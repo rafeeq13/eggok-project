@@ -1,0 +1,176 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --yellow: #FED800;
+  --yellow-dark: #E5C200;
+  --red: #FC0301;
+  --black: #000000;
+  --black-soft: #111111;
+  --black-card: #1A1A1A;
+  --black-border: #2A2A2A;
+  --white: #FEFEFE;
+  --cream: #FECE86;
+  --gray: #CACACA;
+  --gray-text: #888888;
+  --success: #22C55E;
+  --warning: #F59E0B;
+  --danger: #EF4444;
+}
+
+body {
+  background-color: var(--black);
+  color: var(--white);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  min-height: 100vh;
+}
+
+input, textarea, select {
+  outline: none;
+}
+
+button {
+  cursor: pointer;
+  border: none;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #111111;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #2A2A2A;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #888888;
+}
+/* ── DATE & TIME INPUT FIX ── */
+input[type="date"],
+input[type="time"],
+input[type="datetime-local"] {
+  color: #FEFEFE !important;
+  color-scheme: dark !important;
+  background: #111111 !important;
+}
+
+input[type="time"]::-webkit-calendar-picker-indicator,
+input[type="date"]::-webkit-calendar-picker-indicator,
+input[type="datetime-local"]::-webkit-calendar-picker-indicator {
+  display: none !important;
+}
+
+/* ── RESPONSIVE UTILITIES ── */
+
+.table-scroll {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.table-scroll table {
+  min-width: 600px;
+}
+
+/* ── RESPONSIVE GRID OVERRIDES ── */
+
+@media (max-width: 768px) {
+
+  /* All 4-column grids → 2 columns */
+  [style*="repeat(4, 1fr)"] {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+
+  /* All 3-column grids → 1 column */
+  [style*="repeat(3, 1fr)"] {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+
+  /* 2-column grids → 1 column on very small */
+  [style*="repeat(2, 1fr)"] {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Left-right two-column layouts → stack */
+  [style*="1fr 2fr"],
+  [style*="2fr 1fr"],
+  [style*="1fr 1fr"] {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Tables — make scrollable */
+  table {
+    display: block;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    white-space: nowrap;
+  }
+
+  /* Modals — full screen on mobile */
+  [style*="maxWidth: '580px'"],
+  [style*="maxWidth: '560px'"],
+  [style*="maxWidth: '600px'"],
+  [style*="maxWidth: '500px'"],
+  [style*="maxWidth: '480px'"],
+  [style*="maxWidth: '460px'"],
+  [style*="maxWidth: '420px'"],
+  [style*="maxWidth: '400px'"] {
+    max-width: 100% !important;
+    margin: 0 !important;
+    border-radius: 12px !important;
+  }
+
+  /* Reduce padding on mobile */
+  [style*="padding: '28px'"],
+  [style*="padding: '24px'"] {
+    padding: 16px !important;
+  }
+
+  /* Font size adjustments */
+  [style*="fontSize: '28px'"] {
+    font-size: 22px !important;
+  }
+
+  [style*="fontSize: '32px'"] {
+    font-size: 24px !important;
+  }
+
+  /* Hide non-critical table columns */
+  .hide-mobile {
+    display: none !important;
+  }
+
+  /* Full width buttons on mobile */
+  .btn-mobile-full {
+    width: 100% !important;
+  }
+}
+
+@media (max-width: 480px) {
+
+  /* 2-column grids → 1 column on small phones */
+  [style*="repeat(2, 1fr)"] {
+    grid-template-columns: 1fr !important;
+  }
+
+  [style*="repeat(3, 1fr)"] {
+    grid-template-columns: 1fr !important;
+  }
+
+  [style*="repeat(4, 1fr)"] {
+    grid-template-columns: 1fr 1fr !important;
+  }
+}
