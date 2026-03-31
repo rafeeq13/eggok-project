@@ -4,6 +4,96 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useCart } from '../context/CartContext';
 
+const css = `
+  *, *::before, *::after { box-sizing: border-box; }
+
+  .checkout-grid {
+    display: grid;
+    grid-template-columns: 1fr 380px;
+    gap: 32px;
+    align-items: flex-start;
+  }
+
+  .summary-sticky {
+    position: sticky;
+    top: 24px;
+  }
+
+  .tip-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 8px;
+  }
+
+  .name-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+
+  .payment-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+
+  .checkout-wrap {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 32px 24px;
+  }
+
+  /* ════ TABLET ≤ 1024px ════ */
+  @media (max-width: 1024px) {
+    .checkout-grid {
+      grid-template-columns: 1fr 340px;
+      gap: 24px;
+    }
+  }
+
+  /* ════ MOBILE ≤ 768px ════ */
+  @media (max-width: 768px) {
+    .checkout-grid {
+      grid-template-columns: 1fr;
+      gap: 0;
+    }
+
+    /* Order summary moves to top on mobile */
+    .summary-sticky {
+      position: static;
+      order: -1;
+      margin-bottom: 20px;
+    }
+
+    .tip-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    .checkout-wrap {
+      padding: 20px 16px;
+    }
+  }
+
+  /* ════ SMALL ≤ 480px ════ */
+  @media (max-width: 480px) {
+    .checkout-wrap {
+      padding: 16px 12px;
+    }
+
+    .name-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .payment-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .tip-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+`;
+
 export default function CheckoutPage() {
   const router = useRouter();
   const {
@@ -15,13 +105,11 @@ export default function CheckoutPage() {
 
   const [placing, setPlacing] = useState(false);
 
-  // Customer details
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
 
-  // Payment
   const [cardNumber, setCardNumber] = useState('');
   const [expiry, setExpiry] = useState('');
   const [cvv, setCvv] = useState('');
@@ -29,14 +117,12 @@ export default function CheckoutPage() {
   const [promoApplied, setPromoApplied] = useState(false);
   const [promoError, setPromoError] = useState('');
 
-  // Tip — persisted in localStorage
   const [tipMode, setTipMode] = useState<'preset' | 'custom'>('preset');
   const [tipPercent, setTipPercent] = useState(15);
   const [customTipAmount, setCustomTipAmount] = useState('');
   const [customTipPercent, setCustomTipPercent] = useState('');
   const [showCustomTipModal, setShowCustomTipModal] = useState(false);
 
-  // Load tip from localStorage on mount
   useEffect(() => {
     const savedMode = localStorage.getItem('eggok_tip_mode');
     const savedPercent = localStorage.getItem('eggok_tip_percent');
@@ -62,28 +148,28 @@ export default function CheckoutPage() {
 
   const total = subtotal + taxes + deliveryFee - discount + tipAmount;
 
-  const inputStyle = {
+  const inputStyle: React.CSSProperties = {
     width: '100%', padding: '12px 16px',
     background: '#0A0A0A', border: '1px solid #3A3A3A',
     borderRadius: '10px', color: '#FEFEFE',
     fontSize: '14px', outline: 'none',
     transition: 'border-color 0.2s',
-    boxSizing: 'border-box' as const,
+    boxSizing: 'border-box',
   };
 
-  const labelStyle = {
-    fontSize: '13px', fontWeight: '600' as const,
-    color: '#CACACA', display: 'block' as const,
+  const labelStyle: React.CSSProperties = {
+    fontSize: '13px', fontWeight: '600',
+    color: '#CACACA', display: 'block',
     marginBottom: '6px',
   };
 
-  const cardStyle = {
+  const cardStyle: React.CSSProperties = {
     background: '#111111', border: '1px solid #1E1E1E',
     borderRadius: '14px', padding: '20px', marginBottom: '20px',
   };
 
-  const sectionTitle = {
-    fontSize: '16px', fontWeight: '800' as const,
+  const sectionTitle: React.CSSProperties = {
+    fontSize: '16px', fontWeight: '800',
     color: '#FEFEFE', marginBottom: '16px',
   };
 
@@ -109,46 +195,46 @@ export default function CheckoutPage() {
   };
 
   const handlePlaceOrder = async () => {
-  setPlacing(true);
-  try {
-    const response = await fetch('http://localhost:3002/api/orders', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        customerName: `${firstName} ${lastName}`,
-        customerEmail: email,
-        customerPhone: phone,
-        orderType,
-        scheduleType,
-        scheduledDate: scheduleDate || null,
-        scheduledTime: scheduleTime || null,
-        deliveryAddress: deliveryAddress || null,
-        deliveryApt: deliveryApt || null,
-        deliveryInstructions: deliveryInstructions || null,
-        items: cart.map(c => ({
-          id: c.item.id,
-          name: c.item.name,
-          price: getPrice(c.item),
-          quantity: c.quantity,
-          specialInstructions: c.specialInstructions || null,
-        })),
-        subtotal,
-        tax: taxes,
-        deliveryFee,
-        tip: tipAmount,
-        total,
-        promoCode: promoApplied ? promoCode : null,
-        discount,
-      }),
-    });
-    const order = await response.json();
-    localStorage.setItem('eggok_last_order', JSON.stringify(order));
-    router.push('/confirmation');
-  } catch (err) {
-    console.error('Order failed:', err);
-    setPlacing(false);
-  }
-};
+    setPlacing(true);
+    try {
+      const response = await fetch('http://localhost:3002/api/orders', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          customerName: `${firstName} ${lastName}`,
+          customerEmail: email,
+          customerPhone: phone,
+          orderType,
+          scheduleType,
+          scheduledDate: scheduleDate || null,
+          scheduledTime: scheduleTime || null,
+          deliveryAddress: deliveryAddress || null,
+          deliveryApt: deliveryApt || null,
+          deliveryInstructions: deliveryInstructions || null,
+          items: cart.map(c => ({
+            id: c.item.id,
+            name: c.item.name,
+            price: getPrice(c.item),
+            quantity: c.quantity,
+            specialInstructions: c.specialInstructions || null,
+          })),
+          subtotal,
+          tax: taxes,
+          deliveryFee,
+          tip: tipAmount,
+          total,
+          promoCode: promoApplied ? promoCode : null,
+          discount,
+        }),
+      });
+      const order = await response.json();
+      localStorage.setItem('eggok_last_order', JSON.stringify(order));
+      router.push('/confirmation');
+    } catch (err) {
+      console.error('Order failed:', err);
+      setPlacing(false);
+    }
+  };
 
   const getScheduleLabel = () => {
     if (scheduleType === 'asap') return 'ASAP · ~15 min';
@@ -190,48 +276,54 @@ export default function CheckoutPage() {
 
   return (
     <div style={{ background: '#000', minHeight: '100vh', color: '#FEFEFE', fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif' }}>
-      <div style={{ maxWidth: '1100px', margin: '0 auto', padding: '32px 24px' }}>
+      <style>{css}</style>
+
+      <div className="checkout-wrap">
 
         {/* Back */}
-        <Link href="/order" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', color: '#888888', fontSize: '14px', marginBottom: '28px', textDecoration: 'none', transition: 'color 0.2s' }}
+        <Link href="/order"
+          style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', color: '#888888', fontSize: '14px', marginBottom: '28px', textDecoration: 'none', transition: 'color 0.2s' }}
           onMouseEnter={e => (e.currentTarget as HTMLAnchorElement).style.color = '#FED800'}
           onMouseLeave={e => (e.currentTarget as HTMLAnchorElement).style.color = '#888888'}>
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
           Menu
         </Link>
 
-        <h1 style={{ fontSize: 'clamp(28px, 5vw, 48px)', fontWeight: '900', color: '#FEFEFE', marginBottom: '32px', letterSpacing: '-0.5px' }}>Checkout</h1>
+        <h1 style={{ fontSize: 'clamp(24px, 5vw, 48px)', fontWeight: '900', color: '#FEFEFE', marginBottom: '32px', letterSpacing: '-0.5px' }}>Checkout</h1>
 
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 380px', gap: '32px', alignItems: 'flex-start' }}>
+        <div className="checkout-grid">
 
           {/* ── LEFT ── */}
           <div>
 
-            {/* SECTION 1: Order Details */}
+            {/* Order Details */}
             <div style={cardStyle}>
               <p style={sectionTitle}>{orderType === 'pickup' ? 'Pickup details' : 'Delivery details'}</p>
 
-              {/* Address */}
               <div style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '13px 16px', background: '#0A0A0A', borderRadius: '10px', border: '1px solid #2A2A2A', marginBottom: '10px' }}>
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FED800" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
-                <span style={{ fontSize: '14px', color: '#FEFEFE', flex: 1 }}>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FED800" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
+                  <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/>
+                </svg>
+                <span style={{ fontSize: '14px', color: '#FEFEFE', flex: 1, wordBreak: 'break-word' }}>
                   {orderType === 'pickup' ? '3517 Lancaster Ave, Philadelphia PA 19104' : deliveryAddress || 'No address — go back to set one'}
                 </span>
                 <Link href="/order" style={{ fontSize: '12px', color: '#FED800', fontWeight: '700', textDecoration: 'none', flexShrink: 0 }}>Change</Link>
               </div>
 
-              {/* Schedule */}
               <div style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '13px 16px', background: '#0A0A0A', borderRadius: '10px', border: '1px solid #2A2A2A', marginBottom: orderType === 'delivery' ? '10px' : '0' }}>
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FED800" strokeWidth="2" strokeLinecap="round" style={{ flexShrink: 0 }}><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FED800" strokeWidth="2" strokeLinecap="round" style={{ flexShrink: 0 }}>
+                  <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+                </svg>
                 <span style={{ fontSize: '14px', color: '#FEFEFE', flex: 1 }}>{getScheduleLabel()}</span>
                 <Link href="/order" style={{ fontSize: '12px', color: '#FED800', fontWeight: '700', textDecoration: 'none', flexShrink: 0 }}>Change</Link>
               </div>
 
-              {/* Delivery extras */}
               {orderType === 'delivery' && (
                 <>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '13px 16px', background: '#0A0A0A', borderRadius: '10px', border: '1px solid #2A2A2A', marginBottom: '10px' }}>
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#666" strokeWidth="2" strokeLinecap="round" style={{ flexShrink: 0 }}><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#666" strokeWidth="2" strokeLinecap="round" style={{ flexShrink: 0 }}>
+                      <rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/>
+                    </svg>
                     <input placeholder="Apt / Suite / Floor (optional)" value={deliveryApt} onChange={e => setDeliveryApt(e.target.value)}
                       style={{ ...inputStyle, background: 'transparent', border: 'none', padding: '0', flex: 1 }} />
                   </div>
@@ -243,17 +335,17 @@ export default function CheckoutPage() {
               )}
             </div>
 
-            {/* SECTION 2: Tip */}
+            {/* Tip */}
             <div style={cardStyle}>
               <p style={sectionTitle}>Tip</p>
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: '8px' }}>
+              <div className="tip-grid">
                 {[10, 15, 20, 25].map(t => (
                   <button key={t} onClick={() => selectPresetTip(t)} style={{
                     padding: '12px 8px', borderRadius: '10px',
                     background: isPreset(t) ? '#FED80015' : '#0A0A0A',
                     border: `1.5px solid ${isPreset(t) ? '#FED800' : '#2A2A2A'}`,
                     color: isPreset(t) ? '#FED800' : '#888888',
-                    cursor: 'pointer', transition: 'all 0.15s', textAlign: 'center' as const,
+                    cursor: 'pointer', transition: 'all 0.15s', textAlign: 'center',
                   }}>
                     <p style={{ fontSize: '15px', fontWeight: '800', margin: 0 }}>${((subtotal * t) / 100).toFixed(2)}</p>
                     <p style={{ fontSize: '11px', margin: '2px 0 0', opacity: 0.7 }}>{t}%</p>
@@ -264,7 +356,7 @@ export default function CheckoutPage() {
                   background: isCustomActive ? '#FED80015' : '#0A0A0A',
                   border: `1.5px solid ${isCustomActive ? '#FED800' : '#2A2A2A'}`,
                   color: isCustomActive ? '#FED800' : '#888888',
-                  cursor: 'pointer', transition: 'all 0.15s', textAlign: 'center' as const,
+                  cursor: 'pointer', transition: 'all 0.15s', textAlign: 'center',
                 }}>
                   {isCustomActive && customTipAmount ? (
                     <>
@@ -278,7 +370,7 @@ export default function CheckoutPage() {
               </div>
             </div>
 
-            {/* SECTION 3: Your Information */}
+            {/* Your Information */}
             <div style={cardStyle}>
               <p style={sectionTitle}>Your information</p>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
@@ -288,7 +380,7 @@ export default function CheckoutPage() {
                     onFocus={e => (e.target as HTMLInputElement).style.borderColor = '#FED800'}
                     onBlur={e => (e.target as HTMLInputElement).style.borderColor = '#3A3A3A'} />
                 </div>
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
+                <div className="name-grid">
                   <div>
                     <label style={labelStyle}>First name *</label>
                     <input style={inputStyle} placeholder="John" value={firstName} onChange={e => setFirstName(e.target.value)}
@@ -311,11 +403,13 @@ export default function CheckoutPage() {
               </div>
             </div>
 
-            {/* SECTION 4: Payment */}
+            {/* Payment */}
             <div style={cardStyle}>
               <p style={sectionTitle}>Payment</p>
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '10px 14px', background: '#0A0A0A', borderRadius: '8px', border: '1px solid #22C55E20', marginBottom: '16px' }}>
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#22C55E" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#22C55E" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                </svg>
                 <span style={{ fontSize: '12px', color: '#22C55E' }}>Secured by Stripe — 256-bit SSL encryption</span>
               </div>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
@@ -325,7 +419,7 @@ export default function CheckoutPage() {
                     onFocus={e => (e.target as HTMLInputElement).style.borderColor = '#FED800'}
                     onBlur={e => (e.target as HTMLInputElement).style.borderColor = '#3A3A3A'} />
                 </div>
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
+                <div className="payment-grid">
                   <div>
                     <label style={labelStyle}>Expiry date *</label>
                     <input style={inputStyle} placeholder="MM / YY" value={expiry} onChange={e => setExpiry(formatExpiry(e.target.value))}
@@ -360,7 +454,7 @@ export default function CheckoutPage() {
           </div>
 
           {/* ── RIGHT — Summary ── */}
-          <div style={{ position: 'sticky', top: '24px' }}>
+          <div className="summary-sticky">
             <div style={{ background: '#111111', border: '1px solid #1E1E1E', borderRadius: '14px', overflow: 'hidden' }}>
               <div style={{ padding: '16px 20px', borderBottom: '1px solid #1E1E1E' }}>
                 <p style={{ fontSize: '16px', fontWeight: '800', color: '#FEFEFE', margin: 0 }}>Order summary</p>
@@ -399,10 +493,14 @@ export default function CheckoutPage() {
                 <div style={{ marginBottom: '16px' }}>
                   <div style={{ display: 'flex', gap: '8px' }}>
                     <input style={{ ...inputStyle, flex: 1 }} placeholder="Add coupon or gift card"
-                      value={promoCode} onChange={e => { setPromoCode(e.target.value.toUpperCase()); setPromoError(''); setPromoApplied(false); }}
+                      value={promoCode}
+                      onChange={e => { setPromoCode(e.target.value.toUpperCase()); setPromoError(''); setPromoApplied(false); }}
                       onFocus={e => (e.target as HTMLInputElement).style.borderColor = '#FED800'}
                       onBlur={e => (e.target as HTMLInputElement).style.borderColor = '#3A3A3A'} />
-                    <button onClick={applyPromo} style={{ padding: '12px 14px', background: '#FED800', borderRadius: '10px', color: '#000', fontSize: '13px', fontWeight: '700', cursor: 'pointer', border: 'none', flexShrink: 0 }}>Apply</button>
+                    <button onClick={applyPromo}
+                      style={{ padding: '12px 14px', background: '#FED800', borderRadius: '10px', color: '#000', fontSize: '13px', fontWeight: '700', cursor: 'pointer', border: 'none', flexShrink: 0 }}>
+                      Apply
+                    </button>
                   </div>
                   {promoApplied && <p style={{ fontSize: '12px', color: '#22C55E', marginTop: '6px' }}>✓ WELCOME10 applied — 10% off!</p>}
                   {promoError && <p style={{ fontSize: '12px', color: '#FC0301', marginTop: '6px' }}>{promoError}</p>}
@@ -437,18 +535,37 @@ export default function CheckoutPage() {
                 </div>
               </div>
             </div>
+
+            {/* Place Order button — visible on mobile below summary */}
+            <div style={{ marginTop: '16px', display: 'none' }} className="mobile-place-order">
+              <button onClick={handlePlaceOrder} disabled={!canPlaceOrder || placing} style={{
+                width: '100%', padding: '16px',
+                background: canPlaceOrder && !placing ? '#FED800' : '#1A1A1A',
+                color: canPlaceOrder && !placing ? '#000' : '#555',
+                borderRadius: '12px', border: 'none',
+                fontSize: '16px', fontWeight: '800',
+                cursor: canPlaceOrder && !placing ? 'pointer' : 'not-allowed',
+              }}>
+                {placing ? 'Placing Order...' : `Place order · $${total.toFixed(2)}`}
+              </button>
+            </div>
           </div>
         </div>
       </div>
 
       {/* Custom Tip Modal */}
       {showCustomTipModal && (
-        <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.85)', zIndex: 500, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px' }} onClick={() => setShowCustomTipModal(false)}>
-          <div style={{ background: '#111', borderRadius: '20px', width: '100%', maxWidth: '400px', border: '1px solid #1E1E1E', padding: '24px' }} onClick={e => e.stopPropagation()}>
+        <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.85)', zIndex: 500, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '16px' }}
+          onClick={() => setShowCustomTipModal(false)}>
+          <div style={{ background: '#111', borderRadius: '20px', width: '100%', maxWidth: '400px', border: '1px solid #1E1E1E', padding: '24px' }}
+            onClick={e => e.stopPropagation()}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
               <h2 style={{ fontSize: '18px', fontWeight: '800', color: '#FEFEFE', margin: 0 }}>Custom tip</h2>
-              <button onClick={() => setShowCustomTipModal(false)} style={{ width: '30px', height: '30px', borderRadius: '50%', background: '#1A1A1A', border: '1px solid #2A2A2A', color: '#888', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+              <button onClick={() => setShowCustomTipModal(false)}
+                style={{ width: '30px', height: '30px', borderRadius: '50%', background: '#1A1A1A', border: '1px solid #2A2A2A', color: '#888', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
+                  <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+                </svg>
               </button>
             </div>
 
@@ -457,10 +574,7 @@ export default function CheckoutPage() {
                 <label style={{ ...labelStyle, marginBottom: '8px' }}>Amount</label>
                 <div style={{ position: 'relative' }}>
                   <span style={{ position: 'absolute', left: '14px', top: '50%', transform: 'translateY(-50%)', color: '#FED800', fontWeight: '700', fontSize: '14px' }}>$</span>
-                  <input
-                    type="number"
-                    placeholder="0.00"
-                    value={customTipAmount}
+                  <input type="number" placeholder="0.00" value={customTipAmount}
                     onChange={e => {
                       setCustomTipAmount(e.target.value);
                       if (subtotal > 0 && e.target.value) {
@@ -472,18 +586,14 @@ export default function CheckoutPage() {
                     autoFocus
                     style={{ ...inputStyle, paddingLeft: '28px' }}
                     onFocus={e => (e.target as HTMLInputElement).style.borderColor = '#FED800'}
-                    onBlur={e => (e.target as HTMLInputElement).style.borderColor = '#3A3A3A'}
-                  />
+                    onBlur={e => (e.target as HTMLInputElement).style.borderColor = '#3A3A3A'} />
                 </div>
               </div>
               <span style={{ color: '#444', fontSize: '18px', marginTop: '20px' }}>=</span>
               <div>
                 <label style={{ ...labelStyle, marginBottom: '8px' }}>Percent</label>
                 <div style={{ position: 'relative' }}>
-                  <input
-                    type="number"
-                    placeholder="0"
-                    value={customTipPercent}
+                  <input type="number" placeholder="0" value={customTipPercent}
                     onChange={e => {
                       setCustomTipPercent(e.target.value);
                       if (subtotal > 0 && e.target.value) {
@@ -494,8 +604,7 @@ export default function CheckoutPage() {
                     }}
                     style={{ ...inputStyle, paddingRight: '28px' }}
                     onFocus={e => (e.target as HTMLInputElement).style.borderColor = '#FED800'}
-                    onBlur={e => (e.target as HTMLInputElement).style.borderColor = '#3A3A3A'}
-                  />
+                    onBlur={e => (e.target as HTMLInputElement).style.borderColor = '#3A3A3A'} />
                   <span style={{ position: 'absolute', right: '14px', top: '50%', transform: 'translateY(-50%)', color: '#888', fontSize: '14px' }}>%</span>
                 </div>
               </div>
