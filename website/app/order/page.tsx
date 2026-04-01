@@ -164,6 +164,7 @@ const css = `
     background: #FED800;
     color: #000;
     border-color: #FED800;
+    margin-left:85px;
   }
   .mobile-cat-pill:not(.active):hover {
     border-color: #3A3A3A;
@@ -262,7 +263,7 @@ const css = `
     .pop-card { width: 145px; }
     .grid-img { width: 88px; height: 88px; }
     .main-inner { padding: 66px 10px 100px !important; }
-    .schedule-label { display: none; }
+    .schedule-label { display: block; }
     .cat-section { scroll-margin-top: 76px; }
   }
 `;
@@ -563,7 +564,7 @@ export default function OrderPage() {
               aria-label="Search menu">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#999" strokeWidth="2.2">
                 <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
-              </svg>
+              </svg>  &nbsp;Search
             </button>
 
             {/* Divider */}
@@ -646,20 +647,7 @@ export default function OrderPage() {
                     </button>
                   ))}
                 </div>
-
-                {/* Schedule */}
-                <button onClick={() => setShowScheduleModal(true)}
-                  style={{ display: 'flex', alignItems: 'center', gap: '6px', padding: '9px 14px', background: 'transparent', border: '1.5px solid #3A3A3A', borderRadius: '999px', color: '#FEFEFE', fontSize: '13px', cursor: 'pointer', fontWeight: '600', whiteSpace: 'nowrap', flexShrink: 0 }}
-                  onMouseEnter={e => (e.currentTarget as HTMLButtonElement).style.borderColor = '#FED800'}
-                  onMouseLeave={e => (e.currentTarget as HTMLButtonElement).style.borderColor = '#3A3A3A'}>
-                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#FED800" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                    <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
-                  </svg>
-                  <span className="schedule-label">{mounted ? getScheduleLabel() : 'ASAP (15 min)'}</span>
-                  <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#888" strokeWidth="2.5"><polyline points="6 9 12 15 18 9"/></svg>
-                </button>
-
-                {/* Delivery address */}
+ {/* Delivery address */}
                 {mounted && orderType === 'delivery' && (
                   <button onClick={() => setShowDeliveryModal(true)}
                     style={{ display: 'flex', alignItems: 'center', gap: '7px', padding: '9px 12px', background: '#1A1A1A', border: '1px solid #2A2A2A', borderRadius: '10px', color: '#CCC', fontSize: '13px', cursor: 'pointer', fontWeight: '500', maxWidth: '200px' }}>
@@ -669,6 +657,19 @@ export default function OrderPage() {
                     <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{truncateAddress(deliveryAddress)}</span>
                   </button>
                 )}
+                {/* Schedule */}
+                <button onClick={() => setShowScheduleModal(true)}
+                  style={{ display: 'flex', alignItems: 'center', gap: '6px', padding: '9px 8px', background: 'transparent', border: '1.5px solid #3A3A3A', borderRadius: '999px', color: '#FEFEFE', fontSize: '13px', cursor: 'pointer', fontWeight: '600', whiteSpace: 'nowrap', flexShrink: 0 }}
+                  onMouseEnter={e => (e.currentTarget as HTMLButtonElement).style.borderColor = '#FED800'}
+                  onMouseLeave={e => (e.currentTarget as HTMLButtonElement).style.borderColor = '#3A3A3A'}>
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#FED800" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                    <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+                  </svg>
+                  <span className="schedule-label">{mounted ? getScheduleLabel() : 'ASAP (15 min)'}</span>
+                  <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#888" strokeWidth="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+                </button>
+
+               
               </div>
             </div>
 
