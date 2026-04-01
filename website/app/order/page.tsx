@@ -109,14 +109,114 @@ const css = `
     display: none;
     position: fixed;
     inset: 0;
-    // background: rgba(0,0,0,.75);
     z-index: 148;
-    // backdrop-filter: blur(2px);
   }
 
   /* cat btn hover */
   .cat-btn:hover { background: #1A1A1A !important; }
   .more-link:hover { background: #1A1A1A; }
+
+  /* ── Category section scroll margin ── */
+  .cat-section { scroll-margin-top: 24px; }
+
+  /* ══ MOBILE CATEGORY BAR ══ */
+  .mobile-cat-bar {
+    display: none;
+    position: fixed;
+    top: 64px; left: 0; right: 0;
+    z-index: 98;
+    background: rgba(10,10,10,0.98);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid #1E1E1E;
+    height: 52px;
+    align-items: center;
+  }
+
+  .mobile-cat-scroll {
+    display: flex;
+    align-items: center;
+    overflow-x: auto;
+    scrollbar-width: none;
+    padding: 0 10px;
+    gap: 6px;
+    height: 100%;
+    -webkit-overflow-scrolling: touch;
+  }
+  .mobile-cat-scroll::-webkit-scrollbar { display: none; }
+
+  .mobile-cat-pill {
+    flex-shrink: 0;
+    padding: 6px 14px;
+    border-radius: 999px;
+    border: 1px solid #2A2A2A;
+    background: #1A1A1A;
+    color: #888;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background 0.15s, color 0.15s, border-color 0.15s;
+    font-family: inherit;
+    line-height: 1;
+  }
+  .mobile-cat-pill.active {
+    background: #FED800;
+    color: #000;
+    border-color: #FED800;
+  }
+  .mobile-cat-pill:not(.active):hover {
+    border-color: #3A3A3A;
+    color: #CCC;
+  }
+
+  .mobile-search-bar {
+    display: flex;
+    align-items: center;
+    padding: 0 12px;
+    gap: 10px;
+    width: 100%;
+    height: 100%;
+  }
+
+  .mobile-search-input-wrap {
+    position: relative;
+    flex: 1;
+  }
+
+  .mobile-search-input {
+    width: 100%;
+    padding: 8px 12px 8px 34px;
+    background: #1A1A1A;
+    border: 1px solid #2A2A2A;
+    border-radius: 999px;
+    color: #FFF;
+    font-size: 13px;
+    outline: none;
+    font-family: inherit;
+    transition: border-color 0.15s;
+  }
+  .mobile-search-input:focus { border-color: #FED800; }
+
+  .mobile-search-icon-btn {
+  position: fixed;
+    flex-shrink: 0;
+    padding: 6px 10px;
+    border-radius: 999px;
+    border: 1px solid #2A2A2A;
+    background: #1A1A1A;
+    color: #888;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.15s, border-color 0.15s;
+    line-height: 0;
+  }
+  .mobile-search-icon-btn:hover {
+    background: #252525;
+    border-color: #3A3A3A;
+  }
 
   /* ════ TABLET ≤ 1024px ════ */
   @media (max-width: 1024px) {
@@ -140,13 +240,20 @@ const css = `
 
   /* ════ MOBILE ≤ 768px ════ */
   @media (max-width: 768px) {
+    /* Show mobile category bar, hide burger (pills replace sidebar nav) */
+    .mobile-cat-bar { display: flex; }
+    .burger { display: none; }
+
+    /* Push main content below the fixed category bar */
+    .cat-section { scroll-margin-top: 76px; }
+    .main-inner { padding: 70px 14px 100px !important; }
+
     .sidebar { width: 250px; }
     .menu-grid { grid-template-columns: 1fr; }
     .cart-panel { width: 100%; }
     .pop-card { width: 160px; }
     .grid-img { width: 100px; height: 100px; }
     .order-row { gap: 8px; }
-    .main-inner { padding: 18px 14px 100px !important; }
   }
 
   /* ════ SMALL ≤ 480px ════ */
@@ -154,8 +261,9 @@ const css = `
     .sidebar { width: 220px; }
     .pop-card { width: 145px; }
     .grid-img { width: 88px; height: 88px; }
-    .main-inner { padding: 14px 10px 100px !important; }
+    .main-inner { padding: 66px 10px 100px !important; }
     .schedule-label { display: none; }
+    .cat-section { scroll-margin-top: 76px; }
   }
 `;
 
@@ -191,9 +299,16 @@ export default function OrderPage() {
   const [deliveryStep, setDeliveryStep] = useState<1 | 2>(deliveryAddress ? 2 : 1);
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
+  // Mobile-specific state
+  const [showMobileSearch, setShowMobileSearch] = useState(false);
+
   const popularScrollRef = useRef<HTMLDivElement>(null);
   const categoryRefs = useRef<Record<number, HTMLDivElement | null>>({});
   const mainContentRef = useRef<HTMLDivElement>(null);
+
+  // Mobile category bar refs
+  const mobileCatScrollRef = useRef<HTMLDivElement>(null);
+  const mobileCatRefs = useRef<Record<number, HTMLButtonElement | null>>({});
 
   useEffect(() => {
     setMounted(true);
@@ -217,6 +332,7 @@ export default function OrderPage() {
       .catch(() => {});
   }, []);
 
+  // Scroll spy — tracks active category from main scroll
   useEffect(() => {
     const el = mainContentRef.current;
     if (!el) return;
@@ -232,11 +348,30 @@ export default function OrderPage() {
     return () => el.removeEventListener('scroll', handler);
   }, [categories]);
 
+  // Auto-scroll mobile category pill bar to keep active pill centred
+  useEffect(() => {
+    const container = mobileCatScrollRef.current;
+    const activeEl = mobileCatRefs.current[activeCategory];
+    if (!container || !activeEl) return;
+    const containerRect = container.getBoundingClientRect();
+    const elRect = activeEl.getBoundingClientRect();
+    const targetScrollLeft =
+      container.scrollLeft + elRect.left - containerRect.left - (containerRect.width - elRect.width) / 2;
+    container.scrollTo({ left: targetScrollLeft, behavior: 'smooth' });
+  }, [activeCategory]);
+
   useEffect(() => {
     const onResize = () => { if (window.innerWidth > 1024) setSidebarOpen(false); };
     window.addEventListener('resize', onResize);
     return () => window.removeEventListener('resize', onResize);
   }, []);
+
+  // Close mobile search when search is cleared
+  useEffect(() => {
+    if (!search && showMobileSearch) {
+      // keep open so user can type; they close via Cancel
+    }
+  }, [search]);
 
   const popularItems = menuItems.filter(i => i.isPopular);
   const getItemsByCategory = (catId: number) => catId === 0 ? popularItems : menuItems.filter(i => i.categoryId === catId);
@@ -281,6 +416,11 @@ export default function OrderPage() {
   const scrollToCategory = (catId: number) => {
     setActiveCategory(catId);
     setSidebarOpen(false);
+    // Also close mobile search if open
+    if (showMobileSearch) {
+      setShowMobileSearch(false);
+      setSearch('');
+    }
     const el = categoryRefs.current[catId];
     if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
   };
@@ -321,7 +461,7 @@ export default function OrderPage() {
       {/* ══ NAV ══ */}
       <nav style={{ position: 'fixed', top: 0, left: 0, right: 0, zIndex: 100, background: 'rgba(10,10,10,0.98)', backdropFilter: 'blur(20px)', borderBottom: '1px solid #1E1E1E', height: '64px', display: 'flex', alignItems: 'center', padding: '0 16px', gap: '10px' }}>
 
-        {/* Burger */}
+        {/* Burger — visible on tablet only (768-1024px) */}
         <button className="burger" onClick={() => setSidebarOpen(v => !v)} aria-label="Toggle menu">
           {sidebarOpen
             ? <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
@@ -379,7 +519,7 @@ export default function OrderPage() {
               <circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/>
               <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
             </svg>
-            {cartCount > 0 && (
+            {mounted && cartCount > 0 && (
               <div style={{ position: 'absolute', top: '-6px', right: '-6px', width: '20px', height: '20px', background: '#FC0301', borderRadius: '50%', fontSize: '11px', fontWeight: '800', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                 {cartCount}
               </div>
@@ -388,13 +528,68 @@ export default function OrderPage() {
         </div>
       </nav>
 
+      {/* ══ MOBILE CATEGORY BAR (≤768px only) ══ */}
+      <div className="mobile-cat-bar">
+        {showMobileSearch ? (
+          /* Expanded search mode */
+          <div className="mobile-search-bar">
+            <div className="mobile-search-input-wrap">
+              <svg
+                style={{ position: 'absolute', left: '11px', top: '50%', transform: 'translateY(-50%)', pointerEvents: 'none' }}
+                width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#888" strokeWidth="2.2">
+                <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+              </svg>
+              <input
+                autoFocus
+                placeholder="Search menu..."
+                value={search}
+                onChange={e => setSearch(e.target.value)}
+                className="mobile-search-input"
+              />
+            </div>
+            <button
+              onClick={() => { setShowMobileSearch(false); setSearch(''); }}
+              style={{ background: 'none', border: 'none', color: '#FED800', cursor: 'pointer', fontSize: '13px', fontWeight: '700', flexShrink: 0, padding: '4px 0', fontFamily: 'inherit' }}>
+              Cancel
+            </button>
+          </div>
+        ) : (
+          /* Scrollable category pills */
+          <div ref={mobileCatScrollRef} className="mobile-cat-scroll">
+            {/* Search icon pill — always first */}
+            <button
+              className="mobile-search-icon-btn"
+              onClick={() => setShowMobileSearch(true)}
+              aria-label="Search menu">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#999" strokeWidth="2.2">
+                <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+              </svg>
+            </button>
+
+            {/* Divider */}
+            <div style={{ width: '1px', height: '20px', background: '#2A2A2A', flexShrink: 0 }} />
+
+            {/* Category pills */}
+            {categories.map(cat => (
+              <button
+                key={cat.id}
+                ref={el => { mobileCatRefs.current[cat.id] = el; }}
+                className={`mobile-cat-pill${activeCategory === cat.id ? ' active' : ''}`}
+                onClick={() => scrollToCategory(cat.id)}>
+                {cat.name}
+              </button>
+            ))}
+          </div>
+        )}
+      </div>
+
       {/* ══ BODY ══ */}
       <div style={{ display: 'flex', paddingTop: '64px' }}>
 
         {/* Overlay */}
         <div className={`sidebar-overlay${sidebarOpen ? ' visible' : ''}`} onClick={() => setSidebarOpen(false)} />
 
-        {/* ── SIDEBAR ── */}
+        {/* ── SIDEBAR (desktop + tablet drawer) ── */}
         <aside className={`sidebar${sidebarOpen ? ' open' : ''}`}>
           <div style={{ padding: '0 16px 16px', borderBottom: '1px solid #2A2A2A' }}>
             <div style={{ position: 'relative' }}>
@@ -452,6 +647,18 @@ export default function OrderPage() {
                   ))}
                 </div>
 
+                {/* Schedule */}
+                <button onClick={() => setShowScheduleModal(true)}
+                  style={{ display: 'flex', alignItems: 'center', gap: '6px', padding: '9px 14px', background: 'transparent', border: '1.5px solid #3A3A3A', borderRadius: '999px', color: '#FEFEFE', fontSize: '13px', cursor: 'pointer', fontWeight: '600', whiteSpace: 'nowrap', flexShrink: 0 }}
+                  onMouseEnter={e => (e.currentTarget as HTMLButtonElement).style.borderColor = '#FED800'}
+                  onMouseLeave={e => (e.currentTarget as HTMLButtonElement).style.borderColor = '#3A3A3A'}>
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#FED800" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                    <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+                  </svg>
+                  <span className="schedule-label">{mounted ? getScheduleLabel() : 'ASAP (15 min)'}</span>
+                  <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#888" strokeWidth="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+                </button>
+
                 {/* Delivery address */}
                 {mounted && orderType === 'delivery' && (
                   <button onClick={() => setShowDeliveryModal(true)}
@@ -462,18 +669,6 @@ export default function OrderPage() {
                     <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{truncateAddress(deliveryAddress)}</span>
                   </button>
                 )}
-
-                {/* Schedule */}
-                <button onClick={() => setShowScheduleModal(true)}
-                  style={{ display: 'flex', alignItems: 'center', gap: '6px', padding: '9px 14px', background: 'transparent', border: '1.5px solid #3A3A3A', borderRadius: '999px', color: '#FEFEFE', fontSize: '13px', cursor: 'pointer', fontWeight: '600', whiteSpace: 'nowrap', flexShrink: 0 }}
-                  onMouseEnter={e => (e.currentTarget as HTMLButtonElement).style.borderColor = '#FED800'}
-                  onMouseLeave={e => (e.currentTarget as HTMLButtonElement).style.borderColor = '#3A3A3A'}>
-                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#FED800" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                    <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
-                  </svg>
-                  <span className="schedule-label">{getScheduleLabel()}</span>
-                  <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#888" strokeWidth="2.5"><polyline points="6 9 12 15 18 9"/></svg>
-                </button>
               </div>
             </div>
 
@@ -497,7 +692,11 @@ export default function OrderPage() {
               if (items.length === 0) return null;
               const isPopular = cat.id === 0;
               return (
-                <div key={cat.id} ref={el => { categoryRefs.current[cat.id] = el; }} style={{ marginBottom: '52px', scrollMarginTop: '24px' }}>
+                <div
+                  key={cat.id}
+                  ref={el => { categoryRefs.current[cat.id] = el; }}
+                  className="cat-section"
+                  style={{ marginBottom: '52px' }}>
                   <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '20px' }}>
                     <h2 style={{ fontSize: 'clamp(17px,3vw,22px)', fontWeight: '800', color: '#FFF', margin: 0, letterSpacing: '-0.3px' }}>{cat.name}</h2>
                     {isPopular && (
