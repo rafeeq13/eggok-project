@@ -1,5 +1,5 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 type IntegrationStatus = 'connected' | 'disconnected' | 'error';
 
@@ -11,6 +11,8 @@ type Integration = {
   status: IntegrationStatus;
   lastSync: string;
 };
+
+const API = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3002/api';
 
 const clientIntegrationDefaults = {
   googleMapsKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_KEY || '',
@@ -46,11 +48,21 @@ export default function Integrations() {
   const [doordashStatus, setDoordashStatus] = useState<IntegrationStatus>('disconnected');
 
   // Email
-  const [emailProvider, setEmailProvider] = useState('sendgrid');
-  const [emailApiKey, setEmailApiKey] = useState('');
+  const [emailProvider, setEmailProvider] = useState('smtp');
+  const [emailHost, setEmailHost] = useState('');
+  const [emailPort, setEmailPort] = useState('587');
+  const [emailSecure, setEmailSecure] = useState(false);
+  const [emailUser, setEmailUser] = useState('');
+  const [emailPassword, setEmailPassword] = useState('');
   const [emailFromName, setEmailFromName] = useState('Eggs Ok');
   const [emailFromAddress, setEmailFromAddress] = useState('orders@eggsokphilly.com');
+  const [emailOwnerAddress, setEmailOwnerAddress] = useState('orders@eggsokphilly.com');
   const [emailStatus, setEmailStatus] = useState<IntegrationStatus>('disconnected');
+  const [emailHasPassword, setEmailHasPassword] = useState(false);
+  const [emailSaving, setEmailSaving] = useState(false);
+  const [emailTesting, setEmailTesting] = useState(false);
+  const [emailLoading, setEmailLoading] = useState(true);
+  const [emailTestRecipient, setEmailTestRecipient] = useState('');
 
   // Push Notifications
   const [fcmServerKey, setFcmServerKey] = useState('');
@@ -75,6 +87,129 @@ export default function Integrations() {
     setTimeout(() => setErrorMsg(''), 4000);
   };
 
+  const applyEmailPreset = (provider: string) => {
+    setEmailProvider(provider);
+    if (provider === 'sendgrid') {
+      setEmailHost('smtp.sendgrid.net');
+      setEmailPort('587');
+      setEmailSecure(false);
+      setEmailUser('apikey');
+    }
+    if (provider === 'smtp' && emailHost === 'smtp.sendgrid.net' && emailUser === 'apikey') {
+      setEmailHost('');
+      setEmailUser('');
+    }
+  };
+
+  const applyEmailSettings = (settings: {
+    provider?: string;
+    host?: string;
+    port?: number;
+    secure?: boolean;
+    user?: string;
+    fromName?: string;
+    fromEmail?: string;
+    ownerEmail?: string;
+    configured?: boolean;
+    hasPassword?: boolean;
+  }) => {
+    setEmailProvider(settings.provider || 'smtp');
+    setEmailHost(settings.host || '');
+    setEmailPort(String(settings.port || 587));
+    setEmailSecure(Boolean(settings.secure));
+    setEmailUser(settings.user || '');
+    setEmailFromName(settings.fromName || 'Eggs Ok');
+    setEmailFromAddress(settings.fromEmail || 'orders@eggsokphilly.com');
+    setEmailOwnerAddress(settings.ownerEmail || settings.fromEmail || 'orders@eggsokphilly.com');
+    setEmailHasPassword(Boolean(settings.hasPassword));
+    setEmailStatus(settings.configured ? 'connected' : 'disconnected');
+  };
+
+  useEffect(() => {
+    const loadEmailSettings = async () => {
+      try {
+        setEmailLoading(true);
+        const response = await fetch(`${API}/mail/settings`);
+        if (!response.ok) throw new Error('Failed to load email settings');
+        const data = await response.json();
+        applyEmailSettings(data);
+      } catch (error) {
+        console.error(error);
+        setEmailStatus('error');
+        showError('Unable to load email settings');
+      } finally {
+        setEmailLoading(false);
+      }
+    };
+
+    loadEmailSettings();
+  }, []);
+
+  const buildEmailPayload = () => ({
+    enabled: true,
+    provider: emailProvider,
+    host: emailHost.trim(),
+    port: Number(emailPort) || 587,
+    secure: emailSecure,
+    user: emailUser.trim(),
+    password: emailPassword.trim(),
+    fromName: emailFromName.trim(),
+    fromEmail: emailFromAddress.trim(),
+    ownerEmail: (emailOwnerAddress || emailFromAddress).trim(),
+  });
+
+  const saveEmailSettings = async (showToast = true) => {
+    setEmailSaving(true);
+    try {
+      const response = await fetch(`${API}/mail/settings`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(buildEmailPayload()),
+      });
+
+      const data = await response.json().catch(() => ({}));
+      if (!response.ok) {
+        throw new Error(data?.message || 'Failed to save email settings');
+      }
+
+      applyEmailSettings(data);
+      setEmailPassword('');
+      if (showToast) showSuccess('Email settings saved');
+      return data;
+    } catch (error) {
+      const message = error instanceof Error ? error.message : 'Failed to save email settings';
+      setEmailStatus('error');
+      showError(message);
+      throw error;
+    } finally {
+      setEmailSaving(false);
+    }
+  };
+
+  const sendTestEmail = async () => {
+    setEmailTesting(true);
+    try {
+      await saveEmailSettings(false);
+      const response = await fetch(`${API}/mail/test`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ to: emailTestRecipient.trim() || emailOwnerAddress.trim() || emailFromAddress.trim() }),
+      });
+      const data = await response.json().catch(() => ({}));
+      if (!response.ok) {
+        throw new Error(data?.message || 'Test email failed');
+      }
+      setEmailStatus('connected');
+      showSuccess('Test email sent successfully');
+    } catch (error) {
+      const message = error instanceof Error ? error.message : 'Test email failed';
+      setEmailStatus('error');
+      showError(message);
+    } finally {
+      setEmailTesting(false);
+    }
+  };
+
   const testConnection = async (id: string) => {
     setTestingId(id);
     await new Promise(r => setTimeout(r, 2000));
@@ -84,7 +219,6 @@ export default function Integrations() {
       (id === 'square' && squareAppId && squareAccessToken && squareLocationId) ||
       (id === 'stripe' && stripePublishableKey && stripeSecretKey) ||
       (id === 'doordash' && doordashDeveloperId && doordashKeyId) ||
-      (id === 'email' && emailApiKey && emailFromAddress) ||
       (id === 'push' && fcmServerKey) ||
       (id === 'maps' && googleMapsKey)
     );
@@ -92,7 +226,6 @@ export default function Integrations() {
       if (id === 'square') setSquareStatus('connected');
       if (id === 'stripe') setStripeStatus('connected');
       if (id === 'doordash') setDoordashStatus('connected');
-      if (id === 'email') setEmailStatus('connected');
       if (id === 'push') setPushStatus('connected');
       if (id === 'maps') setGoogleMapsStatus('connected');
       showSuccess(`${id.charAt(0).toUpperCase() + id.slice(1)} connected successfully`);
@@ -100,7 +233,6 @@ export default function Integrations() {
       if (id === 'square') setSquareStatus('error');
       if (id === 'stripe') setStripeStatus('error');
       if (id === 'doordash') setDoordashStatus('error');
-      if (id === 'email') setEmailStatus('error');
       if (id === 'push') setPushStatus('error');
       if (id === 'maps') setGoogleMapsStatus('error');
       showError('Connection failed - please check your credentials');
@@ -535,24 +667,72 @@ export default function Integrations() {
 
               <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
                 <div>
-                  <label style={labelStyle}>Email Provider</label>
+                  <label style={labelStyle}>Email Setup</label>
                   <div style={{ display: 'flex', gap: '10px' }}>
-                    {['sendgrid', 'aws_ses'].map(provider => (
-                      <button key={provider} onClick={() => setEmailProvider(provider)} style={{
+                    {[
+                      { id: 'smtp', label: 'Custom SMTP' },
+                      { id: 'sendgrid', label: 'SendGrid SMTP' },
+                    ].map(provider => (
+                      <button key={provider.id} onClick={() => applyEmailPreset(provider.id)} style={{
                         flex: 1, padding: '10px', borderRadius: '8px', cursor: 'pointer',
-                        background: emailProvider === provider ? '#FED800' : '#111111',
-                        border: `1px solid ${emailProvider === provider ? '#FED800' : '#2A2A2A'}`,
-                        color: emailProvider === provider ? '#000' : '#888888',
+                        background: emailProvider === provider.id ? '#FED800' : '#111111',
+                        border: `1px solid ${emailProvider === provider.id ? '#FED800' : '#2A2A2A'}`,
+                        color: emailProvider === provider.id ? '#000' : '#888888',
                         fontSize: '13px', fontWeight: '600',
                       }}>
-                        {provider === 'sendgrid' ? 'SendGrid' : 'AWS SES'}
+                        {provider.label}
                       </button>
                     ))}
                   </div>
                 </div>
                 <div>
-                  <label style={labelStyle}>API Key *</label>
-                  <PasswordInput value={emailApiKey} onChange={setEmailApiKey} placeholder={emailProvider === 'sendgrid' ? 'SG.xxxxxxxxxxxxxxxxxxxxxxxx' : 'AKIA...'} />
+                  <label style={labelStyle}>SMTP Host *</label>
+                  <input style={inputStyle} value={emailHost} onChange={e => setEmailHost(e.target.value)}
+                    placeholder={emailProvider === 'sendgrid' ? 'smtp.sendgrid.net' : 'smtp.your-provider.com'}
+                    onFocus={e => e.target.style.borderColor = '#FED800'}
+                    onBlur={e => e.target.style.borderColor = '#2A2A2A'}
+                  />
+                </div>
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
+                  <div>
+                    <label style={labelStyle}>SMTP Port *</label>
+                    <input style={inputStyle} value={emailPort} onChange={e => setEmailPort(e.target.value.replace(/\D/g, ''))}
+                      placeholder="587"
+                      onFocus={e => e.target.style.borderColor = '#FED800'}
+                      onBlur={e => e.target.style.borderColor = '#2A2A2A'}
+                    />
+                  </div>
+                  <div>
+                    <label style={labelStyle}>Encryption</label>
+                    <button onClick={() => setEmailSecure(!emailSecure)} style={{
+                      ...inputStyle,
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'space-between',
+                      cursor: 'pointer',
+                    }}>
+                      <span>{emailSecure ? 'SSL / TLS' : 'STARTTLS / Standard SMTP'}</span>
+                      <span style={{ color: emailSecure ? '#FED800' : '#888888', fontWeight: '700' }}>{emailSecure ? 'ON' : 'OFF'}</span>
+                    </button>
+                  </div>
+                </div>
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
+                  <div>
+                    <label style={labelStyle}>SMTP Username *</label>
+                    <input style={inputStyle} value={emailUser} onChange={e => setEmailUser(e.target.value)}
+                      placeholder={emailProvider === 'sendgrid' ? 'apikey' : 'username'}
+                      onFocus={e => e.target.style.borderColor = '#FED800'}
+                      onBlur={e => e.target.style.borderColor = '#2A2A2A'}
+                    />
+                  </div>
+                  <div>
+                    <label style={labelStyle}>SMTP Password *</label>
+                    <PasswordInput
+                      value={emailPassword}
+                      onChange={setEmailPassword}
+                      placeholder={emailHasPassword ? 'Leave blank to keep saved password' : 'Enter SMTP password'}
+                    />
+                  </div>
                 </div>
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
                   <div>
@@ -570,7 +750,63 @@ export default function Integrations() {
                     />
                   </div>
                 </div>
-                <ConnectButton id="email" />
+                <div>
+                  <label style={labelStyle}>Owner / Inbox Email *</label>
+                  <input type="email" style={inputStyle} value={emailOwnerAddress} onChange={e => setEmailOwnerAddress(e.target.value)}
+                    placeholder="Where website messages and order alerts should go"
+                    onFocus={e => e.target.style.borderColor = '#FED800'}
+                    onBlur={e => e.target.style.borderColor = '#2A2A2A'}
+                  />
+                </div>
+                <div>
+                  <label style={labelStyle}>Test Recipient</label>
+                  <input type="email" style={inputStyle} value={emailTestRecipient} onChange={e => setEmailTestRecipient(e.target.value)}
+                    placeholder="Optional - defaults to owner inbox"
+                    onFocus={e => e.target.style.borderColor = '#FED800'}
+                    onBlur={e => e.target.style.borderColor = '#2A2A2A'}
+                  />
+                </div>
+                <div style={{ padding: '12px 14px', background: '#111111', borderRadius: '8px', border: '1px solid #2A2A2A' }}>
+                  <p style={{ fontSize: '11px', color: '#888888', lineHeight: '1.6' }}>
+                    This mail setup is used across the application for order confirmations, owner order alerts, contact page submissions, catering requests, hiring applications, and gift card emails.
+                  </p>
+                </div>
+                <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
+                  <button
+                    onClick={() => saveEmailSettings(true)}
+                    disabled={emailSaving || emailLoading}
+                    style={{
+                      padding: '10px 20px',
+                      background: emailSaving || emailLoading ? '#2A2A2A' : '#FED800',
+                      border: 'none',
+                      borderRadius: '8px',
+                      color: emailSaving || emailLoading ? '#888888' : '#000',
+                      fontSize: '13px',
+                      fontWeight: '700',
+                      cursor: emailSaving || emailLoading ? 'not-allowed' : 'pointer',
+                      minWidth: '140px',
+                    }}
+                  >
+                    {emailSaving ? 'Saving...' : 'Save Settings'}
+                  </button>
+                  <button
+                    onClick={sendTestEmail}
+                    disabled={emailTesting || emailLoading}
+                    style={{
+                      padding: '10px 20px',
+                      background: 'transparent',
+                      border: '1px solid #2A2A2A',
+                      borderRadius: '8px',
+                      color: emailTesting || emailLoading ? '#555555' : '#FEFEFE',
+                      fontSize: '13px',
+                      fontWeight: '700',
+                      cursor: emailTesting || emailLoading ? 'not-allowed' : 'pointer',
+                      minWidth: '140px',
+                    }}
+                  >
+                    {emailTesting ? 'Sending Test...' : 'Send Test Email'}
+                  </button>
+                </div>
               </div>
             </div>
           </div>

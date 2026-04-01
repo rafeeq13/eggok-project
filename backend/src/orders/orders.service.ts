@@ -2,13 +2,15 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Order } from './order.entity';
+import { MailService } from '../mail/mail.service';
 
 @Injectable()
 export class OrdersService {
   constructor(
     @InjectRepository(Order)
     private ordersRepository: Repository<Order>,
-  ) {}
+    private mailService: MailService,
+  ) { }
 
   private generateOrderNumber(): string {
     const prefix = 'EO';
@@ -41,7 +43,17 @@ export class OrdersService {
       notes: data.notes || null,
       status: 'pending',
     });
-    return this.ordersRepository.save(order);
+    const savedOrder = await this.ordersRepository.save(order);
+
+    // Send emails asynchronously
+    this.mailService.sendOrderConfirmation(savedOrder).catch(err => {
+      console.error('Failed to send order confirmation email:', err);
+    });
+    this.mailService.sendOwnerNotification(savedOrder).catch(err => {
+      console.error('Failed to send owner notification email:', err);
+    });
+
+    return savedOrder;
   }
 
   async getAllOrders(): Promise<Order[]> {

@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useCart } from '../context/CartContext';
+import { API_URL } from '../../lib/api';
 
 const css = `
   *, *::before, *::after { box-sizing: border-box; }
@@ -101,9 +102,11 @@ export default function CheckoutPage() {
     deliveryAddress, deliveryApt, setDeliveryApt,
     deliveryInstructions, setDeliveryInstructions,
     scheduleType, scheduleDate, scheduleTime,
+    clearCart,
   } = useCart();
 
   const [placing, setPlacing] = useState(false);
+  const [orderError, setOrderError] = useState('');
 
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
@@ -196,8 +199,9 @@ export default function CheckoutPage() {
 
   const handlePlaceOrder = async () => {
     setPlacing(true);
+    setOrderError('');
     try {
-      const response = await fetch('http://localhost:3002/api/orders', {
+      const response = await fetch(`${API_URL}/orders`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -227,11 +231,18 @@ export default function CheckoutPage() {
           discount,
         }),
       });
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        const message = Array.isArray(errorData?.message) ? errorData.message[0] : errorData?.message;
+        throw new Error(message || 'Unable to place your order right now.');
+      }
       const order = await response.json();
       localStorage.setItem('eggok_last_order', JSON.stringify(order));
+      clearCart();
       router.push('/confirmation');
     } catch (err) {
       console.error('Order failed:', err);
+      setOrderError(err instanceof Error ? err.message : 'Unable to place your order right now.');
       setPlacing(false);
     }
   };
@@ -448,6 +459,11 @@ export default function CheckoutPage() {
             }}>
               {placing ? 'Placing Order...' : `Place order · $${total.toFixed(2)}`}
             </button>
+            {orderError && (
+              <p style={{ fontSize: '12px', color: '#FC0301', textAlign: 'center', marginBottom: '12px' }}>
+                {orderError}
+              </p>
+            )}
             <p style={{ fontSize: '11px', color: '#444', textAlign: 'center', lineHeight: '1.6' }}>
               By placing your order, you agree to our Terms of Service and Privacy Policy.
             </p>

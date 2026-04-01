@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Order Confirmed – Eggs Ok</title>
+  <!--[if mso]>
+  <noscript>
+    <xml>
+      <o:OfficeDocumentSettings>
+        <o:PixelsPerInch>96</o:PixelsPerInch>
+      </o:OfficeDocumentSettings>
+    </xml>
+  </noscript>
+  <![endif]-->
+</head>
+<body style="margin:0;padding:0;background-color:#f2f2f2;font-family:Georgia,'Times New Roman',serif;-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;">
+
+  <!-- Outer wrapper -->
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:#f2f2f2;">
+    <tr>
+      <td align="center" style="padding:32px 16px;">
+
+        <!-- Email card -->
+        <table role="presentation" width="600" cellpadding="0" cellspacing="0" border="0" style="max-width:600px;width:100%;background-color:#ffffff;border-radius:4px;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,0.10);">
+
+          <!-- ── HEADER ─────────────────────────────────────── -->
+          <tr>
+            <td style="background-color:#FED800;padding:0;">
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+                <tr>
+                  <!-- Yellow accent stripe -->
+                  <td height="6" style="background-color:#000000;font-size:0;line-height:0;">&nbsp;</td>
+                </tr>
+                <tr>
+                  <td align="center" style="padding:36px 40px 28px;">
+                    <!-- Wordmark -->
+                    <p style="margin:0 0 4px 0;font-family:Georgia,serif;font-size:11px;font-weight:400;letter-spacing:5px;color:#000000;text-transform:uppercase;">Philadelphia</p>
+                    <h1 style="margin:0;font-family:Georgia,serif;font-size:38px;font-weight:700;color:#000000;letter-spacing:2px;line-height:1;">EGGS OK</h1>
+                    <p style="margin:14px 0 0 0;font-family:Arial,sans-serif;font-size:11px;font-weight:700;letter-spacing:4px;color:#000000;text-transform:uppercase;">Order Confirmed</p>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          <!-- ── GREETING ────────────────────────────────────── -->
+          <tr>
+            <td style="padding:36px 44px 0;">
+              <p style="margin:0 0 8px 0;font-family:Arial,sans-serif;font-size:16px;color:#111111;">Hi <strong><%= customerName %></strong>,</p>
+              <p style="margin:0;font-family:Arial,sans-serif;font-size:14px;line-height:1.7;color:#555555;">
+                Your order is confirmed and we're already getting started. You'll hear from us again once it's
+                <strong><%= orderType === 'delivery' ? 'out for delivery' : 'ready for pickup' %></strong>.
+              </p>
+            </td>
+          </tr>
+
+          <!-- ── ORDER META ──────────────────────────────────── -->
+          <tr>
+            <td style="padding:24px 44px 0;">
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:#f9f8f5;border-left:4px solid #FED800;border-radius:2px;">
+                <tr>
+                  <td style="padding:20px 24px;">
+                    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+                      <tr>
+                        <td style="font-family:Arial,sans-serif;font-size:11px;font-weight:700;letter-spacing:3px;color:#FED800;text-transform:uppercase;padding-bottom:14px;">Order Details</td>
+                      </tr>
+                      <tr>
+                        <td width="40%" style="font-family:Arial,sans-serif;font-size:13px;color:#888888;padding-bottom:8px;">Order Number</td>
+                        <td style="font-family:Arial,sans-serif;font-size:13px;font-weight:700;color:#111111;padding-bottom:8px;">#<%= orderNumber %></td>
+                      </tr>
+                      <tr>
+                        <td width="40%" style="font-family:Arial,sans-serif;font-size:13px;color:#888888;padding-bottom:8px;">Order Type</td>
+                        <td style="font-family:Arial,sans-serif;font-size:13px;font-weight:700;color:#111111;padding-bottom:8px;text-transform:capitalize;"><%= orderType %></td>
+                      </tr>
+                      <% if (orderType === 'delivery') { %>
+                      <tr>
+                        <td width="40%" style="font-family:Arial,sans-serif;font-size:13px;color:#888888;">Deliver To</td>
+                        <td style="font-family:Arial,sans-serif;font-size:13px;font-weight:700;color:#111111;"><%= deliveryAddress %></td>
+                      </tr>
+                      <% } else { %>
+                      <tr>
+                        <td width="40%" style="font-family:Arial,sans-serif;font-size:13px;color:#888888;">Pickup At</td>
+                        <td style="font-family:Arial,sans-serif;font-size:13px;font-weight:700;color:#111111;">3517 Lancaster Ave, Philadelphia PA 19104</td>
+                      </tr>
+                      <% } %>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          <!-- ── ITEMS HEADER ───────────────────────────────── -->
+          <tr>
+            <td style="padding:28px 44px 0;">
+              <p style="margin:0 0 10px 0;font-family:Arial,sans-serif;font-size:11px;font-weight:700;letter-spacing:3px;color:#FED800;text-transform:uppercase;">Your Items</p>
+              <!-- Divider -->
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+                <tr><td height="1" style="background-color:#eeeeee;font-size:0;line-height:0;">&nbsp;</td></tr>
+              </table>
+            </td>
+          </tr>
+
+          <!-- ── ITEMS LIST ──────────────────────────────────── -->
+          <tr>
+            <td style="padding:0 44px;">
+              <%- itemsHtml %>
+            </td>
+          </tr>
+
+          <!-- ── TOTALS ──────────────────────────────────────── -->
+          <tr>
+            <td style="padding:0 44px 32px;">
+              <!-- Top divider -->
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+                <tr><td height="1" style="background-color:#eeeeee;font-size:0;line-height:0;">&nbsp;</td></tr>
+              </table>
+
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="padding-top:16px;">
+                <!-- Subtotal -->
+                <tr>
+                  <td style="font-family:Arial,sans-serif;font-size:13px;color:#666666;padding-bottom:8px;">Subtotal</td>
+                  <td align="right" style="font-family:Arial,sans-serif;font-size:13px;color:#333333;padding-bottom:8px;">$<%= subtotal %></td>
+                </tr>
+                <!-- Tax -->
+                <tr>
+                  <td style="font-family:Arial,sans-serif;font-size:13px;color:#666666;padding-bottom:8px;">Tax</td>
+                  <td align="right" style="font-family:Arial,sans-serif;font-size:13px;color:#333333;padding-bottom:8px;">$<%= tax %></td>
+                </tr>
+                <!-- Delivery Fee (conditional) -->
+                <% if (deliveryFee > 0) { %>
+                <tr>
+                  <td style="font-family:Arial,sans-serif;font-size:13px;color:#666666;padding-bottom:8px;">Delivery Fee</td>
+                  <td align="right" style="font-family:Arial,sans-serif;font-size:13px;color:#333333;padding-bottom:8px;">$<%= deliveryFee %></td>
+                </tr>
+                <% } %>
+                <!-- Tip (conditional) -->
+                <% if (tip > 0) { %>
+                <tr>
+                  <td style="font-family:Arial,sans-serif;font-size:13px;color:#666666;padding-bottom:14px;">Tip</td>
+                  <td align="right" style="font-family:Arial,sans-serif;font-size:13px;color:#333333;padding-bottom:14px;">$<%= tip %></td>
+                </tr>
+                <% } %>
+                <!-- Grand Total divider -->
+                <tr>
+                  <td colspan="2" height="2" style="background-color:#FED800;font-size:0;line-height:0;padding-bottom:0;">&nbsp;</td>
+                </tr>
+                <!-- Grand Total -->
+                <tr>
+                  <td style="font-family:Arial,sans-serif;font-size:16px;font-weight:700;color:#000000;padding-top:14px;">Total Paid</td>
+                  <td align="right" style="font-family:Arial,sans-serif;font-size:16px;font-weight:700;color:#000000;padding-top:14px;">$<%= total %></td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          <!-- ── FOOTER ──────────────────────────────────────── -->
+          <tr>
+            <td style="background-color:#111111;padding:28px 44px;">
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+                <tr>
+                  <td align="center">
+                    <p style="margin:0 0 4px 0;font-family:Georgia,serif;font-size:16px;font-weight:700;color:#FED800;letter-spacing:2px;">EGGS OK</p>
+                    <p style="margin:0 0 10px 0;font-family:Arial,sans-serif;font-size:12px;color:#777777;letter-spacing:1px;">PHILADELPHIA</p>
+                    <p style="margin:0 0 4px 0;font-family:Arial,sans-serif;font-size:12px;color:#555555;">3517 Lancaster Ave, Philadelphia PA 19104</p>
+                    <p style="margin:0;">
+                      <a href="https://eggsokphilly.com" style="font-family:Arial,sans-serif;font-size:12px;color:#FED800;text-decoration:none;letter-spacing:1px;">eggsokphilly.com</a>
+                    </p>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          <!-- Bottom yellow bar -->
+          <tr>
+            <td height="6" style="background-color:#FED800;font-size:0;line-height:0;">&nbsp;</td>
+          </tr>
+
+        </table>
+        <!-- /Email card -->
+
+      </td>
+    </tr>
+  </table>
+  <!-- /Outer wrapper -->
+
+</body>
+</html>
