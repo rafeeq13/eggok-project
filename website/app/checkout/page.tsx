@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -44,7 +44,7 @@ const css = `
     padding: 32px 24px;
   }
 
-  /* ════ TABLET ≤ 1024px ════ */
+  /* â•â•â•â• TABLET â‰¤ 1024px â•â•â•â• */
   @media (max-width: 1024px) {
     .checkout-grid {
       grid-template-columns: 1fr 340px;
@@ -52,7 +52,7 @@ const css = `
     }
   }
 
-  /* ════ MOBILE ≤ 768px ════ */
+  /* â•â•â•â• MOBILE â‰¤ 768px â•â•â•â• */
   @media (max-width: 768px) {
     .checkout-grid {
       grid-template-columns: 1fr;
@@ -75,7 +75,7 @@ const css = `
     }
   }
 
-  /* ════ SMALL ≤ 480px ════ */
+  /* â•â•â•â• SMALL â‰¤ 480px â•â•â•â• */
   @media (max-width: 480px) {
     .checkout-wrap {
       padding: 16px 12px;
@@ -215,13 +215,28 @@ export default function CheckoutPage() {
           deliveryAddress: deliveryAddress || null,
           deliveryApt: deliveryApt || null,
           deliveryInstructions: deliveryInstructions || null,
-          items: cart.map(c => ({
-            id: c.item.id,
-            name: c.item.name,
-            price: getPrice(c.item),
-            quantity: c.quantity,
-            specialInstructions: c.specialInstructions || null,
-          })),
+          items: cart.map(c => {
+            const selectedModifiersList: Array<{ name: string; price: number }> = [];
+            if (c.item.modifiers) {
+              c.item.modifiers.forEach(group => {
+                const selected = c.selectedModifiers[group.id] || [];
+                selected.forEach(optId => {
+                  const opt = group.options.find(o => o.id === optId);
+                  if (opt) {
+                    selectedModifiersList.push({ name: opt.name, price: opt.price });
+                  }
+                });
+              });
+            }
+            return {
+              id: c.item.id,
+              name: c.item.name,
+              price: getPrice(c.item),
+              quantity: c.quantity,
+              specialInstructions: c.specialInstructions || null,
+              modifiers: selectedModifiersList,
+            };
+          }),
           subtotal,
           tax: taxes,
           deliveryFee,
@@ -248,7 +263,7 @@ export default function CheckoutPage() {
   };
 
   const getScheduleLabel = () => {
-    if (scheduleType === 'asap') return 'ASAP · ~15 min';
+    if (scheduleType === 'asap') return 'ASAP Â· ~15 min';
     const days = Array.from({ length: 7 }, (_, i) => {
       const d = new Date(Date.now() + i * 86400000);
       return { value: d.toISOString().split('T')[0], label: i === 0 ? 'Today' : i === 1 ? 'Tomorrow' : d.toLocaleDateString('en-US', { weekday: 'short' }) };
@@ -296,7 +311,7 @@ export default function CheckoutPage() {
           style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', color: '#888888', fontSize: '14px', marginBottom: '28px', textDecoration: 'none', transition: 'color 0.2s' }}
           onMouseEnter={e => (e.currentTarget as HTMLAnchorElement).style.color = '#FED800'}
           onMouseLeave={e => (e.currentTarget as HTMLAnchorElement).style.color = '#888888'}>
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="15 18 9 12 15 6" /></svg>
           Menu
         </Link>
 
@@ -304,7 +319,7 @@ export default function CheckoutPage() {
 
         <div className="checkout-grid">
 
-          {/* ── LEFT ── */}
+          {/* â”€â”€ LEFT â”€â”€ */}
           <div>
 
             {/* Order Details */}
@@ -313,17 +328,17 @@ export default function CheckoutPage() {
 
               <div style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '13px 16px', background: '#0A0A0A', borderRadius: '10px', border: '1px solid #2A2A2A', marginBottom: '10px' }}>
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FED800" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
-                  <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/>
+                  <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" /><circle cx="12" cy="10" r="3" />
                 </svg>
                 <span style={{ fontSize: '14px', color: '#FEFEFE', flex: 1, wordBreak: 'break-word' }}>
-                  {orderType === 'pickup' ? '3517 Lancaster Ave, Philadelphia PA 19104' : deliveryAddress || 'No address — go back to set one'}
+                  {orderType === 'pickup' ? '3517 Lancaster Ave, Philadelphia PA 19104' : deliveryAddress || 'No address â€” go back to set one'}
                 </span>
                 <Link href="/order" style={{ fontSize: '12px', color: '#FED800', fontWeight: '700', textDecoration: 'none', flexShrink: 0 }}>Change</Link>
               </div>
 
               <div style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '13px 16px', background: '#0A0A0A', borderRadius: '10px', border: '1px solid #2A2A2A', marginBottom: orderType === 'delivery' ? '10px' : '0' }}>
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FED800" strokeWidth="2" strokeLinecap="round" style={{ flexShrink: 0 }}>
-                  <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+                  <circle cx="12" cy="12" r="10" /><polyline points="12 6 12 12 16 14" />
                 </svg>
                 <span style={{ fontSize: '14px', color: '#FEFEFE', flex: 1 }}>{getScheduleLabel()}</span>
                 <Link href="/order" style={{ fontSize: '12px', color: '#FED800', fontWeight: '700', textDecoration: 'none', flexShrink: 0 }}>Change</Link>
@@ -333,7 +348,7 @@ export default function CheckoutPage() {
                 <>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '13px 16px', background: '#0A0A0A', borderRadius: '10px', border: '1px solid #2A2A2A', marginBottom: '10px' }}>
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#666" strokeWidth="2" strokeLinecap="round" style={{ flexShrink: 0 }}>
-                      <rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/>
+                      <rect x="3" y="3" width="18" height="18" rx="2" /><path d="M3 9h18M9 21V9" />
                     </svg>
                     <input placeholder="Apt / Suite / Floor (optional)" value={deliveryApt} onChange={e => setDeliveryApt(e.target.value)}
                       style={{ ...inputStyle, background: 'transparent', border: 'none', padding: '0', flex: 1 }} />
@@ -419,9 +434,9 @@ export default function CheckoutPage() {
               <p style={sectionTitle}>Payment</p>
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '10px 14px', background: '#0A0A0A', borderRadius: '8px', border: '1px solid #22C55E20', marginBottom: '16px' }}>
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#22C55E" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
                 </svg>
-                <span style={{ fontSize: '12px', color: '#22C55E' }}>Secured by Stripe — 256-bit SSL encryption</span>
+                <span style={{ fontSize: '12px', color: '#22C55E' }}>Secured by Stripe â€” 256-bit SSL encryption</span>
               </div>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
                 <div>
@@ -457,7 +472,7 @@ export default function CheckoutPage() {
               cursor: canPlaceOrder && !placing ? 'pointer' : 'not-allowed',
               transition: 'all 0.2s', marginBottom: '12px',
             }}>
-              {placing ? 'Placing Order...' : `Place order · $${total.toFixed(2)}`}
+              {placing ? 'Placing Order...' : `Place order Â· $${total.toFixed(2)}`}
             </button>
             {orderError && (
               <p style={{ fontSize: '12px', color: '#FC0301', textAlign: 'center', marginBottom: '12px' }}>
@@ -469,7 +484,7 @@ export default function CheckoutPage() {
             </p>
           </div>
 
-          {/* ── RIGHT — Summary ── */}
+          {/* â”€â”€ RIGHT â€” Summary â”€â”€ */}
           <div className="summary-sticky">
             <div style={{ background: '#111111', border: '1px solid #1E1E1E', borderRadius: '14px', overflow: 'hidden' }}>
               <div style={{ padding: '16px 20px', borderBottom: '1px solid #1E1E1E' }}>
@@ -518,7 +533,7 @@ export default function CheckoutPage() {
                       Apply
                     </button>
                   </div>
-                  {promoApplied && <p style={{ fontSize: '12px', color: '#22C55E', marginTop: '6px' }}>✓ WELCOME10 applied — 10% off!</p>}
+                  {promoApplied && <p style={{ fontSize: '12px', color: '#22C55E', marginTop: '6px' }}>âœ“ WELCOME10 applied â€” 10% off!</p>}
                   {promoError && <p style={{ fontSize: '12px', color: '#FC0301', marginTop: '6px' }}>{promoError}</p>}
                 </div>
 
@@ -537,11 +552,31 @@ export default function CheckoutPage() {
                       <div style={{ width: '52px', height: '52px', borderRadius: '8px', background: '#1A1A1A', border: '1px solid #2A2A2A', overflow: 'hidden', flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                         {cartItem.item.image
                           ? <img src={cartItem.item.image} alt={cartItem.item.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                          : <svg width="20" height="20" viewBox="0 0 64 64" fill="none"><circle cx="32" cy="32" r="22" stroke="#2A2A2A" strokeWidth="1.5"/><path d="M20 32 Q32 20 44 32" stroke="#2A2A2A" strokeWidth="1.5" strokeLinecap="round"/><circle cx="32" cy="38" r="6" stroke="#2A2A2A" strokeWidth="1.5"/></svg>
+                          : <svg width="20" height="20" viewBox="0 0 64 64" fill="none"><circle cx="32" cy="32" r="22" stroke="#2A2A2A" strokeWidth="1.5" /><path d="M20 32 Q32 20 44 32" stroke="#2A2A2A" strokeWidth="1.5" strokeLinecap="round" /><circle cx="32" cy="38" r="6" stroke="#2A2A2A" strokeWidth="1.5" /></svg>
                         }
                       </div>
                       <div style={{ flex: 1, minWidth: 0 }}>
                         <p style={{ fontSize: '13px', fontWeight: '700', color: '#FEFEFE', margin: 0, lineHeight: '1.3' }}>{cartItem.item.name}</p>
+
+                        {/* Selected Modifiers */}
+                        {cartItem.item.modifiers && (
+                          <div style={{ marginTop: '4px' }}>
+                            {cartItem.item.modifiers.map(group => {
+                              const selectedIds = cartItem.selectedModifiers[group.id] || [];
+                              return selectedIds.map(optId => {
+                                const opt = group.options.find(o => o.id === optId);
+                                if (!opt) return null;
+                                return (
+                                  <div key={`${group.id}-${optId}`} style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '1px' }}>
+                                    <p style={{ fontSize: '11px', color: '#666', margin: 0 }}>+ {opt.name}</p>
+                                    <p style={{ fontSize: '11px', color: '#666', margin: 0 }}>${(opt.price * cartItem.quantity).toFixed(2)}</p>
+                                  </div>
+                                );
+                              });
+                            })}
+                          </div>
+                        )}
+
                         {cartItem.specialInstructions && <p style={{ fontSize: '11px', color: '#666', margin: '2px 0 0' }}>{cartItem.specialInstructions}</p>}
                         <p style={{ fontSize: '12px', color: '#888', margin: '2px 0 0' }}>Qty: {cartItem.quantity}</p>
                       </div>
@@ -552,7 +587,7 @@ export default function CheckoutPage() {
               </div>
             </div>
 
-            {/* Place Order button — visible on mobile below summary */}
+            {/* Place Order button â€” visible on mobile below summary */}
             <div style={{ marginTop: '16px', display: 'none' }} className="mobile-place-order">
               <button onClick={handlePlaceOrder} disabled={!canPlaceOrder || placing} style={{
                 width: '100%', padding: '16px',
@@ -562,7 +597,7 @@ export default function CheckoutPage() {
                 fontSize: '16px', fontWeight: '800',
                 cursor: canPlaceOrder && !placing ? 'pointer' : 'not-allowed',
               }}>
-                {placing ? 'Placing Order...' : `Place order · $${total.toFixed(2)}`}
+                {placing ? 'Placing Order...' : `Place order Â· $${total.toFixed(2)}`}
               </button>
             </div>
           </div>
@@ -580,7 +615,7 @@ export default function CheckoutPage() {
               <button onClick={() => setShowCustomTipModal(false)}
                 style={{ width: '30px', height: '30px', borderRadius: '50%', background: '#1A1A1A', border: '1px solid #2A2A2A', color: '#888', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
-                  <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+                  <line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" />
                 </svg>
               </button>
             </div>
@@ -628,7 +663,7 @@ export default function CheckoutPage() {
 
             <button onClick={applyCustomTip} disabled={!customTipAmount || parseFloat(customTipAmount) <= 0}
               style={{ width: '100%', padding: '14px', background: customTipAmount && parseFloat(customTipAmount) > 0 ? '#FED800' : '#1A1A1A', border: 'none', borderRadius: '12px', color: customTipAmount && parseFloat(customTipAmount) > 0 ? '#000' : '#555', fontSize: '15px', fontWeight: '800', cursor: customTipAmount && parseFloat(customTipAmount) > 0 ? 'pointer' : 'not-allowed' }}>
-              Done →
+              Done â†’
             </button>
           </div>
         </div>

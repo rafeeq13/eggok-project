@@ -20,7 +20,7 @@ export class MenuService {
     private modifierOptionRepository: Repository<ModifierOption>,
     @InjectRepository(ItemModifierGroup)
     private itemModifierGroupRepository: Repository<ItemModifierGroup>,
-  ) {}
+  ) { }
 
   // ── CATEGORIES ──
   async getAllCategories(): Promise<Category[]> {
@@ -54,9 +54,18 @@ export class MenuService {
 
   // ── ITEMS ──
   async getAllItems(): Promise<Item[]> {
-    return this.itemRepository.find({
-      relations: ['category'],
+    const items = await this.itemRepository.find({
+      relations: ['category', 'itemModifierGroups', 'itemModifierGroups.modifierGroup', 'itemModifierGroups.modifierGroup.options'],
       order: { sortOrder: 'ASC', name: 'ASC' },
+    });
+
+    return items.map(item => {
+      if (item.itemModifierGroups && item.itemModifierGroups.length > 0) {
+        item.modifiers = item.itemModifierGroups
+          .sort((a, b) => a.sortOrder - b.sortOrder)
+          .map(img => img.modifierGroup);
+      }
+      return item;
     });
   }
 
@@ -68,19 +77,35 @@ export class MenuService {
   }
 
   async getPopularItems(): Promise<Item[]> {
-    return this.itemRepository.find({
+    const items = await this.itemRepository.find({
       where: { isPopular: true, isAvailable: true, isDeleted: false },
-      relations: ['category'],
+      relations: ['category', 'itemModifierGroups', 'itemModifierGroups.modifierGroup', 'itemModifierGroups.modifierGroup.options'],
       order: { sortOrder: 'ASC' },
+    });
+
+    return items.map(item => {
+      if (item.itemModifierGroups && item.itemModifierGroups.length > 0) {
+        item.modifiers = item.itemModifierGroups
+          .sort((a, b) => a.sortOrder - b.sortOrder)
+          .map(img => img.modifierGroup);
+      }
+      return item;
     });
   }
 
   async getItemById(id: number): Promise<Item> {
     const item = await this.itemRepository.findOne({
       where: { id },
-      relations: ['category'],
+      relations: ['category', 'itemModifierGroups', 'itemModifierGroups.modifierGroup', 'itemModifierGroups.modifierGroup.options'],
     });
     if (!item) throw new NotFoundException(`Item #${id} not found`);
+
+    if (item.itemModifierGroups && item.itemModifierGroups.length > 0) {
+      item.modifiers = item.itemModifierGroups
+        .sort((a, b) => a.sortOrder - b.sortOrder)
+        .map(img => img.modifierGroup);
+    }
+
     return item;
   }
 
@@ -109,12 +134,19 @@ export class MenuService {
   async getFullMenu(): Promise<any> {
     const categories = await this.categoryRepository.find({
       where: { isActive: true, isDeleted: false },
-      relations: ['items'],
+      relations: ['items', 'items.itemModifierGroups', 'items.itemModifierGroups.modifierGroup', 'items.itemModifierGroups.modifierGroup.options'],
       order: { sortOrder: 'ASC' },
     });
     return categories.map(cat => ({
       ...cat,
-      items: cat.items.filter(item => item.isAvailable && !item.isDeleted),
+      items: cat.items.filter(item => item.isAvailable && !item.isDeleted).map(item => {
+        if (item.itemModifierGroups && item.itemModifierGroups.length > 0) {
+          item.modifiers = item.itemModifierGroups
+            .sort((a, b) => a.sortOrder - b.sortOrder)
+            .map(img => img.modifierGroup);
+        }
+        return item;
+      }),
     }));
   }
 

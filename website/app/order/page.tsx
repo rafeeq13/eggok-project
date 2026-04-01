@@ -330,7 +330,7 @@ export default function OrderPage() {
         setStoreOpen(data.isOpen);
         setStoreStatus(data.isOpen ? `Open · closes ${data.hours.close}` : data.message);
       })
-      .catch(() => {});
+      .catch(() => { });
   }, []);
 
   // Scroll spy — tracks active category from main scroll
@@ -465,8 +465,8 @@ export default function OrderPage() {
         {/* Burger — visible on tablet only (768-1024px) */}
         <button className="burger" onClick={() => setSidebarOpen(v => !v)} aria-label="Toggle menu">
           {sidebarOpen
-            ? <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-            : <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+            ? <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" /></svg>
+            : <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><line x1="3" y1="6" x2="21" y2="6" /><line x1="3" y1="12" x2="21" y2="12" /><line x1="3" y1="18" x2="21" y2="18" /></svg>
           }
         </button>
 
@@ -488,7 +488,7 @@ export default function OrderPage() {
           <div style={{ position: 'relative' }}>
             <button onClick={() => setShowMoreMenu(!showMoreMenu)}
               style={{ display: 'flex', alignItems: 'center', gap: '5px', padding: '8px 12px', background: 'transparent', border: '1px solid #2A2A2A', borderRadius: '8px', color: '#CCC', fontSize: '13px', fontWeight: '600', cursor: 'pointer' }}>
-              More <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#888" strokeWidth="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+              More <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#888" strokeWidth="2.5"><polyline points="6 9 12 15 18 9" /></svg>
             </button>
             {showMoreMenu && (
               <>
@@ -508,7 +508,7 @@ export default function OrderPage() {
           {/* Sign In — hidden mobile */}
           <Link href="/account" className="signin-link">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" /><circle cx="12" cy="7" r="4" />
             </svg>
             Sign In
           </Link>
@@ -517,8 +517,8 @@ export default function OrderPage() {
           <button onClick={() => setShowCart(true)}
             style={{ position: 'relative', width: '42px', height: '42px', background: '#FED800', border: 'none', borderRadius: '10px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
             <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#000" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-              <circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/>
-              <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
+              <circle cx="9" cy="21" r="1" /><circle cx="20" cy="21" r="1" />
+              <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
             </svg>
             {mounted && cartCount > 0 && (
               <div style={{ position: 'absolute', top: '-6px', right: '-6px', width: '20px', height: '20px', background: '#FC0301', borderRadius: '50%', fontSize: '11px', fontWeight: '800', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
@@ -538,7 +538,7 @@ export default function OrderPage() {
               <svg
                 style={{ position: 'absolute', left: '11px', top: '50%', transform: 'translateY(-50%)', pointerEvents: 'none' }}
                 width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#888" strokeWidth="2.2">
-                <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                <circle cx="11" cy="11" r="8" /><line x1="21" y1="21" x2="16.65" y2="16.65" />
               </svg>
               <input
                 autoFocus
@@ -563,7 +563,7 @@ export default function OrderPage() {
               onClick={() => setShowMobileSearch(true)}
               aria-label="Search menu">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#999" strokeWidth="2.2">
-                <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                <circle cx="11" cy="11" r="8" /><line x1="21" y1="21" x2="16.65" y2="16.65" />
               </svg>  &nbsp;Search
             </button>
 
@@ -596,7 +596,7 @@ export default function OrderPage() {
             <div style={{ position: 'relative' }}>
               <svg style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', pointerEvents: 'none' }}
                 width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#AAA" strokeWidth="2">
-                <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                <circle cx="11" cy="11" r="8" /><line x1="21" y1="21" x2="16.65" y2="16.65" />
               </svg>
               <input placeholder="Search menu" value={search} onChange={e => setSearch(e.target.value)}
                 style={{ width: '100%', padding: '10px 12px 10px 36px', background: '#1A1A1A', border: '1px solid #2A2A2A', borderRadius: '10px', color: '#FFF', fontSize: '14px', outline: 'none' }}
@@ -625,8 +625,8 @@ export default function OrderPage() {
               <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexWrap: 'wrap', marginBottom: '16px' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
                   <svg width="13" height="13" viewBox="0 0 24 24" fill="#FED800">
-                    <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/>
-                    <circle cx="12" cy="9" r="2.5" fill="#0D0D0D"/>
+                    <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z" />
+                    <circle cx="12" cy="9" r="2.5" fill="#0D0D0D" />
                   </svg>
                   <span style={{ fontSize: '13px', color: '#666' }}>3517 Lancaster Ave, Philadelphia</span>
                 </div>
@@ -647,12 +647,12 @@ export default function OrderPage() {
                     </button>
                   ))}
                 </div>
- {/* Delivery address */}
+                {/* Delivery address */}
                 {mounted && orderType === 'delivery' && (
                   <button onClick={() => setShowDeliveryModal(true)}
                     style={{ display: 'flex', alignItems: 'center', gap: '7px', padding: '9px 12px', background: '#1A1A1A', border: '1px solid #2A2A2A', borderRadius: '10px', color: '#CCC', fontSize: '13px', cursor: 'pointer', fontWeight: '500', maxWidth: '200px' }}>
                     <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#888" strokeWidth="2" strokeLinecap="round" style={{ flexShrink: 0 }}>
-                      <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>
+                      <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" /><polyline points="9 22 9 12 15 12 15 22" />
                     </svg>
                     <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{truncateAddress(deliveryAddress)}</span>
                   </button>
@@ -663,13 +663,13 @@ export default function OrderPage() {
                   onMouseEnter={e => (e.currentTarget as HTMLButtonElement).style.borderColor = '#FED800'}
                   onMouseLeave={e => (e.currentTarget as HTMLButtonElement).style.borderColor = '#3A3A3A'}>
                   <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#FED800" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                    <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+                    <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
                   </svg>
                   <span className="schedule-label">{mounted ? getScheduleLabel() : 'ASAP (15 min)'}</span>
-                  <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#888" strokeWidth="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+                  <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#888" strokeWidth="2.5"><polyline points="6 9 12 15 18 9" /></svg>
                 </button>
 
-               
+
               </div>
             </div>
 
@@ -706,7 +706,7 @@ export default function OrderPage() {
                           <button key={dir} onClick={() => scrollPopular(dir)}
                             style={{ width: '34px', height: '34px', borderRadius: '50%', background: '#141414', border: '1px solid #2A2A2A', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#888' }}>
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
-                              <polyline points={dir === 'left' ? '15 18 9 12 15 6' : '9 18 15 12 9 6'}/>
+                              <polyline points={dir === 'left' ? '15 18 9 12 15 6' : '9 18 15 12 9 6'} />
                             </svg>
                           </button>
                         ))}
@@ -752,7 +752,7 @@ export default function OrderPage() {
               <button onClick={() => setShowCart(false)}
                 style={{ width: '32px', height: '32px', borderRadius: '8px', background: '#1A1A1A', border: '1px solid #2A2A2A', color: '#888', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
-                  <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+                  <line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" />
                 </svg>
               </button>
             </div>
@@ -770,8 +770,8 @@ export default function OrderPage() {
               {cart.length === 0 ? (
                 <div style={{ textAlign: 'center', padding: '60px 20px' }}>
                   <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#2A2A2A" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" style={{ marginBottom: '16px' }}>
-                    <circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/>
-                    <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
+                    <circle cx="9" cy="21" r="1" /><circle cx="20" cy="21" r="1" />
+                    <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
                   </svg>
                   <p style={{ fontSize: '15px', color: '#444', fontWeight: '600' }}>Your cart is empty</p>
                   <p style={{ fontSize: '13px', color: '#333', marginTop: '4px' }}>Add items to get started</p>
@@ -782,6 +782,25 @@ export default function OrderPage() {
                     <p style={{ fontSize: '14px', fontWeight: '600', color: '#FEFEFE', flex: 1, marginRight: '10px', lineHeight: 1.4 }}>{cartItem.item.name}</p>
                     <p style={{ fontSize: '14px', fontWeight: '700', color: '#FED800' }}>${(getPrice(cartItem.item) * cartItem.quantity).toFixed(2)}</p>
                   </div>
+
+                  {/* Display Modifiers */}
+                  {cartItem.item.modifiers && (
+                    <div style={{ marginBottom: '10px', paddingLeft: '4px' }}>
+                      {cartItem.item.modifiers.map(group => {
+                        const selectedIds = cartItem.selectedModifiers[group.id] || [];
+                        return selectedIds.map(optId => {
+                          const opt = group.options.find(o => o.id === optId);
+                          if (!opt) return null;
+                          return (
+                            <div key={`${group.id}-${optId}`} style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '2px' }}>
+                              <p style={{ fontSize: '12px', color: '#888', margin: 0 }}>+ {opt.name}</p>
+                              <p style={{ fontSize: '12px', color: '#888', margin: 0 }}>${(opt.price * cartItem.quantity).toFixed(2)}</p>
+                            </div>
+                          );
+                        });
+                      })}
+                    </div>
+                  )}
                   <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '12px', background: '#141414', borderRadius: '8px', padding: '4px 10px', border: '1px solid #2A2A2A' }}>
                       <button onClick={() => updateQuantity(cartItem.id, cartItem.quantity - 1)}
@@ -791,7 +810,7 @@ export default function OrderPage() {
                         style={{ width: '26px', height: '26px', borderRadius: '6px', background: '#FED800', border: 'none', color: '#000', fontSize: '16px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>+</button>
                     </div>
                     <button onClick={() => removeFromCart(cartItem.id)}
-                      style={{ fontSize: '12px', color: '#444', background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline' }}>Remove</button>
+                      style={{ fontSize: '12px', color: '#ffffffff', background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline' }}>Remove</button>
                   </div>
                 </div>
               ))}
@@ -827,7 +846,7 @@ export default function OrderPage() {
                 <button onClick={() => setShowDeliveryModal(false)}
                   style={{ width: '30px', height: '30px', borderRadius: '50%', background: '#1A1A1A', border: '1px solid #2A2A2A', color: '#888', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
-                    <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+                    <line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" />
                   </svg>
                 </button>
               </div>
@@ -845,7 +864,7 @@ export default function OrderPage() {
                   <div style={{ position: 'relative' }}>
                     <svg style={{ position: 'absolute', left: '14px', top: '50%', transform: 'translateY(-50%)' }}
                       width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#666" strokeWidth="2">
-                      <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                      <circle cx="11" cy="11" r="8" /><line x1="21" y1="21" x2="16.65" y2="16.65" />
                     </svg>
                     <input placeholder="Enter delivery address..." value={deliveryAddress} onChange={e => setDeliveryAddress(e.target.value)} autoFocus
                       style={{ width: '100%', padding: '13px 40px 13px 42px', background: '#0A0A0A', border: '1.5px solid #FED800', borderRadius: '12px', color: '#FEFEFE', fontSize: '14px', outline: 'none', boxSizing: 'border-box' }} />
@@ -871,7 +890,7 @@ export default function OrderPage() {
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '12px 14px', background: '#0A0A0A', border: '1.5px solid rgba(254,216,0,0.25)', borderRadius: '12px' }}>
                     <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#666" strokeWidth="2">
-                      <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                      <circle cx="11" cy="11" r="8" /><line x1="21" y1="21" x2="16.65" y2="16.65" />
                     </svg>
                     <span style={{ flex: 1, fontSize: '13px', color: '#FEFEFE', fontWeight: '500', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{deliveryAddress}</span>
                     <button onClick={() => setDeliveryStep(1)}
@@ -928,7 +947,7 @@ export default function OrderPage() {
               <button onClick={() => setShowScheduleModal(false)}
                 style={{ width: '30px', height: '30px', borderRadius: '50%', background: '#1A1A1A', border: '1px solid #2A2A2A', color: '#888', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
-                  <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+                  <line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" />
                 </svg>
               </button>
             </div>
@@ -955,7 +974,7 @@ export default function OrderPage() {
                       style={{ width: '100%', padding: '10px', background: 'transparent', border: '1px solid #2A2A2A', borderRadius: '10px', color: '#CCC', fontSize: '13px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px', marginBottom: '4px' }}>
                       {showMoreDates ? 'Less dates' : 'More dates'}
                       <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#888" strokeWidth="2.5">
-                        <polyline points={showMoreDates ? '18 15 12 9 6 15' : '6 9 12 15 18 9'}/>
+                        <polyline points={showMoreDates ? '18 15 12 9 6 15' : '6 9 12 15 18 9'} />
                       </svg>
                     </button>
                   </>
@@ -1006,19 +1025,19 @@ export default function OrderPage() {
               {selectedItem.imageUrl
                 ? <img src={selectedItem.imageUrl} alt={selectedItem.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                 : <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'linear-gradient(135deg,#1A1A00,#0A0A0A)' }}>
-                    <svg width="64" height="64" viewBox="0 0 64 64" fill="none"><circle cx="32" cy="32" r="22" stroke="#2A2A2A" strokeWidth="1.5"/><path d="M20 32 Q32 20 44 32" stroke="#2A2A2A" strokeWidth="1.5" strokeLinecap="round"/><circle cx="32" cy="38" r="6" stroke="#2A2A2A" strokeWidth="1.5"/></svg>
-                  </div>
+                  <svg width="64" height="64" viewBox="0 0 64 64" fill="none"><circle cx="32" cy="32" r="22" stroke="#2A2A2A" strokeWidth="1.5" /><path d="M20 32 Q32 20 44 32" stroke="#2A2A2A" strokeWidth="1.5" strokeLinecap="round" /><circle cx="32" cy="38" r="6" stroke="#2A2A2A" strokeWidth="1.5" /></svg>
+                </div>
               }
               {selectedItem.isPopular && (
                 <div style={{ position: 'absolute', top: '16px', left: '16px', background: '#FED800', color: '#000', padding: '4px 12px', borderRadius: '20px', fontSize: '11px', fontWeight: '800', display: 'flex', alignItems: 'center', gap: '4px' }}>
-                  <svg width="10" height="10" viewBox="0 0 24 24" fill="#000"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                  <svg width="10" height="10" viewBox="0 0 24 24" fill="#000"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" /></svg>
                   POPULAR
                 </div>
               )}
               <button onClick={() => setSelectedItem(null)}
                 style={{ position: 'absolute', top: '16px', right: '16px', width: '34px', height: '34px', borderRadius: '50%', background: 'rgba(0,0,0,0.7)', border: '1px solid rgba(255,255,255,0.1)', color: '#FEFEFE', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
-                  <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+                  <line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" />
                 </svg>
               </button>
             </div>
@@ -1055,7 +1074,7 @@ export default function OrderPage() {
                           style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '13px 14px', background: isSel ? '#1A1A00' : '#0A0A0A', border: `1px solid ${isSel ? 'rgba(254,216,0,0.25)' : '#1A1A1A'}`, borderRadius: '10px', cursor: 'pointer', transition: 'all 0.15s' }}>
                           <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
                             <div style={{ width: '20px', height: '20px', borderRadius: group.maxSelections === 1 ? '50%' : '5px', border: `2px solid ${isSel ? '#FED800' : '#333'}`, background: isSel ? '#FED800' : 'transparent', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                              {isSel && <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#000" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>}
+                              {isSel && <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#000" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12" /></svg>}
                             </div>
                             <span style={{ fontSize: '14px', color: '#FEFEFE', fontWeight: '500' }}>{opt.name}</span>
                           </div>
@@ -1085,7 +1104,7 @@ export default function OrderPage() {
                         <div style={{ height: '80px', background: '#111', overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                           {item.imageUrl
                             ? <img src={item.imageUrl} alt={item.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                            : <svg width="28" height="28" viewBox="0 0 64 64" fill="none"><circle cx="32" cy="32" r="22" stroke="#2A2A2A" strokeWidth="1.5"/></svg>
+                            : <svg width="28" height="28" viewBox="0 0 64 64" fill="none"><circle cx="32" cy="32" r="22" stroke="#2A2A2A" strokeWidth="1.5" /></svg>
                           }
                         </div>
                         <div style={{ padding: '8px 10px' }}>
@@ -1132,12 +1151,12 @@ function PopularCard({ item, orderType, onSelect }: { item: MenuItem; orderType:
         {item.imageUrl
           ? <img src={item.imageUrl} alt={item.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
           : <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'linear-gradient(135deg,#1A1A1A,#0A0A0A)' }}>
-              <svg width="44" height="44" viewBox="0 0 64 64" fill="none"><circle cx="32" cy="32" r="22" stroke="#2A2A2A" strokeWidth="1.5"/><path d="M20 32 Q32 20 44 32" stroke="#2A2A2A" strokeWidth="1.5" strokeLinecap="round"/><circle cx="32" cy="38" r="6" stroke="#2A2A2A" strokeWidth="1.5"/></svg>
-            </div>
+            <svg width="44" height="44" viewBox="0 0 64 64" fill="none"><circle cx="32" cy="32" r="22" stroke="#2A2A2A" strokeWidth="1.5" /><path d="M20 32 Q32 20 44 32" stroke="#2A2A2A" strokeWidth="1.5" strokeLinecap="round" /><circle cx="32" cy="38" r="6" stroke="#2A2A2A" strokeWidth="1.5" /></svg>
+          </div>
         }
         <div style={{ position: 'absolute', bottom: '10px', right: '10px', width: '30px', height: '30px', borderRadius: '50%', background: '#FED800', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 2px 8px rgba(0,0,0,0.3)' }}>
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#000" strokeWidth="2.8" strokeLinecap="round">
-            <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+            <line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" />
           </svg>
         </div>
       </div>
@@ -1167,12 +1186,12 @@ function GridCard({ item, orderType, onSelect, borderRadius }: { item: MenuItem;
         <div className="grid-img" style={{ borderRadius: '12px', overflow: 'hidden', background: '#222', border: '1px solid #2A2A2A', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
           {item.imageUrl
             ? <img src={item.imageUrl} alt={item.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-            : <svg width="36" height="36" viewBox="0 0 64 64" fill="none"><circle cx="32" cy="32" r="22" stroke="#2A2A2A" strokeWidth="1.5"/><path d="M20 32 Q32 20 44 32" stroke="#2A2A2A" strokeWidth="1.5" strokeLinecap="round"/><circle cx="32" cy="38" r="6" stroke="#2A2A2A" strokeWidth="1.5"/></svg>
+            : <svg width="36" height="36" viewBox="0 0 64 64" fill="none"><circle cx="32" cy="32" r="22" stroke="#2A2A2A" strokeWidth="1.5" /><path d="M20 32 Q32 20 44 32" stroke="#2A2A2A" strokeWidth="1.5" strokeLinecap="round" /><circle cx="32" cy="38" r="6" stroke="#2A2A2A" strokeWidth="1.5" /></svg>
           }
         </div>
         <div style={{ position: 'absolute', bottom: '-8px', right: '-8px', width: '30px', height: '30px', borderRadius: '50%', background: '#FED800', display: 'flex', alignItems: 'center', justifyContent: 'center', border: '2px solid #181818', boxShadow: '0 2px 8px rgba(0,0,0,0.4)' }}>
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#000" strokeWidth="2.8" strokeLinecap="round">
-            <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+            <line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" />
           </svg>
         </div>
       </div>

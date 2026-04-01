@@ -62,15 +62,15 @@ export default function ConfirmationPage() {
 
   const steps = orderType === 'pickup'
     ? [
-        { label: 'Order Received', desc: 'We got your order', done: true, active: false },
-        { label: 'Preparing', desc: 'Kitchen is working on it', done: false, active: true },
-        { label: 'Ready for Pickup', desc: 'Come pick it up!', done: false, active: false },
-      ]
+      { label: 'Order Received', desc: 'We got your order', done: true, active: false },
+      { label: 'Preparing', desc: 'Kitchen is working on it', done: false, active: true },
+      { label: 'Ready for Pickup', desc: 'Come pick it up!', done: false, active: false },
+    ]
     : [
-        { label: 'Order Received', desc: 'We got your order', done: true, active: false },
-        { label: 'Preparing', desc: 'Kitchen is working on it', done: false, active: true },
-        { label: 'Out for Delivery', desc: 'On the way to you', done: false, active: false },
-      ];
+      { label: 'Order Received', desc: 'We got your order', done: true, active: false },
+      { label: 'Preparing', desc: 'Kitchen is working on it', done: false, active: true },
+      { label: 'Out for Delivery', desc: 'On the way to you', done: false, active: false },
+    ];
 
   return (
     <div style={{ background: '#000', minHeight: '100vh', color: '#FEFEFE', fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif' }}>
@@ -101,7 +101,7 @@ export default function ConfirmationPage() {
           transition: 'transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275)',
         }}>
           <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#000" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-            <polyline points="20 6 9 17 4 12"/>
+            <polyline points="20 6 9 17 4 12" />
           </svg>
         </div>
 
@@ -143,6 +143,38 @@ export default function ConfirmationPage() {
                   <div key={i} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '10px 0', borderBottom: i < displayItems.length - 1 ? '1px solid #1A1A1A' : 'none' }}>
                     <div style={{ flex: 1, marginRight: '12px' }}>
                       <p style={{ fontSize: '14px', fontWeight: '600', color: '#FEFEFE', margin: 0 }}>{qty}x {name}</p>
+
+                      {/* Modifiers for lastOrder items */}
+                      {!isCartItem && item.modifiers && item.modifiers.length > 0 && (
+                        <div style={{ marginTop: '4px' }}>
+                          {item.modifiers.map((mod: any, mi: number) => (
+                            <div key={mi} style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '1px' }}>
+                              <p style={{ fontSize: '12px', color: '#666', margin: 0 }}>+ {mod.name}</p>
+                              <p style={{ fontSize: '12px', color: '#666', margin: 0 }}>${(Number(mod.price) * qty).toFixed(2)}</p>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+
+                      {/* Modifiers for cart fallback items */}
+                      {isCartItem && item.item.modifiers && (
+                        <div style={{ marginTop: '4px' }}>
+                          {item.item.modifiers.map((group: any) => {
+                            const selectedIds = item.selectedModifiers[group.id] || [];
+                            return selectedIds.map((optId: number) => {
+                              const opt = group.options.find((o: any) => o.id === optId);
+                              if (!opt) return null;
+                              return (
+                                <div key={`${group.id}-${optId}`} style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '1px' }}>
+                                  <p style={{ fontSize: '12px', color: '#666', margin: 0 }}>+ {opt.name}</p>
+                                  <p style={{ fontSize: '12px', color: '#666', margin: 0 }}>${(opt.price * qty).toFixed(2)}</p>
+                                </div>
+                              );
+                            });
+                          })}
+                        </div>
+                      )}
+
                       {note && <p style={{ fontSize: '12px', color: '#888', margin: '2px 0 0' }}>{note}</p>}
                     </div>
                     <p style={{ fontSize: '14px', fontWeight: '600', color: '#FED800', flexShrink: 0, margin: 0 }}>${Number(price).toFixed(2)}</p>
@@ -191,7 +223,7 @@ export default function ConfirmationPage() {
                   <div key={i} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px', flex: 1 }}>
                     <div style={{ width: '40px', height: '40px', borderRadius: '50%', background: step.done ? '#22C55E' : step.active ? '#FED800' : '#1A1A1A', border: `2px solid ${step.done ? '#22C55E' : step.active ? '#FED800' : '#2A2A2A'}`, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                       {step.done ? (
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#000" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#000" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12" /></svg>
                       ) : step.active ? (
                         <div style={{ width: '10px', height: '10px', borderRadius: '50%', background: '#000' }} />
                       ) : (
@@ -212,7 +244,7 @@ export default function ConfirmationPage() {
           <div style={{ background: '#FED80010', border: '1px solid #FED80030', borderRadius: '16px', padding: '20px', marginBottom: '20px', display: 'flex', gap: '16px', alignItems: 'center', textAlign: 'left' }}>
             <div style={{ width: '48px', height: '48px', borderRadius: '12px', background: '#FED80020', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
               <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#FED800" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/>
+                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" /><circle cx="12" cy="10" r="3" />
               </svg>
             </div>
             <div>
@@ -239,8 +271,8 @@ export default function ConfirmationPage() {
           <div style={{ display: 'flex', gap: '12px', justifyContent: 'center', flexWrap: 'wrap' as const }}>
             <Link href="/order" style={{ padding: '14px 32px', background: '#FED800', borderRadius: '12px', fontSize: '15px', fontWeight: '700', color: '#000', display: 'inline-flex', alignItems: 'center', gap: '8px', textDecoration: 'none' }}>
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                <circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/>
-                <path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 001.95-1.57l1.65-7.43H6"/>
+                <circle cx="9" cy="21" r="1" /><circle cx="20" cy="21" r="1" />
+                <path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 001.95-1.57l1.65-7.43H6" />
               </svg>
               Order Again
             </Link>

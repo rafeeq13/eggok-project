@@ -461,13 +461,24 @@ export class MailService {
         return ejs.renderFile(templatePath, context);
     }
 
-    private renderOrderItems(items: Array<{ quantity?: number; name?: string; price?: number }>) {
+    private renderOrderItems(items: any[]) {
         return items
             .map((item) => {
                 const quantity = Number(item?.quantity || 0);
                 const price = Number(item?.price || 0);
                 const name = this.escapeHtml(item?.name || 'Item');
-                return `<li>${quantity}x ${name} - $${(price * quantity).toFixed(2)}</li>`;
+                let html = `<li>${quantity}x ${name} - $${(price * quantity).toFixed(2)}`;
+
+                if (item.modifiers && Array.isArray(item.modifiers) && item.modifiers.length > 0) {
+                    html += '<ul style="margin: 4px 0 8px; padding-left: 20px; list-style-type: none;">';
+                    item.modifiers.forEach((mod: any) => {
+                        html += `<li style="font-size: 13px; color: #888;">+ ${this.escapeHtml(mod.name)} - $${(Number(mod.price) * quantity).toFixed(2)}</li>`;
+                    });
+                    html += '</ul>';
+                }
+
+                html += '</li>';
+                return html;
             })
             .join('');
     }
