@@ -57,17 +57,17 @@ export default function Header() {
               onMouseLeave={e => (e.currentTarget as HTMLAnchorElement).style.color = '#ffffffff'}
             >Home</Link>
             
-            <Link href="/catering" style={{ padding: '8px 14px', color: '#888888', fontSize: '14px', fontWeight: '500', borderRadius: '8px', transition: 'color 0.2s' }}
+            <Link href="/story" style={{ padding: '8px 14px', color: '#888888', fontSize: '14px', fontWeight: '500', borderRadius: '8px', transition: 'color 0.2s' }}
               onMouseEnter={e => (e.currentTarget as HTMLAnchorElement).style.color = '#FEFEFE'}
               onMouseLeave={e => (e.currentTarget as HTMLAnchorElement).style.color = '#ffffffff'}
             >Our Story</Link>
             
-            <Link href="/catering" style={{ padding: '8px 14px', color: '#888888', fontSize: '14px', fontWeight: '500', borderRadius: '8px', transition: 'color 0.2s' }}
+            {/* <Link href="/catering" style={{ padding: '8px 14px', color: '#888888', fontSize: '14px', fontWeight: '500', borderRadius: '8px', transition: 'color 0.2s' }}
               onMouseEnter={e => (e.currentTarget as HTMLAnchorElement).style.color = '#FEFEFE'}
               onMouseLeave={e => (e.currentTarget as HTMLAnchorElement).style.color = '#ffffffff'}
-            >Events</Link>
+            >Events</Link> */}
             
-            <Link href="/catering" style={{ padding: '8px 14px', color: '#888888', fontSize: '14px', fontWeight: '500', borderRadius: '8px', transition: 'color 0.2s' }}
+            <Link href="/hiring" style={{ padding: '8px 14px', color: '#888888', fontSize: '14px', fontWeight: '500', borderRadius: '8px', transition: 'color 0.2s' }}
               onMouseEnter={e => (e.currentTarget as HTMLAnchorElement).style.color = '#FEFEFE'}
               onMouseLeave={e => (e.currentTarget as HTMLAnchorElement).style.color = '#ffffffff'}
             >We're Hiring</Link>
