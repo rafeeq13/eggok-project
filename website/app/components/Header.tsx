@@ -17,10 +17,10 @@ export default function Header() {
   }, []);
 
   const moreLinks = [
-    { label: 'Our Story', href: '/story' },
+    // { label: 'Our Story', href: '/story' },
     { label: 'Contact Us', href: '/contact' },
     { label: 'Gift Cards', href: '/gift-cards' },
-    { label: "We're Hiring", href: '/hiring' },
+    // { label: "We're Hiring", href: '/hiring' },
   ];
 
   return (
@@ -42,11 +42,11 @@ export default function Header() {
           {/* Logo */}
           <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
             <div style={{ width: '44px', height: '44px', borderRadius: '10px', overflow: 'hidden', background: '#000', flexShrink: 0 }}>
-              <Image src="/logo.svg" alt="Eggs Ok" width={44} height={44} style={{ objectFit: 'contain', width: '100%', height: '100%' }} />
+              <Image src="/logo.svg" alt="EggsOK Eatery" width={44} height={44} style={{ objectFit: 'contain', width: '100%', height: '100%' }} />
             </div>
             <div>
-              <p style={{ fontSize: '17px', fontWeight: '800', color: '#FED800', letterSpacing: '1px', fontFamily: 'Bebas Neue, sans-serif' }}>EGGS OK</p>
-              <p style={{ fontSize: '10px', color: '#888888', letterSpacing: '1px' }}>PHILADELPHIA</p>
+              <p style={{ fontSize: '17px', fontWeight: '800', color: '#FED800', letterSpacing: '1px', fontFamily: 'Bebas Neue, sans-serif' }}>EggsOK</p>
+              <p style={{ fontSize: '10px', color: '#888888', letterSpacing: '1px' }}>EATERY WEST PHILLY</p>
             </div>
           </Link>
 
@@ -56,6 +56,21 @@ export default function Header() {
               onMouseEnter={e => (e.currentTarget as HTMLAnchorElement).style.color = '#FEFEFE'}
               onMouseLeave={e => (e.currentTarget as HTMLAnchorElement).style.color = '#ffffffff'}
             >Home</Link>
+            
+            <Link href="/catering" style={{ padding: '8px 14px', color: '#888888', fontSize: '14px', fontWeight: '500', borderRadius: '8px', transition: 'color 0.2s' }}
+              onMouseEnter={e => (e.currentTarget as HTMLAnchorElement).style.color = '#FEFEFE'}
+              onMouseLeave={e => (e.currentTarget as HTMLAnchorElement).style.color = '#ffffffff'}
+            >Our Story</Link>
+            
+            <Link href="/catering" style={{ padding: '8px 14px', color: '#888888', fontSize: '14px', fontWeight: '500', borderRadius: '8px', transition: 'color 0.2s' }}
+              onMouseEnter={e => (e.currentTarget as HTMLAnchorElement).style.color = '#FEFEFE'}
+              onMouseLeave={e => (e.currentTarget as HTMLAnchorElement).style.color = '#ffffffff'}
+            >Events</Link>
+            
+            <Link href="/catering" style={{ padding: '8px 14px', color: '#888888', fontSize: '14px', fontWeight: '500', borderRadius: '8px', transition: 'color 0.2s' }}
+              onMouseEnter={e => (e.currentTarget as HTMLAnchorElement).style.color = '#FEFEFE'}
+              onMouseLeave={e => (e.currentTarget as HTMLAnchorElement).style.color = '#ffffffff'}
+            >We're Hiring</Link>
 
             <Link href="/order" style={{ padding: '8px 14px', color: '#888888', fontSize: '14px', fontWeight: '500', borderRadius: '8px', transition: 'color 0.2s' }}
               onMouseEnter={e => (e.currentTarget as HTMLAnchorElement).style.color = '#FEFEFE'}
@@ -117,7 +132,7 @@ export default function Header() {
               onMouseLeave={e => { (e.currentTarget as HTMLAnchorElement).style.borderColor = '#2A2A2A'; (e.currentTarget as HTMLAnchorElement).style.color = '#FEFEFE'; }}
             >
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/>
+                <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2" /><circle cx="12" cy="7" r="4" />
               </svg>
               Sign In
             </Link>
@@ -135,8 +150,8 @@ export default function Header() {
               marginLeft: '4px',
             }}>
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FEFEFE" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/>
-                <path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 001.95-1.57l1.65-7.43H6"/>
+                <circle cx="9" cy="21" r="1" /><circle cx="20" cy="21" r="1" />
+                <path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 001.95-1.57l1.65-7.43H6" />
               </svg>
               {cartCount > 0 && (
                 <span style={{
@@ -154,13 +169,13 @@ export default function Header() {
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }} className="hide-desktop">
             <Link href="/account" style={{ width: '38px', height: '38px', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#111111', borderRadius: '8px', color: '#FEFEFE' }}>
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/>
+                <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2" /><circle cx="12" cy="7" r="4" />
               </svg>
             </Link>
             <Link href="/order" style={{ position: 'relative', width: '38px', height: '38px', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#111111', borderRadius: '8px' }}>
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FEFEFE" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/>
-                <path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 001.95-1.57l1.65-7.43H6"/>
+                <circle cx="9" cy="21" r="1" /><circle cx="20" cy="21" r="1" />
+                <path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 001.95-1.57l1.65-7.43H6" />
               </svg>
               {cartCount > 0 && (
                 <span style={{ position: 'absolute', top: '-5px', right: '-5px', width: '18px', height: '18px', background: '#FED800', borderRadius: '50%', fontSize: '10px', fontWeight: '700', color: '#000', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>{cartCount}</span>
@@ -178,7 +193,7 @@ export default function Header() {
         <div style={{ position: 'fixed', inset: 0, zIndex: 99, background: 'rgba(0,0,0,0.98)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '16px' }}>
           <button onClick={() => setMobileMenuOpen(false)} style={{ position: 'absolute', top: '20px', right: '24px', color: '#888888', fontSize: '24px', background: 'transparent' }}>✕</button>
           <div style={{ width: '70px', height: '70px', borderRadius: '16px', overflow: 'hidden', marginBottom: '8px' }}>
-            <Image src="/logo.svg" alt="Eggs Ok" width={70} height={70} style={{ objectFit: 'contain' }} />
+            <Image src="/logo.svg" alt="EggsOK Eatery" width={70} height={70} style={{ objectFit: 'contain' }} />
           </div>
           {[
             { label: 'Home', href: '/' },
