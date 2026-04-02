@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 type Promo = {
   id: number;
@@ -13,14 +13,11 @@ type Promo = {
   active: boolean;
 };
 
-const initialPromos: Promo[] = [
-  { id: 1, code: 'WELCOME10', type: 'percentage', value: 10, minOrder: 15, usageLimit: 100, usedCount: 23, expiry: '2026-12-31', active: true },
-  { id: 2, code: 'EGGOK5', type: 'fixed', value: 5, minOrder: 20, usageLimit: 50, usedCount: 12, expiry: '2026-06-30', active: true },
-  { id: 3, code: 'FIRSTORDER', type: 'percentage', value: 15, minOrder: 10, usageLimit: 200, usedCount: 87, expiry: '2026-12-31', active: false },
-];
+const API = 'http://localhost:3002/api';
 
 export default function Promotions() {
-  const [promos, setPromos] = useState<Promo[]>(initialPromos);
+  const [promos, setPromos] = useState<Promo[]>([]);
+  const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
   const [editingPromo, setEditingPromo] = useState<Promo | null>(null);
   const [successMsg, setSuccessMsg] = useState('');
@@ -34,6 +31,39 @@ export default function Promotions() {
     active: true,
   });
 
+  const fetchPromotions = async () => {
+    try {
+      setLoading(true);
+      const res = await fetch(`${API}/promotions`);
+      const data = await res.json();
+      if (!Array.isArray(data)) {
+        setPromos([]);
+        return;
+      }
+      // Map backend fields to frontend types
+      const mapped = data.map((p: any) => ({
+        id: p.id,
+        code: p.code,
+        type: p.type === 'Percentage' ? 'percentage' : 'fixed',
+        value: Number(p.value),
+        minOrder: Number(p.minOrder),
+        usageLimit: Number(p.usageLimit),
+        usedCount: p.usedCount,
+        expiry: p.endDate || '',
+        active: p.status === 'Active',
+      }));
+      setPromos(mapped);
+    } catch (err) {
+      console.error('Failed to fetch promotions:', err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchPromotions();
+  }, []);
+
   const showSuccess = (msg: string) => {
     setSuccessMsg(msg);
     setTimeout(() => setSuccessMsg(''), 3000);
@@ -45,24 +75,44 @@ export default function Promotions() {
     setShowForm(false);
   };
 
-  const handleSave = () => {
+  const handleSave = async () => {
     if (!formData.code || !formData.value) return;
-    if (editingPromo) {
-      setPromos(prev => prev.map(p => p.id === editingPromo.id ? {
-        ...p, code: formData.code.toUpperCase(), type: formData.type,
-        value: Number(formData.value), minOrder: Number(formData.minOrder),
-        usageLimit: Number(formData.usageLimit), expiry: formData.expiry, active: formData.active,
-      } : p));
-      showSuccess('Promo code updated');
-    } else {
-      const newPromo: Promo = {
-        id: Date.now(), code: formData.code.toUpperCase(), type: formData.type,
-        value: Number(formData.value), minOrder: Number(formData.minOrder),
-        usageLimit: Number(formData.usageLimit), usedCount: 0,
-        expiry: formData.expiry, active: formData.active,
-      };
-      setPromos(prev => [...prev, newPromo]);
-      showSuccess('Promo code created');
+
+    const payload = {
+      code: formData.code.toUpperCase(),
+      name: formData.code.toUpperCase(), // Backend expects a name
+      type: formData.type === 'percentage' ? 'Percentage' : 'Fixed Amount',
+      value: String(formData.value),
+      minOrder: String(formData.minOrder),
+      usageLimit: String(formData.usageLimit),
+      endDate: formData.expiry,
+      status: formData.active ? 'Active' : 'Paused',
+    };
+
+    try {
+      if (editingPromo) {
+        const res = await fetch(`${API}/promotions/${editingPromo.id}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+        });
+        if (res.ok) {
+          showSuccess('Promo code updated');
+          fetchPromotions();
+        }
+      } else {
+        const res = await fetch(`${API}/promotions`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+        });
+        if (res.ok) {
+          showSuccess('Promo code created');
+          fetchPromotions();
+        }
+      }
+    } catch (err) {
+      console.error('Save failed:', err);
     }
     resetForm();
   };
@@ -77,14 +127,33 @@ export default function Promotions() {
     setShowForm(true);
   };
 
-  const handleDelete = (id: number) => {
-    setPromos(prev => prev.filter(p => p.id !== id));
-    showSuccess('Promo code deleted');
+  const handleDelete = async (id: number) => {
+    try {
+      const res = await fetch(`${API}/promotions/${id}`, { method: 'DELETE' });
+      if (res.ok) {
+        showSuccess('Promo code deleted');
+        fetchPromotions();
+      }
+    } catch (err) {
+      console.error('Delete failed:', err);
+    }
   };
 
-  const toggleActive = (id: number) => {
-    setPromos(prev => prev.map(p => p.id === id ? { ...p, active: !p.active } : p));
+  const toggleActive = async (id: number) => {
+    const promo = promos.find(p => p.id === id);
+    if (!promo) return;
+    try {
+      const res = await fetch(`${API}/promotions/${id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ status: promo.active ? 'Paused' : 'Active' }),
+      });
+      if (res.ok) fetchPromotions();
+    } catch (err) {
+      console.error('Toggle failed:', err);
+    }
   };
+
 
   const inputStyle = {
     width: '100%', padding: '9px 12px',

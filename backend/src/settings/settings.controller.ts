@@ -1,9 +1,9 @@
-import { Controller, Get, Put, Body } from '@nestjs/common';
+import { Controller, Get, Put, Body, Param } from '@nestjs/common';
 import { SettingsService } from './settings.service';
 
 @Controller('settings')
 export class SettingsController {
-  constructor(private readonly settingsService: SettingsService) {}
+  constructor(private readonly settingsService: SettingsService) { }
 
   @Get('hours')
   getBusinessHours() {
@@ -18,5 +18,15 @@ export class SettingsController {
   @Get('status')
   isStoreOpen() {
     return this.settingsService.isStoreOpen();
+  }
+
+  @Get(':key')
+  getSetting(@Param('key') key: string) {
+    return this.settingsService.getSetting(key);
+  }
+
+  @Put(':key')
+  setSetting(@Param('key') key: string, @Body() value: any) {
+    return this.settingsService.setSetting(key, value);
   }
 }

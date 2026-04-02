@@ -794,7 +794,7 @@ export default function OrderPage() {
                           return (
                             <div key={`${group.id}-${optId}`} style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '2px' }}>
                               <p style={{ fontSize: '12px', color: '#888', margin: 0 }}>+ {opt.name}</p>
-                              <p style={{ fontSize: '12px', color: '#888', margin: 0 }}>${(opt.price * cartItem.quantity).toFixed(2)}</p>
+                              <p style={{ fontSize: '12px', color: '#888', margin: 0 }}>${(Number(opt.price) * cartItem.quantity).toFixed(2)}</p>
                             </div>
                           );
                         });
@@ -1078,8 +1078,8 @@ export default function OrderPage() {
                             </div>
                             <span style={{ fontSize: '14px', color: '#FEFEFE', fontWeight: '500' }}>{opt.name}</span>
                           </div>
-                          <span style={{ fontSize: '13px', color: opt.price > 0 ? '#FED800' : '#444', fontWeight: opt.price > 0 ? '600' : '400' }}>
-                            {opt.price > 0 ? `+$${opt.price.toFixed(2)}` : 'Free'}
+                          <span style={{ fontSize: '13px', color: Number(opt.price) > 0 ? '#FED800' : '#444', fontWeight: Number(opt.price) > 0 ? '600' : '400' }}>
+                            {Number(opt.price) > 0 ? `+$${Number(opt.price).toFixed(2)}` : 'Free'}
                           </span>
                         </div>
                       );

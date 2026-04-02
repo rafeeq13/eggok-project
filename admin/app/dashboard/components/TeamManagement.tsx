@@ -1,10 +1,10 @@
 'use client';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 type Role = 'Super Admin' | 'Manager' | 'Staff';
 
 type TeamMember = {
-  id: number;
+  id: string;
   name: string;
   email: string;
   role: Role;
@@ -14,9 +14,9 @@ type TeamMember = {
 };
 
 const initialTeam: TeamMember[] = [
-  { id: 1, name: 'Muhammad Usama', email: 'admin@eggok.com', role: 'Super Admin', status: 'Active', joinDate: '2026-01-01', lastActive: 'Today' },
-  { id: 2, name: 'Berry', email: 'berry@eggok.com', role: 'Manager', status: 'Active', joinDate: '2026-03-01', lastActive: 'Today' },
-  { id: 3, name: 'Steven', email: 'steven@eggok.com', role: 'Manager', status: 'Active', joinDate: '2026-03-01', lastActive: 'Yesterday' },
+  { id: '1', name: 'Muhammad Usama', email: 'admin@eggok.com', role: 'Super Admin', status: 'Active', joinDate: '2026-01-01', lastActive: 'Today' },
+  { id: '2', name: 'Berry', email: 'berry@eggok.com', role: 'Manager', status: 'Active', joinDate: '2026-03-01', lastActive: 'Today' },
+  { id: '3', name: 'Steven', email: 'steven@eggok.com', role: 'Manager', status: 'Active', joinDate: '2026-03-01', lastActive: 'Yesterday' },
 ];
 
 const rolePermissions: Record<Role, string[]> = {
@@ -37,8 +37,11 @@ const statusColor: Record<string, string> = {
   Suspended: '#FC0301',
 };
 
+const API = 'http://localhost:3002/api';
+
 export default function TeamManagement() {
-  const [team, setTeam] = useState<TeamMember[]>(initialTeam);
+  const [team, setTeam] = useState<TeamMember[]>([]);
+  const [loading, setLoading] = useState(true);
   const [showInviteForm, setShowInviteForm] = useState(false);
   const [editingMember, setEditingMember] = useState<TeamMember | null>(null);
   const [showPermissions, setShowPermissions] = useState<Role | null>(null);
@@ -48,6 +51,32 @@ export default function TeamManagement() {
     email: '',
     role: 'Staff' as Role,
   });
+
+  const fetchTeam = async () => {
+    try {
+      setLoading(true);
+      const res = await fetch(`${API}/users`);
+      const data = await res.json();
+      if (!Array.isArray(data)) {
+        setTeam([]);
+        return;
+      }
+      setTeam(data.map((m: any) => ({
+        ...m,
+        id: m.id, // backend UUID
+        joinDate: new Date(m.joinDate).toISOString().split('T')[0],
+        lastActive: m.lastActive ? new Date(m.lastActive).toLocaleDateString() : 'Not yet'
+      })));
+    } catch (err) {
+      console.error('Failed to fetch team:', err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchTeam();
+  }, []);
 
   const showSuccess = (msg: string) => {
     setSuccessMsg(msg);
@@ -60,27 +89,34 @@ export default function TeamManagement() {
     setShowInviteForm(false);
   };
 
-  const handleSave = () => {
+  const handleSave = async () => {
     if (!formData.name || !formData.email) return;
-    if (editingMember) {
-      setTeam(prev => prev.map(m => m.id === editingMember.id ? {
-        ...m, name: formData.name, email: formData.email, role: formData.role,
-      } : m));
-      showSuccess('Team member updated');
-    } else {
-      const newMember: TeamMember = {
-        id: Date.now(),
-        name: formData.name,
-        email: formData.email,
-        role: formData.role,
-        status: 'Invited',
-        joinDate: new Date().toISOString().split('T')[0],
-        lastActive: 'Not yet',
-      };
-      setTeam(prev => [...prev, newMember]);
-      showSuccess(`Invite sent to ${formData.email}`);
+    try {
+      if (editingMember) {
+        const res = await fetch(`${API}/users/${editingMember.id}`, {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(formData),
+        });
+        if (res.ok) {
+          showSuccess('Team member updated');
+          fetchTeam();
+        }
+      } else {
+        const res = await fetch(`${API}/users`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ ...formData, status: 'Invited' }),
+        });
+        if (res.ok) {
+          showSuccess(`Invite sent to ${formData.email}`);
+          fetchTeam();
+        }
+      }
+      resetForm();
+    } catch (err) {
+      console.error('Save failed:', err);
     }
-    resetForm();
   };
 
   const handleEdit = (member: TeamMember) => {
@@ -89,19 +125,40 @@ export default function TeamManagement() {
     setShowInviteForm(true);
   };
 
-  const handleSuspend = (member: TeamMember) => {
+  const handleSuspend = async (member: TeamMember) => {
     if (member.role === 'Super Admin') return;
-    setTeam(prev => prev.map(m => m.id === member.id ? {
-      ...m, status: m.status === 'Suspended' ? 'Active' : 'Suspended',
-    } : m));
-    showSuccess(member.status === 'Suspended' ? 'Member reactivated' : 'Member suspended');
+    const newStatus = member.status === 'Suspended' ? 'Active' : 'Suspended';
+    try {
+      const res = await fetch(`${API}/users/${member.id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ status: newStatus }),
+      });
+      if (res.ok) {
+        showSuccess(newStatus === 'Active' ? 'Member reactivated' : 'Member suspended');
+        fetchTeam();
+      }
+    } catch (err) {
+      console.error('Suspend failed:', err);
+    }
   };
 
-  const handleDelete = (member: TeamMember) => {
+  const handleDelete = async (member: TeamMember) => {
     if (member.role === 'Super Admin') return;
-    setTeam(prev => prev.filter(m => m.id !== member.id));
-    showSuccess('Member removed');
+    if (!confirm(`Are you sure you want to remove ${member.name}?`)) return;
+    try {
+      const res = await fetch(`${API}/users/${member.id}`, {
+        method: 'DELETE',
+      });
+      if (res.ok) {
+        showSuccess('Member removed');
+        fetchTeam();
+      }
+    } catch (err) {
+      console.error('Delete failed:', err);
+    }
   };
+
 
   const inputStyle = {
     width: '100%', padding: '10px 14px',

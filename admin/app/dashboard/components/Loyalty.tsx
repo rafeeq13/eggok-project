@@ -1,5 +1,6 @@
-'use client';
-import { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+
+const API = 'http://localhost:3002/api';
 
 type RewardTier = {
   id: number;
@@ -64,7 +65,9 @@ const tierColor: Record<string, string> = {
 
 export default function Loyalty() {
   const [activeTab, setActiveTab] = useState<'overview' | 'rewards' | 'customers' | 'settings'>('overview');
-  const [rewards, setRewards] = useState<Reward[]>(initialRewards);
+  const [rewards, setRewards] = useState<Reward[]>([]);
+  const [loyaltyCustomers, setLoyaltyCustomers] = useState<LoyaltyCustomer[]>([]);
+  const [loading, setLoading] = useState(true);
   const [showRewardForm, setShowRewardForm] = useState(false);
   const [editingReward, setEditingReward] = useState<Reward | null>(null);
   const [successMsg, setSuccessMsg] = useState('');
@@ -83,6 +86,47 @@ export default function Loyalty() {
     type: 'discount' as Reward['type'], value: '', active: true,
   });
 
+  const fetchData = async () => {
+    try {
+      setLoading(true);
+      const [rewardsRes, membersRes, settingsRes] = await Promise.all([
+        fetch(`${API}/loyalty/rewards`),
+        fetch(`${API}/loyalty/members`),
+        fetch(`${API}/settings/loyalty`)
+      ]);
+
+      if (rewardsRes.ok) {
+        const data = await rewardsRes.json();
+        setRewards(Array.isArray(data) ? data : []);
+      }
+      if (membersRes.ok) {
+        const data = await membersRes.json();
+        setLoyaltyCustomers(Array.isArray(data) ? data : []);
+      }
+      if (settingsRes.ok) {
+        const data = await settingsRes.json();
+        if (data) {
+          const v = data;
+          setLoyaltyEnabled(v.loyaltyEnabled ?? true);
+          setPointsPerDollar(String(v.pointsPerDollar || '1'));
+          setPointsExpiry(String(v.pointsExpiry || '12'));
+          setSignupBonus(String(v.signupBonus || '50'));
+          setBirthdayBonus(String(v.birthdayBonus || '100'));
+          setMinRedeemPoints(String(v.minRedeemPoints || '100'));
+          setReferralBonus(String(v.referralBonus || '75'));
+        }
+      }
+    } catch (err) {
+      console.error('Failed to fetch loyalty data:', err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
   const showSuccess = (msg: string) => {
     setSuccessMsg(msg);
     setTimeout(() => setSuccessMsg(''), 3000);
@@ -94,24 +138,38 @@ export default function Loyalty() {
     setShowRewardForm(false);
   };
 
-  const handleSaveReward = () => {
+  const handleSaveReward = async () => {
     if (!formData.name || !formData.pointsCost) return;
-    if (editingReward) {
-      setRewards(prev => prev.map(r => r.id === editingReward.id ? {
-        ...r, name: formData.name, description: formData.description,
-        pointsCost: Number(formData.pointsCost), type: formData.type,
-        value: formData.value, active: formData.active,
-      } : r));
-      showSuccess('Reward updated');
-    } else {
-      setRewards(prev => [...prev, {
-        id: Date.now(), name: formData.name, description: formData.description,
-        pointsCost: Number(formData.pointsCost), type: formData.type,
-        value: formData.value, active: formData.active, redemptions: 0,
-      }]);
-      showSuccess('Reward created');
+    const payload = {
+      name: formData.name,
+      description: formData.description,
+      pointsCost: Number(formData.pointsCost),
+      type: formData.type,
+      value: formData.value,
+      active: formData.active,
+    };
+
+    try {
+      if (editingReward) {
+        await fetch(`${API}/loyalty/rewards/${editingReward.id}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+        });
+        showSuccess('Reward updated');
+      } else {
+        await fetch(`${API}/loyalty/rewards`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+        });
+        showSuccess('Reward created');
+      }
+      fetchData();
+      resetForm();
+    } catch (err) {
+      console.error('Save reward failed:', err);
     }
-    resetForm();
   };
 
   const handleEditReward = (reward: Reward) => {
@@ -120,14 +178,32 @@ export default function Loyalty() {
     setShowRewardForm(true);
   };
 
-  const toggleReward = (id: number) => {
-    setRewards(prev => prev.map(r => r.id === id ? { ...r, active: !r.active } : r));
+  const toggleReward = async (reward: Reward) => {
+    try {
+      await fetch(`${API}/loyalty/rewards/${reward.id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ active: !reward.active }),
+      });
+      fetchData();
+    } catch (err) {
+      console.error('Toggle reward failed:', err);
+    }
   };
 
-  const deleteReward = (id: number) => {
-    setRewards(prev => prev.filter(r => r.id !== id));
-    showSuccess('Reward deleted');
+  const deleteReward = async (id: number) => {
+    if (!confirm('Are you sure you want to delete this reward?')) return;
+    try {
+      await fetch(`${API}/loyalty/rewards/${id}`, {
+        method: 'DELETE',
+      });
+      showSuccess('Reward deleted');
+      fetchData();
+    } catch (err) {
+      console.error('Delete reward failed:', err);
+    }
   };
+
 
   const inputStyle = {
     width: '100%', padding: '10px 14px',
@@ -358,7 +434,7 @@ export default function Loyalty() {
                   </div>
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexShrink: 0 }}>
-                  {toggleSwitch(reward.active, () => toggleReward(reward.id))}
+                  {toggleSwitch(reward.active, () => toggleReward(reward))}
                   <button onClick={() => handleEditReward(reward)} style={{ padding: '6px 12px', background: 'transparent', border: '1px solid #2A2A2A', borderRadius: '6px', color: '#888888', fontSize: '11px', cursor: 'pointer' }}>Edit</button>
                   <button onClick={() => deleteReward(reward.id)} style={{ padding: '6px 12px', background: 'transparent', border: '1px solid #FC030130', borderRadius: '6px', color: '#FC0301', fontSize: '11px', cursor: 'pointer' }}>Delete</button>
                 </div>
@@ -462,7 +538,23 @@ export default function Loyalty() {
             ))}
           </div>
 
-          <button onClick={() => showSuccess('Loyalty settings saved')} style={{ width: '100%', padding: '13px', background: '#FED800', border: 'none', borderRadius: '10px', color: '#000', fontSize: '14px', fontWeight: '700', cursor: 'pointer', marginBottom: '32px' }}>
+          <button onClick={async () => {
+            const payload = {
+              loyaltyEnabled, pointsPerDollar: Number(pointsPerDollar), pointsExpiry: Number(pointsExpiry),
+              signupBonus: Number(signupBonus), birthdayBonus: Number(birthdayBonus),
+              minRedeemPoints: Number(minRedeemPoints), referralBonus: Number(referralBonus)
+            };
+            try {
+              await fetch(`${API}/settings/loyalty`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload),
+              });
+              showSuccess('Loyalty settings saved');
+            } catch (err) {
+              console.error('Failed to save loyalty settings:', err);
+            }
+          }} style={{ width: '100%', padding: '13px', background: '#FED800', border: 'none', borderRadius: '10px', color: '#000', fontSize: '14px', fontWeight: '700', cursor: 'pointer', marginBottom: '32px' }}>
             Save Loyalty Settings
           </button>
         </div>

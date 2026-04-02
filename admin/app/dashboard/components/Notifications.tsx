@@ -1,5 +1,7 @@
 'use client';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+
+const API = 'http://localhost:3002/api';
 
 type NotifTab = 'templates' | 'push' | 'history';
 
@@ -117,6 +119,40 @@ export default function Notifications() {
   const [pushTarget, setPushTarget] = useState('all');
   const [sending, setSending] = useState(false);
 
+  useEffect(() => {
+    const fetchTemplates = async () => {
+      try {
+        const res = await fetch(`${API}/settings/notifications`);
+        if (res.ok) {
+          const data = await res.json();
+          if (data) {
+            if (data.emailTemplates) setEmailTemplates(data.emailTemplates);
+            if (data.pushTemplates) setPushTemplates(data.pushTemplates);
+          }
+        }
+      } catch (err) {
+        console.error('Failed to fetch templates:', err);
+      }
+    };
+    fetchTemplates();
+  }, []);
+
+  const saveAllTemplates = async (updatedEmail?: EmailTemplate[], updatedPush?: PushTemplate[]) => {
+    const payload = {
+      emailTemplates: updatedEmail || emailTemplates,
+      pushTemplates: updatedPush || pushTemplates,
+    };
+    try {
+      await fetch(`${API}/settings/notifications`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+    } catch (err) {
+      console.error('Failed to save templates:', err);
+    }
+  };
+
   const showSuccess = (msg: string) => {
     setSuccessMsg(msg);
     setTimeout(() => setSuccessMsg(''), 3000);
@@ -124,14 +160,18 @@ export default function Notifications() {
 
   const saveEmailTemplate = () => {
     if (!editingEmail) return;
-    setEmailTemplates(prev => prev.map(t => t.id === editingEmail.id ? editingEmail : t));
+    const newTemplates = emailTemplates.map(t => t.id === editingEmail.id ? editingEmail : t);
+    setEmailTemplates(newTemplates);
+    saveAllTemplates(newTemplates);
     showSuccess('Email template saved');
     setEditingEmail(null);
   };
 
   const savePushTemplate = () => {
     if (!editingPush) return;
-    setPushTemplates(prev => prev.map(t => t.id === editingPush.id ? editingPush : t));
+    const newTemplates = pushTemplates.map(t => t.id === editingPush.id ? editingPush : t);
+    setPushTemplates(newTemplates);
+    saveAllTemplates(undefined, newTemplates);
     showSuccess('Push template saved');
     setEditingPush(null);
   };

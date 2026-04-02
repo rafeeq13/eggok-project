@@ -1,9 +1,12 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 type Section = 'brand' | 'contact' | 'location' | 'social' | 'seo' | 'owner';
 
+const API = 'http://localhost:3002/api';
+
 export default function BusinessProfile() {
+  const [loading, setLoading] = useState(true);
   const [activeSection, setActiveSection] = useState<Section>('brand');
   const [successMsg, setSuccessMsg] = useState('');
   const [logoPreview, setLogoPreview] = useState('');
@@ -51,10 +54,88 @@ export default function BusinessProfile() {
   const [ownerPhone, setOwnerPhone] = useState('');
   const [ownerBio, setOwnerBio] = useState('');
 
+  const fetchSettings = async () => {
+    try {
+      setLoading(true);
+      const res = await fetch(`${API}/settings/business_profile`);
+      if (res.ok) {
+        const data = await res.json();
+        if (data) {
+          const v = data;
+          if (v.restaurantName) setRestaurantName(v.restaurantName);
+          if (v.tagline) setTagline(v.tagline);
+          if (v.description) setDescription(v.description);
+          if (v.cuisine) setCuisine(v.cuisine);
+          if (v.priceRange) setPriceRange(v.priceRange);
+          if (v.logoPreview) setLogoPreview(v.logoPreview);
+          if (v.coverPreview) setCoverPreview(v.coverPreview);
+          if (v.phone) setPhone(v.phone);
+          if (v.cateringPhone) setCateringPhone(v.cateringPhone);
+          if (v.email) setEmail(v.email);
+          if (v.website) setWebsite(v.website);
+          if (v.address) setAddress(v.address);
+          if (v.city) setCity(v.city);
+          if (v.state) setState(v.state);
+          if (v.zip) setZip(v.zip);
+          if (v.country) setCountry(v.country);
+          if (v.googleMapsLink) setGoogleMapsLink(v.googleMapsLink);
+          if (v.parkingInfo) setParkingInfo(v.parkingInfo);
+          if (v.instagram) setInstagram(v.instagram);
+          if (v.facebook) setFacebook(v.facebook);
+          if (v.tiktok) setTiktok(v.tiktok);
+          if (v.twitter) setTwitter(v.twitter);
+          if (v.yelp) setYelp(v.yelp);
+          if (v.googleBusiness) setGoogleBusiness(v.googleBusiness);
+          if (v.seoTitle) setSeoTitle(v.seoTitle);
+          if (v.seoDescription) setSeoDescription(v.seoDescription);
+          if (v.seoKeywords) setSeoKeywords(v.seoKeywords);
+          if (v.ownerName) setOwnerName(v.ownerName);
+          if (v.ownerEmail) setOwnerEmail(v.ownerEmail);
+          if (v.ownerPhone) setOwnerPhone(v.ownerPhone);
+          if (v.ownerBio) setOwnerBio(v.ownerBio);
+          if (v.ownerPhotoPreview) setOwnerPhotoPreview(v.ownerPhotoPreview);
+        }
+      }
+    } catch (err) {
+      console.error('Fetch failed:', err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchSettings();
+  }, []);
+
+  const handleSave = async (sectionLabel: string) => {
+    const payload = {
+      restaurantName, tagline, description, cuisine, priceRange, logoPreview, coverPreview,
+      phone, cateringPhone, email, website,
+      address, city, state, zip, country, googleMapsLink, parkingInfo,
+      instagram, facebook, tiktok, twitter, yelp, googleBusiness,
+      seoTitle, seoDescription, seoKeywords,
+      ownerName, ownerEmail, ownerPhone, ownerBio, ownerPhotoPreview
+    };
+
+    try {
+      const res = await fetch(`${API}/settings/business_profile`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+      if (res.ok) {
+        showSuccess(`${sectionLabel} saved`);
+      }
+    } catch (err) {
+      console.error('Save failed:', err);
+    }
+  };
+
   const showSuccess = (msg: string) => {
     setSuccessMsg(msg);
     setTimeout(() => setSuccessMsg(''), 3000);
   };
+
 
   const handleImageUpload = (
     e: React.ChangeEvent<HTMLInputElement>,
@@ -90,12 +171,12 @@ export default function BusinessProfile() {
   };
 
   const sectionIcons: Record<string, React.ReactElement> = {
-    brand: <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>,
-    contact: <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6A19.79 19.79 0 012.12 4.18 2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>,
-    location: <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>,
-    social: <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>,
-    seo: <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>,
-    owner: <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>,
+    brand: <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z" /><polyline points="9 22 9 12 15 12 15 22" /></svg>,
+    contact: <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6A19.79 19.79 0 012.12 4.18 2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z" /></svg>,
+    location: <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" /><circle cx="12" cy="10" r="3" /></svg>,
+    social: <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="18" cy="5" r="3" /><circle cx="6" cy="12" r="3" /><circle cx="18" cy="19" r="3" /><line x1="8.59" y1="13.51" x2="15.42" y2="17.49" /><line x1="15.41" y1="6.51" x2="8.59" y2="10.49" /></svg>,
+    seo: <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8" /><line x1="21" y1="21" x2="16.65" y2="16.65" /></svg>,
+    owner: <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2" /><circle cx="12" cy="7" r="4" /></svg>,
   };
 
   const sections = [
@@ -267,7 +348,7 @@ export default function BusinessProfile() {
                 </div>
               </div>
             </div>
-            <button onClick={() => showSuccess('Brand identity saved — syncing to website and apps')} style={{ width: '100%', padding: '13px', background: '#FED800', border: 'none', borderRadius: '10px', color: '#000', fontSize: '14px', fontWeight: '700', cursor: 'pointer' }}>
+            <button onClick={() => handleSave('Brand identity')} style={{ width: '100%', padding: '13px', background: '#FED800', border: 'none', borderRadius: '10px', color: '#000', fontSize: '14px', fontWeight: '700', cursor: 'pointer' }}>
               Save Brand Identity
             </button>
           </div>
@@ -325,7 +406,7 @@ export default function BusinessProfile() {
                 </div>
               </div>
             </div>
-            <button onClick={() => showSuccess('Contact info saved — syncing to website and apps')} style={{ width: '100%', padding: '13px', background: '#FED800', border: 'none', borderRadius: '10px', color: '#000', fontSize: '14px', fontWeight: '700', cursor: 'pointer' }}>
+            <button onClick={() => handleSave('Contact info')} style={{ width: '100%', padding: '13px', background: '#FED800', border: 'none', borderRadius: '10px', color: '#000', fontSize: '14px', fontWeight: '700', cursor: 'pointer' }}>
               Save Contact Info
             </button>
           </div>
@@ -407,7 +488,7 @@ export default function BusinessProfile() {
                 </div>
               </div>
             </div>
-            <button onClick={() => showSuccess('Location saved — syncing to website and apps')} style={{ width: '100%', padding: '13px', background: '#FED800', border: 'none', borderRadius: '10px', color: '#000', fontSize: '14px', fontWeight: '700', cursor: 'pointer' }}>
+            <button onClick={() => handleSave('Location')} style={{ width: '100%', padding: '13px', background: '#FED800', border: 'none', borderRadius: '10px', color: '#000', fontSize: '14px', fontWeight: '700', cursor: 'pointer' }}>
               Save Location
             </button>
           </div>
@@ -423,12 +504,12 @@ export default function BusinessProfile() {
               </p>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
                 {[
-                  { label: 'Instagram', color: '#E1306C', value: instagram, set: setInstagram, placeholder: '@eggsok', icon: <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg> },
-                  { label: 'Facebook', color: '#1877F2', value: facebook, set: setFacebook, placeholder: 'facebook.com/eggsok', icon: <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg> },
-                  { label: 'TikTok', color: '#FEFEFE', value: tiktok, set: setTiktok, placeholder: '@eggsok', icon: <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 12a4 4 0 104 4V4a5 5 0 005 5"/></svg> },
-                  { label: 'Twitter / X', color: '#FEFEFE', value: twitter, set: setTwitter, placeholder: '@eggsok', icon: <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 4l16 16M4 20L20 4"/></svg> },
-                  { label: 'Yelp', color: '#FF1A1A', value: yelp, set: setYelp, placeholder: 'yelp.com/biz/eggs-ok', icon: <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6h-2zm0 8h2v2h-2z"/></svg> },
-                  { label: 'Google Business', color: '#FED800', value: googleBusiness, set: setGoogleBusiness, placeholder: 'Google Business profile link', icon: <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2a10 10 0 100 20A10 10 0 0012 2zm0 3a7 7 0 110 14A7 7 0 0112 5zm1 3h-2v5l4.25 2.52.75-1.23-3-1.79V8z"/></svg> },
+                  { label: 'Instagram', color: '#E1306C', value: instagram, set: setInstagram, placeholder: '@eggsok', icon: <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" /><circle cx="12" cy="12" r="4" /><circle cx="17.5" cy="6.5" r="1" fill="currentColor" /></svg> },
+                  { label: 'Facebook', color: '#1877F2', value: facebook, set: setFacebook, placeholder: 'facebook.com/eggsok', icon: <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z" /></svg> },
+                  { label: 'TikTok', color: '#FEFEFE', value: tiktok, set: setTiktok, placeholder: '@eggsok', icon: <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 12a4 4 0 104 4V4a5 5 0 005 5" /></svg> },
+                  { label: 'Twitter / X', color: '#FEFEFE', value: twitter, set: setTwitter, placeholder: '@eggsok', icon: <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 4l16 16M4 20L20 4" /></svg> },
+                  { label: 'Yelp', color: '#FF1A1A', value: yelp, set: setYelp, placeholder: 'yelp.com/biz/eggs-ok', icon: <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6h-2zm0 8h2v2h-2z" /></svg> },
+                  { label: 'Google Business', color: '#FED800', value: googleBusiness, set: setGoogleBusiness, placeholder: 'Google Business profile link', icon: <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2a10 10 0 100 20A10 10 0 0012 2zm0 3a7 7 0 110 14A7 7 0 0112 5zm1 3h-2v5l4.25 2.52.75-1.23-3-1.79V8z" /></svg> },
                 ].map(item => (
                   <div key={item.label} style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
                     <div style={{
@@ -454,7 +535,7 @@ export default function BusinessProfile() {
                         marginTop: '16px', flexShrink: 0,
                       }}>
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#000" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
-                          <polyline points="20 6 9 17 4 12"/>
+                          <polyline points="20 6 9 17 4 12" />
                         </svg>
                       </div>
                     )}
@@ -462,7 +543,7 @@ export default function BusinessProfile() {
                 ))}
               </div>
             </div>
-            <button onClick={() => showSuccess('Social media links saved')} style={{ width: '100%', padding: '13px', background: '#FED800', border: 'none', borderRadius: '10px', color: '#000', fontSize: '14px', fontWeight: '700', cursor: 'pointer' }}>
+            <button onClick={() => handleSave('Social media')} style={{ width: '100%', padding: '13px', background: '#FED800', border: 'none', borderRadius: '10px', color: '#000', fontSize: '14px', fontWeight: '700', cursor: 'pointer' }}>
               Save Social Media
             </button>
           </div>
@@ -528,7 +609,7 @@ export default function BusinessProfile() {
                 </div>
               </div>
             </div>
-            <button onClick={() => showSuccess('SEO settings saved')} style={{ width: '100%', padding: '13px', background: '#FED800', border: 'none', borderRadius: '10px', color: '#000', fontSize: '14px', fontWeight: '700', cursor: 'pointer' }}>
+            <button onClick={() => handleSave('SEO settings')} style={{ width: '100%', padding: '13px', background: '#FED800', border: 'none', borderRadius: '10px', color: '#000', fontSize: '14px', fontWeight: '700', cursor: 'pointer' }}>
               Save SEO Settings
             </button>
           </div>
@@ -609,7 +690,7 @@ export default function BusinessProfile() {
                 </div>
               </div>
             </div>
-            <button onClick={() => showSuccess('Owner profile saved')} style={{ width: '100%', padding: '13px', background: '#FED800', border: 'none', borderRadius: '10px', color: '#000', fontSize: '14px', fontWeight: '700', cursor: 'pointer' }}>
+            <button onClick={() => handleSave('Owner profile')} style={{ width: '100%', padding: '13px', background: '#FED800', border: 'none', borderRadius: '10px', color: '#000', fontSize: '14px', fontWeight: '700', cursor: 'pointer' }}>
               Save Owner Profile
             </button>
           </div>

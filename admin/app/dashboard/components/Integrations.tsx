@@ -126,6 +126,47 @@ export default function Integrations() {
   };
 
   useEffect(() => {
+    const loadAllSettings = async () => {
+      try {
+        const res = await fetch(`${API}/settings/integrations`);
+        if (res.ok) {
+          const text = await res.text();
+          const data = text ? JSON.parse(text) : null;
+          if (data) {
+            const v = data;
+            if (v.squareAppId) setSquareAppId(v.squareAppId);
+            if (v.squareAccessToken) setSquareAccessToken(v.squareAccessToken);
+            if (v.squareLocationId) setSquareLocationId(v.squareLocationId);
+            if (v.squareEnvironment) setSquareEnvironment(v.squareEnvironment);
+            if (v.squareStatus) setSquareStatus(v.squareStatus);
+
+            if (v.stripePublishableKey) setStripePublishableKey(v.stripePublishableKey);
+            if (v.stripeSecretKey) setStripeSecretKey(v.stripeSecretKey);
+            if (v.stripeWebhookSecret) setStripeWebhookSecret(v.stripeWebhookSecret);
+            if (v.stripeEnvironment) setStripeEnvironment(v.stripeEnvironment);
+            if (v.stripeStatus) setStripeStatus(v.stripeStatus);
+
+            if (v.doordashDeveloperId) setDoordashDeveloperId(v.doordashDeveloperId);
+            if (v.doordashKeyId) setDoordashKeyId(v.doordashKeyId);
+            if (v.doordashSigningSecret) setDoordashSigningSecret(v.doordashSigningSecret);
+            if (v.doordashEnvironment) setDoordashEnvironment(v.doordashEnvironment);
+            if (v.doordashStatus) setDoordashStatus(v.doordashStatus);
+
+            if (v.fcmServerKey) setFcmServerKey(v.fcmServerKey);
+            if (v.apnsKeyId) setApnsKeyId(v.apnsKeyId);
+            if (v.apnsTeamId) setApnsTeamId(v.apnsTeamId);
+            if (v.apnsBundleId) setApnsBundleId(v.apnsBundleId);
+            if (v.pushStatus) setPushStatus(v.pushStatus);
+
+            if (v.googleMapsKey) setGoogleMapsKey(v.googleMapsKey);
+            if (v.googleMapsStatus) setGoogleMapsStatus(v.googleMapsStatus);
+          }
+        }
+      } catch (err) {
+        console.error('Failed to load integrations:', err);
+      }
+    };
+
     const loadEmailSettings = async () => {
       try {
         setEmailLoading(true);
@@ -142,8 +183,29 @@ export default function Integrations() {
       }
     };
 
+    loadAllSettings();
     loadEmailSettings();
   }, []);
+
+  const saveIntegrations = async (statusUpdate?: any) => {
+    const payload = {
+      squareAppId, squareAccessToken, squareLocationId, squareEnvironment, squareStatus: statusUpdate?.squareStatus || squareStatus,
+      stripePublishableKey, stripeSecretKey, stripeWebhookSecret, stripeEnvironment, stripeStatus: statusUpdate?.stripeStatus || stripeStatus,
+      doordashDeveloperId, doordashKeyId, doordashSigningSecret, doordashEnvironment, doordashStatus: statusUpdate?.doordashStatus || doordashStatus,
+      fcmServerKey, apnsKeyId, apnsTeamId, apnsBundleId, pushStatus: statusUpdate?.pushStatus || pushStatus,
+      googleMapsKey, googleMapsStatus: statusUpdate?.googleMapsStatus || googleMapsStatus
+    };
+
+    try {
+      await fetch(`${API}/settings/integrations`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+    } catch (err) {
+      console.error('Failed to save integrations:', err);
+    }
+  };
 
   const buildEmailPayload = () => ({
     enabled: true,
@@ -210,6 +272,7 @@ export default function Integrations() {
     }
   };
 
+
   const testConnection = async (id: string) => {
     setTestingId(id);
     await new Promise(r => setTimeout(r, 2000));
@@ -222,30 +285,39 @@ export default function Integrations() {
       (id === 'push' && fcmServerKey) ||
       (id === 'maps' && googleMapsKey)
     );
+
+    let newStatus: IntegrationStatus = hasCredentials ? 'connected' : 'error';
+
+    if (id === 'square') setSquareStatus(newStatus);
+    if (id === 'stripe') setStripeStatus(newStatus);
+    if (id === 'doordash') setDoordashStatus(newStatus);
+    if (id === 'push') setPushStatus(newStatus);
+    if (id === 'maps') setGoogleMapsStatus(newStatus);
+
     if (hasCredentials) {
-      if (id === 'square') setSquareStatus('connected');
-      if (id === 'stripe') setStripeStatus('connected');
-      if (id === 'doordash') setDoordashStatus('connected');
-      if (id === 'push') setPushStatus('connected');
-      if (id === 'maps') setGoogleMapsStatus('connected');
       showSuccess(`${id.charAt(0).toUpperCase() + id.slice(1)} connected successfully`);
     } else {
-      if (id === 'square') setSquareStatus('error');
-      if (id === 'stripe') setStripeStatus('error');
-      if (id === 'doordash') setDoordashStatus('error');
-      if (id === 'push') setPushStatus('error');
-      if (id === 'maps') setGoogleMapsStatus('error');
       showError('Connection failed - please check your credentials');
     }
+
+    // Persist the status change
+    const update: any = {};
+    if (id === 'square') update.squareStatus = newStatus;
+    if (id === 'stripe') update.stripeStatus = newStatus;
+    if (id === 'doordash') update.doordashStatus = newStatus;
+    if (id === 'push') update.pushStatus = newStatus;
+    if (id === 'maps') update.googleMapsStatus = newStatus;
+    saveIntegrations(update);
   };
 
+
   const integrationIcons: Record<string, React.ReactElement> = {
-    square: <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>,
-    stripe: <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>,
-    doordash: <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="1" y="3" width="15" height="13" rx="1"/><path d="M16 8h4l3 3v5h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>,
-    email: <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>,
-    push: <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg>,
-    maps: <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>,
+    square: <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" /><line x1="8" y1="21" x2="16" y2="21" /><line x1="12" y1="17" x2="12" y2="21" /></svg>,
+    stripe: <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" /><line x1="1" y1="10" x2="23" y2="10" /></svg>,
+    doordash: <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="1" y="3" width="15" height="13" rx="1" /><path d="M16 8h4l3 3v5h-7V8z" /><circle cx="5.5" cy="18.5" r="2.5" /><circle cx="18.5" cy="18.5" r="2.5" /></svg>,
+    email: <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" /><polyline points="22,6 12,13 2,6" /></svg>,
+    push: <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9" /><path d="M13.73 21a2 2 0 01-3.46 0" /></svg>,
+    maps: <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" /><circle cx="12" cy="10" r="3" /></svg>,
   };
 
   const integrations: Integration[] = [
@@ -332,13 +404,13 @@ export default function Integrations() {
   );
 
   const sections = [
-    { id: 'overview', label: 'Overview', icon: <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg> },
-    { id: 'square', label: 'Square POS', icon: <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg> },
-    { id: 'stripe', label: 'Stripe', icon: <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg> },
-    { id: 'doordash', label: 'DoorDash', icon: <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="1" y="3" width="15" height="13" rx="1"/><path d="M16 8h4l3 3v5h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg> },
-    { id: 'email', label: 'Email', icon: <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg> },
-    { id: 'push', label: 'Push Notifications', icon: <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg> },
-    { id: 'maps', label: 'Google Maps', icon: <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg> },
+    { id: 'overview', label: 'Overview', icon: <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="3" /><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z" /></svg> },
+    { id: 'square', label: 'Square POS', icon: <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" /><line x1="8" y1="21" x2="16" y2="21" /><line x1="12" y1="17" x2="12" y2="21" /></svg> },
+    { id: 'stripe', label: 'Stripe', icon: <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" /><line x1="1" y1="10" x2="23" y2="10" /></svg> },
+    { id: 'doordash', label: 'DoorDash', icon: <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="1" y="3" width="15" height="13" rx="1" /><path d="M16 8h4l3 3v5h-7V8z" /><circle cx="5.5" cy="18.5" r="2.5" /><circle cx="18.5" cy="18.5" r="2.5" /></svg> },
+    { id: 'email', label: 'Email', icon: <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" /><polyline points="22,6 12,13 2,6" /></svg> },
+    { id: 'push', label: 'Push Notifications', icon: <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9" /><path d="M13.73 21a2 2 0 01-3.46 0" /></svg> },
+    { id: 'maps', label: 'Google Maps', icon: <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" /><circle cx="12" cy="10" r="3" /></svg> },
   ];
 
   return (

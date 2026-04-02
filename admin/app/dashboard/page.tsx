@@ -36,9 +36,11 @@ function DashboardContent() {
   const [activeTab, setActiveTab] = useState(searchParams.get('tab') || 'overview');
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const [hasMounted, setHasMounted] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
+    setHasMounted(true);
     const check = () => setIsMobile(window.innerWidth < 768);
     check();
     window.addEventListener('resize', check);
@@ -70,21 +72,21 @@ function DashboardContent() {
   };
 
   const sidebarIcons: Record<string, React.ReactElement> = {
-    overview: <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>,
-    orders: <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="2"/><path d="M9 12h6M9 16h4"/></svg>,
-    menu: <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg>,
-    customers: <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>,
-    promotions: <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83 0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>,
-    analytics: <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>,
-    payments: <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>,
-    delivery: <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="1" y="3" width="15" height="13" rx="1"/><path d="M16 8h4l3 3v5h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>,
-    team: <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>,
-    business: <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>,
-    integrations: <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 010 14.14M4.93 4.93a10 10 0 000 14.14"/><path d="M14.83 9.17a4 4 0 010 5.66M9.17 9.17a4 4 0 000 5.66"/></svg>,
-    notifications: <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg>,
-    reviews: <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>,
-    loyalty: <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>,
-    settings: <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>,
+    overview: <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="7" height="7" /><rect x="14" y="3" width="7" height="7" /><rect x="3" y="14" width="7" height="7" /><rect x="14" y="14" width="7" height="7" /></svg>,
+    orders: <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2" /><rect x="9" y="3" width="6" height="4" rx="2" /><path d="M9 12h6M9 16h4" /></svg>,
+    menu: <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 6h18M3 12h18M3 18h18" /></svg>,
+    customers: <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75" /></svg>,
+    promotions: <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83 0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z" /><line x1="7" y1="7" x2="7.01" y2="7" /></svg>,
+    analytics: <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="20" x2="18" y2="10" /><line x1="12" y1="20" x2="12" y2="4" /><line x1="6" y1="20" x2="6" y2="14" /></svg>,
+    payments: <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" /><line x1="1" y1="10" x2="23" y2="10" /></svg>,
+    delivery: <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="1" y="3" width="15" height="13" rx="1" /><path d="M16 8h4l3 3v5h-7V8z" /><circle cx="5.5" cy="18.5" r="2.5" /><circle cx="18.5" cy="18.5" r="2.5" /></svg>,
+    team: <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75" /></svg>,
+    business: <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z" /><polyline points="9 22 9 12 15 12 15 22" /></svg>,
+    integrations: <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="3" /><path d="M19.07 4.93a10 10 0 010 14.14M4.93 4.93a10 10 0 000 14.14" /><path d="M14.83 9.17a4 4 0 010 5.66M9.17 9.17a4 4 0 000 5.66" /></svg>,
+    notifications: <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9" /><path d="M13.73 21a2 2 0 01-3.46 0" /></svg>,
+    reviews: <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" /></svg>,
+    loyalty: <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z" /></svg>,
+    settings: <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="3" /><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z" /></svg>,
   };
 
   const SidebarContent = () => (
@@ -146,15 +148,50 @@ function DashboardContent() {
           }}
         >
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/>
-            <polyline points="16 17 21 12 16 7"/>
-            <line x1="21" y1="12" x2="9" y2="12"/>
+            <path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4" />
+            <polyline points="16 17 21 12 16 7" />
+            <line x1="21" y1="12" x2="9" y2="12" />
           </svg>
           Sign Out
         </button>
       </div>
     </div>
   );
+
+  const [recentOrders, setRecentOrders] = useState<any[]>([]);
+  const [todayStats, setTodayStats] = useState<any>(null);
+  const [overviewLoading, setOverviewLoading] = useState(true);
+
+  const fetchOverview = async () => {
+    try {
+      setOverviewLoading(true);
+      const [statsRes, ordersRes] = await Promise.all([
+        fetch('http://localhost:3002/api/orders/stats/today'),
+        fetch('http://localhost:3002/api/orders')
+      ]);
+      const stats = await statsRes.json();
+      const orders = await ordersRes.json();
+      setTodayStats(stats);
+      setRecentOrders(Array.isArray(orders) ? orders.slice(0, 5) : []);
+    } catch (err) {
+      console.error('Failed to fetch overview:', err);
+    } finally {
+      setOverviewLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    if (activeTab === 'overview') {
+      fetchOverview();
+    }
+  }, [activeTab]);
+
+  const stats = [
+    { label: "Today's Orders", value: todayStats?.totalOrders || '0', sub: 'Total since midnight', color: '#FED800' },
+    { label: "Today's Revenue", value: `$${todayStats?.totalRevenue || '0'}`, sub: 'Gross sales today', color: '#22C55E' },
+    { label: 'Pending Orders', value: todayStats?.pendingOrders || '0', sub: 'Awaiting preparation', color: '#F59E0B' },
+    { label: 'Avg Order Value', value: `$${todayStats?.avgOrderValue || '0'}`, sub: 'Per transaction', color: '#FECE86' },
+  ];
 
   return (
     <div style={{ display: 'flex', minHeight: '100vh', background: '#000000' }}>
@@ -173,7 +210,7 @@ function DashboardContent() {
         background: '#111111',
         borderRight: '1px solid #2A2A2A',
         flexShrink: 0,
-        ...(isMobile ? {
+        ...(isMobile && hasMounted ? {
           position: 'fixed', top: 0, left: 0, bottom: 0,
           zIndex: 50, width: '260px',
           transform: sidebarOpen ? 'translateX(0)' : 'translateX(-100%)',
@@ -228,7 +265,7 @@ function DashboardContent() {
 
         {/* Page Content */}
         <div style={{ flex: 1, overflow: 'auto', padding: isMobile ? '12px' : '24px', minWidth: 0 }}>
-{/* OVERVIEW */}
+          {/* OVERVIEW */}
           {activeTab === 'overview' && (
             <div>
               <div style={{
@@ -236,12 +273,7 @@ function DashboardContent() {
                 gridTemplateColumns: isMobile ? '1fr 1fr' : 'repeat(4, 1fr)',
                 gap: '12px', marginBottom: '20px',
               }}>
-                {[
-                  { label: "Today's Orders", value: '24', sub: '+3 in last hour', color: '#FED800' },
-                  { label: "Today's Revenue", value: '$387', sub: '+12% vs yesterday', color: '#22C55E' },
-                  { label: 'Pending Orders', value: '4', sub: '2 delivery, 2 pickup', color: '#F59E0B' },
-                  { label: 'Menu Items', value: '80+', sub: '14 categories active', color: '#FECE86' },
-                ].map((stat, i) => (
+                {stats.map((stat, i) => (
                   <div key={i} style={{ background: '#1A1A1A', border: '1px solid #2A2A2A', borderRadius: '12px', padding: isMobile ? '14px' : '18px' }}>
                     <p style={{ fontSize: '11px', color: '#888888', marginBottom: '6px' }}>{stat.label}</p>
                     <p style={{ fontSize: isMobile ? '22px' : '26px', fontWeight: '700', color: stat.color }}>{stat.value}</p>
@@ -260,15 +292,17 @@ function DashboardContent() {
                     {recentOrders.map((order, i) => (
                       <div key={i} style={{ padding: '14px 16px', borderBottom: i < recentOrders.length - 1 ? '1px solid #2A2A2A' : 'none' }}>
                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '6px' }}>
-                          <span style={{ fontSize: '13px', fontWeight: '700', color: '#FED800' }}>{order.id}</span>
-                          <span style={{ fontSize: '13px', fontWeight: '700', color: '#FEFEFE' }}>{order.total}</span>
+                          <span style={{ fontSize: '13px', fontWeight: '700', color: '#FED800' }}>#{order.orderNumber?.split('-').pop()}</span>
+                          <span style={{ fontSize: '13px', fontWeight: '700', color: '#FEFEFE' }}>${order.total}</span>
                         </div>
-                        <p style={{ fontSize: '12px', color: '#FEFEFE', marginBottom: '4px' }}>{order.customer}</p>
-                        <p style={{ fontSize: '11px', color: '#888888', marginBottom: '6px' }}>{order.items}</p>
+                        <p style={{ fontSize: '12px', color: '#FEFEFE', marginBottom: '4px' }}>{order.customerName}</p>
+                        <p style={{ fontSize: '11px', color: '#888888', marginBottom: '6px' }}>{Array.isArray(order.items) ? order.items.map((it: any) => it.name).join(', ') : 'No items'}</p>
                         <div style={{ display: 'flex', gap: '8px' }}>
-                          <span style={{ fontSize: '10px', padding: '2px 8px', borderRadius: '20px', fontWeight: '600', background: order.type === 'Delivery' ? '#0A1628' : '#1A1A00', color: order.type === 'Delivery' ? '#60A5FA' : '#FED800', border: `1px solid ${order.type === 'Delivery' ? '#1E3A5F' : '#3A3A00'}` }}>{order.type}</span>
-                          <span style={{ fontSize: '10px', padding: '2px 8px', borderRadius: '20px', fontWeight: '600', color: statusColor[order.status], background: `${statusColor[order.status]}18`, border: `1px solid ${statusColor[order.status]}40` }}>{order.status}</span>
-                          <span style={{ fontSize: '10px', color: '#888888', marginLeft: 'auto' }}>{order.time}</span>
+                          <span style={{ fontSize: '10px', padding: '2px 8px', borderRadius: '20px', fontWeight: '600', background: order.orderType === 'Delivery' ? '#0A1628' : '#1A1A00', color: order.orderType === 'Delivery' ? '#60A5FA' : '#FED800', border: `1px solid ${order.orderType === 'Delivery' ? '#1E3A5F' : '#3A3A00'}` }}>{order.orderType}</span>
+                          <span style={{ fontSize: '10px', padding: '2px 8px', borderRadius: '20px', fontWeight: '600', color: statusColor[order.status] || '#888888', background: `${statusColor[order.status] || '#888888'}18`, border: `1px solid ${statusColor[order.status] || '#888888'}40` }}>{order.status}</span>
+                          <span style={{ fontSize: '10px', color: '#888888', marginLeft: 'auto' }}>
+                            {hasMounted ? new Date(order.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : '--:--'}
+                          </span>
                         </div>
                       </div>
                     ))}
@@ -286,17 +320,19 @@ function DashboardContent() {
                       <tbody>
                         {recentOrders.map((order, i) => (
                           <tr key={i} style={{ borderBottom: i < recentOrders.length - 1 ? '1px solid #2A2A2A' : 'none' }}>
-                            <td style={{ padding: '12px 16px', fontSize: '12px', fontWeight: '600', color: '#FED800' }}>{order.id}</td>
-                            <td style={{ padding: '12px 16px', fontSize: '12px', color: '#FEFEFE' }}>{order.customer}</td>
-                            <td style={{ padding: '12px 16px', fontSize: '11px', color: '#888888' }}>{order.items}</td>
+                            <td style={{ padding: '12px 16px', fontSize: '12px', fontWeight: '600', color: '#FED800' }}>#{order.orderNumber?.split('-').pop()}</td>
+                            <td style={{ padding: '12px 16px', fontSize: '12px', color: '#FEFEFE' }}>{order.customerName}</td>
+                            <td style={{ padding: '12px 16px', fontSize: '11px', color: '#888888' }}>{Array.isArray(order.items) ? order.items.map((it: any) => it.name).join(', ') : 'No items'}</td>
                             <td style={{ padding: '12px 16px' }}>
-                              <span style={{ fontSize: '10px', padding: '2px 8px', borderRadius: '20px', fontWeight: '600', background: order.type === 'Delivery' ? '#0A1628' : '#1A1A00', color: order.type === 'Delivery' ? '#60A5FA' : '#FED800', border: `1px solid ${order.type === 'Delivery' ? '#1E3A5F' : '#3A3A00'}` }}>{order.type}</span>
+                              <span style={{ fontSize: '10px', padding: '2px 8px', borderRadius: '20px', fontWeight: '600', background: order.orderType === 'Delivery' ? '#0A1628' : '#1A1A00', color: order.orderType === 'Delivery' ? '#60A5FA' : '#FED800', border: `1px solid ${order.orderType === 'Delivery' ? '#1E3A5F' : '#3A3A00'}` }}>{order.orderType}</span>
                             </td>
-                            <td style={{ padding: '12px 16px', fontSize: '12px', fontWeight: '600', color: '#FEFEFE' }}>{order.total}</td>
+                            <td style={{ padding: '12px 16px', fontSize: '12px', fontWeight: '600', color: '#FEFEFE' }}>${order.total}</td>
                             <td style={{ padding: '12px 16px' }}>
-                              <span style={{ fontSize: '10px', padding: '2px 8px', borderRadius: '20px', fontWeight: '600', color: statusColor[order.status], background: `${statusColor[order.status]}18`, border: `1px solid ${statusColor[order.status]}40` }}>{order.status}</span>
+                              <span style={{ fontSize: '10px', padding: '2px 8px', borderRadius: '20px', fontWeight: '600', color: statusColor[order.status] || '#888888', background: `${statusColor[order.status] || '#888888'}18`, border: `1px solid ${statusColor[order.status] || '#888888'}40` }}>{order.status}</span>
                             </td>
-                            <td style={{ padding: '12px 16px', fontSize: '11px', color: '#888888' }}>{order.time}</td>
+                            <td style={{ padding: '12px 16px', fontSize: '11px', color: '#888888' }}>
+                              {hasMounted ? new Date(order.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : '--:--'}
+                            </td>
                           </tr>
                         ))}
                       </tbody>

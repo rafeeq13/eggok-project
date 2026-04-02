@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 type Zone = {
   id: number;
@@ -22,7 +22,10 @@ const initialZones: Zone[] = [
   { id: 3, name: 'Extended Zone', radiusMiles: 5.0, deliveryFee: 5.99, minOrder: 25, estimatedMinutes: 45, active: true, color: '#22C55E' },
 ];
 
+const API = 'http://localhost:3002/api';
+
 export default function DeliverySettings() {
+  const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState<Tab>('zones');
   const [zones, setZones] = useState<Zone[]>(initialZones);
   const [showZoneForm, setShowZoneForm] = useState(false);
@@ -42,14 +45,66 @@ export default function DeliverySettings() {
 
   // Delivery hours
   const [deliveryHours, setDeliveryHours] = useState([
-    { day: 'Monday',    open: true, from: '08:00', to: '21:00' },
-    { day: 'Tuesday',   open: true, from: '08:00', to: '21:00' },
+    { day: 'Monday', open: true, from: '08:00', to: '21:00' },
+    { day: 'Tuesday', open: true, from: '08:00', to: '21:00' },
     { day: 'Wednesday', open: true, from: '08:00', to: '21:00' },
-    { day: 'Thursday',  open: true, from: '08:00', to: '21:00' },
-    { day: 'Friday',    open: true, from: '08:00', to: '22:00' },
-    { day: 'Saturday',  open: true, from: '09:00', to: '22:00' },
-    { day: 'Sunday',    open: true, from: '09:00', to: '20:00' },
+    { day: 'Thursday', open: true, from: '08:00', to: '21:00' },
+    { day: 'Friday', open: true, from: '08:00', to: '22:00' },
+    { day: 'Saturday', open: true, from: '09:00', to: '22:00' },
+    { day: 'Sunday', open: true, from: '09:00', to: '20:00' },
   ]);
+
+  const fetchSettings = async () => {
+    try {
+      setLoading(true);
+      const res = await fetch(`${API}/settings/delivery_settings`);
+      if (res.ok) {
+        const data = await res.json();
+        if (data) {
+          const v = data;
+          if (v.zones) setZones(v.zones);
+          if (v.deliveryEnabled !== undefined) setDeliveryEnabled(v.deliveryEnabled);
+          if (v.autoAssign !== undefined) setAutoAssign(v.autoAssign);
+          if (v.freeDeliveryEnabled !== undefined) setFreeDeliveryEnabled(v.freeDeliveryEnabled);
+          if (v.freeDeliveryThreshold !== undefined) setFreeDeliveryThreshold(v.freeDeliveryThreshold);
+          if (v.prepTime !== undefined) setPrepTime(v.prepTime);
+          if (v.maxActiveOrders !== undefined) setMaxActiveOrders(v.maxActiveOrders);
+          if (v.deliveryHours) setDeliveryHours(v.deliveryHours);
+        }
+      }
+    } catch (err) {
+      console.error('Fetch settings failed:', err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchSettings();
+  }, []);
+
+  const saveAll = async (newZones?: Zone[], newHours?: any, extraSettings?: any) => {
+    const payload = {
+      zones: newZones || zones,
+      deliveryHours: newHours || deliveryHours,
+      deliveryEnabled: extraSettings?.deliveryEnabled ?? deliveryEnabled,
+      autoAssign: extraSettings?.autoAssign ?? autoAssign,
+      freeDeliveryEnabled: extraSettings?.freeDeliveryEnabled ?? freeDeliveryEnabled,
+      freeDeliveryThreshold: extraSettings?.freeDeliveryThreshold ?? freeDeliveryThreshold,
+      prepTime: extraSettings?.prepTime ?? prepTime,
+      maxActiveOrders: extraSettings?.maxActiveOrders ?? maxActiveOrders,
+    };
+
+    try {
+      await fetch(`${API}/settings/delivery_settings`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+    } catch (err) {
+      console.error('Save settings failed:', err);
+    }
+  };
 
   const [formData, setFormData] = useState({
     name: '', radiusMiles: '', deliveryFee: '',
@@ -67,17 +122,18 @@ export default function DeliverySettings() {
     setShowZoneForm(false);
   };
 
-  const handleSaveZone = () => {
+  const handleSaveZone = async () => {
     if (!formData.name || !formData.radiusMiles) return;
+    let upZones = [...zones];
     if (editingZone) {
-      setZones(prev => prev.map(z => z.id === editingZone.id ? {
+      upZones = zones.map(z => z.id === editingZone.id ? {
         ...z, name: formData.name,
         radiusMiles: Number(formData.radiusMiles),
         deliveryFee: Number(formData.deliveryFee),
         minOrder: Number(formData.minOrder),
         estimatedMinutes: Number(formData.estimatedMinutes),
         active: formData.active, color: formData.color,
-      } : z));
+      } : z);
       showSuccess('Zone updated');
     } else {
       const newZone: Zone = {
@@ -88,11 +144,14 @@ export default function DeliverySettings() {
         estimatedMinutes: Number(formData.estimatedMinutes),
         active: formData.active, color: formData.color,
       };
-      setZones(prev => [...prev, newZone]);
+      upZones = [...zones, newZone];
       showSuccess('Zone created');
     }
+    setZones(upZones);
+    saveAll(upZones);
     resetForm();
   };
+
 
   const handleEdit = (zone: Zone) => {
     setFormData({
@@ -106,12 +165,16 @@ export default function DeliverySettings() {
   };
 
   const handleDelete = (id: number) => {
-    setZones(prev => prev.filter(z => z.id !== id));
+    const upZones = zones.filter(z => z.id !== id);
+    setZones(upZones);
+    saveAll(upZones);
     showSuccess('Zone deleted');
   };
 
   const toggleZone = (id: number) => {
-    setZones(prev => prev.map(z => z.id === id ? { ...z, active: !z.active } : z));
+    const upZones = zones.map(z => z.id === id ? { ...z, active: !z.active } : z);
+    setZones(upZones);
+    saveAll(upZones);
   };
 
   const toggleDeliveryHour = (day: string) => {
@@ -479,7 +542,11 @@ export default function DeliverySettings() {
                   {deliveryEnabled ? 'Delivery is enabled — DoorDash Drive is active' : 'Delivery is disabled — customers can only place pickup orders'}
                 </p>
               </div>
-              {toggleSwitch(deliveryEnabled, () => setDeliveryEnabled(!deliveryEnabled))}
+              {toggleSwitch(deliveryEnabled, () => {
+                const newVal = !deliveryEnabled;
+                setDeliveryEnabled(newVal);
+                saveAll(undefined, undefined, { deliveryEnabled: newVal });
+              })}
             </div>
           </div>
 
@@ -566,7 +633,10 @@ export default function DeliverySettings() {
           </div>
 
           {/* Save */}
-          <button onClick={() => showSuccess('General settings saved')} style={{
+          <button onClick={() => {
+            saveAll();
+            showSuccess('General settings saved');
+          }} style={{
             width: '100%', padding: '14px', background: '#FED800',
             border: 'none', borderRadius: '10px', color: '#000',
             fontSize: '14px', fontWeight: '700', cursor: 'pointer', marginBottom: '32px',
@@ -611,7 +681,10 @@ export default function DeliverySettings() {
               ))}
             </div>
           </div>
-          <button onClick={() => showSuccess('Delivery hours saved')} style={{
+          <button onClick={() => {
+            saveAll(undefined, deliveryHours);
+            showSuccess('Delivery hours saved');
+          }} style={{
             width: '100%', padding: '14px', background: '#FED800',
             border: 'none', borderRadius: '10px', color: '#000',
             fontSize: '14px', fontWeight: '700', cursor: 'pointer', marginBottom: '32px',

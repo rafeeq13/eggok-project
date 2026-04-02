@@ -1,92 +1,11 @@
-'use client';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import DateRangePicker from './DateRangePicker';
 import {
   AreaChart, Area, BarChart, Bar, XAxis, YAxis, CartesianGrid,
   Tooltip, ResponsiveContainer, PieChart, Pie, Cell, Legend
 } from 'recharts';
 
-const dailyData = [
-  { date: 'Mar 1', revenue: 320, orders: 28 },
-  { date: 'Mar 2', revenue: 480, orders: 41 },
-  { date: 'Mar 3', revenue: 390, orders: 34 },
-  { date: 'Mar 4', revenue: 520, orders: 45 },
-  { date: 'Mar 5', revenue: 610, orders: 52 },
-  { date: 'Mar 6', revenue: 750, orders: 63 },
-  { date: 'Mar 7', revenue: 820, orders: 71 },
-  { date: 'Mar 8', revenue: 490, orders: 42 },
-  { date: 'Mar 9', revenue: 530, orders: 46 },
-  { date: 'Mar 10', revenue: 670, orders: 58 },
-  { date: 'Mar 11', revenue: 710, orders: 61 },
-  { date: 'Mar 12', revenue: 890, orders: 77 },
-  { date: 'Mar 13', revenue: 760, orders: 65 },
-  { date: 'Mar 14', revenue: 940, orders: 81 },
-  { date: 'Mar 15', revenue: 580, orders: 50 },
-  { date: 'Mar 16', revenue: 620, orders: 54 },
-  { date: 'Mar 17', revenue: 810, orders: 70 },
-  { date: 'Mar 18', revenue: 870, orders: 75 },
-  { date: 'Mar 19', revenue: 920, orders: 79 },
-  { date: 'Mar 20', revenue: 387, orders: 24 },
-];
-
-const weeklyData = [
-  { date: 'Week 1', revenue: 2800, orders: 241 },
-  { date: 'Week 2', revenue: 3400, orders: 289 },
-  { date: 'Week 3', revenue: 3900, orders: 334 },
-  { date: 'Week 4', revenue: 4200, orders: 362 },
-];
-
-const monthlyData = [
-  { date: 'Oct', revenue: 12400, orders: 1043 },
-  { date: 'Nov', revenue: 14800, orders: 1241 },
-  { date: 'Dec', revenue: 18900, orders: 1587 },
-  { date: 'Jan', revenue: 15200, orders: 1289 },
-  { date: 'Feb', revenue: 16800, orders: 1420 },
-  { date: 'Mar', revenue: 14300, orders: 1208 },
-];
-
-const topItems = [
-  { name: 'Signature Bacon Egg & Cheese', orders: 312, revenue: 3432, trend: 'up', change: '+12%' },
-  { name: 'Nashville Hot Chicken Sandwich', orders: 287, revenue: 3731, trend: 'up', change: '+8%' },
-  { name: 'Steak & Egg', orders: 241, revenue: 3856, trend: 'up', change: '+5%' },
-  { name: 'OK Breakfast Burrito', orders: 198, revenue: 2574, trend: 'up', change: '+3%' },
-  { name: 'Hot Honey Chicken & Waffle', orders: 187, revenue: 2805, trend: 'up', change: '+2%' },
-  { name: 'Tiramisu Latte', orders: 176, revenue: 1144, trend: 'down', change: '-1%' },
-  { name: 'Matcha Latte', orders: 165, revenue: 825, trend: 'up', change: '+4%' },
-  { name: 'Smashed Burger Grilled Cheese', orders: 143, revenue: 2002, trend: 'down', change: '-3%' },
-  { name: 'Veggie Breakfast Burrito', orders: 98, revenue: 1176, trend: 'down', change: '-7%' },
-  { name: 'Mexican Breakfast Burrito', orders: 87, revenue: 1131, trend: 'down', change: '-11%' },
-];
-
-const orderTypeData = [
-  { name: 'Pickup', value: 62, color: '#FED800' },
-  { name: 'Delivery', value: 38, color: '#60A5FA' },
-];
-
-const peakHoursData = [
-  { hour: '7am', orders: 12 },
-  { hour: '8am', orders: 28 },
-  { hour: '9am', orders: 45 },
-  { hour: '10am', orders: 38 },
-  { hour: '11am', orders: 31 },
-  { hour: '12pm', orders: 52 },
-  { hour: '1pm', orders: 48 },
-  { hour: '2pm', orders: 29 },
-  { hour: '3pm', orders: 18 },
-  { hour: '4pm', orders: 14 },
-  { hour: '5pm', orders: 22 },
-  { hour: '6pm', orders: 35 },
-  { hour: '7pm', orders: 41 },
-  { hour: '8pm', orders: 33 },
-  { hour: '9pm', orders: 19 },
-];
-
-const customerData = [
-  { label: 'New Customers', value: '38%', color: '#22C55E', detail: '287 first-time orders this month' },
-  { label: 'Returning Customers', value: '62%', color: '#FED800', detail: '468 repeat orders this month' },
-  { label: 'Avg Orders per Customer', value: '2.4', color: '#60A5FA', detail: 'Per customer this month' },
-  { label: 'Customer Retention Rate', value: '71%', color: '#FECE86', detail: 'Customers who reordered' },
-];
+const API = 'http://localhost:3002/api';
 
 type Period = 'daily' | 'weekly' | 'monthly';
 
@@ -114,19 +33,48 @@ export default function Analytics() {
   const [dateFrom, setDateFrom] = useState('2026-03-01');
   const [dateTo, setDateTo] = useState('2026-03-20');
   const [activeChart, setActiveChart] = useState<'revenue' | 'orders'>('revenue');
+  const [loading, setLoading] = useState(true);
+  const [stats, setStats] = useState<any>(null);
 
-  const chartData = period === 'daily' ? dailyData : period === 'weekly' ? weeklyData : monthlyData;
+  const fetchStats = async () => {
+    try {
+      setLoading(true);
+      const days = period === 'daily' ? 30 : period === 'weekly' ? 90 : 365;
+      const res = await fetch(`${API}/orders/stats/historical?days=${days}`);
+      const data = await res.json();
+      setStats(data);
+    } catch (err) {
+      console.error('Failed to fetch stats:', err);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-  const totalRevenue = chartData.reduce((a, d) => a + d.revenue, 0);
-  const totalOrders = chartData.reduce((a, d) => a + d.orders, 0);
+  useEffect(() => {
+    fetchStats();
+  }, [period]);
+
+  if (loading || !stats) {
+    return <div style={{ color: '#888', padding: '40px', textAlign: 'center' }}>Loading analytics...</div>;
+  }
+
+  const chartData = stats.chartData || [];
+  const topItems = stats.topItems || [];
+  const orderTypeData = stats.orderTypeData || [];
+  const peakHoursData = stats.peakHoursData || [];
+  const customerData = stats.customerData || [];
+
+  const totalRevenue = stats.totalRevenue || 0;
+  const totalOrders = stats.totalOrders || 0;
   const avgOrderValue = totalOrders > 0 ? (totalRevenue / totalOrders).toFixed(2) : '0';
-  const avgDailyRevenue = (totalRevenue / chartData.length).toFixed(0);
+  const avgDailyRevenue = chartData.length > 0 ? (totalRevenue / chartData.length).toFixed(0) : '0';
 
   const inputStyle = {
     padding: '8px 12px', background: '#111111',
     border: '1px solid #2A2A2A', borderRadius: '8px',
     color: '#FEFEFE', fontSize: '12px',
   };
+
 
   return (
     <div style={{ maxWidth: '1000px' }}>
@@ -163,9 +111,9 @@ export default function Analytics() {
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '12px', marginBottom: '24px' }}>
         {[
           { label: 'Total Revenue', value: `$${totalRevenue.toLocaleString()}`, sub: `$${avgDailyRevenue} avg per ${period === 'daily' ? 'day' : period === 'weekly' ? 'week' : 'month'}`, color: '#FED800' },
-          { label: 'Total Orders', value: totalOrders.toLocaleString(), sub: `${(totalOrders / chartData.length).toFixed(0)} avg per ${period === 'daily' ? 'day' : period === 'weekly' ? 'week' : 'month'}`, color: '#22C55E' },
+          { label: 'Total Orders', value: totalOrders.toLocaleString(), sub: `${(totalOrders / (chartData.length || 1)).toFixed(0)} avg per ${period === 'daily' ? 'day' : period === 'weekly' ? 'week' : 'month'}`, color: '#22C55E' },
           { label: 'Avg Order Value', value: `$${avgOrderValue}`, sub: 'Per transaction', color: '#60A5FA' },
-          { label: 'Top Item', value: 'Bacon Egg & Cheese', sub: '312 orders this period', color: '#FECE86' },
+          { label: 'Top Item', value: topItems[0]?.name || 'N/A', sub: topItems[0] ? `${topItems[0].orders} orders this period` : 'No data', color: '#FECE86' },
         ].map((kpi, i) => (
           <div key={i} style={{ background: '#1A1A1A', border: '1px solid #2A2A2A', borderRadius: '12px', padding: '18px' }}>
             <p style={{ fontSize: '11px', color: '#888888', marginBottom: '8px', textTransform: 'uppercase' as const, letterSpacing: '0.5px' }}>{kpi.label}</p>

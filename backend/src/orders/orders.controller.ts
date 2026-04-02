@@ -1,9 +1,9 @@
-import { Controller, Get, Post, Patch, Param, Body, ParseIntPipe } from '@nestjs/common';
+import { Controller, Get, Post, Patch, Param, Body, ParseIntPipe, Query } from '@nestjs/common';
 import { OrdersService } from './orders.service';
 
 @Controller('orders')
 export class OrdersController {
-  constructor(private readonly ordersService: OrdersService) {}
+  constructor(private readonly ordersService: OrdersService) { }
 
   @Post()
   createOrder(@Body() data: any) {
@@ -34,6 +34,12 @@ export class OrdersController {
   getTodayStats() {
     return this.ordersService.getTodayStats();
   }
+
+  @Get('stats/historical')
+  getHistoricalStats(@Query('days') days?: string) {
+    return this.ordersService.getHistoricalStats(days ? +days : 30);
+  }
+
 
   @Get(':id')
   getOrderById(@Param('id', ParseIntPipe) id: number) {

@@ -5,6 +5,13 @@ import { MenuModule } from './menu/menu.module';
 import { OrdersModule } from './orders/orders.module';
 import { SettingsModule } from './settings/settings.module';
 import { MailModule } from './mail/mail.module';
+import { CustomersModule } from './customers/customers.module';
+import { PromotionsModule } from './promotions/promotions.module';
+import { LoyaltyModule } from './loyalty/loyalty.module';
+import { ReviewsModule } from './reviews/reviews.module';
+import { UsersModule } from './users/users.module';
+import { PaymentsModule } from './payments/payments.module';
+import { SeedModule } from './seed/seed.module';
 
 @Module({
   imports: [
@@ -30,6 +37,14 @@ import { MailModule } from './mail/mail.module';
     OrdersModule,
     SettingsModule,
     MailModule,
+    CustomersModule,
+    PromotionsModule,
+    LoyaltyModule,
+    ReviewsModule,
+    UsersModule,
+    PaymentsModule,
+    SeedModule,
   ],
 })
+
 export class AppModule { }

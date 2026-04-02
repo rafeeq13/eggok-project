@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import DateRangePicker from './DateRangePicker';
 import {
   AreaChart, Area, BarChart, Bar, XAxis, YAxis,
@@ -20,20 +20,7 @@ type Transaction = {
   refundAmount: number;
 };
 
-const transactions: Transaction[] = [
-  { id: 'EO-1001', date: '2026-03-20', time: '09:12 AM', customer: 'John Smith', type: 'Pickup', orderTotal: 16.50, stripeFee: 0.78, deliveryFee: 0, netRevenue: 15.72, status: 'Paid', refundAmount: 0 },
-  { id: 'EO-1002', date: '2026-03-20', time: '09:05 AM', customer: 'Sarah Lee', type: 'Delivery', orderTotal: 34.99, stripeFee: 1.31, deliveryFee: 3.99, netRevenue: 29.69, status: 'Paid', refundAmount: 0 },
-  { id: 'EO-1003', date: '2026-03-20', time: '08:55 AM', customer: 'Mike Johnson', type: 'Pickup', orderTotal: 26.10, stripeFee: 1.06, deliveryFee: 0, netRevenue: 25.04, status: 'Paid', refundAmount: 0 },
-  { id: 'EO-1004', date: '2026-03-20', time: '09:18 AM', customer: 'Emma Davis', type: 'Delivery', orderTotal: 32.99, stripeFee: 1.27, deliveryFee: 3.99, netRevenue: 27.73, status: 'Paid', refundAmount: 0 },
-  { id: 'EO-0998', date: '2026-03-19', time: '08:30 AM', customer: 'Liam Martinez', type: 'Pickup', orderTotal: 9.00, stripeFee: 0.56, deliveryFee: 0, netRevenue: 8.44, status: 'Paid', refundAmount: 0 },
-  { id: 'EO-0997', date: '2026-03-19', time: '10:15 AM', customer: 'Sophia Anderson', type: 'Delivery', orderTotal: 21.99, stripeFee: 0.94, deliveryFee: 3.99, netRevenue: 17.06, status: 'Paid', refundAmount: 0 },
-  { id: 'EO-0995', date: '2026-03-18', time: '09:00 AM', customer: 'John Smith', type: 'Pickup', orderTotal: 13.00, stripeFee: 0.68, deliveryFee: 0, netRevenue: 0, status: 'Refunded', refundAmount: 13.00 },
-  { id: 'EO-0990', date: '2026-03-17', time: '11:20 AM', customer: 'Olivia Brown', type: 'Delivery', orderTotal: 28.50, stripeFee: 1.13, deliveryFee: 3.99, netRevenue: 23.38, status: 'Paid', refundAmount: 0 },
-  { id: 'EO-0985', date: '2026-03-16', time: '08:45 AM', customer: 'James Wilson', type: 'Pickup', orderTotal: 39.00, stripeFee: 1.43, deliveryFee: 0, netRevenue: 37.57, status: 'Paid', refundAmount: 0 },
-  { id: 'EO-0980', date: '2026-03-15', time: '10:30 AM', customer: 'Sarah Lee', type: 'Delivery', orderTotal: 18.99, stripeFee: 0.85, deliveryFee: 3.99, netRevenue: 14.15, status: 'Partial Refund', refundAmount: 5.00 },
-  { id: 'EO-0975', date: '2026-03-14', time: '09:15 AM', customer: 'Mike Johnson', type: 'Pickup', orderTotal: 22.00, stripeFee: 0.94, deliveryFee: 0, netRevenue: 21.06, status: 'Paid', refundAmount: 0 },
-  { id: 'EO-0970', date: '2026-03-13', time: '12:00 PM', customer: 'Emma Davis', type: 'Delivery', orderTotal: 41.50, stripeFee: 1.50, deliveryFee: 3.99, netRevenue: 36.01, status: 'Paid', refundAmount: 0 },
-];
+const API = 'http://localhost:3002/api';
 
 const monthlyData = [
   { month: 'Oct', revenue: 12400, fees: 620, delivery: 1240, profit: 10540 },
@@ -51,6 +38,8 @@ const statusColor: Record<string, string> = {
 };
 
 export default function Payments() {
+  const [data, setData] = useState<{ transactions: Transaction[], stats: any }>({ transactions: [], stats: null });
+  const [loading, setLoading] = useState(true);
   const [dateFrom, setDateFrom] = useState('2026-03-01');
   const [dateTo, setDateTo] = useState('2026-03-20');
   const [search, setSearch] = useState('');
@@ -59,7 +48,48 @@ export default function Payments() {
   const [selectedTx, setSelectedTx] = useState<Transaction | null>(null);
   const [activeChart, setActiveChart] = useState<'revenue' | 'profit'>('revenue');
 
-  const filtered = transactions.filter(t => {
+  const fetchPayments = async () => {
+    try {
+      setLoading(true);
+      const [txRes, statsRes] = await Promise.all([
+        fetch(`${API}/payments/transactions`),
+        fetch(`${API}/payments/stats`)
+      ]);
+      const transactions = await txRes.json();
+      const stats = await statsRes.json();
+
+      if (!Array.isArray(transactions)) {
+        setData({ transactions: [], stats });
+        return;
+      }
+
+      const mapped = transactions.map((t: any) => ({
+        id: t.id,
+        date: new Date(t.date).toISOString().split('T')[0],
+        time: new Date(t.date).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+        customer: t.customer,
+        type: t.type,
+        orderTotal: Number(t.orderTotal),
+        stripeFee: Number(t.stripeFee),
+        deliveryFee: Number(t.deliveryFee),
+        netRevenue: Number(t.netRevenue),
+        status: t.status,
+        refundAmount: Number(t.refundAmount),
+      }));
+
+      setData({ transactions: mapped, stats });
+    } catch (err) {
+      console.error('Failed to fetch payments:', err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchPayments();
+  }, [dateFrom, dateTo]);
+
+  const filtered = data.transactions.filter(t => {
     const matchSearch = !search ||
       t.customer.toLowerCase().includes(search.toLowerCase()) ||
       t.id.toLowerCase().includes(search.toLowerCase());
@@ -397,53 +427,53 @@ export default function Payments() {
       {/* Transactions Table */}
       <div style={{ background: '#1A1A1A', border: '1px solid #2A2A2A', borderRadius: '12px', overflow: 'hidden' }}>
         <div style={{ overflowX: 'auto' }}>
-        <table style={{ width: '100%', borderCollapse: 'collapse', minWidth: '800px' }}>
-          <thead>
-            <tr style={{ borderBottom: '1px solid #2A2A2A' }}>
-              {['Order ID', 'Date', 'Customer', 'Type', 'Total', 'Stripe Fee', 'Delivery', 'Refund', 'Net', 'Status', ''].map(h => (
-                <th key={h} style={{ padding: '12px 12px', textAlign: 'left', fontSize: '10px', fontWeight: '600', color: '#888888', textTransform: 'uppercase', letterSpacing: '0.5px' }}>{h}</th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {filtered.length === 0 ? (
-              <tr><td colSpan={11} style={{ padding: '40px', textAlign: 'center', color: '#888888', fontSize: '13px' }}>No transactions found</td></tr>
-            ) : filtered.map((tx, i) => (
-              <tr key={tx.id} style={{ borderBottom: i < filtered.length - 1 ? '1px solid #2A2A2A' : 'none' }}>
-                <td style={{ padding: '12px 12px', fontSize: '12px', fontWeight: '700', color: '#FED800' }}>{tx.id}</td>
-                <td style={{ padding: '12px 12px' }}>
-                  <p style={{ fontSize: '11px', color: '#FEFEFE' }}>{tx.date}</p>
-                  <p style={{ fontSize: '10px', color: '#888888', marginTop: '1px' }}>{tx.time}</p>
-                </td>
-                <td style={{ padding: '12px 12px', fontSize: '12px', color: '#FEFEFE' }}>{tx.customer}</td>
-                <td style={{ padding: '12px 12px' }}>
-                  <span style={{ fontSize: '10px', padding: '2px 8px', borderRadius: '20px', fontWeight: '600', background: tx.type === 'Delivery' ? '#0A1628' : '#1A1A00', color: tx.type === 'Delivery' ? '#60A5FA' : '#FED800', border: `1px solid ${tx.type === 'Delivery' ? '#1E3A5F' : '#3A3A00'}` }}>
-                    {tx.type}
-                  </span>
-                </td>
-                <td style={{ padding: '12px 12px', fontSize: '12px', fontWeight: '600', color: '#FEFEFE' }}>${tx.orderTotal.toFixed(2)}</td>
-                <td style={{ padding: '12px 12px', fontSize: '12px', color: '#FC0301' }}>-${tx.stripeFee.toFixed(2)}</td>
-                <td style={{ padding: '12px 12px', fontSize: '12px', color: tx.deliveryFee > 0 ? '#F59E0B' : '#888888' }}>
-                  {tx.deliveryFee > 0 ? `-$${tx.deliveryFee.toFixed(2)}` : '—'}
-                </td>
-                <td style={{ padding: '12px 12px', fontSize: '12px', color: tx.refundAmount > 0 ? '#FC0301' : '#888888' }}>
-                  {tx.refundAmount > 0 ? `-$${tx.refundAmount.toFixed(2)}` : '—'}
-                </td>
-                <td style={{ padding: '12px 12px', fontSize: '12px', fontWeight: '700', color: '#22C55E' }}>${tx.netRevenue.toFixed(2)}</td>
-                <td style={{ padding: '12px 12px' }}>
-                  <span style={{ fontSize: '10px', padding: '2px 8px', borderRadius: '20px', fontWeight: '600', background: `${statusColor[tx.status]}20`, color: statusColor[tx.status], border: `1px solid ${statusColor[tx.status]}40` }}>
-                    {tx.status}
-                  </span>
-                </td>
-                <td style={{ padding: '12px 12px' }}>
-                  <button onClick={() => setSelectedTx(tx)} style={{ padding: '4px 10px', background: 'transparent', border: '1px solid #2A2A2A', borderRadius: '6px', color: '#888888', fontSize: '10px', cursor: 'pointer' }}>
-                    View
-                  </button>
-                </td>
+          <table style={{ width: '100%', borderCollapse: 'collapse', minWidth: '800px' }}>
+            <thead>
+              <tr style={{ borderBottom: '1px solid #2A2A2A' }}>
+                {['Order ID', 'Date', 'Customer', 'Type', 'Total', 'Stripe Fee', 'Delivery', 'Refund', 'Net', 'Status', ''].map(h => (
+                  <th key={h} style={{ padding: '12px 12px', textAlign: 'left', fontSize: '10px', fontWeight: '600', color: '#888888', textTransform: 'uppercase', letterSpacing: '0.5px' }}>{h}</th>
+                ))}
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {filtered.length === 0 ? (
+                <tr><td colSpan={11} style={{ padding: '40px', textAlign: 'center', color: '#888888', fontSize: '13px' }}>No transactions found</td></tr>
+              ) : filtered.map((tx, i) => (
+                <tr key={tx.id} style={{ borderBottom: i < filtered.length - 1 ? '1px solid #2A2A2A' : 'none' }}>
+                  <td style={{ padding: '12px 12px', fontSize: '12px', fontWeight: '700', color: '#FED800' }}>{tx.id}</td>
+                  <td style={{ padding: '12px 12px' }}>
+                    <p style={{ fontSize: '11px', color: '#FEFEFE' }}>{tx.date}</p>
+                    <p style={{ fontSize: '10px', color: '#888888', marginTop: '1px' }}>{tx.time}</p>
+                  </td>
+                  <td style={{ padding: '12px 12px', fontSize: '12px', color: '#FEFEFE' }}>{tx.customer}</td>
+                  <td style={{ padding: '12px 12px' }}>
+                    <span style={{ fontSize: '10px', padding: '2px 8px', borderRadius: '20px', fontWeight: '600', background: tx.type === 'Delivery' ? '#0A1628' : '#1A1A00', color: tx.type === 'Delivery' ? '#60A5FA' : '#FED800', border: `1px solid ${tx.type === 'Delivery' ? '#1E3A5F' : '#3A3A00'}` }}>
+                      {tx.type}
+                    </span>
+                  </td>
+                  <td style={{ padding: '12px 12px', fontSize: '12px', fontWeight: '600', color: '#FEFEFE' }}>${tx.orderTotal.toFixed(2)}</td>
+                  <td style={{ padding: '12px 12px', fontSize: '12px', color: '#FC0301' }}>-${tx.stripeFee.toFixed(2)}</td>
+                  <td style={{ padding: '12px 12px', fontSize: '12px', color: tx.deliveryFee > 0 ? '#F59E0B' : '#888888' }}>
+                    {tx.deliveryFee > 0 ? `-$${tx.deliveryFee.toFixed(2)}` : '—'}
+                  </td>
+                  <td style={{ padding: '12px 12px', fontSize: '12px', color: tx.refundAmount > 0 ? '#FC0301' : '#888888' }}>
+                    {tx.refundAmount > 0 ? `-$${tx.refundAmount.toFixed(2)}` : '—'}
+                  </td>
+                  <td style={{ padding: '12px 12px', fontSize: '12px', fontWeight: '700', color: '#22C55E' }}>${tx.netRevenue.toFixed(2)}</td>
+                  <td style={{ padding: '12px 12px' }}>
+                    <span style={{ fontSize: '10px', padding: '2px 8px', borderRadius: '20px', fontWeight: '600', background: `${statusColor[tx.status]}20`, color: statusColor[tx.status], border: `1px solid ${statusColor[tx.status]}40` }}>
+                      {tx.status}
+                    </span>
+                  </td>
+                  <td style={{ padding: '12px 12px' }}>
+                    <button onClick={() => setSelectedTx(tx)} style={{ padding: '4px 10px', background: 'transparent', border: '1px solid #2A2A2A', borderRadius: '6px', color: '#888888', fontSize: '10px', cursor: 'pointer' }}>
+                      View
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
       </div>
     </div>

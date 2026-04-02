@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 type Customer = {
   id: number;
@@ -12,21 +12,37 @@ type Customer = {
   joinDate: string;
 };
 
-const initialCustomers: Customer[] = [
-  { id: 1, name: 'John Smith', email: 'john.smith@gmail.com', phone: '215-555-0101', totalOrders: 12, totalSpent: 187.50, lastOrder: '2026-03-19', joinDate: '2025-11-01' },
-  { id: 2, name: 'Sarah Lee', email: 'sarah.lee@gmail.com', phone: '215-555-0102', totalOrders: 8, totalSpent: 124.00, lastOrder: '2026-03-18', joinDate: '2025-12-15' },
-  { id: 3, name: 'Mike Johnson', email: 'mike.j@gmail.com', phone: '215-555-0103', totalOrders: 24, totalSpent: 412.75, lastOrder: '2026-03-20', joinDate: '2025-10-05' },
-  { id: 4, name: 'Emma Davis', email: 'emma.davis@gmail.com', phone: '215-555-0104', totalOrders: 5, totalSpent: 78.25, lastOrder: '2026-03-15', joinDate: '2026-01-10' },
-  { id: 5, name: 'James Wilson', email: 'james.w@gmail.com', phone: '215-555-0105', totalOrders: 31, totalSpent: 589.00, lastOrder: '2026-03-20', joinDate: '2025-09-20' },
-  { id: 6, name: 'Olivia Brown', email: 'olivia.b@gmail.com', phone: '215-555-0106', totalOrders: 7, totalSpent: 103.50, lastOrder: '2026-03-17', joinDate: '2026-02-01' },
-  { id: 7, name: 'Liam Martinez', email: 'liam.m@gmail.com', phone: '215-555-0107', totalOrders: 3, totalSpent: 44.00, lastOrder: '2026-03-10', joinDate: '2026-03-01' },
-  { id: 8, name: 'Sophia Anderson', email: 'sophia.a@gmail.com', phone: '215-555-0108', totalOrders: 18, totalSpent: 298.25, lastOrder: '2026-03-19', joinDate: '2025-10-15' },
-];
+const API = 'http://localhost:3002/api';
 
 export default function Customers() {
-  const [customers] = useState<Customer[]>(initialCustomers);
+  const [customers, setCustomers] = useState<Customer[]>([]);
+  const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
   const [selectedCustomer, setSelectedCustomer] = useState<Customer | null>(null);
+
+  const fetchCustomers = async () => {
+    try {
+      setLoading(true);
+      const res = await fetch(`${API}/customers`);
+      const data = await res.json();
+      if (Array.isArray(data)) {
+        setCustomers(data);
+      } else {
+        setCustomers([]);
+      }
+    } catch (err) {
+      console.error('Failed to fetch customers:', err);
+      setCustomers([]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchCustomers();
+  }, []);
+
+
 
   const filtered = customers.filter(c =>
     c.name.toLowerCase().includes(search.toLowerCase()) ||
@@ -34,8 +50,8 @@ export default function Customers() {
     c.phone.includes(search)
   );
 
-  const totalRevenue = customers.reduce((a, c) => a + c.totalSpent, 0);
-  const totalOrders = customers.reduce((a, c) => a + c.totalOrders, 0);
+  const totalRevenue = customers.reduce((a, c) => a + Number(c.totalSpent), 0);
+  const totalOrders = customers.reduce((a, c) => a + Number(c.totalOrders), 0);
 
   return (
     <div style={{ maxWidth: '900px' }}>
@@ -79,7 +95,7 @@ export default function Customers() {
               </div>
               <div style={{ background: '#111111', borderRadius: '10px', padding: '14px', textAlign: 'center' }}>
                 <p style={{ fontSize: '11px', color: '#888888', marginBottom: '6px' }}>Total Spent</p>
-                <p style={{ fontSize: '24px', fontWeight: '700', color: '#22C55E' }}>${selectedCustomer.totalSpent.toFixed(2)}</p>
+                <p style={{ fontSize: '24px', fontWeight: '700', color: '#22C55E' }}>${Number(selectedCustomer.totalSpent).toFixed(2)}</p>
               </div>
             </div>
           </div>
@@ -144,7 +160,7 @@ export default function Customers() {
                     <td style={{ padding: '14px 16px', fontSize: '12px', color: '#888888' }}>{c.email}</td>
                     <td style={{ padding: '14px 16px', fontSize: '12px', color: '#888888' }}>{c.phone}</td>
                     <td style={{ padding: '14px 16px', fontSize: '13px', fontWeight: '600', color: '#FED800' }}>{c.totalOrders}</td>
-                    <td style={{ padding: '14px 16px', fontSize: '13px', fontWeight: '600', color: '#22C55E' }}>${c.totalSpent.toFixed(2)}</td>
+                    <td style={{ padding: '14px 16px', fontSize: '13px', fontWeight: '600', color: '#22C55E' }}>${Number(c.totalSpent).toFixed(2)}</td>
                     <td style={{ padding: '14px 16px', fontSize: '12px', color: '#888888' }}>{c.lastOrder}</td>
                     <td style={{ padding: '14px 16px' }}>
                       <button onClick={() => setSelectedCustomer(c)} style={{ padding: '5px 12px', background: 'transparent', border: '1px solid #2A2A2A', borderRadius: '6px', color: '#888888', fontSize: '11px', cursor: 'pointer' }}>View</button>

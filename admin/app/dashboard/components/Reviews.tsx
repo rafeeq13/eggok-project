@@ -1,5 +1,6 @@
-'use client';
-import { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+
+const API = 'http://localhost:3002/api';
 
 type ReviewStatus = 'Published' | 'Hidden' | 'Flagged';
 type ReviewRating = 1 | 2 | 3 | 4 | 5;
@@ -50,7 +51,8 @@ const Stars = ({ rating, size = 14 }: { rating: number; size?: number }) => (
 );
 
 export default function Reviews() {
-  const [reviews, setReviews] = useState<Review[]>(initialReviews);
+  const [reviews, setReviews] = useState<Review[]>([]);
+  const [loading, setLoading] = useState(true);
   const [selectedReview, setSelectedReview] = useState<Review | null>(null);
   const [replyText, setReplyText] = useState('');
   const [filterStatus, setFilterStatus] = useState<ReviewStatus | 'all'>('all');
@@ -58,27 +60,70 @@ export default function Reviews() {
   const [search, setSearch] = useState('');
   const [successMsg, setSuccessMsg] = useState('');
 
+  const fetchReviews = async () => {
+    try {
+      setLoading(true);
+      const res = await fetch(`${API}/reviews`);
+      const data = await res.json();
+      if (Array.isArray(data)) {
+        setReviews(data);
+      } else {
+        setReviews([]);
+      }
+    } catch (err) {
+      console.error('Failed to fetch reviews:', err);
+      setReviews([]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchReviews();
+  }, []);
+
   const showSuccess = (msg: string) => {
     setSuccessMsg(msg);
     setTimeout(() => setSuccessMsg(''), 3000);
   };
 
-  const handleReply = () => {
+  const handleReply = async () => {
     if (!selectedReview || !replyText.trim()) return;
-    setReviews(prev => prev.map(r => r.id === selectedReview.id ? {
-      ...r, reply: replyText,
-      repliedAt: new Date().toISOString().split('T')[0],
-    } : r));
-    setSelectedReview(prev => prev ? { ...prev, reply: replyText, repliedAt: new Date().toISOString().split('T')[0] } : null);
-    showSuccess('Reply posted successfully');
-    setReplyText('');
+    try {
+      const repliedAt = new Date().toISOString().split('T')[0];
+      const res = await fetch(`${API}/reviews/${selectedReview.id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ reply: replyText, repliedAt }),
+      });
+      if (res.ok) {
+        showSuccess('Reply posted successfully');
+        setReplyText('');
+        fetchReviews();
+        setSelectedReview(prev => prev ? { ...prev, reply: replyText, repliedAt } : null);
+      }
+    } catch (err) {
+      console.error('Reply failed:', err);
+    }
   };
 
-  const updateStatus = (id: number, status: ReviewStatus) => {
-    setReviews(prev => prev.map(r => r.id === id ? { ...r, status } : r));
-    if (selectedReview?.id === id) setSelectedReview(prev => prev ? { ...prev, status } : null);
-    showSuccess(`Review ${status.toLowerCase()}`);
+  const updateStatus = async (id: number, status: ReviewStatus) => {
+    try {
+      const res = await fetch(`${API}/reviews/${id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ status }),
+      });
+      if (res.ok) {
+        showSuccess(`Review ${status.toLowerCase()}`);
+        fetchReviews();
+        if (selectedReview?.id === id) setSelectedReview(prev => prev ? { ...prev, status } : null);
+      }
+    } catch (err) {
+      console.error('Status update failed:', err);
+    }
   };
+
 
   const filtered = reviews.filter(r => {
     const matchStatus = filterStatus === 'all' || r.status === filterStatus;

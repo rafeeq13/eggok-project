@@ -4,7 +4,7 @@ import { ValidationPipe } from '@nestjs/common';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  
+
   // Enable CORS
   app.enableCors({
     origin: [
@@ -26,7 +26,7 @@ async function bootstrap() {
 
   const port = process.env.PORT || 3002;
   await app.listen(port);
-  console.log(`🚀 Eggs Ok API running on http://localhost:${port}/api`);
+  console.log(`🚀 Eggs Ok API running on http://localhost:${port}/api - v2`);
 }
 
 bootstrap();

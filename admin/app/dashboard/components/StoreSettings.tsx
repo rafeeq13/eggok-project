@@ -42,22 +42,41 @@ export default function StoreSettings() {
   useEffect(() => {
     const fetchAll = async () => {
       try {
-        // Business hours
-        const hoursRes = await fetch(`${API}/settings/hours`);
-        const hoursData = await hoursRes.json();
-        if (hoursData) {
-          setHours(dayKeys.map(day => ({
-            day,
-            open: hoursData[day]?.isOpen ?? true,
-            from: hoursData[day]?.open ?? '08:00',
-            to: hoursData[day]?.close ?? '21:00',
-          })));
+        setLoading(true);
+        const [hoursRes, storeRes] = await Promise.all([
+          fetch(`${API}/settings/hours`),
+          fetch(`${API}/settings/store`)
+        ]);
+
+        if (hoursRes.ok) {
+          const hoursData = await hoursRes.json();
+          if (hoursData) {
+            setHours(dayKeys.map(day => ({
+              day,
+              open: hoursData[day]?.isOpen ?? true,
+              from: hoursData[day]?.open ?? '08:00',
+              to: hoursData[day]?.close ?? '21:00',
+            })));
+            if (hoursData.special) setSpecialHours(hoursData.special);
+          }
         }
 
-        // Other settings
-        const settingsRes = await fetch(`${API}/settings/hours`);
-        // store_settings key
-        const storeRes = await fetch(`${API}/settings/hours`);
+        if (storeRes.ok) {
+          const data = await storeRes.json();
+          if (data) {
+            const v = data;
+            setStoreOpen(v.storeOpen ?? true);
+            setDeliveryEnabled(v.deliveryEnabled ?? true);
+            setPickupEnabled(v.pickupEnabled ?? true);
+            setPickupWait(String(v.pickupWait || '15'));
+            setMinOrder(String(v.minOrder || '10'));
+            setDeliveryRadius(String(v.deliveryRadius || '5'));
+            setDeliveryFee(String(v.deliveryFee || '3.99'));
+            setClosedMessage(v.closedMessage || 'We are currently closed...');
+            setStorePhone(v.storePhone || '215-948-9902');
+            setStoreEmail(v.storeEmail || 'orders@eggsokphilly.com');
+          }
+        }
       } catch (err) {
         console.error('Failed to load settings:', err);
       } finally {
@@ -87,12 +106,26 @@ export default function StoreSettings() {
           isOpen: h.open,
         };
       });
+      hoursPayload.special = specialHours;
 
-      await fetch(`${API}/settings/hours`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(hoursPayload),
-      });
+      const storePayload = {
+        storeOpen, deliveryEnabled, pickupEnabled, pickupWait: Number(pickupWait),
+        minOrder: Number(minOrder), deliveryRadius: Number(deliveryRadius),
+        deliveryFee: Number(deliveryFee), closedMessage, storePhone, storeEmail
+      };
+
+      await Promise.all([
+        fetch(`${API}/settings/hours`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(hoursPayload),
+        }),
+        fetch(`${API}/settings/store`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(storePayload),
+        })
+      ]);
 
       showSuccess('Settings saved successfully!');
     } catch (err) {
@@ -102,6 +135,7 @@ export default function StoreSettings() {
       setSaving(false);
     }
   };
+
 
   const inputStyle = {
     padding: '9px 12px',
