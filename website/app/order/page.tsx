@@ -75,11 +75,11 @@ const css = `
   .menu-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 2px;
-    background: #2A2A2A;
+    gap: 15px;
+    // background: #2A2A2A;
     border-radius: 16px;
     overflow: hidden;
-    border: 1px solid #2A2A2A;
+    // border: 1px solid #2A2A2A;
   }
 
   /* ── Cart panel ── */

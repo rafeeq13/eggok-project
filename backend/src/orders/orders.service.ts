@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Order } from './order.entity';
+import { Customer } from '../customers/customer.entity';
 import { MailService } from '../mail/mail.service';
 
 @Injectable()
@@ -9,6 +10,8 @@ export class OrdersService {
   constructor(
     @InjectRepository(Order)
     private ordersRepository: Repository<Order>,
+    @InjectRepository(Customer)
+    private customersRepository: Repository<Customer>,
     private mailService: MailService,
   ) { }
 
@@ -17,6 +20,55 @@ export class OrdersService {
     const timestamp = Date.now().toString().slice(-6);
     const random = Math.floor(Math.random() * 1000).toString().padStart(3, '0');
     return `${prefix}-${timestamp}-${random}`;
+  }
+
+  /**
+   * Upsert a customer record based on email.
+   * - If customer doesn't exist → create them.
+   * - If customer exists → increment totalOrders, add to totalSpent, update lastOrder.
+   */
+  private async upsertCustomer(data: {
+    name: string;
+    email: string;
+    phone: string;
+    total: number;
+    orderNumber: string;
+  }): Promise<void> {
+    const today = new Date().toISOString().split('T')[0];
+
+    const existing = await this.customersRepository.findOne({
+      where: { email: data.email },
+    });
+
+    if (existing) {
+      // Update existing customer stats
+      await this.customersRepository.update(existing.id, {
+        totalOrders: existing.totalOrders + 1,
+        totalSpent: Number(existing.totalSpent) + Number(data.total),
+        lastOrder: today,
+        lastActivity: today,
+        // Update name/phone if they were missing
+        name: existing.name || data.name,
+        phone: existing.phone || data.phone,
+      });
+    } else {
+      // Create new customer
+      const newCustomer = this.customersRepository.create({
+        name: data.name,
+        email: data.email,
+        phone: data.phone,
+        totalOrders: 1,
+        totalSpent: Number(data.total),
+        lastOrder: today,
+        lastActivity: today,
+        points: 0,
+        totalPointsEarned: 0,
+        tier: 'Bronze',
+        redemptions: 0,
+        status: 'Active',
+      });
+      await this.customersRepository.save(newCustomer);
+    }
   }
 
   async createOrder(data: any): Promise<Order> {
@@ -44,6 +96,17 @@ export class OrdersService {
       status: 'pending',
     });
     const savedOrder = await this.ordersRepository.save(order);
+
+    // Upsert customer record (create or update) — never let this crash the order
+    this.upsertCustomer({
+      name: data.customerName,
+      email: data.customerEmail,
+      phone: data.customerPhone,
+      total: data.total,
+      orderNumber: savedOrder.orderNumber,
+    }).catch(err => {
+      console.error('Failed to upsert customer record:', err);
+    });
 
     // Send emails asynchronously
     this.mailService.sendOrderConfirmation(savedOrder).catch(err => {
@@ -217,4 +280,3 @@ export class OrdersService {
     };
   }
 }
-
