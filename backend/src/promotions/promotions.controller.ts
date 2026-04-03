@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Put, Delete, Body, Param } from '@nestjs/common';
+import { Controller, Get, Post, Put, Delete, Body, Param, HttpCode } from '@nestjs/common';
 import { PromotionsService } from './promotions.service';
 import { Promotion } from './promotion.entity';
 
@@ -9,6 +9,12 @@ export class PromotionsController {
     @Get()
     findAll(): Promise<Promotion[]> {
         return this.promotionsService.findAll();
+    }
+
+    @Post('validate')
+    @HttpCode(200)
+    validate(@Body() data: { code: string; subtotal: number }) {
+        return this.promotionsService.validateCode(data.code, data.subtotal);
     }
 
     @Get(':id')

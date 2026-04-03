@@ -1,6 +1,6 @@
-import { Controller, Post, Get, Put, Body, UseGuards, Request } from '@nestjs/common';
-import { AuthGuard } from '@nestjs/passport';
+import { Controller, Post, Get, Put, Body, UseGuards, Request, HttpCode } from '@nestjs/common';
 import { AuthService } from './auth.service';
+import { TokenGuard } from './token.guard';
 
 @Controller('auth')
 export class AuthController {
@@ -22,13 +22,33 @@ export class AuthController {
         return this.authService.login(data.email, data.password);
     }
 
-    @UseGuards(AuthGuard('jwt'))
+    @UseGuards(TokenGuard)
+    @Post('logout')
+    @HttpCode(200)
+    logout(@Request() req: any) {
+        const rawToken = req.headers['authorization'].slice(7);
+        return this.authService.logout(rawToken);
+    }
+
+    @Post('forgot-password')
+    @HttpCode(200)
+    forgotPassword(@Body() data: { email: string }) {
+        return this.authService.forgotPassword(data.email);
+    }
+
+    @Post('reset-password')
+    @HttpCode(200)
+    resetPassword(@Body() data: { token: string; password: string }) {
+        return this.authService.resetPassword(data.token, data.password);
+    }
+
+    @UseGuards(TokenGuard)
     @Get('me')
     getProfile(@Request() req: any) {
         return this.authService.getProfile(req.user.id);
     }
 
-    @UseGuards(AuthGuard('jwt'))
+    @UseGuards(TokenGuard)
     @Put('profile')
     updateProfile(@Request() req: any, @Body() data: {
         name?: string;

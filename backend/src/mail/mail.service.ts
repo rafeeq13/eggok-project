@@ -140,6 +140,34 @@ export class MailService {
         return true;
     }
 
+    async sendPasswordResetEmail(to: string, name: string, resetLink: string) {
+        const settings = await this.getResolvedMailSettings();
+        if (!this.isConfigured(settings) || !settings.enabled) {
+            return false;
+        }
+
+        await this.sendMail(
+            {
+                to,
+                subject: 'Reset your Eggs Ok password',
+                html: this.wrapEmail({
+                    eyebrow: 'Password Reset',
+                    title: 'Reset your password',
+                    intro: `Hi ${this.safeText(name)}, we received a request to reset your Eggs Ok account password. Click the button below to choose a new password.`,
+                    cta: {
+                        text: 'Reset Password',
+                        link: resetLink,
+                    },
+                    footer: 'This link expires in 1 hour. If you did not request a password reset, you can safely ignore this email.',
+                }),
+                text: `Hi ${name},\n\nClick the link below to reset your Eggs Ok password:\n\n${resetLink}\n\nThis link expires in 1 hour. If you did not request a password reset, you can safely ignore this email.`,
+            },
+            settings,
+        );
+
+        return true;
+    }
+
     async sendContactMessage(payload: any) {
         const settings = await this.assertMailReady();
         const name = this.safeText(payload?.name);
@@ -362,17 +390,29 @@ export class MailService {
                 user: resolvedSettings.user,
                 pass: resolvedSettings.password,
             },
+            tls: {
+                rejectUnauthorized: false,
+            },
+            logger: true,
+            debug: true,
         });
 
-        await transporter.sendMail({
-            from: `"${resolvedSettings.fromName}" <${resolvedSettings.fromEmail}>`,
-            to: options.to,
-            replyTo: options.replyTo || resolvedSettings.fromEmail,
-            subject: options.subject,
-            html: options.html,
-            text: options.text,
-        });
-        console.log(`Email [${options.subject}] sent successfully to: ${options.to}`);
+        console.log(`[SMTP] Sending via ${resolvedSettings.host}:${resolvedSettings.port} (user: ${resolvedSettings.user})`);
+
+        try {
+            await transporter.sendMail({
+                from: `"${resolvedSettings.fromName}" <${resolvedSettings.fromEmail}>`,
+                to: options.to,
+                replyTo: options.replyTo || resolvedSettings.fromEmail,
+                subject: options.subject,
+                html: options.html,
+                text: options.text,
+            });
+            console.log(`Email [${options.subject}] sent successfully to: ${options.to}`);
+        } catch (error) {
+            console.error(`ERROR: Failed to send email to ${options.to}:`, error);
+            throw error;
+        }
     }
 
     private async assertMailReady() {
@@ -405,7 +445,7 @@ export class MailService {
             port: Number(this.configService.get<number>('MAIL_PORT') || 587),
             secure: this.configService.get('MAIL_ENCRYPTION') === 'ssl',
             user: this.safeText(this.configService.get<string>('MAIL_USERNAME') || ''),
-            password: this.safeText(this.configService.get<string>('MAIL_PASSWORD') || ''),
+            password: this.safeText(this.configService.get<string>('MAIL_PASSWORD') || '').replace(/\s/g, ''),
             fromName,
             fromEmail,
             ownerEmail: this.safeText(
@@ -487,9 +527,15 @@ export class MailService {
         eyebrow: string;
         title: string;
         intro: string;
+        cta?: { text: string; link: string };
         sections?: Array<{ title: string; lines: string[] }>;
         footer?: string;
     }) {
+        const ctaHtml = payload.cta ? `
+          <div style="margin-top: 28px; text-align: center;">
+            <a href="${payload.cta.link}" style="display: inline-block; padding: 14px 28px; background-color: #FED800; color: #000000; text-decoration: none; border-radius: 10px; font-weight: 800; font-size: 15px; letter-spacing: 0.5px;">${this.escapeHtml(payload.cta.text)}</a>
+          </div>` : '';
+
         const sectionsHtml = (payload.sections || [])
             .map(
                 (section) => `
@@ -516,6 +562,7 @@ export class MailService {
           </div>
           <div style="padding: 28px;">
             <div style="font-size: 15px; line-height: 1.7; color: #d7d7d7;">${this.escapeHtml(payload.intro)}</div>
+            ${ctaHtml}
             ${sectionsHtml}
             ${payload.footer
                 ? `<div style="margin-top: 28px; font-size: 13px; line-height: 1.6; color: #888888;">${this.escapeHtml(payload.footer)}</div>`

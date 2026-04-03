@@ -3,9 +3,11 @@ import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useCart } from '../context/CartContext';
+import { useAuth } from '../context/AuthContext';
 
 export default function Header() {
   const { cartCount } = useCart();
+  const { user } = useAuth();
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [moreOpen, setMoreOpen] = useState(false);
@@ -56,17 +58,17 @@ export default function Header() {
               onMouseEnter={e => (e.currentTarget as HTMLAnchorElement).style.color = '#FEFEFE'}
               onMouseLeave={e => (e.currentTarget as HTMLAnchorElement).style.color = '#ffffffff'}
             >Home</Link>
-            
+
             <Link href="/story" style={{ padding: '8px 14px', color: '#888888', fontSize: '14px', fontWeight: '500', borderRadius: '8px', transition: 'color 0.2s' }}
               onMouseEnter={e => (e.currentTarget as HTMLAnchorElement).style.color = '#FEFEFE'}
               onMouseLeave={e => (e.currentTarget as HTMLAnchorElement).style.color = '#ffffffff'}
             >Our Story</Link>
-            
+
             {/* <Link href="/catering" style={{ padding: '8px 14px', color: '#888888', fontSize: '14px', fontWeight: '500', borderRadius: '8px', transition: 'color 0.2s' }}
               onMouseEnter={e => (e.currentTarget as HTMLAnchorElement).style.color = '#FEFEFE'}
               onMouseLeave={e => (e.currentTarget as HTMLAnchorElement).style.color = '#ffffffff'}
             >Events</Link> */}
-            
+
             <Link href="/hiring" style={{ padding: '8px 14px', color: '#888888', fontSize: '14px', fontWeight: '500', borderRadius: '8px', transition: 'color 0.2s' }}
               onMouseEnter={e => (e.currentTarget as HTMLAnchorElement).style.color = '#FEFEFE'}
               onMouseLeave={e => (e.currentTarget as HTMLAnchorElement).style.color = '#ffffffff'}
@@ -121,21 +123,38 @@ export default function Header() {
               )}
             </div>
 
-            {/* Sign In */}
-            <Link href="/account" style={{
-              padding: '9px 18px', color: '#FEFEFE', fontSize: '14px',
-              fontWeight: '600', borderRadius: '8px',
-              border: '1px solid #2A2A2A', background: 'transparent',
-              transition: 'all 0.2s', display: 'inline-flex', alignItems: 'center', gap: '6px',
-            }}
-              onMouseEnter={e => { (e.currentTarget as HTMLAnchorElement).style.borderColor = '#FED800'; (e.currentTarget as HTMLAnchorElement).style.color = '#FED800'; }}
-              onMouseLeave={e => { (e.currentTarget as HTMLAnchorElement).style.borderColor = '#2A2A2A'; (e.currentTarget as HTMLAnchorElement).style.color = '#FEFEFE'; }}
-            >
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2" /><circle cx="12" cy="7" r="4" />
-              </svg>
-              Sign In
-            </Link>
+            {/* Auth / Account */}
+            {user ? (
+              <Link href="/account" style={{
+                padding: '9px 18px', color: '#FED800', fontSize: '14px',
+                fontWeight: '600', borderRadius: '8px',
+                border: '1px solid #FED80030', background: 'rgba(254, 216, 0, 0.05)',
+                transition: 'all 0.2s', display: 'inline-flex', alignItems: 'center', gap: '6px',
+              }}
+                onMouseEnter={e => { (e.currentTarget as HTMLAnchorElement).style.background = 'rgba(254, 216, 0, 0.1)'; }}
+                onMouseLeave={e => { (e.currentTarget as HTMLAnchorElement).style.background = 'rgba(254, 216, 0, 0.05)'; }}
+              >
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2" /><circle cx="12" cy="7" r="4" />
+                </svg>
+                {user.name.split(' ')[0]}
+              </Link>
+            ) : (
+              <Link href="/account" style={{
+                padding: '9px 18px', color: '#FEFEFE', fontSize: '14px',
+                fontWeight: '600', borderRadius: '8px',
+                border: '1px solid #2A2A2A', background: 'transparent',
+                transition: 'all 0.2s', display: 'inline-flex', alignItems: 'center', gap: '6px',
+              }}
+                onMouseEnter={e => { (e.currentTarget as HTMLAnchorElement).style.borderColor = '#FED800'; (e.currentTarget as HTMLAnchorElement).style.color = '#FED800'; }}
+                onMouseLeave={e => { (e.currentTarget as HTMLAnchorElement).style.borderColor = '#2A2A2A'; (e.currentTarget as HTMLAnchorElement).style.color = '#FEFEFE'; }}
+              >
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2" /><circle cx="12" cy="7" r="4" />
+                </svg>
+                Sign In
+              </Link>
+            )}
 
             {/* Order Now */}
             <Link href="/order" className="btn-primary" style={{ padding: '10px 20px', fontSize: '14px', marginLeft: '4px' }}>
@@ -167,7 +186,12 @@ export default function Header() {
 
           {/* Mobile */}
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }} className="hide-desktop">
-            <Link href="/account" style={{ width: '38px', height: '38px', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#111111', borderRadius: '8px', color: '#FEFEFE' }}>
+            <Link href="/account" style={{
+              width: '38px', height: '38px', display: 'flex', alignItems: 'center', justifyContent: 'center',
+              background: user ? 'rgba(254, 216, 0, 0.1)' : '#111111',
+              border: user ? '1px solid #FED80030' : '1px solid #1A1A1A',
+              borderRadius: '8px', color: user ? '#FED800' : '#FEFEFE'
+            }}>
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2" /><circle cx="12" cy="7" r="4" />
               </svg>

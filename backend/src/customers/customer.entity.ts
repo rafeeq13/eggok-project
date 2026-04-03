@@ -46,4 +46,10 @@ export class Customer {
 
     @Column({ nullable: true, select: false })
     password: string;
+
+    @Column({ nullable: true, select: false })
+    resetPasswordToken: string;
+
+    @Column({ nullable: true, type: 'bigint', select: false })
+    resetPasswordExpiry: number;
 }

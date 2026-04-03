@@ -137,6 +137,9 @@ export default function CheckoutPage() {
   const [promoCode, setPromoCode] = useState('');
   const [promoApplied, setPromoApplied] = useState(false);
   const [promoError, setPromoError] = useState('');
+  const [promoDiscount, setPromoDiscount] = useState(0);
+  const [promoLabel, setPromoLabel] = useState('');
+  const [promoLoading, setPromoLoading] = useState(false);
 
   const [tipMode, setTipMode] = useState<'preset' | 'custom'>('preset');
   const [tipPercent, setTipPercent] = useState(15);
@@ -161,7 +164,7 @@ export default function CheckoutPage() {
   const subtotal = cartTotal;
   const taxes = subtotal * 0.08;
   const deliveryFee = orderType === 'delivery' ? 3.99 : 0;
-  const discount = promoApplied ? subtotal * 0.10 : 0;
+  const discount = promoApplied ? promoDiscount : 0;
 
   const tipAmount = tipMode === 'custom' && customTipAmount && parseFloat(customTipAmount) > 0
     ? parseFloat(customTipAmount)
@@ -194,14 +197,32 @@ export default function CheckoutPage() {
     color: '#FEFEFE', marginBottom: '16px',
   };
 
-  const applyPromo = () => {
-    if (promoCode.toUpperCase() === 'WELCOME10') {
-      setPromoApplied(true);
-      setPromoError('');
-    } else {
-      setPromoError('Invalid promo code');
-      setPromoApplied(false);
+  const applyPromo = async () => {
+    if (!promoCode.trim()) return;
+    setPromoLoading(true);
+    setPromoError('');
+    try {
+      const res = await fetch(`${API_URL}/promotions/validate`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ code: promoCode, subtotal }),
+      });
+      const data = await res.json();
+      if (data.valid) {
+        setPromoApplied(true);
+        setPromoDiscount(data.discountAmount);
+        setPromoLabel(data.message);
+        setPromoError('');
+      } else {
+        setPromoApplied(false);
+        setPromoDiscount(0);
+        setPromoLabel('');
+        setPromoError(data.message || 'Invalid promo code');
+      }
+    } catch {
+      setPromoError('Unable to validate promo code. Please try again.');
     }
+    setPromoLoading(false);
   };
 
   const formatCard = (val: string) => {
@@ -531,9 +552,9 @@ export default function CheckoutPage() {
                       <span style={{ fontSize: '14px', color: '#FEFEFE' }}>${tipAmount.toFixed(2)}</span>
                     </div>
                   )}
-                  {promoApplied && (
+                  {promoApplied && discount > 0 && (
                     <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                      <span style={{ fontSize: '14px', color: '#22C55E' }}>Discount (10%)</span>
+                      <span style={{ fontSize: '14px', color: '#22C55E' }}>Discount ({promoCode})</span>
                       <span style={{ fontSize: '14px', color: '#22C55E' }}>-${discount.toFixed(2)}</span>
                     </div>
                   )}
@@ -544,15 +565,15 @@ export default function CheckoutPage() {
                   <div style={{ display: 'flex', gap: '8px' }}>
                     <input style={{ ...inputStyle, flex: 1 }} placeholder="Add coupon or gift card"
                       value={promoCode}
-                      onChange={e => { setPromoCode(e.target.value.toUpperCase()); setPromoError(''); setPromoApplied(false); }}
+                      onChange={e => { setPromoCode(e.target.value.toUpperCase()); setPromoError(''); setPromoApplied(false); setPromoDiscount(0); setPromoLabel(''); }}
                       onFocus={e => (e.target as HTMLInputElement).style.borderColor = '#FED800'}
                       onBlur={e => (e.target as HTMLInputElement).style.borderColor = '#3A3A3A'} />
-                    <button onClick={applyPromo}
-                      style={{ padding: '12px 14px', background: '#FED800', borderRadius: '10px', color: '#000', fontSize: '13px', fontWeight: '700', cursor: 'pointer', border: 'none', flexShrink: 0 }}>
-                      Apply
+                    <button onClick={applyPromo} disabled={promoLoading}
+                      style={{ padding: '12px 14px', background: promoLoading ? '#1A1A1A' : '#FED800', borderRadius: '10px', color: promoLoading ? '#555' : '#000', fontSize: '13px', fontWeight: '700', cursor: promoLoading ? 'not-allowed' : 'pointer', border: 'none', flexShrink: 0 }}>
+                      {promoLoading ? '...' : 'Apply'}
                     </button>
                   </div>
-                  {promoApplied && <p style={{ fontSize: '12px', color: '#22C55E', marginTop: '6px' }}>âœ“ WELCOME10 applied â€” 10% off!</p>}
+                  {promoApplied && <p style={{ fontSize: '12px', color: '#22C55E', marginTop: '6px' }}>&#10003; {promoLabel}</p>}
                   {promoError && <p style={{ fontSize: '12px', color: '#FC0301', marginTop: '6px' }}>{promoError}</p>}
                 </div>
 

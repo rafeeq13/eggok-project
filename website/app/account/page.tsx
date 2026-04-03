@@ -1,20 +1,19 @@
 'use client';
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import Header from '../components/Header';
+import { useAuth } from '../context/AuthContext';
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3002/api';
 
-type View = 'login' | 'register' | 'account';
+type View = 'login' | 'register' | 'account' | 'forgot' | 'forgot-sent';
 
 type Order = { id: string; date: string; items: string; total: string; status: string };
 
 export default function AccountPage() {
-  const [view, setView] = useState<View>(() => {
-    if (typeof window !== 'undefined') {
-      return localStorage.getItem('eggok_token') ? 'account' : 'login';
-    }
-    return 'login';
-  });
+  const { user, loading: authLoading, login: contextLogin, logout: contextLogout, updateUser: contextUpdateUser } = useAuth();
+  const [view, setView] = useState<View>('login');
+  const [isRendered, setIsRendered] = useState(false);
   const [activeTab, setActiveTab] = useState('orders');
   const [loading, setLoading] = useState(false);
 
@@ -35,6 +34,10 @@ export default function AccountPage() {
   const [showRegPassword, setShowRegPassword] = useState(false);
   const [agreeTerms, setAgreeTerms] = useState(false);
 
+  // Forgot password form
+  const [forgotEmail, setForgotEmail] = useState('');
+  const [forgotError, setForgotError] = useState('');
+
   // Account data
   const [savedFirstName, setSavedFirstName] = useState('');
   const [savedLastName, setSavedLastName] = useState('');
@@ -51,46 +54,30 @@ export default function AccountPage() {
   const [currentPassword, setCurrentPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
 
-  // Load profile on mount if token exists
   useEffect(() => {
-    const token = localStorage.getItem('eggok_token');
-    if (token) {
-      loadProfile(token);
-    }
-  }, []);
+    setIsRendered(true);
+    if (!authLoading) {
+      if (user) {
+        setView('account');
+        const [first, ...rest] = (user.name || '').split(' ');
+        setSavedFirstName(first || '');
+        setSavedLastName(rest.join(' ') || '');
+        setSavedEmail(user.email || '');
+        setSavedPhone(user.phone || '');
+        setUserPoints(user.points || 0);
+        setUserTier(user.tier || 'Bronze');
+        setUserTotalOrders(user.totalOrders || 0);
+        setUserJoinDate(user.joinDate || '');
 
-  const loadProfile = async (token: string) => {
-    try {
-      const res = await fetch(`${API_URL}/auth/me`, {
-        headers: { 'Authorization': `Bearer ${token}` },
-      });
-      if (!res.ok) {
-        // Token expired or invalid
-        localStorage.removeItem('eggok_token');
-        localStorage.removeItem('eggok_user');
+        const token = localStorage.getItem('eggok_token');
+        if (token) loadOrders(token);
+      } else {
         setView('login');
-        return;
       }
-      const profile = await res.json();
-      const [first, ...rest] = (profile.name || '').split(' ');
-      setSavedFirstName(first || '');
-      setSavedLastName(rest.join(' ') || '');
-      setSavedEmail(profile.email || '');
-      setSavedPhone(profile.phone || '');
-      setUserPoints(profile.points || 0);
-      setUserTier(profile.tier || 'Bronze');
-      setUserTotalOrders(profile.totalOrders || 0);
-      setUserJoinDate(profile.joinDate || '');
-
-      // Store user data for checkout pre-fill
-      localStorage.setItem('eggok_user', JSON.stringify(profile));
-
-      // Load order history
-      loadOrders(token);
-    } catch {
-      // Silent fail
     }
-  };
+  }, [user, authLoading]);
+
+
 
   const loadOrders = async (token: string) => {
     try {
@@ -137,9 +124,7 @@ export default function AccountPage() {
         setLoading(false);
         return;
       }
-      localStorage.setItem('eggok_token', data.token);
-      localStorage.setItem('eggok_user', JSON.stringify(data.user));
-      await loadProfile(data.token);
+      contextLogin(data.token, data.user);
       setView('account');
     } catch {
       setLoginError('Unable to connect. Please try again.');
@@ -173,16 +158,34 @@ export default function AccountPage() {
         setLoading(false);
         return;
       }
-      localStorage.setItem('eggok_token', data.token);
-      localStorage.setItem('eggok_user', JSON.stringify(data.user));
-      setSavedFirstName(regFirstName);
-      setSavedLastName(regLastName);
-      setSavedEmail(regEmail);
-      setSavedPhone(regPhone);
-      setUserPoints(50);
+      contextLogin(data.token, data.user);
       setView('account');
     } catch {
       setRegError('Unable to connect. Please try again.');
+    }
+    setLoading(false);
+  };
+
+  const handleForgotPassword = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!forgotEmail) { setForgotError('Please enter your email address'); return; }
+    setForgotError('');
+    setLoading(true);
+    try {
+      const res = await fetch(`${API_URL}/auth/forgot-password`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: forgotEmail }),
+      });
+      if (!res.ok) {
+        const data = await res.json();
+        setForgotError(data.message || 'Failed to send reset link. Please try again.');
+        setLoading(false);
+        return;
+      }
+      setView('forgot-sent');
+    } catch {
+      setForgotError('Unable to connect. Please try again.');
     }
     setLoading(false);
   };
@@ -215,7 +218,7 @@ export default function AccountPage() {
         setLoading(false);
         return;
       }
-      localStorage.setItem('eggok_user', JSON.stringify(data));
+      contextUpdateUser(data);
       setCurrentPassword('');
       setNewPassword('');
       showSuccess('Profile updated successfully');
@@ -226,8 +229,7 @@ export default function AccountPage() {
   };
 
   const handleSignOut = () => {
-    localStorage.removeItem('eggok_token');
-    localStorage.removeItem('eggok_user');
+    contextLogout();
     setView('login');
   };
 
@@ -264,28 +266,17 @@ export default function AccountPage() {
     Cancelled: '#FC0301',
   };
 
-  const Nav = () => (
-    <div style={{ position: 'fixed', top: 0, left: 0, right: 0, zIndex: 100, background: 'rgba(10,10,10,0.98)', backdropFilter: 'blur(20px)', borderBottom: '1px solid #1E1E1E', height: '64px', display: 'flex', alignItems: 'center', padding: '0 28px', justifyContent: 'space-between' }}>
-      <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: '10px', textDecoration: 'none' }}>
-        <div style={{ width: '42px', height: '42px', borderRadius: '50%', background: '#FED800', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden' }}>
-          <img src="/logo.svg" alt="Eggs Ok" style={{ width: '38px', height: '38px', objectFit: 'cover' }} onError={e => { (e.target as HTMLImageElement).style.display = 'none'; }} />
-        </div>
-        <div>
-          <div style={{ fontSize: '14px', fontWeight: '800', color: '#FED800', letterSpacing: '0.5px', lineHeight: '1' }}>EGGS OK</div>
-          <div style={{ fontSize: '10px', color: '#444', letterSpacing: '1.5px', textTransform: 'uppercase', marginTop: '1px' }}>Philadelphia</div>
-        </div>
-      </Link>
-      <Link href="/order" style={{ padding: '8px 16px', background: '#FED800', borderRadius: '8px', color: '#000', fontSize: '13px', fontWeight: '700', textDecoration: 'none' }}>
-        Order Now
-      </Link>
-    </div>
-  );
+
+
+  if (!isRendered) {
+    return <div style={{ background: '#000', minHeight: '100vh' }} />;
+  }
 
   // ── LOGIN VIEW ──
   if (view === 'login') {
     return (
       <div style={{ background: '#000', minHeight: '100vh', fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif' }}>
-        <Nav />
+        <Header />
         <div style={{ maxWidth: '440px', margin: '0 auto', padding: '96px 24px 48px' }}>
           <div style={{ textAlign: 'center', marginBottom: '32px' }}>
             <div style={{ width: '64px', height: '64px', borderRadius: '16px', overflow: 'hidden', margin: '0 auto 16px', background: '#FED800', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
@@ -321,7 +312,8 @@ export default function AccountPage() {
               </div>
             </div>
             <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-              <button type="button" style={{ background: 'transparent', border: 'none', color: '#FED800', fontSize: '13px', fontWeight: '600', cursor: 'pointer' }}>
+              <button type="button" onClick={() => { setForgotEmail(loginEmail); setForgotError(''); setView('forgot'); }}
+                style={{ background: 'transparent', border: 'none', color: '#FED800', fontSize: '13px', fontWeight: '600', cursor: 'pointer' }}>
                 Forgot password?
               </button>
             </div>
@@ -355,11 +347,79 @@ export default function AccountPage() {
     );
   }
 
+  // ── FORGOT PASSWORD VIEW ──
+  if (view === 'forgot') {
+    return (
+      <div style={{ background: '#000', minHeight: '100vh', fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif' }}>
+        <Header />
+        <div style={{ maxWidth: '440px', margin: '0 auto', padding: '96px 24px 48px' }}>
+          <button onClick={() => setView('login')} style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#888', fontSize: '14px', marginBottom: '28px', background: 'transparent', border: 'none', cursor: 'pointer' }}>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="15 18 9 12 15 6" /></svg>
+            Back to Sign In
+          </button>
+          <div style={{ textAlign: 'center', marginBottom: '32px' }}>
+            <div style={{ width: '64px', height: '64px', borderRadius: '16px', background: '#111111', border: '1px solid #1A1A1A', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 16px' }}>
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#FED800" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2" /><path d="M7 11V7a5 5 0 0110 0v4" /></svg>
+            </div>
+            <h1 style={{ fontSize: '30px', fontWeight: '900', color: '#FEFEFE', marginBottom: '8px', letterSpacing: '-0.5px' }}>FORGOT PASSWORD?</h1>
+            <p style={{ fontSize: '14px', color: '#888', lineHeight: '1.6' }}>Enter your email and we'll send you a link to reset your password.</p>
+          </div>
+          <form onSubmit={handleForgotPassword} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+            <div>
+              <label style={labelStyle}>Email Address</label>
+              <input type="email" style={inputStyle} placeholder="john@gmail.com"
+                value={forgotEmail} onChange={e => setForgotEmail(e.target.value)}
+                onFocus={e => (e.target as HTMLInputElement).style.borderColor = '#FED800'}
+                onBlur={e => (e.target as HTMLInputElement).style.borderColor = '#1A1A1A'} />
+            </div>
+            {forgotError && (
+              <div style={{ padding: '12px 16px', background: '#2A0A0A', border: '1px solid #FC030140', borderRadius: '10px', color: '#FC0301', fontSize: '13px' }}>
+                {forgotError}
+              </div>
+            )}
+            <button type="submit" disabled={loading} style={{ width: '100%', padding: '15px', background: loading ? '#1A1A1A' : '#FED800', borderRadius: '12px', fontSize: '16px', fontWeight: '700', color: loading ? '#555' : '#000', cursor: loading ? 'not-allowed' : 'pointer', border: 'none' }}>
+              {loading ? 'Sending...' : 'Send Reset Link'}
+            </button>
+          </form>
+        </div>
+      </div>
+    );
+  }
+
+  // ── FORGOT PASSWORD SENT VIEW ──
+  if (view === 'forgot-sent') {
+    return (
+      <div style={{ background: '#000', minHeight: '100vh', fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif' }}>
+        <Header />
+        <div style={{ maxWidth: '440px', margin: '0 auto', padding: '96px 24px 48px' }}>
+          <div style={{ textAlign: 'center' }}>
+            <div style={{ width: '72px', height: '72px', borderRadius: '50%', background: '#22C55E15', border: '2px solid #22C55E40', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 24px' }}>
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#22C55E" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12" /></svg>
+            </div>
+            <h1 style={{ fontSize: '30px', fontWeight: '900', color: '#FEFEFE', marginBottom: '12px', letterSpacing: '-0.5px' }}>CHECK YOUR EMAIL</h1>
+            <p style={{ fontSize: '14px', color: '#888', lineHeight: '1.7', marginBottom: '8px' }}>
+              If an account exists for <span style={{ color: '#FED800' }}>{forgotEmail}</span>, we've sent a password reset link.
+            </p>
+            <p style={{ fontSize: '13px', color: '#555', lineHeight: '1.6', marginBottom: '32px' }}>
+              The link expires in 1 hour. Check your spam folder if you don't see it.
+            </p>
+            <button onClick={() => setView('login')} style={{ width: '100%', padding: '15px', background: '#FED800', borderRadius: '12px', fontSize: '15px', fontWeight: '700', color: '#000', cursor: 'pointer', border: 'none' }}>
+              Back to Sign In
+            </button>
+            <button onClick={() => { setForgotError(''); setView('forgot'); }} style={{ width: '100%', padding: '15px', background: 'transparent', borderRadius: '12px', fontSize: '14px', fontWeight: '600', color: '#888', cursor: 'pointer', border: 'none', marginTop: '8px' }}>
+              Try a different email
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   // ── REGISTER VIEW ──
   if (view === 'register') {
     return (
       <div style={{ background: '#000', minHeight: '100vh', fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif' }}>
-        <Nav />
+        <Header />
         <div style={{ maxWidth: '480px', margin: '0 auto', padding: '96px 24px 48px' }}>
           <button onClick={() => setView('login')} style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#888', fontSize: '14px', marginBottom: '28px', background: 'transparent', border: 'none', cursor: 'pointer' }}>
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="15 18 9 12 15 6" /></svg>
@@ -478,7 +538,7 @@ export default function AccountPage() {
   // ── ACCOUNT DASHBOARD ──
   return (
     <div style={{ background: '#000', minHeight: '100vh', fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif' }}>
-      <Nav />
+      <Header />
 
       {successMsg && (
         <div style={{ position: 'fixed', top: '80px', right: '20px', zIndex: 9999, background: '#22C55E', color: '#000', padding: '12px 20px', borderRadius: '10px', fontSize: '13px', fontWeight: '600', boxShadow: '0 4px 20px rgba(34,197,94,0.3)' }}>
