@@ -141,10 +141,7 @@ export class MailService {
     }
 
     async sendPasswordResetEmail(to: string, name: string, resetLink: string) {
-        const settings = await this.getResolvedMailSettings();
-        if (!this.isConfigured(settings) || !settings.enabled) {
-            return false;
-        }
+        const settings = await this.assertMailReady();
 
         await this.sendMail(
             {
@@ -164,8 +161,6 @@ export class MailService {
             },
             settings,
         );
-
-        return true;
     }
 
     async sendContactMessage(payload: any) {
@@ -419,10 +414,14 @@ export class MailService {
         const settings = await this.getResolvedMailSettings();
 
         if (!settings.enabled) {
+            console.error('[MAIL] assertMailReady failed: mail is disabled. Enable it in Admin → Mail Settings.');
             throw new BadRequestException('Email sending is disabled in mail settings.');
         }
 
         if (!this.isConfigured(settings)) {
+            const missing = ['host', 'port', 'user', 'password', 'fromEmail', 'ownerEmail']
+                .filter(k => !settings[k as keyof typeof settings]);
+            console.error(`[MAIL] assertMailReady failed: missing fields: ${missing.join(', ')}`);
             throw new BadRequestException('Email settings are incomplete. Please configure SMTP in the admin panel.');
         }
 

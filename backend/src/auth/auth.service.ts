@@ -161,7 +161,11 @@ export class AuthService {
     }
 
     async forgotPassword(email: string) {
-        const customer = await this.customersRepository.findOne({ where: { email } });
+        const customer = await this.customersRepository
+            .createQueryBuilder('customer')
+            .addSelect('customer.password')
+            .where('customer.email = :email', { email })
+            .getOne();
 
         if (!customer || !customer.password) {
             console.warn(`[AUTH] Password reset requested for missing or guest user: ${email}`);
@@ -178,21 +182,18 @@ export class AuthService {
 
         const websiteUrl = this.configService.get<string>('WEBSITE_URL') ||
             this.configService.get<string>('FRONTEND_URL') ||
-            'http://localhost:3001';
+            'http://localhost:3000';
         const resetLink = `${websiteUrl}/reset-password?token=${token}`;
 
         console.log(`[DEBUG] Attempting password reset for: ${customer.email}`);
         console.log(`[DEBUG] Reset link: ${resetLink}`);
 
         try {
-            const sent = await this.mailService.sendPasswordResetEmail(customer.email, customer.name, resetLink);
-            if (!sent) {
-                throw new BadRequestException('We are currently unable to send password reset emails. Please contact support.');
-            }
+            await this.mailService.sendPasswordResetEmail(customer.email, customer.name, resetLink);
         } catch (error) {
+            if (error instanceof BadRequestException) throw error;
             console.error(`Unexpected mailer error for ${customer.email}:`, error);
-            const msg = error instanceof Error ? error.message : 'Please check SMTP settings in Admin panel';
-            throw new BadRequestException(`Email delivery failed: ${msg}`);
+            throw new BadRequestException('Failed to send reset email. Please try again later.');
         }
 
         return { message: 'If an account with that email exists, a reset link has been sent.' };

@@ -749,10 +749,10 @@ export default function HomePage() {
           <div className="footer-grid">
             <div className="footer-brand">
               <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '18px' }}>
-                <div style={{ width: '40px', height: '40px', borderRadius: '10px', overflow: 'hidden', background: '#FED800', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                  <Image src="/logo.svg" alt="Eggs Ok" width={36} height={36} style={{ objectFit: 'contain' }} />
+                <div style={{  borderRadius: '10px', overflow: 'hidden',  display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                  <Image src="/logo.svg" alt="Eggs Ok" width={100} height={50} style={{ objectFit: 'contain' }} />
                 </div>
-                <p className="bebas" style={{ fontSize: '22px', color: '#FED800', letterSpacing: '1px' }}>EGGS OK</p>
+                {/* <p className="bebas" style={{ fontSize: '22px', color: '#FED800', letterSpacing: '1px' }}>EGGS OK</p> */}
               </div>
               <p style={{ fontSize: '14px', color: '#555', lineHeight: 1.75, maxWidth: '280px', marginBottom: '22px' }}>
                 Fresh breakfast and lunch in West Philadelphia. Made to order, every time.

@@ -43,12 +43,12 @@ export default function Header() {
         }}>
           {/* Logo */}
           <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-            <div style={{ width: '44px', height: '44px', borderRadius: '10px', overflow: 'hidden', background: '#000', flexShrink: 0 }}>
-              <Image src="/logo.svg" alt="EggsOK Eatery" width={44} height={44} style={{ objectFit: 'contain', width: '100%', height: '100%' }} />
+            <div style={{  borderRadius: '10px', overflow: 'hidden', background: '#000', flexShrink: 0 }}>
+              <Image src="/logo.svg" alt="EggsOK Eatery" width={135} height={80} style={{ objectFit: 'contain' }} />
             </div>
             <div>
-              <p style={{ fontSize: '17px', fontWeight: '800', color: '#FED800', letterSpacing: '1px', fontFamily: 'Bebas Neue, sans-serif' }}>EggsOK</p>
-              <p style={{ fontSize: '10px', color: '#888888', letterSpacing: '1px' }}>EATERY WEST PHILLY</p>
+              {/* <p style={{ fontSize: '17px', fontWeight: '800', color: '#FED800', letterSpacing: '1px', fontFamily: 'Bebas Neue, sans-serif' }}>EggsOK</p>
+              <p style={{ fontSize: '10px', color: '#888888', letterSpacing: '1px' }}>EATERY WEST PHILLY</p> */}
             </div>
           </Link>
 

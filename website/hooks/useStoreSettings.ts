@@ -50,7 +50,7 @@ export function useStoreSettings() {
         statusMessage: status?.message ?? 'Loading...',
         isDeliveryEnabled: settings?.deliveryEnabled ?? true,
         isPickupEnabled: settings?.pickupEnabled ?? true,
-        closedMessage: settings?.closedMessage ?? 'We are currently closed.',
+        closedMessage: settings?.closedMessage ?? 'Closed Now',
         pickupWait: settings?.pickupWait ?? 15,
         deliveryFee: settings?.deliveryFee ?? 3.99,
         minOrder: settings?.minOrder ?? 10
