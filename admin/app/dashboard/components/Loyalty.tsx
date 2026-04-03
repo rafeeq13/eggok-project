@@ -89,32 +89,40 @@ export default function Loyalty() {
   const fetchData = async () => {
     try {
       setLoading(true);
+      const safeJson = async (res: Response, fallback: any = []) => {
+        if (!res.ok) return fallback;
+        const text = await res.text();
+        if (!text) return fallback;
+        try {
+          return JSON.parse(text);
+        } catch (e) {
+          console.error('Failed to parse JSON:', e);
+          return fallback;
+        }
+      };
+
       const [rewardsRes, membersRes, settingsRes] = await Promise.all([
         fetch(`${API}/loyalty/rewards`),
         fetch(`${API}/loyalty/members`),
         fetch(`${API}/settings/loyalty`)
       ]);
 
-      if (rewardsRes.ok) {
-        const data = await rewardsRes.json();
-        setRewards(Array.isArray(data) ? data : []);
-      }
-      if (membersRes.ok) {
-        const data = await membersRes.json();
-        setLoyaltyCustomers(Array.isArray(data) ? data : []);
-      }
-      if (settingsRes.ok) {
-        const data = await settingsRes.json();
-        if (data) {
-          const v = data;
-          setLoyaltyEnabled(v.loyaltyEnabled ?? true);
-          setPointsPerDollar(String(v.pointsPerDollar || '1'));
-          setPointsExpiry(String(v.pointsExpiry || '12'));
-          setSignupBonus(String(v.signupBonus || '50'));
-          setBirthdayBonus(String(v.birthdayBonus || '100'));
-          setMinRedeemPoints(String(v.minRedeemPoints || '100'));
-          setReferralBonus(String(v.referralBonus || '75'));
-        }
+      const rewardsData = await safeJson(rewardsRes, []);
+      setRewards(Array.isArray(rewardsData) ? rewardsData : []);
+
+      const membersData = await safeJson(membersRes, []);
+      setLoyaltyCustomers(Array.isArray(membersData) ? membersData : []);
+
+      const settingsData = await safeJson(settingsRes, null);
+      if (settingsData) {
+        const v = settingsData;
+        setLoyaltyEnabled(v.loyaltyEnabled ?? true);
+        setPointsPerDollar(String(v.pointsPerDollar || '1'));
+        setPointsExpiry(String(v.pointsExpiry || '12'));
+        setSignupBonus(String(v.signupBonus || '50'));
+        setBirthdayBonus(String(v.birthdayBonus || '100'));
+        setMinRedeemPoints(String(v.minRedeemPoints || '100'));
+        setReferralBonus(String(v.referralBonus || '75'));
       }
     } catch (err) {
       console.error('Failed to fetch loyalty data:', err);

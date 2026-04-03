@@ -13,6 +13,16 @@ const DEFAULT_HOURS = {
   sunday: { open: '08:00', close: '21:00', isOpen: true },
 };
 
+const DEFAULT_LOYALTY = {
+  loyaltyEnabled: true,
+  pointsPerDollar: 1,
+  pointsExpiry: 12,
+  signupBonus: 50,
+  birthdayBonus: 100,
+  minRedeemPoints: 100,
+  referralBonus: 75,
+};
+
 @Injectable()
 export class SettingsService implements OnModuleInit {
   constructor(
@@ -26,6 +36,14 @@ export class SettingsService implements OnModuleInit {
       await this.settingsRepository.save({
         key: 'business_hours',
         value: DEFAULT_HOURS,
+      });
+    }
+
+    const loyaltyExisting = await this.settingsRepository.findOne({ where: { key: 'loyalty' } });
+    if (!loyaltyExisting) {
+      await this.settingsRepository.save({
+        key: 'loyalty',
+        value: DEFAULT_LOYALTY,
       });
     }
   }
@@ -89,7 +107,11 @@ export class SettingsService implements OnModuleInit {
 
   async getSetting(key: string): Promise<any> {
     const setting = await this.settingsRepository.findOne({ where: { key } });
-    return setting ? setting.value : null;
+    if (!setting) {
+      if (key === 'loyalty') return DEFAULT_LOYALTY;
+      return null;
+    }
+    return setting.value;
   }
 
   async setSetting(key: string, value: any): Promise<any> {

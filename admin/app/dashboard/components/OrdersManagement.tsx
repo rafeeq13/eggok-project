@@ -409,10 +409,7 @@ export default function OrdersManagement() {
       {/* History Filters */}
       {activeTab === 'history' && (
         <div style={{ display: 'flex', gap: '8px', marginBottom: '16px', flexWrap: 'wrap' as const }}>
-          <input placeholder="Search name, email, phone, order ID..." value={search} onChange={e => setSearch(e.target.value)}
-            style={{ ...inputStyle, flex: 1, minWidth: '220px' }}
-            onFocus={e => (e.target as HTMLInputElement).style.borderColor = '#FED800'}
-            onBlur={e => (e.target as HTMLInputElement).style.borderColor = '#2A2A2A'} />
+        
           <select value={statusFilter} onChange={e => setStatusFilter(e.target.value)} style={{ ...inputStyle, cursor: 'pointer' }}>
             <option value="all">All Statuses</option>
             <option value="delivered">Delivered</option>
@@ -429,6 +426,10 @@ export default function OrdersManagement() {
             style={{ padding: '8px 14px', background: 'transparent', border: '1px solid #2A2A2A', borderRadius: '8px', color: '#888', fontSize: '12px', cursor: 'pointer' }}>
             Clear
           </button>
+            <input placeholder="Search name, email, phone, order ID..." value={search} onChange={e => setSearch(e.target.value)}
+            style={{ ...inputStyle, flex: 1, minWidth: '220px' }}
+            onFocus={e => (e.target as HTMLInputElement).style.borderColor = '#FED800'}
+            onBlur={e => (e.target as HTMLInputElement).style.borderColor = '#2A2A2A'} />
         </div>
       )}
 
