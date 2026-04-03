@@ -43,4 +43,7 @@ export class Customer {
 
     @Column({ default: 'Active' })
     status: string; // 'Active' | 'Inactive' | 'Blocked'
+
+    @Column({ nullable: true, select: false })
+    password: string;
 }

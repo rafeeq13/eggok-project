@@ -112,6 +112,24 @@ export default function CheckoutPage() {
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  // Pre-fill from logged-in user data
+  useEffect(() => {
+    const token = localStorage.getItem('eggok_token');
+    const userData = localStorage.getItem('eggok_user');
+    if (token && userData) {
+      try {
+        const user = JSON.parse(userData);
+        const [first, ...rest] = (user.name || '').split(' ');
+        setFirstName(first || '');
+        setLastName(rest.join(' ') || '');
+        setEmail(user.email || '');
+        setPhone(user.phone || '');
+        setIsLoggedIn(true);
+      } catch { }
+    }
+  }, []);
 
   const [cardNumber, setCardNumber] = useState('');
   const [expiry, setExpiry] = useState('');
@@ -244,6 +262,7 @@ export default function CheckoutPage() {
           total,
           promoCode: promoApplied ? promoCode : null,
           discount,
+          isAuthenticated: isLoggedIn,
         }),
       });
       if (!response.ok) {

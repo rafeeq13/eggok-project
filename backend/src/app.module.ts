@@ -12,6 +12,7 @@ import { ReviewsModule } from './reviews/reviews.module';
 import { UsersModule } from './users/users.module';
 import { PaymentsModule } from './payments/payments.module';
 import { SeedModule } from './seed/seed.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -44,6 +45,7 @@ import { SeedModule } from './seed/seed.module';
     UsersModule,
     PaymentsModule,
     SeedModule,
+    AuthModule,
   ],
 })
 

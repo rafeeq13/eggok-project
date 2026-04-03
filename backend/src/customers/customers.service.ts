@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Not, IsNull, Repository } from 'typeorm';
 import { Customer } from './customer.entity';
 
 @Injectable()
@@ -11,7 +11,10 @@ export class CustomersService {
     ) { }
 
     findAll(): Promise<Customer[]> {
-        return this.customerRepository.find({ order: { joinDate: 'DESC' } });
+        return this.customerRepository.find({
+            where: { password: Not(IsNull()) },
+            order: { joinDate: 'DESC' }
+        });
     }
 
     findOne(id: number): Promise<Customer | null> {

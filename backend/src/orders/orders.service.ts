@@ -97,16 +97,19 @@ export class OrdersService {
     });
     const savedOrder = await this.ordersRepository.save(order);
 
-    // Upsert customer record (create or update) — never let this crash the order
-    this.upsertCustomer({
-      name: data.customerName,
-      email: data.customerEmail,
-      phone: data.customerPhone,
-      total: data.total,
-      orderNumber: savedOrder.orderNumber,
-    }).catch(err => {
-      console.error('Failed to upsert customer record:', err);
-    });
+    // Only upsert customer record for authenticated (signed-up/signed-in) users.
+    // Guest checkout orders should NOT create entries in the Customers table.
+    if (data.isAuthenticated) {
+      this.upsertCustomer({
+        name: data.customerName,
+        email: data.customerEmail,
+        phone: data.customerPhone,
+        total: data.total,
+        orderNumber: savedOrder.orderNumber,
+      }).catch(err => {
+        console.error('Failed to upsert customer record:', err);
+      });
+    }
 
     // Send emails asynchronously
     this.mailService.sendOrderConfirmation(savedOrder).catch(err => {
