@@ -72,7 +72,7 @@ export class SettingsService implements OnModuleInit {
     if (storeSettings && storeSettings.storeOpen === false) {
       return {
         isOpen: false,
-        message: storeSettings.closedMessage || 'Closed Now',
+        message: storeSettings.closedMessage || 'Closed',
         hours: null
       };
     }

@@ -20,7 +20,7 @@ export default function StoreSettings() {
   const [minOrder, setMinOrder] = useState('10');
   const [deliveryRadius, setDeliveryRadius] = useState('5');
   const [deliveryFee, setDeliveryFee] = useState('3.99');
-  const [closedMessage, setClosedMessage] = useState('Closed Now');
+  const [closedMessage, setClosedMessage] = useState('Closed');
   const [storePhone, setStorePhone] = useState('215-948-9902');
   const [storeEmail, setStoreEmail] = useState('orders@eggsokphilly.com');
 
@@ -72,7 +72,7 @@ export default function StoreSettings() {
             setMinOrder(String(v.minOrder || '10'));
             setDeliveryRadius(String(v.deliveryRadius || '5'));
             setDeliveryFee(String(v.deliveryFee || '3.99'));
-            setClosedMessage(v.closedMessage || 'Closed Now');
+            setClosedMessage(v.closedMessage || 'Closed');
             setStorePhone(v.storePhone || '215-948-9902');
             setStoreEmail(v.storeEmail || 'orders@eggsokphilly.com');
           }

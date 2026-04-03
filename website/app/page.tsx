@@ -257,7 +257,7 @@ export default function HomePage() {
             <div>
               <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', background: isOpen ? '#22C55E15' : '#FC030115', border: `1px solid ${isOpen ? '#22C55E30' : '#FC030130'}`, borderRadius: '20px', padding: '6px 16px', marginBottom: '28px' }}>
                 <span style={{ width: '7px', height: '7px', borderRadius: '50%', background: isOpen ? '#22C55E' : '#FC0301', display: 'inline-block', flexShrink: 0 }} />
-                <span style={{ fontSize: '13px', color: isOpen ? '#22C55E' : '#FC0301', fontWeight: '600' }}>{statusMessage} · West Philadelphia</span>
+                <span style={{ fontSize: '13px', color: isOpen ? '#22C55E' : '#FC0301', fontWeight: '600' }}>{isOpen ? statusMessage : 'Closed'}</span>
               </div>
 
 

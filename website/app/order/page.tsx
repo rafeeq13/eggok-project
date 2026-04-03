@@ -408,7 +408,10 @@ function OrderContent() {
     return total;
   };
 
-  const openItem = (item: MenuItem) => { setSelectedItem(item); setSelectedModifiers({}); setQuantity(1); setSpecialInstructions(''); };
+  const openItem = (item: MenuItem) => {
+    if (!isOpen) return;
+    setSelectedItem(item); setSelectedModifiers({}); setQuantity(1); setSpecialInstructions('');
+  };
 
   const toggleModifier = (groupId: number, optId: number, maxSelections: number) => {
     setSelectedModifiers(prev => {
@@ -651,10 +654,20 @@ function OrderContent() {
                 <span style={{ color: '#333' }}>·</span>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
                   <div style={{ width: '7px', height: '7px', borderRadius: '50%', background: isOpen ? '#22C55E' : '#FC0301' }} />
-                  <span style={{ fontSize: '13px', color: isOpen ? '#22C55E' : '#FC0301', fontWeight: '600' }}>{statusMessage}</span>
+                  <span style={{ fontSize: '13px', color: isOpen ? '#22C55E' : '#FC0301', fontWeight: '600' }}>{isOpen ? statusMessage : 'Closed Now'}</span>
 
                 </div>
               </div>
+
+              {!isOpen && (
+                <div style={{ background: '#1A0000', border: '1px solid #FC030130', borderRadius: '12px', padding: '16px 20px', marginBottom: '20px', display: 'flex', alignItems: 'center', gap: '12px' }}>
+                  <div style={{ width: '10px', height: '10px', borderRadius: '50%', background: '#FC0301', flexShrink: 0 }} />
+                  <div>
+                    <div style={{ fontSize: '14px', fontWeight: '700', color: '#FC0301', marginBottom: '2px' }}>Store Closed</div>
+                    <div style={{ fontSize: '13px', color: '#888' }}>{statusMessage}</div>
+                  </div>
+                </div>
+              )}
 
               <div className="order-row">
                 {/* Pickup / Delivery */}
