@@ -44,3 +44,41 @@ export async function getFullMenu(): Promise<{ categories: Category[]; items: Me
   ]);
   return { categories, items };
 }
+
+export interface StoreSettings {
+  storeOpen: boolean;
+  deliveryEnabled: boolean;
+  pickupEnabled: boolean;
+  pickupWait: number;
+  minOrder: number;
+  deliveryRadius: number;
+  deliveryFee: number;
+  closedMessage: string;
+  storePhone: string;
+  storeEmail: string;
+}
+
+export async function getStoreSettings(): Promise<StoreSettings> {
+  const res = await fetch(`${API_URL}/settings/store`, {
+    next: { revalidate: 60 },
+  });
+  if (!res.ok) throw new Error('Failed to fetch store settings');
+  return res.json();
+}
+
+export async function getBusinessHours(): Promise<any> {
+  const res = await fetch(`${API_URL}/settings/hours`, {
+    next: { revalidate: 60 },
+  });
+  if (!res.ok) throw new Error('Failed to fetch business hours');
+  return res.json();
+}
+
+export async function getStoreStatus(): Promise<{ isOpen: boolean; message: string; hours: any }> {
+  const res = await fetch(`${API_URL}/settings/status`, {
+    cache: 'no-store', // Status should always be fresh
+  });
+  if (!res.ok) throw new Error('Failed to fetch store status');
+  return res.json();
+}
+

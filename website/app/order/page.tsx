@@ -1,7 +1,10 @@
 'use client';
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, Suspense } from 'react';
 import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
 import { useCart } from '../context/CartContext';
+import { useStoreSettings } from '../../hooks/useStoreSettings';
+
 
 type ModifierOption = { id: number; name: string; price: number };
 type ModifierGroup = { id: number; name: string; required: boolean; minSelections: number; maxSelections: number; options: ModifierOption[] };
@@ -268,7 +271,9 @@ const css = `
   }
 `;
 
-export default function OrderPage() {
+
+function OrderContent() {
+
   const {
     cart, orderType, setOrderType, addToCart, removeFromCart, updateQuantity,
     cartCount, cartTotal, getPrice,
@@ -281,8 +286,7 @@ export default function OrderPage() {
   } = useCart();
 
   const [mounted, setMounted] = useState(false);
-  const [storeOpen, setStoreOpen] = useState(true);
-  const [storeStatus, setStoreStatus] = useState('Open now');
+
   const [activeCategory, setActiveCategory] = useState(0);
   const [search, setSearch] = useState('');
   const [selectedItem, setSelectedItem] = useState<MenuItem | null>(null);
@@ -299,6 +303,9 @@ export default function OrderPage() {
   const [showMoreDates, setShowMoreDates] = useState(false);
   const [deliveryStep, setDeliveryStep] = useState<1 | 2>(deliveryAddress ? 2 : 1);
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const searchParams = useSearchParams();
+  const { isOpen, statusMessage, isDeliveryEnabled, isPickupEnabled } = useStoreSettings();
+
 
   // Mobile-specific state
   const [showMobileSearch, setShowMobileSearch] = useState(false);
@@ -313,6 +320,10 @@ export default function OrderPage() {
 
   useEffect(() => {
     setMounted(true);
+    fetchData();
+  }, [searchParams, menuItems]);
+
+  const fetchData = () => {
     Promise.all([
       fetch(`${API}/menu/categories`).then(r => r.json()),
       fetch(`${API}/menu/items`).then(r => r.json()),
@@ -322,16 +333,23 @@ export default function OrderPage() {
       setCategories([{ id: 0, name: 'Popular' }, ...activeCategories]);
       setMenuItems(availableItems);
       setLoading(false);
-    }).catch(() => setLoading(false));
 
-    fetch(`${API}/settings/status`)
-      .then(r => r.json())
-      .then(data => {
-        setStoreOpen(data.isOpen);
-        setStoreStatus(data.isOpen ? `Open · closes ${data.hours.close}` : data.message);
-      })
-      .catch(() => { });
-  }, []);
+      // Handle Deep-Linking
+      const pId = searchParams.get('productId');
+      if (pId && availableItems.length > 0) {
+        const item = availableItems.find((i: MenuItem) => i.id === Number(pId));
+        if (item) {
+          setTimeout(() => {
+            openItem(item);
+            const el = document.getElementById(`item-${item.id}`);
+            if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          }, 500);
+        }
+      }
+    }).catch(() => setLoading(false));
+  };
+
+
 
   // Scroll spy — tracks active category from main scroll
   useEffect(() => {
@@ -632,21 +650,29 @@ export default function OrderPage() {
                 </div>
                 <span style={{ color: '#333' }}>·</span>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
-                  <div style={{ width: '7px', height: '7px', borderRadius: '50%', background: storeOpen ? '#22C55E' : '#FC0301' }} />
-                  <span style={{ fontSize: '13px', color: storeOpen ? '#22C55E' : '#FC0301', fontWeight: '600' }}>{storeStatus}</span>
+                  <div style={{ width: '7px', height: '7px', borderRadius: '50%', background: isOpen ? '#22C55E' : '#FC0301' }} />
+                  <span style={{ fontSize: '13px', color: isOpen ? '#22C55E' : '#FC0301', fontWeight: '600' }}>{statusMessage}</span>
+
                 </div>
               </div>
 
               <div className="order-row">
                 {/* Pickup / Delivery */}
                 <div style={{ display: 'flex', background: '#1A1A1A', borderRadius: '10px', padding: '3px', border: '1px solid #2A2A2A', flexShrink: 0 }}>
-                  {(['pickup', 'delivery'] as const).map(type => (
-                    <button key={type} onClick={() => { setOrderType(type); if (type === 'delivery') setShowDeliveryModal(true); }}
-                      style={{ padding: '8px 18px', borderRadius: '8px', border: 'none', cursor: 'pointer', fontSize: '13px', fontWeight: '700', background: orderType === type ? '#FED800' : 'transparent', color: orderType === type ? '#000' : '#666', transition: 'all 0.2s' }}>
-                      {type === 'pickup' ? 'Pickup' : 'Delivery'}
+                  {isPickupEnabled && (
+                    <button onClick={() => setOrderType('pickup')}
+                      style={{ padding: '8px 18px', borderRadius: '8px', border: 'none', cursor: 'pointer', fontSize: '13px', fontWeight: '700', background: orderType === 'pickup' ? '#FED800' : 'transparent', color: orderType === 'pickup' ? '#000' : '#666', transition: 'all 0.2s' }}>
+                      Pickup
                     </button>
-                  ))}
+                  )}
+                  {isDeliveryEnabled && (
+                    <button onClick={() => { setOrderType('delivery'); setShowDeliveryModal(true); }}
+                      style={{ padding: '8px 18px', borderRadius: '8px', border: 'none', cursor: 'pointer', fontSize: '13px', fontWeight: '700', background: orderType === 'delivery' ? '#FED800' : 'transparent', color: orderType === 'delivery' ? '#000' : '#666', transition: 'all 0.2s' }}>
+                      Delivery
+                    </button>
+                  )}
                 </div>
+
                 {/* Delivery address */}
                 {mounted && orderType === 'delivery' && (
                   <button onClick={() => setShowDeliveryModal(true)}
@@ -731,7 +757,8 @@ export default function OrderPage() {
                         if (items.length % 2 === 0 && isLastRow && isLeftCol) br = '0 0 0 14px';
                         if (items.length % 2 === 0 && isLastRow && isRightCol) br = '0 0 14px 0';
                         if (items.length % 2 !== 0 && isLast) br = '0 0 14px 14px';
-                        return <GridCard key={item.id} item={item} orderType={orderType} onSelect={openItem} borderRadius={br} />;
+                        return <div key={item.id} id={`item-${item.id}`}><GridCard item={item} orderType={orderType} onSelect={openItem} borderRadius={br} /></div>;
+
                       })}
                     </div>
                   )}
@@ -1139,6 +1166,15 @@ export default function OrderPage() {
     </div>
   );
 }
+
+export default function OrderPage() {
+  return (
+    <Suspense fallback={<div style={{ background: '#0A0A0A', height: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#666' }}>Loading menu...</div>}>
+      <OrderContent />
+    </Suspense>
+  );
+}
+
 
 function PopularCard({ item, orderType, onSelect }: { item: MenuItem; orderType: 'pickup' | 'delivery'; onSelect: (item: MenuItem) => void }) {
   const price = parseFloat(orderType === 'pickup' ? item.pickupPrice : item.deliveryPrice);

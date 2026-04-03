@@ -4,13 +4,13 @@ import { Repository } from 'typeorm';
 import { Settings } from './settings.entity';
 
 const DEFAULT_HOURS = {
-  monday:    { open: '07:00', close: '21:00', isOpen: true },
-  tuesday:   { open: '07:00', close: '21:00', isOpen: true },
+  monday: { open: '07:00', close: '21:00', isOpen: true },
+  tuesday: { open: '07:00', close: '21:00', isOpen: true },
   wednesday: { open: '07:00', close: '21:00', isOpen: true },
-  thursday:  { open: '07:00', close: '21:00', isOpen: true },
-  friday:    { open: '07:00', close: '21:00', isOpen: true },
-  saturday:  { open: '08:00', close: '21:00', isOpen: true },
-  sunday:    { open: '08:00', close: '21:00', isOpen: true },
+  thursday: { open: '07:00', close: '21:00', isOpen: true },
+  friday: { open: '07:00', close: '21:00', isOpen: true },
+  saturday: { open: '08:00', close: '21:00', isOpen: true },
+  sunday: { open: '08:00', close: '21:00', isOpen: true },
 };
 
 @Injectable()
@@ -18,7 +18,7 @@ export class SettingsService implements OnModuleInit {
   constructor(
     @InjectRepository(Settings)
     private settingsRepository: Repository<Settings>,
-  ) {}
+  ) { }
 
   async onModuleInit() {
     const existing = await this.settingsRepository.findOne({ where: { key: 'business_hours' } });
@@ -48,6 +48,17 @@ export class SettingsService implements OnModuleInit {
 
   async isStoreOpen(): Promise<{ isOpen: boolean; message: string; hours: any }> {
     const hours = await this.getBusinessHours();
+    const storeSettings = await this.getSetting('store');
+
+    // Manual override check
+    if (storeSettings && storeSettings.storeOpen === false) {
+      return {
+        isOpen: false,
+        message: storeSettings.closedMessage || 'We are currently closed. Please check back during our business hours.',
+        hours: null
+      };
+    }
+
     const now = new Date();
     const days = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
     const today = days[now.getDay()];
@@ -74,6 +85,7 @@ export class SettingsService implements OnModuleInit {
       hours: todayHours,
     };
   }
+
 
   async getSetting(key: string): Promise<any> {
     const setting = await this.settingsRepository.findOne({ where: { key } });

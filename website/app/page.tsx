@@ -14,55 +14,58 @@ import {
   UtensilsCrossed,
   Zap,
 } from 'lucide-react';
+import { useStoreSettings } from '../hooks/useStoreSettings';
+
 
 /* ─────────────────────────────────────────────
    DATA
 ───────────────────────────────────────────── */
 const FAVORITES = [
-  { name: 'Ultimate Sammies Sandwich', img: '/main-menu/Fully Loaded Sandwich.jpg',      price: '$14.50', tag: 'Best Seller', desc: '2 fried eggs, Cheddar, hashbrown, applewood smoked bacon' },
-  { name: 'Breakfast BLT Sandwich',    img: '/main-menu/Breakfast BLT Sandwich.jpg',     price: '$14.50', tag: 'Popular',     desc: 'Applewood smoked bacon, romaine, tomato, 2 fried eggs' },
-  { name: 'Fully Loaded Sandwich',     img: '/main-menu/Fully Loaded Sandwich.jpg',      price: '$14.50', tag: 'Fan Fave',    desc: 'Scrambled eggs, Cheddar, tomato, avocado, spinach' },
-  { name: 'Sunrise Burrito',           img: '/main-menu/Sunrise Burrito.jpg',            price: '$13.00', tag: 'New',         desc: 'Scrambled eggs, black beans, salsa, sour cream, cheddar' },
-  { name: 'Avocado Omelette',          img: '/main-menu/Avocado Omelette.jpg',           price: '$13.50', tag: 'Healthy',     desc: 'Fresh avocado, spinach, tomato, pepper jack cheese' },
-  { name: 'Brown Sugar Latte',         img: '/main-menu/Brown Sugar Latte.jpg',          price: '$6.50',  tag: 'Popular',     desc: 'Espresso, oat milk, brown sugar cinnamon syrup' },
+  { id: 1, name: 'Ultimate Sammies Sandwich', img: '/main-menu/Fully Loaded Sandwich.jpg', price: '$14.50', tag: 'Best Seller', desc: '2 fried eggs, Cheddar, hashbrown, applewood smoked bacon' },
+  { id: 2, name: 'Breakfast BLT Sandwich', img: '/main-menu/Breakfast BLT Sandwich.jpg', price: '$14.50', tag: 'Popular', desc: 'Applewood smoked bacon, romaine, tomato, 2 fried eggs' },
+  { id: 3, name: 'Fully Loaded Sandwich', img: '/main-menu/Fully Loaded Sandwich.jpg', price: '$14.50', tag: 'Fan Fave', desc: 'Scrambled eggs, Cheddar, tomato, avocado, spinach' },
+  { id: 4, name: 'Sunrise Burrito', img: '/main-menu/Sunrise Burrito.jpg', price: '$13.00', tag: 'New', desc: 'Scrambled eggs, black beans, salsa, sour cream, cheddar' },
+  { id: 5, name: 'Avocado Omelette', img: '/main-menu/Avocado Omelette.jpg', price: '$13.50', tag: 'Healthy', desc: 'Fresh avocado, spinach, tomato, pepper jack cheese' },
+  { id: 6, name: 'Brown Sugar Latte', img: '/main-menu/Brown Sugar Latte.jpg', price: '$6.50', tag: 'Popular', desc: 'Espresso, oat milk, brown sugar cinnamon syrup' },
 ];
+
 
 const MENU_TILES = [
   { label: 'Breakfast Sandwiches', img: '/main-menu/Breakfast BLT Sandwich.jpg', items: '9 items' },
-  { label: 'Specialty Lattes',     img: '/main-menu/Brown Sugar Latte.jpg',      items: '4 items' },
-  { label: 'Matcha Edition',       img: '/main-menu/Avocado Omelette.jpg',       items: '9 items' },
-  { label: 'Smoothies',            img: '/main-menu/Avocado Omelette.jpg',       items: '7 items' },
+  { label: 'Specialty Lattes', img: '/main-menu/Brown Sugar Latte.jpg', items: '4 items' },
+  { label: 'Matcha Edition', img: '/main-menu/Avocado Omelette.jpg', items: '9 items' },
+  { label: 'Smoothies', img: '/main-menu/Avocado Omelette.jpg', items: '7 items' },
 ];
 
 const CATEGORIES = [
   { name: 'Breakfast Sandwiches', count: 9 },
-  { name: 'Burritos',             count: 4 },
-  { name: 'Not Sandwiches',       count: 5 },
-  { name: 'Pancakes',             count: 2 },
-  { name: 'Omelettes',            count: 6 },
-  { name: 'Lunch Sandwiches',     count: 4 },
-  { name: 'Specialty Lattes',     count: 4 },
-  { name: 'Matcha Edition',       count: 9 },
-  { name: 'Cold Foam',            count: 3 },
-  { name: 'Smoothies',            count: 7 },
-  { name: 'Wellness Smoothies',   count: 4 },
-  { name: 'Coffee & Tea',         count: 6 },
+  { name: 'Burritos', count: 4 },
+  { name: 'Not Sandwiches', count: 5 },
+  { name: 'Pancakes', count: 2 },
+  { name: 'Omelettes', count: 6 },
+  { name: 'Lunch Sandwiches', count: 4 },
+  { name: 'Specialty Lattes', count: 4 },
+  { name: 'Matcha Edition', count: 9 },
+  { name: 'Cold Foam', count: 3 },
+  { name: 'Smoothies', count: 7 },
+  { name: 'Wellness Smoothies', count: 4 },
+  { name: 'Coffee & Tea', count: 6 },
 ];
 
 const REVIEWS = [
-  { name: 'Jasmine T.', stars: 5, text: 'Best breakfast spot in West Philly hands down. The Fully Loaded Sandwich is absolutely insane — I order it every single week.',               date: 'March 2025' },
-  { name: 'Marcus R.',  stars: 5, text: 'Ordered online and it was ready in 12 minutes. Fresh, hot, and exactly what I wanted. The brown sugar latte is a must.',                    date: 'February 2025' },
-  { name: 'Priya K.',   stars: 5, text: 'The matcha drinks here are genuinely the best I have had outside of a specialty café. And the breakfast burrito? Chef\'s kiss.',            date: 'January 2025' },
-  { name: 'Devon M.',   stars: 5, text: 'Catered our office breakfast meeting and every single person was raving. Huge variety, everything was delicious. Will definitely book again.', date: 'December 2024' },
+  { name: 'Jasmine T.', stars: 5, text: 'Best breakfast spot in West Philly hands down. The Fully Loaded Sandwich is absolutely insane — I order it every single week.', date: 'March 2025' },
+  { name: 'Marcus R.', stars: 5, text: 'Ordered online and it was ready in 12 minutes. Fresh, hot, and exactly what I wanted. The brown sugar latte is a must.', date: 'February 2025' },
+  { name: 'Priya K.', stars: 5, text: 'The matcha drinks here are genuinely the best I have had outside of a specialty café. And the breakfast burrito? Chef\'s kiss.', date: 'January 2025' },
+  { name: 'Devon M.', stars: 5, text: 'Catered our office breakfast meeting and every single person was raving. Huge variety, everything was delicious. Will definitely book again.', date: 'December 2024' },
 ];
 
 const FAQS = [
-  { q: 'What are your hours?',          a: 'We\'re open Monday–Friday 8AM–10PM and Saturday–Sunday 9AM–11PM. Hours may vary on holidays — check our social media for updates.' },
-  { q: 'Do you offer delivery?',         a: 'Yes! We offer both pickup and delivery. You can place your order online and choose your preferred method at checkout. Delivery radius covers most of West Philadelphia.' },
-  { q: 'How long does an order take?',   a: 'Pickup orders are typically ready in about 15 minutes. Delivery times depend on your location and current demand, usually 25–40 minutes.' },
-  { q: 'Can I customize my order?',      a: 'Absolutely. Our online ordering system lets you add modifiers, swap ingredients, and leave special instructions for every item.' },
-  { q: 'Do you do catering?',            a: 'Yes! We cater corporate events, birthday parties, brunch gatherings and more. Visit our Catering page to submit a request and we\'ll get back to you within 24 hours.' },
-  { q: 'Is there parking available?',    a: 'Street parking is available on Lancaster Ave. We\'re also steps away from several SEPTA bus stops for easy transit access.' },
+  { q: 'What are your hours?', a: 'We\'re open Monday–Friday 8AM–10PM and Saturday–Sunday 9AM–11PM. Hours may vary on holidays — check our social media for updates.' },
+  { q: 'Do you offer delivery?', a: 'Yes! We offer both pickup and delivery. You can place your order online and choose your preferred method at checkout. Delivery radius covers most of West Philadelphia.' },
+  { q: 'How long does an order take?', a: 'Pickup orders are typically ready in about 15 minutes. Delivery times depend on your location and current demand, usually 25–40 minutes.' },
+  { q: 'Can I customize my order?', a: 'Absolutely. Our online ordering system lets you add modifiers, swap ingredients, and leave special instructions for every item.' },
+  { q: 'Do you do catering?', a: 'Yes! We cater corporate events, birthday parties, brunch gatherings and more. Visit our Catering page to submit a request and we\'ll get back to you within 24 hours.' },
+  { q: 'Is there parking available?', a: 'Street parking is available on Lancaster Ave. We\'re also steps away from several SEPTA bus stops for easy transit access.' },
 ];
 
 /* ─────────────────────────────────────────────
@@ -70,6 +73,8 @@ const FAQS = [
 ───────────────────────────────────────────── */
 export default function HomePage() {
   const [openFaq, setOpenFaq] = useState<number | null>(null);
+  const { isOpen, statusMessage, isDeliveryEnabled, isPickupEnabled } = useStoreSettings();
+
 
   return (
     <main style={{ background: '#000', minHeight: '100vh', fontFamily: 'DM Sans, -apple-system, BlinkMacSystemFont, sans-serif' }}>
@@ -250,10 +255,11 @@ export default function HomePage() {
         <div className="container" style={{ position: 'relative', zIndex: 1, width: '100%' }}>
           <div className="hero-grid">
             <div>
-              <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', background: '#FED80015', border: '1px solid #FED80030', borderRadius: '20px', padding: '6px 16px', marginBottom: '28px' }}>
-                <span style={{ width: '7px', height: '7px', borderRadius: '50%', background: '#22C55E', display: 'inline-block', flexShrink: 0 }} />
-                <span style={{ fontSize: '13px', color: '#FED800', fontWeight: '600' }}>Now Open · West Philadelphia</span>
+              <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', background: isOpen ? '#22C55E15' : '#FC030115', border: `1px solid ${isOpen ? '#22C55E30' : '#FC030130'}`, borderRadius: '20px', padding: '6px 16px', marginBottom: '28px' }}>
+                <span style={{ width: '7px', height: '7px', borderRadius: '50%', background: isOpen ? '#22C55E' : '#FC0301', display: 'inline-block', flexShrink: 0 }} />
+                <span style={{ fontSize: '13px', color: isOpen ? '#22C55E' : '#FC0301', fontWeight: '600' }}>{statusMessage} · West Philadelphia</span>
               </div>
+
 
               <h1 className="bebas" style={{ fontSize: 'clamp(52px, 7vw, 88px)', color: '#FEFEFE' }}>
                 <span style={{ display: 'block' }}>WELCOME TO</span>
@@ -267,7 +273,7 @@ export default function HomePage() {
 
               <div className="hero-cta">
                 <Link href="/order" className="btn-yellow" style={{ fontSize: '16px', padding: '16px 34px' }}>
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 001.95-1.57l1.65-7.43H6"/></svg>
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="9" cy="21" r="1" /><circle cx="20" cy="21" r="1" /><path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 001.95-1.57l1.65-7.43H6" /></svg>
                   Order Now
                 </Link>
                 <a href="#menu" className="btn-outline" style={{ fontSize: '16px', padding: '16px 34px' }}>View Menu</a>
@@ -315,7 +321,8 @@ export default function HomePage() {
 
           <div className="fav-grid">
             {FAVORITES.map((item, i) => (
-              <Link href="/order" key={i} className="fav-card">
+              <Link href={`/order?productId=${item.id}`} key={i} className="fav-card">
+
                 {/* Full-width centered image */}
                 <div className="fav-img-wrap">
                   <img src={item.img} alt={item.name} />
@@ -325,7 +332,7 @@ export default function HomePage() {
                   </div>
                   {/* Add btn */}
                   <div style={{ position: 'absolute', bottom: '14px', right: '14px', width: '36px', height: '36px', borderRadius: '50%', background: '#FED800', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 4px 12px rgba(0,0,0,0.4)' }}>
-                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#000" strokeWidth="2.8" strokeLinecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#000" strokeWidth="2.8" strokeLinecap="round"><line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" /></svg>
                   </div>
                 </div>
 
@@ -357,46 +364,51 @@ export default function HomePage() {
           </div>
 
           <div className="order-ahead-grid">
-            <Link href="/order" className="order-card" style={{ background: '#FED800', textDecoration: 'none' }}>
-              <div style={{ position: 'absolute', top: '-50px', right: '-50px', width: '220px', height: '220px', borderRadius: '50%', background: 'rgba(0,0,0,0.07)' }} />
-              <div style={{ position: 'absolute', bottom: '-70px', left: '-30px', width: '180px', height: '180px', borderRadius: '50%', background: 'rgba(0,0,0,0.05)' }} />
-              <div style={{ position: 'relative', zIndex: 1 }}>
-                <div style={{ width: '58px', height: '58px', background: '#000', borderRadius: '16px', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '24px', boxShadow: '0 4px 16px rgba(0,0,0,0.3)' }}>
-                  <UtensilsCrossed size={26} color="#FED800" />
+            {isPickupEnabled && (
+              <Link href="/order" className="order-card" style={{ background: '#FED800', textDecoration: 'none' }}>
+                <div style={{ position: 'absolute', top: '-50px', right: '-50px', width: '220px', height: '220px', borderRadius: '50%', background: 'rgba(0,0,0,0.07)' }} />
+                <div style={{ position: 'absolute', bottom: '-70px', left: '-30px', width: '180px', height: '180px', borderRadius: '50%', background: 'rgba(0,0,0,0.05)' }} />
+                <div style={{ position: 'relative', zIndex: 1 }}>
+                  <div style={{ width: '58px', height: '58px', background: '#000', borderRadius: '16px', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '24px', boxShadow: '0 4px 16px rgba(0,0,0,0.3)' }}>
+                    <UtensilsCrossed size={26} color="#FED800" />
+                  </div>
+                  <p className="bebas" style={{ fontSize: 'clamp(30px, 4vw, 48px)', color: '#000', marginBottom: '10px' }}>PICKUP</p>
+                  <p style={{ fontSize: '15px', color: '#00000075', lineHeight: 1.7, maxWidth: '320px', marginBottom: '32px' }}>
+                    Order online and pick up fresh at 3517 Lancaster Ave. Ready in about 15 minutes.
+                  </p>
+                  <div style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', fontSize: '14px', fontWeight: '700', color: '#000', background: 'rgba(0,0,0,0.1)', padding: '10px 18px', borderRadius: '999px' }}>
+                    Order Pickup <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><path d="M5 12h14M12 5l7 7-7 7" /></svg>
+                  </div>
                 </div>
-                <p className="bebas" style={{ fontSize: 'clamp(30px, 4vw, 48px)', color: '#000', marginBottom: '10px' }}>PICKUP</p>
-                <p style={{ fontSize: '15px', color: '#00000075', lineHeight: 1.7, maxWidth: '320px', marginBottom: '32px' }}>
-                  Order online and pick up fresh at 3517 Lancaster Ave. Ready in about 15 minutes.
-                </p>
-                <div style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', fontSize: '14px', fontWeight: '700', color: '#000', background: 'rgba(0,0,0,0.1)', padding: '10px 18px', borderRadius: '999px' }}>
-                  Order Pickup <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-                </div>
-              </div>
-            </Link>
+              </Link>
+            )}
 
-            <Link href="/order" className="order-card" style={{ background: '#111', textDecoration: 'none', border: '2px solid #1E1E1E' }}>
-              <div style={{ position: 'absolute', top: '-50px', right: '-50px', width: '220px', height: '220px', borderRadius: '50%', background: '#FED80009' }} />
-              <div style={{ position: 'relative', zIndex: 1 }}>
-                <div style={{ width: '58px', height: '58px', background: '#FED80018', border: '1px solid #FED80035', borderRadius: '16px', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '24px' }}>
-                  <Truck size={26} color="#FED800" />
+            {isDeliveryEnabled && (
+              <Link href="/order" className="order-card" style={{ background: '#111', textDecoration: 'none', border: '2px solid #1E1E1E', gridColumn: !isPickupEnabled ? '1 / span 2' : 'auto' }}>
+                <div style={{ position: 'absolute', top: '-50px', right: '-50px', width: '220px', height: '220px', borderRadius: '50%', background: '#FED80009' }} />
+                <div style={{ position: 'relative', zIndex: 1 }}>
+                  <div style={{ width: '58px', height: '58px', background: '#FED80018', border: '1px solid #FED80035', borderRadius: '16px', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '24px' }}>
+                    <Truck size={26} color="#FED800" />
+                  </div>
+                  <p className="bebas" style={{ fontSize: 'clamp(30px, 4vw, 48px)', color: '#FEFEFE', marginBottom: '10px' }}>DELIVERY</p>
+                  <p style={{ fontSize: '15px', color: '#555', lineHeight: 1.7, maxWidth: '320px', marginBottom: '32px' }}>
+                    Get your order delivered right to your door across West Philadelphia. Hot and fresh.
+                  </p>
+                  <div style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', fontSize: '14px', fontWeight: '700', color: '#FED800', background: '#FED80012', border: '1px solid #FED80025', padding: '10px 18px', borderRadius: '999px' }}>
+                    Order Delivery <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><path d="M5 12h14M12 5l7 7-7 7" /></svg>
+                  </div>
                 </div>
-                <p className="bebas" style={{ fontSize: 'clamp(30px, 4vw, 48px)', color: '#FEFEFE', marginBottom: '10px' }}>DELIVERY</p>
-                <p style={{ fontSize: '15px', color: '#555', lineHeight: 1.7, maxWidth: '320px', marginBottom: '32px' }}>
-                  Get your order delivered right to your door across West Philadelphia. Hot and fresh.
-                </p>
-                <div style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', fontSize: '14px', fontWeight: '700', color: '#FED800', background: '#FED80012', border: '1px solid #FED80025', padding: '10px 18px', borderRadius: '999px' }}>
-                  Order Delivery <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-                </div>
-              </div>
-            </Link>
+              </Link>
+            )}
           </div>
+
 
           {/* Info strip */}
           <div style={{ display: 'flex', flexWrap: 'wrap', background: '#0A0A0A', border: '1px solid #1A1A1A', borderTop: 'none', borderRadius: '0 0 20px 20px', overflow: 'hidden' }}>
             {[
-              { icon: <Zap size={14} color="#FED800" />,       text: 'Ready in ~15 minutes' },
-              { icon: <Clock size={14} color="#FED800" />,     text: 'Schedule up to 7 days ahead' },
-              { icon: <MapPin size={14} color="#FED800" />,    text: '3517 Lancaster Ave, Philly' },
+              { icon: <Zap size={14} color="#FED800" />, text: 'Ready in ~15 minutes' },
+              { icon: <Clock size={14} color="#FED800" />, text: 'Schedule up to 7 days ahead' },
+              { icon: <MapPin size={14} color="#FED800" />, text: '3517 Lancaster Ave, Philly' },
               { icon: <Smartphone size={14} color="#FED800" />, text: 'Easy online ordering' },
             ].map((item, i) => (
               <div key={i} style={{ flex: '1 1 200px', padding: '18px 24px', display: 'flex', alignItems: 'center', gap: '10px', borderRight: i < 3 ? '1px solid #1A1A1A' : 'none' }}>
@@ -509,7 +521,7 @@ export default function HomePage() {
               WHAT OUR GUESTS <span style={{ color: '#FED800' }}>ARE SAYING</span>
             </h2>
             <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '5px', marginTop: '14px' }}>
-              {[0,1,2,3,4].map(i => <Star key={i} size={19} color="#FED800" fill="#FED800" />)}
+              {[0, 1, 2, 3, 4].map(i => <Star key={i} size={19} color="#FED800" fill="#FED800" />)}
               <span style={{ fontSize: '14px', color: '#555', marginLeft: '8px' }}>5.0 · 200+ reviews</span>
             </div>
           </div>
@@ -518,7 +530,7 @@ export default function HomePage() {
             {REVIEWS.map((r, i) => (
               <div key={i} className="review-card">
                 <div style={{ display: 'flex', gap: '3px', marginBottom: '18px' }}>
-                  {[0,1,2,3,4].map(s => <Star key={s} size={13} color="#FED800" fill="#FED800" />)}
+                  {[0, 1, 2, 3, 4].map(s => <Star key={s} size={13} color="#FED800" fill="#FED800" />)}
                 </div>
                 <p style={{ fontSize: '15px', color: '#BBBBBB', lineHeight: 1.75, marginBottom: '24px', fontStyle: 'italic' }}>"{r.text}"</p>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -545,9 +557,9 @@ export default function HomePage() {
           <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: 'clamp(28px, 6vw, 80px)', flexWrap: 'wrap' }}>
             {[
               { name: 'Philadelphia Magazine', sub: 'Best Breakfast 2024' },
-              { name: 'Visit Philadelphia',    sub: 'Local Favorite' },
-              { name: 'Philly Voice',           sub: 'Featured Restaurant' },
-              { name: 'Yelp',                   sub: "People's Choice" },
+              { name: 'Visit Philadelphia', sub: 'Local Favorite' },
+              { name: 'Philly Voice', sub: 'Featured Restaurant' },
+              { name: 'Yelp', sub: "People's Choice" },
             ].map((p, i) => (
               <div key={i} style={{ textAlign: 'center', opacity: 0.45 }}>
                 <p className="bebas" style={{ fontSize: 'clamp(16px, 2.5vw, 22px)', color: '#FEFEFE' }}>{p.name}</p>
@@ -579,9 +591,9 @@ export default function HomePage() {
 
             <div className="rewards-steps">
               {[
-                { step: '01', title: 'Sign Up Free',    desc: 'Create your account in under a minute. No fees, ever.', color: '#FED800' },
-                { step: '02', title: 'Earn Points',     desc: '$1 spent = 10 points. Points stack up fast.',           color: '#FC0301' },
-                { step: '03', title: 'Redeem Rewards',  desc: 'Free items, discounts, and exclusive member perks.',    color: '#22C55E' },
+                { step: '01', title: 'Sign Up Free', desc: 'Create your account in under a minute. No fees, ever.', color: '#FED800' },
+                { step: '02', title: 'Earn Points', desc: '$1 spent = 10 points. Points stack up fast.', color: '#FC0301' },
+                { step: '03', title: 'Redeem Rewards', desc: 'Free items, discounts, and exclusive member perks.', color: '#22C55E' },
               ].map((s, i) => (
                 <div key={i} style={{ background: '#0D0D0D', border: '1px solid #1A1A1A', borderRadius: '16px', padding: '26px 20px', position: 'relative', overflow: 'hidden' }}>
                   <p className="bebas" style={{ position: 'absolute', top: '-10px', right: '10px', fontSize: '64px', color: `${s.color}10`, lineHeight: 1 }}>{s.step}</p>
@@ -645,10 +657,11 @@ export default function HomePage() {
             {/* Info panel */}
             <div style={{ background: '#0D0D0D', padding: 'clamp(32px, 5vw, 60px)', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', gap: '36px' }}>
               <div>
-                <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', background: '#22C55E15', border: '1px solid #22C55E30', borderRadius: '20px', padding: '5px 14px', marginBottom: '20px' }}>
-                  <div style={{ width: '7px', height: '7px', borderRadius: '50%', background: '#22C55E' }} />
-                  <span style={{ fontSize: '12px', color: '#22C55E', fontWeight: '600' }}>Open Now</span>
+                <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', background: isOpen ? '#22C55E15' : '#FC030115', border: `1px solid ${isOpen ? '#22C55E30' : '#FC030130'}`, borderRadius: '20px', padding: '5px 14px', marginBottom: '20px' }}>
+                  <div style={{ width: '7px', height: '7px', borderRadius: '50%', background: isOpen ? '#22C55E' : '#FC0301' }} />
+                  <span style={{ fontSize: '12px', color: isOpen ? '#22C55E' : '#FC0301', fontWeight: '600' }}>{isOpen ? 'Open Now' : 'Closed'}</span>
                 </div>
+
                 <h3 className="bebas" style={{ fontSize: 'clamp(28px, 4vw, 44px)', color: '#FEFEFE', marginBottom: '28px' }}>
                   EGGS OK<br /><span style={{ color: '#FED800' }}>WEST PHILADELPHIA</span>
                 </h3>
@@ -718,7 +731,7 @@ export default function HomePage() {
           </p>
           <div style={{ display: 'flex', justifyContent: 'center', gap: '16px', flexWrap: 'wrap' }}>
             <Link href="/order" style={{ padding: '16px 44px', background: '#000', color: '#FED800', borderRadius: '10px', fontSize: '16px', fontWeight: '700', display: 'inline-flex', alignItems: 'center', gap: '8px', textDecoration: 'none' }}>
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 001.95-1.57l1.65-7.43H6"/></svg>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="9" cy="21" r="1" /><circle cx="20" cy="21" r="1" /><path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 001.95-1.57l1.65-7.43H6" /></svg>
               Order Online Now
             </Link>
             <a href="https://maps.google.com/?q=3517+Lancaster+Ave+Philadelphia+PA+19104" target="_blank" rel="noopener noreferrer" style={{ padding: '16px 36px', background: 'rgba(0,0,0,0.1)', color: '#000', borderRadius: '10px', fontSize: '16px', fontWeight: '700', border: '1.5px solid rgba(0,0,0,0.2)', display: 'inline-flex', alignItems: 'center', gap: '8px', textDecoration: 'none' }}>
