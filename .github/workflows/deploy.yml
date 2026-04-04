@@ -39,7 +39,7 @@ jobs:
         run: |
           cd website
           npm ci
-          NEXT_PUBLIC_API_URL=/api npx next build
+          NEXT_PUBLIC_API_URL=https://fooddeliveryaudit.com/api npx next build
           cp -r .next/static .next/standalone/.next/static
           cp -r public .next/standalone/public
 
@@ -48,7 +48,7 @@ jobs:
         run: |
           cd admin
           npm ci
-          NEXT_PUBLIC_API_URL=/api npx next build
+          NEXT_PUBLIC_API_URL=https://fooddeliveryaudit.com/api npx next build
           cp -r .next/static .next/standalone/.next/static
           cp -r public .next/standalone/public
 
