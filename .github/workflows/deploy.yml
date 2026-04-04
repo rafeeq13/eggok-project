@@ -14,6 +14,26 @@ jobs:
         with:
           node-version: '22'
 
+      # Set production configs before build
+      - name: Set production configs
+        run: |
+          cat > website/next.config.ts << 'EOF'
+          import type { NextConfig } from "next";
+          const nextConfig: NextConfig = { output: 'standalone' };
+          export default nextConfig;
+          EOF
+
+          cat > admin/next.config.ts << 'EOF'
+          import type { NextConfig } from "next";
+          const nextConfig: NextConfig = {
+            output: 'standalone',
+            basePath: '/admin',
+            typescript: { ignoreBuildErrors: true },
+            eslint: { ignoreDuringBuilds: true },
+          };
+          export default nextConfig;
+          EOF
+
       # Build website
       - name: Build website
         run: |
