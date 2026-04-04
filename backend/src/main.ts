@@ -10,7 +10,12 @@ async function bootstrap() {
     origin: [
       'http://localhost:3000',
       'http://localhost:3001',
-    ],
+      'https://fooddeliveryaudit.com',
+      'https://www.fooddeliveryaudit.com',
+      'https://admin.fooddeliveryaudit.com',
+      process.env.FRONTEND_URL,
+      process.env.ADMIN_URL,
+    ].filter(Boolean),
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
     credentials: true,
   });

@@ -2,7 +2,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import DateRangePicker from './DateRangePicker';
 
-const API = 'http://localhost:3002/api';
+const API = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3002/api';
 
 type OrderStatus = 'pending' | 'confirmed' | 'preparing' | 'ready' | 'out_for_delivery' | 'delivered' | 'picked_up' | 'cancelled';
 type OrderType = 'pickup' | 'delivery';

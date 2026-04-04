@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 
 type Section = 'brand' | 'contact' | 'location' | 'social' | 'seo' | 'owner';
 
-const API = 'http://localhost:3002/api';
+const API = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3002/api';
 
 export default function BusinessProfile() {
   const [loading, setLoading] = useState(true);

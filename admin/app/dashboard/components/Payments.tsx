@@ -20,7 +20,7 @@ type Transaction = {
   refundAmount: number;
 };
 
-const API = 'http://localhost:3002/api';
+const API = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3002/api';
 
 const monthlyData = [
   { month: 'Oct', revenue: 12400, fees: 620, delivery: 1240, profit: 10540 },

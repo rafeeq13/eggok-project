@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-const API = 'http://localhost:3002/api';
+const API = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3002/api';
 
 type ReviewStatus = 'Published' | 'Hidden' | 'Flagged';
 type ReviewRating = 1 | 2 | 3 | 4 | 5;

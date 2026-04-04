@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import SingleDatePicker from './SingleDatePicker';
 
-const API = 'http://localhost:3002/api';
+const API = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3002/api';
 
 const dayKeys = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
 const dayLabels = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];

@@ -22,7 +22,7 @@ const initialZones: Zone[] = [
   { id: 3, name: 'Extended Zone', radiusMiles: 5.0, deliveryFee: 5.99, minOrder: 25, estimatedMinutes: 45, active: true, color: '#22C55E' },
 ];
 
-const API = 'http://localhost:3002/api';
+const API = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3002/api';
 
 export default function DeliverySettings() {
   const [loading, setLoading] = useState(true);

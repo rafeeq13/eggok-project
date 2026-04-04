@@ -166,8 +166,8 @@ function DashboardContent() {
     try {
       setOverviewLoading(true);
       const [statsRes, ordersRes] = await Promise.all([
-        fetch('http://localhost:3002/api/orders/stats/today'),
-        fetch('http://localhost:3002/api/orders')
+        fetch((process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3002/api') + '/orders/stats/today'),
+        fetch((process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3002/api') + '/orders')
       ]);
       const stats = await statsRes.json();
       const orders = await ordersRes.json();

@@ -38,7 +38,7 @@ export class Order {
   @Column({ nullable: true })
   deliveryInstructions: string;
 
-  @Column({ type: 'jsonb' })
+  @Column({ type: 'json' })
   items: any[];
 
   @Column({ type: 'decimal', precision: 10, scale: 2 })

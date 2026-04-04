@@ -1,7 +1,7 @@
 'use client';
 import { useState, useEffect } from 'react';
 
-const API = 'http://localhost:3002/api';
+const API = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3002/api';
 
 type NotifTab = 'templates' | 'push' | 'history';
 

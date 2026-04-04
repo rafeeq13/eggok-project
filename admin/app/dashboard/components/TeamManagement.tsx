@@ -37,7 +37,7 @@ const statusColor: Record<string, string> = {
   Suspended: '#FC0301',
 };
 
-const API = 'http://localhost:3002/api';
+const API = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3002/api';
 
 export default function TeamManagement() {
   const [team, setTeam] = useState<TeamMember[]>([]);

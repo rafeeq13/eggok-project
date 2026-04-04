@@ -12,7 +12,7 @@ type Customer = {
   joinDate: string;
 };
 
-const API = 'http://localhost:3002/api';
+const API = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3002/api';
 
 export default function Customers() {
   const [customers, setCustomers] = useState<Customer[]>([]);

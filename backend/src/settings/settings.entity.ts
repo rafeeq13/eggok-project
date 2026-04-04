@@ -8,7 +8,7 @@ export class Settings {
   @Column({ unique: true })
   key: string;
 
-  @Column({ type: 'jsonb' })
+  @Column({ type: 'json' })
   value: any;
 
   @UpdateDateColumn()

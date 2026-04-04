@@ -33,7 +33,7 @@ export class Item {
   @Column({ default: 0 })
   sortOrder: number;
 
-  @Column({ type: 'jsonb', nullable: true })
+  @Column({ type: 'json', nullable: true })
   modifiers: any;
 
   @OneToMany(() => ItemModifierGroup, img => img.item)

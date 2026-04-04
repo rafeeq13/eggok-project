@@ -13,7 +13,7 @@ const actionColor: Record<string, string> = {
   TOGGLED: '#60A5FA', LINKED: '#A78BFA', UNLINKED: '#888888',
 };
 
-const API = 'http://localhost:3002/api';
+const API = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3002/api';
 
 export default function MenuManagement() {
   const [mounted, setMounted] = useState(false);
