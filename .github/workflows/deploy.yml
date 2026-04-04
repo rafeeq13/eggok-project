@@ -1,11 +1,8 @@
 name: Deploy to Hostinger
 
 on:
-  workflow_dispatch:
-    inputs:
-      confirm:
-        description: 'Type "deploy" to confirm deployment'
-        required: true
+  push:
+    branches: [production]
 
 jobs:
   deploy:
