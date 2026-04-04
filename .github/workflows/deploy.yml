@@ -81,25 +81,7 @@ jobs:
           cp backend/package.json deploy/backend/
           cp backend/package-lock.json deploy/backend/
 
-      # Deploy via SSH
-      - name: Deploy to server
-        uses: appleboy/ssh-action@v1
-        with:
-          host: 147.93.42.43
-          username: u966025995
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          port: 65002
-          script: |
-            export PATH=/opt/alt/alt-nodejs22/root/usr/bin:$PATH
-            DEST=~/domains/fooddeliveryaudit.com/nodejs
-
-            # Save .env
-            cp $DEST/backend/.env /tmp/backend-env-backup 2>/dev/null || true
-
-            # Clean and prepare
-            rm -rf $DEST/website $DEST/admin $DEST/backend
-            rm -f $DEST/server.js $DEST/package.json
-
+      # Deploy via SSH - upload first, then swap
       - name: Upload files
         uses: appleboy/scp-action@v0.1.7
         with:
@@ -108,10 +90,10 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: 65002
           source: "deploy/*"
-          target: ~/domains/fooddeliveryaudit.com/nodejs/
+          target: ~/domains/fooddeliveryaudit.com/deploy-new/
           strip_components: 1
 
-      - name: Post-deploy setup
+      - name: Swap and restart
         uses: appleboy/ssh-action@v1
         with:
           host: 147.93.42.43
@@ -121,6 +103,18 @@ jobs:
           script: |
             export PATH=/opt/alt/alt-nodejs22/root/usr/bin:$PATH
             DEST=~/domains/fooddeliveryaudit.com/nodejs
+            NEW=~/domains/fooddeliveryaudit.com/deploy-new
+
+            # Save .env
+            cp $DEST/backend/.env /tmp/backend-env-backup 2>/dev/null || true
+
+            # Replace files (not delete first - safer)
+            rm -rf $DEST/website $DEST/admin $DEST/backend
+            mv $NEW/website $DEST/website
+            mv $NEW/admin $DEST/admin
+            mv $NEW/backend $DEST/backend
+            cp $NEW/server.js $DEST/server.js
+            cp $NEW/package.json $DEST/package.json
 
             # Install backend dependencies
             cd $DEST/backend
@@ -128,6 +122,9 @@ jobs:
 
             # Restore .env
             cp /tmp/backend-env-backup $DEST/backend/.env 2>/dev/null || true
+
+            # Cleanup
+            rm -rf $NEW
 
             # Restart Passenger
             touch $DEST/tmp/restart.txt
