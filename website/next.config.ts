@@ -1,7 +1,3 @@
 import type { NextConfig } from "next";
-
-const nextConfig: NextConfig = {
-  // output: 'standalone' is set during build in GitHub Actions
-};
-
+const nextConfig: NextConfig = {};
 export default nextConfig;

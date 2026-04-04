@@ -327,6 +327,77 @@ export default function HomePage() {
           .order-hero { padding: 60px 20px; }
           .order-card-box { margin: 0; max-width: 100%; }
         }
+          .order-hero {
+  position: relative;
+  height: 300px;
+  background: url('/main-menu/Avocado Omelette.jpg') no-repeat center center/cover;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Dark overlay for readability */
+.overlay {
+  width: 100%;
+  // height: 100%;
+  background: rgba(0.65, 0.55, 0.55, 0.65);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.order-content {
+  text-align: center;
+  color: #fff;
+  max-width: 800px;
+  padding: 20px;
+}
+
+.small-text {
+  font-size: 14px;
+  letter-spacing: 2px;
+  margin-bottom: 10px;
+  display: block;
+}
+
+.order-content h1 {
+  font-size: 48px;
+  font-weight: 800;
+  margin: 10px 0;
+}
+
+.order-content h1 span {
+  color: #f5c518; /* yellow */
+}
+
+.order-content p {
+  font-size: 16px;
+  margin: 15px 0 25px;
+}
+
+.order-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+.btn {
+  padding: 12px 25px;
+  border-radius: 8px;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.uber {
+  background: #fff;
+  color: #000;
+}
+
+.doordash {
+  background: #fff;
+  color: #e53935;
+}
+
         @media (max-width: 500px) {
           .photo-gallery { grid-template-columns: 1fr; }
         }
@@ -757,6 +828,31 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+      <div className="order-hero">
+        <div className="overlay">
+          <div className="order-content">
+            <span className="small-text">ORDER ONLINE</span>
+
+            <h1>
+              GET IT DELIVERED <br />
+              <span>STRAIGHT TO YOUR DOOR</span>
+            </h1>
+
+            <p>
+              Craving Philly Cheesesteak? Order takeout or get it delivered piping hot via your favorite app—
+              UberEats, Grubhub, or DoorDash.
+            </p>
+
+            <div className="order-buttons">
+              <img src="/main-menu/Ubereats-ordering-1.webp" alt="Uber Eats" width={120} />
+              {/* <a href="#" className="btn doordash">DoorDash</a> */}
+              <img src="/main-menu/Doordash-Ordering-1.webp" alt="DoorDash" width={120} />
+            </div>
+          </div>
+        </div>
+      </div>
+
+
 
       {/* ══════════════════════════════════════════
           FOOTER
