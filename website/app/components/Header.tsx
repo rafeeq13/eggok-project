@@ -24,9 +24,14 @@ export default function Header() {
     { label: 'Gift Cards', href: '/gift-cards' },
     // { label: "We're Hiring", href: '/hiring' },
   ];
-
+const css = `
+  .navLink:hover{
+  color:#FED800 !important;
+  }
+`
   return (
     <>
+      <style>{css}</style>
       <header style={{
         position: 'fixed', top: 0, left: 0, right: 0, zIndex: 100,
         background: scrolled ? 'rgba(0,0,0,0.95)' : 'transparent',
@@ -44,7 +49,7 @@ export default function Header() {
           {/* Logo */}
           <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
             <div style={{  borderRadius: '10px', overflow: 'hidden', background: '#000', flexShrink: 0 }}>
-              <Image src="/logo.svg" alt="EggsOK Eatery" width={135} height={80} style={{ objectFit: 'contain' }} />
+              <Image src="/logo.svg" alt="EggsOK Eatery" width={135} height={60} style={{ objectFit: 'contain' }} />
             </div>
             <div>
               {/* <p style={{ fontSize: '17px', fontWeight: '800', color: '#FED800', letterSpacing: '1px', fontFamily: 'Bebas Neue, sans-serif' }}>EggsOK</p>
@@ -54,12 +59,12 @@ export default function Header() {
 
           {/* Desktop Nav */}
           <nav style={{ display: 'flex', alignItems: 'center', gap: '4px' }} className="hide-mobile">
-            <Link href="/" style={{ padding: '8px 14px', color: '#888888', fontSize: '14px', fontWeight: '500', borderRadius: '8px', transition: 'color 0.2s' }}
+            <Link href="/" className="navLink" style={{ padding: '8px 14px', color: '#f9f9f9ff', fontSize: '14px', fontWeight: '500', borderRadius: '8px', transition: 'color 0.2s' }}
               onMouseEnter={e => (e.currentTarget as HTMLAnchorElement).style.color = '#FEFEFE'}
               onMouseLeave={e => (e.currentTarget as HTMLAnchorElement).style.color = '#ffffffff'}
             >Home</Link>
 
-            <Link href="/story" style={{ padding: '8px 14px', color: '#888888', fontSize: '14px', fontWeight: '500', borderRadius: '8px', transition: 'color 0.2s' }}
+            <Link href="/story" className="navLink" style={{ padding: '8px 14px', color: '#f9f9f9ff', fontSize: '14px', fontWeight: '500', borderRadius: '8px', transition: 'color 0.2s' }}
               onMouseEnter={e => (e.currentTarget as HTMLAnchorElement).style.color = '#FEFEFE'}
               onMouseLeave={e => (e.currentTarget as HTMLAnchorElement).style.color = '#ffffffff'}
             >Our Story</Link>
@@ -69,17 +74,17 @@ export default function Header() {
               onMouseLeave={e => (e.currentTarget as HTMLAnchorElement).style.color = '#ffffffff'}
             >Events</Link> */}
 
-            <Link href="/hiring" style={{ padding: '8px 14px', color: '#888888', fontSize: '14px', fontWeight: '500', borderRadius: '8px', transition: 'color 0.2s' }}
+            <Link href="/hiring" className="navLink" style={{ padding: '8px 14px', color: '#f9f9f9ff', fontSize: '14px', fontWeight: '500', borderRadius: '8px', transition: 'color 0.2s' }}
               onMouseEnter={e => (e.currentTarget as HTMLAnchorElement).style.color = '#FEFEFE'}
               onMouseLeave={e => (e.currentTarget as HTMLAnchorElement).style.color = '#ffffffff'}
             >We're Hiring</Link>
 
-            <Link href="/order" style={{ padding: '8px 14px', color: '#888888', fontSize: '14px', fontWeight: '500', borderRadius: '8px', transition: 'color 0.2s' }}
+            <Link href="/order" className="navLink" style={{ padding: '8px 14px', color: '#ffffffff', fontSize: '14px', fontWeight: '500', borderRadius: '8px', transition: 'color 0.2s' }}
               onMouseEnter={e => (e.currentTarget as HTMLAnchorElement).style.color = '#FEFEFE'}
               onMouseLeave={e => (e.currentTarget as HTMLAnchorElement).style.color = '#ffffffff'}
             >Menu</Link>
 
-            <Link href="/catering" style={{ padding: '8px 14px', color: '#888888', fontSize: '14px', fontWeight: '500', borderRadius: '8px', transition: 'color 0.2s' }}
+            <Link href="/catering" className="navLink" style={{ padding: '8px 14px', color: '#f9f9f9ff', fontSize: '14px', fontWeight: '500', borderRadius: '8px', transition: 'color 0.2s' }}
               onMouseEnter={e => (e.currentTarget as HTMLAnchorElement).style.color = '#FEFEFE'}
               onMouseLeave={e => (e.currentTarget as HTMLAnchorElement).style.color = '#ffffffff'}
             >Catering</Link>
@@ -87,8 +92,9 @@ export default function Header() {
             {/* More Dropdown */}
             <div style={{ position: 'relative' }}>
               <button
+              className="navLink"
                 onClick={() => setMoreOpen(!moreOpen)}
-                style={{ padding: '8px 14px', color: '#888888', fontSize: '14px', fontWeight: '500', borderRadius: '8px', transition: 'color 0.2s', display: 'flex', alignItems: 'center', gap: '4px', background: 'transparent' }}
+                style={{ padding: '8px 14px', color: '#f9f9f9ff', fontSize: '14px', fontWeight: '500', borderRadius: '8px', transition: 'color 0.2s', display: 'flex', alignItems: 'center', gap: '4px', background: 'transparent' }}
                 onMouseEnter={e => (e.currentTarget as HTMLButtonElement).style.color = '#FEFEFE'}
                 onMouseLeave={e => (e.currentTarget as HTMLButtonElement).style.color = '#ffffffff'}
               >
