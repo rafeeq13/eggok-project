@@ -1,5 +1,5 @@
 'use client';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -12,6 +12,7 @@ export default function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [moreOpen, setMoreOpen] = useState(false);
+  const moreRef = useRef<HTMLDivElement>(null);
   const pathname = usePathname();
 
   // Close dropdowns on route change
@@ -19,6 +20,18 @@ export default function Header() {
     setMoreOpen(false);
     setMobileMenuOpen(false);
   }, [pathname]);
+
+  // Close "More" dropdown on any click outside it
+  useEffect(() => {
+    if (!moreOpen) return;
+    const handleClickOutside = (e: MouseEvent) => {
+      if (moreRef.current && !moreRef.current.contains(e.target as Node)) {
+        setMoreOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside, true);
+    return () => document.removeEventListener('mousedown', handleClickOutside, true);
+  }, [moreOpen]);
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20);
@@ -98,7 +111,7 @@ const css = `
             >Catering</Link>
 
             {/* More Dropdown */}
-            <div style={{ position: 'relative' }}>
+            <div ref={moreRef} style={{ position: 'relative' }}>
               <button
               className="navLink"
                 onClick={() => setMoreOpen(!moreOpen)}
@@ -113,7 +126,6 @@ const css = `
               </button>
               {moreOpen && (
                 <>
-                  <div onClick={() => setMoreOpen(false)} style={{ position: 'fixed', inset: 0, zIndex: 10 }} />
                   <div style={{
                     position: 'absolute', top: 'calc(100% + 8px)', left: '50%',
                     transform: 'translateX(-50%)',

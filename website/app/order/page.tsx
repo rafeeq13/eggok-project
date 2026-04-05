@@ -650,6 +650,7 @@ function OrderContent() {
   const [showDeliveryModal, setShowDeliveryModal] = useState(false);
   const [showScheduleModal, setShowScheduleModal] = useState(false);
   const [showMoreMenu, setShowMoreMenu] = useState(false);
+  const moreMenuRef = useRef<HTMLDivElement>(null);
   const [showMoreDates, setShowMoreDates] = useState(false);
   const [deliveryStep, setDeliveryStep] = useState<1 | 2>(deliveryAddress ? 2 : 1);
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -662,6 +663,18 @@ function OrderContent() {
   const mainContentRef = useRef<HTMLDivElement>(null);
   const mobileCatScrollRef = useRef<HTMLDivElement>(null);
   const mobileCatRefs = useRef<Record<number, HTMLButtonElement | null>>({});
+
+  // Close More dropdown on click outside
+  useEffect(() => {
+    if (!showMoreMenu) return;
+    const handleClickOutside = (e: MouseEvent) => {
+      if (moreMenuRef.current && !moreMenuRef.current.contains(e.target as Node)) {
+        setShowMoreMenu(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside, true);
+    return () => document.removeEventListener('mousedown', handleClickOutside, true);
+  }, [showMoreMenu]);
 
   useEffect(() => { setMounted(true); fetchData(); }, [searchParams, menuItems]);
 
@@ -827,14 +840,13 @@ function OrderContent() {
         <div id="nav-actions" className="nav-actions">
 
           {/* More dropdown */}
-          <div id="nav-more-wrap" className="nav-more-wrap">
+          <div id="nav-more-wrap" ref={moreMenuRef} className="nav-more-wrap">
             <button id="nav-more-btn" className="nav-more-btn" onClick={() => setShowMoreMenu(!showMoreMenu)}>
               More
               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#ffffff" strokeWidth="2.5"><polyline points="6 9 12 15 18 9"/></svg>
             </button>
             {showMoreMenu && (
               <>
-                <div style={{ position: 'fixed', inset: 0, zIndex: 150 }} onClick={() => setShowMoreMenu(false)} />
                 <div id="nav-more-dropdown" className="nav-more-dropdown">
                   {moreLinks.map(link => (
                     <Link key={link.href} href={link.href} className="nav-more-link" onClick={() => setShowMoreMenu(false)}>{link.label}</Link>
