@@ -63,7 +63,9 @@ export async function getStoreSettings(): Promise<StoreSettings> {
     next: { revalidate: 60 },
   });
   if (!res.ok) throw new Error('Failed to fetch store settings');
-  return res.json();
+  const text = await res.text();
+  if (!text) return {} as StoreSettings;
+  return JSON.parse(text);
 }
 
 export async function getBusinessHours(): Promise<any> {

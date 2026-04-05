@@ -23,6 +23,19 @@ const DEFAULT_LOYALTY = {
   referralBonus: 75,
 };
 
+const DEFAULT_STORE = {
+  storeOpen: true,
+  deliveryEnabled: true,
+  pickupEnabled: true,
+  pickupWait: 15,
+  minOrder: 10,
+  deliveryRadius: 5,
+  deliveryFee: 3.99,
+  closedMessage: 'We are currently closed',
+  storePhone: '',
+  storeEmail: '',
+};
+
 @Injectable()
 export class SettingsService implements OnModuleInit {
   constructor(
@@ -44,6 +57,14 @@ export class SettingsService implements OnModuleInit {
       await this.settingsRepository.save({
         key: 'loyalty',
         value: DEFAULT_LOYALTY,
+      });
+    }
+
+    const storeExisting = await this.settingsRepository.findOne({ where: { key: 'store' } });
+    if (!storeExisting) {
+      await this.settingsRepository.save({
+        key: 'store',
+        value: DEFAULT_STORE,
       });
     }
   }
@@ -109,6 +130,7 @@ export class SettingsService implements OnModuleInit {
     const setting = await this.settingsRepository.findOne({ where: { key } });
     if (!setting) {
       if (key === 'loyalty') return DEFAULT_LOYALTY;
+      if (key === 'store') return DEFAULT_STORE;
       return null;
     }
     return setting.value;

@@ -20,15 +20,15 @@ const css = `
   :root {
     --y: #FED800;
     --r: #FC0301;
-    --w: #FEFEFE;
+    --w: #ffffff;
     --bg0: #000000;
     --bg1: #0A0A0A;
     --bg2: #111111;
     --bg3: #181818;
     --bg4: #1A1A1A;
     --border: #2A2A2A;
-    --t1: #FEFEFE;
-    --t2: #AAAAAA;
+    --t1: #ffffff;
+    --t2: #ffffff;
     --t3: #666666;
     --t4: #444444;
     --green: #22C55E;
@@ -92,7 +92,7 @@ const css = `
     border-radius: 8px; transition: background 0.12s, color 0.12s;
     font-family: var(--font-body);
   }
-  .nav-more-link:hover { background: var(--bg4); color: var(--t1); }
+  .nav-more-link:hover { background: var(--bg4); color: var(--t1);color:#e8c400; }
 
   /* ── Sign in ── */
   .nav-signin {
@@ -830,7 +830,7 @@ function OrderContent() {
           <div id="nav-more-wrap" className="nav-more-wrap">
             <button id="nav-more-btn" className="nav-more-btn" onClick={() => setShowMoreMenu(!showMoreMenu)}>
               More
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#888" strokeWidth="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#ffffff" strokeWidth="2.5"><polyline points="6 9 12 15 18 9"/></svg>
             </button>
             {showMoreMenu && (
               <>
@@ -873,7 +873,7 @@ function OrderContent() {
           <div id="mobile-search-bar" className="mobile-search-bar">
             <div className="mobile-search-input-wrap">
               <svg style={{ position: 'absolute', left: '11px', top: '50%', transform: 'translateY(-50%)', pointerEvents: 'none' }}
-                width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#888" strokeWidth="2.2">
+                width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#ffffff" strokeWidth="2.2">
                 <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
               </svg>
               <input
@@ -1014,7 +1014,7 @@ function OrderContent() {
                 {/* Delivery address */}
                 {mounted && orderType === 'delivery' && (
                   <button id="delivery-addr-btn" className="delivery-addr-btn" onClick={() => setShowDeliveryModal(true)}>
-                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#888" strokeWidth="2" strokeLinecap="round" style={{ flexShrink: 0 }}>
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#ffffff" strokeWidth="2" strokeLinecap="round" style={{ flexShrink: 0 }}>
                       <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>
                     </svg>
                     <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
@@ -1281,7 +1281,7 @@ function OrderContent() {
                     <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#666" strokeWidth="2">
                       <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
                     </svg>
-                    <span style={{ flex: 1, fontSize: '13px', color: '#FEFEFE', fontWeight: '500', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{deliveryAddress}</span>
+                    <span style={{ flex: 1, fontSize: '13px', color: '#ffffff', fontWeight: '500', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{deliveryAddress}</span>
                     <button className="delivery-addr-change" onClick={() => setDeliveryStep(1)}>Change</button>
                   </div>
 
@@ -1298,7 +1298,7 @@ function OrderContent() {
                   <div id="delivery-from-box" className="delivery-from-box">
                     <p className="delivery-from-label">Delivering from</p>
                     <div className="delivery-from-name-row">
-                      <p style={{ fontSize: '14px', fontWeight: '700', color: '#FEFEFE', margin: 0 }}>Eggs Ok</p>
+                      <p style={{ fontSize: '14px', fontWeight: '700', color: '#ffffff', margin: 0 }}>Eggs Ok</p>
                       <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
                         <div style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#22C55E' }} />
                         <span style={{ fontSize: '12px', color: '#22C55E', fontWeight: '600' }}>Open now</span>
@@ -1359,7 +1359,7 @@ function OrderContent() {
                     </div>
                     <button id="schedule-more-dates-btn" className="schedule-more-btn" onClick={() => setShowMoreDates(p => !p)}>
                       {showMoreDates ? 'Less dates' : 'More dates'}
-                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#888" strokeWidth="2.5">
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#ffffff" strokeWidth="2.5">
                         <polyline points={showMoreDates ? '18 15 12 9 6 15' : '6 9 12 15 18 9'}/>
                       </svg>
                     </button>
