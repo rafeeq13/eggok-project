@@ -1,11 +1,11 @@
 'use client';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Image from 'next/image';
 
 const API = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3002/api';
 
-export default function SetPasswordPage() {
+function SetPasswordContent() {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [loading, setLoading] = useState(false);
@@ -181,5 +181,13 @@ export default function SetPasswordPage() {
         </p>
       </div>
     </div>
+  );
+}
+
+export default function SetPasswordPage() {
+  return (
+    <Suspense fallback={<div style={{background:"#000",minHeight:"100vh"}} />}>
+      <SetPasswordContent />
+    </Suspense>
   );
 }
