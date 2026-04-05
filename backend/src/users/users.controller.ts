@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Put, Delete, Body, Param } from '@nestjs/common';
+import { Controller, Get, Post, Put, Patch, Delete, Body, Param, HttpCode } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { User } from './user.entity';
 
@@ -21,8 +21,25 @@ export class UsersController {
         return this.usersService.create(user);
     }
 
+    @Post('set-password')
+    @HttpCode(200)
+    setPassword(@Body() data: { token: string; password: string }) {
+        return this.usersService.setPasswordByToken(data.token, data.password);
+    }
+
+    @Post('login')
+    @HttpCode(200)
+    login(@Body() data: { email: string; password: string }) {
+        return this.usersService.login(data.email, data.password);
+    }
+
     @Put(':id')
     update(@Param('id') id: string, @Body() user: Partial<User>): Promise<User | null> {
+        return this.usersService.update(id, user);
+    }
+
+    @Patch(':id')
+    patch(@Param('id') id: string, @Body() user: Partial<User>): Promise<User | null> {
         return this.usersService.update(id, user);
     }
 

@@ -318,6 +318,42 @@ export class MailService {
         ]);
     }
 
+    async sendTeamInviteEmail(payload: { name: string; email: string; role: string; setupLink: string }) {
+        const settings = await this.assertMailReady();
+        const name = this.safeText(payload.name);
+        const email = this.safeText(payload.email);
+        const role = this.safeText(payload.role);
+
+        await this.sendMail(
+            {
+                to: email,
+                subject: "You're invited to join the Eggs Ok team",
+                html: this.wrapEmail({
+                    eyebrow: 'Team Invitation',
+                    title: "You're invited to Eggs Ok",
+                    intro: `Hi ${name}, you've been invited to join the Eggs Ok team as a ${role}. Click the button below to set your password and activate your account.`,
+                    cta: {
+                        text: 'Set Up Your Account',
+                        link: payload.setupLink,
+                    },
+                    sections: [
+                        {
+                            title: 'Your account details',
+                            lines: [
+                                `Name: ${name}`,
+                                `Email: ${email}`,
+                                `Role: ${role}`,
+                            ],
+                        },
+                    ],
+                    footer: 'This invitation link expires in 7 days. If you did not expect this invitation, you can safely ignore this email.',
+                }),
+                text: `Hi ${name}, you've been invited to join the Eggs Ok team as a ${role}.\n\nSet up your account: ${payload.setupLink}\n\nThis link expires in 7 days.`,
+            },
+            settings,
+        );
+    }
+
     async sendGiftCardRequest(payload: any) {
         const settings = await this.assertMailReady();
         const amount = Number(payload?.amount || 0).toFixed(2);

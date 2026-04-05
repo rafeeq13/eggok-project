@@ -3,6 +3,8 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 
+const API = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3002/api';
+
 export default function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -14,11 +16,22 @@ export default function LoginPage() {
     e.preventDefault();
     setLoading(true);
     setError('');
-    await new Promise(r => setTimeout(r, 1000));
-    if (email === 'admin@eggok.com' && password === 'admin123') {
+    try {
+      const res = await fetch(`${API}/users/login`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        setError(data.message || 'Invalid email or password');
+        setLoading(false);
+        return;
+      }
+      localStorage.setItem('admin_user', JSON.stringify(data.user));
       router.push('/dashboard');
-    } else {
-      setError('Invalid email or password');
+    } catch {
+      setError('Unable to connect to server');
       setLoading(false);
     }
   };
@@ -168,17 +181,6 @@ export default function LoginPage() {
             </button>
           </form>
 
-          <div style={{
-            marginTop: '20px',
-            padding: '12px',
-            background: '#111111',
-            borderRadius: '8px',
-            textAlign: 'center',
-          }}>
-            <p style={{ fontSize: '12px', color: '#888888' }}>
-              Demo: <span style={{ color: '#FED800' }}>admin@eggok.com</span> / <span style={{ color: '#FED800' }}>admin123</span>
-            </p>
-          </div>
         </div>
 
         <p style={{

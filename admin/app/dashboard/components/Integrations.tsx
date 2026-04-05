@@ -71,6 +71,13 @@ export default function Integrations() {
   const [apnsBundleId, setApnsBundleId] = useState('');
   const [pushStatus, setPushStatus] = useState<IntegrationStatus>('disconnected');
 
+  // Uber Direct
+  const [uberDirectCustomerId, setUberDirectCustomerId] = useState('');
+  const [uberDirectClientId, setUberDirectClientId] = useState('');
+  const [uberDirectClientSecret, setUberDirectClientSecret] = useState('');
+  const [uberDirectEnvironment, setUberDirectEnvironment] = useState('sandbox');
+  const [uberDirectStatus, setUberDirectStatus] = useState<IntegrationStatus>('disconnected');
+
   // Google Maps
   const [googleMapsKey, setGoogleMapsKey] = useState(clientIntegrationDefaults.googleMapsKey);
   const [googleMapsStatus, setGoogleMapsStatus] = useState<IntegrationStatus>('disconnected');
@@ -158,6 +165,12 @@ export default function Integrations() {
             if (v.apnsBundleId) setApnsBundleId(v.apnsBundleId);
             if (v.pushStatus) setPushStatus(v.pushStatus);
 
+            if (v.uberDirectCustomerId) setUberDirectCustomerId(v.uberDirectCustomerId);
+            if (v.uberDirectClientId) setUberDirectClientId(v.uberDirectClientId);
+            if (v.uberDirectClientSecret) setUberDirectClientSecret(v.uberDirectClientSecret);
+            if (v.uberDirectEnvironment) setUberDirectEnvironment(v.uberDirectEnvironment);
+            if (v.uberDirectStatus) setUberDirectStatus(v.uberDirectStatus);
+
             if (v.googleMapsKey) setGoogleMapsKey(v.googleMapsKey);
             if (v.googleMapsStatus) setGoogleMapsStatus(v.googleMapsStatus);
           }
@@ -193,6 +206,7 @@ export default function Integrations() {
       stripePublishableKey, stripeSecretKey, stripeWebhookSecret, stripeEnvironment, stripeStatus: statusUpdate?.stripeStatus || stripeStatus,
       doordashDeveloperId, doordashKeyId, doordashSigningSecret, doordashEnvironment, doordashStatus: statusUpdate?.doordashStatus || doordashStatus,
       fcmServerKey, apnsKeyId, apnsTeamId, apnsBundleId, pushStatus: statusUpdate?.pushStatus || pushStatus,
+      uberDirectCustomerId, uberDirectClientId, uberDirectClientSecret, uberDirectEnvironment, uberDirectStatus: statusUpdate?.uberDirectStatus || uberDirectStatus,
       googleMapsKey, googleMapsStatus: statusUpdate?.googleMapsStatus || googleMapsStatus
     };
 
@@ -282,6 +296,7 @@ export default function Integrations() {
       (id === 'square' && squareAppId && squareAccessToken && squareLocationId) ||
       (id === 'stripe' && stripePublishableKey && stripeSecretKey) ||
       (id === 'doordash' && doordashDeveloperId && doordashKeyId) ||
+      (id === 'uberdirect' && uberDirectCustomerId && uberDirectClientId && uberDirectClientSecret) ||
       (id === 'push' && fcmServerKey) ||
       (id === 'maps' && googleMapsKey)
     );
@@ -291,6 +306,7 @@ export default function Integrations() {
     if (id === 'square') setSquareStatus(newStatus);
     if (id === 'stripe') setStripeStatus(newStatus);
     if (id === 'doordash') setDoordashStatus(newStatus);
+    if (id === 'uberdirect') setUberDirectStatus(newStatus);
     if (id === 'push') setPushStatus(newStatus);
     if (id === 'maps') setGoogleMapsStatus(newStatus);
 
@@ -305,6 +321,7 @@ export default function Integrations() {
     if (id === 'square') update.squareStatus = newStatus;
     if (id === 'stripe') update.stripeStatus = newStatus;
     if (id === 'doordash') update.doordashStatus = newStatus;
+    if (id === 'uberdirect') update.uberDirectStatus = newStatus;
     if (id === 'push') update.pushStatus = newStatus;
     if (id === 'maps') update.googleMapsStatus = newStatus;
     saveIntegrations(update);
@@ -317,6 +334,7 @@ export default function Integrations() {
     doordash: <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="1" y="3" width="15" height="13" rx="1" /><path d="M16 8h4l3 3v5h-7V8z" /><circle cx="5.5" cy="18.5" r="2.5" /><circle cx="18.5" cy="18.5" r="2.5" /></svg>,
     email: <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" /><polyline points="22,6 12,13 2,6" /></svg>,
     push: <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9" /><path d="M13.73 21a2 2 0 01-3.46 0" /></svg>,
+    uberdirect: <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z" /><path d="M2 17l10 5 10-5" /><path d="M2 12l10 5 10-5" /></svg>,
     maps: <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" /><circle cx="12" cy="10" r="3" /></svg>,
   };
 
@@ -324,6 +342,7 @@ export default function Integrations() {
     { id: 'square', name: 'Square POS', description: 'Kitchen printing & order sync', icon: 'square', status: squareStatus, lastSync: squareStatus === 'connected' ? 'Just now' : 'Never' },
     { id: 'stripe', name: 'Stripe Payments', description: 'Online payment processing', icon: 'stripe', status: stripeStatus, lastSync: stripeStatus === 'connected' ? 'Just now' : 'Never' },
     { id: 'doordash', name: 'DoorDash Drive', description: 'Delivery dispatch & tracking', icon: 'doordash', status: doordashStatus, lastSync: doordashStatus === 'connected' ? 'Just now' : 'Never' },
+    { id: 'uberdirect', name: 'Uber Direct', description: 'On-demand delivery via Uber', icon: 'uberdirect', status: uberDirectStatus, lastSync: uberDirectStatus === 'connected' ? 'Just now' : 'Never' },
     { id: 'email', name: 'Email Service', description: 'Order confirmations & notifications', icon: 'email', status: emailStatus, lastSync: emailStatus === 'connected' ? 'Just now' : 'Never' },
     { id: 'push', name: 'Push Notifications', description: 'iOS & Android push alerts', icon: 'push', status: pushStatus, lastSync: pushStatus === 'connected' ? 'Just now' : 'Never' },
     { id: 'maps', name: 'Google Maps', description: 'Live map & delivery zones', icon: 'maps', status: googleMapsStatus, lastSync: googleMapsStatus === 'connected' ? 'Just now' : 'Never' },
@@ -408,6 +427,7 @@ export default function Integrations() {
     { id: 'square', label: 'Square POS', icon: <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" /><line x1="8" y1="21" x2="16" y2="21" /><line x1="12" y1="17" x2="12" y2="21" /></svg> },
     { id: 'stripe', label: 'Stripe', icon: <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" /><line x1="1" y1="10" x2="23" y2="10" /></svg> },
     { id: 'doordash', label: 'DoorDash', icon: <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="1" y="3" width="15" height="13" rx="1" /><path d="M16 8h4l3 3v5h-7V8z" /><circle cx="5.5" cy="18.5" r="2.5" /><circle cx="18.5" cy="18.5" r="2.5" /></svg> },
+    { id: 'uberdirect', label: 'Uber Direct', icon: <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z" /><path d="M2 17l10 5 10-5" /><path d="M2 12l10 5 10-5" /></svg> },
     { id: 'email', label: 'Email', icon: <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" /><polyline points="22,6 12,13 2,6" /></svg> },
     { id: 'push', label: 'Push Notifications', icon: <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9" /><path d="M13.73 21a2 2 0 01-3.46 0" /></svg> },
     { id: 'maps', label: 'Google Maps', icon: <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" /><circle cx="12" cy="10" r="3" /></svg> },
@@ -498,14 +518,15 @@ export default function Integrations() {
             <div style={cardStyle}>
               <p style={{ fontSize: '13px', fontWeight: '700', color: '#FEFEFE', marginBottom: '12px' }}>System Readiness</p>
               {[
-                { label: 'Square POS', status: squareStatus, required: true },
-                { label: 'Stripe Payments', status: stripeStatus, required: true },
-                { label: 'DoorDash Drive', status: doordashStatus, required: true },
-                { label: 'Email Service', status: emailStatus, required: true },
-                { label: 'Push Notifications', status: pushStatus, required: false },
-                { label: 'Google Maps', status: googleMapsStatus, required: false },
-              ].map((item, i) => (
-                <div key={i} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '10px 0', borderBottom: i < 5 ? '1px solid #2A2A2A' : 'none' }}>
+                { id: 'square', label: 'Square POS', status: squareStatus, required: true },
+                { id: 'stripe', label: 'Stripe Payments', status: stripeStatus, required: true },
+                { id: 'doordash', label: 'DoorDash Drive', status: doordashStatus, required: true },
+                { id: 'uberdirect', label: 'Uber Direct', status: uberDirectStatus, required: false },
+                { id: 'email', label: 'Email Service', status: emailStatus, required: true },
+                { id: 'push', label: 'Push Notifications', status: pushStatus, required: false },
+                { id: 'maps', label: 'Google Maps', status: googleMapsStatus, required: false },
+              ].map((item, i, arr) => (
+                <div key={i} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '10px 0', borderBottom: i < arr.length - 1 ? '1px solid #2A2A2A' : 'none' }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                     <div style={{ width: '8px', height: '8px', borderRadius: '50%', background: statusColor[item.status], flexShrink: 0 }} />
                     <span style={{ fontSize: '13px', color: '#FEFEFE' }}>{item.label}</span>
@@ -513,7 +534,7 @@ export default function Integrations() {
                   </div>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                     <span style={{ fontSize: '11px', color: statusColor[item.status] }}>{statusLabel[item.status]}</span>
-                    <button onClick={() => setActiveSection(item.label.toLowerCase().split(' ')[0])} style={{ fontSize: '11px', color: '#FED800', background: 'transparent', border: 'none', cursor: 'pointer' }}>Configure →</button>
+                    <button onClick={() => setActiveSection(item.id)} style={{ fontSize: '11px', color: '#FED800', background: 'transparent', border: 'none', cursor: 'pointer' }}>Configure →</button>
                   </div>
                 </div>
               ))}
@@ -718,6 +739,90 @@ export default function Integrations() {
                   <PasswordInput value={doordashSigningSecret} onChange={setDoordashSigningSecret} />
                 </div>
                 <ConnectButton id="doordash" />
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* UBER DIRECT */}
+        {activeSection === 'uberdirect' && (
+          <div>
+            <div style={cardStyle}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '16px', paddingBottom: '12px', borderBottom: '1px solid #2A2A2A' }}>
+                <div>
+                  <p style={sectionTitle}>Uber Direct Integration</p>
+                  <p style={{ fontSize: '12px', color: '#888888', marginTop: '4px' }}>On-demand delivery dispatch via Uber's courier network</p>
+                </div>
+                <span style={{ fontSize: '11px', padding: '3px 10px', borderRadius: '20px', fontWeight: '600', background: `${statusColor[uberDirectStatus]}20`, color: statusColor[uberDirectStatus], border: `1px solid ${statusColor[uberDirectStatus]}40`, flexShrink: 0 }}>
+                  {statusLabel[uberDirectStatus]}
+                </span>
+              </div>
+
+              <div style={{ padding: '12px 14px', background: '#111111', borderRadius: '8px', marginBottom: '16px', border: '1px solid #FED80020' }}>
+                <p style={{ fontSize: '12px', color: '#FED800', fontWeight: '600', marginBottom: '4px' }}>Where to get these credentials</p>
+                <p style={{ fontSize: '11px', color: '#888888', lineHeight: '1.6' }}>
+                  1. Go to developer.uber.com → Dashboard<br />
+                  2. Create a new app or select existing one<br />
+                  3. Enable the Direct API scope<br />
+                  4. Copy Customer ID, Client ID, and Client Secret from the app settings
+                </p>
+              </div>
+
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
+                <div>
+                  <label style={labelStyle}>Environment</label>
+                  <div style={{ display: 'flex', gap: '10px' }}>
+                    {['sandbox', 'production'].map(env => (
+                      <button key={env} onClick={() => setUberDirectEnvironment(env)} style={{
+                        flex: 1, padding: '10px', borderRadius: '8px', cursor: 'pointer',
+                        background: uberDirectEnvironment === env ? '#FED800' : '#111111',
+                        border: `1px solid ${uberDirectEnvironment === env ? '#FED800' : '#2A2A2A'}`,
+                        color: uberDirectEnvironment === env ? '#000' : '#888888',
+                        fontSize: '13px', fontWeight: '600',
+                      }}>
+                        {env === 'sandbox' ? 'Sandbox (Testing)' : 'Production (Live)'}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+                <div>
+                  <label style={labelStyle}>Customer ID *</label>
+                  <input style={inputStyle} value={uberDirectCustomerId} onChange={e => setUberDirectCustomerId(e.target.value)}
+                    placeholder="your_uber_customer_id"
+                    onFocus={e => e.target.style.borderColor = '#FED800'}
+                    onBlur={e => e.target.style.borderColor = '#2A2A2A'}
+                  />
+                </div>
+                <div>
+                  <label style={labelStyle}>Client ID *</label>
+                  <input style={inputStyle} value={uberDirectClientId} onChange={e => setUberDirectClientId(e.target.value)}
+                    placeholder="your_uber_client_id"
+                    onFocus={e => e.target.style.borderColor = '#FED800'}
+                    onBlur={e => e.target.style.borderColor = '#2A2A2A'}
+                  />
+                </div>
+                <div>
+                  <label style={labelStyle}>Client Secret *</label>
+                  <PasswordInput value={uberDirectClientSecret} onChange={setUberDirectClientSecret} placeholder="your_uber_client_secret" />
+                </div>
+
+                <div style={{ padding: '12px 14px', background: '#111111', borderRadius: '8px', border: '1px solid #2A2A2A' }}>
+                  <p style={{ fontSize: '12px', fontWeight: '600', color: '#FEFEFE', marginBottom: '8px' }}>Features enabled with Uber Direct</p>
+                  {[
+                    'On-demand courier dispatch for delivery orders',
+                    'Real-time delivery tracking for customers',
+                    'Automatic driver assignment and ETA updates',
+                    'Proof of delivery with photo confirmation',
+                    'Delivery cost estimation before dispatch',
+                  ].map((feature, i) => (
+                    <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px' }}>
+                      <span style={{ color: '#22C55E', fontSize: '12px' }}>✓</span>
+                      <span style={{ fontSize: '12px', color: '#888888' }}>{feature}</span>
+                    </div>
+                  ))}
+                </div>
+
+                <ConnectButton id="uberdirect" />
               </div>
             </div>
           </div>
