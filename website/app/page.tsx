@@ -247,7 +247,7 @@ export default function HomePage() {
           font-family: 'Bebas Neue', sans-serif;
           font-size: clamp(32px, 4vw, 52px);
           letter-spacing: 1px; line-height: 1;
-          color: #FED800; margin-bottom: 20px;
+          color: #ffffffff; margin-bottom: 20px;
         }
         .about-content p { color: #ffffff; line-height: 1.75; font-size: 15px; max-width: 520px; }
 
@@ -548,7 +548,8 @@ export default function HomePage() {
             </div>
             <div className="about-content story-content">
               <span className="sec-label">Our Story</span>
-              <h2 id="story-heading" className="story-heading">Born in the Heart of West Philly</h2>
+              <h2 id="story-heading" className="story-heading">Born in the Heart <span className="text-accent" style={{ color: '#FED800' }}>of West Philly</span></h2>
+
               <p className="story-body">
                 Eggs Ok started with a simple idea — great breakfast should be fast, fresh, and made with
                 real ingredients. Located at 3517 Lancaster Ave, we&apos;ve been serving the neighborhood
@@ -571,7 +572,7 @@ export default function HomePage() {
           <div className="about-grid quality-grid">
             <div className="about-content quality-content">
               <span className="sec-label">Quality First</span>
-              <h2 id="quality-heading" className="quality-heading">Fresh Ingredients, Bold Flavors</h2>
+              <h2 id="quality-heading" className="quality-heading">Fresh Ingredients, <span className="text-accent" style={{ color: '#FED800' }}> Bold Flavors</span></h2>
               <p className="quality-body">
                 We source quality ingredients and prep everything in-house daily. Whether you&apos;re
                 fueling up before work, grabbing lunch on the run, or treating yourself to a specialty
@@ -596,7 +597,7 @@ export default function HomePage() {
       <div id="order-ahead" className="order-ahead-hero container">
         <div className="order-ahead-overlay" />
         <div className="order-card-box">
-          <h2 id="order-ahead-heading" className="order-ahead-heading">Order Ahead, Enjoy Anytime</h2>
+          <h2 id="order-ahead-heading" className="order-ahead-heading">Order Ahead, <span className="text-accent" style={{ color: '#FED800' }}> Enjoy Anytime</span></h2>
           <p className="order-ahead-body">
             Skip the line and order online in seconds. Pick it up hot and ready, or have it
             delivered straight to your door. It only takes a few taps.
@@ -666,7 +667,7 @@ export default function HomePage() {
             </div>
             <div className="about-content catering-content">
               <span className="sec-label">Catering</span>
-              <h2 id="catering-heading" className="catering-heading">Let Us Cater Your Next Event</h2>
+              <h2 id="catering-heading" className="catering-heading">Let Us Cater Your <span className="text-accent" style={{ color: '#FED800' }}> Next Event</span></h2>
               <p className="catering-body">
                 From corporate breakfasts to birthday brunches, Eggs Ok brings the same fresh,
                 made-to-order quality to your event. We handle setup, variety, and volume — you

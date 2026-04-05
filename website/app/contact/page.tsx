@@ -4,13 +4,8 @@ import Link from 'next/link';
 import Image from 'next/image';
 import Header from '../components/Header';
 import {
-  MapPin,
-  Phone,
-  Mail,
-  Clock,
-  ChevronRight,
-  Check,
-  Smartphone,
+  MapPin, Phone, Mail, Clock,
+  ChevronRight, Check, Smartphone, ArrowRight,
 } from 'lucide-react';
 
 export default function ContactPage() {
@@ -24,282 +19,448 @@ export default function ContactPage() {
     setSubmitted(true);
   };
 
-  const inputStyle = {
-    width: '100%', padding: '13px 16px',
-    background: '#111111', border: '1px solid #1A1A1A',
-    borderRadius: '10px', color: '#FEFEFE',
-    fontSize: '14px', outline: 'none',
-    transition: 'border-color 0.2s',
-    boxSizing: 'border-box' as const,
-  };
-
-  const labelStyle = {
-    fontSize: '13px', fontWeight: '600' as const,
-    color: '#CACACA', display: 'block' as const,
-    marginBottom: '6px',
-  };
-
   const hours = [
-    { day: 'Monday – Friday', hours: '8:00 AM – 10:00 PM' },
+    { day: 'Monday', hours: '8:00 AM – 10:00 PM' },
+    { day: 'Tuesday',         hours: '8:00 AM – 10:00 PM' },
+    { day: 'Wednesday',       hours: '8:00 AM – 10:00 PM' },
+    { day: 'Thursday',        hours: '8:00 AM – 10:00 PM' },
+    { day: 'Friday',          hours: '8:00 AM – 11:00 PM' },
     { day: 'Saturday',        hours: '9:00 AM – 11:00 PM' },
-    { day: 'Sunday',          hours: '9:00 AM – 9:00 PM' },
+    { day: 'Sunday',          hours: '9:00 AM – 9:00 PM'  },
   ];
 
   const contactInfo = [
-    { Icon: MapPin, label: 'Address',  value: '3517 Lancaster Ave, Philadelphia PA 19104', href: 'https://maps.google.com/?q=3517+Lancaster+Ave+Philadelphia+PA+19104', external: true },
-    { Icon: Phone,  label: 'Phone',    value: '215-948-9902',         href: 'tel:2159489902',              external: false },
-    { Icon: Phone,  label: 'Catering', value: '267-370-7993',         href: 'tel:2673707993',              external: false },
-    { Icon: Mail,   label: 'Email',    value: 'orders@eggsokphilly.com', href: 'mailto:orders@eggsokphilly.com', external: false },
+    { Icon: MapPin, label: 'Address',  value: '3517 Lancaster Ave, Philadelphia PA 19104', href: 'https://maps.google.com/?q=3517+Lancaster+Ave+Philadelphia+PA+19104', external: true  },
+    { Icon: Phone,  label: 'Phone',    value: '215-948-9902',                              href: 'tel:2159489902',                                                    external: false },
+    { Icon: Phone,  label: 'Catering', value: '267-370-7993',                              href: 'tel:2673707993',                                                    external: false },
+    { Icon: Mail,   label: 'Email',    value: 'orders@eggsokphilly.com',                   href: 'mailto:orders@eggsokphilly.com',                                    external: false },
   ];
 
   return (
-    <div style={{ background: '#000', minHeight: '100vh' }}>
+    <div id="contact-page" style={{ background: '#000', minHeight: '100vh', fontFamily: 'DM Sans, -apple-system, BlinkMacSystemFont, sans-serif' }}>
 
-      {/* ── RESPONSIVE STYLES (homepage reference pattern) ── */}
       <style>{`
-        /* ── BASE (desktop) ── */
-        .contact-grid {
-          display: grid;
-          grid-template-columns: 1fr 1.4fr;
-          gap: 48px;
-          align-items: flex-start;
+        @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;0,9..40,800;1,9..40,400&display=swap');
+
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+          --y: #FED800;
+          --r: #FC0301;
+          --green: #22C55E;
+          --bg0: #000;
+          --bg1: #0A0A0A;
+          --bg2: #111111;
+          --bg3: #1A1A1A;
+          --border: #1E1E1E;
+          --t1: #ffffff;
+          --t2: #ffffff;
+          --t3: #666666;
+          --font-head: 'Bebas Neue', sans-serif;
+          --font-body: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
         }
-        .form-row-2 {
-          display: grid;
-          grid-template-columns: 1fr 1fr;
-          gap: 12px;
+
+        /* ── Accessibility ── */
+        :focus-visible { outline: 2px solid var(--y); outline-offset: 3px; }
+        a:focus:not(:focus-visible), button:focus:not(:focus-visible) { outline: none; }
+
+        /* ── Layout ── */
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+        .bebas { font-family: var(--font-head); letter-spacing: 1px; }
+
+        /* ── Buttons ── */
+        .btn-yellow {
+          display: inline-flex; align-items: center; gap: 8px;
+          padding: 14px 28px; background: var(--y); color: #000;
+          border-radius: 10px; font-size: 15px; font-weight: 700;
+          text-decoration: none; border: none; cursor: pointer;
+          transition: transform 0.18s, box-shadow 0.18s;
+          font-family: var(--font-body);
         }
-        .form-wrap {
-          background: #111111;
-          border: 1px solid #1A1A1A;
-          border-radius: 16px;
-          padding: 32px;
+        .btn-yellow:hover { transform: translateY(-2px); box-shadow: 0 10px 28px rgba(254,216,0,0.25); }
+        .btn-yellow:active { transform: translateY(0); }
+        .btn-outline {
+          display: inline-flex; align-items: center; gap: 8px;
+          padding: 14px 28px; background: transparent; color: var(--t1);
+          border-radius: 10px; font-size: 15px; font-weight: 700;
+          text-decoration: none; border: 1.5px solid #333;
+          transition: border-color 0.15s, color 0.15s;
+          font-family: var(--font-body); cursor: pointer;
         }
-        .success-actions {
-          display: flex;
-          gap: 12px;
-          justify-content: center;
-          flex-wrap: wrap;
+        .btn-outline:hover { border-color: var(--y); color: var(--y); }
+
+        /* ── Section label ── */
+        .sec-label {
+          font-size: 11px; font-weight: 700; letter-spacing: 3.5px;
+          text-transform: uppercase; color: var(--y);
+          margin-bottom: 10px; display: block;
         }
-        .footer-grid {
-          display: grid;
-          grid-template-columns: 2fr 1fr 1fr;
-          gap: 48px;
-          margin-bottom: 20px;
+
+        /* ── Section heading ── */
+        .sec-heading {
+          font-family: var(--font-head);
+          font-size: clamp(36px, 6vw, 62px);
+          letter-spacing: 1px; line-height: 0.95; color: var(--t1);
         }
-        .footer-bottom {
-          border-top: 1px solid #1A1A1A;
-          padding-top: 24px;
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          flex-wrap: wrap;
-          gap: 12px;
-        }
-        .footer-link {
-          display: block;
-          font-size: 14px;
-          color: #888888;
-          margin-bottom: 10px;
-          transition: color 0.2s;
+        .sec-heading .accent { color: var(--y); }
+
+        /* ── Contact grid ── */
+        .contact-grid { display: grid; grid-template-columns: 1fr 1.4fr; gap: 48px; align-items: flex-start; }
+
+        /* ── Contact info card ── */
+        .contact-info-card {
+          display: flex; align-items: center; gap: 16px;
+          padding: 18px 20px; background: var(--bg2); border: 1px solid var(--border);
+          border-radius: 14px; transition: border-color 0.2s, background 0.2s;
           text-decoration: none;
         }
-        .footer-link:hover { color: #FED800; }
+        .contact-info-card:hover { border-color: rgba(254,216,0,0.25); background: #141414; }
+        .contact-card-icon {
+          width: 46px; height: 46px; border-radius: 12px;
+          background: rgba(254,216,0,0.08); border: 1px solid rgba(254,216,0,0.2);
+          display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+        }
+        .contact-card-label { font-size: 10px; color: var(--t3); text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 3px; font-weight: 600; }
+        .contact-card-value { font-size: 14px; font-weight: 600; color: var(--t1); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .contact-card-chevron { margin-left: auto; flex-shrink: 0; color: var(--t3); transition: color 0.15s; }
+        .contact-info-card:hover .contact-card-chevron { color: var(--y); }
 
-        /* ── TABLET (≤ 1024px) ── */
+        /* ── Hours box ── */
+        .hours-box {
+          background: var(--bg2); border: 1px solid var(--border);
+          border-radius: 16px; padding: 26px; margin-bottom: 16px;
+        }
+        .hours-box-header { display: flex; align-items: center; gap: 10px; margin-bottom: 18px; }
+        .hours-box-title { font-family: var(--font-head); font-size: 18px; letter-spacing: 1px; color: var(--t1); }
+        .hours-open-badge { margin-left: auto; display: flex; align-items: center; gap: 6px; }
+        .hours-open-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green); }
+        .hours-open-text { font-size: 12px; color: var(--green); font-weight: 600; }
+        .hours-row { display: flex; justify-content: space-between; align-items: center; padding: 4px 0; }
+        .hours-row + .hours-row { border-top: 1px solid #141414; }
+        .hours-row-day { font-size: 13px; color: var(--t2); }
+        .hours-row-time { font-size: 13px; font-weight: 600; color: var(--t1); }
+
+        /* ── Map box ── */
+        .map-box {
+          background: var(--bg2); border: 1px solid var(--border);
+          border-radius: 16px; overflow: hidden;
+        }
+        .map-placeholder {
+          height: 210px;
+          background: linear-gradient(135deg, #0A0A0A, #111100);
+          display: flex; flex-direction: column;
+          align-items: center; justify-content: center;
+          gap: 12px; position: relative;
+        }
+        .map-grid-line-h { position: absolute; left: 0; right: 0; height: 1px; background: rgba(254,216,0,0.06); }
+        .map-grid-line-v { position: absolute; top: 0; bottom: 0; width: 1px; background: rgba(254,216,0,0.06); }
+        .map-pin-dot { width: 16px; height: 16px; border-radius: 50%; background: var(--r); border: 3px solid #fff; z-index: 1; box-shadow: 0 0 0 6px rgba(252,3,1,0.15); }
+        .map-address-chip {
+          background: var(--bg2); border: 1px solid #2A2A2A;
+          border-radius: 10px; padding: 9px 16px; z-index: 1;
+        }
+        .map-address-name { font-size: 12px; font-weight: 700; color: var(--t1); }
+        .map-address-sub  { font-size: 11px; color: var(--t3); }
+        .map-open-link {
+          display: flex; align-items: center; justify-content: center; gap: 8px;
+          padding: 14px; background: #0D0D0D; color: var(--y);
+          font-size: 13px; font-weight: 700; border-top: 1px solid #141414;
+          text-decoration: none; transition: background 0.15s; font-family: var(--font-body);
+          letter-spacing: 0.5px;
+        }
+        .map-open-link:hover { background: var(--bg2); }
+
+        /* ── Form wrap ── */
+        .form-wrap {
+          background: var(--bg2); border: 1px solid var(--border);
+          border-radius: 18px; padding: 36px;
+        }
+        .form-header { margin-bottom: 28px; padding-bottom: 22px; border-bottom: 1px solid var(--border); }
+        .form-title { font-family: var(--font-head); font-size: 28px; letter-spacing: 1px; color: var(--t1); margin-bottom: 6px; line-height: 1; }
+        .form-subtitle { font-size: 14px; color: var(--t2); }
+        .form-row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+        .form-label { font-size: 12px; font-weight: 700; color: var(--t2); display: block; margin-bottom: 6px; letter-spacing: 0.5px; text-transform: uppercase; }
+        .form-input {
+          width: 100%; padding: 13px 16px;
+          background: #0D0D0D; border: 1px solid #2A2A2A;
+          border-radius: 10px; color: var(--t1); font-size: 14px; outline: none;
+          transition: border-color 0.15s; font-family: var(--font-body);
+        }
+        .form-input:focus { border-color: var(--y); }
+        .form-input::placeholder { color: var(--t3); }
+        .form-select {
+          width: 100%; padding: 13px 16px;
+          background: #0D0D0D; border: 1px solid #2A2A2A;
+          border-radius: 10px; color: var(--t1); font-size: 14px; outline: none;
+          cursor: pointer; appearance: none;
+          transition: border-color 0.15s; font-family: var(--font-body);
+        }
+        .form-select:focus { border-color: var(--y); }
+        .form-textarea {
+          width: 100%; padding: 13px 16px;
+          background: #0D0D0D; border: 1px solid #2A2A2A;
+          border-radius: 10px; color: var(--t1); font-size: 14px; outline: none;
+          resize: none; height: 140px;
+          transition: border-color 0.15s; font-family: var(--font-body);
+        }
+        .form-textarea:focus { border-color: var(--y); }
+        .form-textarea::placeholder { color: var(--t3); }
+        .form-submit-btn {
+          width: 100%; padding: 16px; background: var(--y);
+          border-radius: 12px; font-size: 15px; font-weight: 800;
+          color: #000; cursor: pointer; border: none;
+          display: flex; align-items: center; justify-content: center; gap: 8px;
+          font-family: var(--font-body);
+          transition: transform 0.15s, box-shadow 0.15s;
+        }
+        .form-submit-btn:hover { transform: translateY(-1px); box-shadow: 0 8px 24px rgba(254,216,0,0.25); }
+        .form-phone-note {
+          margin-top: 18px; padding: 14px 18px;
+          background: #0D0D0D; border-radius: 10px;
+          border: 1px solid #1A1A1A; display: flex; align-items: center; gap: 10px;
+        }
+        .form-phone-note-text { font-size: 13px; color: var(--t2); }
+        .form-phone-note-link { color: var(--y); font-weight: 700; text-decoration: none; }
+        .form-phone-note-link:hover { text-decoration: underline; }
+
+        /* ── Success card ── */
+        .success-card {
+          padding: 60px 36px; background: var(--bg2);
+          border: 1px solid rgba(34,197,94,0.2); border-radius: 18px; text-align: center;
+        }
+        .success-icon-wrap {
+          width: 80px; height: 80px; border-radius: 50%;
+          background: rgba(34,197,94,0.08); border: 2px solid var(--green);
+          display: flex; align-items: center; justify-content: center; margin: 0 auto 24px;
+        }
+        .success-title { font-family: var(--font-head); font-size: clamp(28px,5vw,38px); letter-spacing: 1px; color: var(--t1); margin-bottom: 14px; line-height: 1; }
+        .success-msg { font-size: 15px; color: var(--t2); line-height: 1.75; margin-bottom: 32px; }
+        .success-actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+
+        /* ── Footer ── */
+        .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 48px; margin-bottom: 40px; }
+        .footer-bottom { border-top: 1px solid #1A1A1A; padding-top: 24px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
+        .footer-link { display: block; font-size: 14px; color: var(--t1); margin-bottom: 11px; text-decoration: none; transition: color 0.15s, padding-left 0.15s; }
+        .footer-link:hover { color: var(--y); padding-left: 4px; }
+
+        /* ═══ RESPONSIVE ═══ */
         @media (max-width: 1024px) {
-          .contact-grid {
-            grid-template-columns: 1fr 1fr;
-            gap: 32px;
-          }
-          .footer-grid {
-            grid-template-columns: 1fr 1fr;
-            gap: 32px;
-          }
+          .contact-grid { grid-template-columns: 1fr 1fr; gap: 32px; }
+          .footer-grid  { grid-template-columns: 1fr 1fr; gap: 32px; }
           .footer-brand { grid-column: 1 / -1; }
         }
-
-        /* ── MOBILE (≤ 768px) ── */
         @media (max-width: 768px) {
-          .contact-grid {
-            grid-template-columns: 1fr;
-          }
-          .section-pad { padding: 56px 0 !important; }
-          .hero-section { padding: 48px 0 40px !important; }
-          .form-row-2  { grid-template-columns: 1fr; }
-          .form-wrap   { padding: 24px 16px; }
-          .footer-grid {
-            grid-template-columns: 1fr;
-            gap: 32px;
-          }
+          .contact-grid { grid-template-columns: 1fr; }
+          .form-wrap    { padding: 24px 18px; }
+          .footer-grid  { grid-template-columns: 1fr; gap: 28px; }
           .footer-brand { grid-column: unset; }
+          .footer-bottom { flex-direction: column; text-align: center; }
+          .success-card { padding: 40px 24px; }
+        }
+        @media (max-width: 480px) {
+          .container    { padding: 0 14px; }
+          .form-row-2   { grid-template-columns: 1fr; }
+          .success-actions { flex-direction: column; align-items: center; }
+          .success-actions .btn-yellow,
+          .success-actions .btn-outline { width: 100%; justify-content: center; }
         }
 
-        /* ── SMALL MOBILE (≤ 480px) ── */
-        @media (max-width: 480px) {
-          .success-actions {
-            flex-direction: column;
-          }
-          .success-actions a,
-          .success-actions button {
-            width: 100%;
-            text-align: center;
-          }
-          .footer-bottom {
-            flex-direction: column;
-            text-align: center;
-          }
+        /* ═══ REDUCED MOTION ═══ */
+        @media (prefers-reduced-motion: reduce) {
+          .contact-info-card, .btn-yellow, .btn-outline, .form-submit-btn { transition: none; }
         }
       `}</style>
 
       <Header />
 
-      {/* ── HERO ── */}
-      <section className="hero-section" style={{textAlign: 'center', padding: '80px 0 60px', background: '#000', borderBottom: '1px solid #1A1A1A' }}>
-        <div className="container">
-          <p style={{ fontSize: '13px', color: '#FED800', fontWeight: '600', letterSpacing: '3px', textTransform: 'uppercase', marginBottom: '12px' }}>Get In Touch</p>
-          <h1 style={{ fontSize: 'clamp(40px, 8vw, 60px)', color: '#FEFEFE', lineHeight: '0.95', marginBottom: '16px' }}>
+      {/* ══════════════════════════════════════════
+          HERO
+      ══════════════════════════════════════════ */}
+      <section id="contact-hero" style={{ textAlign: 'center', padding: '110px 0 80px', background: '#000', position: 'relative', overflow: 'hidden', borderBottom: '1px solid #141414' }}>
+
+        <div className="hero-glow" style={{ position: 'absolute', top: '-60px', left: '50%', transform: 'translateX(-50%)', width: '600px', height: '600px', borderRadius: '50%', background: 'radial-gradient(circle, rgba(254,216,0,0.05) 0%, transparent 70%)', pointerEvents: 'none' }} aria-hidden="true" />
+
+        <div className="container hero-container" style={{ position: 'relative' }}>
+          <span id="hero-label" className="sec-label">Get In Touch</span>
+          <h1 id="hero-title" className="bebas" style={{ fontSize: 'clamp(52px, 9vw, 80px)', color: '#ffffff', lineHeight: '0.93', marginBottom: '22px' }}>
             WE&apos;D LOVE TO <span style={{ color: '#FED800' }}>HEAR FROM YOU</span>
           </h1>
-          <p style={{ fontSize: 'clamp(14px, 2vw, 17px)', color: '#888888',  lineHeight: '1.7' }}>
+          <p id="hero-subtitle" style={{ fontSize: 'clamp(15px, 2vw, 18px)', color: '#ffffff', lineHeight: '1.8', maxWidth: '500px', margin: '0 auto' }}>
             Questions, feedback, catering inquiries, or just want to say hi — we are here for it.
           </p>
         </div>
       </section>
 
-      {/* ── MAIN CONTENT ── */}
-      <section className="section-pad" style={{ padding: '80px 0' }}>
-        <div className="container">
-          <div className="contact-grid">
+      {/* ══════════════════════════════════════════
+          MAIN CONTENT
+      ══════════════════════════════════════════ */}
+      <section id="contact-main" style={{ padding: '88px 0', background: '#0A0A0A' }}>
+        <div className="container contact-container">
+          <div id="contact-grid" className="contact-grid">
 
-            {/* ── LEFT — Info ── */}
-            <div>
-              {/* Contact Cards */}
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', marginBottom: '32px' }}>
+            {/* ── LEFT — Info panel ── */}
+            <div id="contact-info-panel">
+
+              {/* Section header */}
+              <div id="contact-info-header" style={{ marginBottom: '28px' }}>
+                <span className="sec-label">Contact Info</span>
+                <h2 id="contact-info-heading" className="bebas" style={{ fontSize: 'clamp(28px, 4vw, 40px)', color: '#ffffff', lineHeight: '0.95' }}>
+                  REACH <span style={{ color: '#FED800' }}>US ANYTIME</span>
+                </h2>
+              </div>
+
+              {/* Contact info cards */}
+              <div id="contact-cards-list" style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginBottom: '24px' }}>
                 {contactInfo.map((info, i) => (
-                  <a key={i} href={info.href}
+                  <a
+                    key={i}
+                    id={`contact-card-${i}`}
+                    href={info.href}
+                    className="contact-info-card"
                     target={info.external ? '_blank' : undefined}
                     rel="noopener noreferrer"
-                    style={{ display: 'flex', alignItems: 'center', gap: '14px', padding: '16px 20px', background: '#111111', border: '1px solid #1A1A1A', borderRadius: '12px', transition: 'all 0.2s', textDecoration: 'none' }}
-                    onMouseEnter={e => { (e.currentTarget as HTMLAnchorElement).style.borderColor = '#FED80040'; (e.currentTarget as HTMLAnchorElement).style.background = '#1A1A1A'; }}
-                    onMouseLeave={e => { (e.currentTarget as HTMLAnchorElement).style.borderColor = '#1A1A1A'; (e.currentTarget as HTMLAnchorElement).style.background = '#111111'; }}
+                    aria-label={`${info.label}: ${info.value}`}
                   >
-                    <div style={{ width: '44px', height: '44px', borderRadius: '10px', background: '#FED80015', border: '1px solid #FED80030', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                    <div className="contact-card-icon" aria-hidden="true">
                       <info.Icon size={20} color="#FED800" strokeWidth={2} />
                     </div>
-                    <div style={{ minWidth: 0 }}>
-                      <p style={{ fontSize: '11px', color: '#888888', textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: '2px' }}>{info.label}</p>
-                      <p style={{ fontSize: '14px', fontWeight: '600', color: '#FEFEFE', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' as const }}>{info.value}</p>
+                    <div className="contact-card-text" style={{ minWidth: 0 }}>
+                      <p className="contact-card-label">{info.label}</p>
+                      <p className="contact-card-value">{info.value}</p>
                     </div>
-                    <ChevronRight size={16} color="#888888" style={{ marginLeft: 'auto', flexShrink: 0 }} />
+                    <ChevronRight size={16} className="contact-card-chevron" aria-hidden="true" />
                   </a>
                 ))}
               </div>
 
-              {/* Hours */}
-              <div style={{ background: '#111111', border: '1px solid #1A1A1A', borderRadius: '14px', padding: '24px', marginBottom: '24px' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '16px' }}>
-                  <Clock size={18} color="#FED800" strokeWidth={2} />
-                  <p style={{ fontSize: '16px', fontWeight: '700', color: '#FEFEFE' }}>Hours</p>
-                  <span style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: '6px', fontSize: '12px', color: '#22C55E', fontWeight: '600' }}>
-                    <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#22C55E', display: 'inline-block' }} />
-                    Open Now
-                  </span>
-                </div>
-                {hours.map((h, i) => (
-                  <div key={i} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '10px 0', borderBottom: i < hours.length - 1 ? '1px solid #1A1A1A' : 'none' }}>
-                    <span style={{ fontSize: '14px', color: '#888888' }}>{h.day}</span>
-                    <span style={{ fontSize: '14px', fontWeight: '600', color: '#FEFEFE' }}>{h.hours}</span>
+              {/* Hours box */}
+              <div id="hours-box" className="hours-box">
+                <div id="hours-box-header" className="hours-box-header">
+                  <Clock size={18} color="#FED800" strokeWidth={2} aria-hidden="true" />
+                  <p id="hours-box-title" className="hours-box-title">HOURS</p>
+                  <div id="hours-open-badge" className="hours-open-badge" role="status" aria-live="polite">
+                    <span className="hours-open-dot" aria-hidden="true" />
+                    <span className="hours-open-text">Open Now</span>
                   </div>
-                ))}
+                </div>
+                <div id="hours-list">
+                  {hours.map((h, i) => (
+                    <div key={i} id={`hours-row-${i}`} className="hours-row">
+                      <span className="hours-row-day">{h.day}</span>
+                      <span className="hours-row-time">{h.hours}</span>
+                    </div>
+                  ))}
+                </div>
               </div>
 
-              {/* Map Placeholder */}
-              <div style={{ background: '#111111', border: '1px solid #1A1A1A', borderRadius: '14px', overflow: 'hidden' }}>
-                <div style={{ height: '200px', background: 'linear-gradient(135deg, #0A0A0A, #111100)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '12px', position: 'relative' }}>
-                  <div style={{ position: 'absolute', inset: 0, opacity: 0.1 }}>
-                    {[...Array(8)].map((_, i) => (
-                      <div key={i} style={{ position: 'absolute', left: 0, right: 0, top: `${i * 12.5}%`, height: '1px', background: '#FED800' }} />
-                    ))}
-                    {[...Array(10)].map((_, i) => (
-                      <div key={i} style={{ position: 'absolute', top: 0, bottom: 0, left: `${i * 10}%`, width: '1px', background: '#FED800' }} />
-                    ))}
-                  </div>
-                  <div style={{ width: '16px', height: '16px', borderRadius: '50%', background: '#FC0301', border: '3px solid #fff', zIndex: 1 }} />
-                  <div style={{ background: '#1A1A1A', border: '1px solid #2A2A2A', borderRadius: '8px', padding: '8px 14px', zIndex: 1 }}>
-                    <p style={{ fontSize: '12px', fontWeight: '600', color: '#FEFEFE' }}>3517 Lancaster Ave</p>
-                    <p style={{ fontSize: '11px', color: '#888888' }}>Philadelphia, PA 19104</p>
+              {/* Map box */}
+              <div id="map-box" className="map-box">
+                <div id="map-placeholder" className="map-placeholder">
+                  {/* Grid lines */}
+                  {[...Array(8)].map((_, i) => (
+                    <div key={`h${i}`} className="map-grid-line-h" style={{ top: `${i * 12.5}%` }} aria-hidden="true" />
+                  ))}
+                  {[...Array(10)].map((_, i) => (
+                    <div key={`v${i}`} className="map-grid-line-v" style={{ left: `${i * 10}%` }} aria-hidden="true" />
+                  ))}
+                  <div id="map-pin-dot" className="map-pin-dot" aria-hidden="true" />
+                  <div id="map-address-chip" className="map-address-chip">
+                    <p className="map-address-name">3517 Lancaster Ave</p>
+                    <p className="map-address-sub">Philadelphia, PA 19104</p>
                   </div>
                 </div>
-                <a href="https://maps.google.com/?q=3517+Lancaster+Ave+Philadelphia+PA+19104" target="_blank" rel="noopener noreferrer"
-                  style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', padding: '14px', background: '#0A0A0A', color: '#FED800', fontSize: '13px', fontWeight: '600', borderTop: '1px solid #1A1A1A', transition: 'background 0.2s', textDecoration: 'none' }}
-                  onMouseEnter={e => (e.currentTarget as HTMLAnchorElement).style.background = '#111111'}
-                  onMouseLeave={e => (e.currentTarget as HTMLAnchorElement).style.background = '#0A0A0A'}
+                <a
+                  id="map-open-link"
+                  href="https://maps.google.com/?q=3517+Lancaster+Ave+Philadelphia+PA+19104"
+                  target="_blank" rel="noopener noreferrer"
+                  className="map-open-link"
+                  aria-label="Open location in Google Maps"
                 >
-                  <MapPin size={14} color="currentColor" />
+                  <MapPin size={14} aria-hidden="true" />
                   Open in Google Maps
                 </a>
               </div>
+
             </div>
 
             {/* ── RIGHT — Form ── */}
-            <div>
+            <div id="contact-form-panel">
               {submitted ? (
-                <div style={{ padding: '60px 32px', background: '#111111', border: '1px solid #22C55E30', borderRadius: '16px', textAlign: 'center' }}>
-                  <div style={{ width: '72px', height: '72px', borderRadius: '50%', background: '#22C55E15', border: '2px solid #22C55E', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 20px' }}>
-                    <Check size={32} color="#22C55E" strokeWidth={2.5} />
+                <div id="success-card" className="success-card">
+                  <div id="success-icon" className="success-icon-wrap" aria-hidden="true">
+                    <Check size={36} color="#22C55E" strokeWidth={2.5} />
                   </div>
-                  <h3 style={{ fontSize: 'clamp(22px, 5vw, 32px)', color: '#FEFEFE', marginBottom: '12px' }}>MESSAGE SENT!</h3>
-                  <p style={{ fontSize: '15px', color: '#888888', marginBottom: '28px' }}>
-                    Thank you, {formData.name}! We will get back to you at <span style={{ color: '#FED800' }}>{formData.email}</span> within 24 hours.
+                  <h3 id="success-title" className="success-title">MESSAGE SENT!</h3>
+                  <p id="success-msg" className="success-msg">
+                    Thank you, {formData.name}! We will get back to you at{' '}
+                    <span style={{ color: '#FED800' }}>{formData.email}</span>{' '}
+                    within 24 hours.
                   </p>
-                  <div className="success-actions">
+                  <div id="success-actions" className="success-actions">
                     <button
+                      id="success-another-btn"
+                      className="btn-outline"
                       onClick={() => { setSubmitted(false); setFormData({ name: '', email: '', phone: '', subject: '', message: '' }); }}
-                      style={{ padding: '12px 24px', background: 'transparent', border: '1px solid #2A2A2A', borderRadius: '10px', color: '#888888', fontSize: '14px', cursor: 'pointer' }}>
+                    >
                       Send Another
                     </button>
-                    <Link href="/" style={{ padding: '12px 24px', background: '#FED800', borderRadius: '10px', color: '#000', fontSize: '14px', fontWeight: '700', display: 'inline-block' }}>
-                      Back to Home
+                    <Link id="success-home-btn" href="/" className="btn-yellow">
+                      Back to Home <ArrowRight size={15} aria-hidden="true" />
                     </Link>
                   </div>
                 </div>
               ) : (
-                <div className="form-wrap">
-                  <h2 style={{ fontSize: 'clamp(22px, 4vw, 28px)', color: '#FEFEFE', marginBottom: '6px', fontFamily: 'Bebas Neue, sans-serif', letterSpacing: '1px' }}>SEND US A MESSAGE</h2>
-                  <p style={{ fontSize: '14px', color: '#888888', marginBottom: '24px' }}>We typically respond within a few hours during business hours.</p>
+                <div id="contact-form-wrap" className="form-wrap">
 
-                  <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
-                    <div className="form-row-2">
-                      <div>
-                        <label style={labelStyle}>Full Name *</label>
-                        <input style={inputStyle} placeholder="John Smith" required
-                          value={formData.name} onChange={e => setFormData({ ...formData, name: e.target.value })}
-                          onFocus={e => e.target.style.borderColor = '#FED800'}
-                          onBlur={e => e.target.style.borderColor = '#1A1A1A'}
+                  {/* Form header */}
+                  <div id="form-header" className="form-header">
+                    <h2 id="form-title" className="form-title">SEND US A MESSAGE</h2>
+                    <p id="form-subtitle" className="form-subtitle">We typically respond within a few hours during business hours.</p>
+                  </div>
+
+                  <form id="contact-form" onSubmit={handleSubmit} noValidate style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+
+                    {/* Name + Phone */}
+                    <div id="form-row-name-phone" className="form-row-2">
+                      <div id="form-group-name">
+                        <label htmlFor="input-name" className="form-label">Full Name *</label>
+                        <input
+                          id="input-name" className="form-input"
+                          placeholder="John Smith" required
+                          value={formData.name}
+                          onChange={e => setFormData({ ...formData, name: e.target.value })}
                         />
                       </div>
-                      <div>
-                        <label style={labelStyle}>Phone Number</label>
-                        <input type="tel" style={inputStyle} placeholder="215-555-0100"
-                          value={formData.phone} onChange={e => setFormData({ ...formData, phone: e.target.value })}
-                          onFocus={e => e.target.style.borderColor = '#FED800'}
-                          onBlur={e => e.target.style.borderColor = '#1A1A1A'}
+                      <div id="form-group-phone">
+                        <label htmlFor="input-phone" className="form-label">Phone Number</label>
+                        <input
+                          id="input-phone" type="tel" className="form-input"
+                          placeholder="215-555-0100"
+                          value={formData.phone}
+                          onChange={e => setFormData({ ...formData, phone: e.target.value })}
                         />
                       </div>
                     </div>
-                    <div>
-                      <label style={labelStyle}>Email Address *</label>
-                      <input type="email" style={inputStyle} placeholder="john@gmail.com" required
-                        value={formData.email} onChange={e => setFormData({ ...formData, email: e.target.value })}
-                        onFocus={e => e.target.style.borderColor = '#FED800'}
-                        onBlur={e => e.target.style.borderColor = '#1A1A1A'}
+
+                    {/* Email */}
+                    <div id="form-group-email">
+                      <label htmlFor="input-email" className="form-label">Email Address *</label>
+                      <input
+                        id="input-email" type="email" className="form-input"
+                        placeholder="john@gmail.com" required
+                        value={formData.email}
+                        onChange={e => setFormData({ ...formData, email: e.target.value })}
                       />
                     </div>
-                    <div>
-                      <label style={labelStyle}>Subject</label>
-                      <select style={{ ...inputStyle, cursor: 'pointer' }}
-                        value={formData.subject} onChange={e => setFormData({ ...formData, subject: e.target.value })}>
+
+                    {/* Subject */}
+                    <div id="form-group-subject">
+                      <label htmlFor="input-subject" className="form-label">Subject</label>
+                      <select
+                        id="input-subject" className="form-select"
+                        value={formData.subject}
+                        onChange={e => setFormData({ ...formData, subject: e.target.value })}
+                      >
                         <option value="">Select a topic</option>
                         <option value="order">Order Issue</option>
                         <option value="catering">Catering Inquiry</option>
@@ -308,96 +469,120 @@ export default function ContactPage() {
                         <option value="other">Other</option>
                       </select>
                     </div>
-                    <div>
-                      <label style={labelStyle}>Message *</label>
+
+                    {/* Message */}
+                    <div id="form-group-message">
+                      <label htmlFor="input-message" className="form-label">Message *</label>
                       <textarea
-                        style={{ ...inputStyle, height: '130px', resize: 'none' as const }}
+                        id="input-message" className="form-textarea"
                         placeholder="Tell us how we can help..."
                         required
-                        value={formData.message} onChange={e => setFormData({ ...formData, message: e.target.value })}
-                        onFocus={e => (e.target as HTMLTextAreaElement).style.borderColor = '#FED800'}
-                        onBlur={e => (e.target as HTMLTextAreaElement).style.borderColor = '#1A1A1A'}
+                        value={formData.message}
+                        onChange={e => setFormData({ ...formData, message: e.target.value })}
                       />
                     </div>
-                    <button type="submit" style={{ width: '100%', padding: '15px', background: '#FED800', borderRadius: '12px', fontSize: '16px', fontWeight: '700', color: '#000', cursor: 'pointer', border: 'none' }}>
-                      Send Message
+
+                    {/* Submit */}
+                    <button id="form-submit-btn" type="submit" className="form-submit-btn">
+                      Send Message <ArrowRight size={16} aria-hidden="true" />
                     </button>
+
                   </form>
 
-                  <div style={{ marginTop: '20px', padding: '14px 16px', background: '#0A0A0A', borderRadius: '10px', border: '1px solid #1A1A1A', display: 'flex', alignItems: 'center', gap: '10px' }}>
-                    <Phone size={16} color="#FED800" strokeWidth={2} style={{ flexShrink: 0 }} />
-                    <p style={{ fontSize: '13px', color: '#888888' }}>
-                      Prefer to call? <a href="tel:2159489902" style={{ color: '#FED800', fontWeight: '600' }}>215-948-9902</a> · Mon–Fri 8AM–10PM
+                  {/* Phone note */}
+                  <div id="form-phone-note" className="form-phone-note">
+                    <Phone size={16} color="#FED800" strokeWidth={2} style={{ flexShrink: 0 }} aria-hidden="true" />
+                    <p className="form-phone-note-text">
+                      Prefer to call?{' '}
+                      <a id="form-phone-link" href="tel:2159489902" className="form-phone-note-link">215-948-9902</a>
+                      {' '}· Mon–Fri 8AM–10PM
                     </p>
                   </div>
+
                 </div>
               )}
             </div>
+
           </div>
         </div>
       </section>
 
-      {/* ── FOOTER ── */}
-      <footer style={{ background: '#0A0A0A', padding: '30px 0 32px', borderTop: '1px solid #1A1A1A' }}>
-        <div className="container">
-          <div className="footer-grid">
+      {/* ══════════════════════════════════════════
+          FOOTER
+      ══════════════════════════════════════════ */}
+      <footer id="contact-footer" className="site-footer" style={{ background: '#050505', padding: '68px 0 32px', borderTop: '1px solid #141414' }}>
+        <div className="container footer-container">
+          <div id="footer-grid" className="footer-grid">
 
             {/* Brand */}
-            <div className="footer-brand">
-              <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '16px' }}>
-                <div style={{ width: '40px', height: '40px', borderRadius: '10px', overflow: 'hidden', background: '#000' }}>
-                  <Image src="/logo.svg" alt="Eggs Ok" width={40} height={40} style={{ objectFit: 'contain' }} />
+            <div id="footer-brand" className="footer-brand">
+              <div id="footer-logo-wrap" style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '18px' }}>
+                <div id="footer-logo-img-wrap" style={{ borderRadius: '10px', overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                  <Image src="/logo.svg" alt="Eggs Ok" width={100} height={50} style={{ objectFit: 'contain' }} />
                 </div>
-                <p style={{ fontSize: '20px', fontFamily: 'Bebas Neue, sans-serif', color: '#FED800', letterSpacing: '1px' }}>EGGS OK</p>
               </div>
-              <p style={{ fontSize: '14px', color: '#888888', lineHeight: '1.7', maxWidth: '300px', marginBottom: '20px' }}>
+              <p id="footer-tagline" style={{ fontSize: '14px', color: '#ffffff', lineHeight: '1.75', maxWidth: '280px', marginBottom: '22px' }}>
                 Fresh breakfast and lunch in West Philadelphia. Made to order, every time.
               </p>
-              <p style={{ fontSize: '13px', color: '#888888', display: 'flex', alignItems: 'center', gap: '6px' }}>
-                <MapPin size={14} /> 3517 Lancaster Ave, Philadelphia PA 19104
-              </p>
-              <p style={{ fontSize: '13px', color: '#888888', marginTop: '6px', display: 'flex', alignItems: 'center', gap: '6px' }}>
-                <Smartphone size={14} />
-                <a href="tel:2159489902" style={{ color: '#888888' }}>215-948-9902</a>
-              </p>
+              <address id="footer-address" style={{ fontStyle: 'normal' }}>
+                <p id="footer-address-line" style={{ fontSize: '13px', color: '#ffffff', display: 'flex', alignItems: 'center', gap: '7px', marginBottom: '8px' }}>
+                  <MapPin size={13} color="#FED800" aria-hidden="true" />
+                  <a id="footer-address-link" href="https://www.google.com/maps?q=3517+Lancaster+Ave,+Philadelphia+PA+19104" style={{ color: '#ffffff', textDecoration: 'none' }}>
+                    3517 Lancaster Ave, Philadelphia PA 19104
+                  </a>
+                </p>
+                <p id="footer-phone-line" style={{ fontSize: '13px', color: '#ffffff', display: 'flex', alignItems: 'center', gap: '7px' }}>
+                  <Smartphone size={13} color="#FED800" aria-hidden="true" />
+                  <a id="footer-phone-link" href="tel:2159489902" style={{ color: '#ffffff', textDecoration: 'none' }}>215-948-9902</a>
+                </p>
+              </address>
             </div>
 
-            {/* Quick Links */}
-            <div>
-              <p style={{ fontSize: '13px', fontWeight: '700', color: '#FEFEFE', letterSpacing: '1px', textTransform: 'uppercase', marginBottom: '16px' }}>Quick Links</p>
+            {/* Quick links */}
+            <nav id="footer-nav" aria-label="Quick links">
+              <p id="footer-nav-heading" style={{ fontSize: '15px', fontWeight: '700', color: '#ffffff', letterSpacing: '2px', textTransform: 'uppercase', marginBottom: '20px' }}>Quick Links</p>
               {[
-                { label: 'Home',         href: '/' },
-                { label: 'Order Online', href: '/order' },
-                { label: 'Catering',     href: '/catering' },
-                { label: 'Our Story',    href: '/story' },
-                { label: 'Contact Us',   href: '/contact' },
-              ].map(link => (
-                <Link key={link.href} href={link.href} style={{ display: 'block', fontSize: '14px', color: '#888888', marginBottom: '10px', transition: 'color 0.2s' }}
-                  onMouseEnter={e => (e.currentTarget as HTMLAnchorElement).style.color = '#FED800'}
-                  onMouseLeave={e => (e.currentTarget as HTMLAnchorElement).style.color = '#888888'}
-                >{link.label}</Link>
+                { label: 'Home',          href: '/'         },
+                { label: 'Order Online',  href: '/order'    },
+                { label: 'Catering',      href: '/catering' },
+                { label: 'Our Story',     href: '/story'    },
+                { label: 'Gift Cards',    href: '/gift-cards'},
+                { label: 'Contact',       href: '/contact'  },
+              ].map(l => (
+                <Link key={l.href} href={l.href} className="footer-link">{l.label}</Link>
               ))}
-            </div>
+            </nav>
 
             {/* Hours */}
-            <div>
-              <p style={{ fontSize: '13px', fontWeight: '700', color: '#FEFEFE', letterSpacing: '1px', textTransform: 'uppercase', marginBottom: '16px' }}>Hours</p>
-              {[
-                { day: 'Mon – Fri', hours: '8:00 AM – 10:00 PM' },
-                { day: 'Saturday',  hours: '9:00 AM – 11:00 PM' },
-                { day: 'Sunday',    hours: '9:00 AM – 9:00 PM' },
-              ].map((h, i) => (
-                <div key={i} style={{ marginBottom: '10px' }}>
-                  <p style={{ fontSize: '13px', color: '#FEFEFE', fontWeight: '500' }}>{h.day}</p>
-                  <p style={{ fontSize: '12px', color: '#888888' }}>{h.hours}</p>
-                </div>
-              ))}
+            <div id="footer-hours">
+              <p id="footer-hours-heading" style={{ fontSize: '15px', fontWeight: '700', color: '#ffffff', letterSpacing: '2px', textTransform: 'uppercase', marginBottom: '20px' }}>Hours</p>
+              <div id="footer-hours-list" style={{ display: 'flex', flexDirection: 'column', gap: '5px' }}>
+                {[
+                  { day: 'Monday',    hours: '8:00 AM – 10:00 PM' },
+                  { day: 'Tuesday',   hours: '8:00 AM – 10:00 PM' },
+                  { day: 'Wednesday', hours: '8:00 AM – 10:00 PM' },
+                  { day: 'Thursday',  hours: '8:00 AM – 10:00 PM' },
+                  { day: 'Friday',    hours: '8:00 AM – 10:00 PM' },
+                  { day: 'Saturday',  hours: '9:00 AM – 11:00 PM' },
+                  { day: 'Sunday',    hours: '9:00 AM – 9:00 PM'  },
+                ].map((h, i) => (
+                  <div key={i} id={`footer-hours-row-${i}`} style={{ display: 'flex', gap: '14px' }}>
+                    <span style={{ fontSize: '13px', color: '#ffffff', fontWeight: '600', minWidth: '96px' }}>{h.day}</span>
+                    <span style={{ fontSize: '13px', color: '#BBBBBB' }}>{h.hours}</span>
+                  </div>
+                ))}
+              </div>
             </div>
+
           </div>
 
-          <div className="footer-bottom">
-            <p style={{ fontSize: '13px', color: '#888888' }}>© 2026 Eggs Ok. All rights reserved.</p>
-            <p style={{ fontSize: '13px', color: '#888888' }}>Built by <span style={{ color: '#FED800' }}>RestoRise Business Solutions</span></p>
+          <div id="footer-bottom" className="footer-bottom">
+            <p id="footer-copyright" style={{ fontSize: '13px', color: '#ffffff' }}>
+              &copy; {new Date().getFullYear()} Eggs Ok. All rights reserved.
+            </p>
+            <p id="footer-credit" style={{ fontSize: '13px', color: '#ffffff' }}>
+              Built by <span id="footer-credit-brand" style={{ color: '#FED800' }}>RestoRise Business Solutions</span>
+            </p>
           </div>
         </div>
       </footer>

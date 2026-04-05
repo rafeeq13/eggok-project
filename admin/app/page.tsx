@@ -70,7 +70,7 @@ export default function LoginPage() {
           <h2 style={{
             fontSize: '20px',
             fontWeight: '600',
-            color: '#FEFEFE',
+            color: '#ffffff',
             marginBottom: '8px',
           }}>Welcome back</h2>
           <p style={{
@@ -100,7 +100,7 @@ export default function LoginPage() {
                   background: '#111111',
                   border: '1px solid #2A2A2A',
                   borderRadius: '10px',
-                  color: '#FEFEFE',
+                  color: '#ffffff',
                   fontSize: '14px',
                 }}
                 onFocus={e => e.target.style.borderColor = '#FED800'}
@@ -128,7 +128,7 @@ export default function LoginPage() {
                   background: '#111111',
                   border: '1px solid #2A2A2A',
                   borderRadius: '10px',
-                  color: '#FEFEFE',
+                  color: '#ffffff',
                   fontSize: '14px',
                 }}
                 onFocus={e => e.target.style.borderColor = '#FED800'}

@@ -8,6 +8,7 @@ import {
   Shirt, Users, ChevronDown, ChevronUp, Check,
   MapPin, Smartphone, SendHorizonal, ArrowRight,
 } from 'lucide-react';
+import { title } from 'process';
 
 export default function HiringPage() {
   const [activeJob, setActiveJob] = useState<number | null>(null);
@@ -21,6 +22,8 @@ export default function HiringPage() {
     { id: 2, title: 'Cashier / Front of House', type: 'Full-time / Part-time', pay: '$14–$16/hr',   desc: 'Greet customers, take orders, and ensure an amazing dining experience. Great communication skills required.',                                    requirements: ['Customer service experience', 'Positive attitude', 'Basic math skills', 'Flexible schedule'] },
     { id: 3, title: 'Delivery Driver',          type: 'Part-time',             pay: '$15/hr + tips', desc: "Deliver Eggs Ok orders to customers safely and on time. Must have a valid driver's license and reliable vehicle.",                              requirements: ["Valid PA driver's license", 'Clean driving record', 'Smartphone for app navigation', 'Own reliable vehicle'] },
     { id: 4, title: 'Shift Manager',            type: 'Full-time',             pay: '$20–$24/hr',   desc: 'Lead and motivate our team during shifts. Oversee kitchen operations and ensure customer satisfaction.',                                        requirements: ['2+ years restaurant management', 'Strong leadership skills', 'Food safety certified', 'Weekend availability'] },
+    // other postion 
+    {id:5,title:'Other', type:'Full-time',pay:'',des:'other'}
   ];
 
   const perks = [
