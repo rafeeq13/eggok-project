@@ -493,12 +493,12 @@ function OrderContent() {
 
         {/* Logo */}
         <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: '10px', textDecoration: 'none', flexShrink: 0 }}>
-          <div style={{ width: '40px', height: '40px', borderRadius: '50%', background: '#FED800', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden', flexShrink: 0 }}>
-            <img src="/logo.svg" alt="Eggs Ok" style={{ width: '36px', height: '36px', objectFit: 'cover' }} onError={e => { (e.target as HTMLImageElement).style.display = 'none'; }} />
+          <div style={{ background: '#FED800', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden', flexShrink: 0 }}>
+            <img src="/logo.svg" alt="Eggs Ok" style={{  objectFit: 'cover' }} onError={e => { (e.target as HTMLImageElement).style.display = 'none'; }} />
           </div>
           <div>
-            <div style={{ fontSize: '14px', fontWeight: '800', color: '#FED800', letterSpacing: '0.5px', lineHeight: 1 }}>EGGS OK</div>
-            <div style={{ fontSize: '10px', color: '#444', letterSpacing: '1.5px', textTransform: 'uppercase', marginTop: '1px' }}>Philadelphia</div>
+            {/* <div style={{ fontSize: '14px', fontWeight: '800', color: '#FED800', letterSpacing: '0.5px', lineHeight: 1 }}>EGGS OK</div>
+            <div style={{ fontSize: '10px', color: '#444', letterSpacing: '1.5px', textTransform: 'uppercase', marginTop: '1px' }}>Philadelphia</div> */}
           </div>
         </Link>
 
@@ -659,7 +659,7 @@ function OrderContent() {
                 </div>
               </div>
 
-              {!isOpen && (
+              {/* {!isOpen && (
                 <div style={{ background: '#1A0000', border: '1px solid #FC030130', borderRadius: '12px', padding: '16px 20px', marginBottom: '20px', display: 'flex', alignItems: 'center', gap: '12px' }}>
                   <div style={{ width: '10px', height: '10px', borderRadius: '50%', background: '#FC0301', flexShrink: 0 }} />
                   <div>
@@ -667,7 +667,7 @@ function OrderContent() {
                     <div style={{ fontSize: '13px', color: '#888' }}>{statusMessage}</div>
                   </div>
                 </div>
-              )}
+              )} */}
 
               <div className="order-row">
                 {/* Pickup / Delivery */}

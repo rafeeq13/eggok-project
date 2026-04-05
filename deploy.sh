@@ -146,7 +146,7 @@ if [ "$DEPLOY_BACKEND" = true ]; then
   REMOTE_CMD="$REMOTE_CMD rm -rf \$DEST/backend/dist; cd \$DEST/backend && tar xzf /tmp/backend-deploy.tar.gz; rm -f /tmp/backend-deploy.tar.gz;"
 fi
 
-REMOTE_CMD="$REMOTE_CMD touch \$DEST/tmp/restart.txt; echo done"
+REMOTE_CMD="$REMOTE_CMD pkill -u u966025995 -f 'node dist/main' 2>/dev/null; sleep 2; touch \$DEST/tmp/restart.txt; echo done"
 
 ssh -o StrictHostKeyChecking=no -i "$KEY" -p $PORT $SERVER "$REMOTE_CMD" > /dev/null 2>&1
 echo "  Deploy done ✓"
@@ -169,3 +169,12 @@ echo "════════════════════════�
 echo "  Deploy Complete!"
 echo "  https://fooddeliveryaudit.com"
 echo "══════════════════════════════════"
+
+# Fix Windows paths in standalone builds (built on Windows, deployed on Linux)
+echo "[FIX] Fixing Windows paths..."
+ssh -o StrictHostKeyChecking=no -i "$KEY" -p $PORT $SERVER 'cat > /tmp/fixpaths.js << '"'"'JSEOF'"'"'
+var fs=require("fs"),actual="/home/u966025995/domains/fooddeliveryaudit.com/nodejs/website",base=actual+"/.next/standalone";
+[base+"/server.js",base+"/.next/required-server-files.json"].forEach(function(f){try{var c=fs.readFileSync(f,"utf8");c=c.replace(/C:[\\/]+xampp[\\/]+htdocs[\\/]+eggok-project[\\/]+website/g,actual);fs.writeFileSync(f,c);console.log("Fixed: "+f)}catch(e){}});
+JSEOF
+node /tmp/fixpaths.js' > /dev/null 2>&1
+echo "  Paths fixed ✓"
