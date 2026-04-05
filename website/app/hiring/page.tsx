@@ -3,13 +3,11 @@ import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import Header from '../components/Header';
-import { Check } from 'lucide-react';
 import {
   UtensilsCrossed, DollarSign, CalendarDays, TrendingUp,
   Shirt, Users, ChevronDown, ChevronUp, Check,
-  MapPin, Smartphone, SendHorizonal, ArrowRight,
+  MapPin, Smartphone, SendHorizontal, ArrowRight,
 } from 'lucide-react';
-import { title } from 'process';
 
 export default function HiringPage() {
   const [activeJob, setActiveJob] = useState<number | null>(null);
@@ -24,7 +22,7 @@ export default function HiringPage() {
     { id: 3, title: 'Delivery Driver',          type: 'Part-time',             pay: '$15/hr + tips', desc: "Deliver Eggs Ok orders to customers safely and on time. Must have a valid driver's license and reliable vehicle.",                              requirements: ["Valid PA driver's license", 'Clean driving record', 'Smartphone for app navigation', 'Own reliable vehicle'] },
     { id: 4, title: 'Shift Manager',            type: 'Full-time',             pay: '$20–$24/hr',   desc: 'Lead and motivate our team during shifts. Oversee kitchen operations and ensure customer satisfaction.',                                        requirements: ['2+ years restaurant management', 'Strong leadership skills', 'Food safety certified', 'Weekend availability'] },
     // other postion 
-    {id:5,title:'Other', type:'Full-time',pay:'',des:'other'}
+    {id:5,title:'Other', type:'Full-time',pay:'',desc:'other', requirements:[]}
   ];
 
   const perks = [
@@ -412,7 +410,7 @@ export default function HiringPage() {
                   {/* Form header */}
                   <div id="form-header" className="form-header">
                     <div id="form-icon" className="form-icon" aria-hidden="true">
-                      <SendHorizonal size={22} color="#FED800" strokeWidth={2} />
+                      <SendHorizontal size={22} color="#FED800" strokeWidth={2} />
                     </div>
                     <div id="form-header-text">
                       <h2 id="form-title" className="form-title">APPLY NOW</h2>
@@ -509,7 +507,7 @@ export default function HiringPage() {
 
                     {/* Submit */}
                     <button id="form-submit-btn" type="submit" className="form-submit-btn">
-                      <SendHorizonal size={16} strokeWidth={2.5} aria-hidden="true" />
+                      <SendHorizontal size={16} strokeWidth={2.5} aria-hidden="true" />
                       Submit Application
                     </button>
 
