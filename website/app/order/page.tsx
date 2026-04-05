@@ -765,7 +765,7 @@ function OrderContent() {
 
   const canAddToCart = () => {
     if (!selectedItem?.modifiers) return true;
-    return selectedItem.modifiers.filter(g => g.required).every(g => (selectedModifiers[g.id] || []).length >= g.minSelections);
+    return selectedItem.modifiers.filter(g => g.required).every(g => (selectedModifiers[g.id] || []).length >= Math.max(g.minSelections, 1));
   };
 
   const handleAddToCart = () => {
@@ -912,18 +912,22 @@ function OrderContent() {
               </svg>
               Search
             </button>
-            <div className="mobile-cat-divider" aria-hidden="true" />
+            {/* <div className="mobile-cat-divider" aria-hidden="true" /> */}
             {categories.map(cat => (
-              <button
-                key={cat.id}
-                id={`mobile-cat-pill-${cat.id}`}
-                ref={el => { mobileCatRefs.current[cat.id] = el; }}
-                className={`mobile-cat-pill${activeCategory === cat.id ? ' active' : ''}`}
-                onClick={() => scrollToCategory(cat.id)}
-                aria-pressed={activeCategory === cat.id}
-              >
-                {cat.name}
+                cat.name !== "Popular" && (
+
+                <button
+                  key={cat.id}
+                  id={`mobile-cat-pill-${cat.id}`}
+                  ref={el => { mobileCatRefs.current[cat.id] = el; }}
+                  className={`mobile-cat-pill${activeCategory === cat.id ? ' active' : ''}`}
+                  onClick={() => scrollToCategory(cat.id)}
+                  aria-pressed={activeCategory === cat.id}
+                >
+                  {cat.name}
+
               </button>
+               )
             ))}
           </div>
         )}
@@ -957,18 +961,20 @@ function OrderContent() {
 
           <div id="sidebar-categories" className="sidebar-menu-wrap">
             <span className="sidebar-menu-label">Menu</span>
-            {categories.map(cat => (
-              <button
-                key={cat.id}
-                id={`sidebar-cat-${cat.id}`}
-                className={`sidebar-cat-btn${activeCategory === cat.id ? ' active' : ''}`}
-                onClick={() => scrollToCategory(cat.id)}
-                aria-pressed={activeCategory === cat.id}
-              >
-                <span className="sidebar-cat-dot" aria-hidden="true" />
-                {cat.name}
-              </button>
-            ))}
+           {categories
+  .filter(cat => cat.name !== "Popular")
+  .map(cat => (
+    <button
+      key={cat.id}
+      id={`sidebar-cat-${cat.id}`}
+      className={`sidebar-cat-btn${activeCategory === cat.id ? ' active' : ''}`}
+      onClick={() => scrollToCategory(cat.id)}
+      aria-pressed={activeCategory === cat.id}
+    >
+      <div>{cat.name}</div>
+    </button>
+))}
+
           </div>
         </aside>
 

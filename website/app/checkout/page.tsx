@@ -93,20 +93,79 @@ const css = `
       grid-template-columns: repeat(3, 1fr);
     }
   }
+
+  /* ══ MODALS ══ */
+  .co-modal-backdrop { position: fixed; inset: 0; background: rgba(0,0,0,0.88); z-index: 300; display: flex; align-items: center; justify-content: center; padding: 16px; }
+  .co-modal-close { width: 32px; height: 32px; border-radius: 50%; background: #1A1A1A; border: 1px solid #2A2A2A; color: #666; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background 0.15s; flex-shrink: 0; }
+  .co-modal-close:hover { background: #252525; color: #fff; }
+  .co-modal-title { font-family: 'Bebas Neue', sans-serif; font-size: 24px; letter-spacing: 1px; color: #fff; margin: 0; }
+
+  .co-delivery-box { background: #111; border-radius: 20px; width: 100%; max-width: 460px; border: 1px solid #1E1E1E; box-shadow: 0 24px 64px rgba(0,0,0,0.7); max-height: 92vh; overflow-y: auto; }
+  .co-delivery-inner { padding: 28px; }
+  .co-delivery-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 22px; }
+  .co-type-toggle { display: flex; background: #1A1A1A; border-radius: 999px; padding: 3px; margin-bottom: 20px; border: 1px solid #2A2A2A; }
+  .co-type-btn { flex: 1; padding: 10px; border-radius: 999px; border: none; cursor: pointer; font-size: 13px; font-weight: 700; transition: all 0.2s; }
+  .co-type-btn.active { background: #fff; color: #000; }
+  .co-type-btn.inactive { background: transparent; color: #444; }
+  .co-del-input-wrap { position: relative; }
+  .co-del-input { width: 100%; padding: 13px 40px 13px 42px; background: #0A0A0A; border: 1.5px solid #FED800; border-radius: 12px; color: #fff; font-size: 14px; outline: none; box-sizing: border-box; }
+  .co-del-input::placeholder { color: #444; }
+  .co-del-clear { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); background: none; border: none; color: #444; cursor: pointer; font-size: 13px; font-weight: 600; }
+  .co-del-clear:hover { color: #fff; }
+  .co-del-suggestion { margin-top: 8px; background: #0A0A0A; border: 1px solid #1A1A1A; border-radius: 12px; overflow: hidden; }
+  .co-del-sug-row { padding: 14px 16px; cursor: pointer; transition: background 0.12s; }
+  .co-del-sug-row:hover { background: #141414; }
+  .co-del-addr-row { display: flex; align-items: center; gap: 10px; padding: 12px 14px; background: #0A0A0A; border: 1.5px solid rgba(254,216,0,0.2); border-radius: 12px; }
+  .co-del-addr-change { background: none; border: none; color: #FED800; font-size: 12px; font-weight: 700; cursor: pointer; flex-shrink: 0; }
+  .co-del-field-label { font-size: 12px; color: #666; display: block; margin-bottom: 6px; font-weight: 600; }
+  .co-del-field-input { width: 100%; padding: 12px; background: #0A0A0A; border: 1px solid #2A2A2A; border-radius: 10px; color: #fff; font-size: 13px; outline: none; box-sizing: border-box; transition: border-color 0.15s; }
+  .co-del-field-input:focus { border-color: #FED800; }
+  .co-del-field-input::placeholder { color: #444; }
+  .co-del-field-textarea { width: 100%; padding: 12px; background: #0A0A0A; border: 1px solid #2A2A2A; border-radius: 10px; color: #fff; font-size: 13px; outline: none; height: 80px; resize: none; box-sizing: border-box; transition: border-color 0.15s; }
+  .co-del-field-textarea:focus { border-color: #FED800; }
+  .co-del-field-textarea::placeholder { color: #444; }
+  .co-del-from { padding: 14px 16px; background: #0A0A0A; border-radius: 12px; border: 1px solid #1A1A1A; }
+  .co-btn-primary { width: 100%; padding: 14px; background: #FED800; border: none; border-radius: 12px; color: #000; font-size: 15px; font-weight: 800; cursor: pointer; transition: transform 0.15s, box-shadow 0.15s; }
+  .co-btn-primary:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(254,216,0,0.25); }
+  .co-btn-secondary { width: 100%; padding: 14px; background: transparent; border: 1.5px solid #2A2A2A; border-radius: 12px; color: #ccc; font-size: 15px; font-weight: 600; cursor: pointer; transition: border-color 0.15s; }
+  .co-btn-secondary:hover { border-color: #3A3A3A; color: #fff; }
+
+  .co-schedule-box { background: #111; border-radius: 20px; width: 100%; max-width: 420px; border: 1px solid #1E1E1E; box-shadow: 0 24px 64px rgba(0,0,0,0.7); overflow: hidden; max-height: 90vh; display: flex; flex-direction: column; }
+  .co-schedule-header { padding: 20px 24px 16px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #1A1A1A; flex-shrink: 0; }
+  .co-schedule-dates { padding: 16px 24px 0; flex-shrink: 0; }
+  .co-schedule-dates-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 10px; }
+  .co-schedule-date-btn { padding: 10px 14px; border-radius: 10px; border: 1px solid; cursor: pointer; text-align: left; transition: border-color 0.15s, background 0.15s; background: #1A1A1A; }
+  .co-schedule-date-btn.active { border-color: #FED800; background: rgba(254,216,0,0.08); }
+  .co-schedule-date-btn.inactive { border-color: #2A2A2A; }
+  .co-more-dates-btn { width: 100%; padding: 10px; background: transparent; border: 1px solid #2A2A2A; border-radius: 10px; color: #ccc; font-size: 13px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; margin-bottom: 4px; transition: border-color 0.15s; }
+  .co-more-dates-btn:hover { border-color: #3A3A3A; color: #fff; }
+  .co-times-list { overflow-y: auto; flex: 1; padding: 0 24px 8px; }
+  .co-time-row { display: flex; align-items: center; gap: 14px; padding: 14px 0; border-bottom: 1px solid #141414; cursor: pointer; }
+  .co-radio { width: 20px; height: 20px; border-radius: 50%; border: 2px solid; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: border-color 0.15s; }
+  .co-radio.selected { border-color: #FED800; background: #FED800; }
+  .co-radio.unselected { border-color: #333; background: transparent; }
+  .co-radio-inner { width: 8px; height: 8px; border-radius: 50%; background: #000; }
+  .co-schedule-footer { padding: 16px 24px; border-top: 1px solid #1A1A1A; flex-shrink: 0; }
+  .co-schedule-confirm { width: 100%; padding: 14px; background: #FED800; border: none; border-radius: 12px; color: #000; font-size: 15px; font-weight: 800; cursor: pointer; transition: transform 0.15s; }
+  .co-schedule-confirm:hover { transform: translateY(-1px); }
 `;
 
 export default function CheckoutPage() {
   const router = useRouter();
   const {
-    cart, cartTotal, orderType, getPrice,
-    deliveryAddress, deliveryApt, setDeliveryApt,
+    cart, cartTotal, orderType, setOrderType, getPrice,
+    deliveryAddress, setDeliveryAddress, deliveryApt, setDeliveryApt,
     deliveryInstructions, setDeliveryInstructions,
-    scheduleType, scheduleDate, scheduleTime,
+    scheduleType, setScheduleType, scheduleDate, setScheduleDate, scheduleTime, setScheduleTime,
     clearCart,
   } = useCart();
 
   const [placing, setPlacing] = useState(false);
   const [orderError, setOrderError] = useState('');
+  const [showDeliveryModal, setShowDeliveryModal] = useState(false);
+  const [showScheduleModal, setShowScheduleModal] = useState(false);
+  const [showMoreDates, setShowMoreDates] = useState(false);
+  const [deliveryStep, setDeliveryStep] = useState<1 | 2>(deliveryAddress ? 2 : 1);
 
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
@@ -303,7 +362,7 @@ export default function CheckoutPage() {
   };
 
   const getScheduleLabel = () => {
-    if (scheduleType === 'asap') return 'ASAP Â· ~15 min';
+    if (scheduleType === 'asap') return 'ASAP In 15 min';
     const days = Array.from({ length: 7 }, (_, i) => {
       const d = new Date(Date.now() + i * 86400000);
       return { value: d.toISOString().split('T')[0], label: i === 0 ? 'Today' : i === 1 ? 'Tomorrow' : d.toLocaleDateString('en-US', { weekday: 'short' }) };
@@ -371,9 +430,9 @@ export default function CheckoutPage() {
                   <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" /><circle cx="12" cy="10" r="3" />
                 </svg>
                 <span style={{ fontSize: '14px', color: '#FEFEFE', flex: 1, wordBreak: 'break-word' }}>
-                  {orderType === 'pickup' ? '3517 Lancaster Ave, Philadelphia PA 19104' : deliveryAddress || 'No address â€” go back to set one'}
+                  {orderType === 'pickup' ? '3517 Lancaster Ave, Philadelphia PA 19104' : deliveryAddress || 'No address , go back to set one'}
                 </span>
-                <Link href="/order" style={{ fontSize: '12px', color: '#FED800', fontWeight: '700', textDecoration: 'none', flexShrink: 0 }}>Change</Link>
+                <button onClick={() => setShowDeliveryModal(true)} style={{ fontSize: '12px', color: '#FED800', fontWeight: '700', background: 'none', border: 'none', cursor: 'pointer', flexShrink: 0 }}>Change</button>
               </div>
 
               <div style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '13px 16px', background: '#0A0A0A', borderRadius: '10px', border: '1px solid #2A2A2A', marginBottom: orderType === 'delivery' ? '10px' : '0' }}>
@@ -381,7 +440,7 @@ export default function CheckoutPage() {
                   <circle cx="12" cy="12" r="10" /><polyline points="12 6 12 12 16 14" />
                 </svg>
                 <span style={{ fontSize: '14px', color: '#FEFEFE', flex: 1 }}>{getScheduleLabel()}</span>
-                <Link href="/order" style={{ fontSize: '12px', color: '#FED800', fontWeight: '700', textDecoration: 'none', flexShrink: 0 }}>Change</Link>
+                <button onClick={() => setShowScheduleModal(true)} style={{ fontSize: '12px', color: '#FED800', fontWeight: '700', background: 'none', border: 'none', cursor: 'pointer', flexShrink: 0 }}>Change</button>
               </div>
 
               {orderType === 'delivery' && (
@@ -476,7 +535,7 @@ export default function CheckoutPage() {
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#22C55E" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
                 </svg>
-                <span style={{ fontSize: '12px', color: '#22C55E' }}>Secured by Stripe â€” 256-bit SSL encryption</span>
+                <span style={{ fontSize: '12px', color: '#22C55E' }}>Secured by Stripe — 256-bit SSL encryption</span>
               </div>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
                 <div>
@@ -512,7 +571,7 @@ export default function CheckoutPage() {
               cursor: canPlaceOrder && !placing ? 'pointer' : 'not-allowed',
               transition: 'all 0.2s', marginBottom: '12px',
             }}>
-              {placing ? 'Placing Order...' : `Place order Â· $${total.toFixed(2)}`}
+              {placing ? 'Placing Order...' : `Place order  $${total.toFixed(2)}`}
             </button>
             {orderError && (
               <p style={{ fontSize: '12px', color: '#FC0301', textAlign: 'center', marginBottom: '12px' }}>
@@ -708,6 +767,157 @@ export default function CheckoutPage() {
           </div>
         </div>
       )}
+
+      {/* ══ DELIVERY / ORDER TYPE MODAL ══ */}
+      {showDeliveryModal && (
+        <div className="co-modal-backdrop" onClick={() => setShowDeliveryModal(false)}>
+          <div className="co-delivery-box" onClick={e => e.stopPropagation()}>
+            <div className="co-delivery-inner">
+              <div className="co-delivery-header">
+                <h2 className="co-modal-title">ORDER DETAILS</h2>
+                <button className="co-modal-close" onClick={() => setShowDeliveryModal(false)}>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                </button>
+              </div>
+
+              <div className="co-type-toggle">
+                {(['pickup', 'delivery'] as const).map(type => (
+                  <button key={type} className={`co-type-btn ${orderType === type ? 'active' : 'inactive'}`}
+                    onClick={() => { setOrderType(type); if (type === 'pickup') setShowDeliveryModal(false); }}>
+                    {type === 'pickup' ? 'Pickup' : 'Delivery'}
+                  </button>
+                ))}
+              </div>
+
+              {deliveryStep === 1 && (
+                <div>
+                  <div className="co-del-input-wrap">
+                    <svg style={{ position: 'absolute', left: '14px', top: '50%', transform: 'translateY(-50%)' }} width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#666" strokeWidth="2">
+                      <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                    </svg>
+                    <input placeholder="Enter delivery address..." value={deliveryAddress} onChange={e => setDeliveryAddress(e.target.value)} autoFocus className="co-del-input" />
+                    {deliveryAddress && <button className="co-del-clear" onClick={() => setDeliveryAddress('')}>Clear</button>}
+                  </div>
+                  {deliveryAddress.length > 2 && (
+                    <div className="co-del-suggestion">
+                      <div className="co-del-sug-row" onClick={() => setDeliveryStep(2)}>
+                        <p style={{ fontSize: '14px', fontWeight: '700', color: '#fff' }}>{deliveryAddress}</p>
+                        <p style={{ fontSize: '12px', color: '#444', marginTop: '2px' }}>Philadelphia, PA</p>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {deliveryStep === 2 && (
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                  <div className="co-del-addr-row">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#666" strokeWidth="2">
+                      <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                    </svg>
+                    <span style={{ flex: 1, fontSize: '13px', color: '#fff', fontWeight: '500', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{deliveryAddress}</span>
+                    <button className="co-del-addr-change" onClick={() => setDeliveryStep(1)}>Change</button>
+                  </div>
+                  <div>
+                    <label className="co-del-field-label">Apt / Suite / Floor</label>
+                    <input placeholder="Apt 4B, Suite 200…" value={deliveryApt} onChange={e => setDeliveryApt(e.target.value)} className="co-del-field-input" />
+                  </div>
+                  <div>
+                    <label className="co-del-field-label">Delivery instructions</label>
+                    <textarea placeholder="Leave at front door, don't ring the bell…" value={deliveryInstructions} onChange={e => setDeliveryInstructions(e.target.value)} className="co-del-field-textarea" />
+                  </div>
+                  <div className="co-del-from">
+                    <p style={{ fontSize: '12px', fontWeight: '700', color: '#666', marginBottom: '6px', textTransform: 'uppercase', letterSpacing: '1px' }}>Delivering from</p>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                      <p style={{ fontSize: '14px', fontWeight: '700', color: '#fff', margin: 0 }}>Eggs Ok</p>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                        <div style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#22C55E' }} />
+                        <span style={{ fontSize: '12px', color: '#22C55E', fontWeight: '600' }}>Open now</span>
+                      </div>
+                    </div>
+                    <p style={{ fontSize: '12px', color: '#444', marginTop: '2px' }}>3517 Lancaster Ave, Philadelphia, PA</p>
+                  </div>
+                  <button className="co-btn-primary" onClick={() => { setScheduleType('asap'); setShowDeliveryModal(false); }}>Deliver ASAP</button>
+                  <button className="co-btn-secondary" onClick={() => { setShowDeliveryModal(false); setShowScheduleModal(true); }}>Schedule delivery</button>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ══ SCHEDULE MODAL ══ */}
+      {showScheduleModal && (
+        <div className="co-modal-backdrop" onClick={() => setShowScheduleModal(false)}>
+          <div className="co-schedule-box" onClick={e => e.stopPropagation()}>
+            <div className="co-schedule-header">
+              <h2 className="co-modal-title">ORDER TIME</h2>
+              <button className="co-modal-close" onClick={() => setShowScheduleModal(false)}>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+              </button>
+            </div>
+
+            <div className="co-schedule-dates">
+              {(() => {
+                const days = Array.from({ length: 7 }, (_, i) => {
+                  const d = new Date(Date.now() + i * 86400000);
+                  return { label: i === 0 ? 'Today' : i === 1 ? 'Tomorrow' : d.toLocaleDateString('en-US', { weekday: 'short' }), sub: d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }), value: d.toISOString().split('T')[0] };
+                });
+                const visibleDays = showMoreDates ? days : days.slice(0, 2);
+                const selectedVal = scheduleDate || days[0].value;
+                return (
+                  <>
+                    <div className="co-schedule-dates-grid">
+                      {visibleDays.map(d => (
+                        <button key={d.value} className={`co-schedule-date-btn ${selectedVal === d.value ? 'active' : 'inactive'}`} onClick={() => setScheduleDate(d.value)}>
+                          <p style={{ fontSize: '13px', fontWeight: '700', margin: 0, color: selectedVal === d.value ? '#FED800' : '#fff' }}>{d.label}</p>
+                          <p style={{ fontSize: '11px', color: '#444', margin: '2px 0 0' }}>{d.sub}</p>
+                        </button>
+                      ))}
+                    </div>
+                    <button className="co-more-dates-btn" onClick={() => setShowMoreDates(p => !p)}>
+                      {showMoreDates ? 'Less dates' : 'More dates'}
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2.5">
+                        <polyline points={showMoreDates ? '18 15 12 9 6 15' : '6 9 12 15 18 9'}/>
+                      </svg>
+                    </button>
+                  </>
+                );
+              })()}
+            </div>
+
+            <div className="co-times-list">
+              <div className="co-time-row" onClick={() => { setScheduleType('asap'); setScheduleTime(''); }}>
+                <div className={`co-radio ${scheduleType === 'asap' ? 'selected' : 'unselected'}`}>
+                  {scheduleType === 'asap' && <div className="co-radio-inner" />}
+                </div>
+                <span style={{ fontSize: '14px', color: '#fff' }}>ASAP</span>
+              </div>
+              {Array.from({ length: 57 }, (_, i) => {
+                const totalMins = 7 * 60 + i * 15; const h = Math.floor(totalMins / 60); const m = totalMins % 60;
+                const label = `${h > 12 ? h - 12 : h === 0 ? 12 : h}:${m.toString().padStart(2, '0')} ${h >= 12 ? 'PM' : 'AM'} EDT`;
+                const val = `${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}`;
+                const isSelected = scheduleType === 'scheduled' && scheduleTime === val;
+                return (
+                  <div key={val} className="co-time-row" onClick={() => { setScheduleType('scheduled'); setScheduleTime(val); }}>
+                    <div className={`co-radio ${isSelected ? 'selected' : 'unselected'}`}>
+                      {isSelected && <div className="co-radio-inner" />}
+                    </div>
+                    <span style={{ fontSize: '14px', color: '#fff' }}>{label}</span>
+                  </div>
+                );
+              })}
+            </div>
+
+            <div className="co-schedule-footer">
+              <button className="co-schedule-confirm" onClick={() => setShowScheduleModal(false)}>
+                {scheduleType === 'asap' ? 'Order ASAP' : `Schedule for ${scheduleTime}`}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
+
 }
