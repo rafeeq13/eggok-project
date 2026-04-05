@@ -4,14 +4,9 @@ import Link from 'next/link';
 import Image from 'next/image';
 import Header from '../components/Header';
 import {
-  ChefHat,
-  Truck,
-  SlidersHorizontal,
-  ClipboardList,
-  Lightbulb,
-  UtensilsCrossed,
-  MapPin,
-  Smartphone,
+  ChefHat, Truck, SlidersHorizontal, ClipboardList,
+  Lightbulb, UtensilsCrossed, MapPin, Smartphone,
+  ArrowRight, Check, Phone,
 } from 'lucide-react';
 
 export default function CateringPage() {
@@ -27,12 +22,7 @@ export default function CateringPage() {
       price: 'From $12/person',
       minGuests: '10',
       color: '#FED800',
-      items: [
-        'Choice of 2 Breakfast Sandwiches',
-        'Hash Browns',
-        'Fresh Fruit Cup',
-        'Coffee or Juice',
-      ],
+      items: ['Choice of 2 Breakfast Sandwiches', 'Hash Browns', 'Fresh Fruit Cup', 'Coffee or Juice'],
       popular: false,
     },
     {
@@ -40,13 +30,7 @@ export default function CateringPage() {
       price: 'From $22/person',
       minGuests: '20',
       color: '#FC0301',
-      items: [
-        'Choice of 3 Breakfast Items',
-        'Omelette Station',
-        'Pancakes & Waffles',
-        'Specialty Drinks',
-        'Fresh Fruit & Pastries',
-      ],
+      items: ['Choice of 3 Breakfast Items', 'Omelette Station', 'Pancakes & Waffles', 'Specialty Drinks', 'Fresh Fruit & Pastries'],
       popular: true,
     },
     {
@@ -54,22 +38,16 @@ export default function CateringPage() {
       price: 'Custom Pricing',
       minGuests: '50+',
       color: '#22C55E',
-      items: [
-        'Full Menu Access',
-        'Dedicated Server',
-        'Setup & Cleanup',
-        'Custom Branding Options',
-        'Invoice & Receipt',
-      ],
+      items: ['Full Menu Access', 'Dedicated Server', 'Setup & Cleanup', 'Custom Branding Options', 'Invoice & Receipt'],
       popular: false,
     },
   ];
 
   const whyItems = [
-    { icon: ChefHat,           title: 'Made Fresh',    desc: 'Every item prepared fresh on the day of your event' },
-    { icon: Truck,             title: 'We Deliver',    desc: 'Free delivery within 5 miles for orders over $200' },
-    { icon: SlidersHorizontal, title: 'Customizable',  desc: 'Build your own menu from our full selection' },
-    { icon: ClipboardList,     title: 'Easy Setup',    desc: 'We handle setup, serving, and cleanup' },
+    { icon: ChefHat,           title: 'Made Fresh',   desc: 'Every item prepared fresh on the day of your event' },
+    { icon: Truck,             title: 'We Deliver',   desc: 'Free delivery within 5 miles for orders over $200' },
+    { icon: SlidersHorizontal, title: 'Customizable', desc: 'Build your own menu from our full selection'        },
+    { icon: ClipboardList,     title: 'Easy Setup',   desc: 'We handle setup, serving, and cleanup'             },
   ];
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -77,293 +55,345 @@ export default function CateringPage() {
     setSubmitted(true);
   };
 
-  const inputStyle = {
-    width: '100%', padding: '13px 16px',
-    background: '#111111', border: '1px solid #1A1A1A',
-    borderRadius: '10px', color: '#FEFEFE',
-    fontSize: '14px', outline: 'none',
-    transition: 'border-color 0.2s',
-    boxSizing: 'border-box' as const,
-  };
-
-  const labelStyle = {
-    fontSize: '13px', fontWeight: '600' as const,
-    color: '#CACACA', display: 'block' as const,
-    marginBottom: '6px',
-  };
-
   return (
-    <div style={{ background: '#000', minHeight: '100vh' }}>
+    <div id="catering-page" style={{ background: '#000', minHeight: '100vh', fontFamily: 'DM Sans, -apple-system, BlinkMacSystemFont, sans-serif' }}>
 
-      {/* ── RESPONSIVE STYLES (follows homepage reference pattern) ── */}
       <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;0,9..40,800;1,9..40,400&display=swap');
 
-        .hero-btns {
-          display: flex;
-          gap: 14px;
-          flex-wrap: wrap;
-          justify-content: center;
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+          --y: #FED800;
+          --r: #FC0301;
+          --green: #22C55E;
+          --bg0: #000;
+          --bg1: #0A0A0A;
+          --bg2: #111111;
+          --bg3: #1A1A1A;
+          --border: #1E1E1E;
+          --t1: #ffffff;
+          --t2: #ffffff;
+          --t3: #666666;
+          --font-head: 'Bebas Neue', sans-serif;
+          --font-body: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
         }
 
-        .why-grid {
-          display: grid;
-          grid-template-columns: repeat(4, 1fr);
-          gap: 20px;
+        /* ── Accessibility ── */
+        :focus-visible { outline: 2px solid var(--y); outline-offset: 3px; }
+        a:focus:not(:focus-visible), button:focus:not(:focus-visible) { outline: none; }
+
+        /* ── Layout ── */
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+        .bebas { font-family: var(--font-head); letter-spacing: 1px; }
+
+        /* ── Buttons ── */
+        .btn-yellow {
+          display: inline-flex; align-items: center; gap: 8px;
+          padding: 14px 28px; background: var(--y); color: #000;
+          border-radius: 10px; font-size: 15px; font-weight: 700;
+          text-decoration: none; border: none; cursor: pointer;
+          transition: transform 0.18s, box-shadow 0.18s;
+          font-family: var(--font-body);
+        }
+        .btn-yellow:hover { transform: translateY(-2px); box-shadow: 0 10px 28px rgba(254,216,0,0.25); }
+        .btn-yellow:active { transform: translateY(0); }
+        .btn-outline {
+          display: inline-flex; align-items: center; gap: 8px;
+          padding: 14px 28px; background: transparent; color: var(--t1);
+          border-radius: 10px; font-size: 15px; font-weight: 700;
+          text-decoration: none; border: 1.5px solid #333;
+          transition: border-color 0.15s, color 0.15s;
+          font-family: var(--font-body);
+        }
+        .btn-outline:hover { border-color: var(--y); color: var(--y); }
+
+        /* ── Section label ── */
+        .sec-label {
+          font-size: 11px; font-weight: 700; letter-spacing: 3.5px;
+          text-transform: uppercase; color: var(--y);
+          margin-bottom: 10px; display: block;
         }
 
-        .packages-grid {
-          display: grid;
-          grid-template-columns: repeat(3, 1fr);
-          gap: 20px;
-          margin-bottom: 40px;
+        /* ── Section heading ── */
+        .sec-heading {
+          font-family: var(--font-head);
+          font-size: clamp(36px, 6vw, 62px);
+          letter-spacing: 1px; line-height: 0.95; color: var(--t1);
         }
+        .sec-heading .accent { color: var(--y); }
 
+        /* ── Why grid ── */
+        .why-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+
+        /* ── Why card ── */
+        .why-card {
+          padding: 28px 24px; background: var(--bg2); border: 1px solid var(--border);
+          border-radius: 16px; text-align: center;
+          transition: border-color 0.2s, transform 0.25s, box-shadow 0.25s;
+        }
+        .why-card:hover { border-color: rgba(254,216,0,0.2); transform: translateY(-3px); box-shadow: 0 10px 30px rgba(0,0,0,0.4); }
+        .why-icon {
+          width: 56px; height: 56px; border-radius: 14px;
+          background: rgba(254,216,0,0.08); border: 1px solid rgba(254,216,0,0.2);
+          display: flex; align-items: center; justify-content: center;
+          margin: 0 auto 18px;
+        }
+        .why-title { font-family: var(--font-head); font-size: 20px; letter-spacing: 1px; color: var(--t1); margin-bottom: 8px; }
+        .why-desc  { font-size: 13px; color: var(--t2); line-height: 1.6; }
+
+        /* ── Packages grid ── */
+        .packages-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-bottom: 40px; }
+
+        /* ── Package card ── */
+        .pkg-card { background: var(--bg2); border-radius: 18px; overflow: hidden; position: relative; transition: transform 0.25s, box-shadow 0.25s; }
+        .pkg-card:hover { transform: translateY(-4px); box-shadow: 0 14px 40px rgba(0,0,0,0.5); }
+        .pkg-popular-bar { padding: 9px; text-align: center; font-family: var(--font-head); font-size: 13px; font-weight: 700; letter-spacing: 2px; color: #000; }
+        .pkg-body { padding: 28px 26px; }
+        .pkg-icon { width: 52px; height: 52px; border-radius: 14px; display: flex; align-items: center; justify-content: center; margin-bottom: 18px; }
+        .pkg-name { font-family: var(--font-head); font-size: clamp(22px, 3vw, 30px); letter-spacing: 1px; color: var(--t1); margin-bottom: 6px; line-height: 1; }
+        .pkg-price { font-family: var(--font-head); font-size: 22px; letter-spacing: 1px; margin-bottom: 4px; }
+        .pkg-min-guests { font-size: 12px; color: var(--t3); margin-bottom: 22px; font-weight: 500; }
+        .pkg-items { display: flex; flex-direction: column; gap: 9px; margin-bottom: 26px; }
+        .pkg-item { display: flex; align-items: center; gap: 10px; }
+        .pkg-item-check { width: 18px; height: 18px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+        .pkg-item-text { font-size: 13px; color: var(--t2); }
+        .pkg-cta {
+          display: block; width: 100%; padding: 13px;
+          border-radius: 10px; text-align: center;
+          font-size: 14px; font-weight: 700;
+          transition: transform 0.15s, box-shadow 0.15s, background 0.15s;
+          font-family: var(--font-body); cursor: pointer;
+          text-decoration: none;
+        }
+        .pkg-cta-solid:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(0,0,0,0.3); }
+        .pkg-cta-outline:hover { filter: brightness(1.2); }
+
+        /* ── Tip banner ── */
         .tip-banner {
-          display: flex;
-          align-items: center;
-          gap: 16px;
-          padding: 20px 28px;
-          background: #111111;
-          border: 1px solid #FED80030;
-          border-radius: 12px;
+          display: flex; align-items: center; gap: 18px;
+          padding: 22px 28px; background: var(--bg2);
+          border: 1px solid rgba(254,216,0,0.15); border-radius: 14px;
         }
+        .tip-icon { width: 44px; height: 44px; border-radius: 10px; background: rgba(254,216,0,0.08); border: 1px solid rgba(254,216,0,0.2); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+        .tip-text { font-size: 14px; color: var(--t2); line-height: 1.7; }
+        .tip-link { color: var(--y); font-weight: 700; text-decoration: none; }
+        .tip-link:hover { text-decoration: underline; }
 
-        .form-row-2 {
-          display: grid;
-          grid-template-columns: 1fr 1fr;
-          gap: 12px;
-        }
-
+        /* ── Form section ── */
         .form-wrap {
-          background: #111111;
-          border: 1px solid #1A1A1A;
-          border-radius: 16px;
-          padding: 32px;
+          background: var(--bg2); border: 1px solid var(--border);
+          border-radius: 18px; padding: 36px;
         }
-
-        .success-actions {
-          display: flex;
-          gap: 12px;
-          justify-content: center;
-          flex-wrap: wrap;
+        .form-row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+        .form-label { font-size: 12px; font-weight: 700; color: var(--t2); display: block; margin-bottom: 6px; letter-spacing: 0.5px; text-transform: uppercase; }
+        .form-input {
+          width: 100%; padding: 13px 16px;
+          background: #0D0D0D; border: 1px solid #2A2A2A;
+          border-radius: 10px; color: var(--t1);
+          font-size: 14px; outline: none;
+          transition: border-color 0.15s; font-family: var(--font-body);
         }
-
-        /* ── FOOTER ── */
-        .footer-grid {
-          display: grid;
-          grid-template-columns: 2fr 1fr 1fr;
-          gap: 48px;
-          margin-bottom: 20px;
+        .form-input:focus { border-color: var(--y); }
+        .form-input::placeholder { color: var(--t3); }
+        .form-select {
+          width: 100%; padding: 13px 16px;
+          background: #0D0D0D; border: 1px solid #2A2A2A;
+          border-radius: 10px; color: var(--t1);
+          font-size: 14px; outline: none; cursor: pointer;
+          transition: border-color 0.15s; font-family: var(--font-body);
+          appearance: none;
         }
-
-        .footer-bottom {
-          border-top: 1px solid #1A1A1A;
-          padding-top: 24px;
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          flex-wrap: wrap;
-          gap: 12px;
+        .form-select:focus { border-color: var(--y); }
+        .form-textarea {
+          width: 100%; padding: 13px 16px;
+          background: #0D0D0D; border: 1px solid #2A2A2A;
+          border-radius: 10px; color: var(--t1);
+          font-size: 14px; outline: none; resize: none; height: 110px;
+          transition: border-color 0.15s; font-family: var(--font-body);
         }
+        .form-textarea:focus { border-color: var(--y); }
+        .form-textarea::placeholder { color: var(--t3); }
+        .form-submit-btn {
+          width: 100%; padding: 16px; background: var(--y);
+          border-radius: 12px; font-size: 16px; font-weight: 800;
+          color: #000; cursor: pointer; border: none;
+          display: flex; align-items: center; justify-content: center; gap: 8px;
+          font-family: var(--font-body);
+          transition: transform 0.15s, box-shadow 0.15s;
+        }
+        .form-submit-btn:hover { transform: translateY(-1px); box-shadow: 0 8px 24px rgba(254,216,0,0.25); }
 
-        /* ── TABLET (≤ 1024px) ── */
+        /* ── Success card ── */
+        .success-card {
+          padding: 56px 36px; background: var(--bg2);
+          border: 1px solid rgba(34,197,94,0.2); border-radius: 18px; text-align: center;
+        }
+        .success-icon-wrap {
+          width: 80px; height: 80px; border-radius: 50%;
+          background: rgba(34,197,94,0.08); border: 2px solid var(--green);
+          display: flex; align-items: center; justify-content: center; margin: 0 auto 24px;
+        }
+        .success-title { font-family: var(--font-head); font-size: clamp(28px, 5vw, 38px); letter-spacing: 1px; color: var(--t1); margin-bottom: 14px; line-height: 1; }
+        .success-msg { font-size: 15px; color: var(--t2); line-height: 1.75; margin-bottom: 32px; }
+        .success-actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+
+        /* ── Phone CTA ── */
+        .phone-cta-section {
+          padding: 72px 0; background: #060606;
+          border-top: 1px solid #141414; text-align: center;
+        }
+        .phone-cta-number {
+          font-family: var(--font-head);
+          font-size: clamp(36px, 6vw, 64px);
+          color: var(--y); letter-spacing: 3px; display: block;
+          transition: color 0.15s;
+        }
+        .phone-cta-number:hover { color: #e8c400; }
+
+        /* ── Footer ── */
+        .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 48px; margin-bottom: 40px; }
+        .footer-bottom { border-top: 1px solid #1A1A1A; padding-top: 24px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
+        .footer-link { display: block; font-size: 14px; color: var(--t1); margin-bottom: 11px; text-decoration: none; transition: color 0.15s, padding-left 0.15s; }
+        .footer-link:hover { color: var(--y); padding-left: 4px; }
+
+        /* ═══ RESPONSIVE ═══ */
         @media (max-width: 1024px) {
-          .why-grid {
-            grid-template-columns: repeat(2, 1fr);
-          }
-          .packages-grid {
-            grid-template-columns: repeat(2, 1fr);
-          }
-          .footer-grid {
-            grid-template-columns: 1fr 1fr;
-            gap: 32px;
-          }
-          .footer-brand {
-            grid-column: 1 / -1;
-          }
+          .why-grid      { grid-template-columns: repeat(2, 1fr); }
+          .packages-grid { grid-template-columns: repeat(2, 1fr); }
+          .footer-grid   { grid-template-columns: 1fr 1fr; gap: 32px; }
+          .footer-brand  { grid-column: 1 / -1; }
         }
-
-        /* ── MOBILE (≤ 768px) ── */
         @media (max-width: 768px) {
-          .hero-section {
-            padding: 48px 0 40px !important;
-          }
-          .section-pad {
-            padding: 56px 0 !important;
-          }
-          .why-grid {
-            grid-template-columns: repeat(2, 1fr);
-            gap: 12px;
-          }
-          .packages-grid {
-            grid-template-columns: 1fr;
-          }
-          .form-row-2 {
-            grid-template-columns: 1fr;
-          }
-          .tip-banner {
-            flex-direction: column;
-            align-items: flex-start;
-            gap: 10px;
-            padding: 18px 20px;
-          }
-          .form-wrap {
-            padding: 24px 16px;
-          }
-          .footer-grid {
-            grid-template-columns: 1fr;
-            gap: 32px;
-          }
-          .footer-brand {
-            grid-column: unset;
-          }
+          .packages-grid { grid-template-columns: 1fr; }
+          .form-row-2    { grid-template-columns: 1fr; }
+          .form-wrap     { padding: 24px 18px; }
+          .tip-banner    { flex-direction: column; align-items: flex-start; gap: 12px; padding: 18px 20px; }
+          .footer-grid   { grid-template-columns: 1fr; gap: 28px; }
+          .footer-brand  { grid-column: unset; }
+          .footer-bottom { flex-direction: column; text-align: center; }
+          .success-actions { flex-direction: column; align-items: center; }
         }
-
-        /* ── SMALL MOBILE (≤ 480px) ── */
         @media (max-width: 480px) {
-          .why-grid {
-            grid-template-columns: 1fr;
-          }
-          .hero-btns .btn-primary,
-          .hero-btns .btn-secondary {
-            width: 100%;
-            justify-content: center;
-            text-align: center;
-          }
-          .success-actions {
-            flex-direction: column;
-          }
-          .success-actions a,
-          .success-actions button {
-            width: 100%;
-            text-align: center;
-          }
-          .footer-bottom {
-            flex-direction: column;
-            text-align: center;
-          }
+          .container  { padding: 0 14px; }
+          .why-grid   { grid-template-columns: 1fr; }
         }
 
+        /* ═══ REDUCED MOTION ═══ */
+        @media (prefers-reduced-motion: reduce) {
+          .why-card, .pkg-card, .btn-yellow, .btn-outline, .form-submit-btn { transition: none; }
+        }
       `}</style>
 
       <Header />
 
-      {/* ── HERO ── */}
-      <section className="hero-section" style={{
-        padding: '40px 0',
-        background: 'linear-gradient(135deg, #000 0%, #0A0A0A 60%, #1A1100 100%)',
-        position: 'relative', overflow: 'hidden',
-        borderBottom: '1px solid #1A1A1A',
-      }}>
-        <div style={{
-          position: 'absolute', top: '-100px', right: '-100px',
-          width: '500px', height: '500px', borderRadius: '50%',
-          background: 'radial-gradient(circle, #FED80015 0%, transparent 70%)',
-        }} />
-        <div className="container" style={{ position: 'relative' }}>
-          <p style={{ fontSize: '13px', color: '#FED800', fontWeight: '600', letterSpacing: '3px', textTransform: 'uppercase', marginBottom: '12px' }}>Catering Services</p>
-          <h1 style={{ fontSize: 'clamp(40px, 8vw, 50px)', color: '#FEFEFE', lineHeight: '0.95', marginBottom: '20px',justifyContent: 'center', display: 'flex', gap: '8px' }}>
+      {/* ══════════════════════════════════════════
+          HERO
+      ══════════════════════════════════════════ */}
+      <section id="catering-hero" style={{ padding: '110px 0 80px', background: '#000', position: 'relative', overflow: 'hidden', borderBottom: '1px solid #141414' }}>
+
+        <div className="hero-glow" style={{ position: 'absolute', top: '-100px', right: '-100px', width: '560px', height: '560px', borderRadius: '50%', background: 'radial-gradient(circle, rgba(254,216,0,0.06) 0%, transparent 70%)', pointerEvents: 'none' }} aria-hidden="true" />
+        <div className="hero-glow-bottom" style={{ position: 'absolute', bottom: '-80px', left: '-80px', width: '400px', height: '400px', borderRadius: '50%', background: 'radial-gradient(circle, rgba(252,3,1,0.04) 0%, transparent 70%)', pointerEvents: 'none' }} aria-hidden="true" />
+
+        <div className="container hero-container" style={{ position: 'relative', textAlign: 'center' }}>
+          <span id="hero-label" className="sec-label">Catering Services</span>
+          <h1 id="hero-title" className="bebas" style={{ fontSize: 'clamp(52px, 9vw, 80px)', color: '#ffffff', lineHeight: '0.93', marginBottom: '24px' }}>
             FEED YOUR <span style={{ color: '#FED800' }}>WHOLE CREW</span>
           </h1>
-          <p style={{ fontSize: 'clamp(14px, 2vw, 18px)', color: '#888888', maxWidth: '520px', lineHeight: '1.7', marginBottom: '32px' ,display: 'flex', justifyContent: 'center', marginLeft: 'auto', marginRight: 'auto' }}>
+          <p id="hero-subtitle" style={{ fontSize: 'clamp(15px, 2vw, 18px)', color: '#ffffff', lineHeight: '1.8', maxWidth: '520px', margin: '0 auto 40px' }}>
             From office breakfasts to special events — Eggs Ok caters for groups of all sizes. Fresh, made-to-order food delivered to your door.
           </p>
-          <div className="hero-btns">
-            <a href="#packages" className="btn-primary" style={{ fontSize: '16px', padding: '14px 32px' }}>
-              View Packages
+          <div id="hero-cta" style={{ display: 'flex', gap: '14px', justifyContent: 'center', flexWrap: 'wrap' }}>
+            <a id="hero-packages-btn" href="#packages" className="btn-yellow" style={{ fontSize: '16px', padding: '16px 34px' }}>
+              View Packages <ArrowRight size={16} aria-hidden="true" />
             </a>
-            <a href="#contact" className="btn-secondary" style={{ fontSize: '16px', padding: '14px 32px' }}>
+            <a id="hero-quote-btn" href="#contact" className="btn-outline" style={{ fontSize: '16px', padding: '16px 34px' }}>
               Get a Quote
             </a>
           </div>
         </div>
       </section>
 
-      {/* ── WHY CHOOSE US ── */}
-      <section className="section-pad" style={{ padding: '80px 0', background: '#ffffffff' }}>
-        <div className="container">
-          <div className="why-grid">
+      {/* ══════════════════════════════════════════
+          WHY CHOOSE US
+      ══════════════════════════════════════════ */}
+      <section id="why-us" style={{ padding: '88px 0', background: '#0A0A0A' }}>
+        <div className="container why-container">
+
+          <div id="why-header" style={{ textAlign: 'center', marginBottom: '52px' }}>
+            <span className="sec-label">Why Eggs Ok</span>
+            <h2 id="why-heading" className="sec-heading">
+              THE <span className="accent">DIFFERENCE</span>
+            </h2>
+          </div>
+
+          <div id="why-grid" className="why-grid" role="list" aria-label="Why choose Eggs Ok catering">
             {whyItems.map((item, i) => (
-              <div key={i} style={{
-                padding: '28px 24px', background: '#111111',
-                border: '1px solid #1A1A1A', borderRadius: '14px', textAlign: 'center',
-              }}>
-                <div style={{
-                  width: '52px', height: '52px', borderRadius: '14px',
-                  background: '#FED80015', border: '1px solid #FED80030',
-                  display: 'flex', alignItems: 'center', justifyContent: 'center',
-                  margin: '0 auto 16px',
-                }}>
+              <div key={i} id={`why-card-${i}`} className="why-card" role="listitem">
+                <div className="why-icon" aria-hidden="true">
                   <item.icon size={26} color="#FED800" strokeWidth={2} />
                 </div>
-                <p style={{ fontSize: '16px', fontWeight: '700', color: '#FEFEFE', marginBottom: '8px' }}>{item.title}</p>
-                <p style={{ fontSize: '13px', color: '#888888', lineHeight: '1.5' }}>{item.desc}</p>
+                <p className="why-title">{item.title}</p>
+                <p className="why-desc">{item.desc}</p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* ── PACKAGES ── */}
-      <section id="packages" className="section-pad" style={{ padding: '80px 0', background: '#000' }}>
-        <div className="container">
-          <div style={{ marginBottom: '48px' }}>
-            <p style={{ fontSize: '13px', color: '#FED800', fontWeight: '600', letterSpacing: '3px', textTransform: 'uppercase', marginBottom: '12px' }}>Catering Packages</p>
-            <h2 style={{ fontSize: 'clamp(32px, 6vw, 64px)', color: '#FEFEFE' }}>
-              CHOOSE YOUR <span style={{ color: '#FED800' }}>PACKAGE</span>
+      {/* ══════════════════════════════════════════
+          PACKAGES
+      ══════════════════════════════════════════ */}
+      <section id="packages" style={{ padding: '88px 0', background: '#000' }}>
+        <div className="container packages-container">
+
+          <div id="packages-header" style={{ marginBottom: '52px' }}>
+            <span className="sec-label">Catering Packages</span>
+            <h2 id="packages-heading" className="sec-heading">
+              CHOOSE YOUR <span className="accent">PACKAGE</span>
             </h2>
           </div>
 
-          <div className="packages-grid">
+          <div id="packages-grid" className="packages-grid" role="list" aria-label="Catering packages">
             {packages.map((pkg, i) => (
-              <div key={i} style={{
-                background: '#111111',
-                border: `1px solid ${pkg.popular ? pkg.color + '60' : '#1A1A1A'}`,
-                borderRadius: '16px', overflow: 'hidden',
-                position: 'relative',
-              }}>
+              <div key={i} id={`pkg-card-${i}`} className="pkg-card" style={{ border: `1px solid ${pkg.popular ? pkg.color + '50' : '#1E1E1E'}` }} role="listitem">
+
                 {pkg.popular && (
-                  <div style={{ background: pkg.color, padding: '8px', textAlign: 'center' }}>
-                    <p style={{ fontSize: '12px', fontWeight: '700', color: '#000', letterSpacing: '1px' }}>⭐ MOST POPULAR</p>
+                  <div id={`pkg-popular-bar-${i}`} className="pkg-popular-bar" style={{ background: pkg.color }}>
+                    ★ MOST POPULAR
                   </div>
                 )}
-                <div style={{ padding: '28px 24px' }}>
-                  <div style={{
-                    width: '48px', height: '48px', borderRadius: '12px',
-                    background: `${pkg.color}20`, border: `1px solid ${pkg.color}40`,
-                    display: 'flex', alignItems: 'center', justifyContent: 'center',
-                    marginBottom: '16px',
-                  }}>
-                    <UtensilsCrossed size={22} color={pkg.color} strokeWidth={2} />
+
+                <div className="pkg-body">
+                  <div id={`pkg-icon-${i}`} className="pkg-icon" style={{ background: `${pkg.color}15`, border: `1px solid ${pkg.color}30` }}>
+                    <UtensilsCrossed size={24} color={pkg.color} strokeWidth={2} />
                   </div>
-                  <h3 style={{ fontSize: 'clamp(20px, 4vw, 28px)', color: '#FEFEFE', marginBottom: '4px' }}>{pkg.name.toUpperCase()}</h3>
-                  <p style={{ fontSize: '20px', fontWeight: '700', color: pkg.color, marginBottom: '4px' }}>{pkg.price}</p>
-                  <p style={{ fontSize: '13px', color: '#888888', marginBottom: '20px' }}>Minimum {pkg.minGuests} guests</p>
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', marginBottom: '24px' }}>
+                  <h3 id={`pkg-name-${i}`} className="pkg-name">{pkg.name.toUpperCase()}</h3>
+                  <p id={`pkg-price-${i}`} className="pkg-price" style={{ color: pkg.color }}>{pkg.price}</p>
+                  <p id={`pkg-guests-${i}`} className="pkg-min-guests">Minimum {pkg.minGuests} guests</p>
+
+                  <ul id={`pkg-items-${i}`} className="pkg-items" aria-label={`${pkg.name} includes`}>
                     {pkg.items.map((item, j) => (
-                      <div key={j} style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                        <div style={{
-                          width: '16px', height: '16px', borderRadius: '50%',
-                          background: `${pkg.color}20`, border: `1px solid ${pkg.color}60`,
-                          display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
-                        }}>
-                          <svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke={pkg.color} strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+                      <li key={j} id={`pkg-item-${i}-${j}`} className="pkg-item">
+                        <div className="pkg-item-check" style={{ background: `${pkg.color}15`, border: `1px solid ${pkg.color}40` }} aria-hidden="true">
+                          <svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke={pkg.color} strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round">
                             <polyline points="20 6 9 17 4 12"/>
                           </svg>
                         </div>
-                        <span style={{ fontSize: '13px', color: '#CACACA' }}>{item}</span>
-                      </div>
+                        <span className="pkg-item-text">{item}</span>
+                      </li>
                     ))}
-                  </div>
-                  <a href="#contact" style={{
-                    display: 'block', width: '100%', padding: '13px',
-                    background: pkg.popular ? pkg.color : 'transparent',
-                    border: `2px solid ${pkg.color}`,
-                    borderRadius: '10px', textAlign: 'center',
-                    color: pkg.popular ? '#000' : pkg.color,
-                    fontSize: '14px', fontWeight: '700', transition: 'all 0.2s',
-                    boxSizing: 'border-box',
-                  }}>
+                  </ul>
+
+                  <a
+                    id={`pkg-cta-${i}`}
+                    href="#contact"
+                    className={`pkg-cta ${pkg.popular ? 'pkg-cta-solid' : 'pkg-cta-outline'}`}
+                    style={pkg.popular
+                      ? { background: pkg.color, color: '#000', border: `2px solid ${pkg.color}` }
+                      : { background: 'transparent', color: pkg.color, border: `2px solid ${pkg.color}` }
+                    }
+                  >
                     Request This Package
                   </a>
                 </div>
@@ -371,112 +401,98 @@ export default function CateringPage() {
             ))}
           </div>
 
-          {/* Tip Banner */}
-          <div className="tip-banner">
-            <div style={{
-              width: '40px', height: '40px', borderRadius: '10px',
-              background: '#FED80015', border: '1px solid #FED80030',
-              display: 'flex', alignItems: 'center', justifyContent: 'center',
-              flexShrink: 0,
-            }}>
+          {/* Tip banner */}
+          <div id="tip-banner" className="tip-banner">
+            <div id="tip-icon" className="tip-icon" aria-hidden="true">
               <Lightbulb size={20} color="#FED800" strokeWidth={2} />
             </div>
-            <p style={{ fontSize: '14px', color: '#888888', lineHeight: '1.6' }}>
+            <p id="tip-text" className="tip-text">
               Need something custom? We can build a catering menu specifically for your event. Call us at{' '}
-              <a href="tel:2673707993" style={{ color: '#FED800', fontWeight: '600' }}>267-370-7993</a>{' '}
+              <a href="tel:2673707993" className="tip-link">267-370-7993</a>{' '}
               or fill out the form below.
             </p>
           </div>
         </div>
       </section>
 
-      {/* ── CONTACT FORM ── */}
-      <section id="contact" className="section-pad" style={{ padding: '80px 0', background: '#0A0A0A' }}>
-        <div className="container">
-          <div style={{ maxWidth: '680px', margin: '0 auto' }}>
-            <div style={{ marginBottom: '40px' }}>
-              <p style={{ fontSize: '13px', color: '#FED800', fontWeight: '600', letterSpacing: '3px', textTransform: 'uppercase', marginBottom: '12px' }}>Get A Quote</p>
-              <h2 style={{ fontSize: 'clamp(28px, 6vw, 64px)', color: '#FEFEFE', marginBottom: '12px' }}>
-                LET&apos;S PLAN YOUR <span style={{ color: '#FED800' }}>EVENT</span>
+      {/* ══════════════════════════════════════════
+          CONTACT FORM
+      ══════════════════════════════════════════ */}
+      <section id="contact" style={{ padding: '88px 0', background: '#0A0A0A' }}>
+        <div className="container contact-container">
+          <div id="contact-inner" style={{ maxWidth: '700px', margin: '0 auto' }}>
+
+            <div id="contact-header" style={{ marginBottom: '44px' }}>
+              <span className="sec-label">Get A Quote</span>
+              <h2 id="contact-heading" className="sec-heading">
+                LET&apos;S PLAN YOUR <span className="accent">EVENT</span>
               </h2>
-              <p style={{ fontSize: '15px', color: '#888888' }}>Fill out the form below and we will get back to you within 24 hours.</p>
+              <p id="contact-subtitle" style={{ fontSize: '15px', color: '#ffffff', marginTop: '14px', lineHeight: '1.7' }}>
+                Fill out the form below and we will get back to you within 24 hours.
+              </p>
             </div>
 
             {submitted ? (
-              <div style={{
-                padding: '48px 32px', background: '#111111',
-                border: '1px solid #22C55E30', borderRadius: '16px', textAlign: 'center',
-              }}>
-                <div style={{
-                  width: '72px', height: '72px', borderRadius: '50%',
-                  background: '#22C55E20', border: '2px solid #22C55E',
-                  display: 'flex', alignItems: 'center', justifyContent: 'center',
-                  margin: '0 auto 20px',
-                }}>
-                  <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#22C55E" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                    <polyline points="20 6 9 17 4 12"/>
-                  </svg>
+              <div id="success-card" className="success-card">
+                <div id="success-icon" className="success-icon-wrap" aria-hidden="true">
+                  <Check size={36} color="#22C55E" strokeWidth={2.5} />
                 </div>
-                <h3 style={{ fontSize: 'clamp(22px, 5vw, 32px)', color: '#FEFEFE', marginBottom: '12px' }}>REQUEST SENT!</h3>
-                <p style={{ fontSize: '15px', color: '#888888', marginBottom: '8px' }}>Thank you, {formData.name}! We received your catering request.</p>
-                <p style={{ fontSize: '14px', color: '#888888', marginBottom: '28px' }}>
-                  Our team will contact you at <span style={{ color: '#FED800' }}>{formData.email}</span> within 24 hours.
+                <h3 id="success-title" className="success-title">REQUEST SENT!</h3>
+                <p id="success-msg" className="success-msg">
+                  Thank you, {formData.name}! We received your catering request.<br />
+                  Our team will contact you at{' '}
+                  <span style={{ color: '#FED800' }}>{formData.email}</span>{' '}
+                  within 24 hours.
                 </p>
-                <div className="success-actions">
+                <div id="success-actions" className="success-actions">
                   <button
+                    id="success-resubmit-btn"
+                    className="btn-outline"
                     onClick={() => { setSubmitted(false); setFormData({ name: '', email: '', phone: '', eventDate: '', eventType: '', guestCount: '', location: '', message: '' }); }}
-                    style={{ padding: '12px 24px', background: 'transparent', border: '1px solid #2A2A2A', borderRadius: '10px', color: '#888888', fontSize: '14px', cursor: 'pointer' }}>
+                  >
                     Submit Another
                   </button>
-                  <Link href="/" style={{ padding: '12px 24px', background: '#FED800', borderRadius: '10px', color: '#000', fontSize: '14px', fontWeight: '700', display: 'inline-block' }}>
-                    Back to Home
+                  <Link id="success-home-btn" href="/" className="btn-yellow">
+                    Back to Home <ArrowRight size={15} aria-hidden="true" />
                   </Link>
                 </div>
               </div>
             ) : (
-              <form onSubmit={handleSubmit} className="form-wrap">
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+              <form id="catering-form" className="form-wrap" onSubmit={handleSubmit} noValidate>
+                <div id="form-fields" style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
 
-                  <div className="form-row-2">
-                    <div>
-                      <label style={labelStyle}>Full Name *</label>
-                      <input style={inputStyle} placeholder="John Smith" required
-                        value={formData.name} onChange={e => setFormData({ ...formData, name: e.target.value })}
-                        onFocus={e => e.target.style.borderColor = '#FED800'}
-                        onBlur={e => e.target.style.borderColor = '#1A1A1A'}
-                      />
+                  {/* Name + Phone */}
+                  <div id="form-row-name-phone" className="form-row-2">
+                    <div id="form-group-name">
+                      <label htmlFor="input-name" className="form-label">Full Name *</label>
+                      <input id="input-name" className="form-input" placeholder="John Smith" required
+                        value={formData.name} onChange={e => setFormData({ ...formData, name: e.target.value })} />
                     </div>
-                    <div>
-                      <label style={labelStyle}>Phone Number *</label>
-                      <input type="tel" style={inputStyle} placeholder="215-555-0100" required
-                        value={formData.phone} onChange={e => setFormData({ ...formData, phone: e.target.value })}
-                        onFocus={e => e.target.style.borderColor = '#FED800'}
-                        onBlur={e => e.target.style.borderColor = '#1A1A1A'}
-                      />
+                    <div id="form-group-phone">
+                      <label htmlFor="input-phone" className="form-label">Phone Number *</label>
+                      <input id="input-phone" type="tel" className="form-input" placeholder="215-555-0100" required
+                        value={formData.phone} onChange={e => setFormData({ ...formData, phone: e.target.value })} />
                     </div>
                   </div>
 
-                  <div>
-                    <label style={labelStyle}>Email Address *</label>
-                    <input type="email" style={inputStyle} placeholder="john@company.com" required
-                      value={formData.email} onChange={e => setFormData({ ...formData, email: e.target.value })}
-                      onFocus={e => e.target.style.borderColor = '#FED800'}
-                      onBlur={e => e.target.style.borderColor = '#1A1A1A'}
-                    />
+                  {/* Email */}
+                  <div id="form-group-email">
+                    <label htmlFor="input-email" className="form-label">Email Address *</label>
+                    <input id="input-email" type="email" className="form-input" placeholder="john@company.com" required
+                      value={formData.email} onChange={e => setFormData({ ...formData, email: e.target.value })} />
                   </div>
 
-                  <div className="form-row-2">
-                    <div>
-                      <label style={labelStyle}>Event Date *</label>
-                      <input type="date" style={{ ...inputStyle, colorScheme: 'dark' } as React.CSSProperties} required
-                        value={formData.eventDate} onChange={e => setFormData({ ...formData, eventDate: e.target.value })}
-                        onFocus={e => e.target.style.borderColor = '#FED800'}
-                        onBlur={e => e.target.style.borderColor = '#1A1A1A'}
-                      />
+                  {/* Date + Guests */}
+                  <div id="form-row-date-guests" className="form-row-2">
+                    <div id="form-group-date">
+                      <label htmlFor="input-date" className="form-label">Event Date *</label>
+                      <input id="input-date" type="date" className="form-input" required
+                        style={{ colorScheme: 'dark' } as React.CSSProperties}
+                        value={formData.eventDate} onChange={e => setFormData({ ...formData, eventDate: e.target.value })} />
                     </div>
-                    <div>
-                      <label style={labelStyle}>Number of Guests *</label>
-                      <select style={{ ...inputStyle, cursor: 'pointer' }} required
+                    <div id="form-group-guests">
+                      <label htmlFor="input-guests" className="form-label">Number of Guests *</label>
+                      <select id="input-guests" className="form-select" required
                         value={formData.guestCount} onChange={e => setFormData({ ...formData, guestCount: e.target.value })}>
                         <option value="">Select</option>
                         <option value="10-25">10–25 guests</option>
@@ -487,10 +503,11 @@ export default function CateringPage() {
                     </div>
                   </div>
 
-                  <div className="form-row-2">
-                    <div>
-                      <label style={labelStyle}>Event Type</label>
-                      <select style={{ ...inputStyle, cursor: 'pointer' }}
+                  {/* Event Type + Location */}
+                  <div id="form-row-type-location" className="form-row-2">
+                    <div id="form-group-type">
+                      <label htmlFor="input-type" className="form-label">Event Type</label>
+                      <select id="input-type" className="form-select"
                         value={formData.eventType} onChange={e => setFormData({ ...formData, eventType: e.target.value })}>
                         <option value="">Select</option>
                         <option value="corporate">Corporate Breakfast</option>
@@ -500,35 +517,26 @@ export default function CateringPage() {
                         <option value="other">Other</option>
                       </select>
                     </div>
-                    <div>
-                      <label style={labelStyle}>Event Location</label>
-                      <input style={inputStyle} placeholder="Address or venue name"
-                        value={formData.location} onChange={e => setFormData({ ...formData, location: e.target.value })}
-                        onFocus={e => e.target.style.borderColor = '#FED800'}
-                        onBlur={e => e.target.style.borderColor = '#1A1A1A'}
-                      />
+                    <div id="form-group-location">
+                      <label htmlFor="input-location" className="form-label">Event Location</label>
+                      <input id="input-location" className="form-input" placeholder="Address or venue name"
+                        value={formData.location} onChange={e => setFormData({ ...formData, location: e.target.value })} />
                     </div>
                   </div>
 
-                  <div>
-                    <label style={labelStyle}>Additional Details</label>
-                    <textarea
-                      style={{ ...inputStyle, height: '100px', resize: 'none' as const }}
+                  {/* Message */}
+                  <div id="form-group-message">
+                    <label htmlFor="input-message" className="form-label">Additional Details</label>
+                    <textarea id="input-message" className="form-textarea"
                       placeholder="Tell us about your event, dietary restrictions, special requests..."
-                      value={formData.message}
-                      onChange={e => setFormData({ ...formData, message: e.target.value })}
-                      onFocus={e => (e.target as HTMLTextAreaElement).style.borderColor = '#FED800'}
-                      onBlur={e => (e.target as HTMLTextAreaElement).style.borderColor = '#1A1A1A'}
-                    />
+                      value={formData.message} onChange={e => setFormData({ ...formData, message: e.target.value })} />
                   </div>
 
-                  <button type="submit" style={{
-                    width: '100%', padding: '15px', background: '#FED800',
-                    borderRadius: '12px', fontSize: '16px', fontWeight: '700',
-                    color: '#000', cursor: 'pointer', marginTop: '4px', border: 'none',
-                  }}>
-                    Submit Catering Request
+                  {/* Submit */}
+                  <button id="form-submit-btn" type="submit" className="form-submit-btn">
+                    Submit Catering Request <ArrowRight size={16} aria-hidden="true" />
                   </button>
+
                 </div>
               </form>
             )}
@@ -536,75 +544,96 @@ export default function CateringPage() {
         </div>
       </section>
 
-      {/* ── FOOTER CTA ── */}
-      <section style={{ padding: '60px 0', background: '#000', borderTop: '1px solid #1A1A1A', textAlign: 'center' }}>
+      {/* ══════════════════════════════════════════
+          PHONE CTA
+      ══════════════════════════════════════════ */}
+      <section id="phone-cta" className="phone-cta-section">
         <div className="container">
-          <p style={{ fontSize: '13px', color: '#888888', marginBottom: '8px' }}>Have questions? Call our catering hotline</p>
-          <a href="tel:2673707993" style={{
-            fontSize: 'clamp(28px, 5vw, 48px)', fontFamily: 'Bebas Neue, sans-serif',
-            color: '#FED800', letterSpacing: '2px', display: 'block',
-          }}>
-            267-370-7993
-          </a>
-          <p style={{ fontSize: '13px', color: '#888888', marginTop: '8px' }}>Mon–Fri 8AM–6PM · Sat 9AM–4PM</p>
+          <div id="phone-cta-icon" style={{ width: '56px', height: '56px', borderRadius: '14px', background: 'rgba(254,216,0,0.08)', border: '1px solid rgba(254,216,0,0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 18px' }}>
+            <Phone size={24} color="#FED800" strokeWidth={2} aria-hidden="true" />
+          </div>
+          <p id="phone-cta-label" style={{ fontSize: '13px', color: '#ffffff', marginBottom: '10px', textTransform: 'uppercase', letterSpacing: '2px', fontWeight: '700' }}>Catering Hotline</p>
+          <a id="phone-cta-number" href="tel:2673707993" className="phone-cta-number">267-370-7993</a>
+          <p id="phone-cta-hours" style={{ fontSize: '13px', color: '#ffffff', marginTop: '12px' }}>Mon–Fri 8AM–6PM · Sat 9AM–4PM</p>
         </div>
       </section>
 
-      {/* ── FOOTER ── */}
-      <footer style={{ background: '#0A0A0A', padding: '30px 0 32px', borderTop: '1px solid #1A1A1A' }}>
-        <div className="container">
-          <div className="footer-grid">
+      {/* ══════════════════════════════════════════
+          FOOTER
+      ══════════════════════════════════════════ */}
+      <footer id="catering-footer" className="site-footer" style={{ background: '#050505', padding: '68px 0 32px', borderTop: '1px solid #141414' }}>
+        <div className="container footer-container">
+          <div id="footer-grid" className="footer-grid">
 
             {/* Brand */}
-            <div className="footer-brand">
-              <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '16px' }}>
-                <div style={{ width: '40px', height: '40px', borderRadius: '10px', overflow: 'hidden', background: '#000' }}>
-                  <Image src="/logo.svg" alt="Eggs Ok" width={40} height={40} style={{ objectFit: 'contain' }} />
+            <div id="footer-brand" className="footer-brand">
+              <div id="footer-logo-wrap" style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '18px' }}>
+                <div id="footer-logo-img-wrap" style={{ borderRadius: '10px', overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                  <Image src="/logo.svg" alt="Eggs Ok" width={100} height={50} style={{ objectFit: 'contain' }} />
                 </div>
-                <p style={{ fontSize: '20px', fontFamily: 'Bebas Neue, sans-serif', color: '#FED800', letterSpacing: '1px' }}>EGGS OK</p>
               </div>
-              <p style={{ fontSize: '14px', color: '#888888', lineHeight: '1.7', maxWidth: '300px', marginBottom: '20px' }}>
+              <p id="footer-tagline" style={{ fontSize: '14px', color: '#ffffff', lineHeight: '1.75', maxWidth: '280px', marginBottom: '22px' }}>
                 Fresh breakfast and lunch in West Philadelphia. Made to order, every time.
               </p>
-              <p style={{ fontSize: '13px', color: '#888888', display: 'flex', alignItems: 'center', gap: '6px' }}>
-                <MapPin size={14} /> 3517 Lancaster Ave, Philadelphia PA 19104
-              </p>
-              <p style={{ fontSize: '13px', color: '#888888', marginTop: '6px', display: 'flex', alignItems: 'center', gap: '6px' }}>
-                <Smartphone size={14} />
-                <a href="tel:2159489902" style={{ color: '#888888' }}>215-948-9902</a>
-              </p>
+              <address id="footer-address" style={{ fontStyle: 'normal' }}>
+                <p id="footer-address-line" style={{ fontSize: '13px', color: '#ffffff', display: 'flex', alignItems: 'center', gap: '7px', marginBottom: '8px' }}>
+                  <MapPin size={13} color="#FED800" aria-hidden="true" />
+                  <a id="footer-address-link" href="https://www.google.com/maps?q=3517+Lancaster+Ave,+Philadelphia+PA+19104" style={{ color: '#ffffff', textDecoration: 'none' }}>
+                    3517 Lancaster Ave, Philadelphia PA 19104
+                  </a>
+                </p>
+                <p id="footer-phone-line" style={{ fontSize: '13px', color: '#ffffff', display: 'flex', alignItems: 'center', gap: '7px' }}>
+                  <Smartphone size={13} color="#FED800" aria-hidden="true" />
+                  <a id="footer-phone-link" href="tel:2159489902" style={{ color: '#ffffff', textDecoration: 'none' }}>215-948-9902</a>
+                </p>
+              </address>
             </div>
 
-            {/* Quick Links */}
-            <div>
-              <p style={{ fontSize: '13px', fontWeight: '700', color: '#FEFEFE', letterSpacing: '1px', textTransform: 'uppercase', marginBottom: '16px' }}>Quick Links</p>
-              {['Home', 'Menu', 'Order Online'].map(link => (
-                <Link key={link} href={link === 'Menu' || link === 'Order Online' ? '/order' : '/'} style={{ display: 'block', fontSize: '14px', color: '#888888', marginBottom: '10px', transition: 'color 0.2s' }}
-                  onMouseEnter={e => (e.currentTarget as HTMLAnchorElement).style.color = '#FED800'}
-                  onMouseLeave={e => (e.currentTarget as HTMLAnchorElement).style.color = '#888888'}
-                >{link}</Link>
+            {/* Quick links */}
+            <nav id="footer-nav" aria-label="Quick links">
+              <p id="footer-nav-heading" style={{ fontSize: '15px', fontWeight: '700', color: '#ffffff', letterSpacing: '2px', textTransform: 'uppercase', marginBottom: '20px' }}>Quick Links</p>
+              {[
+                { label: 'Home',          href: '/'         },
+                { label: 'Order Online',  href: '/order'    },
+                { label: 'Catering',      href: '/catering' },
+                { label: 'Our Story',     href: '/story'    },
+                { label: 'Gift Cards',    href: '/gift-cards'},
+                { label: 'Contact',       href: '/contact'  },
+              ].map(l => (
+                <Link key={l.href} href={l.href} className="footer-link">{l.label}</Link>
               ))}
-            </div>
+            </nav>
 
             {/* Hours */}
-            <div>
-              <p style={{ fontSize: '13px', fontWeight: '700', color: '#FEFEFE', letterSpacing: '1px', textTransform: 'uppercase', marginBottom: '16px' }}>Hours</p>
-              {[
-                { day: 'Mon – Fri', hours: '8:00 AM – 10:00 PM' },
-                { day: 'Saturday', hours: '9:00 AM – 11:00 PM' },
-                { day: 'Sunday',   hours: '9:00 AM – 9:00 PM' },
-              ].map((h, i) => (
-                <div key={i} style={{ marginBottom: '10px' }}>
-                  <p style={{ fontSize: '13px', color: '#FEFEFE', fontWeight: '500' }}>{h.day}</p>
-                  <p style={{ fontSize: '12px', color: '#888888' }}>{h.hours}</p>
-                </div>
-              ))}
+            <div id="footer-hours">
+              <p id="footer-hours-heading" style={{ fontSize: '15px', fontWeight: '700', color: '#ffffff', letterSpacing: '2px', textTransform: 'uppercase', marginBottom: '20px' }}>Hours</p>
+              <div id="footer-hours-list" style={{ display: 'flex', flexDirection: 'column', gap: '5px' }}>
+                {[
+                  { day: 'Monday',    hours: '8:00 AM – 10:00 PM' },
+                  { day: 'Tuesday',   hours: '8:00 AM – 10:00 PM' },
+                  { day: 'Wednesday', hours: '8:00 AM – 10:00 PM' },
+                  { day: 'Thursday',  hours: '8:00 AM – 10:00 PM' },
+                  { day: 'Friday',    hours: '8:00 AM – 10:00 PM' },
+                  { day: 'Saturday',  hours: '9:00 AM – 11:00 PM' },
+                  { day: 'Sunday',    hours: '9:00 AM – 9:00 PM'  },
+                ].map((h, i) => (
+                  <div key={i} id={`footer-hours-row-${i}`} style={{ display: 'flex', gap: '14px' }}>
+                    <span style={{ fontSize: '13px', color: '#ffffff', fontWeight: '600', minWidth: '96px' }}>{h.day}</span>
+                    <span style={{ fontSize: '13px', color: '#BBBBBB' }}>{h.hours}</span>
+                  </div>
+                ))}
+              </div>
             </div>
+
           </div>
 
-          <div className="footer-bottom">
-            <p style={{ fontSize: '13px', color: '#888888' }}>© 2026 Eggs Ok. All rights reserved.</p>
-            <p style={{ fontSize: '13px', color: '#888888' }}>Built by <span style={{ color: '#FED800' }}>RestoRise Business Solutions</span></p>
+          <div id="footer-bottom" className="footer-bottom">
+            <p id="footer-copyright" style={{ fontSize: '13px', color: '#ffffff' }}>
+              &copy; {new Date().getFullYear()} Eggs Ok. All rights reserved.
+            </p>
+            <p id="footer-credit" style={{ fontSize: '13px', color: '#ffffff' }}>
+              Built by <span id="footer-credit-brand" style={{ color: '#FED800' }}>RestoRise Business Solutions</span>
+            </p>
           </div>
         </div>
       </footer>

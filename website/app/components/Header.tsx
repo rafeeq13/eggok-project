@@ -115,13 +115,13 @@ const css = `
                     boxShadow: '0 8px 32px rgba(0,0,0,0.6)',
                   }}>
                     {moreLinks.map(link => (
-                      <Link key={link.href} href={link.href} onClick={() => setMoreOpen(false)} style={{
+                      <Link key={link.href} className="navLink" href={link.href} onClick={() => setMoreOpen(false)} style={{
                         display: 'block', padding: '10px 14px',
-                        color: '#888888', fontSize: '14px', borderRadius: '8px',
+                        color: '#ffffff', fontSize: '14px', borderRadius: '8px',
                         transition: 'all 0.15s',
                       }}
                         onMouseEnter={e => { (e.currentTarget as HTMLAnchorElement).style.color = '#FEFEFE'; (e.currentTarget as HTMLAnchorElement).style.background = '#1A1A1A'; }}
-                        onMouseLeave={e => { (e.currentTarget as HTMLAnchorElement).style.color = '#888888'; (e.currentTarget as HTMLAnchorElement).style.background = 'transparent'; }}
+                        onMouseLeave={e => { (e.currentTarget as HTMLAnchorElement).style.color = '#ffffff'; (e.currentTarget as HTMLAnchorElement).style.background = 'transparent'; }}
                       >{link.label}</Link>
                     ))}
                   </div>
@@ -168,13 +168,13 @@ const css = `
             </Link>
 
             {/* Cart */}
-            <Link href="/order" style={{
+            <Link href="/order"  style={{
               position: 'relative', width: '42px', height: '42px',
               display: 'flex', alignItems: 'center', justifyContent: 'center',
               background: '#111111', borderRadius: '10px', border: '1px solid #1A1A1A',
               marginLeft: '4px',
             }}>
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FEFEFE" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <svg width="18"  className="navLink" height="18" viewBox="0 0 24 24" fill="none" stroke="#FEFEFE" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <circle cx="9" cy="21" r="1" /><circle cx="20" cy="21" r="1" />
                 <path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 001.95-1.57l1.65-7.43H6" />
               </svg>
