@@ -126,6 +126,44 @@ export class SettingsService implements OnModuleInit {
   }
 
 
+  async validateDeliveryAddress(lat: number, lng: number) {
+    const deliverySettings = await this.getSetting('delivery_settings');
+    const zones = deliverySettings?.zones || [];
+    const storeLat = 39.9612;
+    const storeLng = -75.1832;
+
+    // Haversine distance in miles
+    const R = 3958.8;
+    const dLat = (lat - storeLat) * Math.PI / 180;
+    const dLng = (lng - storeLng) * Math.PI / 180;
+    const a = Math.sin(dLat / 2) ** 2 + Math.cos(storeLat * Math.PI / 180) * Math.cos(lat * Math.PI / 180) * Math.sin(dLng / 2) ** 2;
+    const distance = R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+    const matchingZone = zones
+      .filter((z: any) => z.active && distance <= z.radiusMiles)
+      .sort((a: any, b: any) => a.radiusMiles - b.radiusMiles)[0];
+
+    if (matchingZone) {
+      return {
+        eligible: true,
+        distance: Math.round(distance * 10) / 10,
+        zone: matchingZone.name,
+        deliveryFee: matchingZone.deliveryFee,
+        minOrder: matchingZone.minOrder,
+        estimatedMinutes: matchingZone.estimatedMinutes,
+      };
+    }
+
+    return {
+      eligible: false,
+      distance: Math.round(distance * 10) / 10,
+      zone: null,
+      deliveryFee: 0,
+      minOrder: 0,
+      estimatedMinutes: 0,
+    };
+  }
+
   async getSetting(key: string): Promise<any> {
     const setting = await this.settingsRepository.findOne({ where: { key } });
     if (!setting) {

@@ -4,6 +4,7 @@ import { Repository } from 'typeorm';
 import { Order } from './order.entity';
 import { Customer } from '../customers/customer.entity';
 import { MailService } from '../mail/mail.service';
+import { DeliveryService } from '../delivery/delivery.service';
 
 @Injectable()
 export class OrdersService {
@@ -13,6 +14,7 @@ export class OrdersService {
     @InjectRepository(Customer)
     private customersRepository: Repository<Customer>,
     private mailService: MailService,
+    private deliveryService: DeliveryService,
   ) { }
 
   private generateOrderNumber(): string {
@@ -138,7 +140,76 @@ export class OrdersService {
 
   async updateOrderStatus(id: number, status: string): Promise<Order | null> {
     await this.ordersRepository.update(id, { status });
-    return this.getOrderById(id);
+    const order = await this.getOrderById(id);
+
+    // When order moves to out_for_delivery
+    if (order && status === 'out_for_delivery' && order.orderType === 'delivery') {
+      // Send "on the way" email to customer
+      this.mailService.sendDeliveryUpdateEmail(order).catch(err => {
+        console.error(`[ORDERS] Failed to send delivery update email:`, err.message);
+      });
+
+      // Auto-dispatch via Uber Direct if not already dispatched
+      if (!order.deliveryQuoteId) {
+        this.dispatchDelivery(order).catch(err => {
+          console.error(`[ORDERS] Auto-dispatch failed for order ${order.orderNumber}:`, err.message);
+        });
+      }
+    }
+
+    // Cancel delivery if order cancelled
+    if (order && status === 'cancelled' && order.deliveryQuoteId) {
+      this.deliveryService.cancelDelivery(order.deliveryQuoteId).catch(err => {
+        console.error(`[ORDERS] Failed to cancel delivery for order ${order.orderNumber}:`, err);
+      });
+    }
+
+    return order;
+  }
+
+  async dispatchDelivery(order: Order): Promise<Order | null> {
+    if (order.orderType !== 'delivery' || !order.deliveryAddress) {
+      return order;
+    }
+
+    const result = await this.deliveryService.createDelivery({
+      id: order.id,
+      orderNumber: order.orderNumber,
+      customerName: order.customerName,
+      customerPhone: order.customerPhone,
+      deliveryAddress: order.deliveryAddress,
+      deliveryApt: order.deliveryApt,
+      deliveryInstructions: order.deliveryInstructions,
+      items: order.items,
+      total: Number(order.total),
+    });
+
+    if (result) {
+      await this.ordersRepository.update(order.id, {
+        deliveryProvider: result.provider,
+        deliveryQuoteId: result.quoteId,
+        deliveryTrackingUrl: result.trackingUrl,
+        deliveryEta: result.eta,
+      });
+      return this.getOrderById(order.id);
+    }
+
+    return order;
+  }
+
+  async getDeliveryStatus(id: number): Promise<any> {
+    const order = await this.getOrderById(id);
+    if (!order?.deliveryQuoteId) return { status: 'no_dispatch' };
+
+    const status = await this.deliveryService.getDeliveryStatus(order.deliveryQuoteId);
+    if (status?.driverName && status.driverName !== order.deliveryDriverName) {
+      await this.ordersRepository.update(order.id, {
+        deliveryDriverName: status.driverName,
+        deliveryDriverPhone: status.driverPhone || undefined,
+        deliveryEta: status.eta || undefined,
+      });
+    }
+    return status || { status: 'unknown' };
   }
 
   async getActiveOrders(): Promise<Order[]> {

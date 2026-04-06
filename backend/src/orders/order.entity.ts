@@ -72,6 +72,25 @@ export class Order {
   @Column({ nullable: true })
   notes: string;
 
+  // Delivery dispatch tracking
+  @Column({ nullable: true })
+  deliveryProvider: string; // 'uber_direct' | 'doordash' | null
+
+  @Column({ nullable: true })
+  deliveryQuoteId: string;
+
+  @Column({ nullable: true })
+  deliveryTrackingUrl: string;
+
+  @Column({ nullable: true })
+  deliveryDriverName: string;
+
+  @Column({ nullable: true })
+  deliveryDriverPhone: string;
+
+  @Column({ nullable: true })
+  deliveryEta: string;
+
   @CreateDateColumn()
   createdAt: Date;
 

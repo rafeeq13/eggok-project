@@ -157,6 +157,7 @@ export default function CheckoutPage() {
     deliveryAddress, setDeliveryAddress, deliveryApt, setDeliveryApt,
     deliveryInstructions, setDeliveryInstructions,
     scheduleType, setScheduleType, scheduleDate, setScheduleDate, scheduleTime, setScheduleTime,
+    deliveryFee: cartDeliveryFee,
     clearCart,
   } = useCart();
 
@@ -222,7 +223,7 @@ export default function CheckoutPage() {
 
   const subtotal = cartTotal;
   const taxes = subtotal * 0.08;
-  const deliveryFee = orderType === 'delivery' ? 3.99 : 0;
+  const deliveryFee = orderType === 'delivery' ? cartDeliveryFee : 0;
   const discount = promoApplied ? promoDiscount : 0;
 
   const tipAmount = tipMode === 'custom' && customTipAmount && parseFloat(customTipAmount) > 0
@@ -602,7 +603,7 @@ export default function CheckoutPage() {
                   {orderType === 'delivery' && (
                     <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                       <span style={{ fontSize: '14px', color: '#888' }}>Delivery</span>
-                      <span style={{ fontSize: '14px', color: '#FEFEFE' }}>$3.99</span>
+                      <span style={{ fontSize: '14px', color: '#FEFEFE' }}>${deliveryFee.toFixed(2)}</span>
                     </div>
                   )}
                   {tipAmount > 0 && (

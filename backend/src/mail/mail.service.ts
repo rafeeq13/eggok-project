@@ -82,6 +82,9 @@ export class MailService {
             return false;
         }
 
+        const websiteUrl = this.configService.get<string>('FRONTEND_URL') || 'http://localhost:3000';
+        const trackOrderUrl = `${websiteUrl}/order-tracking?id=${order.id}`;
+
         const itemsHtml = this.renderOrderItems(order.items || []);
         const html = await this.renderTemplate('confirmation', {
             customerName: this.safeText(order.customerName),
@@ -94,6 +97,7 @@ export class MailService {
             total: Number(order.total || 0).toFixed(2),
             orderType: this.safeText(order.orderType),
             deliveryAddress: this.safeText(order.deliveryAddress || ''),
+            trackOrderUrl,
         });
 
         await this.sendMail(
@@ -316,6 +320,59 @@ export class MailService {
                 settings,
             ),
         ]);
+    }
+
+    async sendDeliveryUpdateEmail(order: any) {
+        const settings = await this.getResolvedMailSettings();
+        if (!this.isConfigured(settings) || !settings.enabled) {
+            return false;
+        }
+
+        const websiteUrl = this.configService.get<string>('FRONTEND_URL') || 'http://localhost:3000';
+        const trackOrderUrl = `${websiteUrl}/order-tracking?id=${order.id}`;
+        const trackingUrl = order.deliveryTrackingUrl || trackOrderUrl;
+
+        const sections: Array<{ title: string; lines: string[] }> = [
+            {
+                title: 'Order details',
+                lines: [
+                    `Order: #${this.safeText(order.orderNumber)}`,
+                    `Delivering to: ${this.safeText(order.deliveryAddress || '')}`,
+                ],
+            },
+        ];
+
+        if (order.deliveryDriverName) {
+            sections.push({
+                title: 'Your driver',
+                lines: [
+                    `Name: ${this.safeText(order.deliveryDriverName)}`,
+                    ...(order.deliveryEta ? [`ETA: ${this.safeText(order.deliveryEta)}`] : []),
+                ],
+            });
+        }
+
+        await this.sendMail(
+            {
+                to: order.customerEmail,
+                subject: `Your order #${order.orderNumber} is on the way!`,
+                html: this.wrapEmail({
+                    eyebrow: 'Delivery Update',
+                    title: 'Your order is on the way!',
+                    intro: `Hi ${this.safeText(order.customerName)}, great news! Your order #${this.safeText(order.orderNumber)} has been picked up and is heading your way.`,
+                    cta: {
+                        text: 'Track Your Delivery',
+                        link: trackingUrl,
+                    },
+                    sections,
+                    footer: 'You can track your delivery in real-time using the button above. If you have any questions, reply to this email or call the store.',
+                }),
+                text: `Hi ${order.customerName}, your order #${order.orderNumber} is on the way! Track it here: ${trackingUrl}`,
+            },
+            settings,
+        );
+
+        return true;
     }
 
     async sendTeamInviteEmail(payload: { name: string; email: string; role: string; setupLink: string }) {

@@ -328,6 +328,65 @@ export default function OrdersManagement() {
                 </div>
               </div>
 
+              {/* Delivery Dispatch Info */}
+              {selectedOrder.orderType === 'delivery' && (selectedOrder.deliveryProvider || selectedOrder.status === 'ready') && (
+                <div style={{ background: '#111111', borderRadius: '10px', padding: '14px 16px', marginBottom: '14px', border: selectedOrder.deliveryTrackingUrl ? '1px solid #A78BFA40' : '1px solid #2A2A2A' }}>
+                  <p style={{ fontSize: '11px', color: '#888', textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: '10px' }}>Delivery Dispatch</p>
+                  {selectedOrder.deliveryProvider ? (
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                      <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                        <span style={{ fontSize: '12px', color: '#888' }}>Provider</span>
+                        <span style={{ fontSize: '12px', color: '#A78BFA', fontWeight: '600' }}>{selectedOrder.deliveryProvider === 'uber_direct' ? 'Uber Direct' : selectedOrder.deliveryProvider}</span>
+                      </div>
+                      {selectedOrder.deliveryDriverName && (
+                        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                          <span style={{ fontSize: '12px', color: '#888' }}>Driver</span>
+                          <span style={{ fontSize: '12px', color: '#FEFEFE' }}>{selectedOrder.deliveryDriverName}</span>
+                        </div>
+                      )}
+                      {selectedOrder.deliveryEta && (
+                        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                          <span style={{ fontSize: '12px', color: '#888' }}>ETA</span>
+                          <span style={{ fontSize: '12px', color: '#FEFEFE' }}>{selectedOrder.deliveryEta}</span>
+                        </div>
+                      )}
+                      {selectedOrder.deliveryTrackingUrl && (
+                        <a href={selectedOrder.deliveryTrackingUrl} target="_blank" rel="noopener noreferrer" style={{
+                          display: 'block', textAlign: 'center', padding: '8px', background: '#A78BFA20',
+                          border: '1px solid #A78BFA40', borderRadius: '8px', color: '#A78BFA',
+                          fontSize: '12px', fontWeight: '600', textDecoration: 'none', marginTop: '4px',
+                        }}>
+                          Track Delivery
+                        </a>
+                      )}
+                    </div>
+                  ) : (
+                    <button
+                      onClick={async () => {
+                        try {
+                          const res = await fetch(`${API}/orders/${selectedOrder.id}/dispatch`, { method: 'POST' });
+                          if (res.ok) {
+                            const updated = await res.json();
+                            setOrders(prev => prev.map(o => o.id === selectedOrder.id ? updated : o));
+                            setSelectedOrder(updated);
+                            showSuccess('Delivery dispatched via Uber Direct');
+                          } else {
+                            showSuccess('Dispatch failed - check integration settings');
+                          }
+                        } catch { showSuccess('Dispatch failed'); }
+                      }}
+                      style={{
+                        width: '100%', padding: '10px', background: '#A78BFA20',
+                        border: '1px solid #A78BFA40', borderRadius: '8px', color: '#A78BFA',
+                        fontSize: '12px', fontWeight: '700', cursor: 'pointer',
+                      }}
+                    >
+                      Dispatch via Uber Direct
+                    </button>
+                  )}
+                </div>
+              )}
+
               {/* Status Actions */}
               {nextStatuses[selectedOrder.status]?.length > 0 && (
                 <div>

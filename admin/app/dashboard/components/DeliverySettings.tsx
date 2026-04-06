@@ -1,5 +1,5 @@
 'use client';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 
 type Zone = {
   id: number;
@@ -40,8 +40,15 @@ export default function DeliverySettings() {
   const [prepTime, setPrepTime] = useState('15');
   const [maxActiveOrders, setMaxActiveOrders] = useState('20');
   const [storeAddress] = useState('3517 Lancaster Ave, Philadelphia PA 19104');
-  const [storeLat] = useState('39.9612');
-  const [storeLng] = useState('-75.1832');
+  const [storeLat] = useState(39.9612);
+  const [storeLng] = useState(-75.1832);
+
+  // Google Maps
+  const [googleMapsKey, setGoogleMapsKey] = useState('');
+  const [mapsLoaded, setMapsLoaded] = useState(false);
+  const mapRef = useRef<HTMLDivElement>(null);
+  const mapInstanceRef = useRef<google.maps.Map | null>(null);
+  const circlesRef = useRef<google.maps.Circle[]>([]);
 
   // Delivery hours
   const [deliveryHours, setDeliveryHours] = useState([
@@ -81,7 +88,98 @@ export default function DeliverySettings() {
 
   useEffect(() => {
     fetchSettings();
+    // Load Google Maps API key from integrations settings
+    fetch(`${API}/settings/integrations`)
+      .then(r => r.ok ? r.text() : '')
+      .then(text => {
+        if (!text) return;
+        const data = JSON.parse(text);
+        if (data?.googleMapsKey) setGoogleMapsKey(data.googleMapsKey);
+      })
+      .catch(() => {});
   }, []);
+
+  // Load Google Maps script
+  useEffect(() => {
+    if (!googleMapsKey || mapsLoaded) return;
+    if (typeof window !== 'undefined' && (window as any).google?.maps) {
+      setMapsLoaded(true);
+      return;
+    }
+    const script = document.createElement('script');
+    script.src = `https://maps.googleapis.com/maps/api/js?key=${googleMapsKey}&libraries=places,geocoding`;
+    script.async = true;
+    script.onload = () => setMapsLoaded(true);
+    document.head.appendChild(script);
+  }, [googleMapsKey]);
+
+  // Initialize map
+  const initMap = useCallback(() => {
+    if (!mapsLoaded || !mapRef.current || mapInstanceRef.current) return;
+    const center = { lat: storeLat, lng: storeLng };
+    const map = new google.maps.Map(mapRef.current, {
+      center,
+      zoom: 13,
+      styles: [
+        { elementType: 'geometry', stylers: [{ color: '#0D1117' }] },
+        { elementType: 'labels.text.fill', stylers: [{ color: '#888888' }] },
+        { elementType: 'labels.text.stroke', stylers: [{ color: '#0D1117' }] },
+        { featureType: 'road', elementType: 'geometry', stylers: [{ color: '#1A1A1A' }] },
+        { featureType: 'road', elementType: 'geometry.stroke', stylers: [{ color: '#2A2A2A' }] },
+        { featureType: 'water', elementType: 'geometry', stylers: [{ color: '#0a1929' }] },
+        { featureType: 'poi', stylers: [{ visibility: 'off' }] },
+        { featureType: 'transit', stylers: [{ visibility: 'off' }] },
+      ],
+      disableDefaultUI: true,
+      zoomControl: true,
+    });
+    new google.maps.Marker({
+      position: center,
+      map,
+      title: 'Eggs Ok',
+      icon: {
+        path: google.maps.SymbolPath.CIRCLE,
+        scale: 10,
+        fillColor: '#FC0301',
+        fillOpacity: 1,
+        strokeColor: '#FFFFFF',
+        strokeWeight: 3,
+      },
+    });
+    mapInstanceRef.current = map;
+    updateCircles(map, zones);
+  }, [mapsLoaded, storeLat, storeLng]);
+
+  useEffect(() => { initMap(); }, [initMap]);
+
+  // Update zone circles on map
+  const updateCircles = (map: google.maps.Map, currentZones: Zone[]) => {
+    circlesRef.current.forEach(c => c.setMap(null));
+    circlesRef.current = [];
+    currentZones
+      .filter(z => z.active)
+      .sort((a, b) => b.radiusMiles - a.radiusMiles)
+      .forEach(zone => {
+        const circle = new google.maps.Circle({
+          map,
+          center: { lat: storeLat, lng: storeLng },
+          radius: zone.radiusMiles * 1609.34,
+          fillColor: zone.color,
+          fillOpacity: 0.08,
+          strokeColor: zone.color,
+          strokeOpacity: 0.7,
+          strokeWeight: 2,
+        });
+        circlesRef.current.push(circle);
+      });
+  };
+
+  // Sync circles when zones change
+  useEffect(() => {
+    if (mapInstanceRef.current) {
+      updateCircles(mapInstanceRef.current, zones);
+    }
+  }, [zones]);
 
   const saveAll = async (newZones?: Zone[], newHours?: any, extraSettings?: any) => {
     const payload = {
@@ -226,21 +324,53 @@ export default function DeliverySettings() {
     </div>
   );
 
-  // Simulate customer address check
+  // Address check with geocoding
   const [testAddress, setTestAddress] = useState('');
-  const [testResult, setTestResult] = useState<{ zone: Zone; eligible: boolean } | null>(null);
+  const [testResult, setTestResult] = useState<{ zone: Zone; eligible: boolean; distance?: number } | null>(null);
+  const [testChecking, setTestChecking] = useState(false);
 
-  const checkAddress = () => {
+  const haversineDistance = (lat1: number, lng1: number, lat2: number, lng2: number): number => {
+    const R = 3958.8; // Earth radius in miles
+    const dLat = (lat2 - lat1) * Math.PI / 180;
+    const dLng = (lng2 - lng1) * Math.PI / 180;
+    const a = Math.sin(dLat / 2) ** 2 + Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * Math.sin(dLng / 2) ** 2;
+    return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  };
+
+  const checkAddress = async () => {
     if (!testAddress.trim()) return;
-    // Simulate random distance for demo
-    const simulatedMiles = Math.random() * 6;
-    const matchingZone = zones
-      .filter(z => z.active && simulatedMiles <= z.radiusMiles)
-      .sort((a, b) => a.radiusMiles - b.radiusMiles)[0];
-    if (matchingZone) {
-      setTestResult({ zone: matchingZone, eligible: true });
+
+    if (mapsLoaded && (window as any).google?.maps) {
+      setTestChecking(true);
+      const geocoder = new google.maps.Geocoder();
+      geocoder.geocode({ address: testAddress }, (results, status) => {
+        setTestChecking(false);
+        if (status === 'OK' && results && results[0]) {
+          const loc = results[0].geometry.location;
+          const distMiles = haversineDistance(storeLat, storeLng, loc.lat(), loc.lng());
+          const matchingZone = zones
+            .filter(z => z.active && distMiles <= z.radiusMiles)
+            .sort((a, b) => a.radiusMiles - b.radiusMiles)[0];
+          if (matchingZone) {
+            setTestResult({ zone: matchingZone, eligible: true, distance: Math.round(distMiles * 10) / 10 });
+          } else {
+            setTestResult({ zone: { id: 0, name: 'Out of Range', radiusMiles: 0, deliveryFee: 0, minOrder: 0, estimatedMinutes: 0, active: false, color: '#FC0301' }, eligible: false, distance: Math.round(distMiles * 10) / 10 });
+          }
+        } else {
+          setTestResult({ zone: { id: 0, name: 'Address not found', radiusMiles: 0, deliveryFee: 0, minOrder: 0, estimatedMinutes: 0, active: false, color: '#FC0301' }, eligible: false });
+        }
+      });
     } else {
-      setTestResult({ zone: { id: 0, name: 'Out of Range', radiusMiles: 0, deliveryFee: 0, minOrder: 0, estimatedMinutes: 0, active: false, color: '#FC0301' }, eligible: false });
+      // Fallback: simulated
+      const simulatedMiles = Math.random() * 6;
+      const matchingZone = zones
+        .filter(z => z.active && simulatedMiles <= z.radiusMiles)
+        .sort((a, b) => a.radiusMiles - b.radiusMiles)[0];
+      if (matchingZone) {
+        setTestResult({ zone: matchingZone, eligible: true, distance: Math.round(simulatedMiles * 10) / 10 });
+      } else {
+        setTestResult({ zone: { id: 0, name: 'Out of Range', radiusMiles: 0, deliveryFee: 0, minOrder: 0, estimatedMinutes: 0, active: false, color: '#FC0301' }, eligible: false, distance: Math.round(simulatedMiles * 10) / 10 });
+      }
     }
   };
 
@@ -358,62 +488,69 @@ export default function DeliverySettings() {
       {/* ── ZONES TAB ── */}
       {activeTab === 'zones' && (
         <div>
-          {/* Map Placeholder */}
-          <div style={{ ...cardStyle, padding: '0', overflow: 'hidden', marginBottom: '20px' }}>
-            <div style={{
-              height: '280px', background: '#0D1117',
-              display: 'flex', flexDirection: 'column',
-              alignItems: 'center', justifyContent: 'center',
-              position: 'relative', overflow: 'hidden',
-            }}>
-              {/* Fake map grid */}
-              <div style={{ position: 'absolute', inset: 0, opacity: 0.15 }}>
-                {[...Array(10)].map((_, i) => (
-                  <div key={i} style={{ position: 'absolute', left: 0, right: 0, top: `${i * 10}%`, height: '1px', background: '#FEFEFE' }} />
+          {/* Map */}
+          <div style={{ ...cardStyle, padding: '0', overflow: 'hidden', marginBottom: '20px', position: 'relative' }}>
+            {mapsLoaded ? (
+              <>
+                <div ref={mapRef} style={{ height: '340px', width: '100%' }} />
+                {/* Zone legend overlay */}
+                <div style={{ position: 'absolute', top: '12px', left: '12px', display: 'flex', flexDirection: 'column', gap: '4px', zIndex: 1 }}>
+                  {zones.filter(z => z.active).map(zone => (
+                    <div key={zone.id} style={{ display: 'flex', alignItems: 'center', gap: '6px', background: 'rgba(26,26,26,0.9)', padding: '4px 8px', borderRadius: '6px' }}>
+                      <div style={{ width: '10px', height: '10px', borderRadius: '50%', background: zone.color, flexShrink: 0 }} />
+                      <span style={{ fontSize: '10px', color: '#FEFEFE' }}>{zone.name} — {zone.radiusMiles} mi</span>
+                    </div>
+                  ))}
+                </div>
+              </>
+            ) : (
+              <div style={{
+                height: '340px', background: '#0D1117',
+                display: 'flex', flexDirection: 'column',
+                alignItems: 'center', justifyContent: 'center',
+                position: 'relative', overflow: 'hidden',
+              }}>
+                {/* Fake map grid fallback */}
+                <div style={{ position: 'absolute', inset: 0, opacity: 0.15 }}>
+                  {[...Array(10)].map((_, i) => (
+                    <div key={i} style={{ position: 'absolute', left: 0, right: 0, top: `${i * 10}%`, height: '1px', background: '#FEFEFE' }} />
+                  ))}
+                  {[...Array(14)].map((_, i) => (
+                    <div key={i} style={{ position: 'absolute', top: 0, bottom: 0, left: `${i * 7.5}%`, width: '1px', background: '#FEFEFE' }} />
+                  ))}
+                </div>
+                {zones.filter(z => z.active).map((zone, i) => (
+                  <div key={zone.id} style={{
+                    position: 'absolute',
+                    width: `${(zone.radiusMiles / 6) * 400 + i * 20}px`,
+                    height: `${(zone.radiusMiles / 6) * 400 + i * 20}px`,
+                    borderRadius: '50%',
+                    border: `2px solid ${zone.color}`,
+                    background: `${zone.color}10`,
+                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  }} />
                 ))}
-                {[...Array(14)].map((_, i) => (
-                  <div key={i} style={{ position: 'absolute', top: 0, bottom: 0, left: `${i * 7.5}%`, width: '1px', background: '#FEFEFE' }} />
-                ))}
-              </div>
-
-              {/* Zone rings */}
-              {zones.filter(z => z.active).map((zone, i) => (
-                <div key={zone.id} style={{
-                  position: 'absolute',
-                  width: `${(zone.radiusMiles / 6) * 400 + i * 20}px`,
-                  height: `${(zone.radiusMiles / 6) * 400 + i * 20}px`,
-                  borderRadius: '50%',
-                  border: `2px solid ${zone.color}`,
-                  background: `${zone.color}10`,
-                  display: 'flex', alignItems: 'center', justifyContent: 'center',
-                }} />
-              ))}
-
-              {/* Store pin */}
-              <div style={{ position: 'relative', zIndex: 10, textAlign: 'center' }}>
-                <div style={{ width: '20px', height: '20px', background: '#FC0301', borderRadius: '50%', border: '3px solid #FEFEFE', margin: '0 auto 8px' }} />
-                <div style={{ background: '#1A1A1A', border: '1px solid #2A2A2A', borderRadius: '8px', padding: '6px 12px' }}>
-                  <p style={{ fontSize: '11px', fontWeight: '600', color: '#FEFEFE' }}>Egg Ok</p>
-                  <p style={{ fontSize: '10px', color: '#888888' }}>3517 Lancaster Ave</p>
+                <div style={{ position: 'relative', zIndex: 10, textAlign: 'center' }}>
+                  <div style={{ width: '20px', height: '20px', background: '#FC0301', borderRadius: '50%', border: '3px solid #FEFEFE', margin: '0 auto 8px' }} />
+                  <div style={{ background: '#1A1A1A', border: '1px solid #2A2A2A', borderRadius: '8px', padding: '6px 12px' }}>
+                    <p style={{ fontSize: '11px', fontWeight: '600', color: '#FEFEFE' }}>Egg Ok</p>
+                    <p style={{ fontSize: '10px', color: '#888888' }}>3517 Lancaster Ave</p>
+                  </div>
+                </div>
+                <div style={{ position: 'absolute', top: '12px', left: '12px', display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                  {zones.filter(z => z.active).map(zone => (
+                    <div key={zone.id} style={{ display: 'flex', alignItems: 'center', gap: '6px', background: '#1A1A1A90', padding: '4px 8px', borderRadius: '6px' }}>
+                      <div style={{ width: '10px', height: '10px', borderRadius: '50%', background: zone.color, flexShrink: 0 }} />
+                      <span style={{ fontSize: '10px', color: '#FEFEFE' }}>{zone.name} — {zone.radiusMiles} mi</span>
+                    </div>
+                  ))}
+                </div>
+                <div style={{ position: 'absolute', bottom: '12px', right: '12px', background: '#1A1A1A', border: '1px solid #2A2A2A', borderRadius: '8px', padding: '6px 12px' }}>
+                  <p style={{ fontSize: '10px', color: '#888888' }}>Google Maps integration</p>
+                  <p style={{ fontSize: '10px', color: '#FED800' }}>Add API key in Integrations to enable live map</p>
                 </div>
               </div>
-
-              {/* Zone labels */}
-              <div style={{ position: 'absolute', top: '12px', left: '12px', display: 'flex', flexDirection: 'column', gap: '4px' }}>
-                {zones.filter(z => z.active).map(zone => (
-                  <div key={zone.id} style={{ display: 'flex', alignItems: 'center', gap: '6px', background: '#1A1A1A90', padding: '4px 8px', borderRadius: '6px' }}>
-                    <div style={{ width: '10px', height: '10px', borderRadius: '50%', background: zone.color, flexShrink: 0 }} />
-                    <span style={{ fontSize: '10px', color: '#FEFEFE' }}>{zone.name} — {zone.radiusMiles} mi</span>
-                  </div>
-                ))}
-              </div>
-
-              {/* Google Maps badge */}
-              <div style={{ position: 'absolute', bottom: '12px', right: '12px', background: '#1A1A1A', border: '1px solid #2A2A2A', borderRadius: '8px', padding: '6px 12px' }}>
-                <p style={{ fontSize: '10px', color: '#888888' }}>Google Maps integration</p>
-                <p style={{ fontSize: '10px', color: '#FED800' }}>Add API key to enable live map</p>
-              </div>
-            </div>
+            )}
           </div>
 
           {/* Zone Cards */}

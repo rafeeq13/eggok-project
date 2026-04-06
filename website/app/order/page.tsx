@@ -634,6 +634,8 @@ function OrderContent() {
     scheduleType, setScheduleType,
     scheduleDate, setScheduleDate,
     scheduleTime, setScheduleTime,
+    deliveryFee, setDeliveryFee,
+    setDeliveryZone, setDeliveryMinOrder,
   } = useCart();
 
   const [mounted, setMounted] = useState(false);
@@ -675,6 +677,77 @@ function OrderContent() {
     document.addEventListener('mousedown', handleClickOutside, true);
     return () => document.removeEventListener('mousedown', handleClickOutside, true);
   }, [showMoreMenu]);
+
+  // Google Maps + Places Autocomplete
+  const [mapsLoaded, setMapsLoaded] = useState(false);
+  const [deliveryError, setDeliveryError] = useState('');
+  const autocompleteInputRef = useRef<HTMLInputElement>(null);
+  const autocompleteRef = useRef<google.maps.places.Autocomplete | null>(null);
+
+  useEffect(() => {
+    // Load Google Maps key from integrations settings, then load script
+    fetch(`${API}/settings/integrations`)
+      .then(r => r.ok ? r.text() : '')
+      .then(text => {
+        if (!text) return;
+        const data = JSON.parse(text);
+        const key = data?.googleMapsKey;
+        if (!key) return;
+        if ((window as any).google?.maps) { setMapsLoaded(true); return; }
+        const script = document.createElement('script');
+        script.src = `https://maps.googleapis.com/maps/api/js?key=${key}&libraries=places`;
+        script.async = true;
+        script.onload = () => setMapsLoaded(true);
+        document.head.appendChild(script);
+      })
+      .catch(() => {});
+  }, []);
+
+  // Init autocomplete when maps loaded and modal opens
+  useEffect(() => {
+    if (!mapsLoaded || !autocompleteInputRef.current || autocompleteRef.current) return;
+    const ac = new google.maps.places.Autocomplete(autocompleteInputRef.current, {
+      componentRestrictions: { country: 'us' },
+      fields: ['formatted_address', 'geometry'],
+    });
+    ac.addListener('place_changed', () => {
+      const place = ac.getPlace();
+      if (place.formatted_address) {
+        setDeliveryAddress(place.formatted_address);
+      }
+      if (place.geometry?.location) {
+        const lat = place.geometry.location.lat();
+        const lng = place.geometry.location.lng();
+        // Validate against zones
+        fetch(`${API}/settings/validate-delivery`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ lat, lng }),
+        })
+          .then(r => r.json())
+          .then(result => {
+            if (result.eligible) {
+              setDeliveryFee(result.deliveryFee);
+              setDeliveryZone(result.zone);
+              setDeliveryMinOrder(result.minOrder);
+              setDeliveryError('');
+              setDeliveryStep(2);
+            } else {
+              setDeliveryError(`Sorry, this address is ${result.distance} miles away — outside our delivery area.`);
+            }
+          })
+          .catch(() => setDeliveryStep(2));
+      } else {
+        setDeliveryStep(2);
+      }
+    });
+    autocompleteRef.current = ac;
+  }, [mapsLoaded, showDeliveryModal]);
+
+  // Reset autocomplete ref when modal closes
+  useEffect(() => {
+    if (!showDeliveryModal) autocompleteRef.current = null;
+  }, [showDeliveryModal]);
 
   useEffect(() => { setMounted(true); fetchData(); }, [searchParams, menuItems]);
 
@@ -1221,11 +1294,11 @@ function OrderContent() {
             {cart.length > 0 && (
               <div id="cart-footer" className="cart-footer">
                 <div className="cart-summary-row"><span className="cart-summary-label">Subtotal</span><span className="cart-summary-val">${cartTotal.toFixed(2)}</span></div>
-                {orderType === 'delivery' && <div className="cart-summary-row"><span className="cart-summary-label">Delivery fee</span><span className="cart-summary-val">$3.99</span></div>}
+                {orderType === 'delivery' && <div className="cart-summary-row"><span className="cart-summary-label">Delivery fee</span><span className="cart-summary-val">${deliveryFee.toFixed(2)}</span></div>}
                 <div className="cart-summary-row"><span className="cart-summary-label">Tax</span><span className="cart-summary-val">${(cartTotal * 0.08).toFixed(2)}</span></div>
                 <div className="cart-total-row">
                   <span className="cart-total-label">TOTAL</span>
-                  <span className="cart-total-val">${(cartTotal + (orderType === 'delivery' ? 3.99 : 0) + cartTotal * 0.08).toFixed(2)}</span>
+                  <span className="cart-total-val">${(cartTotal + (orderType === 'delivery' ? deliveryFee : 0) + cartTotal * 0.08).toFixed(2)}</span>
                 </div>
                 <Link id="cart-checkout-btn" href="/checkout" className="cart-checkout-btn" onClick={() => setShowCart(false)}>
                   Checkout →
@@ -1271,18 +1344,24 @@ function OrderContent() {
                     </svg>
                     <input
                       id="delivery-address-input"
+                      ref={autocompleteInputRef}
                       placeholder="Enter delivery address..."
-                      value={deliveryAddress}
-                      onChange={e => setDeliveryAddress(e.target.value)}
+                      defaultValue={deliveryAddress}
+                      onChange={e => { setDeliveryAddress(e.target.value); setDeliveryError(''); }}
                       autoFocus
                       className="delivery-input"
                       aria-label="Delivery address"
                     />
                     {deliveryAddress && (
-                      <button className="delivery-input-clear" onClick={() => setDeliveryAddress('')}>Clear</button>
+                      <button className="delivery-input-clear" onClick={() => { setDeliveryAddress(''); setDeliveryError(''); if (autocompleteInputRef.current) autocompleteInputRef.current.value = ''; }}>Clear</button>
                     )}
                   </div>
-                  {deliveryAddress.length > 2 && (
+                  {deliveryError && (
+                    <div style={{ marginTop: '8px', padding: '10px 14px', background: '#FC030115', border: '1px solid #FC030140', borderRadius: '10px' }}>
+                      <p style={{ fontSize: '13px', color: '#FC0301', fontWeight: '500' }}>{deliveryError}</p>
+                    </div>
+                  )}
+                  {!mapsLoaded && deliveryAddress.length > 2 && (
                     <div id="delivery-suggestion" className="delivery-suggestion">
                       <div className="delivery-suggestion-row" onClick={() => setDeliveryStep(2)}>
                         <p className="delivery-suggestion-name">{deliveryAddress}</p>

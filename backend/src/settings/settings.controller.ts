@@ -1,4 +1,4 @@
-import { Controller, Get, Put, Body, Param } from '@nestjs/common';
+import { Controller, Get, Put, Post, Body, Param } from '@nestjs/common';
 import { SettingsService } from './settings.service';
 
 @Controller('settings')
@@ -18,6 +18,11 @@ export class SettingsController {
   @Get('status')
   isStoreOpen() {
     return this.settingsService.isStoreOpen();
+  }
+
+  @Post('validate-delivery')
+  validateDelivery(@Body() body: { lat: number; lng: number }) {
+    return this.settingsService.validateDeliveryAddress(body.lat, body.lng);
   }
 
   @Get(':key')

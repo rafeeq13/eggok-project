@@ -4,14 +4,16 @@ import Link from 'next/link';
 import { useCart } from '../context/CartContext';
 
 export default function ConfirmationPage() {
-  const { cart, cartTotal, orderType, getPrice, scheduleType, scheduleTime, deliveryAddress } = useCart();
+  const { cart, cartTotal, orderType, getPrice, scheduleType, scheduleTime, deliveryAddress, deliveryFee: cartDeliveryFee } = useCart();
   const [visible, setVisible] = useState(false);
   const [orderNumber, setOrderNumber] = useState('');
   const [lastOrder, setLastOrder] = useState<any>(null);
+  const [deliveryTracking, setDeliveryTracking] = useState<any>(null);
 
   const subtotal = cartTotal;
   const taxes = subtotal * 0.08;
-  const deliveryFee = orderType === 'delivery' ? 3.99 : 0;
+  const deliveryFee = orderType === 'delivery' ? (cartDeliveryFee || 3.99) : 0;
+  const API = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3002/api';
 
   const getSavedTipAmount = () => {
     if (typeof window === 'undefined') return 0;
@@ -42,13 +44,47 @@ export default function ConfirmationPage() {
 
   useEffect(() => {
     setTimeout(() => setVisible(true), 100);
-    // Read real order from localStorage (saved by checkout)
     const saved = localStorage.getItem('eggok_last_order');
     if (saved) {
       try {
         const order = JSON.parse(saved);
         setLastOrder(order);
         setOrderNumber(order.orderNumber);
+
+        if (order.id) {
+          // Poll order from API to get latest status + delivery fields
+          const poll = () => {
+            fetch(`${API}/orders/${order.id}`)
+              .then(r => r.ok ? r.json() : null)
+              .then(freshOrder => {
+                if (!freshOrder) return;
+                setLastOrder(freshOrder);
+                // Update tracking from order fields
+                if (freshOrder.deliveryProvider) {
+                  setDeliveryTracking({
+                    status: freshOrder.status,
+                    driverName: freshOrder.deliveryDriverName,
+                    driverPhone: freshOrder.deliveryDriverPhone,
+                    eta: freshOrder.deliveryEta,
+                    trackingUrl: freshOrder.deliveryTrackingUrl,
+                  });
+                }
+                // Also poll live delivery status if dispatched
+                if (freshOrder.deliveryQuoteId) {
+                  fetch(`${API}/orders/${order.id}/delivery-status`)
+                    .then(r => r.ok ? r.json() : null)
+                    .then(data => {
+                      if (data && data.status !== 'no_dispatch') setDeliveryTracking(data);
+                    })
+                    .catch(() => {});
+                }
+              })
+              .catch(() => {});
+          };
+          poll();
+          const interval = setInterval(poll, 15000); // Poll every 15 seconds
+          return () => clearInterval(interval);
+        }
       } catch {
         setOrderNumber('EO-' + Math.floor(1000 + Math.random() * 9000));
       }
@@ -60,17 +96,28 @@ export default function ConfirmationPage() {
   const displayItems = lastOrder?.items || cart;
   const displayTotal = lastOrder ? Number(lastOrder.total) : total;
 
-  const steps = orderType === 'pickup'
-    ? [
-      { label: 'Order Received', desc: 'We got your order', done: true, active: false },
-      { label: 'Preparing', desc: 'Kitchen is working on it', done: false, active: true },
-      { label: 'Ready for Pickup', desc: 'Come pick it up!', done: false, active: false },
-    ]
-    : [
-      { label: 'Order Received', desc: 'We got your order', done: true, active: false },
-      { label: 'Preparing', desc: 'Kitchen is working on it', done: false, active: true },
-      { label: 'Out for Delivery', desc: 'On the way to you', done: false, active: false },
-    ];
+  const orderStatus = lastOrder?.status || 'pending';
+  const pickupSteps = ['pending', 'confirmed', 'preparing', 'ready', 'picked_up'];
+  const deliverySteps = ['pending', 'confirmed', 'preparing', 'ready', 'out_for_delivery', 'delivered'];
+  const currentSteps = orderType === 'pickup' ? pickupSteps : deliverySteps;
+  const currentIdx = currentSteps.indexOf(orderStatus);
+
+  const stepLabels: Record<string, [string, string]> = {
+    pending: ['Order Received', 'We got your order'],
+    confirmed: ['Confirmed', 'Restaurant confirmed'],
+    preparing: ['Preparing', 'Kitchen is working on it'],
+    ready: ['Ready', orderType === 'pickup' ? 'Come pick it up!' : 'Waiting for driver'],
+    out_for_delivery: ['Out for Delivery', 'On the way to you'],
+    delivered: ['Delivered', 'Enjoy your meal!'],
+    picked_up: ['Picked Up', 'Enjoy your meal!'],
+  };
+
+  const steps = currentSteps.slice(0, orderType === 'pickup' ? 4 : 5).map((s, i) => ({
+    label: stepLabels[s]?.[0] || s,
+    desc: stepLabels[s]?.[1] || '',
+    done: i <= currentIdx,
+    active: i === currentIdx,
+  }));
 
   return (
     <div style={{ background: '#000', minHeight: '100vh', color: '#FEFEFE', fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif' }}>
@@ -78,13 +125,13 @@ export default function ConfirmationPage() {
       {/* NAV */}
       <div style={{ position: 'fixed', top: 0, left: 0, right: 0, zIndex: 100, background: 'rgba(10,10,10,0.98)', backdropFilter: 'blur(20px)', borderBottom: '1px solid #1E1E1E', height: '64px', display: 'flex', alignItems: 'center', padding: '0 28px' }}>
         <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: '10px', textDecoration: 'none', flexShrink: 0 }}>
-          <div style={{ width: '42px', height: '42px', borderRadius: '50%', background: '#FED800', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden' }}>
-            <img src="/logo.svg" alt="Eggs Ok" style={{ width: '38px', height: '38px', objectFit: 'cover' }} onError={e => { (e.target as HTMLImageElement).style.display = 'none'; }} />
+          <div style={{   display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden' }}>
+            <img src="/logo.svg" alt="Eggs Ok" style={{  objectFit: 'cover' }} onError={e => { (e.target as HTMLImageElement).style.display = 'none'; }} />
           </div>
-          <div>
+          {/* <div>
             <div style={{ fontSize: '14px', fontWeight: '800', color: '#FED800', letterSpacing: '0.5px', lineHeight: '1' }}>EGGS OK</div>
             <div style={{ fontSize: '10px', color: '#444', letterSpacing: '1.5px', textTransform: 'uppercase', marginTop: '1px' }}>Philadelphia</div>
-          </div>
+          </div> */}
         </Link>
       </div>
 
@@ -259,6 +306,44 @@ export default function ConfirmationPage() {
               )}
             </div>
           </div>
+
+          {/* Delivery Tracking */}
+          {deliveryTracking && orderType === 'delivery' && (
+            <div style={{ background: '#A78BFA10', border: '1px solid #A78BFA30', borderRadius: '16px', padding: '20px', marginBottom: '20px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '12px' }}>
+                <div style={{ width: '36px', height: '36px', borderRadius: '10px', background: '#A78BFA20', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#A78BFA" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <rect x="1" y="3" width="15" height="13" rx="1" /><path d="M16 8h4l3 3v5h-7V8z" /><circle cx="5.5" cy="18.5" r="2.5" /><circle cx="18.5" cy="18.5" r="2.5" />
+                  </svg>
+                </div>
+                <div>
+                  <p style={{ fontSize: '14px', fontWeight: '700', color: '#FEFEFE', margin: 0 }}>Delivery In Progress</p>
+                  <p style={{ fontSize: '12px', color: '#A78BFA', margin: 0 }}>via Uber Direct</p>
+                </div>
+              </div>
+              {deliveryTracking.driverName && (
+                <div style={{ display: 'flex', justifyContent: 'space-between', padding: '8px 0', borderTop: '1px solid #2A2A2A' }}>
+                  <span style={{ fontSize: '13px', color: '#888' }}>Driver</span>
+                  <span style={{ fontSize: '13px', color: '#FEFEFE', fontWeight: '600' }}>{deliveryTracking.driverName}</span>
+                </div>
+              )}
+              {deliveryTracking.eta && (
+                <div style={{ display: 'flex', justifyContent: 'space-between', padding: '8px 0', borderTop: '1px solid #2A2A2A' }}>
+                  <span style={{ fontSize: '13px', color: '#888' }}>ETA</span>
+                  <span style={{ fontSize: '13px', color: '#FEFEFE' }}>{deliveryTracking.eta}</span>
+                </div>
+              )}
+              {deliveryTracking.trackingUrl && (
+                <a href={deliveryTracking.trackingUrl} target="_blank" rel="noopener noreferrer" style={{
+                  display: 'block', textAlign: 'center', padding: '12px', marginTop: '12px',
+                  background: '#A78BFA', borderRadius: '10px', color: '#000',
+                  fontSize: '14px', fontWeight: '700', textDecoration: 'none',
+                }}>
+                  Track Your Delivery Live
+                </a>
+              )}
+            </div>
+          )}
 
           {/* Email note */}
           <div style={{ padding: '14px', background: '#111111', border: '1px solid #1A1A1A', borderRadius: '12px', marginBottom: '32px' }}>

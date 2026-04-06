@@ -1,4 +1,5 @@
 import { Controller, Get, Post, Patch, Param, Body, ParseIntPipe, Query } from '@nestjs/common';
+
 import { OrdersService } from './orders.service';
 
 @Controller('orders')
@@ -54,5 +55,18 @@ export class OrdersController {
   @Patch(':id/cancel')
   cancelOrder(@Param('id', ParseIntPipe) id: number) {
     return this.ordersService.cancelOrder(id);
+  }
+
+  @Post(':id/dispatch')
+  dispatchDelivery(@Param('id', ParseIntPipe) id: number) {
+    return this.ordersService.getOrderById(id).then(order => {
+      if (!order) throw new Error('Order not found');
+      return this.ordersService.dispatchDelivery(order);
+    });
+  }
+
+  @Get(':id/delivery-status')
+  getDeliveryStatus(@Param('id', ParseIntPipe) id: number) {
+    return this.ordersService.getDeliveryStatus(id);
   }
 }

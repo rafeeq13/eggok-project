@@ -29,6 +29,12 @@ type CartContextType = {
   setScheduleDate: (date: string) => void;
   scheduleTime: string;
   setScheduleTime: (time: string) => void;
+  deliveryFee: number;
+  setDeliveryFee: (fee: number) => void;
+  deliveryZone: string;
+  setDeliveryZone: (zone: string) => void;
+  deliveryMinOrder: number;
+  setDeliveryMinOrder: (min: number) => void;
   addToCart: (item: MenuItem, quantity: number, selectedModifiers: Record<number, number[]>, specialInstructions: string) => void;
   removeFromCart: (id: number) => void;
   updateQuantity: (id: number, quantity: number) => void;
@@ -68,6 +74,9 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   const [scheduleType, setScheduleTypeState] = useState<'asap' | 'scheduled'>(() => ls.get('eggok_scheduletype', 'asap') as 'asap' | 'scheduled');
   const [scheduleDate, setScheduleDateState] = useState(() => ls.get('eggok_scheduledate'));
   const [scheduleTime, setScheduleTimeState] = useState(() => ls.get('eggok_scheduletime'));
+  const [deliveryFee, setDeliveryFeeState] = useState(() => parseFloat(ls.get('eggok_deliveryfee', '3.99')));
+  const [deliveryZone, setDeliveryZoneState] = useState(() => ls.get('eggok_deliveryzone'));
+  const [deliveryMinOrder, setDeliveryMinOrderState] = useState(() => parseFloat(ls.get('eggok_deliveryminorder', '0')));
 
   // Persist cart
   useEffect(() => { ls.set('eggok_cart', JSON.stringify(cart)); }, [cart]);
@@ -90,6 +99,9 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   const setScheduleType = (val: 'asap' | 'scheduled') => { setScheduleTypeState(val); ls.set('eggok_scheduletype', val); };
   const setScheduleDate = (val: string) => { setScheduleDateState(val); ls.set('eggok_scheduledate', val); };
   const setScheduleTime = (val: string) => { setScheduleTimeState(val); ls.set('eggok_scheduletime', val); };
+  const setDeliveryFee = (val: number) => { setDeliveryFeeState(val); ls.set('eggok_deliveryfee', String(val)); };
+  const setDeliveryZone = (val: string) => { setDeliveryZoneState(val); ls.set('eggok_deliveryzone', val); };
+  const setDeliveryMinOrder = (val: number) => { setDeliveryMinOrderState(val); ls.set('eggok_deliveryminorder', String(val)); };
 
   const getPrice = (item: MenuItem) => orderType === 'pickup' ? item.pickupPrice : item.deliveryPrice;
 
@@ -146,6 +158,9 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       scheduleType, setScheduleType,
       scheduleDate, setScheduleDate,
       scheduleTime, setScheduleTime,
+      deliveryFee, setDeliveryFee,
+      deliveryZone, setDeliveryZone,
+      deliveryMinOrder, setDeliveryMinOrder,
       addToCart, removeFromCart, updateQuantity, clearCart,
       cartCount, cartTotal, getPrice,
     }}>
