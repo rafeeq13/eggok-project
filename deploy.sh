@@ -120,7 +120,7 @@ if [ "$DEPLOY_BACKEND" = true ]; then
   echo "[BUILD] Backend..."
   cd "$ROOT/backend"
   npx nest build > /dev/null 2>&1
-  tar czf /tmp/backend-deploy.tar.gz dist/
+  tar czf /tmp/backend-deploy.tar.gz dist/ src/mail/templates/
   FILES_TO_UPLOAD="$FILES_TO_UPLOAD /tmp/backend-deploy.tar.gz"
   echo "  Backend build done ✓"
 fi
