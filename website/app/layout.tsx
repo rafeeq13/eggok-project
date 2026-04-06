@@ -3,6 +3,8 @@ import './globals.css';
 import { CartProvider } from './context/CartContext';
 import { AuthProvider } from './context/AuthContext';
 
+export const dynamic = 'force-dynamic';
+
 export const metadata: Metadata = {
   title: 'Eggs Ok — Breakfast & Lunch Philadelphia',
   description: 'Order online from Eggs Ok in Philadelphia. Fresh breakfast sandwiches, burritos, omelettes, and specialty drinks. Pickup and delivery available.',
