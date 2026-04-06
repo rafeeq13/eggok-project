@@ -20,7 +20,7 @@ export class Item {
   @Column({ type: 'decimal', precision: 10, scale: 2 })
   deliveryPrice: number;
 
-  @Column({ nullable: true })
+  @Column({ type: 'longtext', nullable: true })
   image: string;
 
   @Column({ default: true })
