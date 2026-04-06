@@ -15,6 +15,18 @@ export default function HiringPage() {
   const [formData, setFormData] = useState({
     name: '', email: '', phone: '', position: '', experience: '', message: '',
   });
+  const [resumeFile, setResumeFile] = useState<{ name: string; data: string } | null>(null);
+
+  const handleResumeUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    if (file.size > 100 * 1024 * 1024) { alert('File too large. Max 100MB.'); return; }
+    const reader = new FileReader();
+    reader.onload = () => {
+      setResumeFile({ name: file.name, data: reader.result as string });
+    };
+    reader.readAsDataURL(file);
+  };
 
   const jobs = [
     { id: 1, title: 'Line Cook',               type: 'Full-time',             pay: '$16–$20/hr',   desc: 'Prepare and cook menu items to our quality standards. Experience in a fast-paced kitchen preferred.',                                            requirements: ['1+ year kitchen experience', 'Food safety certification preferred', 'Availability on weekends', 'Team player'] },
@@ -34,9 +46,30 @@ export default function HiringPage() {
     { icon: Users,           title: 'Great Team',        desc: 'Fun, tight-knit work environment'         },
   ];
 
-  const handleApply = (e: React.FormEvent) => {
+  const [submitting, setSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState('');
+
+  const handleApply = async (e: React.FormEvent) => {
     e.preventDefault();
-    setApplied(true);
+    setSubmitting(true);
+    setSubmitError('');
+    try {
+      const API = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3002/api';
+      const res = await fetch(`${API}/mail/hiring`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ...formData, resume: resumeFile?.data || null }),
+      });
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        throw new Error(data.message || 'Failed to submit application');
+      }
+      setApplied(true);
+    } catch (err) {
+      setSubmitError(err instanceof Error ? err.message : 'Failed to submit. Please try again.');
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -505,10 +538,42 @@ export default function HiringPage() {
                       />
                     </div>
 
+                    {/* Resume Upload */}
+                    <div id="form-group-resume">
+                      <label className="form-label">Resume / CV (optional, max 5MB)</label>
+                      <div style={{
+                        border: `2px dashed ${resumeFile ? '#22C55E' : '#2A2A2A'}`,
+                        borderRadius: '12px', padding: '20px', textAlign: 'center',
+                        background: resumeFile ? '#22C55E08' : '#0A0A0A',
+                        cursor: 'pointer', transition: 'border-color 0.2s',
+                      }}
+                        onClick={() => document.getElementById('resume-input')?.click()}
+                      >
+                        <input id="resume-input" type="file" accept=".pdf,.doc,.docx" onChange={handleResumeUpload} style={{ display: 'none' }} />
+                        {resumeFile ? (
+                          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}>
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#22C55E" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                            <span style={{ fontSize: '13px', color: '#22C55E', fontWeight: '600' }}>{resumeFile.name}</span>
+                            <button type="button" onClick={(e) => { e.stopPropagation(); setResumeFile(null); }} style={{ background: 'none', border: 'none', color: '#888', cursor: 'pointer', fontSize: '16px', padding: '0 4px' }}>✕</button>
+                          </div>
+                        ) : (
+                          <div>
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#555" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ marginBottom: '8px' }}><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                            <p style={{ fontSize: '13px', color: '#888', margin: 0 }}>Click to upload PDF or Word document</p>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+
+                    {/* Error */}
+                    {submitError && (
+                      <p style={{ color: '#FC0301', fontSize: '13px', margin: '0 0 8px' }}>{submitError}</p>
+                    )}
+
                     {/* Submit */}
-                    <button id="form-submit-btn" type="submit" className="form-submit-btn">
+                    <button id="form-submit-btn" type="submit" className="form-submit-btn" disabled={submitting} style={submitting ? { opacity: 0.6, cursor: 'not-allowed' } : {}}>
                       <SendHorizontal size={16} strokeWidth={2.5} aria-hidden="true" />
-                      Submit Application
+                      {submitting ? 'Submitting...' : 'Submit Application'}
                     </button>
 
                   </div>

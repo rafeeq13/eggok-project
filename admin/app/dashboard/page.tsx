@@ -17,6 +17,7 @@ import Integrations from './components/Integrations';
 import Notifications from './components/Notifications';
 import Reviews from './components/Reviews';
 import Loyalty from './components/Loyalty';
+import Submissions from './components/Submissions';
 
 const recentOrders = [
   { id: '#1001', customer: 'John Smith', items: 'Signature Bacon Egg & Cheese x1', total: '$11.00', status: 'Preparing', type: 'Pickup', time: '2 min ago' },
@@ -31,12 +32,16 @@ const statusColor: Record<string, string> = {
   Delivered: '#888888',
 };
 
+const API = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3002/api';
+
 function DashboardContent() {
   const searchParams = useSearchParams();
   const [activeTab, setActiveTab] = useState(searchParams.get('tab') || 'overview');
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const [hasMounted, setHasMounted] = useState(false);
+  const [adminUser, setAdminUser] = useState<{ name: string; role: string } | null>(null);
+  const [storeOpen, setStoreOpen] = useState<boolean | null>(null);
   const router = useRouter();
 
   useEffect(() => {
@@ -44,6 +49,19 @@ function DashboardContent() {
     const check = () => setIsMobile(window.innerWidth < 768);
     check();
     window.addEventListener('resize', check);
+
+    // Load admin user from localStorage
+    try {
+      const saved = localStorage.getItem('admin_user');
+      if (saved) setAdminUser(JSON.parse(saved));
+    } catch {}
+
+    // Fetch store status
+    fetch(`${API}/settings/status`)
+      .then(r => r.ok ? r.json() : null)
+      .then(data => { if (data) setStoreOpen(data.isOpen); })
+      .catch(() => {});
+
     return () => window.removeEventListener('resize', check);
   }, []);
 
@@ -59,6 +77,7 @@ function DashboardContent() {
     { id: 'team', label: 'Team', icon: '👤' },
     { id: 'business', label: 'Business Profile', icon: '🏪' },
     { id: 'integrations', label: 'Integrations', icon: '🔌' },
+    { id: 'submissions', label: 'Submissions', icon: '📬' },
     { id: 'notifications', label: 'Notifications', icon: '🔔' },
     { id: 'reviews', label: 'Reviews', icon: '⭐' },
     { id: 'loyalty', label: 'Loyalty Program', icon: '🎁' },
@@ -92,15 +111,15 @@ function DashboardContent() {
   const SidebarContent = () => (
     <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
       {/* Brand / Logo */}
-      <div style={{ padding: '16px', borderBottom: '1px solid #2A2A2A', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+      <div style={{ padding: '2px', borderBottom: '1px solid #2A2A2A', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-          <div style={{ width: '40px', height: '40px', borderRadius: '10px', overflow: 'hidden', flexShrink: 0, background: '#000' }}>
+          <div style={{ borderRadius: '10px', overflow: 'hidden', flexShrink: 0, background: '#000' }}>
             <Image src="/logo.svg" alt="Eggs Ok" width={40} height={40} style={{ objectFit: 'contain', width: '100%', height: '100%' }} />
           </div>
-          <div>
+          {/* <div>
             <div style={{ fontSize: '12px', fontWeight: '800', color: '#FED800', letterSpacing: '1px' }}>EGGS OK</div>
             <div style={{ fontSize: '10px', color: '#888888', marginTop: '1px' }}>Admin Panel</div>
-          </div>
+          </div> */}
         </div>
         {isMobile && (
           <button onClick={() => setSidebarOpen(false)} style={{ background: 'transparent', border: 'none', color: '#888888', fontSize: '20px', cursor: 'pointer', padding: '4px' }}>✕</button>
@@ -251,14 +270,14 @@ function DashboardContent() {
             </div>
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <div style={{ width: '8px', height: '8px', background: '#22C55E', borderRadius: '50%', flexShrink: 0 }} />
-            {!isMobile && <span style={{ fontSize: '11px', color: '#22C55E' }}>Store Open</span>}
+            <div style={{ width: '8px', height: '8px', background: storeOpen === false ? '#FC0301' : '#22C55E', borderRadius: '50%', flexShrink: 0 }} />
+            {!isMobile && <span style={{ fontSize: '11px', color: storeOpen === false ? '#FC0301' : '#22C55E' }}>{storeOpen === false ? 'Store Closed' : 'Store Open'}</span>}
             <div style={{
               padding: '5px 10px', background: '#1A1A1A',
               border: '1px solid #2A2A2A', borderRadius: '8px',
               fontSize: '11px', color: '#CACACA',
             }}>
-              {isMobile ? 'MU' : 'Muhammad Usama'}
+              {adminUser ? (isMobile ? adminUser.name.split(' ').map(w => w[0]).join('') : adminUser.name) : '...'}
             </div>
           </div>
         </div>
@@ -353,6 +372,7 @@ function DashboardContent() {
           {activeTab === 'team' && <TeamManagement />}
           {activeTab === 'business' && <BusinessProfile />}
           {activeTab === 'integrations' && <Integrations />}
+          {activeTab === 'submissions' && <Submissions />}
           {activeTab === 'notifications' && <Notifications />}
           {activeTab === 'reviews' && <Reviews />}
           {activeTab === 'loyalty' && <Loyalty />}

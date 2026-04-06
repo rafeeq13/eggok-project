@@ -1,17 +1,21 @@
 'use client';
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import Header from '../components/Header';
 import { useAuth } from '../context/AuthContext';
+import { useCart } from '../context/CartContext';
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3002/api';
 
 type View = 'login' | 'register' | 'account' | 'forgot' | 'forgot-sent';
 
-type Order = { id: string; date: string; items: string; total: string; status: string };
+type Order = { id: string; date: string; items: string; total: string; status: string; rawItems: any[] };
 
 export default function AccountPage() {
   const { user, loading: authLoading, login: contextLogin, logout: contextLogout, updateUser: contextUpdateUser } = useAuth();
+  const { addToCart } = useCart();
+  const router = useRouter();
   const [view, setView] = useState<View>('login');
   const [isRendered, setIsRendered] = useState(false);
   const [activeTab, setActiveTab] = useState('orders');
@@ -50,6 +54,17 @@ export default function AccountPage() {
   const [orders, setOrders] = useState<Order[]>([]);
   const [successMsg, setSuccessMsg] = useState('');
 
+  // Saved Addresses
+  const [addresses, setAddresses] = useState<any[]>([]);
+  const [showAddressForm, setShowAddressForm] = useState(false);
+  const [editingAddress, setEditingAddress] = useState<any>(null);
+  const [addrForm, setAddrForm] = useState({ label: '', address: '', apt: '', instructions: '' });
+
+  // Loyalty
+  const [rewards, setRewards] = useState<any[]>([]);
+  const [pointsHistory, setPointsHistory] = useState<any[]>([]);
+  const [redeemingId, setRedeemingId] = useState<number | null>(null);
+
   // Password change
   const [currentPassword, setCurrentPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
@@ -70,7 +85,12 @@ export default function AccountPage() {
         setUserJoinDate(user.joinDate || '');
 
         const token = localStorage.getItem('eggok_token');
-        if (token) loadOrders(token);
+        if (token) {
+          loadOrders(token);
+          loadAddresses(token);
+          loadRewards();
+          loadPointsHistory(token);
+        }
       } else {
         setView('login');
       }
@@ -99,11 +119,116 @@ export default function AccountPage() {
           items: Array.isArray(o.items) ? o.items.map((it: any) => it.name).join(', ') : '',
           total: `$${Number(o.total).toFixed(2)}`,
           status: o.status === 'delivered' ? 'Delivered' : o.status === 'picked_up' ? 'Picked Up' : o.status === 'cancelled' ? 'Cancelled' : 'Preparing',
+          rawItems: Array.isArray(o.items) ? o.items : [],
         }));
       setOrders(userOrders);
       setUserTotalOrders(userOrders.length);
     } catch {
       // Silent fail
+    }
+  };
+
+  const handleReorder = (order: Order) => {
+    if (!order.rawItems || order.rawItems.length === 0) {
+      router.push('/order');
+      return;
+    }
+    order.rawItems.forEach((item: any) => {
+      const menuItem = {
+        id: item.id || Date.now(),
+        categoryId: item.categoryId || 0,
+        name: item.name,
+        description: item.description || '',
+        pickupPrice: item.price || 0,
+        deliveryPrice: item.price || 0,
+        image: item.image || '',
+        modifiers: item.modifiers || [],
+      };
+      addToCart(menuItem, item.quantity || 1, item.selectedModifiers || {}, item.specialInstructions || '');
+    });
+    setSuccessMsg(`${order.rawItems.length} item${order.rawItems.length > 1 ? 's' : ''} added to cart!`);
+    setTimeout(() => { setSuccessMsg(''); router.push('/order'); }, 1500);
+  };
+
+  const loadAddresses = async (token: string) => {
+    try {
+      const res = await fetch(`${API_URL}/auth/addresses`, { headers: { 'Authorization': `Bearer ${token}` } });
+      if (res.ok) setAddresses(await res.json());
+    } catch {}
+  };
+
+  const saveAddresses = async (newAddresses: any[]) => {
+    const token = localStorage.getItem('eggok_token');
+    if (!token) return;
+    try {
+      await fetch(`${API_URL}/auth/addresses`, {
+        method: 'PUT', headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+        body: JSON.stringify({ addresses: newAddresses }),
+      });
+      setAddresses(newAddresses);
+    } catch {}
+  };
+
+  const handleSaveAddress = () => {
+    if (!addrForm.address.trim()) return;
+    let updated;
+    if (editingAddress) {
+      updated = addresses.map(a => a.id === editingAddress.id ? { ...editingAddress, ...addrForm } : a);
+    } else {
+      updated = [...addresses, { id: Date.now(), ...addrForm, isDefault: addresses.length === 0 }];
+    }
+    saveAddresses(updated);
+    setShowAddressForm(false);
+    setEditingAddress(null);
+    setAddrForm({ label: '', address: '', apt: '', instructions: '' });
+    setSuccessMsg(editingAddress ? 'Address updated' : 'Address saved');
+    setTimeout(() => setSuccessMsg(''), 3000);
+  };
+
+  const deleteAddress = (id: number) => {
+    saveAddresses(addresses.filter(a => a.id !== id));
+    setSuccessMsg('Address removed');
+    setTimeout(() => setSuccessMsg(''), 3000);
+  };
+
+  const setDefaultAddress = (id: number) => {
+    saveAddresses(addresses.map(a => ({ ...a, isDefault: a.id === id })));
+  };
+
+  const loadRewards = async () => {
+    try {
+      const res = await fetch(`${API_URL}/loyalty/rewards`);
+      if (res.ok) setRewards(await res.json());
+    } catch {}
+  };
+
+  const loadPointsHistory = async (token: string) => {
+    try {
+      const res = await fetch(`${API_URL}/auth/points-history`, { headers: { 'Authorization': `Bearer ${token}` } });
+      if (res.ok) setPointsHistory(await res.json());
+    } catch {}
+  };
+
+  const handleRedeem = async (rewardId: number) => {
+    const token = localStorage.getItem('eggok_token');
+    if (!token) return;
+    setRedeemingId(rewardId);
+    try {
+      const res = await fetch(`${API_URL}/auth/redeem`, {
+        method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+        body: JSON.stringify({ rewardId }),
+      });
+      const data = await res.json();
+      if (!res.ok) { setSuccessMsg(data.message || 'Redemption failed'); setTimeout(() => setSuccessMsg(''), 3000); return; }
+      setUserPoints(data.remainingPoints);
+      setSuccessMsg(data.message);
+      setTimeout(() => setSuccessMsg(''), 3000);
+      loadPointsHistory(token);
+    } catch {
+      setSuccessMsg('Failed to redeem');
+      setTimeout(() => setSuccessMsg(''), 3000);
+    } finally {
+      setRedeemingId(null);
     }
   };
 
@@ -613,7 +738,7 @@ export default function AccountPage() {
                     </div>
                     <div style={{ textAlign: 'right', flexShrink: 0 }}>
                       <p style={{ fontSize: '16px', fontWeight: '700', color: '#ffffff', marginBottom: '8px' }}>{order.total}</p>
-                      <button style={{ padding: '6px 14px', background: 'transparent', border: '1px solid #2A2A2A', borderRadius: '8px', color: '#888', fontSize: '12px', cursor: 'pointer' }}>Reorder</button>
+                      <button onClick={() => handleReorder(order)} style={{ padding: '6px 14px', background: 'transparent', border: '1px solid #2A2A2A', borderRadius: '8px', color: '#888', fontSize: '12px', cursor: 'pointer', transition: 'all 0.15s' }} onMouseEnter={e => { e.currentTarget.style.borderColor = '#FED800'; e.currentTarget.style.color = '#FED800'; }} onMouseLeave={e => { e.currentTarget.style.borderColor = '#2A2A2A'; e.currentTarget.style.color = '#888'; }}>Reorder</button>
                     </div>
                   </div>
                 ))}
@@ -675,15 +800,57 @@ export default function AccountPage() {
         {activeTab === 'addresses' && (
           <div>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
-              <p style={{ fontSize: '13px', color: '#888', margin: 0 }}>Saved delivery addresses</p>
-              <button style={{ padding: '8px 16px', background: '#FED800', borderRadius: '8px', color: '#000', fontSize: '13px', fontWeight: '700', cursor: 'pointer', border: 'none' }}>+ Add Address</button>
+              <p style={{ fontSize: '13px', color: '#888', margin: 0 }}>{addresses.length} saved address{addresses.length !== 1 ? 'es' : ''}</p>
+              <button onClick={() => { setEditingAddress(null); setAddrForm({ label: '', address: '', apt: '', instructions: '' }); setShowAddressForm(true); }} style={{ padding: '8px 16px', background: '#FED800', borderRadius: '8px', color: '#000', fontSize: '13px', fontWeight: '700', cursor: 'pointer', border: 'none' }}>+ Add Address</button>
             </div>
-            <div style={{ padding: '40px 20px', background: '#111111', border: '1px dashed #2A2A2A', borderRadius: '12px', textAlign: 'center' }}>
-              <div style={{ width: '48px', height: '48px', margin: '0 auto 16px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#2A2A2A" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" /><circle cx="12" cy="10" r="3" /></svg>
+
+            {/* Address Form Modal */}
+            {showAddressForm && (
+              <div style={{ background: '#111', border: '1px solid #2A2A2A', borderRadius: '12px', padding: '20px', marginBottom: '16px' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
+                  <p style={{ fontSize: '15px', fontWeight: '700', color: '#fff', margin: 0 }}>{editingAddress ? 'Edit Address' : 'New Address'}</p>
+                  <button onClick={() => setShowAddressForm(false)} style={{ background: 'none', border: 'none', color: '#888', fontSize: '18px', cursor: 'pointer' }}>✕</button>
+                </div>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                  <input placeholder="Label (e.g. Home, Work)" value={addrForm.label} onChange={e => setAddrForm({ ...addrForm, label: e.target.value })} style={{ padding: '10px 14px', background: '#0A0A0A', border: '1px solid #2A2A2A', borderRadius: '8px', color: '#fff', fontSize: '13px' }} />
+                  <input placeholder="Street address *" value={addrForm.address} onChange={e => setAddrForm({ ...addrForm, address: e.target.value })} style={{ padding: '10px 14px', background: '#0A0A0A', border: '1px solid #2A2A2A', borderRadius: '8px', color: '#fff', fontSize: '13px' }} />
+                  <input placeholder="Apt / Suite / Floor (optional)" value={addrForm.apt} onChange={e => setAddrForm({ ...addrForm, apt: e.target.value })} style={{ padding: '10px 14px', background: '#0A0A0A', border: '1px solid #2A2A2A', borderRadius: '8px', color: '#fff', fontSize: '13px' }} />
+                  <input placeholder="Delivery instructions (optional)" value={addrForm.instructions} onChange={e => setAddrForm({ ...addrForm, instructions: e.target.value })} style={{ padding: '10px 14px', background: '#0A0A0A', border: '1px solid #2A2A2A', borderRadius: '8px', color: '#fff', fontSize: '13px' }} />
+                  <button onClick={handleSaveAddress} style={{ padding: '10px', background: '#FED800', border: 'none', borderRadius: '8px', color: '#000', fontSize: '13px', fontWeight: '700', cursor: 'pointer' }}>
+                    {editingAddress ? 'Update Address' : 'Save Address'}
+                  </button>
+                </div>
               </div>
-              <p style={{ fontSize: '14px', fontWeight: '600', color: '#ffffff', marginBottom: '6px' }}>No saved addresses yet</p>
-              <p style={{ fontSize: '13px', color: '#888', margin: 0 }}>Add your delivery address for faster checkout</p>
+            )}
+
+            {/* Address List */}
+            {addresses.length === 0 && !showAddressForm && (
+              <div style={{ padding: '40px 20px', background: '#111', border: '1px dashed #2A2A2A', borderRadius: '12px', textAlign: 'center' }}>
+                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#2A2A2A" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" style={{ marginBottom: '16px' }}><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" /><circle cx="12" cy="10" r="3" /></svg>
+                <p style={{ fontSize: '14px', fontWeight: '600', color: '#fff', marginBottom: '6px' }}>No saved addresses yet</p>
+                <p style={{ fontSize: '13px', color: '#888', margin: 0 }}>Add your delivery address for faster checkout</p>
+              </div>
+            )}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+              {addresses.map((addr: any) => (
+                <div key={addr.id} style={{ padding: '16px', background: '#111', border: addr.isDefault ? '1px solid #FED80040' : '1px solid #2A2A2A', borderRadius: '12px' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '8px' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FED800" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" /><circle cx="12" cy="10" r="3" /></svg>
+                      <p style={{ fontSize: '14px', fontWeight: '700', color: '#fff', margin: 0 }}>{addr.label || 'Address'}</p>
+                      {addr.isDefault && <span style={{ fontSize: '10px', padding: '2px 8px', borderRadius: '20px', background: '#FED80020', color: '#FED800', border: '1px solid #FED80040', fontWeight: '600' }}>Default</span>}
+                    </div>
+                    <div style={{ display: 'flex', gap: '6px' }}>
+                      <button onClick={() => { setEditingAddress(addr); setAddrForm({ label: addr.label || '', address: addr.address, apt: addr.apt || '', instructions: addr.instructions || '' }); setShowAddressForm(true); }} style={{ background: 'none', border: 'none', color: '#888', fontSize: '12px', cursor: 'pointer' }}>Edit</button>
+                      <button onClick={() => deleteAddress(addr.id)} style={{ background: 'none', border: 'none', color: '#FC0301', fontSize: '12px', cursor: 'pointer' }}>Delete</button>
+                    </div>
+                  </div>
+                  <p style={{ fontSize: '13px', color: '#ccc', margin: '0 0 4px', paddingLeft: '24px' }}>{addr.address}</p>
+                  {addr.apt && <p style={{ fontSize: '12px', color: '#888', margin: '0 0 4px', paddingLeft: '24px' }}>Apt: {addr.apt}</p>}
+                  {addr.instructions && <p style={{ fontSize: '12px', color: '#888', margin: '0 0 4px', paddingLeft: '24px' }}>{addr.instructions}</p>}
+                  {!addr.isDefault && <button onClick={() => setDefaultAddress(addr.id)} style={{ marginTop: '6px', marginLeft: '24px', background: 'none', border: '1px solid #2A2A2A', borderRadius: '6px', padding: '4px 10px', color: '#888', fontSize: '11px', cursor: 'pointer' }}>Set as default</button>}
+                </div>
+              ))}
             </div>
           </div>
         )}
@@ -691,6 +858,7 @@ export default function AccountPage() {
         {/* LOYALTY */}
         {activeTab === 'loyalty' && (
           <div>
+            {/* Points Card */}
             <div style={{ background: 'linear-gradient(135deg, #FED800, #E5C200)', borderRadius: '16px', padding: '28px', marginBottom: '20px', position: 'relative', overflow: 'hidden' }}>
               <div style={{ position: 'absolute', top: '-40px', right: '-40px', width: '200px', height: '200px', borderRadius: '50%', background: 'rgba(0,0,0,0.08)' }} />
               <div style={{ position: 'absolute', bottom: '-60px', left: '-20px', width: '160px', height: '160px', borderRadius: '50%', background: 'rgba(0,0,0,0.05)' }} />
@@ -702,40 +870,56 @@ export default function AccountPage() {
               </div>
             </div>
 
+            {/* Rewards */}
             <p style={{ fontSize: '18px', fontWeight: '800', color: '#ffffff', marginBottom: '14px' }}>Available Rewards</p>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '10px', marginBottom: '24px' }}>
-              {[
-                { name: 'Free Delivery', points: 150, available: true },
-                { name: '$5 Off Your Order', points: 200, available: true },
-                { name: 'Free Signature Sandwich', points: 500, available: false },
-                { name: '$10 Off Your Order', points: 400, available: false },
-              ].map((reward, i) => (
-                <div key={i} style={{ padding: '16px', background: '#111111', border: `1px solid ${reward.available ? '#FED80040' : '#1A1A1A'}`, borderRadius: '12px', opacity: reward.available ? 1 : 0.6 }}>
-                  <p style={{ fontSize: '14px', fontWeight: '700', color: '#ffffff', marginBottom: '4px' }}>{reward.name}</p>
-                  <p style={{ fontSize: '12px', color: '#FED800', marginBottom: '10px' }}>{reward.points} points</p>
-                  <button disabled={!reward.available} style={{ width: '100%', padding: '8px', background: reward.available ? '#FED800' : '#2A2A2A', border: 'none', borderRadius: '8px', color: reward.available ? '#000' : '#888', fontSize: '12px', fontWeight: '700', cursor: reward.available ? 'pointer' : 'not-allowed' }}>
-                    {reward.available ? 'Redeem' : `Need ${reward.points - userPoints} more pts`}
-                  </button>
-                </div>
-              ))}
-            </div>
+            {rewards.filter((r: any) => r.active).length === 0 ? (
+              <div style={{ padding: '24px', background: '#111', border: '1px dashed #2A2A2A', borderRadius: '12px', textAlign: 'center', marginBottom: '24px' }}>
+                <p style={{ fontSize: '13px', color: '#888', margin: 0 }}>No rewards available right now. Check back soon!</p>
+              </div>
+            ) : (
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '10px', marginBottom: '24px' }}>
+                {rewards.filter((r: any) => r.active).map((reward: any) => {
+                  const canRedeem = userPoints >= reward.pointsCost;
+                  const isRedeeming = redeemingId === reward.id;
+                  return (
+                    <div key={reward.id} style={{ padding: '16px', background: '#111', border: `1px solid ${canRedeem ? '#FED80040' : '#1A1A1A'}`, borderRadius: '12px', opacity: canRedeem ? 1 : 0.6 }}>
+                      <p style={{ fontSize: '14px', fontWeight: '700', color: '#fff', marginBottom: '2px' }}>{reward.name}</p>
+                      {reward.description && <p style={{ fontSize: '11px', color: '#888', marginBottom: '6px' }}>{reward.description}</p>}
+                      <p style={{ fontSize: '12px', color: '#FED800', marginBottom: '10px' }}>{reward.pointsCost} points</p>
+                      <button onClick={() => canRedeem && handleRedeem(reward.id)} disabled={!canRedeem || isRedeeming} style={{
+                        width: '100%', padding: '8px', background: canRedeem ? '#FED800' : '#2A2A2A',
+                        border: 'none', borderRadius: '8px', color: canRedeem ? '#000' : '#888',
+                        fontSize: '12px', fontWeight: '700', cursor: canRedeem ? 'pointer' : 'not-allowed',
+                        opacity: isRedeeming ? 0.6 : 1,
+                      }}>
+                        {isRedeeming ? 'Redeeming...' : canRedeem ? 'Redeem' : `Need ${reward.pointsCost - userPoints} more pts`}
+                      </button>
+                    </div>
+                  );
+                })}
+              </div>
+            )}
 
+            {/* Points History */}
             <p style={{ fontSize: '18px', fontWeight: '800', color: '#ffffff', marginBottom: '14px' }}>Points History</p>
-            <div style={{ background: '#111111', border: '1px solid #1A1A1A', borderRadius: '12px', overflow: 'hidden' }}>
-              {[
-                { desc: 'Order #EO-1042', points: '+11', date: 'Mar 20', color: '#22C55E' },
-                { desc: 'Order #EO-1038', points: '+20', date: 'Mar 18', color: '#22C55E' },
-                { desc: 'Sign-up Bonus', points: '+50', date: 'Mar 15', color: '#FED800' },
-                { desc: 'Order #EO-1024', points: '+26', date: 'Mar 12', color: '#22C55E' },
-              ].map((h, i) => (
-                <div key={i} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '14px 20px', borderBottom: i < 3 ? '1px solid #1A1A1A' : 'none' }}>
-                  <div>
-                    <p style={{ fontSize: '13px', color: '#ffffff', margin: 0 }}>{h.desc}</p>
-                    <p style={{ fontSize: '11px', color: '#888', marginTop: '2px' }}>{h.date}</p>
-                  </div>
-                  <span style={{ fontSize: '16px', fontWeight: '800', color: h.color }}>{h.points}</span>
+            <div style={{ background: '#111', border: '1px solid #1A1A1A', borderRadius: '12px', overflow: 'hidden' }}>
+              {pointsHistory.length === 0 ? (
+                <div style={{ padding: '24px', textAlign: 'center' }}>
+                  <p style={{ fontSize: '13px', color: '#888', margin: 0 }}>No points activity yet. Place an order to start earning!</p>
                 </div>
-              ))}
+              ) : (
+                pointsHistory.map((h: any, i: number) => (
+                  <div key={i} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '14px 20px', borderBottom: i < pointsHistory.length - 1 ? '1px solid #1A1A1A' : 'none' }}>
+                    <div>
+                      <p style={{ fontSize: '13px', color: '#fff', margin: 0 }}>{h.description}</p>
+                      <p style={{ fontSize: '11px', color: '#888', marginTop: '2px' }}>{h.date ? new Date(h.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) : ''}</p>
+                    </div>
+                    <span style={{ fontSize: '16px', fontWeight: '800', color: h.type === 'redeemed' ? '#FC0301' : '#22C55E' }}>
+                      {h.points > 0 ? '+' : ''}{h.points}
+                    </span>
+                  </div>
+                ))
+              )}
             </div>
           </div>
         )}

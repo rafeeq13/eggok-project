@@ -283,6 +283,21 @@ export class MailService {
         const experience = this.safeText(payload?.experience || 'Not provided');
         const message = this.safeText(payload?.message || 'No additional notes provided.');
 
+        // Build attachments from resume if provided
+        const attachments: Array<{ filename: string; content: string; encoding: string }> = [];
+        if (payload?.resume) {
+            // resume is a base64 data URL like "data:application/pdf;base64,JVBERi..."
+            const match = payload.resume.match(/^data:(.+);base64,(.+)$/);
+            if (match) {
+                const ext = match[1].includes('pdf') ? 'pdf' : match[1].includes('word') ? 'docx' : 'pdf';
+                attachments.push({
+                    filename: `${name.replace(/\s+/g, '_')}_Resume.${ext}`,
+                    content: match[2],
+                    encoding: 'base64',
+                });
+            }
+        }
+
         await Promise.all([
             this.sendMail(
                 {
@@ -292,13 +307,14 @@ export class MailService {
                     html: this.wrapEmail({
                         eyebrow: 'Hiring Application',
                         title: 'New job application received',
-                        intro: `${name} applied for ${position}.`,
+                        intro: `${name} applied for ${position}.${attachments.length > 0 ? ' Resume attached.' : ''}`,
                         sections: [
                             { title: 'Applicant details', lines: [`Email: ${email}`, `Phone: ${phone}`, `Experience: ${experience}`] },
                             { title: 'Message', lines: [message] },
                         ],
                     }),
                     text: `Hiring application\n\nName: ${name}\nEmail: ${email}\nPhone: ${phone}\nPosition: ${position}\nExperience: ${experience}\n\n${message}`,
+                    attachments,
                 },
                 settings,
             ),
@@ -466,6 +482,7 @@ export class MailService {
             html: string;
             text?: string;
             replyTo?: string;
+            attachments?: Array<{ filename: string; content: string; encoding: string }>;
         },
         settings?: MailSettings,
     ) {
@@ -495,6 +512,7 @@ export class MailService {
                 subject: options.subject,
                 html: options.html,
                 text: options.text,
+                attachments: options.attachments,
             });
             console.log(`Email [${options.subject}] sent successfully to: ${options.to}`);
         } catch (error) {

@@ -6,6 +6,7 @@ import * as bcrypt from 'bcryptjs';
 import * as crypto from 'crypto';
 import { Customer } from '../customers/customer.entity';
 import { CustomerToken } from './customer-token.entity';
+import { Reward } from '../loyalty/reward.entity';
 import { MailService } from '../mail/mail.service';
 
 const TOKEN_TTL_MS = 30 * 24 * 60 * 60 * 1000; // 30 days
@@ -17,6 +18,8 @@ export class AuthService {
         private customersRepository: Repository<Customer>,
         @InjectRepository(CustomerToken)
         private tokenRepository: Repository<CustomerToken>,
+        @InjectRepository(Reward)
+        private rewardRepository: Repository<Reward>,
         private mailService: MailService,
         private configService: ConfigService,
     ) { }
@@ -157,6 +160,7 @@ export class AuthService {
             redemptions: customer.redemptions,
             joinDate: customer.joinDate,
             status: customer.status,
+            savedAddresses: customer.savedAddresses || [],
         };
     }
 
@@ -273,5 +277,68 @@ export class AuthService {
         }
 
         return this.getProfile(customerId);
+    }
+
+    // Saved Addresses
+    async getAddresses(customerId: number) {
+        const customer = await this.customersRepository.findOne({ where: { id: customerId } });
+        if (!customer) throw new UnauthorizedException('User not found');
+        return customer.savedAddresses || [];
+    }
+
+    async updateAddresses(customerId: number, addresses: any[]) {
+        await this.customersRepository.update(customerId, { savedAddresses: addresses });
+        return addresses;
+    }
+
+    // Points History
+    async getPointsHistory(customerId: number) {
+        const customer = await this.customersRepository.findOne({ where: { id: customerId } });
+        if (!customer) throw new UnauthorizedException('User not found');
+        return customer.pointsHistory || [];
+    }
+
+    private async addPointsHistoryEntry(customerId: number, entry: { description: string; points: number; type: 'earned' | 'redeemed' }) {
+        const customer = await this.customersRepository.findOne({ where: { id: customerId } });
+        if (!customer) return;
+        const history = Array.isArray(customer.pointsHistory) ? customer.pointsHistory : [];
+        history.unshift({ ...entry, date: new Date().toISOString() });
+        // Keep last 100 entries
+        if (history.length > 100) history.length = 100;
+        await this.customersRepository.update(customerId, { pointsHistory: history });
+    }
+
+    // Redeem Reward
+    async redeemReward(customerId: number, rewardId: number) {
+        const customer = await this.customersRepository.findOne({ where: { id: customerId } });
+        if (!customer) throw new UnauthorizedException('User not found');
+
+        const reward = await this.rewardRepository.findOneBy({ id: rewardId });
+        if (!reward || !reward.active) throw new BadRequestException('Reward not found or inactive');
+        if (customer.points < reward.pointsCost) throw new BadRequestException(`Not enough points. You need ${reward.pointsCost} but have ${customer.points}.`);
+
+        // Deduct points
+        await this.customersRepository.update(customerId, {
+            points: customer.points - reward.pointsCost,
+            redemptions: customer.redemptions + 1,
+        });
+
+        // Track redemption count on reward
+        await this.rewardRepository.update(rewardId, { redemptions: reward.redemptions + 1 });
+
+        // Add to points history
+        await this.addPointsHistoryEntry(customerId, {
+            description: `Redeemed: ${reward.name}`,
+            points: -reward.pointsCost,
+            type: 'redeemed',
+        });
+
+        const updated = await this.getProfile(customerId);
+        return {
+            success: true,
+            message: `Successfully redeemed ${reward.name}!`,
+            reward: { name: reward.name, type: reward.type, value: reward.value },
+            remainingPoints: updated.points,
+        };
     }
 }

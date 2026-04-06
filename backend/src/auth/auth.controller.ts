@@ -59,4 +59,31 @@ export class AuthController {
     }) {
         return this.authService.updateProfile(req.user.id, data);
     }
+
+    // Saved Addresses
+    @UseGuards(TokenGuard)
+    @Get('addresses')
+    getAddresses(@Request() req: any) {
+        return this.authService.getAddresses(req.user.id);
+    }
+
+    @UseGuards(TokenGuard)
+    @Put('addresses')
+    updateAddresses(@Request() req: any, @Body() data: { addresses: any[] }) {
+        return this.authService.updateAddresses(req.user.id, data.addresses);
+    }
+
+    // Loyalty
+    @UseGuards(TokenGuard)
+    @Get('points-history')
+    getPointsHistory(@Request() req: any) {
+        return this.authService.getPointsHistory(req.user.id);
+    }
+
+    @UseGuards(TokenGuard)
+    @Post('redeem')
+    @HttpCode(200)
+    redeemReward(@Request() req: any, @Body() data: { rewardId: number }) {
+        return this.authService.redeemReward(req.user.id, data.rewardId);
+    }
 }

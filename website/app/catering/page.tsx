@@ -50,9 +50,30 @@ export default function CateringPage() {
     { icon: ClipboardList,     title: 'Easy Setup',   desc: 'We handle setup, serving, and cleanup'             },
   ];
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const [submitting, setSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState('');
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setSubmitted(true);
+    setSubmitting(true);
+    setSubmitError('');
+    try {
+      const API = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3002/api';
+      const res = await fetch(`${API}/mail/catering`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      });
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        throw new Error(data.message || 'Failed to submit inquiry');
+      }
+      setSubmitted(true);
+    } catch (err) {
+      setSubmitError(err instanceof Error ? err.message : 'Failed to submit. Please try again.');
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -532,9 +553,14 @@ export default function CateringPage() {
                       value={formData.message} onChange={e => setFormData({ ...formData, message: e.target.value })} />
                   </div>
 
+                  {/* Error */}
+                  {submitError && (
+                    <p style={{ color: '#FC0301', fontSize: '13px', margin: '0 0 8px' }}>{submitError}</p>
+                  )}
+
                   {/* Submit */}
-                  <button id="form-submit-btn" type="submit" className="form-submit-btn">
-                    Submit Catering Request <ArrowRight size={16} aria-hidden="true" />
+                  <button id="form-submit-btn" type="submit" className="form-submit-btn" disabled={submitting} style={submitting ? { opacity: 0.6, cursor: 'not-allowed' } : {}}>
+                    {submitting ? 'Submitting...' : 'Submit Catering Request'} {!submitting && <ArrowRight size={16} aria-hidden="true" />}
                   </button>
 
                 </div>

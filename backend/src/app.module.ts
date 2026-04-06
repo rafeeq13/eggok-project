@@ -14,6 +14,7 @@ import { PaymentsModule } from './payments/payments.module';
 import { SeedModule } from './seed/seed.module';
 import { AuthModule } from './auth/auth.module';
 import { DeliveryModule } from './delivery/delivery.module';
+import { SubmissionsModule } from './submissions/submissions.module';
 
 @Module({
   imports: [
@@ -55,6 +56,7 @@ import { DeliveryModule } from './delivery/delivery.module';
     SeedModule,
     AuthModule,
     DeliveryModule,
+    SubmissionsModule,
   ],
 })
 

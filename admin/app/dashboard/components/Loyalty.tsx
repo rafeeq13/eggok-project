@@ -72,6 +72,19 @@ export default function Loyalty() {
   const [editingReward, setEditingReward] = useState<Reward | null>(null);
   const [successMsg, setSuccessMsg] = useState('');
 
+  // Members filters
+  const [memberSearch, setMemberSearch] = useState('');
+  const [memberTierFilter, setMemberTierFilter] = useState('all');
+  const [memberSort, setMemberSort] = useState<'points-desc' | 'points-asc' | 'name' | 'recent' | 'redemptions'>('points-desc');
+  const [memberMinPoints, setMemberMinPoints] = useState('');
+  const [memberStatusFilter, setMemberStatusFilter] = useState<'all' | 'active' | 'inactive'>('all');
+
+  // Rewards filters
+  const [rewardSearch, setRewardSearch] = useState('');
+  const [rewardTypeFilter, setRewardTypeFilter] = useState('all');
+  const [rewardStatusFilter, setRewardStatusFilter] = useState<'all' | 'active' | 'inactive'>('all');
+  const [rewardSort, setRewardSort] = useState<'name' | 'points-asc' | 'points-desc' | 'popular'>('name');
+
   // Settings
   const [loyaltyEnabled, setLoyaltyEnabled] = useState(true);
   const [pointsPerDollar, setPointsPerDollar] = useState('1');
@@ -111,7 +124,12 @@ export default function Loyalty() {
       setRewards(Array.isArray(rewardsData) ? rewardsData : []);
 
       const membersData = await safeJson(membersRes, []);
-      setLoyaltyCustomers(Array.isArray(membersData) ? membersData : []);
+      const mapped = (Array.isArray(membersData) ? membersData : []).map((c: any) => ({
+        ...c,
+        totalEarned: c.totalEarned ?? c.totalPointsEarned ?? 0,
+        lastActivity: c.lastActivity || c.lastOrder || '',
+      }));
+      setLoyaltyCustomers(mapped);
 
       const settingsData = await safeJson(settingsRes, null);
       if (settingsData) {
@@ -134,6 +152,50 @@ export default function Loyalty() {
   useEffect(() => {
     fetchData();
   }, []);
+
+  // Filtered members
+  const filteredMembers = (() => {
+    let list = [...loyaltyCustomers];
+    if (memberSearch.trim()) {
+      const q = memberSearch.toLowerCase();
+      list = list.filter(c => c.name.toLowerCase().includes(q) || c.email.toLowerCase().includes(q));
+    }
+    if (memberTierFilter !== 'all') list = list.filter(c => c.tier === memberTierFilter);
+    if (memberMinPoints) list = list.filter(c => c.points >= Number(memberMinPoints));
+    if (memberStatusFilter === 'active') list = list.filter(c => c.lastActivity && new Date(c.lastActivity) > new Date(Date.now() - 30 * 86400000));
+    if (memberStatusFilter === 'inactive') list = list.filter(c => !c.lastActivity || new Date(c.lastActivity) <= new Date(Date.now() - 30 * 86400000));
+    if (memberSort === 'points-desc') list.sort((a, b) => b.points - a.points);
+    else if (memberSort === 'points-asc') list.sort((a, b) => a.points - b.points);
+    else if (memberSort === 'name') list.sort((a, b) => a.name.localeCompare(b.name));
+    else if (memberSort === 'recent') list.sort((a, b) => (b.lastActivity || '').localeCompare(a.lastActivity || ''));
+    else if (memberSort === 'redemptions') list.sort((a, b) => b.redemptions - a.redemptions);
+    return list;
+  })();
+
+  // Filtered rewards
+  const filteredRewards = (() => {
+    let list = [...rewards];
+    if (rewardSearch.trim()) {
+      const q = rewardSearch.toLowerCase();
+      list = list.filter(r => r.name.toLowerCase().includes(q) || (r.description && r.description.toLowerCase().includes(q)));
+    }
+    if (rewardTypeFilter !== 'all') list = list.filter(r => r.type === rewardTypeFilter);
+    if (rewardStatusFilter === 'active') list = list.filter(r => r.active);
+    if (rewardStatusFilter === 'inactive') list = list.filter(r => !r.active);
+    if (rewardSort === 'points-asc') list.sort((a, b) => a.pointsCost - b.pointsCost);
+    else if (rewardSort === 'points-desc') list.sort((a, b) => b.pointsCost - a.pointsCost);
+    else if (rewardSort === 'popular') list.sort((a, b) => b.redemptions - a.redemptions);
+    else list.sort((a, b) => a.name.localeCompare(b.name));
+    return list;
+  })();
+
+  const memberFilterCount = [memberSearch.trim(), memberTierFilter !== 'all', memberMinPoints, memberStatusFilter !== 'all'].filter(Boolean).length;
+  const rewardFilterCount = [rewardSearch.trim(), rewardTypeFilter !== 'all', rewardStatusFilter !== 'all'].filter(Boolean).length;
+
+  const clearMemberFilters = () => { setMemberSearch(''); setMemberTierFilter('all'); setMemberSort('points-desc'); setMemberMinPoints(''); setMemberStatusFilter('all'); };
+  const clearRewardFilters = () => { setRewardSearch(''); setRewardTypeFilter('all'); setRewardStatusFilter('all'); setRewardSort('name'); };
+
+  const selectStyle: React.CSSProperties = { padding: '7px 10px', background: '#111', border: '1px solid #2A2A2A', borderRadius: '8px', color: '#FEFEFE', fontSize: '12px', cursor: 'pointer' };
 
   const showSuccess = (msg: string) => {
     setSuccessMsg(msg);
@@ -419,14 +481,48 @@ export default function Loyalty() {
       {/* REWARDS */}
       {activeTab === 'rewards' && (
         <div>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '14px' }}>
             <p style={{ fontSize: '13px', color: '#888888' }}>{rewards.filter(r => r.active).length} active · {rewards.length} total</p>
             <button onClick={() => { setEditingReward(null); setShowRewardForm(true); }} style={{ padding: '9px 18px', background: '#FED800', border: 'none', borderRadius: '8px', color: '#000', fontSize: '13px', fontWeight: '700', cursor: 'pointer' }}>
               + Create Reward
             </button>
           </div>
+
+          {/* Rewards Filters */}
+          <div style={{ background: '#1A1A1A', border: '1px solid #2A2A2A', borderRadius: '12px', padding: '14px 16px', marginBottom: '14px' }}>
+            <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap', alignItems: 'center' }}>
+              <div style={{ position: 'relative', flex: '1 1 180px' }}>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#555" strokeWidth="2" style={{ position: 'absolute', left: '10px', top: '50%', transform: 'translateY(-50%)' }}><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                <input placeholder="Search rewards..." value={rewardSearch} onChange={e => setRewardSearch(e.target.value)} style={{ ...selectStyle, paddingLeft: '30px', width: '100%' }} />
+              </div>
+              <select value={rewardTypeFilter} onChange={e => setRewardTypeFilter(e.target.value)} style={selectStyle}>
+                <option value="all">All Types</option>
+                <option value="discount">Discount</option>
+                <option value="freeItem">Free Item</option>
+                <option value="freeDelivery">Free Delivery</option>
+              </select>
+              <select value={rewardStatusFilter} onChange={e => setRewardStatusFilter(e.target.value as any)} style={selectStyle}>
+                <option value="all">All Status</option>
+                <option value="active">Active</option>
+                <option value="inactive">Inactive</option>
+              </select>
+              <select value={rewardSort} onChange={e => setRewardSort(e.target.value as any)} style={selectStyle}>
+                <option value="name">Name A-Z</option>
+                <option value="points-asc">Points: Low to High</option>
+                <option value="points-desc">Points: High to Low</option>
+                <option value="popular">Most Redeemed</option>
+              </select>
+            </div>
+            {rewardFilterCount > 0 && (
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '10px', paddingTop: '10px', borderTop: '1px solid #2A2A2A' }}>
+                <span style={{ fontSize: '11px', color: '#888' }}>Showing {filteredRewards.length} of {rewards.length}</span>
+                <button onClick={clearRewardFilters} style={{ background: 'none', border: 'none', color: '#FED800', fontSize: '11px', fontWeight: '600', cursor: 'pointer' }}>Clear filters</button>
+              </div>
+            )}
+          </div>
+
           <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-            {rewards.map(reward => (
+            {filteredRewards.map(reward => (
               <div key={reward.id} style={{ background: '#1A1A1A', border: `1px solid ${reward.active ? '#2A2A2A' : '#FC030120'}`, borderRadius: '12px', padding: '16px 20px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '16px' }}>
                 <div style={{ flex: 1 }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '4px' }}>
@@ -455,9 +551,10 @@ export default function Loyalty() {
       {/* MEMBERS */}
       {activeTab === 'customers' && (
         <div>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '12px', marginBottom: '20px' }}>
+          {/* Tier summary cards */}
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '12px', marginBottom: '14px' }}>
             {tiers.map(tier => (
-              <div key={tier.id} style={{ background: '#1A1A1A', border: `1px solid ${tier.color}30`, borderRadius: '12px', padding: '16px', textAlign: 'center' }}>
+              <div key={tier.id} onClick={() => setMemberTierFilter(memberTierFilter === tier.name ? 'all' : tier.name)} style={{ background: '#1A1A1A', border: `1px solid ${memberTierFilter === tier.name ? tier.color : tier.color + '30'}`, borderRadius: '12px', padding: '16px', textAlign: 'center', cursor: 'pointer', transition: 'border-color 0.15s' }}>
                 <p style={{ fontSize: '12px', color: tier.color, fontWeight: '600', marginBottom: '6px' }}>{tier.name}</p>
                 <p style={{ fontSize: '28px', fontWeight: '700', color: tier.color }}>{loyaltyCustomers.filter(c => c.tier === tier.name).length}</p>
                 <p style={{ fontSize: '11px', color: '#888888', marginTop: '4px' }}>members</p>
@@ -465,6 +562,42 @@ export default function Loyalty() {
             ))}
           </div>
 
+          {/* Members Filters */}
+          <div style={{ background: '#1A1A1A', border: '1px solid #2A2A2A', borderRadius: '12px', padding: '14px 16px', marginBottom: '14px' }}>
+            <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap', alignItems: 'center' }}>
+              <div style={{ position: 'relative', flex: '1 1 180px' }}>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#555" strokeWidth="2" style={{ position: 'absolute', left: '10px', top: '50%', transform: 'translateY(-50%)' }}><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                <input placeholder="Search name or email..." value={memberSearch} onChange={e => setMemberSearch(e.target.value)} style={{ ...selectStyle, paddingLeft: '30px', width: '100%' }} />
+              </div>
+              <select value={memberTierFilter} onChange={e => setMemberTierFilter(e.target.value)} style={selectStyle}>
+                <option value="all">All Tiers</option>
+                <option value="Bronze">Bronze</option>
+                <option value="Silver">Silver</option>
+                <option value="Gold">Gold</option>
+              </select>
+              <select value={memberStatusFilter} onChange={e => setMemberStatusFilter(e.target.value as any)} style={selectStyle}>
+                <option value="all">All Activity</option>
+                <option value="active">Active (30 days)</option>
+                <option value="inactive">Inactive (30+ days)</option>
+              </select>
+              <select value={memberSort} onChange={e => setMemberSort(e.target.value as any)} style={selectStyle}>
+                <option value="points-desc">Points: High to Low</option>
+                <option value="points-asc">Points: Low to High</option>
+                <option value="name">Name A-Z</option>
+                <option value="recent">Most Recent</option>
+                <option value="redemptions">Most Redemptions</option>
+              </select>
+              <input type="number" placeholder="Min points" value={memberMinPoints} onChange={e => setMemberMinPoints(e.target.value)} style={{ ...selectStyle, width: '110px' }} />
+            </div>
+            {memberFilterCount > 0 && (
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '10px', paddingTop: '10px', borderTop: '1px solid #2A2A2A' }}>
+                <span style={{ fontSize: '11px', color: '#888' }}>Showing {filteredMembers.length} of {loyaltyCustomers.length} members</span>
+                <button onClick={clearMemberFilters} style={{ background: 'none', border: 'none', color: '#FED800', fontSize: '11px', fontWeight: '600', cursor: 'pointer' }}>Clear filters</button>
+              </div>
+            )}
+          </div>
+
+          {/* Members Table */}
           <div style={{ background: '#1A1A1A', border: '1px solid #2A2A2A', borderRadius: '12px', overflow: 'hidden' }}>
             <table style={{ width: '100%', borderCollapse: 'collapse' }}>
               <thead>
@@ -475,11 +608,16 @@ export default function Loyalty() {
                 </tr>
               </thead>
               <tbody>
-                {loyaltyCustomers.map((c, i) => (
-                  <tr key={c.id} style={{ borderBottom: i < loyaltyCustomers.length - 1 ? '1px solid #2A2A2A' : 'none' }}>
+                {filteredMembers.length === 0 ? (
+                  <tr><td colSpan={6} style={{ padding: '32px', textAlign: 'center', color: '#888', fontSize: '13px' }}>
+                    {loyaltyCustomers.length === 0 ? 'No members yet' : 'No members match your filters'}
+                    {memberFilterCount > 0 && <button onClick={clearMemberFilters} style={{ display: 'block', margin: '8px auto 0', background: 'none', border: 'none', color: '#FED800', fontSize: '12px', cursor: 'pointer' }}>Clear filters</button>}
+                  </td></tr>
+                ) : filteredMembers.map((c, i) => (
+                  <tr key={c.id} style={{ borderBottom: i < filteredMembers.length - 1 ? '1px solid #2A2A2A' : 'none' }}>
                     <td style={{ padding: '13px 16px' }}>
                       <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                        <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: `${tierColor[c.tier]}20`, border: `1px solid ${tierColor[c.tier]}40`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '12px', fontWeight: '700', color: tierColor[c.tier], flexShrink: 0 }}>
+                        <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: `${tierColor[c.tier] || '#888'}20`, border: `1px solid ${tierColor[c.tier] || '#888'}40`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '12px', fontWeight: '700', color: tierColor[c.tier] || '#888', flexShrink: 0 }}>
                           {c.name.charAt(0)}
                         </div>
                         <div>
@@ -489,14 +627,14 @@ export default function Loyalty() {
                       </div>
                     </td>
                     <td style={{ padding: '13px 16px' }}>
-                      <span style={{ fontSize: '11px', padding: '3px 10px', borderRadius: '20px', fontWeight: '600', background: `${tierColor[c.tier]}20`, color: tierColor[c.tier], border: `1px solid ${tierColor[c.tier]}40` }}>
+                      <span style={{ fontSize: '11px', padding: '3px 10px', borderRadius: '20px', fontWeight: '600', background: `${tierColor[c.tier] || '#888'}20`, color: tierColor[c.tier] || '#888', border: `1px solid ${tierColor[c.tier] || '#888'}40` }}>
                         {c.tier}
                       </span>
                     </td>
-                    <td style={{ padding: '13px 16px', fontSize: '13px', fontWeight: '700', color: '#FED800' }}>{c.points.toLocaleString()}</td>
-                    <td style={{ padding: '13px 16px', fontSize: '12px', color: '#888888' }}>{c.totalEarned.toLocaleString()}</td>
-                    <td style={{ padding: '13px 16px', fontSize: '12px', color: '#22C55E', fontWeight: '600' }}>{c.redemptions}</td>
-                    <td style={{ padding: '13px 16px', fontSize: '11px', color: '#888888' }}>{c.lastActivity}</td>
+                    <td style={{ padding: '13px 16px', fontSize: '13px', fontWeight: '700', color: '#FED800' }}>{(c.points || 0).toLocaleString()}</td>
+                    <td style={{ padding: '13px 16px', fontSize: '12px', color: '#888888' }}>{(c.totalEarned || 0).toLocaleString()}</td>
+                    <td style={{ padding: '13px 16px', fontSize: '12px', color: '#22C55E', fontWeight: '600' }}>{c.redemptions || 0}</td>
+                    <td style={{ padding: '13px 16px', fontSize: '11px', color: '#888888' }}>{c.lastActivity || '—'}</td>
                   </tr>
                 ))}
               </tbody>

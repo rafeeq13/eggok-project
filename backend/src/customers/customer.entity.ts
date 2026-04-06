@@ -41,6 +41,12 @@ export class Customer {
     @CreateDateColumn()
     joinDate: Date;
 
+    @Column({ type: 'json', nullable: true })
+    savedAddresses: any; // Array of { id, label, address, apt, instructions, isDefault }
+
+    @Column({ type: 'json', nullable: true })
+    pointsHistory: any; // Array of { date, description, points, type: 'earned'|'redeemed' }
+
     @Column({ default: 'Active' })
     status: string; // 'Active' | 'Inactive' | 'Blocked'
 

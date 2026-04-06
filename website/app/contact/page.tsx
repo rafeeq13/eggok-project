@@ -14,9 +14,30 @@ export default function ContactPage() {
   });
   const [submitted, setSubmitted] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const [submitting, setSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState('');
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setSubmitted(true);
+    setSubmitting(true);
+    setSubmitError('');
+    try {
+      const API = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3002/api';
+      const res = await fetch(`${API}/mail/contact`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      });
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        throw new Error(data.message || 'Failed to send message');
+      }
+      setSubmitted(true);
+    } catch (err) {
+      setSubmitError(err instanceof Error ? err.message : 'Failed to send. Please try again.');
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   const hours = [
@@ -482,9 +503,14 @@ export default function ContactPage() {
                       />
                     </div>
 
+                    {/* Error */}
+                    {submitError && (
+                      <p style={{ color: '#FC0301', fontSize: '13px', margin: '0 0 8px' }}>{submitError}</p>
+                    )}
+
                     {/* Submit */}
-                    <button id="form-submit-btn" type="submit" className="form-submit-btn">
-                      Send Message <ArrowRight size={16} aria-hidden="true" />
+                    <button id="form-submit-btn" type="submit" className="form-submit-btn" disabled={submitting} style={submitting ? { opacity: 0.6, cursor: 'not-allowed' } : {}}>
+                      {submitting ? 'Sending...' : 'Send Message'} {!submitting && <ArrowRight size={16} aria-hidden="true" />}
                     </button>
 
                   </form>
