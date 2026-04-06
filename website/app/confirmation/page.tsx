@@ -120,7 +120,7 @@ export default function ConfirmationPage() {
   }));
 
   return (
-    <div style={{ background: '#000', minHeight: '100vh', color: '#FEFEFE', fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif' }}>
+    <div style={{ background: '#000', minHeight: '100vh', color: '#ffffff', fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif' }}>
 
       {/* NAV */}
       <div style={{ position: 'fixed', top: 0, left: 0, right: 0, zIndex: 100, background: 'rgba(10,10,10,0.98)', backdropFilter: 'blur(20px)', borderBottom: '1px solid #1E1E1E', height: '64px', display: 'flex', alignItems: 'center', padding: '0 28px' }}>
@@ -154,10 +154,10 @@ export default function ConfirmationPage() {
 
         <div style={{ opacity: visible ? 1 : 0, transform: visible ? 'translateY(0)' : 'translateY(20px)', transition: 'all 0.5s ease 0.2s' }}>
 
-          <h1 style={{ fontSize: 'clamp(36px, 8vw, 64px)', fontWeight: '900', color: '#FEFEFE', marginBottom: '8px', letterSpacing: '-1px' }}>
+          <h1 style={{ fontSize: 'clamp(36px, 8vw, 64px)', fontWeight: '900', color: '#ffffff', marginBottom: '8px', letterSpacing: '-1px' }}>
             ORDER <span style={{ color: '#FED800' }}>CONFIRMED!</span>
           </h1>
-          <p style={{ fontSize: '16px', color: '#888888', marginBottom: '32px' }}>
+          <p style={{ fontSize: '16px', color: '#ffffff', marginBottom: '32px' }}>
             Thank you! Your order has been received and we are getting started right away.
           </p>
 
@@ -166,18 +166,18 @@ export default function ConfirmationPage() {
 
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px', paddingBottom: '16px', borderBottom: '1px solid #1A1A1A' }}>
               <div>
-                <p style={{ fontSize: '11px', color: '#888', marginBottom: '4px', textTransform: 'uppercase', letterSpacing: '1px', margin: 0 }}>Order Number</p>
+                <p style={{ fontSize: '11px', color: '#ffffff', marginBottom: '4px', textTransform: 'uppercase', letterSpacing: '1px', margin: 0 }}>Order Number</p>
                 <p style={{ fontSize: '26px', fontWeight: '900', color: '#FED800', letterSpacing: '2px', margin: '4px 0 0' }}>{orderNumber || '...'}</p>
               </div>
               <div style={{ textAlign: 'right' }}>
-                <p style={{ fontSize: '11px', color: '#888', marginBottom: '4px', textTransform: 'uppercase', letterSpacing: '1px', margin: 0 }}>Est. {orderType === 'delivery' ? 'Delivery' : 'Ready'}</p>
-                <p style={{ fontSize: '26px', fontWeight: '900', color: '#FEFEFE', letterSpacing: '1px', margin: '4px 0 0' }}>{getEstimatedTime()}</p>
+                <p style={{ fontSize: '11px', color: '#ffffff', marginBottom: '4px', textTransform: 'uppercase', letterSpacing: '1px', margin: 0 }}>Est. {orderType === 'delivery' ? 'Delivery' : 'Ready'}</p>
+                <p style={{ fontSize: '26px', fontWeight: '900', color: '#ffffff', letterSpacing: '1px', margin: '4px 0 0' }}>{getEstimatedTime()}</p>
               </div>
             </div>
 
             {/* Items */}
             <div style={{ marginBottom: '20px' }}>
-              <p style={{ fontSize: '11px', color: '#888', marginBottom: '12px', textTransform: 'uppercase', letterSpacing: '1px' }}>Items Ordered</p>
+              <p style={{ fontSize: '11px', color: '#ffffff', marginBottom: '12px', textTransform: 'uppercase', letterSpacing: '1px' }}>Items Ordered</p>
               {displayItems.length === 0 ? (
                 <p style={{ fontSize: '14px', color: '#555' }}>No items</p>
               ) : displayItems.map((item: any, i: number) => {
@@ -189,7 +189,7 @@ export default function ConfirmationPage() {
                 return (
                   <div key={i} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '10px 0', borderBottom: i < displayItems.length - 1 ? '1px solid #1A1A1A' : 'none' }}>
                     <div style={{ flex: 1, marginRight: '12px' }}>
-                      <p style={{ fontSize: '14px', fontWeight: '600', color: '#FEFEFE', margin: 0 }}>{qty}x {name}</p>
+                      <p style={{ fontSize: '14px', fontWeight: '600', color: '#ffffff', margin: 0 }}>{qty}x {name}</p>
 
                       {/* Modifiers for lastOrder items */}
                       {!isCartItem && item.modifiers && item.modifiers.length > 0 && (
@@ -222,7 +222,7 @@ export default function ConfirmationPage() {
                         </div>
                       )}
 
-                      {note && <p style={{ fontSize: '12px', color: '#888', margin: '2px 0 0' }}>{note}</p>}
+                      {note && <p style={{ fontSize: '12px', color: '#ffffff', margin: '2px 0 0' }}>{note}</p>}
                     </div>
                     <p style={{ fontSize: '14px', fontWeight: '600', color: '#FED800', flexShrink: 0, margin: 0 }}>${Number(price).toFixed(2)}</p>
                   </div>
@@ -233,27 +233,27 @@ export default function ConfirmationPage() {
             {/* Bill */}
             <div style={{ borderTop: '1px solid #1A1A1A', paddingTop: '14px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                <span style={{ fontSize: '13px', color: '#888' }}>Subtotal</span>
-                <span style={{ fontSize: '13px', color: '#FEFEFE' }}>${lastOrder ? Number(lastOrder.subtotal).toFixed(2) : subtotal.toFixed(2)}</span>
+                <span style={{ fontSize: '13px', color: '#ffffff' }}>Subtotal</span>
+                <span style={{ fontSize: '13px', color: '#ffffff' }}>${lastOrder ? Number(lastOrder.subtotal).toFixed(2) : subtotal.toFixed(2)}</span>
               </div>
               <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                <span style={{ fontSize: '13px', color: '#888' }}>Taxes & fees</span>
-                <span style={{ fontSize: '13px', color: '#FEFEFE' }}>${lastOrder ? Number(lastOrder.tax).toFixed(2) : taxes.toFixed(2)}</span>
+                <span style={{ fontSize: '13px', color: '#ffffff' }}>Taxes & fees</span>
+                <span style={{ fontSize: '13px', color: '#ffffff' }}>${lastOrder ? Number(lastOrder.tax).toFixed(2) : taxes.toFixed(2)}</span>
               </div>
               {orderType === 'delivery' && (
                 <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                  <span style={{ fontSize: '13px', color: '#888' }}>Delivery fee</span>
-                  <span style={{ fontSize: '13px', color: '#FEFEFE' }}>$3.99</span>
+                  <span style={{ fontSize: '13px', color: '#ffffff' }}>Delivery fee</span>
+                  <span style={{ fontSize: '13px', color: '#ffffff' }}>$3.99</span>
                 </div>
               )}
               {tipAmount > 0 && (
                 <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                  <span style={{ fontSize: '13px', color: '#888' }}>Tip</span>
-                  <span style={{ fontSize: '13px', color: '#FEFEFE' }}>${lastOrder ? Number(lastOrder.tip).toFixed(2) : tipAmount.toFixed(2)}</span>
+                  <span style={{ fontSize: '13px', color: '#ffffff' }}>Tip</span>
+                  <span style={{ fontSize: '13px', color: '#ffffff' }}>${lastOrder ? Number(lastOrder.tip).toFixed(2) : tipAmount.toFixed(2)}</span>
                 </div>
               )}
               <div style={{ display: 'flex', justifyContent: 'space-between', paddingTop: '10px', borderTop: '1px solid #1A1A1A', marginTop: '4px' }}>
-                <span style={{ fontSize: '16px', fontWeight: '800', color: '#FEFEFE' }}>Total Paid</span>
+                <span style={{ fontSize: '16px', fontWeight: '800', color: '#ffffff' }}>Total Paid</span>
                 <span style={{ fontSize: '18px', fontWeight: '800', color: '#FED800' }}>${displayTotal.toFixed(2)}</span>
               </div>
             </div>
@@ -261,7 +261,7 @@ export default function ConfirmationPage() {
 
           {/* Order Status */}
           <div style={{ background: '#111111', border: '1px solid #1A1A1A', borderRadius: '16px', padding: '24px', marginBottom: '20px' }}>
-            <p style={{ fontSize: '11px', color: '#888', marginBottom: '20px', textTransform: 'uppercase', letterSpacing: '1px', textAlign: 'left' }}>Order Status</p>
+            <p style={{ fontSize: '11px', color: '#ffffff', marginBottom: '20px', textTransform: 'uppercase', letterSpacing: '1px', textAlign: 'left' }}>Order Status</p>
             <div style={{ position: 'relative' }}>
               <div style={{ position: 'absolute', top: '20px', left: '20px', right: '20px', height: '2px', background: '#1A1A1A', zIndex: 0 }} />
               <div style={{ position: 'absolute', top: '20px', left: '20px', width: '33%', height: '2px', background: '#FED800', zIndex: 1 }} />
@@ -274,12 +274,12 @@ export default function ConfirmationPage() {
                       ) : step.active ? (
                         <div style={{ width: '10px', height: '10px', borderRadius: '50%', background: '#000' }} />
                       ) : (
-                        <div style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#888' }} />
+                        <div style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#ffffff' }} />
                       )}
                     </div>
                     <div style={{ textAlign: 'center' }}>
-                      <p style={{ fontSize: '12px', fontWeight: '700', color: step.done ? '#22C55E' : step.active ? '#FED800' : '#888', margin: 0 }}>{step.label}</p>
-                      <p style={{ fontSize: '11px', color: '#888', marginTop: '2px' }}>{step.desc}</p>
+                      <p style={{ fontSize: '12px', fontWeight: '700', color: step.done ? '#22C55E' : step.active ? '#FED800' : '#ffffff', margin: 0 }}>{step.label}</p>
+                      <p style={{ fontSize: '11px', color: '#ffffff', marginTop: '2px' }}>{step.desc}</p>
                     </div>
                   </div>
                 ))}
@@ -295,10 +295,10 @@ export default function ConfirmationPage() {
               </svg>
             </div>
             <div>
-              <p style={{ fontSize: '14px', fontWeight: '700', color: '#FEFEFE', marginBottom: '4px' }}>
+              <p style={{ fontSize: '14px', fontWeight: '700', color: '#ffffff', marginBottom: '4px' }}>
                 {orderType === 'pickup' ? 'Pickup Location' : 'Delivering To'}
               </p>
-              <p style={{ fontSize: '13px', color: '#888', margin: 0 }}>
+              <p style={{ fontSize: '13px', color: '#ffffff', margin: 0 }}>
                 {orderType === 'pickup' ? '3517 Lancaster Ave, Philadelphia PA 19104' : deliveryAddress || '—'}
               </p>
               {orderType === 'pickup' && orderNumber && (
@@ -317,20 +317,20 @@ export default function ConfirmationPage() {
                   </svg>
                 </div>
                 <div>
-                  <p style={{ fontSize: '14px', fontWeight: '700', color: '#FEFEFE', margin: 0 }}>Delivery In Progress</p>
+                  <p style={{ fontSize: '14px', fontWeight: '700', color: '#ffffff', margin: 0 }}>Delivery In Progress</p>
                   <p style={{ fontSize: '12px', color: '#A78BFA', margin: 0 }}>via Uber Direct</p>
                 </div>
               </div>
               {deliveryTracking.driverName && (
                 <div style={{ display: 'flex', justifyContent: 'space-between', padding: '8px 0', borderTop: '1px solid #2A2A2A' }}>
-                  <span style={{ fontSize: '13px', color: '#888' }}>Driver</span>
-                  <span style={{ fontSize: '13px', color: '#FEFEFE', fontWeight: '600' }}>{deliveryTracking.driverName}</span>
+                  <span style={{ fontSize: '13px', color: '#ffffff' }}>Driver</span>
+                  <span style={{ fontSize: '13px', color: '#ffffff', fontWeight: '600' }}>{deliveryTracking.driverName}</span>
                 </div>
               )}
               {deliveryTracking.eta && (
                 <div style={{ display: 'flex', justifyContent: 'space-between', padding: '8px 0', borderTop: '1px solid #2A2A2A' }}>
-                  <span style={{ fontSize: '13px', color: '#888' }}>ETA</span>
-                  <span style={{ fontSize: '13px', color: '#FEFEFE' }}>{deliveryTracking.eta}</span>
+                  <span style={{ fontSize: '13px', color: '#ffffff' }}>ETA</span>
+                  <span style={{ fontSize: '13px', color: '#ffffff' }}>{deliveryTracking.eta}</span>
                 </div>
               )}
               {deliveryTracking.trackingUrl && (
@@ -347,7 +347,7 @@ export default function ConfirmationPage() {
 
           {/* Email note */}
           <div style={{ padding: '14px', background: '#111111', border: '1px solid #1A1A1A', borderRadius: '12px', marginBottom: '32px' }}>
-            <p style={{ fontSize: '13px', color: '#888', margin: 0 }}>
+            <p style={{ fontSize: '13px', color: '#ffffff', margin: 0 }}>
               A confirmation has been sent to your email. Check your inbox for order details and updates.
             </p>
           </div>
@@ -361,7 +361,7 @@ export default function ConfirmationPage() {
               </svg>
               Order Again
             </Link>
-            <Link href="/" style={{ padding: '14px 32px', background: 'transparent', border: '1px solid #2A2A2A', borderRadius: '12px', fontSize: '15px', fontWeight: '600', color: '#888', textDecoration: 'none' }}>
+            <Link href="/" style={{ padding: '14px 32px', background: 'transparent', border: '1px solid #2A2A2A', borderRadius: '12px', fontSize: '15px', fontWeight: '600', color: '#ffffff', textDecoration: 'none' }}>
               Back to Home
             </Link>
           </div>

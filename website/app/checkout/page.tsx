@@ -235,7 +235,7 @@ export default function CheckoutPage() {
   const inputStyle: React.CSSProperties = {
     width: '100%', padding: '12px 16px',
     background: '#0A0A0A', border: '1px solid #3A3A3A',
-    borderRadius: '10px', color: '#FEFEFE',
+    borderRadius: '10px', color: '#ffffff',
     fontSize: '14px', outline: 'none',
     transition: 'border-color 0.2s',
     boxSizing: 'border-box',
@@ -254,7 +254,7 @@ export default function CheckoutPage() {
 
   const sectionTitle: React.CSSProperties = {
     fontSize: '16px', fontWeight: '800',
-    color: '#FEFEFE', marginBottom: '16px',
+    color: '#ffffff', marginBottom: '16px',
   };
 
   const applyPromo = async () => {
@@ -401,21 +401,21 @@ export default function CheckoutPage() {
   const isCustomActive = tipMode === 'custom';
 
   return (
-    <div style={{ background: '#000', minHeight: '100vh', color: '#FEFEFE', fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif' }}>
+    <div style={{ background: '#000', minHeight: '100vh', color: '#ffffff', fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif' }}>
       <style>{css}</style>
 
       <div className="checkout-wrap">
 
         {/* Back */}
         <Link href="/order"
-          style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', color: '#888888', fontSize: '14px', marginBottom: '28px', textDecoration: 'none', transition: 'color 0.2s' }}
+          style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', color: '#ffffffffffff', fontSize: '14px', marginBottom: '28px', textDecoration: 'none', transition: 'color 0.2s' }}
           onMouseEnter={e => (e.currentTarget as HTMLAnchorElement).style.color = '#FED800'}
-          onMouseLeave={e => (e.currentTarget as HTMLAnchorElement).style.color = '#888888'}>
+          onMouseLeave={e => (e.currentTarget as HTMLAnchorElement).style.color = '#ffffffffffff'}>
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="15 18 9 12 15 6" /></svg>
           Menu
         </Link>
 
-        <h1 style={{ fontSize: 'clamp(24px, 5vw, 48px)', fontWeight: '900', color: '#FEFEFE', marginBottom: '32px', letterSpacing: '-0.5px' }}>Checkout</h1>
+        <h1 style={{ fontSize: 'clamp(24px, 5vw, 48px)', fontWeight: '900', color: '#ffffff', marginBottom: '32px', letterSpacing: '-0.5px' }}>Checkout</h1>
 
         <div className="checkout-grid">
 
@@ -430,7 +430,7 @@ export default function CheckoutPage() {
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FED800" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
                   <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" /><circle cx="12" cy="10" r="3" />
                 </svg>
-                <span style={{ fontSize: '14px', color: '#FEFEFE', flex: 1, wordBreak: 'break-word' }}>
+                <span style={{ fontSize: '14px', color: '#ffffff', flex: 1, wordBreak: 'break-word' }}>
                   {orderType === 'pickup' ? '3517 Lancaster Ave, Philadelphia PA 19104' : deliveryAddress || 'No address , go back to set one'}
                 </span>
                 <button onClick={() => setShowDeliveryModal(true)} style={{ fontSize: '12px', color: '#FED800', fontWeight: '700', background: 'none', border: 'none', cursor: 'pointer', flexShrink: 0 }}>Change</button>
@@ -440,7 +440,7 @@ export default function CheckoutPage() {
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FED800" strokeWidth="2" strokeLinecap="round" style={{ flexShrink: 0 }}>
                   <circle cx="12" cy="12" r="10" /><polyline points="12 6 12 12 16 14" />
                 </svg>
-                <span style={{ fontSize: '14px', color: '#FEFEFE', flex: 1 }}>{getScheduleLabel()}</span>
+                <span style={{ fontSize: '14px', color: '#ffffff', flex: 1 }}>{getScheduleLabel()}</span>
                 <button onClick={() => setShowScheduleModal(true)} style={{ fontSize: '12px', color: '#FED800', fontWeight: '700', background: 'none', border: 'none', cursor: 'pointer', flexShrink: 0 }}>Change</button>
               </div>
 
@@ -470,18 +470,18 @@ export default function CheckoutPage() {
                     padding: '12px 8px', borderRadius: '10px',
                     background: isPreset(t) ? '#FED80015' : '#0A0A0A',
                     border: `1.5px solid ${isPreset(t) ? '#FED800' : '#2A2A2A'}`,
-                    color: isPreset(t) ? '#FED800' : '#888888',
+                    color: isPreset(t) ? '#FED800' : '#ffffffffffff',
                     cursor: 'pointer', transition: 'all 0.15s', textAlign: 'center',
                   }}>
-                    <p style={{ fontSize: '15px', fontWeight: '800', margin: 0 }}>${((subtotal * t) / 100).toFixed(2)}</p>
-                    <p style={{ fontSize: '11px', margin: '2px 0 0', opacity: 0.7 }}>{t}%</p>
+                    <p style={{ fontSize: '15px', fontWeight: '800', margin: 0 ,color:'#ffffff',}}>${((subtotal * t) / 100).toFixed(2)}</p>
+                    <p style={{ fontSize: '11px', margin: '2px 0 0', opacity: 0.7,color:'#ffffff', }}>{t}%</p>
                   </button>
                 ))}
                 <button onClick={() => setShowCustomTipModal(true)} style={{
                   padding: '12px 8px', borderRadius: '10px',
                   background: isCustomActive ? '#FED80015' : '#0A0A0A',
                   border: `1.5px solid ${isCustomActive ? '#FED800' : '#2A2A2A'}`,
-                  color: isCustomActive ? '#FED800' : '#888888',
+                  color: isCustomActive ? '#FED800' : '#ffffff',
                   cursor: 'pointer', transition: 'all 0.15s', textAlign: 'center',
                 }}>
                   {isCustomActive && customTipAmount ? (
@@ -588,28 +588,28 @@ export default function CheckoutPage() {
           <div className="summary-sticky">
             <div style={{ background: '#111111', border: '1px solid #1E1E1E', borderRadius: '14px', overflow: 'hidden' }}>
               <div style={{ padding: '16px 20px', borderBottom: '1px solid #1E1E1E' }}>
-                <p style={{ fontSize: '16px', fontWeight: '800', color: '#FEFEFE', margin: 0 }}>Order summary</p>
+                <p style={{ fontSize: '16px', fontWeight: '800', color: '#ffffff', margin: 0 }}>Order summary</p>
               </div>
               <div style={{ padding: '16px 20px' }}>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginBottom: '16px' }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                    <span style={{ fontSize: '14px', color: '#888' }}>Subtotal</span>
-                    <span style={{ fontSize: '14px', color: '#FEFEFE' }}>${subtotal.toFixed(2)}</span>
+                    <span style={{ fontSize: '14px', color: '#ffffff' }}>Subtotal</span>
+                    <span style={{ fontSize: '14px', color: '#ffffff' }}>${subtotal.toFixed(2)}</span>
                   </div>
                   <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                    <span style={{ fontSize: '14px', color: '#888' }}>Taxes & fees</span>
-                    <span style={{ fontSize: '14px', color: '#FEFEFE' }}>${taxes.toFixed(2)}</span>
+                    <span style={{ fontSize: '14px', color: '#ffffff' }}>Taxes & fees</span>
+                    <span style={{ fontSize: '14px', color: '#ffffff' }}>${taxes.toFixed(2)}</span>
                   </div>
                   {orderType === 'delivery' && (
                     <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                      <span style={{ fontSize: '14px', color: '#888' }}>Delivery</span>
-                      <span style={{ fontSize: '14px', color: '#FEFEFE' }}>${deliveryFee.toFixed(2)}</span>
+                      <span style={{ fontSize: '14px', color: '#ffffff' }}>Delivery</span>
+                      <span style={{ fontSize: '14px', color: '#ffffff' }}>${deliveryFee.toFixed(2)}</span>
                     </div>
                   )}
                   {tipAmount > 0 && (
                     <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                      <span style={{ fontSize: '14px', color: '#888' }}>Tip</span>
-                      <span style={{ fontSize: '14px', color: '#FEFEFE' }}>${tipAmount.toFixed(2)}</span>
+                      <span style={{ fontSize: '14px', color: '#ffffff' }}>Tip</span>
+                      <span style={{ fontSize: '14px', color: '#ffffff' }}>${tipAmount.toFixed(2)}</span>
                     </div>
                   )}
                   {promoApplied && discount > 0 && (
@@ -639,7 +639,7 @@ export default function CheckoutPage() {
 
                 {/* Total */}
                 <div style={{ display: 'flex', justifyContent: 'space-between', paddingTop: '12px', borderTop: '1px solid #1E1E1E', marginBottom: '20px' }}>
-                  <span style={{ fontSize: '16px', fontWeight: '800', color: '#FEFEFE' }}>Total</span>
+                  <span style={{ fontSize: '16px', fontWeight: '800', color: '#ffffff' }}>Total</span>
                   <span style={{ fontSize: '18px', fontWeight: '800', color: '#FED800' }}>${total.toFixed(2)}</span>
                 </div>
 
@@ -656,7 +656,7 @@ export default function CheckoutPage() {
                         }
                       </div>
                       <div style={{ flex: 1, minWidth: 0 }}>
-                        <p style={{ fontSize: '13px', fontWeight: '700', color: '#FEFEFE', margin: 0, lineHeight: '1.3' }}>{cartItem.item.name}</p>
+                        <p style={{ fontSize: '13px', fontWeight: '700', color: '#ffffff', margin: 0, lineHeight: '1.3' }}>{cartItem.item.name}</p>
 
                         {/* Selected Modifiers */}
                         {cartItem.item.modifiers && (
@@ -678,9 +678,9 @@ export default function CheckoutPage() {
                         )}
 
                         {cartItem.specialInstructions && <p style={{ fontSize: '11px', color: '#666', margin: '2px 0 0' }}>{cartItem.specialInstructions}</p>}
-                        <p style={{ fontSize: '12px', color: '#888', margin: '2px 0 0' }}>Qty: {cartItem.quantity}</p>
+                        <p style={{ fontSize: '12px', color: '#ffffff', margin: '2px 0 0' }}>Qty: {cartItem.quantity}</p>
                       </div>
-                      <p style={{ fontSize: '14px', fontWeight: '700', color: '#FEFEFE', flexShrink: 0 }}>${(getPrice(cartItem.item) * cartItem.quantity).toFixed(2)}</p>
+                      <p style={{ fontSize: '14px', fontWeight: '700', color: '#ffffff', flexShrink: 0 }}>${(getPrice(cartItem.item) * cartItem.quantity).toFixed(2)}</p>
                     </div>
                   ))}
                 </div>
@@ -711,9 +711,9 @@ export default function CheckoutPage() {
           <div style={{ background: '#111', borderRadius: '20px', width: '100%', maxWidth: '400px', border: '1px solid #1E1E1E', padding: '24px' }}
             onClick={e => e.stopPropagation()}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
-              <h2 style={{ fontSize: '18px', fontWeight: '800', color: '#FEFEFE', margin: 0 }}>Custom tip</h2>
+              <h2 style={{ fontSize: '18px', fontWeight: '800', color: '#ffffff', margin: 0 }}>Custom tip</h2>
               <button onClick={() => setShowCustomTipModal(false)}
-                style={{ width: '30px', height: '30px', borderRadius: '50%', background: '#1A1A1A', border: '1px solid #2A2A2A', color: '#888', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                style={{ width: '30px', height: '30px', borderRadius: '50%', background: '#1A1A1A', border: '1px solid #2A2A2A', color: '#ffffff', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
                   <line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" />
                 </svg>
@@ -756,7 +756,7 @@ export default function CheckoutPage() {
                     style={{ ...inputStyle, paddingRight: '28px' }}
                     onFocus={e => (e.target as HTMLInputElement).style.borderColor = '#FED800'}
                     onBlur={e => (e.target as HTMLInputElement).style.borderColor = '#3A3A3A'} />
-                  <span style={{ position: 'absolute', right: '14px', top: '50%', transform: 'translateY(-50%)', color: '#888', fontSize: '14px' }}>%</span>
+                  <span style={{ position: 'absolute', right: '14px', top: '50%', transform: 'translateY(-50%)', color: '#ffffff', fontSize: '14px' }}>%</span>
                 </div>
               </div>
             </div>

@@ -284,7 +284,7 @@ const css = `
   }
 
   /* ── Menu grid ── */
-  .menu-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; border-radius: 16px; overflow: hidden; background: #161616; border: 1px solid #161616; }
+  .menu-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 25px; overflow: hidden;}
 
   /* ── Grid card ── */
   .grid-card {
@@ -296,7 +296,7 @@ const css = `
   .grid-card-body { flex: 1; min-width: 0; }
   .grid-card-name { font-size: clamp(13px, 2vw, 15px); font-weight: 700; color: var(--t1); margin-bottom: 5px; line-height: 1.4; }
   .grid-card-price { font-size: clamp(13px, 2vw, 15px); font-weight: 800; color: var(--y); margin-bottom: 6px; }
-  .grid-card-desc { font-size: 12px; color: var(--t3); line-height: 1.5; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
+  .grid-card-desc { font-size: 12px; color: #ffffff; line-height: 1.5; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
   .grid-card-img-wrap { position: relative; flex-shrink: 0; }
   .grid-card-img { width: 120px; height: 120px; border-radius: 12px; overflow: hidden; background: #222; border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; }
   .grid-card-img img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s ease; }
@@ -396,11 +396,11 @@ const css = `
   .cart-qty-inc { background: var(--y); color: #000; }
   .cart-qty-inc:hover { background: #e8c400; }
   .cart-qty-val { font-size: 14px; font-weight: 700; color: var(--t1); min-width: 18px; text-align: center; }
-  .cart-remove-btn { font-size: 12px; color: var(--t3); background: none; border: none; cursor: pointer; text-decoration: underline; transition: color 0.15s; font-family: var(--font-body); }
+  .cart-remove-btn { font-size: 12px; color: #ffffff; background: none; border: none; cursor: pointer; text-decoration: underline; transition: color 0.15s; font-family: var(--font-body); }
   .cart-remove-btn:hover { color: var(--r); }
   .cart-footer { padding: 18px 20px; border-top: 1px solid #1A1A1A; }
   .cart-summary-row { display: flex; justify-content: space-between; margin-bottom: 7px; }
-  .cart-summary-label { font-size: 13px; color: var(--t3); }
+  .cart-summary-label { font-size: 13px; color: #e8c400; }
   .cart-summary-val { font-size: 13px; color: var(--t2); }
   .cart-total-row { display: flex; justify-content: space-between; margin-bottom: 18px; margin-top: 8px; padding-top: 12px; border-top: 1px solid #1A1A1A; }
   .cart-total-label { font-family: var(--font-head); font-size: 22px; letter-spacing: 1px; color: var(--t1); }
@@ -519,8 +519,8 @@ const css = `
   .item-modal-close { position: absolute; top: 16px; right: 16px; width: 36px; height: 36px; border-radius: 50%; background: rgba(0,0,0,0.75); border: 1px solid rgba(255,255,255,0.1); color: var(--t1); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background 0.15s; }
   .item-modal-close:hover { background: rgba(0,0,0,0.9); }
   .item-modal-body { padding: 28px; }
-  .item-modal-name { font-family: var(--font-head); font-size: clamp(26px, 5vw, 34px); letter-spacing: 1px; line-height: 1; color: var(--t1); margin-bottom: 10px; }
-  .item-modal-desc { font-size: 14px; color: var(--t3); line-height: 1.7; margin-bottom: 24px; }
+  .item-modal-name { font-family: var(--font-head); font-size: clamp(26px, 5vw, 34px); letter-spacing: 1px; line-height: 1; color: #e8c400; margin-bottom: 10px; }
+  .item-modal-desc { font-size: 14px; color: #ffffff; line-height: 1.7; margin-bottom: 24px; }
   .item-price-row { display: flex; gap: 10px; margin-bottom: 28px; }
   .item-price-card { flex: 1; padding: 14px; border-radius: 12px; text-align: center; cursor: pointer; transition: border-color 0.15s, background 0.15s; border: 2px solid; }
   .item-price-card.active { background: rgba(254,216,0,0.08); border-color: var(--y); }
@@ -559,7 +559,7 @@ const css = `
   .item-instructions-input:focus { border-color: var(--y); }
   .item-instructions-input::placeholder { color: var(--t4); }
   .upsell-section { margin-bottom: 28px; }
-  .upsell-label { font-size: 11px; font-weight: 700; color: var(--t4); margin-bottom: 12px; text-transform: uppercase; letter-spacing: 1.5px; }
+  .upsell-label { font-size: 11px; font-weight: 700; color: #ffffff; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 1.5px; }
   .upsell-row { display: flex; gap: 10px; overflow-x: auto; scrollbar-width: none; padding-bottom: 4px; }
   .upsell-row::-webkit-scrollbar { display: none; }
   .upsell-card { flex-shrink: 0; width: 130px; background: var(--bg1); border-radius: 12px; overflow: hidden; cursor: pointer; border: 1px solid #1A1A1A; transition: border-color 0.15s; }
@@ -1066,7 +1066,7 @@ function OrderContent() {
                     <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/>
                     <circle cx="12" cy="9" r="2.5" fill="#0D0D0D"/>
                   </svg>
-                  <span style={{ fontSize: '13px', color: '#666' }}>3517 Lancaster Ave, Philadelphia</span>
+                  <span style={{ fontSize: '13px', color: '#ffffff' }}>3517 Lancaster Ave, Philadelphia</span>
                 </div>
                 <span className="page-meta-dot" aria-hidden="true">·</span>
                 <div id="order-store-status" className="page-meta-status" role="status" aria-live="polite">
@@ -1699,7 +1699,7 @@ function GridCard({ item, orderType, onSelect, borderRadius }: { item: MenuItem;
     <div
       id={`grid-card-${item.id}`}
       className="grid-card"
-      style={{ borderRadius: borderRadius || '0' }}
+    style={{ borderRadius: '8px' }}
       onClick={() => onSelect(item)}
     >
       <div className="grid-card-body">
