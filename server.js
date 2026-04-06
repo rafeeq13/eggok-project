@@ -40,8 +40,18 @@ function startChild(name, script, env) {
   log(name, "started PID=" + child.pid);
 }
 
-function proxy(req, res, port) {
-  var pr = http.request({ hostname: "127.0.0.1", port: port, path: req.url, method: req.method, headers: req.headers }, function(r) { res.writeHead(r.statusCode, r.headers); r.pipe(res); });
+function proxy(req, res, port, noCache) {
+  var pr = http.request({ hostname: "127.0.0.1", port: port, path: req.url, method: req.method, headers: req.headers }, function(r) {
+    var headers = Object.assign({}, r.headers);
+    if (noCache) {
+      headers["cache-control"] = "no-cache, no-store, must-revalidate";
+      delete headers["x-nextjs-cache"];
+      delete headers["x-nextjs-prerender"];
+      delete headers["x-nextjs-stale-time"];
+    }
+    res.writeHead(r.statusCode, headers);
+    r.pipe(res);
+  });
   pr.on("error", function() { res.writeHead(502); res.end("starting"); });
   req.pipe(pr);
 }
@@ -65,24 +75,21 @@ startChild("admin", path.join(ROOT, "admin", ".next", "standalone", "server.js")
 http.createServer(function(req, res) {
   var u = req.url.split("?")[0];
 
-  // Serve static files directly for /_next/static/
   if (u.startsWith("/_next/static/")) {
     var staticPath = u.replace("/_next/static/", "");
-    // Try website static first
     var filePath = path.join(STATIC_DIR, staticPath);
     if (fs.existsSync(filePath)) return serveStatic(req, res, filePath);
-    // Try admin static
     filePath = path.join(ADMIN_STATIC_DIR, staticPath);
     if (fs.existsSync(filePath)) return serveStatic(req, res, filePath);
   }
 
-  // Serve public files
   if (!u.startsWith("/api") && !u.startsWith("/admin") && !u.startsWith("/_next")) {
     var pubFile = path.join(PUBLIC_DIR, u);
     if (fs.existsSync(pubFile) && fs.statSync(pubFile).isFile()) return serveStatic(req, res, pubFile);
   }
 
-  if (u.startsWith("/api/") || u === "/api") return proxy(req, res, BACKEND_PORT);
-  if (u.startsWith("/admin")) return proxy(req, res, ADMIN_PORT);
-  proxy(req, res, WEBSITE_PORT);
+  if (u.startsWith("/api/") || u === "/api") return proxy(req, res, BACKEND_PORT, false);
+  if (u.startsWith("/admin")) return proxy(req, res, ADMIN_PORT, true);
+  // HTML pages - NO CACHE so deploy changes show immediately
+  proxy(req, res, WEBSITE_PORT, true);
 }).listen(MAIN_PORT, "0.0.0.0", function() { log("gateway", "port " + MAIN_PORT); });
