@@ -12,8 +12,11 @@ export default function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [moreOpen, setMoreOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
   const moreRef = useRef<HTMLDivElement>(null);
   const pathname = usePathname();
+
+  useEffect(() => { setMounted(true); }, []);
 
   // Close dropdowns on route change
   useEffect(() => {
@@ -150,7 +153,7 @@ const css = `
             </div>
 
             {/* Auth / Account */}
-            {user ? (
+            {mounted && user ? (
               <Link href="/account" style={{
                 padding: '9px 18px', color: '#FED800', fontSize: '14px',
                 fontWeight: '600', borderRadius: '8px',
@@ -198,7 +201,7 @@ const css = `
                 <circle cx="9" cy="21" r="1" /><circle cx="20" cy="21" r="1" />
                 <path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 001.95-1.57l1.65-7.43H6" />
               </svg>
-              {cartCount > 0 && (
+              {mounted && cartCount > 0 && (
                 <span style={{
                   position: 'absolute', top: '-6px', right: '-6px',
                   width: '20px', height: '20px',
@@ -227,7 +230,7 @@ const css = `
                 <circle cx="9" cy="21" r="1" /><circle cx="20" cy="21" r="1" />
                 <path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 001.95-1.57l1.65-7.43H6" />
               </svg>
-              {cartCount > 0 && (
+              {mounted && cartCount > 0 && (
                 <span style={{ position: 'absolute', top: '-5px', right: '-5px', width: '18px', height: '18px', background: '#FED800', borderRadius: '50%', fontSize: '10px', fontWeight: '700', color: '#000', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>{cartCount}</span>
               )}
             </Link>

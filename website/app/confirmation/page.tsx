@@ -243,7 +243,7 @@ export default function ConfirmationPage() {
               {orderType === 'delivery' && (
                 <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                   <span style={{ fontSize: '13px', color: '#ffffff' }}>Delivery fee</span>
-                  <span style={{ fontSize: '13px', color: '#ffffff' }}>$3.99</span>
+                  <span style={{ fontSize: '13px', color: '#ffffff' }}>${lastOrder ? Number(lastOrder.deliveryFee).toFixed(2) : deliveryFee.toFixed(2)}</span>
                 </div>
               )}
               {tipAmount > 0 && (

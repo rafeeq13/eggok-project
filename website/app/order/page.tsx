@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { useCart } from '../context/CartContext';
 import { useStoreSettings } from '../../hooks/useStoreSettings';
+import { useGoogleMaps, initAutocomplete, validateDeliveryAddress } from '../../hooks/useGoogleMaps';
 
 type ModifierOption = { id: number; name: string; price: number };
 type ModifierGroup = { id: number; name: string; required: boolean; minSelections: number; maxSelections: number; options: ModifierOption[] };
@@ -679,75 +680,33 @@ function OrderContent() {
   }, [showMoreMenu]);
 
   // Google Maps + Places Autocomplete
-  const [mapsLoaded, setMapsLoaded] = useState(false);
+  const mapsLoaded = useGoogleMaps();
   const [deliveryError, setDeliveryError] = useState('');
   const autocompleteInputRef = useRef<HTMLInputElement>(null);
-  const autocompleteRef = useRef<google.maps.places.Autocomplete | null>(null);
-
-  useEffect(() => {
-    // Load Google Maps key from integrations settings, then load script
-    fetch(`${API}/settings/integrations`)
-      .then(r => r.ok ? r.text() : '')
-      .then(text => {
-        if (!text) return;
-        const data = JSON.parse(text);
-        const key = data?.googleMapsKey;
-        if (!key) return;
-        if ((window as any).google?.maps) { setMapsLoaded(true); return; }
-        const script = document.createElement('script');
-        script.src = `https://maps.googleapis.com/maps/api/js?key=${key}&libraries=places`;
-        script.async = true;
-        script.onload = () => setMapsLoaded(true);
-        document.head.appendChild(script);
-      })
-      .catch(() => {});
-  }, []);
+  const cleanupRef = useRef<(() => void) | null>(null);
 
   // Init autocomplete when maps loaded and modal opens
   useEffect(() => {
-    if (!mapsLoaded || !autocompleteInputRef.current || autocompleteRef.current) return;
-    const ac = new google.maps.places.Autocomplete(autocompleteInputRef.current, {
-      componentRestrictions: { country: 'us' },
-      fields: ['formatted_address', 'geometry'],
-    });
-    ac.addListener('place_changed', () => {
-      const place = ac.getPlace();
-      if (place.formatted_address) {
-        setDeliveryAddress(place.formatted_address);
-      }
-      if (place.geometry?.location) {
-        const lat = place.geometry.location.lat();
-        const lng = place.geometry.location.lng();
-        // Validate against zones
-        fetch(`${API}/settings/validate-delivery`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ lat, lng }),
+    if (!mapsLoaded || !autocompleteInputRef.current) return;
+    cleanupRef.current?.();
+    cleanupRef.current = initAutocomplete(autocompleteInputRef.current, (place) => {
+      setDeliveryAddress(place.address);
+      validateDeliveryAddress(place.lat, place.lng)
+        .then(result => {
+          if (result.eligible) {
+            setDeliveryFee(result.deliveryFee);
+            setDeliveryZone(result.zone || '');
+            setDeliveryMinOrder(result.minOrder);
+            setDeliveryError('');
+            setDeliveryStep(2);
+          } else {
+            setDeliveryError(`Sorry, this address is ${result.distance} miles away — outside our delivery area.`);
+          }
         })
-          .then(r => r.json())
-          .then(result => {
-            if (result.eligible) {
-              setDeliveryFee(result.deliveryFee);
-              setDeliveryZone(result.zone);
-              setDeliveryMinOrder(result.minOrder);
-              setDeliveryError('');
-              setDeliveryStep(2);
-            } else {
-              setDeliveryError(`Sorry, this address is ${result.distance} miles away — outside our delivery area.`);
-            }
-          })
-          .catch(() => setDeliveryStep(2));
-      } else {
-        setDeliveryStep(2);
-      }
+        .catch(() => setDeliveryStep(2));
     });
-    autocompleteRef.current = ac;
+    return () => { cleanupRef.current?.(); cleanupRef.current = null; };
   }, [mapsLoaded, showDeliveryModal]);
-
-  // Reset autocomplete ref when modal closes
-  useEffect(() => {
-    if (!showDeliveryModal) autocompleteRef.current = null;
-  }, [showDeliveryModal]);
 
   useEffect(() => { setMounted(true); fetchData(); }, [searchParams, menuItems]);
 

@@ -32,6 +32,9 @@ const MENU_TILES = [
   { label: 'Smoothies',            img: '/main-menu/Avocado Omelette.jpg',        items: '7 items' },
   { label: 'Omelettes',            img: '/main-menu/Brown Sugar Latte.jpg',       items: '4 items' },
   { label: 'Burritos',             img: '/main-menu/Avocado Omelette.jpg',        items: '9 items' },
+  { label: 'Smoothies',            img: '/main-menu/Avocado Omelette.jpg',        items: '7 items' },
+  { label: 'Omelettes',            img: '/main-menu/Brown Sugar Latte.jpg',       items: '4 items' },
+  { label: 'Burritos',             img: '/main-menu/Avocado Omelette.jpg',        items: '9 items' },
 ];
 
 const REVIEWS = [
@@ -413,6 +416,10 @@ export default function HomePage() {
           .order-card-box { margin: 24px; max-width: 100%; padding: 32px 28px; }
         }
         @media (max-width: 500px) {
+        .hero-order-btn{
+        padding:16px 14px !important;
+        white-space: nowrap !important;
+        }
           .photo-gallery { grid-template-columns: 1fr; }
           .gallery-item { height: 220px; }
         }
@@ -644,14 +651,14 @@ export default function HomePage() {
             ))}
           </div>
 
-          <div id="menu-photo-gallery" className="photo-gallery">
+          {/* <div id="menu-photo-gallery" className="photo-gallery">
             {MENU_TILES.map((tile, i) => (
               <div key={i} id={`gallery-item-${i}`} className="gallery-item">
                 <Image src={tile.img} alt={tile.label} width={400} height={280}
                   style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
               </div>
             ))}
-          </div>
+          </div> */}
         </div>
       </section>
 

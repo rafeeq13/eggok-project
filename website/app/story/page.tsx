@@ -478,11 +478,11 @@ export default function StoryPage() {
               <p id="footer-hours-heading" style={{ fontSize: '15px', fontWeight: '700', color: 'var(--t1)', letterSpacing: '2px', textTransform: 'uppercase', marginBottom: '20px' }}>Hours</p>
               <div id="footer-hours-list" style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
                 {[
-                  { day: 'Mon',  hours: '8:00 AM – 10:00 PM' },
-                  { day: 'Tue',  hours: '8:00 AM – 10:00 PM' },
-                  { day: 'Wed',  hours: '8:00 AM – 10:00 PM' },
-                  { day: 'Thu',  hours: '8:00 AM – 10:00 PM' },
-                  { day: 'Fri',  hours: '8:00 AM – 11:00 PM' },
+                  { day: 'Monday',  hours: '8:00 AM – 10:00 PM' },
+                  { day: 'Tuesday',  hours: '8:00 AM – 10:00 PM' },
+                  { day: 'Wednesday',  hours: '8:00 AM – 10:00 PM' },
+                  { day: 'Thursday',  hours: '8:00 AM – 10:00 PM' },
+                  { day: 'Friday',  hours: '8:00 AM – 11:00 PM' },
                   { day: 'Saturday',   hours: '9:00 AM – 11:00 PM' },
                   { day: 'Sunday',     hours: '9:00 AM – 9:00 PM'  },
                 ].map((h, i) => (

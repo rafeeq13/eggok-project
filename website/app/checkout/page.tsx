@@ -1,9 +1,10 @@
 ﻿'use client';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useCart } from '../context/CartContext';
 import { API_URL } from '../../lib/api';
+import { useGoogleMaps, initAutocomplete, validateDeliveryAddress } from '../../hooks/useGoogleMaps';
 
 const css = `
   *, *::before, *::after { box-sizing: border-box; }
@@ -157,7 +158,7 @@ export default function CheckoutPage() {
     deliveryAddress, setDeliveryAddress, deliveryApt, setDeliveryApt,
     deliveryInstructions, setDeliveryInstructions,
     scheduleType, setScheduleType, scheduleDate, setScheduleDate, scheduleTime, setScheduleTime,
-    deliveryFee: cartDeliveryFee,
+    deliveryFee: cartDeliveryFee, setDeliveryFee,
     clearCart,
   } = useCart();
 
@@ -167,6 +168,32 @@ export default function CheckoutPage() {
   const [showScheduleModal, setShowScheduleModal] = useState(false);
   const [showMoreDates, setShowMoreDates] = useState(false);
   const [deliveryStep, setDeliveryStep] = useState<1 | 2>(deliveryAddress ? 2 : 1);
+  const [deliveryAddrError, setDeliveryAddrError] = useState('');
+
+  // Google Maps autocomplete
+  const mapsLoaded = useGoogleMaps();
+  const coAddrInputRef = useRef<HTMLInputElement>(null);
+  const coCleanupRef = useRef<(() => void) | null>(null);
+
+  useEffect(() => {
+    if (!mapsLoaded || !coAddrInputRef.current || !showDeliveryModal) return;
+    coCleanupRef.current?.();
+    coCleanupRef.current = initAutocomplete(coAddrInputRef.current, (place) => {
+      setDeliveryAddress(place.address);
+      validateDeliveryAddress(place.lat, place.lng)
+        .then(result => {
+          if (result.eligible) {
+            setDeliveryFee(result.deliveryFee);
+            setDeliveryAddrError('');
+            setDeliveryStep(2);
+          } else {
+            setDeliveryAddrError(`Sorry, this address is ${result.distance} miles away — outside our delivery area.`);
+          }
+        })
+        .catch(() => setDeliveryStep(2));
+    });
+    return () => { coCleanupRef.current?.(); coCleanupRef.current = null; };
+  }, [mapsLoaded, showDeliveryModal]);
 
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
@@ -796,10 +823,15 @@ export default function CheckoutPage() {
                     <svg style={{ position: 'absolute', left: '14px', top: '50%', transform: 'translateY(-50%)' }} width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#666" strokeWidth="2">
                       <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
                     </svg>
-                    <input placeholder="Enter delivery address..." value={deliveryAddress} onChange={e => setDeliveryAddress(e.target.value)} autoFocus className="co-del-input" />
-                    {deliveryAddress && <button className="co-del-clear" onClick={() => setDeliveryAddress('')}>Clear</button>}
+                    <input ref={coAddrInputRef} placeholder="Enter delivery address..." defaultValue={deliveryAddress} onChange={e => { setDeliveryAddress(e.target.value); setDeliveryAddrError(''); }} autoFocus className="co-del-input" />
+                    {deliveryAddress && <button className="co-del-clear" onClick={() => { setDeliveryAddress(''); setDeliveryAddrError(''); if (coAddrInputRef.current) coAddrInputRef.current.value = ''; }}>Clear</button>}
                   </div>
-                  {deliveryAddress.length > 2 && (
+                  {deliveryAddrError && (
+                    <div style={{ marginTop: '8px', padding: '10px 14px', background: '#FC030115', border: '1px solid #FC030140', borderRadius: '10px' }}>
+                      <p style={{ fontSize: '13px', color: '#FC0301', fontWeight: '500', margin: 0 }}>{deliveryAddrError}</p>
+                    </div>
+                  )}
+                  {!mapsLoaded && deliveryAddress.length > 2 && (
                     <div className="co-del-suggestion">
                       <div className="co-del-sug-row" onClick={() => setDeliveryStep(2)}>
                         <p style={{ fontSize: '14px', fontWeight: '700', color: '#fff' }}>{deliveryAddress}</p>

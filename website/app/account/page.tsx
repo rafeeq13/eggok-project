@@ -1,10 +1,11 @@
 'use client';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import Header from '../components/Header';
 import { useAuth } from '../context/AuthContext';
 import { useCart } from '../context/CartContext';
+import { useGoogleMaps, initAutocomplete } from '../../hooks/useGoogleMaps';
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3002/api';
 
@@ -64,6 +65,26 @@ export default function AccountPage() {
   const [rewards, setRewards] = useState<any[]>([]);
   const [pointsHistory, setPointsHistory] = useState<any[]>([]);
   const [redeemingId, setRedeemingId] = useState<number | null>(null);
+
+  // Google Maps for address autocomplete
+  const mapsLoaded = useGoogleMaps();
+  const addrInputRef = useRef<HTMLInputElement>(null);
+  const addrCleanupRef = useRef<(() => void) | null>(null);
+  const [addrFormKey, setAddrFormKey] = useState(0);
+
+  useEffect(() => {
+    if (!mapsLoaded || !addrInputRef.current || !showAddressForm) return;
+    // Small delay to ensure DOM is ready
+    const timer = setTimeout(() => {
+      if (!addrInputRef.current) return;
+      addrCleanupRef.current?.();
+      addrCleanupRef.current = initAutocomplete(addrInputRef.current, (place) => {
+        setAddrForm(prev => ({ ...prev, address: place.address }));
+        if (addrInputRef.current) addrInputRef.current.value = place.address;
+      });
+    }, 100);
+    return () => { clearTimeout(timer); addrCleanupRef.current?.(); addrCleanupRef.current = null; };
+  }, [mapsLoaded, showAddressForm, addrFormKey]);
 
   // Password change
   const [currentPassword, setCurrentPassword] = useState('');
@@ -801,7 +822,7 @@ export default function AccountPage() {
           <div>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
               <p style={{ fontSize: '13px', color: '#888', margin: 0 }}>{addresses.length} saved address{addresses.length !== 1 ? 'es' : ''}</p>
-              <button onClick={() => { setEditingAddress(null); setAddrForm({ label: '', address: '', apt: '', instructions: '' }); setShowAddressForm(true); }} style={{ padding: '8px 16px', background: '#FED800', borderRadius: '8px', color: '#000', fontSize: '13px', fontWeight: '700', cursor: 'pointer', border: 'none' }}>+ Add Address</button>
+              <button onClick={() => { setEditingAddress(null); setAddrForm({ label: '', address: '', apt: '', instructions: '' }); setShowAddressForm(true); setAddrFormKey(k => k + 1); }} style={{ padding: '8px 16px', background: '#FED800', borderRadius: '8px', color: '#000', fontSize: '13px', fontWeight: '700', cursor: 'pointer', border: 'none' }}>+ Add Address</button>
             </div>
 
             {/* Address Form Modal */}
@@ -813,7 +834,7 @@ export default function AccountPage() {
                 </div>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
                   <input placeholder="Label (e.g. Home, Work)" value={addrForm.label} onChange={e => setAddrForm({ ...addrForm, label: e.target.value })} style={{ padding: '10px 14px', background: '#0A0A0A', border: '1px solid #2A2A2A', borderRadius: '8px', color: '#fff', fontSize: '13px' }} />
-                  <input placeholder="Street address *" value={addrForm.address} onChange={e => setAddrForm({ ...addrForm, address: e.target.value })} style={{ padding: '10px 14px', background: '#0A0A0A', border: '1px solid #2A2A2A', borderRadius: '8px', color: '#fff', fontSize: '13px' }} />
+                  <input ref={addrInputRef} placeholder="Street address *" defaultValue={addrForm.address} onChange={e => setAddrForm(prev => ({ ...prev, address: e.target.value }))} style={{ padding: '10px 14px', background: '#0A0A0A', border: '1px solid #2A2A2A', borderRadius: '8px', color: '#fff', fontSize: '13px' }} />
                   <input placeholder="Apt / Suite / Floor (optional)" value={addrForm.apt} onChange={e => setAddrForm({ ...addrForm, apt: e.target.value })} style={{ padding: '10px 14px', background: '#0A0A0A', border: '1px solid #2A2A2A', borderRadius: '8px', color: '#fff', fontSize: '13px' }} />
                   <input placeholder="Delivery instructions (optional)" value={addrForm.instructions} onChange={e => setAddrForm({ ...addrForm, instructions: e.target.value })} style={{ padding: '10px 14px', background: '#0A0A0A', border: '1px solid #2A2A2A', borderRadius: '8px', color: '#fff', fontSize: '13px' }} />
                   <button onClick={handleSaveAddress} style={{ padding: '10px', background: '#FED800', border: 'none', borderRadius: '8px', color: '#000', fontSize: '13px', fontWeight: '700', cursor: 'pointer' }}>
@@ -841,7 +862,7 @@ export default function AccountPage() {
                       {addr.isDefault && <span style={{ fontSize: '10px', padding: '2px 8px', borderRadius: '20px', background: '#FED80020', color: '#FED800', border: '1px solid #FED80040', fontWeight: '600' }}>Default</span>}
                     </div>
                     <div style={{ display: 'flex', gap: '6px' }}>
-                      <button onClick={() => { setEditingAddress(addr); setAddrForm({ label: addr.label || '', address: addr.address, apt: addr.apt || '', instructions: addr.instructions || '' }); setShowAddressForm(true); }} style={{ background: 'none', border: 'none', color: '#888', fontSize: '12px', cursor: 'pointer' }}>Edit</button>
+                      <button onClick={() => { setEditingAddress(addr); setAddrForm({ label: addr.label || '', address: addr.address, apt: addr.apt || '', instructions: addr.instructions || '' }); setShowAddressForm(true); setAddrFormKey(k => k + 1); }} style={{ background: 'none', border: 'none', color: '#888', fontSize: '12px', cursor: 'pointer' }}>Edit</button>
                       <button onClick={() => deleteAddress(addr.id)} style={{ background: 'none', border: 'none', color: '#FC0301', fontSize: '12px', cursor: 'pointer' }}>Delete</button>
                     </div>
                   </div>
