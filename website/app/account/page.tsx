@@ -11,7 +11,7 @@ const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3002/api';
 
 type View = 'login' | 'register' | 'account' | 'forgot' | 'forgot-sent';
 
-type Order = { id: string; date: string; items: string; total: string; status: string; rawItems: any[] };
+type Order = { id: string; dbId: number; date: string; items: string; total: string; status: string; rawItems: any[]; orderType: string; deliveryProvider?: string };
 
 export default function AccountPage() {
   const { user, loading: authLoading, login: contextLogin, logout: contextLogout, updateUser: contextUpdateUser } = useAuth();
@@ -136,11 +136,14 @@ export default function AccountPage() {
         .slice(0, 20)
         .map((o: any) => ({
           id: o.orderNumber,
+          dbId: o.id,
           date: new Date(o.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
           items: Array.isArray(o.items) ? o.items.map((it: any) => it.name).join(', ') : '',
           total: `$${Number(o.total).toFixed(2)}`,
-          status: o.status === 'delivered' ? 'Delivered' : o.status === 'picked_up' ? 'Picked Up' : o.status === 'cancelled' ? 'Cancelled' : 'Preparing',
+          status: o.status === 'delivered' ? 'Delivered' : o.status === 'picked_up' ? 'Picked Up' : o.status === 'cancelled' ? 'Cancelled' : o.status === 'out_for_delivery' ? 'Out for Delivery' : 'Preparing',
           rawItems: Array.isArray(o.items) ? o.items : [],
+          orderType: o.orderType || 'pickup',
+          deliveryProvider: o.deliveryProvider || undefined,
         }));
       setOrders(userOrders);
       setUserTotalOrders(userOrders.length);
@@ -759,7 +762,12 @@ export default function AccountPage() {
                     </div>
                     <div style={{ textAlign: 'right', flexShrink: 0 }}>
                       <p style={{ fontSize: '16px', fontWeight: '700', color: '#ffffff', marginBottom: '8px' }}>{order.total}</p>
-                      <button onClick={() => handleReorder(order)} style={{ padding: '6px 14px', background: 'transparent', border: '1px solid #2A2A2A', borderRadius: '8px', color: '#888', fontSize: '12px', cursor: 'pointer', transition: 'all 0.15s' }} onMouseEnter={e => { e.currentTarget.style.borderColor = '#FED800'; e.currentTarget.style.color = '#FED800'; }} onMouseLeave={e => { e.currentTarget.style.borderColor = '#2A2A2A'; e.currentTarget.style.color = '#888'; }}>Reorder</button>
+                      <div style={{ display: 'flex', gap: '6px', justifyContent: 'flex-end' }}>
+                        {!['Delivered', 'Picked Up', 'Cancelled'].includes(order.status) && (
+                          <Link href={`/order-tracking?id=${order.dbId}`} style={{ padding: '6px 14px', background: 'transparent', border: '1px solid #A78BFA40', borderRadius: '8px', color: '#A78BFA', fontSize: '12px', textDecoration: 'none', fontWeight: '600' }}>Track</Link>
+                        )}
+                        <button onClick={() => handleReorder(order)} style={{ padding: '6px 14px', background: 'transparent', border: '1px solid #2A2A2A', borderRadius: '8px', color: '#888', fontSize: '12px', cursor: 'pointer', transition: 'all 0.15s' }} onMouseEnter={e => { e.currentTarget.style.borderColor = '#FED800'; e.currentTarget.style.color = '#FED800'; }} onMouseLeave={e => { e.currentTarget.style.borderColor = '#2A2A2A'; e.currentTarget.style.color = '#888'; }}>Reorder</button>
+                      </div>
                     </div>
                   </div>
                 ))}

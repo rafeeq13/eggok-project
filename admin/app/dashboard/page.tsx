@@ -19,13 +19,6 @@ import Reviews from './components/Reviews';
 import Loyalty from './components/Loyalty';
 import Submissions from './components/Submissions';
 
-const recentOrders = [
-  { id: '#1001', customer: 'John Smith', items: 'Signature Bacon Egg & Cheese x1', total: '$11.00', status: 'Preparing', type: 'Pickup', time: '2 min ago' },
-  { id: '#1002', customer: 'Sarah Lee', items: 'Nashville Hot Chicken + Matcha Latte', total: '$18.00', status: 'Ready', type: 'Pickup', time: '5 min ago' },
-  { id: '#1003', customer: 'Mike Johnson', items: 'OK Breakfast Burrito x2', total: '$26.00', status: 'Delivered', type: 'Delivery', time: '12 min ago' },
-  { id: '#1004', customer: 'Emma Davis', items: 'Steak & Egg + Strawberry Refresh', total: '$23.00', status: 'Preparing', type: 'Delivery', time: '15 min ago' },
-];
-
 const statusColor: Record<string, string> = {
   Preparing: '#F59E0B',
   Ready: '#22C55E',
@@ -50,11 +43,19 @@ function DashboardContent() {
     check();
     window.addEventListener('resize', check);
 
-    // Load admin user from localStorage
+    // Load admin user from localStorage - redirect if not logged in
     try {
       const saved = localStorage.getItem('admin_user');
-      if (saved) setAdminUser(JSON.parse(saved));
-    } catch {}
+      if (saved) {
+        setAdminUser(JSON.parse(saved));
+      } else {
+        router.push('/');
+        return;
+      }
+    } catch {
+      router.push('/');
+      return;
+    }
 
     // Fetch store status
     fetch(`${API}/settings/status`)
@@ -211,6 +212,11 @@ function DashboardContent() {
     { label: 'Pending Orders', value: todayStats?.pendingOrders || '0', sub: 'Awaiting preparation', color: '#F59E0B' },
     { label: 'Avg Order Value', value: `$${todayStats?.avgOrderValue || '0'}`, sub: 'Per transaction', color: '#FECE86' },
   ];
+
+  // Don't render until auth is checked
+  if (!hasMounted || !adminUser) {
+    return <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '100vh', background: '#000' }}><p style={{ color: '#888', fontSize: '14px' }}>Loading...</p></div>;
+  }
 
   return (
     <div style={{ display: 'flex', minHeight: '100vh', background: '#000000' }}>

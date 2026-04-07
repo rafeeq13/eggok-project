@@ -30,8 +30,10 @@ const CustomTooltip = ({ active, payload, label }: any) => {
 
 export default function Analytics() {
   const [period, setPeriod] = useState<Period>('daily');
-  const [dateFrom, setDateFrom] = useState('2026-03-01');
-  const [dateTo, setDateTo] = useState('2026-03-20');
+  const today = new Date().toISOString().split('T')[0];
+  const thirtyDaysAgo = new Date(Date.now() - 30 * 86400000).toISOString().split('T')[0];
+  const [dateFrom, setDateFrom] = useState(thirtyDaysAgo);
+  const [dateTo, setDateTo] = useState(today);
   const [activeChart, setActiveChart] = useState<'revenue' | 'orders'>('revenue');
   const [loading, setLoading] = useState(true);
   const [stats, setStats] = useState<any>(null);
@@ -39,8 +41,10 @@ export default function Analytics() {
   const fetchStats = async () => {
     try {
       setLoading(true);
-      const days = period === 'daily' ? 30 : period === 'weekly' ? 90 : 365;
-      const res = await fetch(`${API}/orders/stats/historical?days=${days}`);
+      const from = new Date(dateFrom);
+      const to = new Date(dateTo);
+      const diffDays = Math.max(1, Math.ceil((to.getTime() - from.getTime()) / 86400000));
+      const res = await fetch(`${API}/orders/stats/historical?days=${diffDays}`);
       const data = await res.json();
       setStats(data);
     } catch (err) {
@@ -101,7 +105,7 @@ export default function Analytics() {
             onChange={(f, t) => { setDateFrom(f); setDateTo(t); }}
           />
         </div>
-        <button style={{
+        <button onClick={() => fetchStats()} style={{
           padding: '8px 16px', background: '#FED800', border: 'none',
           borderRadius: '8px', color: '#000', fontSize: '12px', fontWeight: '700', cursor: 'pointer',
         }}>Apply Filter</button>

@@ -30,6 +30,12 @@ type Order = {
   promoCode: string | null;
   discount: number;
   notes: string | null;
+  deliveryProvider: string | null;
+  deliveryQuoteId: string | null;
+  deliveryTrackingUrl: string | null;
+  deliveryDriverName: string | null;
+  deliveryDriverPhone: string | null;
+  deliveryEta: string | null;
   createdAt: string;
   updatedAt: string;
 };
@@ -329,7 +335,7 @@ export default function OrdersManagement() {
               </div>
 
               {/* Delivery Dispatch Info */}
-              {selectedOrder.orderType === 'delivery' && (selectedOrder.deliveryProvider || selectedOrder.status === 'ready') && (
+              {selectedOrder.orderType === 'delivery' && (selectedOrder.deliveryProvider || ['ready', 'out_for_delivery'].includes(selectedOrder.status)) && (
                 <div style={{ background: '#111111', borderRadius: '10px', padding: '14px 16px', marginBottom: '14px', border: selectedOrder.deliveryTrackingUrl ? '1px solid #A78BFA40' : '1px solid #2A2A2A' }}>
                   <p style={{ fontSize: '11px', color: '#888', textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: '10px' }}>Delivery Dispatch</p>
                   {selectedOrder.deliveryProvider ? (
@@ -344,25 +350,65 @@ export default function OrdersManagement() {
                           <span style={{ fontSize: '12px', color: '#FEFEFE' }}>{selectedOrder.deliveryDriverName}</span>
                         </div>
                       )}
+                      {selectedOrder.deliveryDriverPhone && (
+                        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                          <span style={{ fontSize: '12px', color: '#888' }}>Driver Phone</span>
+                          <a href={`tel:${selectedOrder.deliveryDriverPhone}`} style={{ fontSize: '12px', color: '#60A5FA', textDecoration: 'none' }}>{selectedOrder.deliveryDriverPhone}</a>
+                        </div>
+                      )}
                       {selectedOrder.deliveryEta && (
                         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                           <span style={{ fontSize: '12px', color: '#888' }}>ETA</span>
-                          <span style={{ fontSize: '12px', color: '#FEFEFE' }}>{selectedOrder.deliveryEta}</span>
+                          <span style={{ fontSize: '12px', color: '#FEFEFE' }}>{new Date(selectedOrder.deliveryEta).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })}</span>
                         </div>
                       )}
-                      {selectedOrder.deliveryTrackingUrl && (
-                        <a href={selectedOrder.deliveryTrackingUrl} target="_blank" rel="noopener noreferrer" style={{
-                          display: 'block', textAlign: 'center', padding: '8px', background: '#A78BFA20',
-                          border: '1px solid #A78BFA40', borderRadius: '8px', color: '#A78BFA',
-                          fontSize: '12px', fontWeight: '600', textDecoration: 'none', marginTop: '4px',
-                        }}>
-                          Track Delivery
-                        </a>
-                      )}
+                      <div style={{ display: 'flex', gap: '8px', marginTop: '4px' }}>
+                        {selectedOrder.deliveryTrackingUrl && (
+                          <a href={selectedOrder.deliveryTrackingUrl} target="_blank" rel="noopener noreferrer" style={{
+                            flex: 1, textAlign: 'center', padding: '8px', background: '#A78BFA20',
+                            border: '1px solid #A78BFA40', borderRadius: '8px', color: '#A78BFA',
+                            fontSize: '12px', fontWeight: '600', textDecoration: 'none',
+                          }}>Track</a>
+                        )}
+                        {selectedOrder.status !== 'delivered' && (
+                          <button onClick={async () => {
+                            if (!confirm('Cancel this delivery dispatch?')) return;
+                            try {
+                              const res = await fetch(`${API}/orders/${selectedOrder.id}/cancel-delivery`, { method: 'POST' });
+                              const data = await res.json();
+                              if (data.success) {
+                                const fresh = await fetch(`${API}/orders/${selectedOrder.id}`).then(r => r.json());
+                                setOrders(prev => prev.map(o => o.id === selectedOrder.id ? fresh : o));
+                                setSelectedOrder(fresh);
+                                showSuccess('Delivery cancelled');
+                              } else { showSuccess(data.message || 'Cancel failed'); }
+                            } catch { showSuccess('Cancel failed'); }
+                          }} style={{
+                            padding: '8px 12px', background: '#FC030115', border: '1px solid #FC030140',
+                            borderRadius: '8px', color: '#FC0301', fontSize: '12px', fontWeight: '600', cursor: 'pointer',
+                          }}>Cancel Delivery</button>
+                        )}
+                      </div>
                     </div>
                   ) : (
-                    <button
-                      onClick={async () => {
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                      {/* Get Quote button */}
+                      <button onClick={async () => {
+                        try {
+                          const res = await fetch(`${API}/orders/${selectedOrder.id}/delivery-quote`);
+                          const data = await res.json();
+                          if (data.error) { showSuccess(data.error); return; }
+                          const eta = data.eta ? new Date(data.eta).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' }) : 'N/A';
+                          showSuccess(`Uber quote: $${data.fee?.toFixed(2)} · ETA: ${eta}`);
+                        } catch { showSuccess('Could not get quote'); }
+                      }} style={{
+                        width: '100%', padding: '8px', background: 'transparent',
+                        border: '1px solid #2A2A2A', borderRadius: '8px', color: '#888',
+                        fontSize: '12px', fontWeight: '600', cursor: 'pointer',
+                      }}>Get Uber Quote</button>
+
+                      {/* Dispatch button */}
+                      <button onClick={async () => {
                         try {
                           const res = await fetch(`${API}/orders/${selectedOrder.id}/dispatch`, { method: 'POST' });
                           if (res.ok) {
@@ -371,18 +417,16 @@ export default function OrdersManagement() {
                             setSelectedOrder(updated);
                             showSuccess('Delivery dispatched via Uber Direct');
                           } else {
-                            showSuccess('Dispatch failed - check integration settings');
+                            const err = await res.json().catch(() => ({}));
+                            showSuccess(err.message || 'Dispatch failed - check integration settings');
                           }
                         } catch { showSuccess('Dispatch failed'); }
-                      }}
-                      style={{
+                      }} style={{
                         width: '100%', padding: '10px', background: '#A78BFA20',
                         border: '1px solid #A78BFA40', borderRadius: '8px', color: '#A78BFA',
                         fontSize: '12px', fontWeight: '700', cursor: 'pointer',
-                      }}
-                    >
-                      Dispatch via Uber Direct
-                    </button>
+                      }}>Dispatch via Uber Direct</button>
+                    </div>
                   )}
                 </div>
               )}
@@ -523,7 +567,10 @@ export default function OrdersManagement() {
               <tbody>
                 {displayOrders.map((order, i) => (
                   <tr key={order.id} style={{ borderBottom: i < displayOrders.length - 1 ? '1px solid #2A2A2A' : 'none' }}>
-                    <td style={{ padding: '13px 14px', fontSize: '13px', fontWeight: '700', color: '#FED800' }}>{order.orderNumber}</td>
+                    <td style={{ padding: '13px 14px' }}>
+                      <span style={{ fontSize: '13px', fontWeight: '700', color: '#FED800' }}>{order.orderNumber}</span>
+                      {order.deliveryProvider && <span style={{ marginLeft: '6px', fontSize: '9px', padding: '2px 6px', borderRadius: '10px', background: '#A78BFA20', color: '#A78BFA', border: '1px solid #A78BFA40', fontWeight: '600', verticalAlign: 'middle' }}>UBER</span>}
+                    </td>
                     <td style={{ padding: '13px 14px' }}>
                       <p style={{ fontSize: '13px', fontWeight: '600', color: '#FEFEFE', margin: 0 }}>{order.customerName}</p>
                       <p style={{ fontSize: '11px', color: '#888', marginTop: '2px' }}>{order.customerPhone}</p>

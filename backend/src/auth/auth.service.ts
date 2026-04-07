@@ -88,6 +88,9 @@ export class AuthService {
         const saved = await this.customersRepository.save(customer);
         const token = await this.issueToken(saved.id);
 
+        // Send welcome email
+        this.mailService.sendWelcomeEmail(`${data.firstName} ${data.lastName}`, data.email).catch(() => {});
+
         return {
             token,
             user: {

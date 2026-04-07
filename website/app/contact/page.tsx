@@ -13,7 +13,6 @@ export default function ContactPage() {
     name: '', email: '', phone: '', subject: '', message: '',
   });
   const [submitted, setSubmitted] = useState(false);
-
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState('');
 
@@ -41,13 +40,13 @@ export default function ContactPage() {
   };
 
   const hours = [
-    { day: 'Monday', hours: '8:00 AM – 10:00 PM' },
-    { day: 'Tuesday',         hours: '8:00 AM – 10:00 PM' },
-    { day: 'Wednesday',       hours: '8:00 AM – 10:00 PM' },
-    { day: 'Thursday',        hours: '8:00 AM – 10:00 PM' },
-    { day: 'Friday',          hours: '8:00 AM – 11:00 PM' },
-    { day: 'Saturday',        hours: '9:00 AM – 11:00 PM' },
-    { day: 'Sunday',          hours: '9:00 AM – 9:00 PM'  },
+    { day: 'Monday',    hours: '8:00 AM – 10:00 PM' },
+    { day: 'Tuesday',   hours: '8:00 AM – 10:00 PM' },
+    { day: 'Wednesday', hours: '8:00 AM – 10:00 PM' },
+    { day: 'Thursday',  hours: '8:00 AM – 10:00 PM' },
+    { day: 'Friday',    hours: '8:00 AM – 11:00 PM' },
+    { day: 'Saturday',  hours: '9:00 AM – 11:00 PM' },
+    { day: 'Sunday',    hours: '9:00 AM – 9:00 PM'  },
   ];
 
   const contactInfo = [
@@ -125,6 +124,22 @@ export default function ContactPage() {
         }
         .sec-heading .accent { color: var(--y); }
 
+        /* ── Hero section ── */
+        .contact-hero {
+          text-align: center;
+          padding: 110px 0 80px;
+          background: #000;
+          position: relative;
+          overflow: hidden;
+          border-bottom: 1px solid #141414;
+        }
+
+        /* ── Main section ── */
+        .contact-main {
+          padding: 88px 0;
+          background: #0A0A0A;
+        }
+
         /* ── Contact grid ── */
         .contact-grid { display: grid; grid-template-columns: 1fr 1.4fr; gap: 48px; align-items: flex-start; }
 
@@ -154,12 +169,12 @@ export default function ContactPage() {
         .hours-box-header { display: flex; align-items: center; gap: 10px; margin-bottom: 18px; }
         .hours-box-title { font-family: var(--font-head); font-size: 18px; letter-spacing: 1px; color: var(--t1); }
         .hours-open-badge { margin-left: auto; display: flex; align-items: center; gap: 6px; }
-        .hours-open-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green); }
+        .hours-open-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green); flex-shrink: 0; }
         .hours-open-text { font-size: 12px; color: var(--green); font-weight: 600; }
-        .hours-row { display: flex; justify-content: space-between; align-items: center; padding: 4px 0; }
+        .hours-row { display: flex; justify-content: space-between; align-items: center; padding: 6px 0; gap: 8px; }
         .hours-row + .hours-row { border-top: 1px solid #141414; }
-        .hours-row-day { font-size: 13px; color: var(--t2); }
-        .hours-row-time { font-size: 13px; font-weight: 600; color: var(--t1); }
+        .hours-row-day { font-size: 13px; color: var(--t2); white-space: nowrap; }
+        .hours-row-time { font-size: 13px; font-weight: 600; color: var(--t1); text-align: right; white-space: nowrap; }
 
         /* ── Map box ── */
         .map-box {
@@ -179,6 +194,7 @@ export default function ContactPage() {
         .map-address-chip {
           background: var(--bg2); border: 1px solid #2A2A2A;
           border-radius: 10px; padding: 9px 16px; z-index: 1;
+          max-width: calc(100% - 32px);
         }
         .map-address-name { font-size: 12px; font-weight: 700; color: var(--t1); }
         .map-address-sub  { font-size: 11px; color: var(--t3); }
@@ -239,6 +255,7 @@ export default function ContactPage() {
           margin-top: 18px; padding: 14px 18px;
           background: #0D0D0D; border-radius: 10px;
           border: 1px solid #1A1A1A; display: flex; align-items: center; gap: 10px;
+          flex-wrap: wrap;
         }
         .form-phone-note-text { font-size: 13px; color: var(--t2); }
         .form-phone-note-link { color: var(--y); font-weight: 700; text-decoration: none; }
@@ -259,31 +276,65 @@ export default function ContactPage() {
         .success-actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
 
         /* ── Footer ── */
+        .site-footer { background: #050505; padding: 68px 0 32px; border-top: 1px solid #141414; }
         .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 48px; margin-bottom: 40px; }
         .footer-bottom { border-top: 1px solid #1A1A1A; padding-top: 24px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
         .footer-link { display: block; font-size: 14px; color: var(--t1); margin-bottom: 11px; text-decoration: none; transition: color 0.15s, padding-left 0.15s; }
         .footer-link:hover { color: var(--y); padding-left: 4px; }
+        .footer-hours-row { display: flex; gap: 14px; }
+        .footer-hours-day { font-size: 13px; color: #ffffff; font-weight: 600; min-width: 90px; }
+        .footer-hours-time { font-size: 13px; color: #BBBBBB; }
 
         /* ═══ RESPONSIVE ═══ */
+
         @media (max-width: 1024px) {
           .contact-grid { grid-template-columns: 1fr 1fr; gap: 32px; }
           .footer-grid  { grid-template-columns: 1fr 1fr; gap: 32px; }
           .footer-brand { grid-column: 1 / -1; }
         }
+
         @media (max-width: 768px) {
-          .contact-grid { grid-template-columns: 1fr; }
-          .form-wrap    { padding: 24px 18px; }
-          .footer-grid  { grid-template-columns: 1fr; gap: 28px; }
-          .footer-brand { grid-column: unset; }
+          .container     { padding: 0 18px; }
+          .contact-hero  { padding: 80px 0 56px; }
+          .contact-main  { padding: 56px 0; }
+          .contact-grid  { grid-template-columns: 1fr; gap: 28px; }
+          .form-wrap     { padding: 24px 18px; }
+          .hours-box     { padding: 20px 16px; }
+          .site-footer   { padding: 52px 0 28px; }
+          .footer-grid   { grid-template-columns: 1fr; gap: 28px; }
+          .footer-brand  { grid-column: unset; }
           .footer-bottom { flex-direction: column; text-align: center; }
-          .success-card { padding: 40px 24px; }
+          .success-card  { padding: 40px 24px; }
         }
+
         @media (max-width: 480px) {
-          .container    { padding: 0 14px; }
-          .form-row-2   { grid-template-columns: 1fr; }
+          .container       { padding: 0 14px; }
+          .contact-hero    { padding: 72px 0 44px; }
+          .contact-main    { padding: 40px 0; }
+          .form-row-2      { grid-template-columns: 1fr; }
+          .contact-info-card { padding: 14px 16px; gap: 12px; }
+          .contact-card-icon { width: 40px; height: 40px; border-radius: 10px; }
+          .contact-card-value { font-size: 13px; }
+          .hours-box       { padding: 16px 14px; }
+          .hours-row-day,
+          .hours-row-time  { font-size: 12px; }
+          .site-footer     { padding: 40px 0 24px; }
+          .footer-hours-day  { min-width: 80px; font-size: 12px; }
+          .footer-hours-time { font-size: 12px; }
+          .success-card    { padding: 32px 16px; }
           .success-actions { flex-direction: column; align-items: center; }
           .success-actions .btn-yellow,
           .success-actions .btn-outline { width: 100%; justify-content: center; }
+        }
+
+        @media (max-width: 360px) {
+          .container         { padding: 0 12px; }
+          .contact-hero      { padding: 64px 0 36px; }
+          .form-wrap         { padding: 18px 14px; border-radius: 14px; }
+          .contact-info-card { padding: 12px 12px; gap: 10px; }
+          .contact-card-icon { width: 36px; height: 36px; flex-shrink: 0; }
+          .hours-box         { padding: 14px 12px; }
+          .map-placeholder   { height: 170px; }
         }
 
         /* ═══ REDUCED MOTION ═══ */
@@ -297,16 +348,16 @@ export default function ContactPage() {
       {/* ══════════════════════════════════════════
           HERO
       ══════════════════════════════════════════ */}
-      <section id="contact-hero" style={{ textAlign: 'center', padding: '110px 0 80px', background: '#000', position: 'relative', overflow: 'hidden', borderBottom: '1px solid #141414' }}>
+      <section id="contact-hero" className="contact-hero">
 
         <div className="hero-glow" style={{ position: 'absolute', top: '-60px', left: '50%', transform: 'translateX(-50%)', width: '600px', height: '600px', borderRadius: '50%', background: 'radial-gradient(circle, rgba(254,216,0,0.05) 0%, transparent 70%)', pointerEvents: 'none' }} aria-hidden="true" />
 
         <div className="container hero-container" style={{ position: 'relative' }}>
           <span id="hero-label" className="sec-label">Get In Touch</span>
-          <h1 id="hero-title" className="bebas" style={{ fontSize: 'clamp(52px, 9vw, 80px)', color: '#ffffff', lineHeight: '0.93', marginBottom: '22px' }}>
+          <h1 id="hero-title" className="bebas" style={{ fontSize: 'clamp(40px, 9vw, 80px)', color: '#ffffff', lineHeight: '0.93', marginBottom: '22px' }}>
             WE&apos;D LOVE TO <span style={{ color: '#FED800' }}>HEAR FROM YOU</span>
           </h1>
-          <p id="hero-subtitle" style={{ fontSize: 'clamp(15px, 2vw, 18px)', color: '#ffffff', lineHeight: '1.8', maxWidth: '500px', margin: '0 auto' }}>
+          <p id="hero-subtitle" style={{ fontSize: 'clamp(14px, 2vw, 18px)', color: '#ffffff', lineHeight: '1.8', maxWidth: '500px', margin: '0 auto' }}>
             Questions, feedback, catering inquiries, or just want to say hi — we are here for it.
           </p>
         </div>
@@ -315,7 +366,7 @@ export default function ContactPage() {
       {/* ══════════════════════════════════════════
           MAIN CONTENT
       ══════════════════════════════════════════ */}
-      <section id="contact-main" style={{ padding: '88px 0', background: '#0A0A0A' }}>
+      <section id="contact-main" className="contact-main">
         <div className="container contact-container">
           <div id="contact-grid" className="contact-grid">
 
@@ -325,7 +376,7 @@ export default function ContactPage() {
               {/* Section header */}
               <div id="contact-info-header" style={{ marginBottom: '28px' }}>
                 <span className="sec-label">Contact Info</span>
-                <h2 id="contact-info-heading" className="bebas" style={{ fontSize: 'clamp(28px, 4vw, 40px)', color: '#ffffff', lineHeight: '0.95' }}>
+                <h2 id="contact-info-heading" className="bebas" style={{ fontSize: 'clamp(26px, 4vw, 40px)', color: '#ffffff', lineHeight: '0.95' }}>
                   REACH <span style={{ color: '#FED800' }}>US ANYTIME</span>
                 </h2>
               </div>
@@ -345,7 +396,7 @@ export default function ContactPage() {
                     <div className="contact-card-icon" aria-hidden="true">
                       <info.Icon size={20} color="#FED800" strokeWidth={2} />
                     </div>
-                    <div className="contact-card-text" style={{ minWidth: 0 }}>
+                    <div className="contact-card-text" style={{ minWidth: 0, flex: 1 }}>
                       <p className="contact-card-label">{info.label}</p>
                       <p className="contact-card-value">{info.value}</p>
                     </div>
@@ -377,7 +428,6 @@ export default function ContactPage() {
               {/* Map box */}
               <div id="map-box" className="map-box">
                 <div id="map-placeholder" className="map-placeholder">
-                  {/* Grid lines */}
                   {[...Array(8)].map((_, i) => (
                     <div key={`h${i}`} className="map-grid-line-h" style={{ top: `${i * 12.5}%` }} aria-hidden="true" />
                   ))}
@@ -536,7 +586,7 @@ export default function ContactPage() {
       {/* ══════════════════════════════════════════
           FOOTER
       ══════════════════════════════════════════ */}
-      <footer id="contact-footer" className="site-footer" style={{ background: '#050505', padding: '68px 0 32px', borderTop: '1px solid #141414' }}>
+      <footer id="contact-footer" className="site-footer">
         <div className="container footer-container">
           <div id="footer-grid" className="footer-grid">
 
@@ -568,12 +618,12 @@ export default function ContactPage() {
             <nav id="footer-nav" aria-label="Quick links">
               <p id="footer-nav-heading" style={{ fontSize: '15px', fontWeight: '700', color: '#ffffff', letterSpacing: '2px', textTransform: 'uppercase', marginBottom: '20px' }}>Quick Links</p>
               {[
-                { label: 'Home',          href: '/'         },
-                { label: 'Order Online',  href: '/order'    },
-                { label: 'Catering',      href: '/catering' },
-                { label: 'Our Story',     href: '/story'    },
-                { label: 'Gift Cards',    href: '/gift-cards'},
-                { label: 'Contact',       href: '/contact'  },
+                { label: 'Home',         href: '/'          },
+                { label: 'Order Online', href: '/order'     },
+                { label: 'Catering',     href: '/catering'  },
+                { label: 'Our Story',    href: '/story'     },
+                { label: 'Gift Cards',   href: '/gift-cards'},
+                { label: 'Contact',      href: '/contact'   },
               ].map(l => (
                 <Link key={l.href} href={l.href} className="footer-link">{l.label}</Link>
               ))}
@@ -592,9 +642,9 @@ export default function ContactPage() {
                   { day: 'Saturday',  hours: '9:00 AM – 11:00 PM' },
                   { day: 'Sunday',    hours: '9:00 AM – 9:00 PM'  },
                 ].map((h, i) => (
-                  <div key={i} id={`footer-hours-row-${i}`} style={{ display: 'flex', gap: '14px' }}>
-                    <span style={{ fontSize: '13px', color: '#ffffff', fontWeight: '600', minWidth: '96px' }}>{h.day}</span>
-                    <span style={{ fontSize: '13px', color: '#BBBBBB' }}>{h.hours}</span>
+                  <div key={i} id={`footer-hours-row-${i}`} className="footer-hours-row">
+                    <span className="footer-hours-day">{h.day}</span>
+                    <span className="footer-hours-time">{h.hours}</span>
                   </div>
                 ))}
               </div>

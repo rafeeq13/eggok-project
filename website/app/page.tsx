@@ -26,15 +26,15 @@ const FAVORITES = [
 ];
 
 const MENU_TILES = [
-  { label: 'Breakfast Sandwiches', img: '/main-menu/Breakfast BLT Sandwich.jpg', items: '9 items' },
-  { label: 'Specialty Lattes',     img: '/main-menu/Brown Sugar Latte.jpg',       items: '4 items' },
-  { label: 'Matcha Edition',       img: '/main-menu/Avocado Omelette.jpg',        items: '9 items' },
-  { label: 'Smoothies',            img: '/main-menu/Avocado Omelette.jpg',        items: '7 items' },
-  { label: 'Omelettes',            img: '/main-menu/Brown Sugar Latte.jpg',       items: '4 items' },
-  { label: 'Burritos',             img: '/main-menu/Avocado Omelette.jpg',        items: '9 items' },
-  { label: 'Smoothies',            img: '/main-menu/Avocado Omelette.jpg',        items: '7 items' },
-  { label: 'Omelettes',            img: '/main-menu/Brown Sugar Latte.jpg',       items: '4 items' },
-  { label: 'Burritos',             img: '/main-menu/Avocado Omelette.jpg',        items: '9 items' },
+  { label: 'Breakfast Sandwiches', img: '/main-menu/Our-Gallery/1.webp', items: '9 items' },
+  { label: 'Specialty Lattes',     img: '/main-menu/Our-Gallery/2.webp',       items: '4 items' },
+  { label: 'Matcha Edition',       img: '/main-menu/Our-Gallery/3.webp',        items: '9 items' },
+  { label: 'Smoothies',            img: '/main-menu/Our-Gallery/4.webp',        items: '7 items' },
+  { label: 'Omelettes',            img: '/main-menu/Our-Gallery/5.webp',       items: '4 items' },
+  { label: 'Burritos',             img: '/main-menu/Our-Gallery/6.webp',        items: '9 items' },
+  { label: 'Smoothies',            img: '/main-menu/Our-Gallery/7.webp',        items: '7 items' },
+  { label: 'Omelettes',            img: '/main-menu/Our-Gallery/8.webp',       items: '4 items' },
+  { label: 'Burritos',             img: '/main-menu/Our-Gallery/8.webp',        items: '9 items' },
 ];
 
 const REVIEWS = [
@@ -204,7 +204,7 @@ export default function HomePage() {
         .hero-section {
           min-height: 100vh; display: flex; align-items: center; justify-content: center;
           text-align: center; position: relative; overflow: hidden;
-          background-image: url('/main-menu/Avocado Omelette.jpg');
+          background-image: url('/main-menu/Hero-Banner.webp');
           background-size: cover; background-position: center; background-repeat: no-repeat;
         }
         .hero-cta { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
@@ -258,14 +258,16 @@ export default function HomePage() {
         .order-ahead-hero {
           position: relative; overflow: hidden;
           border-radius: 24px; margin: 60px auto;
-          max-width: 1200px; min-height: 360px;
-          background-image: url('/main-menu/Avocado Omelette.jpg');
+          max-width: 1200px; 
+          max-height: 600px;
+          min-height: 600px;
+          background-image: url('/main-menu/Main-Page/catering-home.webp');
           background-size: cover; background-position: center;
           display: flex; align-items: center; justify-content: flex-end;
         }
         .order-ahead-overlay {
           position: absolute; inset: 0;
-          background: linear-gradient(90deg, transparent 0%, rgba(0,0,0,0.88) 45%);
+          // background: linear-gradient(90deg, transparent 0%, rgba(0,0,0,0.88) 45%);
         }
         .order-card-box {
           position: relative; z-index: 1;
@@ -294,7 +296,7 @@ export default function HomePage() {
         /* ── Delivery CTA Section (Section 12) ── */
         .delivery-hero {
           position: relative; overflow: hidden;
-          background-image: url('/main-menu/Avocado Omelette.jpg');
+          background-image: url('/main-menu/Main-Page/catering-home.webp');
           background-size: cover; background-position: center;
           min-height: 420px;
           display: flex; align-items: center; justify-content: center;
@@ -550,7 +552,7 @@ export default function HomePage() {
         <div className="container story-container">
           <div className="about-grid story-grid">
             <div className="about-img story-img">
-              <Image src="/main-menu/Avocado Omelette.jpg" alt="Inside Eggs Ok" width={600} height={460}
+              <Image src="/main-menu/Main-Page/Born-in-the-Heart-of-West-Philly.webp" alt="Inside Eggs Ok" width={600} height={460}
                 style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '20px' }} />
             </div>
             <div className="about-content story-content">
@@ -591,7 +593,7 @@ export default function HomePage() {
               </Link>
             </div>
             <div className="about-img quality-img">
-              <Image src="/main-menu/Breakfast BLT Sandwich.jpg" alt="Fresh Eggs Ok ingredients" width={600} height={460}
+              <Image src="/main-menu/Main-Page/Fresh-Ingredients-Bold-Flavors.webp" alt="Fresh Eggs Ok ingredients" width={600} height={460}
                 style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '20px' }} />
             </div>
           </div>
@@ -621,10 +623,10 @@ export default function HomePage() {
           <div className={`menu-header reveal ${menuReveal.visible ? 'visible' : ''}`} style={{ textAlign: 'left', marginBottom: '52px' }}>
             <span className="sec-label">Explore</span>
             <h2 id="menu-heading" className="sec-heading">
-              OUR <span className="text-accent" style={{ color: '#FED800' }}>MENU</span>
+             A Taste Of  <span className="text-accent" style={{ color: '#FED800' }}> OUR MENU</span>
             </h2>
             <p className="menu-subheading" style={{ color: '#ffffff', marginTop: '14px', fontSize: '15px' }}>
-              Discover the delicious offerings we have for you.
+              Bright Flavors, warm atmosphere, and a menu that has something for everyone. <br /> From classic breakfast sandwiches to bold specialty drinks,  get a glimpse of what we offer <br /> before you order. 
             </p>
           </div>
 
@@ -669,7 +671,7 @@ export default function HomePage() {
         <div className="container catering-container">
           <div className="about-grid catering-grid">
             <div className="about-img catering-img">
-              <Image src="/main-menu/Sunrise Burrito.jpg" alt="Eggs Ok catering spread" width={600} height={460}
+              <Image src="/main-menu/Main-Page/catering-home.webp" alt="Eggs Ok catering spread" width={600} height={460}
                 style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '20px' }} />
             </div>
             <div className="about-content catering-content">

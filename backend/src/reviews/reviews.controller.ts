@@ -1,4 +1,4 @@
-import { Controller, Get, Put, Delete, Body, Param } from '@nestjs/common';
+import { Controller, Get, Post, Put, Patch, Delete, Body, Param } from '@nestjs/common';
 import { ReviewsService } from './reviews.service';
 import { Review } from './review.entity';
 
@@ -11,6 +11,11 @@ export class ReviewsController {
         return this.reviewsService.findAll();
     }
 
+    @Post()
+    create(@Body() review: Partial<Review>): Promise<Review> {
+        return this.reviewsService.create(review);
+    }
+
     @Get(':id')
     findOne(@Param('id') id: string): Promise<Review | null> {
         return this.reviewsService.findOne(+id);
@@ -18,6 +23,11 @@ export class ReviewsController {
 
     @Put(':id')
     update(@Param('id') id: string, @Body() review: Partial<Review>): Promise<Review | null> {
+        return this.reviewsService.update(+id, review);
+    }
+
+    @Patch(':id')
+    patch(@Param('id') id: string, @Body() review: Partial<Review>): Promise<Review | null> {
         return this.reviewsService.update(+id, review);
     }
 

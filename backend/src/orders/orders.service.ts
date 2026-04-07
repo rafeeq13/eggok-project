@@ -5,6 +5,7 @@ import { Order } from './order.entity';
 import { Customer } from '../customers/customer.entity';
 import { MailService } from '../mail/mail.service';
 import { DeliveryService } from '../delivery/delivery.service';
+import { PaymentsService } from '../payments/payments.service';
 
 @Injectable()
 export class OrdersService {
@@ -15,6 +16,7 @@ export class OrdersService {
     private customersRepository: Repository<Customer>,
     private mailService: MailService,
     private deliveryService: DeliveryService,
+    private paymentsService: PaymentsService,
   ) { }
 
   private generateOrderNumber(): string {
@@ -121,6 +123,17 @@ export class OrdersService {
       console.error('Failed to send owner notification email:', err);
     });
 
+    // Record payment transaction
+    this.paymentsService.recordTransaction({
+      orderNumber: savedOrder.orderNumber,
+      customer: savedOrder.customerName,
+      type: savedOrder.orderType === 'delivery' ? 'Delivery' : 'Pickup',
+      orderTotal: Number(savedOrder.total),
+      deliveryFee: Number(savedOrder.deliveryFee),
+    }).catch(err => {
+      console.error('Failed to record transaction:', err.message);
+    });
+
     return savedOrder;
   }
 
@@ -141,30 +154,67 @@ export class OrdersService {
   async updateOrderStatus(id: number, status: string): Promise<Order | null> {
     await this.ordersRepository.update(id, { status });
     const order = await this.getOrderById(id);
+    if (!order) return null;
 
-    // When order moves to out_for_delivery
-    if (order && status === 'out_for_delivery' && order.orderType === 'delivery') {
-      // Send "on the way" email to customer
-      this.mailService.sendDeliveryUpdateEmail(order).catch(err => {
-        console.error(`[ORDERS] Failed to send delivery update email:`, err.message);
-      });
+    // Send status update emails for all transitions
+    const emailStatuses = ['confirmed', 'preparing', 'ready'];
+    if (emailStatuses.includes(status)) {
+      this.mailService.sendOrderStatusEmail(order, status).catch(() => {});
+    }
 
-      // Auto-dispatch via Uber Direct if not already dispatched
+    // Out for delivery
+    if (status === 'out_for_delivery' && order.orderType === 'delivery') {
+      this.mailService.sendDeliveryUpdateEmail(order).catch(() => {});
       if (!order.deliveryQuoteId) {
         this.dispatchDelivery(order).catch(err => {
-          console.error(`[ORDERS] Auto-dispatch failed for order ${order.orderNumber}:`, err.message);
+          console.error(`[ORDERS] Auto-dispatch failed for ${order.orderNumber}:`, err.message);
         });
       }
     }
 
-    // Cancel delivery if order cancelled
-    if (order && status === 'cancelled' && order.deliveryQuoteId) {
-      this.deliveryService.cancelDelivery(order.deliveryQuoteId).catch(err => {
-        console.error(`[ORDERS] Failed to cancel delivery for order ${order.orderNumber}:`, err);
-      });
+    // Delivered (delivery orders)
+    if (status === 'delivered' && order.orderType === 'delivery') {
+      this.mailService.sendDeliveryCompletedEmail(order).catch(() => {});
+    }
+
+    // Picked up (pickup orders)
+    if (status === 'picked_up') {
+      this.mailService.sendPickupCompleteEmail(order).catch(() => {});
+    }
+
+    // Cancelled
+    if (status === 'cancelled') {
+      this.mailService.sendOrderCancelledEmail(order).catch(() => {});
+      if (order.deliveryQuoteId) {
+        this.deliveryService.cancelDelivery(order.deliveryQuoteId).catch(err => {
+          console.error(`[ORDERS] Failed to cancel delivery:`, err);
+        });
+      }
     }
 
     return order;
+  }
+
+  // Get delivery quote (cost estimate before dispatch)
+  async getDeliveryQuote(id: number): Promise<any> {
+    const order = await this.getOrderById(id);
+    if (!order || order.orderType !== 'delivery' || !order.deliveryAddress) {
+      return { error: 'Not a delivery order' };
+    }
+
+    const quote = await this.deliveryService.getQuote({
+      customerName: order.customerName,
+      customerPhone: order.customerPhone,
+      deliveryAddress: order.deliveryAddress,
+      deliveryApt: order.deliveryApt,
+      deliveryInstructions: order.deliveryInstructions,
+      items: order.items,
+      total: Number(order.total),
+      orderNumber: order.orderNumber,
+    });
+
+    if (!quote) return { error: 'Could not get quote from Uber Direct' };
+    return { fee: quote.fee, eta: quote.eta, currency: quote.currency };
   }
 
   async dispatchDelivery(order: Order): Promise<Order | null> {
@@ -197,19 +247,117 @@ export class OrdersService {
     return order;
   }
 
+  // Cancel an active delivery
+  async cancelDeliveryDispatch(id: number): Promise<{ success: boolean; message: string }> {
+    const order = await this.getOrderById(id);
+    if (!order?.deliveryQuoteId) return { success: false, message: 'No active delivery to cancel' };
+
+    const cancelled = await this.deliveryService.cancelDelivery(order.deliveryQuoteId);
+    if (cancelled) {
+      await this.ordersRepository.update(id, {
+        deliveryProvider: undefined,
+        deliveryQuoteId: undefined,
+        deliveryTrackingUrl: undefined,
+        deliveryDriverName: undefined,
+        deliveryDriverPhone: undefined,
+        deliveryEta: undefined,
+      });
+      return { success: true, message: 'Delivery cancelled successfully' };
+    }
+    return { success: false, message: 'Failed to cancel delivery with Uber' };
+  }
+
   async getDeliveryStatus(id: number): Promise<any> {
     const order = await this.getOrderById(id);
     if (!order?.deliveryQuoteId) return { status: 'no_dispatch' };
 
     const status = await this.deliveryService.getDeliveryStatus(order.deliveryQuoteId);
-    if (status?.driverName && status.driverName !== order.deliveryDriverName) {
-      await this.ordersRepository.update(order.id, {
-        deliveryDriverName: status.driverName,
-        deliveryDriverPhone: status.driverPhone || undefined,
-        deliveryEta: status.eta || undefined,
-      });
+    if (!status) return { status: 'unknown' };
+
+    // Update order with latest driver info
+    const updates: any = {};
+    if (status.driverName && status.driverName !== order.deliveryDriverName) updates.deliveryDriverName = status.driverName;
+    if (status.driverPhone && status.driverPhone !== order.deliveryDriverPhone) updates.deliveryDriverPhone = status.driverPhone;
+    if (status.eta && status.eta !== order.deliveryEta) updates.deliveryEta = status.eta;
+    if (Object.keys(updates).length > 0) {
+      await this.ordersRepository.update(order.id, updates);
     }
-    return status || { status: 'unknown' };
+
+    // Auto-complete order if Uber says delivered
+    const mappedStatus = this.deliveryService.mapUberStatusToOrderStatus(status.uberStatus || status.status);
+    if (mappedStatus === 'delivered' && order.status !== 'delivered') {
+      await this.ordersRepository.update(order.id, { status: 'delivered' });
+      console.log(`[ORDERS] Auto-completed order ${order.orderNumber} (Uber status: delivered)`);
+      // Send delivered email
+      const freshOrder = await this.getOrderById(order.id);
+      if (freshOrder) {
+        this.mailService.sendDeliveryCompletedEmail(freshOrder).catch(() => {});
+      }
+    }
+
+    // Send driver assigned email (first time driver appears)
+    if (status.driverName && !order.deliveryDriverName) {
+      this.mailService.sendDriverAssignedEmail(order, status.driverName, status.eta).catch(() => {});
+    }
+
+    return status;
+  }
+
+  // Handle webhook from Uber Direct
+  async handleDeliveryWebhook(payload: any): Promise<void> {
+    const externalId = payload.data?.external_id || payload.external_id;
+    const uberStatus = payload.data?.status || payload.status;
+    const deliveryId = payload.data?.id || payload.id;
+
+    if (!externalId && !deliveryId) {
+      console.log('[WEBHOOK] No external_id or delivery_id in payload');
+      return;
+    }
+
+    // Find order by orderNumber (external_id) or deliveryQuoteId
+    let order: Order | null = null;
+    if (externalId) {
+      order = await this.ordersRepository.findOne({ where: { orderNumber: externalId } });
+    }
+    if (!order && deliveryId) {
+      order = await this.ordersRepository.findOne({ where: { deliveryQuoteId: deliveryId } });
+    }
+    if (!order) {
+      console.log(`[WEBHOOK] Order not found for external_id=${externalId}, delivery_id=${deliveryId}`);
+      return;
+    }
+
+    console.log(`[WEBHOOK] Order ${order.orderNumber}: Uber status=${uberStatus}`);
+
+    // Update driver info
+    const courier = payload.data?.courier || payload.courier;
+    const updates: any = {};
+    if (courier?.name) updates.deliveryDriverName = courier.name;
+    if (courier?.phone_number) updates.deliveryDriverPhone = courier.phone_number;
+    if (payload.data?.dropoff_eta) updates.deliveryEta = payload.data.dropoff_eta;
+    if (payload.data?.tracking_url) updates.deliveryTrackingUrl = payload.data.tracking_url;
+
+    // Map Uber status to order status
+    const mappedStatus = this.deliveryService.mapUberStatusToOrderStatus(uberStatus);
+    if (mappedStatus && mappedStatus !== order.status) {
+      updates.status = mappedStatus;
+      console.log(`[WEBHOOK] Order ${order.orderNumber}: status ${order.status} → ${mappedStatus}`);
+    }
+
+    if (Object.keys(updates).length > 0) {
+      await this.ordersRepository.update(order.id, updates);
+    }
+
+    // Send emails based on status
+    const freshOrder = await this.getOrderById(order.id);
+    if (!freshOrder) return;
+
+    if (courier?.name && !order.deliveryDriverName) {
+      this.mailService.sendDriverAssignedEmail(freshOrder, courier.name, payload.data?.dropoff_eta).catch(() => {});
+    }
+    if (mappedStatus === 'delivered' && order.status !== 'delivered') {
+      this.mailService.sendDeliveryCompletedEmail(freshOrder).catch(() => {});
+    }
   }
 
   async getActiveOrders(): Promise<Order[]> {

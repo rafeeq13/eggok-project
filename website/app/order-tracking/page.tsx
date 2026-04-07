@@ -152,10 +152,16 @@ function OrderTrackingContent() {
                 <span style={{ fontSize: '13px', color: '#FEFEFE', fontWeight: '600' }}>{order.deliveryDriverName}</span>
               </div>
             )}
+            {order.deliveryDriverPhone && (
+              <div style={{ display: 'flex', justifyContent: 'space-between', padding: '10px 0', borderTop: '1px solid #2A2A2A' }}>
+                <span style={{ fontSize: '13px', color: '#888' }}>Driver Phone</span>
+                <a href={`tel:${order.deliveryDriverPhone}`} style={{ fontSize: '13px', color: '#60A5FA', textDecoration: 'none', fontWeight: '600' }}>{order.deliveryDriverPhone}</a>
+              </div>
+            )}
             {order.deliveryEta && (
               <div style={{ display: 'flex', justifyContent: 'space-between', padding: '10px 0', borderTop: '1px solid #2A2A2A' }}>
                 <span style={{ fontSize: '13px', color: '#888' }}>ETA</span>
-                <span style={{ fontSize: '13px', color: '#FEFEFE' }}>{order.deliveryEta}</span>
+                <span style={{ fontSize: '13px', color: '#FEFEFE' }}>{new Date(order.deliveryEta).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })}</span>
               </div>
             )}
             {order.deliveryTrackingUrl && (

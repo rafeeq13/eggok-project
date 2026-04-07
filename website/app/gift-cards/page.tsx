@@ -20,9 +20,30 @@ export default function GiftCardsPage() {
   const presetAmounts = [10, 25, 50, 100];
   const finalAmount = customAmount ? Number(customAmount) : amount;
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const [submitting, setSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState('');
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setSubmitted(true);
+    setSubmitting(true);
+    setSubmitError('');
+    try {
+      const API = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3002/api';
+      const res = await fetch(`${API}/mail/gift-card`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ amount: finalAmount, recipientName, recipientEmail, senderName, message }),
+      });
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        throw new Error(data.message || 'Failed to send gift card');
+      }
+      setSubmitted(true);
+    } catch (err) {
+      setSubmitError(err instanceof Error ? err.message : 'Failed to send. Please try again.');
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   const perks = [
@@ -469,15 +490,18 @@ export default function GiftCardsPage() {
                       </p>
                     </div>
 
+                    {submitError && <p style={{ color: '#FC0301', fontSize: '13px', margin: '0 0 8px' }}>{submitError}</p>}
+
                     {/* Submit */}
                     <button
                       id="form-submit-btn"
                       type="submit"
-                      disabled={finalAmount <= 0}
-                      className={`form-submit-btn ${finalAmount > 0 ? 'enabled' : 'disabled'}`}
+                      disabled={finalAmount <= 0 || submitting}
+                      className={`form-submit-btn ${finalAmount > 0 && !submitting ? 'enabled' : 'disabled'}`}
+                      style={submitting ? { opacity: 0.6, cursor: 'not-allowed' } : {}}
                     >
                       <Gift size={18} strokeWidth={2.5} aria-hidden="true" />
-                      Purchase Gift Card · ${finalAmount > 0 ? finalAmount : 0}
+                      {submitting ? 'Sending...' : `Purchase Gift Card · $${finalAmount > 0 ? finalAmount : 0}`}
                     </button>
 
                   </form>

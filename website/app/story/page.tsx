@@ -279,7 +279,7 @@ export default function StoryPage() {
             <div id="origin-img-side" className="story-img-side">
               <div id="origin-img-frame" className="story-img-frame">
                 <Image
-                  src="/main-menu/Fully Loaded Sandwich.jpg"
+                  src="/main-menu/Our-Story/TWO-FRIENDS- ONE-BIG-IDEA.webp"
                   alt="The original Eggs Ok sandwich"
                   width={480} height={360}
                   style={{ objectFit: 'cover', borderRadius: '16px', display: 'block', width: '100%', height: 'auto', aspectRatio: '4/3' }}
@@ -360,7 +360,7 @@ export default function StoryPage() {
             <div id="food-img-side" className="story-img-side">
               <div id="food-img-frame" className="story-img-frame story-img-frame-alt">
                 <Image
-                  src="/main-menu/Fully Loaded Sandwich.jpg"
+                  src="/main-menu/Our-Story/TWO-CULTURES.webp"
                   alt="Eggs Ok — fresh, made to order"
                   width={480} height={360}
                   style={{ objectFit: 'cover', borderRadius: '16px', display: 'block', width: '100%', height: 'auto', aspectRatio: '4/3' }}
@@ -388,7 +388,7 @@ export default function StoryPage() {
             <div id="community-img-side" className="story-img-side">
               <div id="community-img-frame" className="story-img-frame">
                 <Image
-                  src="/main-menu/Fully Loaded Sandwich.jpg"
+                  src="/main-menu/Our-Story/WEST-PHILLY-IS-HOME.webp"
                   alt="Serving West Philadelphia"
                   width={480} height={360}
                   style={{ objectFit: 'cover', borderRadius: '16px', display: 'block', width: '100%', height: 'auto', aspectRatio: '4/3' }}

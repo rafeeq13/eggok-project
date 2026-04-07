@@ -46,6 +46,7 @@ export default function Header() {
     // { label: 'Our Story', href: '/story' },
     { label: 'Contact Us', href: '/contact' },
     { label: 'Gift Cards', href: '/gift-cards' },
+    { label: 'Track My Order', href: '/track' },
     // { label: "We're Hiring", href: '/hiring' },
   ];
 const css = `

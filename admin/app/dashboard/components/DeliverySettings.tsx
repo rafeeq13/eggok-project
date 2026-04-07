@@ -35,6 +35,7 @@ export default function DeliverySettings() {
   // General settings
   const [deliveryEnabled, setDeliveryEnabled] = useState(true);
   const [autoAssign, setAutoAssign] = useState(true);
+  const [deliveryProvider, setDeliveryProvider] = useState('uber_direct');
   const [freeDeliveryEnabled, setFreeDeliveryEnabled] = useState(false);
   const [freeDeliveryThreshold, setFreeDeliveryThreshold] = useState('50');
   const [prepTime, setPrepTime] = useState('15');
@@ -72,6 +73,7 @@ export default function DeliverySettings() {
           if (v.zones) setZones(v.zones);
           if (v.deliveryEnabled !== undefined) setDeliveryEnabled(v.deliveryEnabled);
           if (v.autoAssign !== undefined) setAutoAssign(v.autoAssign);
+          if (v.deliveryProvider) setDeliveryProvider(v.deliveryProvider);
           if (v.freeDeliveryEnabled !== undefined) setFreeDeliveryEnabled(v.freeDeliveryEnabled);
           if (v.freeDeliveryThreshold !== undefined) setFreeDeliveryThreshold(v.freeDeliveryThreshold);
           if (v.prepTime !== undefined) setPrepTime(v.prepTime);
@@ -187,6 +189,7 @@ export default function DeliverySettings() {
       deliveryHours: newHours || deliveryHours,
       deliveryEnabled: extraSettings?.deliveryEnabled ?? deliveryEnabled,
       autoAssign: extraSettings?.autoAssign ?? autoAssign,
+      deliveryProvider: extraSettings?.deliveryProvider ?? deliveryProvider,
       freeDeliveryEnabled: extraSettings?.freeDeliveryEnabled ?? freeDeliveryEnabled,
       freeDeliveryThreshold: extraSettings?.freeDeliveryThreshold ?? freeDeliveryThreshold,
       prepTime: extraSettings?.prepTime ?? prepTime,
@@ -676,7 +679,7 @@ export default function DeliverySettings() {
               <div>
                 <p style={{ fontSize: '15px', fontWeight: '700', color: '#FEFEFE', marginBottom: '4px' }}>Delivery Service</p>
                 <p style={{ fontSize: '12px', color: deliveryEnabled ? '#22C55E' : '#FC0301' }}>
-                  {deliveryEnabled ? 'Delivery is enabled — DoorDash Drive is active' : 'Delivery is disabled — customers can only place pickup orders'}
+                  {deliveryEnabled ? `Delivery is enabled — ${deliveryProvider === 'uber_direct' ? 'Uber Direct' : deliveryProvider === 'doordash' ? 'DoorDash Drive' : 'Manual'} is active` : 'Delivery is disabled — customers can only place pickup orders'}
                 </p>
               </div>
               {toggleSwitch(deliveryEnabled, () => {
@@ -692,10 +695,31 @@ export default function DeliverySettings() {
             <p style={sectionTitle}>Delivery Configuration</p>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
 
+              {/* Delivery Provider */}
+              <div style={{ padding: '12px 16px', background: '#111111', borderRadius: '8px' }}>
+                <p style={{ fontSize: '13px', fontWeight: '600', color: '#FEFEFE', marginBottom: '4px' }}>Delivery Provider</p>
+                <p style={{ fontSize: '11px', color: '#888888', marginBottom: '10px' }}>Choose which service dispatches delivery drivers</p>
+                <div style={{ display: 'flex', gap: '8px' }}>
+                  {[
+                    { id: 'uber_direct', label: 'Uber Direct', color: '#A78BFA' },
+                    { id: 'doordash', label: 'DoorDash Drive', color: '#FC0301' },
+                    { id: 'manual', label: 'Manual (No auto-dispatch)', color: '#888' },
+                  ].map(p => (
+                    <button key={p.id} onClick={() => setDeliveryProvider(p.id)} style={{
+                      flex: 1, padding: '10px', borderRadius: '8px', cursor: 'pointer',
+                      background: deliveryProvider === p.id ? `${p.color}20` : '#0A0A0A',
+                      border: deliveryProvider === p.id ? `1px solid ${p.color}` : '1px solid #2A2A2A',
+                      color: deliveryProvider === p.id ? p.color : '#888',
+                      fontSize: '12px', fontWeight: '600',
+                    }}>{p.label}</button>
+                  ))}
+                </div>
+              </div>
+
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '12px 16px', background: '#111111', borderRadius: '8px' }}>
                 <div>
-                  <p style={{ fontSize: '13px', fontWeight: '600', color: '#FEFEFE' }}>Auto-Assign DoorDash Driver</p>
-                  <p style={{ fontSize: '11px', color: '#888888', marginTop: '2px' }}>Automatically dispatch a Dasher when a delivery order is placed</p>
+                  <p style={{ fontSize: '13px', fontWeight: '600', color: '#FEFEFE' }}>Auto-Assign Driver</p>
+                  <p style={{ fontSize: '11px', color: '#888888', marginTop: '2px' }}>Automatically dispatch a driver when order status changes to "Out for Delivery"</p>
                 </div>
                 {toggleSwitch(autoAssign, () => setAutoAssign(!autoAssign))}
               </div>

@@ -327,10 +327,16 @@ export default function ConfirmationPage() {
                   <span style={{ fontSize: '13px', color: '#ffffff', fontWeight: '600' }}>{deliveryTracking.driverName}</span>
                 </div>
               )}
+              {deliveryTracking.driverPhone && (
+                <div style={{ display: 'flex', justifyContent: 'space-between', padding: '8px 0', borderTop: '1px solid #2A2A2A' }}>
+                  <span style={{ fontSize: '13px', color: '#888' }}>Driver Phone</span>
+                  <a href={`tel:${deliveryTracking.driverPhone}`} style={{ fontSize: '13px', color: '#60A5FA', textDecoration: 'none', fontWeight: '600' }}>{deliveryTracking.driverPhone}</a>
+                </div>
+              )}
               {deliveryTracking.eta && (
                 <div style={{ display: 'flex', justifyContent: 'space-between', padding: '8px 0', borderTop: '1px solid #2A2A2A' }}>
-                  <span style={{ fontSize: '13px', color: '#ffffff' }}>ETA</span>
-                  <span style={{ fontSize: '13px', color: '#ffffff' }}>{deliveryTracking.eta}</span>
+                  <span style={{ fontSize: '13px', color: '#888' }}>ETA</span>
+                  <span style={{ fontSize: '13px', color: '#ffffff' }}>{new Date(deliveryTracking.eta).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })}</span>
                 </div>
               )}
               {deliveryTracking.trackingUrl && (
@@ -361,7 +367,12 @@ export default function ConfirmationPage() {
               </svg>
               Order Again
             </Link>
-            <Link href="/" style={{ padding: '14px 32px', background: 'transparent', border: '1px solid #2A2A2A', borderRadius: '12px', fontSize: '15px', fontWeight: '600', color: '#ffffff', textDecoration: 'none' }}>
+            {lastOrder?.id && (
+              <Link href={`/order-tracking?id=${lastOrder.id}`} style={{ padding: '14px 32px', background: 'transparent', border: '1px solid #FED80040', borderRadius: '12px', fontSize: '15px', fontWeight: '600', color: '#FED800', textDecoration: 'none' }}>
+                Track Order
+              </Link>
+            )}
+            <Link href="/" style={{ padding: '14px 32px', background: 'transparent', border: '1px solid #2A2A2A', borderRadius: '12px', fontSize: '15px', fontWeight: '600', color: '#888', textDecoration: 'none' }}>
               Back to Home
             </Link>
           </div>

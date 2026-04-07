@@ -602,7 +602,7 @@ export default function Loyalty() {
             <table style={{ width: '100%', borderCollapse: 'collapse' }}>
               <thead>
                 <tr style={{ borderBottom: '1px solid #2A2A2A' }}>
-                  {['Member', 'Tier', 'Current Points', 'Total Earned', 'Redemptions', 'Last Active'].map(h => (
+                  {['Member', 'Tier', 'Current Points', 'Total Earned', 'Redemptions', 'Last Active', 'Actions'].map(h => (
                     <th key={h} style={{ padding: '12px 16px', textAlign: 'left', fontSize: '10px', fontWeight: '600', color: '#888888', textTransform: 'uppercase', letterSpacing: '0.5px' }}>{h}</th>
                   ))}
                 </tr>
@@ -635,6 +635,21 @@ export default function Loyalty() {
                     <td style={{ padding: '13px 16px', fontSize: '12px', color: '#888888' }}>{(c.totalEarned || 0).toLocaleString()}</td>
                     <td style={{ padding: '13px 16px', fontSize: '12px', color: '#22C55E', fontWeight: '600' }}>{c.redemptions || 0}</td>
                     <td style={{ padding: '13px 16px', fontSize: '11px', color: '#888888' }}>{c.lastActivity || '—'}</td>
+                    <td style={{ padding: '13px 16px' }}>
+                      <button onClick={async () => {
+                        const amount = prompt(`Adjust points for ${c.name}:\nPositive to add, negative to deduct.\nCurrent: ${c.points} pts`, '0');
+                        if (!amount || isNaN(Number(amount)) || Number(amount) === 0) return;
+                        try {
+                          await fetch(`${API}/customers/${c.id}`, {
+                            method: 'PUT',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ points: Math.max(0, c.points + Number(amount)) }),
+                          });
+                          showSuccess(`${Number(amount) > 0 ? '+' : ''}${amount} points for ${c.name}`);
+                          fetchData();
+                        } catch { showSuccess('Failed to adjust points'); }
+                      }} style={{ padding: '4px 10px', background: 'transparent', border: '1px solid #2A2A2A', borderRadius: '6px', color: '#888', fontSize: '10px', cursor: 'pointer' }}>Adjust</button>
+                    </td>
                   </tr>
                 ))}
               </tbody>

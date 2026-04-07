@@ -391,6 +391,122 @@ export class MailService {
         return true;
     }
 
+    async sendDriverAssignedEmail(order: any, driverName: string, eta?: string) {
+        const settings = await this.getResolvedMailSettings();
+        if (!this.isConfigured(settings) || !settings.enabled) return false;
+
+        const websiteUrl = this.configService.get<string>('FRONTEND_URL') || 'http://localhost:3000';
+        const trackingUrl = order.deliveryTrackingUrl || `${websiteUrl}/order-tracking?id=${order.id}`;
+
+        await this.sendMail({
+            to: order.customerEmail,
+            subject: `Driver assigned for order #${order.orderNumber}`,
+            html: this.wrapEmail({
+                eyebrow: 'Driver Assigned',
+                title: `${this.safeText(driverName)} is heading to pick up your order!`,
+                intro: `Hi ${this.safeText(order.customerName)}, a driver has been assigned to deliver your order #${this.safeText(order.orderNumber)}.${eta ? ` Estimated delivery: ${this.safeText(eta)}.` : ''}`,
+                cta: { text: 'Track Your Delivery', link: trackingUrl },
+                sections: [{ title: 'Driver details', lines: [`Name: ${this.safeText(driverName)}`] }],
+                footer: 'You will receive another update when your order is delivered.',
+            }),
+            text: `Hi ${order.customerName}, driver ${driverName} has been assigned to your order #${order.orderNumber}. Track: ${trackingUrl}`,
+        }, settings);
+        return true;
+    }
+
+    async sendDeliveryCompletedEmail(order: any) {
+        const settings = await this.getResolvedMailSettings();
+        if (!this.isConfigured(settings) || !settings.enabled) return false;
+
+        const websiteUrl = this.configService.get<string>('FRONTEND_URL') || 'http://localhost:3000';
+        const sections: Array<{ title: string; lines: string[] }> = [];
+
+        if (order.deliveryDriverName) {
+            sections.push({ title: 'Delivered by', lines: [`Driver: ${this.safeText(order.deliveryDriverName)}`] });
+        }
+
+        await this.sendMail({
+            to: order.customerEmail,
+            subject: `Order #${order.orderNumber} has been delivered!`,
+            html: this.wrapEmail({
+                eyebrow: 'Delivered',
+                title: 'Your order has arrived!',
+                intro: `Hi ${this.safeText(order.customerName)}, your order #${this.safeText(order.orderNumber)} has been delivered. Enjoy your meal!`,
+                cta: { text: 'Leave a Review', link: `${websiteUrl}/review?order=${order.orderNumber}` },
+                sections,
+                footer: 'Thank you for ordering from Eggs Ok! We would love to hear your feedback.',
+            }),
+            text: `Hi ${order.customerName}, your order #${order.orderNumber} has been delivered. Enjoy!`,
+        }, settings);
+        return true;
+    }
+
+    async sendOrderStatusEmail(order: any, newStatus: string) {
+        const settings = await this.getResolvedMailSettings();
+        if (!this.isConfigured(settings) || !settings.enabled) return false;
+
+        const websiteUrl = this.configService.get<string>('FRONTEND_URL') || 'http://localhost:3000';
+        const trackUrl = `${websiteUrl}/order-tracking?id=${order.id}`;
+        const statusMessages: Record<string, { title: string; intro: string }> = {
+            confirmed: { title: 'Order Confirmed!', intro: `Great news! Your order #${this.safeText(order.orderNumber)} has been confirmed and the kitchen is getting ready.` },
+            preparing: { title: 'Your Order is Being Prepared', intro: `The kitchen is now preparing your order #${this.safeText(order.orderNumber)}. It won't be long!` },
+            ready: { title: order.orderType === 'delivery' ? 'Your Order is Ready for Pickup by Driver' : 'Your Order is Ready for Pickup!', intro: order.orderType === 'delivery' ? `Your order #${this.safeText(order.orderNumber)} is ready and waiting for a driver.` : `Your order #${this.safeText(order.orderNumber)} is ready! Head to 3517 Lancaster Ave to pick it up.` },
+        };
+        const msg = statusMessages[newStatus];
+        if (!msg) return false;
+
+        await this.sendMail({ to: order.customerEmail, subject: `Order #${order.orderNumber} - ${msg.title}`, html: this.wrapEmail({
+            eyebrow: 'Order Update', title: msg.title, intro: `Hi ${this.safeText(order.customerName)}, ${msg.intro}`,
+            cta: { text: 'Track Your Order', link: trackUrl },
+            footer: 'You can track your order status in real-time using the button above.',
+        }), text: `Hi ${order.customerName}, ${msg.intro} Track: ${trackUrl}` }, settings);
+        return true;
+    }
+
+    async sendOrderCancelledEmail(order: any) {
+        const settings = await this.getResolvedMailSettings();
+        if (!this.isConfigured(settings) || !settings.enabled) return false;
+
+        const websiteUrl = this.configService.get<string>('FRONTEND_URL') || 'http://localhost:3000';
+        await this.sendMail({ to: order.customerEmail, subject: `Order #${order.orderNumber} has been cancelled`, html: this.wrapEmail({
+            eyebrow: 'Order Cancelled', title: 'Your order has been cancelled',
+            intro: `Hi ${this.safeText(order.customerName)}, your order #${this.safeText(order.orderNumber)} has been cancelled. If you didn't request this, please contact us.`,
+            cta: { text: 'Order Again', link: `${websiteUrl}/order` },
+            sections: [{ title: 'Order details', lines: [`Order: #${this.safeText(order.orderNumber)}`, `Total: $${Number(order.total).toFixed(2)}`] }],
+            footer: 'If you have any questions, reply to this email or call us.',
+        }), text: `Hi ${order.customerName}, your order #${order.orderNumber} has been cancelled.` }, settings);
+        return true;
+    }
+
+    async sendPickupCompleteEmail(order: any) {
+        const settings = await this.getResolvedMailSettings();
+        if (!this.isConfigured(settings) || !settings.enabled) return false;
+
+        const websiteUrl = this.configService.get<string>('FRONTEND_URL') || 'http://localhost:3000';
+        await this.sendMail({ to: order.customerEmail, subject: `Order #${order.orderNumber} picked up - Enjoy!`, html: this.wrapEmail({
+            eyebrow: 'Picked Up', title: 'Enjoy your meal!',
+            intro: `Hi ${this.safeText(order.customerName)}, your order #${this.safeText(order.orderNumber)} has been picked up. Thank you for choosing Eggs Ok!`,
+            cta: { text: 'Leave a Review', link: `${websiteUrl}/review?order=${order.orderNumber}` },
+            footer: 'We hope you love your food! Consider leaving us a review.',
+        }), text: `Hi ${order.customerName}, your order #${order.orderNumber} has been picked up. Enjoy!` }, settings);
+        return true;
+    }
+
+    async sendWelcomeEmail(name: string, email: string) {
+        const settings = await this.getResolvedMailSettings();
+        if (!this.isConfigured(settings) || !settings.enabled) return false;
+
+        const websiteUrl = this.configService.get<string>('FRONTEND_URL') || 'http://localhost:3000';
+        await this.sendMail({ to: email, subject: 'Welcome to Eggs Ok!', html: this.wrapEmail({
+            eyebrow: 'Welcome', title: `Welcome to Eggs Ok, ${this.safeText(name)}!`,
+            intro: 'Thanks for creating your account. You now have access to order tracking, saved addresses, loyalty rewards, and exclusive offers.',
+            cta: { text: 'Start Ordering', link: `${websiteUrl}/order` },
+            sections: [{ title: 'Your perks', lines: ['Earn points on every order', 'Save delivery addresses', 'Track orders in real-time', 'Exclusive member rewards'] }],
+            footer: 'Start earning loyalty points with your first order!',
+        }), text: `Welcome to Eggs Ok, ${name}! Start ordering at ${websiteUrl}/order` }, settings);
+        return true;
+    }
+
     async sendTeamInviteEmail(payload: { name: string; email: string; role: string; setupLink: string }) {
         const settings = await this.assertMailReady();
         const name = this.safeText(payload.name);

@@ -22,14 +22,7 @@ type Transaction = {
 
 const API = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3002/api';
 
-const monthlyData = [
-  { month: 'Oct', revenue: 12400, fees: 620, delivery: 1240, profit: 10540 },
-  { month: 'Nov', revenue: 14800, fees: 740, delivery: 1480, profit: 12580 },
-  { month: 'Dec', revenue: 18900, fees: 945, delivery: 1890, profit: 16065 },
-  { month: 'Jan', revenue: 15200, fees: 760, delivery: 1520, profit: 12920 },
-  { month: 'Feb', revenue: 16800, fees: 840, delivery: 1680, profit: 14280 },
-  { month: 'Mar', revenue: 14300, fees: 715, delivery: 1430, profit: 12155 },
-];
+// monthlyData is computed from real transactions below
 
 const statusColor: Record<string, string> = {
   Paid: '#22C55E',
@@ -40,8 +33,8 @@ const statusColor: Record<string, string> = {
 export default function Payments() {
   const [data, setData] = useState<{ transactions: Transaction[], stats: any }>({ transactions: [], stats: null });
   const [loading, setLoading] = useState(true);
-  const [dateFrom, setDateFrom] = useState('2026-03-01');
-  const [dateTo, setDateTo] = useState('2026-03-20');
+  const [dateFrom, setDateFrom] = useState(new Date(Date.now() - 30 * 86400000).toISOString().split('T')[0]);
+  const [dateTo, setDateTo] = useState(new Date().toISOString().split('T')[0]);
   const [search, setSearch] = useState('');
   const [statusFilter, setStatusFilter] = useState<string>('all');
   const [typeFilter, setTypeFilter] = useState<string>('all');
@@ -100,10 +93,25 @@ export default function Payments() {
     return matchSearch && matchStatus && matchType && matchFrom && matchTo;
   });
 
-  const totalRevenue = filtered.reduce((a, t) => a + t.orderTotal, 0);
-  const totalStripeFees = filtered.reduce((a, t) => a + t.stripeFee, 0);
-  const totalDeliveryFees = filtered.reduce((a, t) => a + t.deliveryFee, 0);
-  const totalRefunds = filtered.reduce((a, t) => a + t.refundAmount, 0);
+  const totalRevenue = filtered.reduce((a: number, t: any) => a + t.orderTotal, 0);
+  const totalStripeFees = filtered.reduce((a: number, t: any) => a + t.stripeFee, 0);
+  const totalDeliveryFees = filtered.reduce((a: number, t: any) => a + t.deliveryFee, 0);
+  const totalRefunds = filtered.reduce((a: number, t: any) => a + t.refundAmount, 0);
+
+  // Build monthly chart data from real transactions
+  const monthlyMap: Record<string, { revenue: number; fees: number; delivery: number; profit: number }> = {};
+  data.transactions.forEach((t: any) => {
+    const d = new Date(t.date);
+    const key = d.toLocaleString('en-US', { month: 'short', year: '2-digit' });
+    if (!monthlyMap[key]) monthlyMap[key] = { revenue: 0, fees: 0, delivery: 0, profit: 0 };
+    monthlyMap[key].revenue += t.orderTotal;
+    monthlyMap[key].fees += t.stripeFee;
+    monthlyMap[key].delivery += t.deliveryFee;
+    monthlyMap[key].profit += t.netRevenue;
+  });
+  const monthlyData = Object.entries(monthlyMap).map(([month, d]) => ({
+    month, revenue: Math.round(d.revenue), fees: Math.round(d.fees), delivery: Math.round(d.delivery), profit: Math.round(d.profit),
+  }));
   const totalNet = filtered.reduce((a, t) => a + t.netRevenue, 0);
   const totalProfit = totalRevenue - totalStripeFees - totalDeliveryFees - totalRefunds;
   const stripePct = totalRevenue > 0 ? ((totalStripeFees / totalRevenue) * 100).toFixed(1) : '0';

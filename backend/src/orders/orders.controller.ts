@@ -65,8 +65,27 @@ export class OrdersController {
     });
   }
 
+  @Get(':id/delivery-quote')
+  getDeliveryQuote(@Param('id', ParseIntPipe) id: number) {
+    return this.ordersService.getDeliveryQuote(id);
+  }
+
+  @Post(':id/cancel-delivery')
+  cancelDelivery(@Param('id', ParseIntPipe) id: number) {
+    return this.ordersService.cancelDeliveryDispatch(id);
+  }
+
   @Get(':id/delivery-status')
   getDeliveryStatus(@Param('id', ParseIntPipe) id: number) {
     return this.ordersService.getDeliveryStatus(id);
+  }
+
+  // Uber Direct webhook
+  @Post('webhooks/uber')
+  handleUberWebhook(@Body() payload: any) {
+    this.ordersService.handleDeliveryWebhook(payload).catch(err => {
+      console.error('[WEBHOOK] Error processing:', err.message);
+    });
+    return { status: 'ok' };
   }
 }

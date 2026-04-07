@@ -5,6 +5,8 @@ import { useRouter } from 'next/navigation';
 import { useCart } from '../context/CartContext';
 import { API_URL } from '../../lib/api';
 import { useGoogleMaps, initAutocomplete, validateDeliveryAddress } from '../../hooks/useGoogleMaps';
+import { loadStripe } from '@stripe/stripe-js';
+import { Elements, CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
 
 const css = `
   *, *::before, *::after { box-sizing: border-box; }
@@ -152,6 +154,27 @@ const css = `
 `;
 
 export default function CheckoutPage() {
+  const [stripePromise, setStripePromise] = useState<any>(null);
+
+  useEffect(() => {
+    fetch(`${API_URL}/payments/stripe-key`)
+      .then(r => r.ok ? r.json() : { key: null })
+      .then(data => {
+        if (data.key && data.key.startsWith('pk_') && data.key.length > 20) {
+          setStripePromise(loadStripe(data.key));
+        }
+      })
+      .catch(() => {});
+  }, []);
+
+  return (
+    <Elements stripe={stripePromise} options={{ appearance: { theme: 'night', variables: { colorPrimary: '#FED800', colorBackground: '#0A0A0A', colorText: '#FEFEFE', borderRadius: '10px' } } }}>
+      <CheckoutInner />
+    </Elements>
+  );
+}
+
+function CheckoutInner() {
   const router = useRouter();
   const {
     cart, cartTotal, orderType, setOrderType, getPrice,
@@ -218,9 +241,10 @@ export default function CheckoutPage() {
     }
   }, []);
 
-  const [cardNumber, setCardNumber] = useState('');
-  const [expiry, setExpiry] = useState('');
-  const [cvv, setCvv] = useState('');
+  // Stripe
+  const stripe = useStripe();
+  const elements = useElements();
+  const [cardComplete, setCardComplete] = useState(false);
   const [promoCode, setPromoCode] = useState('');
   const [promoApplied, setPromoApplied] = useState(false);
   const [promoError, setPromoError] = useState('');
@@ -312,72 +336,86 @@ export default function CheckoutPage() {
     setPromoLoading(false);
   };
 
-  const formatCard = (val: string) => {
-    const digits = val.replace(/\D/g, '').slice(0, 16);
-    return digits.replace(/(.{4})/g, '$1 ').trim();
-  };
-
-  const formatExpiry = (val: string) => {
-    const digits = val.replace(/\D/g, '').slice(0, 4);
-    if (digits.length >= 3) return digits.slice(0, 2) + '/' + digits.slice(2);
-    return digits;
-  };
-
   const handlePlaceOrder = async () => {
     setPlacing(true);
     setOrderError('');
+
+    const orderData = {
+      customerName: `${firstName} ${lastName}`,
+      customerEmail: email,
+      customerPhone: phone,
+      orderType,
+      scheduleType,
+      scheduledDate: scheduleDate || null,
+      scheduledTime: scheduleTime || null,
+      deliveryAddress: deliveryAddress || null,
+      deliveryApt: deliveryApt || null,
+      deliveryInstructions: deliveryInstructions || null,
+      items: cart.map(c => {
+        const selectedModifiersList: Array<{ name: string; price: number }> = [];
+        if (c.item.modifiers) {
+          c.item.modifiers.forEach(group => {
+            const selected = c.selectedModifiers[group.id] || [];
+            selected.forEach(optId => {
+              const opt = group.options.find(o => o.id === optId);
+              if (opt) selectedModifiersList.push({ name: opt.name, price: opt.price });
+            });
+          });
+        }
+        return { id: c.item.id, name: c.item.name, price: getPrice(c.item), quantity: c.quantity, specialInstructions: c.specialInstructions || null, modifiers: selectedModifiersList };
+      }),
+      subtotal,
+      tax: taxes,
+      deliveryFee,
+      tip: tipAmount,
+      total,
+      promoCode: promoApplied ? promoCode : null,
+      discount,
+      isAuthenticated: isLoggedIn,
+    };
+
     try {
+      // Step 1: Process payment with Stripe (if available and card element exists)
+      const cardElement = stripe && elements ? elements.getElement(CardElement) : null;
+      if (stripe && cardElement) {
+
+        // Create payment intent on backend
+        const piRes = await fetch(`${API_URL}/payments/create-payment-intent`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ amount: total, orderNumber: `EO-${Date.now()}`, customerEmail: email, customerName: `${firstName} ${lastName}` }),
+        });
+
+        if (!piRes.ok) {
+          const err = await piRes.json().catch(() => ({}));
+          throw new Error(err.message || 'Payment setup failed');
+        }
+
+        const { clientSecret } = await piRes.json();
+
+        // Confirm payment with Stripe
+        const { error: stripeError } = await stripe.confirmCardPayment(clientSecret, {
+          payment_method: { card: cardElement, billing_details: { name: `${firstName} ${lastName}`, email } },
+        });
+
+        if (stripeError) {
+          throw new Error(stripeError.message || 'Payment failed');
+        }
+      }
+
+      // Step 2: Create order (payment already confirmed)
       const response = await fetch(`${API_URL}/orders`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          customerName: `${firstName} ${lastName}`,
-          customerEmail: email,
-          customerPhone: phone,
-          orderType,
-          scheduleType,
-          scheduledDate: scheduleDate || null,
-          scheduledTime: scheduleTime || null,
-          deliveryAddress: deliveryAddress || null,
-          deliveryApt: deliveryApt || null,
-          deliveryInstructions: deliveryInstructions || null,
-          items: cart.map(c => {
-            const selectedModifiersList: Array<{ name: string; price: number }> = [];
-            if (c.item.modifiers) {
-              c.item.modifiers.forEach(group => {
-                const selected = c.selectedModifiers[group.id] || [];
-                selected.forEach(optId => {
-                  const opt = group.options.find(o => o.id === optId);
-                  if (opt) {
-                    selectedModifiersList.push({ name: opt.name, price: opt.price });
-                  }
-                });
-              });
-            }
-            return {
-              id: c.item.id,
-              name: c.item.name,
-              price: getPrice(c.item),
-              quantity: c.quantity,
-              specialInstructions: c.specialInstructions || null,
-              modifiers: selectedModifiersList,
-            };
-          }),
-          subtotal,
-          tax: taxes,
-          deliveryFee,
-          tip: tipAmount,
-          total,
-          promoCode: promoApplied ? promoCode : null,
-          discount,
-          isAuthenticated: isLoggedIn,
-        }),
+        body: JSON.stringify(orderData),
       });
+
       if (!response.ok) {
         const errorData = await response.json().catch(() => ({}));
         const message = Array.isArray(errorData?.message) ? errorData.message[0] : errorData?.message;
         throw new Error(message || 'Unable to place your order right now.');
       }
+
       const order = await response.json();
       localStorage.setItem('eggok_last_order', JSON.stringify(order));
       clearCart();
@@ -421,7 +459,7 @@ export default function CheckoutPage() {
   };
 
   const isFormValid = firstName && lastName && email && phone;
-  const isPaymentValid = cardNumber.replace(/\s/g, '').length === 16 && expiry.length === 5 && cvv.length >= 3;
+  const isPaymentValid = (stripe && elements?.getElement(CardElement)) ? cardComplete : true;
   const canPlaceOrder = isFormValid && isPaymentValid;
 
   const isPreset = (t: number) => tipMode === 'preset' && tipPercent === t;
@@ -565,28 +603,23 @@ export default function CheckoutPage() {
                 </svg>
                 <span style={{ fontSize: '12px', color: '#22C55E' }}>Secured by Stripe — 256-bit SSL encryption</span>
               </div>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-                <div>
-                  <label style={labelStyle}>Card number *</label>
-                  <input style={inputStyle} placeholder="0000 0000 0000 0000" value={cardNumber} onChange={e => setCardNumber(formatCard(e.target.value))}
-                    onFocus={e => (e.target as HTMLInputElement).style.borderColor = '#FED800'}
-                    onBlur={e => (e.target as HTMLInputElement).style.borderColor = '#3A3A3A'} />
+              {stripe ? (
+                <div style={{ padding: '14px', background: '#0A0A0A', border: '1px solid #3A3A3A', borderRadius: '10px' }}>
+                  <CardElement
+                    options={{
+                      style: {
+                        base: { fontSize: '15px', color: '#FEFEFE', '::placeholder': { color: '#555' }, iconColor: '#FED800' },
+                        invalid: { color: '#FC0301', iconColor: '#FC0301' },
+                      },
+                    }}
+                    onChange={(e) => setCardComplete(e.complete)}
+                  />
                 </div>
-                <div className="payment-grid">
-                  <div>
-                    <label style={labelStyle}>Expiry date *</label>
-                    <input style={inputStyle} placeholder="MM / YY" value={expiry} onChange={e => setExpiry(formatExpiry(e.target.value))}
-                      onFocus={e => (e.target as HTMLInputElement).style.borderColor = '#FED800'}
-                      onBlur={e => (e.target as HTMLInputElement).style.borderColor = '#3A3A3A'} />
-                  </div>
-                  <div>
-                    <label style={labelStyle}>Security code *</label>
-                    <input style={inputStyle} placeholder="CVC" maxLength={4} value={cvv} onChange={e => setCvv(e.target.value.replace(/\D/g, ''))}
-                      onFocus={e => (e.target as HTMLInputElement).style.borderColor = '#FED800'}
-                      onBlur={e => (e.target as HTMLInputElement).style.borderColor = '#3A3A3A'} />
-                  </div>
+              ) : (
+                <div style={{ padding: '20px', background: '#0A0A0A', borderRadius: '10px', border: '1px dashed #2A2A2A', textAlign: 'center' }}>
+                  <p style={{ fontSize: '13px', color: '#888', margin: 0 }}>Payment processing not configured. Add Stripe keys in Admin → Integrations.</p>
                 </div>
-              </div>
+              )}
             </div>
 
             {/* Place Order */}

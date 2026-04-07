@@ -10,6 +10,10 @@ export class ReviewsService {
         private readonly reviewRepository: Repository<Review>,
     ) { }
 
+    create(review: Partial<Review>): Promise<Review> {
+        return this.reviewRepository.save(this.reviewRepository.create(review));
+    }
+
     findAll(): Promise<Review[]> {
         return this.reviewRepository.find({ order: { date: 'DESC' } });
     }
