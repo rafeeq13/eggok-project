@@ -1,84 +1,73 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>New Order - Eggs Ok Admin</title>
-</head>
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>New Order</title></head>
 <body style="margin:0;padding:0;background-color:#050505;">
-
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:#050505;">
 <tr><td align="center" style="padding:24px 16px;">
-
 <table role="presentation" width="600" cellpadding="0" cellspacing="0" border="0" style="max-width:600px;width:100%;background:#000;border:1px solid #1A1A1A;border-radius:20px;overflow:hidden;">
 
   <!-- HEADER -->
-  <tr><td style="background:#000;padding:28px 36px;border-bottom:1px solid #1A1A1A;">
+  <tr><td style="background:#000;padding:16px 36px;border-bottom:1px solid #1A1A1A;">
     <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
       <tr>
-        <td style="font-family:Georgia,serif;font-size:28px;font-weight:700;color:#FED800;letter-spacing:3px;">EGGS OK</td>
-        <td align="right" style="font-family:Arial,sans-serif;font-size:10px;color:#555;letter-spacing:2px;text-transform:uppercase;">Admin Alert</td>
+        <td><img src="https://fooddeliveryaudit.com/logo.svg" alt="Eggs Ok" width="120" height="50" style="display:block;border:0;"></td>
+        <td align="right" style="font-family:Arial,sans-serif;font-size:16px;color:#FED800;letter-spacing:2px;text-transform:uppercase;vertical-align:middle;">Admin</td>
       </tr>
     </table>
   </td></tr>
 
   <!-- RED BANNER -->
-  <tr><td style="background:#FC0301;padding:24px 36px;">
-    <div style="font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,0.6);margin-bottom:8px;font-family:Arial,sans-serif;">New Order Received</div>
-    <div style="font-size:26px;font-weight:800;line-height:1.15;color:#FFFFFF;font-family:Georgia,serif;">#<%= orderNumber %></div>
+  <tr><td style="background:#FC0301;padding:28px 36px;">
+    <div style="font-size:11px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#000000;margin-bottom:8px;font-family:Arial,sans-serif;">New Order Received</div>
+    <div style="font-size:24px;font-weight:700;line-height:1.2;color:#FFFFFF;font-family:Georgia,serif;">#<%= orderNumber %></div>
   </td></tr>
 
   <!-- BODY -->
   <tr><td style="padding:32px 36px;">
 
-    <!-- Customer Info -->
-    <div style="font-family:Arial,sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;color:#FED800;text-transform:uppercase;margin-bottom:12px;">Customer</div>
+    <div style="font-family:Arial,sans-serif;font-size:11px;font-weight:600;letter-spacing:2px;color:#FED800;text-transform:uppercase;margin-bottom:12px;">Customer</div>
     <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#0D0D0D;border:1px solid #1A1A1A;border-radius:12px;margin-bottom:24px;">
       <tr><td style="padding:16px 20px;">
-        <div style="font-family:Arial,sans-serif;font-size:15px;font-weight:700;color:#FFF;margin-bottom:4px;"><%= customerName %></div>
-        <div style="font-family:Arial,sans-serif;font-size:13px;color:#888;line-height:1.6;">
+        <div style="font-family:Arial,sans-serif;font-size:15px;font-weight:600;color:#FFFFFF;margin-bottom:4px;"><%= customerName %></div>
+        <div style="font-family:Arial,sans-serif;font-size:13px;color:#FFFFFF;line-height:1.6;font-weight:400;">
           <%= customerEmail %><br><%= customerPhone %>
         </div>
       </td></tr>
     </table>
 
-    <!-- Order Info -->
+    <div style="font-family:Arial,sans-serif;font-size:11px;font-weight:600;letter-spacing:2px;color:#FED800;text-transform:uppercase;margin-bottom:12px;">Order Info</div>
     <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#0D0D0D;border:1px solid #1A1A1A;border-radius:12px;margin-bottom:24px;">
       <tr><td style="padding:16px 20px;">
         <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
           <tr>
-            <td style="font-family:Arial,sans-serif;font-size:13px;color:#888;padding-bottom:8px;">Type</td>
-            <td align="right" style="font-family:Arial,sans-serif;font-size:13px;font-weight:700;color:#FFF;padding-bottom:8px;text-transform:capitalize;"><%= orderType %></td>
+            <td style="font-family:Arial,sans-serif;font-size:13px;color:#FFFFFF;padding-bottom:8px;font-weight:400;">Type</td>
+            <td align="right" style="font-family:Arial,sans-serif;font-size:13px;font-weight:600;color:#FFFFFF;padding-bottom:8px;text-transform:capitalize;"><%= orderType %></td>
           </tr>
           <% if (orderType === 'delivery' && deliveryAddress) { %>
           <tr>
-            <td style="font-family:Arial,sans-serif;font-size:13px;color:#888;padding-bottom:8px;">Deliver To</td>
-            <td align="right" style="font-family:Arial,sans-serif;font-size:13px;font-weight:700;color:#FFF;padding-bottom:8px;"><%= deliveryAddress %></td>
+            <td style="font-family:Arial,sans-serif;font-size:13px;color:#FFFFFF;padding-bottom:8px;font-weight:400;">Deliver To</td>
+            <td align="right" style="font-family:Arial,sans-serif;font-size:13px;font-weight:600;color:#FFFFFF;padding-bottom:8px;"><%= deliveryAddress %></td>
           </tr>
           <% } %>
           <tr>
-            <td style="font-family:Arial,sans-serif;font-size:15px;font-weight:700;color:#FFF;padding-top:8px;border-top:1px solid #1A1A1A;">Total</td>
-            <td align="right" style="font-family:Arial,sans-serif;font-size:18px;font-weight:800;color:#FED800;padding-top:8px;border-top:1px solid #1A1A1A;">$<%= total %></td>
+            <td style="font-family:Arial,sans-serif;font-size:15px;font-weight:600;color:#FFFFFF;padding-top:8px;border-top:1px solid #1A1A1A;">Total</td>
+            <td align="right" style="font-family:Arial,sans-serif;font-size:18px;font-weight:600;color:#FED800;padding-top:8px;border-top:1px solid #1A1A1A;">$<%= total %></td>
           </tr>
         </table>
       </td></tr>
     </table>
 
-    <!-- Items -->
-    <div style="font-family:Arial,sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;color:#FED800;text-transform:uppercase;margin-bottom:12px;">Items</div>
-    <div style="font-family:Arial,sans-serif;font-size:14px;color:#D0D0D0;line-height:2;">
-      <%- itemsHtml %>
-    </div>
+    <div style="font-family:Arial,sans-serif;font-size:11px;font-weight:600;letter-spacing:2px;color:#FED800;text-transform:uppercase;margin-bottom:12px;">Items</div>
+    <div style="font-family:Arial,sans-serif;font-size:14px;color:#FFFFFF;line-height:2;font-weight:400;"><%- itemsHtml %></div>
 
   </td></tr>
 
   <!-- FOOTER -->
   <tr><td style="padding:0 36px;"><div style="height:1px;background:#1A1A1A;"></div></td></tr>
   <tr><td align="center" style="padding:20px 36px;">
-    <div style="font-family:Arial,sans-serif;font-size:12px;color:#555;">This is an automated notification from Eggs Ok ordering system.</div>
+    <div style="font-family:Arial,sans-serif;font-size:12px;color:#FED800;font-weight:400;">Automated notification from Eggs Ok ordering system.</div>
   </td></tr>
-
-  <tr><td height="6" style="background:#FED800;font-size:0;line-height:0;">&nbsp;</td></tr>
+  <tr><td height="5" style="background:#FED800;font-size:0;line-height:0;">&nbsp;</td></tr>
 
 </table>
 </td></tr>

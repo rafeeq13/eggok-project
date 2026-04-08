@@ -784,10 +784,7 @@ export class MailService {
             ? `<div style="margin-top:28px;padding-top:20px;border-top:1px solid #1A1A1A;font-size:14px;line-height:1.7;color:#FFFFFF;font-family:Arial,sans-serif;font-weight:400;">${this.escapeHtml(payload.footer)}</div>`
             : '';
 
-        // Social icon SVGs (inline for email compatibility)
-        const igIcon = `<img src="https://cdn-icons-png.flaticon.com/16/174/174855.png" width="16" height="16" alt="Instagram" style="vertical-align:middle;margin-right:4px;">`;
-        const fbIcon = `<img src="https://cdn-icons-png.flaticon.com/16/124/124010.png" width="16" height="16" alt="Facebook" style="vertical-align:middle;margin-right:4px;">`;
-        const tkIcon = `<img src="https://cdn-icons-png.flaticon.com/16/3046/3046121.png" width="16" height="16" alt="TikTok" style="vertical-align:middle;margin-right:4px;">`;
+        // Social icon images
 
         return `
 <!DOCTYPE html>
@@ -800,11 +797,11 @@ export class MailService {
 <table role="presentation" width="600" cellpadding="0" cellspacing="0" border="0" style="max-width:600px;width:100%;background-color:#000000;border:1px solid #1A1A1A;border-radius:20px;overflow:hidden;">
 
   <!-- HEADER with Logo -->
-  <tr><td style="background:#000000;padding:24px 36px;border-bottom:1px solid #1A1A1A;">
+  <tr><td style="background:#000000;padding:16px 36px;border-bottom:1px solid #1A1A1A;">
     <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
       <tr>
         <td><img src="${logoUrl}" alt="Eggs Ok" width="120" height="50" style="display:block;border:0;outline:none;"></td>
-        <td align="right" style="font-family:Arial,sans-serif;font-size:10px;color:#FED800;letter-spacing:2px;text-transform:uppercase;vertical-align:middle;">Philadelphia</td>
+        <td align="right" style="font-family:Arial,sans-serif;font-size:16px;color:#FED800;letter-spacing:2px;text-transform:uppercase;vertical-align:middle;">Philadelphia</td>
       </tr>
     </table>
   </td></tr>
@@ -844,11 +841,11 @@ export class MailService {
       </td></tr>
       <!-- Social Icons -->
       <tr><td align="center" style="padding-bottom:18px;">
-        <table role="presentation" cellpadding="0" cellspacing="0" border="0"><tr>
-          <td style="padding:0 10px;"><a href="https://instagram.com/eggsokphilly" style="text-decoration:none;">${igIcon}<span style="font-family:Arial,sans-serif;font-size:12px;color:#FED800;font-weight:400;">Instagram</span></a></td>
-          <td style="padding:0 10px;"><a href="https://facebook.com/eggsokphilly" style="text-decoration:none;">${fbIcon}<span style="font-family:Arial,sans-serif;font-size:12px;color:#FED800;font-weight:400;">Facebook</span></a></td>
-          <td style="padding:0 10px;"><a href="https://tiktok.com/@eggsokphilly" style="text-decoration:none;">${tkIcon}<span style="font-family:Arial,sans-serif;font-size:12px;color:#FED800;font-weight:400;">TikTok</span></a></td>
-        </tr></table>
+        <a href="https://instagram.com/eggsokphilly" style="text-decoration:none;padding:0 8px;"><img src="https://cdn.simpleicons.org/instagram/FED800" width="22" height="22" alt="Instagram" style="border:0;vertical-align:middle;"></a>
+        <a href="https://facebook.com/eggsokphilly" style="text-decoration:none;padding:0 8px;"><img src="https://cdn.simpleicons.org/facebook/FED800" width="22" height="22" alt="Facebook" style="border:0;vertical-align:middle;"></a>
+        <a href="https://tiktok.com/@eggsokphilly" style="text-decoration:none;padding:0 8px;"><img src="https://cdn.simpleicons.org/tiktok/FED800" width="22" height="22" alt="TikTok" style="border:0;vertical-align:middle;"></a>
+        <a href="https://www.yelp.com/biz/eggs-ok-philadelphia" style="text-decoration:none;padding:0 8px;"><img src="https://cdn.simpleicons.org/yelp/FED800" width="22" height="22" alt="Yelp" style="border:0;vertical-align:middle;"></a>
+        <a href="https://maps.google.com/?q=3517+Lancaster+Ave+Philadelphia+PA+19104" style="text-decoration:none;padding:0 8px;"><img src="https://cdn.simpleicons.org/googlemaps/FED800" width="22" height="22" alt="Google Maps" style="border:0;vertical-align:middle;"></a>
       </td></tr>
       <!-- Legal -->
       <tr><td align="center">
