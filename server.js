@@ -1,10 +1,13 @@
 var http = require("http");
 var fs = require("fs");
 var path = require("path");
-var net = require("net");
+var exec = require("child_process").execSync;
 var spawn = require("child_process").spawn;
 
 var MAIN_PORT = parseInt(process.env.PORT, 10) || 3000;
+var BACKEND_PORT = 29001;
+var WEBSITE_PORT = 29002;
+var ADMIN_PORT = 29003;
 var ROOT = __dirname;
 var NODE = process.execPath;
 
@@ -27,20 +30,13 @@ var MIME = {
   ".woff2": "font/woff2",
 };
 
-// Find a free port dynamically - no more conflicts
-function findFreePort() {
-  return new Promise(function(resolve, reject) {
-    var server = net.createServer();
-    server.listen(0, "127.0.0.1", function() {
-      var port = server.address().port;
-      server.close(function() { resolve(port); });
-    });
-    server.on("error", reject);
-  });
-}
-
 function log(n, m) { console.log("[" + n + "] " + m); }
 
+// Kill old child processes before starting new ones
+try { exec("pkill -f 'node.*dist/main.js' 2>/dev/null || true"); } catch(e) {}
+try { exec("pkill -f 'node.*standalone/server.js' 2>/dev/null || true"); } catch(e) {}
+
+var children = [];
 function startChild(name, script, env) {
   var cwd = path.dirname(script);
   var child = spawn(NODE, [script], { cwd: cwd, env: Object.assign({}, process.env, env), stdio: ["ignore", "pipe", "pipe"] });
@@ -48,11 +44,10 @@ function startChild(name, script, env) {
   child.stderr.on("data", function(d) { log(name, d.toString().trim()); });
   child.on("exit", function(code) {
     log(name, "exit " + code + ", restarting in 5s");
-    // Re-use same port on restart since we own it
     setTimeout(function() { startChild(name, script, env); }, 5000);
   });
-  log(name, "started PID=" + child.pid + " on port " + env.PORT);
-  return child;
+  children.push(child);
+  log(name, "started PID=" + child.pid);
 }
 
 function proxy(req, res, port, noCache) {
@@ -83,20 +78,14 @@ function serveStatic(req, res, filePath) {
   return true;
 }
 
-// Start everything with dynamic ports
-async function main() {
-  var BACKEND_PORT = await findFreePort();
-  var WEBSITE_PORT = await findFreePort();
-  var ADMIN_PORT = await findFreePort();
-
-  log("gateway", "Ports: backend=" + BACKEND_PORT + " website=" + WEBSITE_PORT + " admin=" + ADMIN_PORT);
-
+// Wait for old processes to die, then start
+setTimeout(function() {
   startChild("backend", path.join(ROOT, "backend", "dist", "main.js"), { PORT: String(BACKEND_PORT) });
   startChild("website", path.join(ROOT, "website", ".next", "standalone", "server.js"), { PORT: String(WEBSITE_PORT), HOSTNAME: "127.0.0.1" });
   startChild("admin", path.join(ROOT, "admin", ".next", "standalone", "server.js"), { PORT: String(ADMIN_PORT), HOSTNAME: "127.0.0.1" });
 
   http.createServer(function(req, res) {
-    var u = req.url.split("?")[0];
+    var u = decodeURIComponent(req.url.split("?")[0]);
 
     if (u.startsWith("/_next/static/")) {
       var staticPath = u.replace("/_next/static/", "");
@@ -115,6 +104,7 @@ async function main() {
     if (u.startsWith("/admin")) return proxy(req, res, ADMIN_PORT, true);
     proxy(req, res, WEBSITE_PORT, true);
   }).listen(MAIN_PORT, "0.0.0.0", function() { log("gateway", "running on port " + MAIN_PORT); });
-}
+}, 3000);
 
-main().catch(function(e) { console.error("Fatal:", e); process.exit(1); });
+process.on("exit", function() { children.forEach(function(c) { try { c.kill(); } catch(e) {} }); });
+process.on("SIGTERM", function() { process.exit(0); });
