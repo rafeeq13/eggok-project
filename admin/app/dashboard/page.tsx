@@ -66,24 +66,27 @@ function DashboardContent() {
     return () => window.removeEventListener('resize', check);
   }, []);
 
-  const sidebarItems = [
-    { id: 'overview', label: 'Overview', icon: '📊' },
-    { id: 'orders', label: 'Orders', icon: '🧾' },
-    { id: 'menu', label: 'Menu Management', icon: '🍽️' },
-    { id: 'customers', label: 'Customers', icon: '👥' },
-    { id: 'promotions', label: 'Promotions', icon: '🎟️' },
-    { id: 'analytics', label: 'Analytics', icon: '📈' },
-    { id: 'payments', label: 'Payments', icon: '💳' },
-    { id: 'delivery', label: 'Delivery Settings', icon: '🚗' },
-    { id: 'team', label: 'Team', icon: '👤' },
-    { id: 'business', label: 'Business Profile', icon: '🏪' },
-    { id: 'integrations', label: 'Integrations', icon: '🔌' },
-    { id: 'submissions', label: 'Submissions', icon: '📬' },
-    { id: 'notifications', label: 'Notifications', icon: '🔔' },
-    { id: 'reviews', label: 'Reviews', icon: '⭐' },
-    { id: 'loyalty', label: 'Loyalty Program', icon: '🎁' },
-    { id: 'settings', label: 'Store Settings', icon: '⚙️' },
+  // Role-based access: Staff=orders only, Manager=most tabs, Super Admin=everything
+  const allSidebarItems = [
+    { id: 'overview', label: 'Overview', icon: '📊', roles: ['Staff', 'Manager', 'Super Admin'] },
+    { id: 'orders', label: 'Orders', icon: '🧾', roles: ['Staff', 'Manager', 'Super Admin'] },
+    { id: 'menu', label: 'Menu Management', icon: '🍽️', roles: ['Manager', 'Super Admin'] },
+    { id: 'customers', label: 'Customers', icon: '👥', roles: ['Manager', 'Super Admin'] },
+    { id: 'promotions', label: 'Promotions', icon: '🎟️', roles: ['Manager', 'Super Admin'] },
+    { id: 'analytics', label: 'Analytics', icon: '📈', roles: ['Manager', 'Super Admin'] },
+    { id: 'payments', label: 'Payments', icon: '💳', roles: ['Super Admin'] },
+    { id: 'delivery', label: 'Delivery Settings', icon: '🚗', roles: ['Manager', 'Super Admin'] },
+    { id: 'team', label: 'Team', icon: '👤', roles: ['Super Admin'] },
+    { id: 'business', label: 'Business Profile', icon: '🏪', roles: ['Super Admin'] },
+    { id: 'integrations', label: 'Integrations', icon: '🔌', roles: ['Super Admin'] },
+    { id: 'submissions', label: 'Submissions', icon: '📬', roles: ['Manager', 'Super Admin'] },
+    { id: 'notifications', label: 'Notifications', icon: '🔔', roles: ['Manager', 'Super Admin'] },
+    { id: 'reviews', label: 'Reviews', icon: '⭐', roles: ['Manager', 'Super Admin'] },
+    { id: 'loyalty', label: 'Loyalty Program', icon: '🎁', roles: ['Manager', 'Super Admin'] },
+    { id: 'settings', label: 'Store Settings', icon: '⚙️', roles: ['Super Admin'] },
   ];
+  const userRole = adminUser?.role || 'Staff';
+  const sidebarItems = allSidebarItems.filter(item => item.roles.includes(userRole));
 
   const handleTabChange = (id: string) => {
     setActiveTab(id);

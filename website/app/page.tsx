@@ -118,9 +118,56 @@ function useReveal() {
 /* ─────────────────────────────────────────────
    PAGE
 ───────────────────────────────────────────── */
+const API = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3002/api';
+
 export default function HomePage() {
   const [openFaq, setOpenFaq] = useState<number | null>(null);
   const { isOpen, statusMessage } = useStoreSettings();
+
+  // Dynamic data with static fallbacks
+  const [livePopular, setLivePopular] = useState<any[] | null>(null);
+  const [liveReviews, setLiveReviews] = useState<any[] | null>(null);
+
+  useEffect(() => {
+    // Fetch popular menu items
+    fetch(`${API}/menu/items`)
+      .then(r => r.ok ? r.json() : [])
+      .then(items => {
+        const popular = items
+          .filter((i: any) => i.isAvailable && i.isPopular)
+          .slice(0, 4)
+          .map((i: any) => ({
+            id: i.id,
+            name: i.name,
+            img: i.image || '/main-menu/Fully Loaded Sandwich.jpg',
+            price: `$${Number(i.pickupPrice).toFixed(2)}`,
+            tag: 'Popular',
+            desc: i.description || '',
+          }));
+        if (popular.length > 0) setLivePopular(popular);
+      })
+      .catch(() => {});
+
+    // Fetch published reviews
+    fetch(`${API}/reviews`)
+      .then(r => r.ok ? r.json() : [])
+      .then(reviews => {
+        const published = reviews
+          .filter((r: any) => r.status === 'Published' && r.rating >= 4)
+          .slice(0, 4)
+          .map((r: any) => ({
+            name: r.customer,
+            stars: r.rating,
+            text: r.body || r.title,
+            date: new Date(r.date).toLocaleDateString('en-US', { month: 'long', year: 'numeric' }),
+          }));
+        if (published.length > 0) setLiveReviews(published);
+      })
+      .catch(() => {});
+  }, []);
+
+  const displayFavorites = livePopular || FAVORITES;
+  const displayReviews = liveReviews || REVIEWS;
 
   const heroReveal      = useReveal();
   const featuredReveal  = useReveal();
@@ -261,7 +308,7 @@ export default function HomePage() {
           max-width: 1200px; 
           max-height: 600px;
           min-height: 600px;
-          background-image: url('/main-menu/Main-Page/catering-home.webp');
+          background-image: url('/main-menu/Main-Page/order-ahead.webp');
           background-size: cover; background-position: center;
           display: flex; align-items: center; justify-content: flex-end;
         }
@@ -517,7 +564,7 @@ export default function HomePage() {
           </div>
 
           <div id="favorites-grid" className="fav-grid" role="list" aria-label="Featured menu items">
-            {FAVORITES.map((item, i) => (
+            {displayFavorites.map((item, i) => (
               <Link
                 href={`/order?productId=${item.id}`} key={item.id}
                 id={`fav-card-${item.id}`}
@@ -707,7 +754,7 @@ export default function HomePage() {
           </div>
 
           <div id="reviews-grid" className="reviews-grid" role="list" aria-label="Customer reviews">
-            {REVIEWS.map((r, i) => (
+            {displayReviews.map((r, i) => (
               <article
                 key={i}
                 id={`review-card-${i}`}

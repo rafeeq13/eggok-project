@@ -30,7 +30,7 @@ function ReviewContent() {
       const res = await fetch(`${API}/reviews`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ customer: name, email, rating, title, body, orderType, orderId: orderId || `WEB-${Date.now()}`, status: 'Published' }),
+        body: JSON.stringify({ customer: name, email, rating, title, body, orderType, orderId: orderId || `WEB-${Date.now()}`, status: 'Pending' }),
       });
       if (!res.ok) throw new Error('Failed to submit review');
       setSubmitted(true);

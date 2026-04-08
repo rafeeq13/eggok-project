@@ -360,6 +360,31 @@ export class OrdersService {
     }
   }
 
+  async searchOrder(query: string): Promise<Order | null> {
+    if (!query) return null;
+    const q = query.trim();
+    // Search by order number
+    const byNumber = await this.ordersRepository.findOne({ where: { orderNumber: q } });
+    if (byNumber) return byNumber;
+    // Search with EO- prefix
+    if (!q.startsWith('EO-')) {
+      const byPrefix = await this.ordersRepository.findOne({ where: { orderNumber: `EO-${q}` } });
+      if (byPrefix) return byPrefix;
+    }
+    // Search by numeric ID
+    const numId = Number(q);
+    if (!isNaN(numId)) {
+      const byId = await this.ordersRepository.findOne({ where: { id: numId } });
+      if (byId) return byId;
+    }
+    // Search by email - return most recent
+    const byEmail = await this.ordersRepository.findOne({
+      where: { customerEmail: q.toLowerCase() },
+      order: { createdAt: 'DESC' },
+    });
+    return byEmail;
+  }
+
   async getActiveOrders(): Promise<Order[]> {
     return this.ordersRepository
       .createQueryBuilder('order')

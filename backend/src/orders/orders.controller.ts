@@ -16,6 +16,11 @@ export class OrdersController {
     return this.ordersService.getAllOrders();
   }
 
+  @Get('search')
+  searchOrder(@Query('q') q: string) {
+    return this.ordersService.searchOrder(q);
+  }
+
   @Get('active')
   getActiveOrders() {
     return this.ordersService.getActiveOrders();

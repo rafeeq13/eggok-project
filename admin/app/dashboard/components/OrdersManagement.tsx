@@ -475,6 +475,19 @@ export default function OrdersManagement() {
         ))}
       </div>
 
+      {/* Export */}
+      <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '10px' }}>
+        <button onClick={() => {
+          const rows = [['Order #', 'Customer', 'Email', 'Phone', 'Type', 'Status', 'Total', 'Date']];
+          displayOrders.forEach((o: any) => rows.push([o.orderNumber, o.customerName, o.customerEmail, o.customerPhone, o.orderType, o.status, `$${Number(o.total).toFixed(2)}`, new Date(o.createdAt).toLocaleDateString()]));
+          const csv = rows.map(r => r.map(v => `"${v}"`).join(',')).join('\n');
+          const blob = new Blob([csv], { type: 'text/csv' });
+          const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `orders-${activeTab}-${new Date().toISOString().split('T')[0]}.csv`; a.click();
+        }} style={{ padding: '8px 14px', background: '#1A1A1A', border: '1px solid #2A2A2A', borderRadius: '8px', color: '#888', fontSize: '11px', fontWeight: '600', cursor: 'pointer' }}>
+          Export CSV
+        </button>
+      </div>
+
       {/* Stats Row */}
       {activeTab === 'active' && (
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '10px', marginBottom: '16px' }}>

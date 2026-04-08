@@ -18,20 +18,11 @@ export default function TrackPage() {
     setError('');
 
     try {
-      // Try by order number first
-      const res = await fetch(`${API}/orders`);
+      const res = await fetch(`${API}/orders/search?q=${encodeURIComponent(query.trim())}`);
       if (!res.ok) throw new Error('Failed to search');
-      const orders = await res.json();
+      const match = await res.json();
 
-      const q = query.trim().toUpperCase();
-      const match = orders.find((o: any) =>
-        o.orderNumber === q ||
-        o.orderNumber === `EO-${q}` ||
-        o.id === Number(q) ||
-        o.customerEmail?.toLowerCase() === query.trim().toLowerCase()
-      );
-
-      if (match) {
+      if (match && match.id) {
         router.push(`/order-tracking?id=${match.id}`);
       } else {
         setError('No order found. Check your order number or email and try again.');

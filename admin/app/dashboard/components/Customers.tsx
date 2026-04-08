@@ -116,16 +116,25 @@ export default function Customers() {
         ))}
       </div>
 
-      {/* Search */}
-      <div style={{ marginBottom: '16px' }}>
+      {/* Search + Export */}
+      <div style={{ display: 'flex', gap: '10px', marginBottom: '16px', alignItems: 'center' }}>
         <input
           placeholder="Search by name, email or phone..."
           value={search}
           onChange={e => setSearch(e.target.value)}
-          style={{ width: '100%', padding: '11px 16px', background: '#1A1A1A', border: '1px solid #2A2A2A', borderRadius: '10px', color: '#FEFEFE', fontSize: '13px' }}
+          style={{ flex: 1, padding: '11px 16px', background: '#1A1A1A', border: '1px solid #2A2A2A', borderRadius: '10px', color: '#FEFEFE', fontSize: '13px' }}
           onFocus={e => e.target.style.borderColor = '#FED800'}
           onBlur={e => e.target.style.borderColor = '#2A2A2A'}
         />
+        <button onClick={() => {
+          const rows = [['Name', 'Email', 'Phone', 'Orders', 'Total Spent', 'Points', 'Tier', 'Status', 'Join Date']];
+          filtered.forEach((c: any) => rows.push([c.name, c.email, c.phone || '', c.totalOrders, `$${Number(c.totalSpent).toFixed(2)}`, c.points, c.tier, c.status, c.joinDate ? new Date(c.joinDate).toLocaleDateString() : '']));
+          const csv = rows.map(r => r.map(v => `"${v}"`).join(',')).join('\n');
+          const blob = new Blob([csv], { type: 'text/csv' });
+          const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `customers-${new Date().toISOString().split('T')[0]}.csv`; a.click();
+        }} style={{ padding: '10px 16px', background: '#1A1A1A', border: '1px solid #2A2A2A', borderRadius: '10px', color: '#888', fontSize: '12px', fontWeight: '600', cursor: 'pointer', whiteSpace: 'nowrap' }}>
+          Export CSV
+        </button>
       </div>
 
       {/* Customer Table */}

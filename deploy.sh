@@ -146,7 +146,8 @@ if [ "$DEPLOY_BACKEND" = true ]; then
   REMOTE_CMD="$REMOTE_CMD rm -rf \$DEST/backend/dist; cd \$DEST/backend && tar xzf /tmp/backend-deploy.tar.gz; rm -f /tmp/backend-deploy.tar.gz;"
 fi
 
-REMOTE_CMD="$REMOTE_CMD pkill -u u966025995 -f 'node dist/main' 2>/dev/null; sleep 2; touch \$DEST/tmp/restart.txt; echo done"
+# Kill ALL node processes and let hosting restart the app via restart.txt
+REMOTE_CMD="$REMOTE_CMD pkill -u u966025995 -f node 2>/dev/null; sleep 3; touch \$DEST/tmp/restart.txt; echo done"
 
 ssh -o StrictHostKeyChecking=no -i "$KEY" -p $PORT $SERVER "$REMOTE_CMD" > /dev/null 2>&1
 echo "  Deploy done ✓"

@@ -59,7 +59,8 @@ export default function BusinessProfile() {
       setLoading(true);
       const res = await fetch(`${API}/settings/business_profile`);
       if (res.ok) {
-        const data = await res.json();
+        const text = await res.text();
+        const data = text ? JSON.parse(text) : null;
         if (data) {
           const v = data;
           if (v.restaurantName) setRestaurantName(v.restaurantName);
