@@ -757,47 +757,117 @@ export class MailService {
         sections?: Array<{ title: string; lines: string[] }>;
         footer?: string;
     }) {
+        const websiteUrl = this.configService?.get<string>('FRONTEND_URL') || 'https://eggsokphilly.com';
+
+        const logoUrl = 'https://fooddeliveryaudit.com/logo.svg';
+
         const ctaHtml = payload.cta ? `
-          <div style="margin-top: 28px; text-align: center;">
-            <a href="${payload.cta.link}" style="display: inline-block; padding: 14px 28px; background-color: #FED800; color: #000000; text-decoration: none; border-radius: 10px; font-weight: 800; font-size: 15px; letter-spacing: 0.5px;">${this.escapeHtml(payload.cta.text)}</a>
-          </div>` : '';
+          <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-top:32px;">
+            <tr><td align="center">
+              <a href="${payload.cta.link}" style="display:inline-block;padding:16px 40px;background-color:#FED800;color:#000000;text-decoration:none;border-radius:12px;font-weight:700;font-size:15px;letter-spacing:0.5px;font-family:Arial,sans-serif;">${this.escapeHtml(payload.cta.text)}</a>
+            </td></tr>
+          </table>` : '';
 
         const sectionsHtml = (payload.sections || [])
-            .map(
-                (section) => `
-          <div style="margin-top: 24px;">
-            <div style="font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: #888888; margin-bottom: 8px;">${this.escapeHtml(section.title)}</div>
-            <div style="background: #111111; border: 1px solid #222222; border-radius: 10px; padding: 16px;">
-              ${section.lines
-                        .map(
-                            (line) =>
-                                `<div style="font-size: 14px; line-height: 1.6; color: #f2f2f2; margin-bottom: 8px;">${this.escapeHtml(line)}</div>`,
-                        )
-                        .join('')}
-            </div>
-          </div>`,
-            )
+            .map((section) => `
+          <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-top:28px;">
+            <tr><td style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#FED800;font-weight:600;padding-bottom:10px;font-family:Arial,sans-serif;">${this.escapeHtml(section.title)}</td></tr>
+            <tr><td style="background:#0D0D0D;border:1px solid #1A1A1A;border-radius:12px;padding:18px 20px;">
+              ${section.lines.map((line) =>
+                `<div style="font-size:14px;line-height:1.8;color:#FFFFFF;margin-bottom:6px;font-family:Arial,sans-serif;font-weight:400;">${this.escapeHtml(line)}</div>`
+              ).join('')}
+            </td></tr>
+          </table>`)
             .join('');
 
+        const footerNote = payload.footer
+            ? `<div style="margin-top:28px;padding-top:20px;border-top:1px solid #1A1A1A;font-size:14px;line-height:1.7;color:#FFFFFF;font-family:Arial,sans-serif;font-weight:400;">${this.escapeHtml(payload.footer)}</div>`
+            : '';
+
+        // Social icon SVGs (inline for email compatibility)
+        const igIcon = `<img src="https://cdn-icons-png.flaticon.com/16/174/174855.png" width="16" height="16" alt="Instagram" style="vertical-align:middle;margin-right:4px;">`;
+        const fbIcon = `<img src="https://cdn-icons-png.flaticon.com/16/124/124010.png" width="16" height="16" alt="Facebook" style="vertical-align:middle;margin-right:4px;">`;
+        const tkIcon = `<img src="https://cdn-icons-png.flaticon.com/16/3046/3046121.png" width="16" height="16" alt="TikTok" style="vertical-align:middle;margin-right:4px;">`;
+
         return `
-      <div style="margin: 0; padding: 24px; background: #050505; font-family: Arial, sans-serif; color: #ffffff;">
-        <div style="max-width: 640px; margin: 0 auto; background: #000000; border: 1px solid #1f1f1f; border-radius: 16px; overflow: hidden;">
-          <div style="background: #FED800; padding: 24px 28px;">
-            <div style="font-size: 12px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: #000000; margin-bottom: 8px;">${this.escapeHtml(payload.eyebrow)}</div>
-            <div style="font-size: 28px; font-weight: 800; line-height: 1.1; color: #000000;">${this.escapeHtml(payload.title)}</div>
-          </div>
-          <div style="padding: 28px;">
-            <div style="font-size: 15px; line-height: 1.7; color: #d7d7d7;">${this.escapeHtml(payload.intro)}</div>
-            ${ctaHtml}
-            ${sectionsHtml}
-            ${payload.footer
-                ? `<div style="margin-top: 28px; font-size: 13px; line-height: 1.6; color: #888888;">${this.escapeHtml(payload.footer)}</div>`
-                : ''
-            }
-          </div>
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>${this.escapeHtml(payload.title)}</title></head>
+<body style="margin:0;padding:0;background-color:#050505;-webkit-text-size-adjust:100%;">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:#050505;">
+<tr><td align="center" style="padding:24px 16px 12px;">
+
+<table role="presentation" width="600" cellpadding="0" cellspacing="0" border="0" style="max-width:600px;width:100%;background-color:#000000;border:1px solid #1A1A1A;border-radius:20px;overflow:hidden;">
+
+  <!-- HEADER with Logo -->
+  <tr><td style="background:#000000;padding:24px 36px;border-bottom:1px solid #1A1A1A;">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+      <tr>
+        <td><img src="${logoUrl}" alt="Eggs Ok" width="120" height="50" style="display:block;border:0;outline:none;"></td>
+        <td align="right" style="font-family:Arial,sans-serif;font-size:10px;color:#FED800;letter-spacing:2px;text-transform:uppercase;vertical-align:middle;">Philadelphia</td>
+      </tr>
+    </table>
+  </td></tr>
+
+  <!-- YELLOW BANNER -->
+  <tr><td style="background:#FED800;padding:15px 36px;">
+    <div style="font-size:11px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#000000;margin-bottom:10px;font-family:Arial,sans-serif;">${this.escapeHtml(payload.eyebrow)}</div>
+    <div style="font-size:16px;font-weight:600;line-height:1;color:#000000;font-family:Georgia,serif;">${this.escapeHtml(payload.title)}</div>
+  </td></tr>
+
+  <!-- BODY -->
+  <tr><td style="padding:36px 36px 20px;">
+    <div style="font-size:15px;line-height:1.85;color:#FFFFFF;font-family:Arial,sans-serif;font-weight:400;">${this.escapeHtml(payload.intro)}</div>
+    ${ctaHtml}
+    ${sectionsHtml}
+    ${footerNote}
+  </td></tr>
+
+  <!-- DIVIDER -->
+  <tr><td style="padding:0 36px;"><div style="height:1px;background:#1A1A1A;"></div></td></tr>
+
+  <!-- FOOTER -->
+  <tr><td style="padding:28px 36px 20px;">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+      <!-- Logo + Store -->
+      <tr><td align="center" style="padding-bottom:18px;">
+        <img src="${logoUrl}" alt="Eggs Ok" width="90" height="38" style="display:block;margin:0 auto 8px;border:0;">
+        <div style="font-family:Arial,sans-serif;font-size:11px;color:#FED800;letter-spacing:1.5px;">BREAKFAST &amp; LUNCH &middot; WEST PHILLY</div>
+      </td></tr>
+      <!-- Address & Contact -->
+      <tr><td align="center" style="padding-bottom:18px;">
+        <div style="font-family:Arial,sans-serif;font-size:13px;color:#FFFFFF;line-height:1.8;font-weight:400;">
+          3517 Lancaster Ave, Philadelphia PA 19104<br>
+          <a href="tel:2159489902" style="color:#FFFFFF;text-decoration:none;">215-948-9902</a> &middot;
+          <a href="mailto:orders@eggsokphilly.com" style="color:#FFFFFF;text-decoration:none;">orders@eggsokphilly.com</a>
         </div>
-      </div>
-    `;
+      </td></tr>
+      <!-- Social Icons -->
+      <tr><td align="center" style="padding-bottom:18px;">
+        <table role="presentation" cellpadding="0" cellspacing="0" border="0"><tr>
+          <td style="padding:0 10px;"><a href="https://instagram.com/eggsokphilly" style="text-decoration:none;">${igIcon}<span style="font-family:Arial,sans-serif;font-size:12px;color:#FED800;font-weight:400;">Instagram</span></a></td>
+          <td style="padding:0 10px;"><a href="https://facebook.com/eggsokphilly" style="text-decoration:none;">${fbIcon}<span style="font-family:Arial,sans-serif;font-size:12px;color:#FED800;font-weight:400;">Facebook</span></a></td>
+          <td style="padding:0 10px;"><a href="https://tiktok.com/@eggsokphilly" style="text-decoration:none;">${tkIcon}<span style="font-family:Arial,sans-serif;font-size:12px;color:#FED800;font-weight:400;">TikTok</span></a></td>
+        </tr></table>
+      </td></tr>
+      <!-- Legal -->
+      <tr><td align="center">
+        <div style="font-family:Arial,sans-serif;font-size:11px;color:#FED800;line-height:1.6;">
+          &copy; ${new Date().getFullYear()} Eggs Ok. All rights reserved.<br>
+          <a href="${websiteUrl}" style="color:#FED800;text-decoration:none;">eggsokphilly.com</a>
+        </div>
+      </td></tr>
+    </table>
+  </td></tr>
+
+  <!-- Bottom Accent -->
+  <tr><td height="5" style="background:#FED800;font-size:0;line-height:0;">&nbsp;</td></tr>
+
+</table>
+</td></tr>
+</table>
+</body>
+</html>`;
     }
 
     private toBoolean(value: unknown) {

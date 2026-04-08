@@ -151,7 +151,7 @@ function DashboardContent() {
 
       {/* Logout */}
       <div style={{ padding: '12px 10px', borderTop: '1px solid #2A2A2A' }}>
-        <button onClick={() => router.push('/')} style={{
+        <button onClick={() => { localStorage.removeItem('admin_user'); router.push('/'); }} style={{
           width: '100%', padding: '10px 12px',
           background: 'transparent',
           color: '#666666', borderRadius: '8px', fontSize: '12px',

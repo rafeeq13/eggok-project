@@ -159,4 +159,56 @@ export class UsersService implements OnModuleInit {
     async remove(id: string): Promise<void> {
         await this.userRepository.delete(id);
     }
+
+    async forgotPassword(email: string) {
+        const user = await this.userRepository.findOne({ where: { email } });
+        if (!user) return { message: 'If an account with that email exists, a reset link has been sent.' };
+
+        const token = crypto.randomBytes(32).toString('hex');
+        await this.userRepository.update(user.id, {
+            inviteToken: token,
+            inviteTokenExpiry: Date.now() + 3600000, // 1 hour
+        });
+
+        const adminUrl = this.configService.get<string>('ADMIN_URL') || 'http://localhost:3001';
+        const resetLink = `${adminUrl}/reset-password?token=${token}`;
+
+        this.mailService.sendTeamInviteEmail({
+            name: user.name,
+            email: user.email,
+            role: 'Password Reset',
+            setupLink: resetLink,
+        }).catch(err => {
+            console.error(`[USERS] Failed to send reset email to ${email}:`, err.message);
+        });
+
+        return { message: 'If an account with that email exists, a reset link has been sent.' };
+    }
+
+    async resetPasswordByToken(token: string, password: string) {
+        if (!token || !password) throw new BadRequestException('Token and password are required');
+        if (password.length < 8) throw new BadRequestException('Password must be at least 8 characters');
+
+        const user = await this.userRepository
+            .createQueryBuilder('user')
+            .addSelect('user.inviteToken')
+            .addSelect('user.inviteTokenExpiry')
+            .where('user.inviteToken = :token', { token })
+            .getOne();
+
+        if (!user) throw new BadRequestException('Invalid or expired reset link');
+        if (user.inviteTokenExpiry && Date.now() > Number(user.inviteTokenExpiry)) {
+            throw new BadRequestException('Reset link has expired. Please request a new one.');
+        }
+
+        const hashedPassword = await bcrypt.hash(password, 10);
+        await this.userRepository.update(user.id, {
+            password: hashedPassword,
+            inviteToken: null as any,
+            inviteTokenExpiry: null as any,
+            status: 'Active',
+        });
+
+        return { message: 'Password reset successfully. You can now sign in.' };
+    }
 }

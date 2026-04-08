@@ -33,6 +33,18 @@ export class UsersController {
         return this.usersService.login(data.email, data.password);
     }
 
+    @Post('forgot-password')
+    @HttpCode(200)
+    forgotPassword(@Body() data: { email: string }) {
+        return this.usersService.forgotPassword(data.email);
+    }
+
+    @Post('reset-password')
+    @HttpCode(200)
+    resetPassword(@Body() data: { token: string; password: string }) {
+        return this.usersService.resetPasswordByToken(data.token, data.password);
+    }
+
     @Put(':id')
     update(@Param('id') id: string, @Body() user: Partial<User>): Promise<User | null> {
         return this.usersService.update(id, user);
