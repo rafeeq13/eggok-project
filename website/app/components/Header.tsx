@@ -247,7 +247,7 @@ const css = `
         <div style={{ position: 'fixed', inset: 0, zIndex: 99, background: 'rgba(0,0,0,0.98)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '16px' }}>
           <button onClick={() => setMobileMenuOpen(false)} style={{ position: 'absolute', top: '20px', right: '24px', color: '#888888', fontSize: '24px', background: 'transparent' }}>✕</button>
           <div style={{ width: '70px', height: '70px', borderRadius: '16px', overflow: 'hidden', marginBottom: '8px' }}>
-            <Image src="/logo.svg" alt="EggsOK Eatery" width={70} height={70} style={{ objectFit: 'contain' }} />
+            {/* <Image src="/logo.svg" alt="EggsOK Eatery" width={70} height={70} style={{ objectFit: 'contain' }} /> */}
           </div>
           {[
             { label: 'Home', href: '/' },
@@ -255,6 +255,9 @@ const css = `
             { label: 'Catering', href: '/catering' },
             { label: 'Our Story', href: '/story' },
             { label: 'Contact', href: '/contact' },
+            { label: 'Gift Cards', href: '/gift-cards' },
+            { label: 'Track My Order', href: '/track' },
+            { label: "We're Hiring", href: '/hiring' },
           ].map(item => (
             <Link key={item.href} href={item.href} onClick={() => setMobileMenuOpen(false)} style={{ fontSize: '32px', fontWeight: '800', color: '#ffffffff', fontFamily: 'Bebas Neue, sans-serif', letterSpacing: '2px' }}>
               {item.label}

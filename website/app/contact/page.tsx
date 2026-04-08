@@ -3,12 +3,14 @@ import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import Header from '../components/Header';
+import { useStoreSettings } from '../../hooks/useStoreSettings';
 import {
   MapPin, Phone, Mail, Clock,
   ChevronRight, Check, Smartphone, ArrowRight,
 } from 'lucide-react';
 
 export default function ContactPage() {
+  const { isOpen } = useStoreSettings();
   const [formData, setFormData] = useState({
     name: '', email: '', phone: '', subject: '', message: '',
   });
@@ -411,8 +413,8 @@ export default function ContactPage() {
                   <Clock size={18} color="#FED800" strokeWidth={2} aria-hidden="true" />
                   <p id="hours-box-title" className="hours-box-title">HOURS</p>
                   <div id="hours-open-badge" className="hours-open-badge" role="status" aria-live="polite">
-                    <span className="hours-open-dot" aria-hidden="true" />
-                    <span className="hours-open-text">Open Now</span>
+                    <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: isOpen ? '#22C55E' : '#FC0301', flexShrink: 0 }} aria-hidden="true" />
+                    <span style={{ fontSize: '12px', color: isOpen ? '#22C55E' : '#FC0301', fontWeight: 600 }}>{isOpen ? 'Open Now' : 'Closed'}</span>
                   </div>
                 </div>
                 <div id="hours-list">
