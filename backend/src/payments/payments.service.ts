@@ -45,6 +45,7 @@ export class PaymentsService {
         const paymentIntent = await stripe.paymentIntents.create({
             amount: amountCents,
             currency: 'usd',
+            payment_method_types: ['card'],
             metadata: {
                 orderNumber: data.orderNumber,
                 customerEmail: data.customerEmail,

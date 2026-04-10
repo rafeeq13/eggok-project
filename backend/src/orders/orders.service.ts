@@ -19,11 +19,13 @@ export class OrdersService {
     private paymentsService: PaymentsService,
   ) { }
 
-  private generateOrderNumber(): string {
-    const prefix = 'EO';
-    const timestamp = Date.now().toString().slice(-6);
-    const random = Math.floor(Math.random() * 1000).toString().padStart(3, '0');
-    return `${prefix}-${timestamp}-${random}`;
+  private async generateOrderNumber(): Promise<string> {
+    const last = await this.ordersRepository
+      .createQueryBuilder('order')
+      .orderBy('order.id', 'DESC')
+      .getOne();
+    const next = last ? last.id + 1 : 1;
+    return `EO-${next.toString().padStart(4, '0')}`;
   }
 
   /**
@@ -77,7 +79,7 @@ export class OrdersService {
 
   async createOrder(data: any): Promise<Order> {
     const order = this.ordersRepository.create({
-      orderNumber: this.generateOrderNumber(),
+      orderNumber: await this.generateOrderNumber(),
       customerName: data.customerName,
       customerEmail: data.customerEmail,
       customerPhone: data.customerPhone,

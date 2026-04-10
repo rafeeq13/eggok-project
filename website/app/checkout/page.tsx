@@ -336,7 +336,10 @@ function CheckoutInner() {
     setPromoLoading(false);
   };
 
+  const placingRef = useRef(false);
   const handlePlaceOrder = async () => {
+    if (placingRef.current) return;
+    placingRef.current = true;
     setPlacing(true);
     setOrderError('');
 
@@ -375,35 +378,7 @@ function CheckoutInner() {
     };
 
     try {
-      // Step 1: Process payment with Stripe (if available and card element exists)
-      const cardElement = stripe && elements ? elements.getElement(CardElement) : null;
-      if (stripe && cardElement) {
-
-        // Create payment intent on backend
-        const piRes = await fetch(`${API_URL}/payments/create-payment-intent`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ amount: total, orderNumber: `EO-${Date.now()}`, customerEmail: email, customerName: `${firstName} ${lastName}` }),
-        });
-
-        if (!piRes.ok) {
-          const err = await piRes.json().catch(() => ({}));
-          throw new Error(err.message || 'Payment setup failed');
-        }
-
-        const { clientSecret } = await piRes.json();
-
-        // Confirm payment with Stripe
-        const { error: stripeError } = await stripe.confirmCardPayment(clientSecret, {
-          payment_method: { card: cardElement, billing_details: { name: `${firstName} ${lastName}`, email } },
-        });
-
-        if (stripeError) {
-          throw new Error(stripeError.message || 'Payment failed');
-        }
-      }
-
-      // Step 2: Create order (payment already confirmed)
+      // Step 1: Create order FIRST to get real order number
       const response = await fetch(`${API_URL}/orders`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -417,6 +392,32 @@ function CheckoutInner() {
       }
 
       const order = await response.json();
+
+      // Step 2: Process payment with REAL order number
+      const cardElement = stripe && elements ? elements.getElement(CardElement) : null;
+      if (stripe && cardElement) {
+        const piRes = await fetch(`${API_URL}/payments/create-payment-intent`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ amount: total, orderNumber: order.orderNumber, customerEmail: email, customerName: `${firstName} ${lastName}` }),
+        });
+
+        if (!piRes.ok) {
+          const err = await piRes.json().catch(() => ({}));
+          throw new Error(err.message || 'Payment setup failed');
+        }
+
+        const { clientSecret } = await piRes.json();
+
+        const { error: stripeError } = await stripe.confirmCardPayment(clientSecret, {
+          payment_method: { card: cardElement, billing_details: { name: `${firstName} ${lastName}`, email } },
+        });
+
+        if (stripeError) {
+          throw new Error(stripeError.message || 'Payment failed');
+        }
+      }
+
       localStorage.setItem('eggok_last_order', JSON.stringify(order));
       clearCart();
       router.push('/confirmation');
@@ -424,6 +425,7 @@ function CheckoutInner() {
       console.error('Order failed:', err);
       setOrderError(err instanceof Error ? err.message : 'Unable to place your order right now.');
       setPlacing(false);
+      placingRef.current = false;
     }
   };
 
