@@ -112,6 +112,10 @@ export class MailService {
             customerEmail: this.safeText(order.customerEmail),
             customerPhone: this.safeText(order.customerPhone),
             itemsHtml,
+            subtotal: Number(order.subtotal || 0).toFixed(2),
+            tax: Number(order.tax || 0).toFixed(2),
+            tip: Number(order.tip || 0).toFixed(2),
+            deliveryFee: Number(order.deliveryFee || 0).toFixed(2),
             total: Number(order.total || 0).toFixed(2),
             orderType: this.safeText(order.orderType),
             deliveryAddress: this.safeText(order.deliveryAddress || ''),
@@ -753,329 +757,141 @@ export class MailService {
         sections?: Array<{ title: string; lines: string[] }>;
         footer?: string;
     }) {
-        const logoUrl = 'https://fooddeliveryaudit.com/logo.svg';
         const year = new Date().getFullYear();
+        const esc = (s: string) => this.escapeHtml(s);
 
-        // ── Preheader ────────────────────────────────────────────────────────────
-        // Hidden preview text shown in inbox snippets before the email is opened.
-        // Zero-width non-joiners prevent body text from bleeding into the preview.
-        const preheaderHtml = payload.preheader
-            ? `<div style="display:none;max-height:0;overflow:hidden;mso-hide:all;
-                           font-size:1px;line-height:1px;color:#0a0a0a;">
-          ${this.escapeHtml(payload.preheader)}${'&nbsp;&zwnj;'.repeat(60)}
-        </div>`
-            : '';
+        const sectionsHtml = (payload.sections || []).map(s => `
+      <tr><td style="padding:20px 40px 0;">
+        <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:#1a1a1a;border-radius:12px;border:1px solid #2a2a2a;overflow:hidden;">
+          <tr><td style="background:#FED800;padding:10px 20px;">
+            <span style="font-family:Arial,Helvetica,sans-serif;font-size:11px;font-weight:700;color:#000;letter-spacing:1.5px;text-transform:uppercase;">${esc(s.title)}</span>
+          </td></tr>
+          <tr><td style="padding:16px 20px;">
+            ${s.lines.map(l => `<p style="margin:0 0 4px;font-family:Arial,Helvetica,sans-serif;font-size:14px;color:#FEFEFE;">${esc(l)}</p>`).join('')}
+          </td></tr>
+        </table>
+      </td></tr>`).join('');
 
-        // ── CTA button ───────────────────────────────────────────────────────────
-        // VML <v:roundrect> renders a real solid button in Outlook 2007–2021,
-        // which ignores border-radius and padding on anchor tags entirely.
-        // Modern clients use the <a> inside the <!--[if !mso]><!--> guard.
-        const ctaHtml = payload.cta
-            ? `<tr>
-          <td align="center" style="padding:8px 36px 36px;">
-            <!--[if mso]>
-            <v:roundrect xmlns:v="urn:schemas-microsoft-com:vml"
-                         xmlns:w="urn:schemas-microsoft-com:office:word"
-                         href="${payload.cta.link}"
-                         style="height:52px;v-text-anchor:middle;width:240px;"
-                         arcsize="19%" strokecolor="#FED800" fillcolor="#FED800">
-              <w:anchorlock/>
-              <center style="color:#000000;font-family:Arial,sans-serif;
-                             font-size:15px;font-weight:700;">
-                ${this.escapeHtml(payload.cta.text)}
-              </center>
-            </v:roundrect>
-            <![endif]-->
-            <!--[if !mso]><!-->
-            <a href="${payload.cta.link}"
-               style="display:inline-block;padding:16px 48px;background-color:#FED800;
-                      color:#000000;text-decoration:none;border-radius:10px;
-                      font-weight:700;font-size:15px;letter-spacing:0.3px;
-                      font-family:Arial,sans-serif;mso-hide:all;">
-              ${this.escapeHtml(payload.cta.text)}
-            </a>
-            <!--<![endif]-->
-          </td>
-        </tr>`
-            : '';
+        const ctaHtml = payload.cta ? `
+      <tr><td style="padding:32px 40px 0;text-align:center;">
+        <table cellpadding="0" cellspacing="0" border="0" style="margin:0 auto;"><tr><td style="background-color:#FFFFFF;border-radius:10px;padding:16px 44px;">
+          <a href="${payload.cta.link}" style="font-family:Arial,Helvetica,sans-serif;font-size:14px;font-weight:900;color:#000000;text-decoration:none;letter-spacing:0.5px;text-transform:uppercase;">${esc(payload.cta.text)}</a>
+        </td></tr></table>
+        <p style="margin:12px 0 0;font-family:Arial,Helvetica,sans-serif;font-size:12px;color:#555555;">Or visit us at <a href="https://eggsokphilly.com" style="color:#FED800;text-decoration:none;">eggsokphilly.com</a></p>
+      </td></tr>` : '';
 
-        // ── Section cards ─────────────────────────────────────────────────────────
-        // A 2-cell nested table simulates the yellow left-border accent in Outlook,
-        // where CSS border shorthand on a single <div> is ignored.
-        const sectionsHtml = (payload.sections || [])
-            .map(
-                (section) => `
-        <tr>
-          <td style="padding:0 36px 22px;">
-            <p style="margin:0 0 8px;font-size:10px;letter-spacing:2.5px;
-                      text-transform:uppercase;color:#888888;font-weight:700;
-                      font-family:Arial,sans-serif;">
-              ${this.escapeHtml(section.title)}
-            </p>
-            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
-              <tr>
-                <td width="3" style="background:#FED800;">&nbsp;</td>
-                <td style="background:#141414;border-top:1px solid #252525;
-                           border-right:1px solid #252525;border-bottom:1px solid #252525;
-                           padding:14px 18px;">
-                  ${section.lines
-                      .map(
-                          (line) =>
-                              `<p style="margin:0 0 4px;font-size:14px;line-height:1.85;
-                                  color:#ffffff;font-family:Arial,sans-serif;">
-                                ${this.escapeHtml(line)}
-                              </p>`,
-                      )
-                      .join('')}
-                </td>
-              </tr>
-            </table>
-          </td>
-        </tr>`,
-            )
-            .join('');
-
-        // ── Footer note ──────────────────────────────────────────────────────────
-        const footerNoteHtml = payload.footer
-            ? `<tr>
-          <td style="padding:0 36px 32px;">
-            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
-              <tr>
-                <td style="background:#0f0f0f;border:1px solid #222222;
-                           padding:14px 18px;font-size:13px;line-height:1.8;
-                           color:#999999;font-family:Arial,sans-serif;">
-                  ${this.escapeHtml(payload.footer)}
-                </td>
-              </tr>
-            </table>
-          </td>
-        </tr>`
-            : '';
-
-        // ── Divider between CTA and section cards ────────────────────────────────
-        const hasSections = (payload.sections?.length ?? 0) > 0 || !!payload.footer;
-        const dividerHtml = hasSections
-            ? `<tr>
-          <td style="padding:0 36px 28px;">
-            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
-              <tr>
-                <td height="1" style="background:#222222;font-size:0;line-height:0;">&nbsp;</td>
-              </tr>
-            </table>
-          </td>
-        </tr>`
-            : '';
-
-        // ── Social icon helper ─────────────────────────────────────────────────
-        // Each icon is a <td> in a shared row for pixel-perfect Outlook alignment.
-        const socialIcon = (href: string, icon: string, label: string) =>
-            `<td style="padding:0 5px;">
-          <a href="${href}" style="text-decoration:none;display:block;">
-            <table role="presentation" cellpadding="0" cellspacing="0" border="0">
-              <tr>
-                <td width="32" height="32"
-                    style="border:1px solid #2e2e2e;background:#0f0f0f;
-                           text-align:center;vertical-align:middle;">
-                  <img src="https://cdn.simpleicons.org/${icon}/FED800"
-                       width="15" height="15" alt="${label}"
-                       style="border:0;display:block;margin:8px auto 9px;">
-                </td>
-              </tr>
-            </table>
-          </a>
-        </td>`;
+        const footerNote = payload.footer ? `
+      <tr><td style="padding:20px 40px 0;">
+        <p style="margin:0;font-family:Arial,Helvetica,sans-serif;font-size:15px;color:#999999;line-height:1.7;">${esc(payload.footer)}</p>
+      </td></tr>` : '';
 
         return `<!DOCTYPE html>
-<html lang="en"
-      xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:v="urn:schemas-microsoft-com:vml"
-      xmlns:o="urn:schemas-microsoft-com:office:office">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="x-apple-disable-message-reformatting">
-  <meta name="format-detection" content="telephone=no,address=no,email=no,date=no,url=no">
-  <title>${this.escapeHtml(payload.title)}</title>
-  <!--[if mso]>
-  <noscript><xml><o:OfficeDocumentSettings>
-    <o:PixelsPerInch>96</o:PixelsPerInch>
-  </o:OfficeDocumentSettings></xml></noscript>
-  <![endif]-->
-  <style>
-    body,table,td,a{-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%}
-    table,td{mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse}
-    img{border:0;height:auto;line-height:100%;outline:none;text-decoration:none;-ms-interpolation-mode:bicubic}
-    @media only screen and (max-width:600px){
-      .email-container{width:100%!important}
-      .mob-pad{padding-left:20px!important;padding-right:20px!important}
-      h1.title{font-size:20px!important;line-height:1.3!important}
-    }
-  </style>
-</head>
-<body style="margin:0;padding:0;background-color:#0d0d0d;word-spacing:normal;">
+<html lang="en">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><meta http-equiv="X-UA-Compatible" content="IE=edge"><title>${esc(payload.title)}</title></head>
+<body style="margin:0;padding:0;background-color:#1a1a1a;font-family:Arial,Helvetica,sans-serif;">
+<table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:#1a1a1a;">
+<tr><td align="center" style="padding:30px 16px;">
+<table width="600" cellpadding="0" cellspacing="0" border="0" style="max-width:600px;width:100%;background-color:#111111;border-radius:16px;overflow:hidden;border:1px solid #2a2a2a;">
 
-${preheaderHtml}
+  <!-- HEADER -->
+  <tr><td style="background-color:#000000;padding:0;">
+    <table width="100%" cellpadding="0" cellspacing="0" border="0">
+      <tr><td style="background-color:#FED800;padding:6px 0;text-align:center;">
+        <span style="font-family:Arial,Helvetica,sans-serif;font-size:11px;font-weight:700;color:#000000;letter-spacing:2px;text-transform:uppercase;">Fresh Made To Order &middot; Philadelphia, PA</span>
+      </td></tr>
+      <tr><td style="background-color:#000000;padding:28px 40px;text-align:center;">
+        <img src="https://fooddeliveryaudit.com/logo.svg" width="120" height="50" alt="Eggs Ok" style="display:block;margin:0 auto 8px;border:0;">
+        <p style="margin:0;font-family:Arial,Helvetica,sans-serif;font-size:12px;color:#888888;letter-spacing:3px;text-transform:uppercase;">Breakfast &amp; Lunch</p>
+      </td></tr>
+    </table>
+  </td></tr>
 
-<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"
-       style="background-color:#0d0d0d;">
-  <tr>
-    <td align="center" style="padding:32px 12px;">
+  <!-- HERO BANNER -->
+  <tr><td style="background-color:#FED800;padding:40px;text-align:center;">
+    <p style="margin:0 0 8px;font-family:Arial,Helvetica,sans-serif;font-size:13px;font-weight:700;color:#000000;letter-spacing:2px;text-transform:uppercase;">${esc(payload.eyebrow)}</p>
+    <h2 style="margin:0 0 12px;font-family:Arial,Helvetica,sans-serif;font-size:36px;font-weight:900;color:#000000;line-height:1.1;letter-spacing:-1px;">${esc(payload.title)}</h2>
+  </td></tr>
 
-      <!--[if mso]>
-      <table role="presentation" align="center" border="0" cellpadding="0" cellspacing="0" width="580">
-      <tr><td>
-      <![endif]-->
+  <!-- BODY CONTENT -->
+  <tr><td style="padding:36px 40px 0;">
+    <p style="margin:0;font-family:Arial,Helvetica,sans-serif;font-size:15px;color:#999999;line-height:1.7;">${esc(payload.intro)}</p>
+  </td></tr>
 
-      <table class="email-container" role="presentation" cellpadding="0" cellspacing="0" border="0"
-             style="max-width:580px;width:100%;background-color:#0a0a0a;
-                    border:1px solid #1f1f1f;">
+  ${sectionsHtml}
+  ${ctaHtml}
+  ${footerNote}
 
-        <!-- TOP STRIPE -->
-        <tr>
-          <td height="5" style="background-color:#FED800;font-size:0;line-height:0;">&nbsp;</td>
-        </tr>
+  <!-- INFO BOXES -->
+  <tr><td style="padding:32px 40px 0;">
+    <table width="100%" cellpadding="0" cellspacing="0" border="0"><tr>
+      <td width="48%" style="background-color:#0d0d0d;border-radius:12px;border:1px solid #2a2a2a;padding:18px 16px;text-align:center;vertical-align:top;">
+        <p style="margin:0 0 6px;font-family:Arial,Helvetica,sans-serif;"><img src="https://cdn.simpleicons.org/googlemaps/FED800" width="22" height="22" alt="Location" style="border:0;"></p>
+        <p style="margin:0 0 4px;font-family:Arial,Helvetica,sans-serif;font-size:12px;font-weight:700;color:#FED800;letter-spacing:0.5px;text-transform:uppercase;">Location</p>
+        <p style="margin:0;font-family:Arial,Helvetica,sans-serif;font-size:12px;color:#888888;line-height:1.5;">3517 Lancaster Ave<br>Philadelphia, PA 19104</p>
+      </td>
+      <td width="4%">&nbsp;</td>
+      <td width="48%" style="background-color:#0d0d0d;border-radius:12px;border:1px solid #2a2a2a;padding:18px 16px;text-align:center;vertical-align:top;">
+        <p style="margin:0 0 6px;font-family:Arial,Helvetica,sans-serif;"><img src="https://cdn.simpleicons.org/clockify/FED800" width="22" height="22" alt="Hours" style="border:0;"></p>
+        <p style="margin:0 0 4px;font-family:Arial,Helvetica,sans-serif;font-size:12px;font-weight:700;color:#FED800;letter-spacing:0.5px;text-transform:uppercase;">Hours</p>
+        <p style="margin:0;font-family:Arial,Helvetica,sans-serif;font-size:12px;color:#888888;line-height:1.5;">Mon-Fri: 7AM-4PM<br>Sat-Sun: 8AM-3PM</p>
+      </td>
+    </tr></table>
+  </td></tr>
 
-        <!-- ── HEADER ─────────────────────────────────────────────────── -->
-        <tr>
-          <td class="mob-pad" style="padding:20px 36px;border-bottom:1px solid #1a1a1a;">
-            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
-              <tr>
-                <td style="vertical-align:middle;">
-                  <img src="${logoUrl}" alt="Eggs Ok" width="110" height="44"
-                       style="display:block;border:0;max-width:110px;">
-                </td>
-                <td align="right"
-                    style="vertical-align:middle;font-family:Arial,sans-serif;
-                           font-size:10px;color:#444444;letter-spacing:2.5px;
-                           text-transform:uppercase;white-space:nowrap;">
-                  Philadelphia
-                </td>
-              </tr>
-            </table>
-          </td>
-        </tr>
+  <!-- DIVIDER -->
+  <tr><td style="padding:32px 40px 0;"><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="height:1px;background-color:#2a2a2a;font-size:0;line-height:0;">&nbsp;</td></tr></table></td></tr>
 
-        <!-- ── HERO: EYEBROW + TITLE + INTRO ────────────────────────── -->
-        <tr>
-          <td class="mob-pad" style="padding:32px 36px 28px;">
+  <!-- SOCIAL LINKS -->
+  <tr><td style="padding:24px 40px 0;text-align:center;">
+    <p style="margin:0 0 16px;font-family:Arial,Helvetica,sans-serif;font-size:12px;color:#666;letter-spacing:1px;text-transform:uppercase;">Follow Us</p>
+    <table cellpadding="0" cellspacing="0" border="0" style="margin:0 auto;"><tr>
+      <td style="padding:0 4px;"><table cellpadding="0" cellspacing="0" border="0"><tr><td style="background:#1a1a1a;border:1px solid #FED800;border-radius:6px;padding:8px 14px;"><a href="https://facebook.com/eggsokphilly" style="font-family:Arial,Helvetica,sans-serif;font-size:11px;font-weight:700;color:#FED800;text-decoration:none;">Facebook</a></td></tr></table></td>
+      <td style="padding:0 4px;"><table cellpadding="0" cellspacing="0" border="0"><tr><td style="background:#1a1a1a;border:1px solid #FED800;border-radius:6px;padding:8px 14px;"><a href="https://instagram.com/eggsokphilly" style="font-family:Arial,Helvetica,sans-serif;font-size:11px;font-weight:700;color:#FED800;text-decoration:none;">Instagram</a></td></tr></table></td>
+      <td style="padding:0 4px;"><table cellpadding="0" cellspacing="0" border="0"><tr><td style="background:#1a1a1a;border:1px solid #FED800;border-radius:6px;padding:8px 14px;"><a href="https://tiktok.com/@eggsokphilly" style="font-family:Arial,Helvetica,sans-serif;font-size:11px;font-weight:700;color:#FED800;text-decoration:none;">TikTok</a></td></tr></table></td>
+      <td style="padding:0 4px;"><table cellpadding="0" cellspacing="0" border="0"><tr><td style="background:#1a1a1a;border:1px solid #FED800;border-radius:6px;padding:8px 14px;"><a href="https://g.page/eggsokphilly" style="font-family:Arial,Helvetica,sans-serif;font-size:11px;font-weight:700;color:#FED800;text-decoration:none;">Google</a></td></tr></table></td>
+    </tr></table>
+  </td></tr>
 
-            <!-- Eyebrow badge -->
-            <table role="presentation" cellpadding="0" cellspacing="0" border="0"
-                   style="margin-bottom:16px;">
-              <tr>
-                <td style="background:#191200;border:1px solid #362800;
-                           padding:5px 16px;">
-                  <span style="color:#FED800;font-size:10px;font-weight:700;
-                               letter-spacing:3px;text-transform:uppercase;
-                               font-family:Arial,sans-serif;">
-                    ${this.escapeHtml(payload.eyebrow)}
-                  </span>
-                </td>
-              </tr>
-            </table>
+  <!-- FOOTER -->
+  <tr><td style="padding:28px 40px 0;">
+    <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:#000000;border-radius:12px;overflow:hidden;">
+      <tr><td style="padding:24px 28px 16px;text-align:center;border-bottom:1px solid #1a1a1a;">
+        <img src="https://fooddeliveryaudit.com/logo.svg" width="100" height="42" alt="Eggs Ok" style="display:block;margin:0 auto 4px;border:0;">
+        <p style="margin:0;font-family:Arial,Helvetica,sans-serif;font-size:11px;color:#555555;letter-spacing:2px;text-transform:uppercase;">Breakfast &amp; Lunch &middot; Philadelphia</p>
+      </td></tr>
+      <tr><td style="padding:16px 28px;text-align:center;">
+        <table width="100%" cellpadding="0" cellspacing="0" border="0">
+          <tr><td style="text-align:center;padding-bottom:8px;">
+            <span style="font-family:Arial,Helvetica,sans-serif;font-size:13px;color:#888888;"><img src="https://cdn.simpleicons.org/googlemaps/888888" width="13" height="13" alt="loc" style="border:0;vertical-align:middle;margin-right:4px;">3517 Lancaster Ave, Philadelphia, PA 19104</span>
+          </td></tr>
+          <tr><td style="text-align:center;padding-bottom:8px;">
+            <a href="tel:2159489902" style="font-family:Arial,Helvetica,sans-serif;font-size:13px;color:#FED800;text-decoration:none;"><img src="https://cdn.simpleicons.org/phonepe/FED800" width="13" height="13" alt="phone" style="border:0;vertical-align:middle;margin-right:4px;">(215) 948-9902</a>
+            <span style="font-family:Arial,Helvetica,sans-serif;font-size:13px;color:#555555;"> &middot; </span>
+            <a href="https://eggsokphilly.com" style="font-family:Arial,Helvetica,sans-serif;font-size:13px;color:#FED800;text-decoration:none;">eggsokphilly.com</a>
+          </td></tr>
+          <tr><td style="text-align:center;padding-bottom:16px;border-bottom:1px solid #1a1a1a;">
+            <span style="font-family:Arial,Helvetica,sans-serif;font-size:12px;color:#555555;">Mon-Fri: 7AM-4PM &middot; Sat-Sun: 8AM-3PM</span>
+          </td></tr>
+          <tr><td style="text-align:center;padding-top:16px;">
+            <p style="margin:0;font-family:Arial,Helvetica,sans-serif;font-size:11px;color:#444444;">&copy; ${year} Eggs Ok. All rights reserved.</p>
+          </td></tr>
+        </table>
+      </td></tr>
+      <tr><td style="background-color:#FED800;padding:8px;text-align:center;">
+        <span style="font-family:Arial,Helvetica,sans-serif;font-size:10px;font-weight:700;color:#000000;letter-spacing:1.5px;text-transform:uppercase;">Made with <img src="https://cdn.simpleicons.org/undertale/FC0301" width="11" height="11" alt="love" style="border:0;vertical-align:middle;"> in Philadelphia &middot; Eggs Ok</span>
+      </td></tr>
+    </table>
+  </td></tr>
 
-            <!-- Title -->
-            <h1 class="title"
-                style="margin:0 0 14px;font-size:24px;font-weight:700;line-height:1.2;
-                       color:#ffffff;font-family:Georgia,'Times New Roman',serif;
-                       letter-spacing:-0.3px;">
-              ${this.escapeHtml(payload.title)}
-            </h1>
+  <tr><td style="padding:24px;">&nbsp;</td></tr>
 
-            <!-- Intro -->
-            <p style="margin:0;font-size:15px;line-height:1.85;color:#ffffff;
-                      font-family:Arial,sans-serif;font-weight:400;">
-              ${this.escapeHtml(payload.intro)}
-            </p>
-
-          </td>
-        </tr>
-
-        <!-- ── CTA BUTTON ───────────────────────────────────────────── -->
-        ${ctaHtml}
-
-        <!-- ── DIVIDER ──────────────────────────────────────────────── -->
-        ${dividerHtml}
-
-        <!-- ── SECTION CARDS ────────────────────────────────────────── -->
-        ${sectionsHtml}
-
-        <!-- ── FOOTER NOTE ──────────────────────────────────────────── -->
-        ${footerNoteHtml}
-
-        <!-- ── FOOTER RULE ──────────────────────────────────────────── -->
-        <tr>
-          <td style="padding:0 36px;">
-            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
-              <tr>
-                <td height="1" style="background:#1a1a1a;font-size:0;line-height:0;">&nbsp;</td>
-              </tr>
-            </table>
-          </td>
-        </tr>
-
-        <!-- ── FOOTER ───────────────────────────────────────────────── -->
-        <tr>
-          <td class="mob-pad" style="padding:28px 36px 26px;text-align:center;">
-
-            <img src="${logoUrl}" alt="Eggs Ok" width="84" height="36"
-                 style="display:block;margin:0 auto 10px;border:0;max-width:84px;">
-
-            <p style="margin:0 0 10px;font-family:Arial,sans-serif;font-size:10px;
-                      color:#555555;letter-spacing:2.5px;text-transform:uppercase;">
-              Breakfast &amp; Lunch &middot; West Philly
-            </p>
-
-            <p style="margin:0 0 18px;font-family:Arial,sans-serif;font-size:12px;
-                      color:#555555;line-height:2;">
-              3517 Lancaster Ave, Philadelphia PA 19104<br>
-              <a href="tel:2159489902"
-                 style="color:#666666;text-decoration:none;">215-948-9902</a>
-              &nbsp;&middot;&nbsp;
-              <a href="mailto:orders@eggsokphilly.com"
-                 style="color:#666666;text-decoration:none;">orders@eggsokphilly.com</a>
-            </p>
-
-            <table role="presentation" align="center" cellpadding="0" cellspacing="0" border="0"
-                   style="margin:0 auto 20px;">
-              <tr>
-                ${socialIcon('https://instagram.com/eggsokphilly', 'instagram', 'Instagram')}
-                ${socialIcon('https://facebook.com/eggsokphilly', 'facebook', 'Facebook')}
-                ${socialIcon('https://tiktok.com/@eggsokphilly', 'tiktok', 'TikTok')}
-                ${socialIcon('https://www.yelp.com/biz/eggs-ok-philadelphia', 'yelp', 'Yelp')}
-                ${socialIcon('https://maps.google.com/?q=3517+Lancaster+Ave+Philadelphia+PA+19104', 'googlemaps', 'Google Maps')}
-              </tr>
-            </table>
-
-            <p style="margin:0;font-family:Arial,sans-serif;font-size:11px;
-                      color:#3a3a3a;line-height:1.8;">
-              &copy; ${year} Eggs Ok. All rights reserved.<br>
-              <a href="https://eggsokphilly.com"
-                 style="color:#444444;text-decoration:none;">eggsokphilly.com</a>
-            </p>
-
-          </td>
-        </tr>
-
-        <!-- BOTTOM STRIPE -->
-        <tr>
-          <td height="5" style="background-color:#FED800;font-size:0;line-height:0;">&nbsp;</td>
-        </tr>
-
-      </table>
-
-      <!--[if mso]>
-      </td></tr></table>
-      <![endif]-->
-
-    </td>
-  </tr>
 </table>
-
+</td></tr>
+</table>
 </body>
 </html>`;
     }
+
 
     // ─── Private: Utilities ──────────────────────────────────────────────────────
 
