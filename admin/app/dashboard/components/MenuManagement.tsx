@@ -63,23 +63,32 @@ export default function MenuManagement() {
         fetch(`${API}/menu/modifier-groups`).then(r => r.json()),
       ]);
       setCategories(catsRes.map((c: any) => ({ id: c.id, name: c.name, active: c.isActive, sortOrder: c.sortOrder })));
-      setItems(itemsRes.map((i: any) => ({
+
+      // Build item-modifier links from item's modifiers field (no extra API calls)
+      const mappedItems = itemsRes.map((i: any) => ({
         id: i.id, categoryId: i.categoryId, name: i.name,
         description: i.description, pickupPrice: i.pickupPrice,
         deliveryPrice: i.deliveryPrice, available: i.isAvailable,
         imageUrl: i.image || '',
         linkedModifierIds: i.modifiers ? i.modifiers.map((m: any) => m.id) : [],
-      })));
-      const modsWithLinks = await Promise.all(modsRes.map(async (g: any) => {
-        const linkedRes = await fetch(`${API}/menu/modifier-groups/${g.id}/items`).then(r => r.json());
-        return {
-          id: g.id, name: g.name, required: g.required,
-          minSelections: g.minSelections, maxSelections: g.maxSelections,
-          options: g.options.map((o: any) => ({ id: o.id, name: o.name, price: parseFloat(o.price), isDefault: o.isDefault })),
-          linkedItemIds: Array.isArray(linkedRes) ? linkedRes : [],
-        };
       }));
-      setModifierGroups(modsWithLinks);
+      setItems(mappedItems);
+
+      // Build modifier->item links from items data (avoids N+1 API calls)
+      const modLinksMap: Record<number, number[]> = {};
+      mappedItems.forEach((item: any) => {
+        (item.linkedModifierIds || []).forEach((modId: number) => {
+          if (!modLinksMap[modId]) modLinksMap[modId] = [];
+          modLinksMap[modId].push(item.id);
+        });
+      });
+
+      setModifierGroups(modsRes.map((g: any) => ({
+        id: g.id, name: g.name, required: g.required,
+        minSelections: g.minSelections, maxSelections: g.maxSelections,
+        options: (g.options || []).map((o: any) => ({ id: o.id, name: o.name, price: parseFloat(o.price), isDefault: o.isDefault })),
+        linkedItemIds: modLinksMap[g.id] || [],
+      })));
     } catch (e) { console.error('Load error:', e); }
   };
 
@@ -91,7 +100,22 @@ export default function MenuManagement() {
   };
 
   const confirm = (title: string, message: string, onConfirm: () => void) => setConfirmDialog({ show: true, title, message, onConfirm });
-  const addHistory = (action: string, target: string, detail: string) => setHistory(prev => [{ id: Date.now(), action, target, detail, time: new Date().toLocaleString() }, ...prev]);
+  const addHistory = (action: string, target: string, detail: string) => {
+    setHistory(prev => {
+      const entry = { id: Date.now(), action, target, detail, time: new Date().toLocaleString() };
+      const updated = [entry, ...prev].slice(0, 100); // keep last 100
+      try { localStorage.setItem('menuHistory', JSON.stringify(updated)); } catch {}
+      return updated;
+    });
+  };
+
+  // Load history from localStorage on mount
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem('menuHistory');
+      if (saved) setHistory(JSON.parse(saved));
+    } catch {}
+  }, []);
   const showSuccess = (msg: string) => { setSuccessMsg(msg); setTimeout(() => setSuccessMsg(''), 3000); };
 
   const inputStyle = { padding: '9px 12px', background: '#111111', border: '1px solid #2A2A2A', borderRadius: '8px', color: '#FEFEFE', fontSize: '13px', width: '100%' };
@@ -234,23 +258,22 @@ export default function MenuManagement() {
 
   const toggleLinkItem = async (modifierId: number, itemId: number) => {
     const group = modifierGroups.find(g => g.id === modifierId);
-    const isLinked = group?.linkedItemIds.includes(itemId);
-    if (isLinked) {
-      await fetch(`${API}/menu/items/${itemId}/modifiers/${modifierId}`, { method: 'DELETE' });
-    } else {
-      await fetch(`${API}/menu/items/${itemId}/modifiers/${modifierId}`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ sortOrder: 0 }) });
-    }
-    const updatedGroups = modifierGroups.map(g => g.id === modifierId ? { ...g, linkedItemIds: isLinked ? g.linkedItemIds.filter(id => id !== itemId) : [...g.linkedItemIds, itemId] } : g);
-    setModifierGroups(updatedGroups);
-    const updatedItems = items.map(i => i.id === itemId ? { ...i, linkedModifierIds: isLinked ? i.linkedModifierIds.filter(mid => mid !== modifierId) : [...i.linkedModifierIds, modifierId] } : i);
-    setItems(updatedItems);
-    const targetItem = updatedItems.find(i => i.id === itemId);
-    if (targetItem) {
-      const linkedMods = updatedGroups.filter(g => targetItem.linkedModifierIds.includes(g.id));
-      await fetch(`${API}/menu/items/${itemId}`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ modifiers: linkedMods }) });
-    }
     const item = items.find(i => i.id === itemId);
-    addHistory(isLinked ? 'UNLINKED' : 'LINKED', 'Modifier', `${group?.name} → ${item?.name}`);
+    const isLinked = group?.linkedItemIds.includes(itemId);
+    try {
+      if (isLinked) {
+        await fetch(`${API}/menu/items/${itemId}/modifiers/${modifierId}`, { method: 'DELETE' });
+      } else {
+        await fetch(`${API}/menu/items/${itemId}/modifiers/${modifierId}`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ sortOrder: 0 }) });
+      }
+      // Update local state only - junction table is already persisted by the POST/DELETE above
+      setModifierGroups(prev => prev.map(g => g.id === modifierId ? { ...g, linkedItemIds: isLinked ? g.linkedItemIds.filter(id => id !== itemId) : [...g.linkedItemIds, itemId] } : g));
+      setItems(prev => prev.map(i => i.id === itemId ? { ...i, linkedModifierIds: isLinked ? i.linkedModifierIds.filter(mid => mid !== modifierId) : [...i.linkedModifierIds, modifierId] } : i));
+      addHistory(isLinked ? 'UNLINKED' : 'LINKED', 'Modifier', `${group?.name} → ${item?.name}`);
+    } catch (err) {
+      console.error('Toggle link failed:', err);
+      showSuccess('Failed to update modifier link');
+    }
   };
 
   const filteredItems = items.filter(i => {
@@ -489,6 +512,7 @@ export default function MenuManagement() {
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ orderedIds: reordered.map(c => c.id) }),
         });
+        addHistory('REORDERED', 'Category', `${moved.name} moved to position ${i + 1}`);
                       }}
                       onDragEnd={() => setDragOverCatIndex(null)}
                       style={{ borderBottom: i < categories.length - 1 ? '1px solid #2A2A2A' : 'none', background: dragOverCatIndex === i ? '#1A1A00' : 'transparent', cursor: 'grab' }}
@@ -583,6 +607,20 @@ export default function MenuManagement() {
                         <td style={{ padding: '12px 16px' }}>
                           <div style={{ display: 'flex', gap: '6px' }}>
                             <button onClick={() => { setEditingItem(item); setShowItemForm(true); }} style={{ padding: '5px 10px', background: 'transparent', border: '1px solid #2A2A2A', borderRadius: '6px', color: '#888888', fontSize: '11px', cursor: 'pointer' }}>Edit</button>
+                            <button onClick={async () => {
+                              try {
+                                const payload = { name: `${item.name} (Copy)`, description: item.description, pickupPrice: parseFloat(item.pickupPrice), deliveryPrice: parseFloat(item.deliveryPrice), categoryId: item.categoryId, isAvailable: item.available, image: item.imageUrl || null };
+                                const res = await fetch(`${API}/menu/items`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+                                const created = await res.json();
+                                // Copy modifier links
+                                for (const modId of item.linkedModifierIds) {
+                                  await fetch(`${API}/menu/items/${created.id}/modifiers/${modId}`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ sortOrder: 0 }) });
+                                }
+                                setItems(prev => [...prev, { id: created.id, categoryId: created.categoryId, name: created.name, description: created.description, pickupPrice: created.pickupPrice, deliveryPrice: created.deliveryPrice, available: created.isAvailable, imageUrl: created.image || '', linkedModifierIds: [...item.linkedModifierIds] }]);
+                                addHistory('DUPLICATED', 'Item', `${item.name} → ${created.name}`);
+                                showSuccess(`Duplicated "${item.name}"`);
+                              } catch { showSuccess('Failed to duplicate'); }
+                            }} style={{ padding: '5px 10px', background: 'transparent', border: '1px solid #FED80030', borderRadius: '6px', color: '#FED800', fontSize: '11px', cursor: 'pointer' }}>Duplicate</button>
                             <button onClick={() => toggleItemAvailable(item)} style={{ padding: '5px 10px', background: 'transparent', border: `1px solid ${item.available ? '#FC030130' : '#22C55E30'}`, borderRadius: '6px', color: item.available ? '#FC0301' : '#22C55E', fontSize: '11px', cursor: 'pointer' }}>{item.available ? 'Disable' : 'Enable'}</button>
                             <button onClick={() => handleDeleteItem(item)} style={{ padding: '5px 10px', background: 'transparent', border: '1px solid #FC030130', borderRadius: '6px', color: '#FC0301', fontSize: '11px', cursor: 'pointer' }}>Delete</button>
                           </div>
