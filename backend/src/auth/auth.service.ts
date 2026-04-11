@@ -7,6 +7,7 @@ import * as crypto from 'crypto';
 import { Customer } from '../customers/customer.entity';
 import { CustomerToken } from './customer-token.entity';
 import { Reward } from '../loyalty/reward.entity';
+import { Order } from '../orders/order.entity';
 import { MailService } from '../mail/mail.service';
 
 const TOKEN_TTL_MS = 30 * 24 * 60 * 60 * 1000; // 30 days
@@ -42,7 +43,7 @@ export class AuthService {
         password: string;
     }) {
         const existing = await this.customersRepository.findOne({
-            where: { email: data.email },
+            where: { email: data.email.toLowerCase().trim() },
         });
 
         if (existing) {
@@ -72,7 +73,7 @@ export class AuthService {
 
         const customer = this.customersRepository.create({
             name: `${data.firstName} ${data.lastName}`,
-            email: data.email,
+            email: data.email.toLowerCase().trim(),
             phone: data.phone,
             password: hashedPassword,
             totalOrders: 0,
@@ -106,7 +107,7 @@ export class AuthService {
         const customer = await this.customersRepository
             .createQueryBuilder('customer')
             .addSelect('customer.password')
-            .where('customer.email = :email', { email })
+            .where('LOWER(customer.email) = LOWER(:email)', { email })
             .getOne();
 
         if (!customer || !customer.password) {
@@ -171,7 +172,7 @@ export class AuthService {
         const customer = await this.customersRepository
             .createQueryBuilder('customer')
             .addSelect('customer.password')
-            .where('customer.email = :email', { email })
+            .where('LOWER(customer.email) = LOWER(:email)', { email })
             .getOne();
 
         if (!customer || !customer.password) {
@@ -192,8 +193,7 @@ export class AuthService {
             'http://localhost:3000';
         const resetLink = `${websiteUrl}/reset-password?token=${token}`;
 
-        console.log(`[DEBUG] Attempting password reset for: ${customer.email}`);
-        console.log(`[DEBUG] Reset link: ${resetLink}`);
+        // Reset link generated for customer
 
         try {
             await this.mailService.sendPasswordResetEmail(customer.email, customer.name, resetLink);
@@ -294,6 +294,18 @@ export class AuthService {
         return addresses;
     }
 
+    // My Orders
+    async getMyOrders(customerId: number) {
+        const customer = await this.customersRepository.findOne({ where: { id: customerId } });
+        if (!customer) throw new UnauthorizedException('User not found');
+        const orders = await this.customersRepository.manager.find(Order, {
+            where: { customerEmail: customer.email },
+            order: { createdAt: 'DESC' },
+            take: 50,
+        });
+        return orders;
+    }
+
     // Points History
     async getPointsHistory(customerId: number) {
         const customer = await this.customersRepository.findOne({ where: { id: customerId } });
@@ -313,35 +325,34 @@ export class AuthService {
 
     // Redeem Reward
     async redeemReward(customerId: number, rewardId: number) {
-        const customer = await this.customersRepository.findOne({ where: { id: customerId } });
-        if (!customer) throw new UnauthorizedException('User not found');
+        return await this.customersRepository.manager.transaction(async (manager) => {
+            const customer = await manager.findOne(Customer, { where: { id: customerId }, lock: { mode: 'pessimistic_write' } });
+            if (!customer) throw new UnauthorizedException('User not found');
 
-        const reward = await this.rewardRepository.findOneBy({ id: rewardId });
-        if (!reward || !reward.active) throw new BadRequestException('Reward not found or inactive');
-        if (customer.points < reward.pointsCost) throw new BadRequestException(`Not enough points. You need ${reward.pointsCost} but have ${customer.points}.`);
+            const reward = await manager.findOne(Reward, { where: { id: rewardId } });
+            if (!reward || !reward.active) throw new BadRequestException('Reward not found or inactive');
+            if (customer.points < reward.pointsCost) throw new BadRequestException(`Not enough points. You need ${reward.pointsCost} but have ${customer.points}.`);
 
-        // Deduct points
-        await this.customersRepository.update(customerId, {
-            points: customer.points - reward.pointsCost,
-            redemptions: customer.redemptions + 1,
+            // Deduct points atomically within transaction
+            await manager.update(Customer, customerId, {
+                points: customer.points - reward.pointsCost,
+                redemptions: customer.redemptions + 1,
+            });
+
+            await manager.update(Reward, rewardId, { redemptions: reward.redemptions + 1 });
+
+            // Add to points history
+            const history = Array.isArray(customer.pointsHistory) ? customer.pointsHistory : [];
+            history.unshift({ description: `Redeemed: ${reward.name}`, points: -reward.pointsCost, type: 'redeemed', date: new Date().toISOString() });
+            if (history.length > 100) history.length = 100;
+            await manager.update(Customer, customerId, { pointsHistory: history });
+
+            return {
+                success: true,
+                message: `Successfully redeemed ${reward.name}!`,
+                reward: { name: reward.name, type: reward.type, value: reward.value },
+                remainingPoints: customer.points - reward.pointsCost,
+            };
         });
-
-        // Track redemption count on reward
-        await this.rewardRepository.update(rewardId, { redemptions: reward.redemptions + 1 });
-
-        // Add to points history
-        await this.addPointsHistoryEntry(customerId, {
-            description: `Redeemed: ${reward.name}`,
-            points: -reward.pointsCost,
-            type: 'redeemed',
-        });
-
-        const updated = await this.getProfile(customerId);
-        return {
-            success: true,
-            message: `Successfully redeemed ${reward.name}!`,
-            reward: { name: reward.name, type: reward.type, value: reward.value },
-            remainingPoints: updated.points,
-        };
     }
 }

@@ -1,7 +1,7 @@
 'use client';
 import { useState, useEffect } from 'react';
 
-const API = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3002/api';
+import { API, adminFetch } from '../../../lib/api';
 
 type NotifTab = 'templates' | 'push' | 'history';
 
@@ -122,9 +122,10 @@ export default function Notifications() {
   useEffect(() => {
     const fetchTemplates = async () => {
       try {
-        const res = await fetch(`${API}/settings/notifications`);
+        const res = await adminFetch(`${API}/settings/notifications`);
         if (res.ok) {
-          const data = await res.json();
+          const text = await res.text();
+          const data = text ? JSON.parse(text) : null;
           if (data) {
             if (data.emailTemplates) setEmailTemplates(data.emailTemplates);
             if (data.pushTemplates) setPushTemplates(data.pushTemplates);
@@ -143,7 +144,7 @@ export default function Notifications() {
       pushTemplates: updatedPush || pushTemplates,
     };
     try {
-      await fetch(`${API}/settings/notifications`, {
+      await adminFetch(`${API}/settings/notifications`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
@@ -194,7 +195,7 @@ export default function Notifications() {
 
   const labelStyle = {
     fontSize: '12px', fontWeight: '500' as const,
-    color: '#888888', display: 'block' as const, marginBottom: '6px',
+    color: '#FEFEFE', display: 'block' as const, marginBottom: '6px',
   };
 
   const statusColor: Record<string, string> = {
@@ -218,7 +219,7 @@ export default function Notifications() {
           <div style={{ background: '#1A1A1A', border: '1px solid #2A2A2A', borderRadius: '16px', width: '100%', maxWidth: '600px', maxHeight: '90vh', display: 'flex', flexDirection: 'column' }}>
             <div style={{ padding: '18px 24px', borderBottom: '1px solid #2A2A2A', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexShrink: 0 }}>
               <h2 style={{ fontSize: '16px', fontWeight: '700', color: '#FEFEFE' }}>Edit Email Template</h2>
-              <button onClick={() => setEditingEmail(null)} style={{ background: 'transparent', color: '#888888', fontSize: '20px', border: 'none', cursor: 'pointer' }}>✕</button>
+              <button onClick={() => setEditingEmail(null)} style={{ background: 'transparent', color: '#FEFEFE', fontSize: '20px', border: 'none', cursor: 'pointer' }}>✕</button>
             </div>
             <div style={{ overflow: 'auto', padding: '20px 24px', flex: 1 }}>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
@@ -271,7 +272,7 @@ export default function Notifications() {
               </div>
             </div>
             <div style={{ padding: '16px 24px', borderTop: '1px solid #2A2A2A', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', flexShrink: 0 }}>
-              <button onClick={() => setEditingEmail(null)} style={{ padding: '11px', background: 'transparent', border: '1px solid #2A2A2A', borderRadius: '8px', color: '#888888', fontSize: '13px', cursor: 'pointer' }}>Cancel</button>
+              <button onClick={() => setEditingEmail(null)} style={{ padding: '11px', background: 'transparent', border: '1px solid #2A2A2A', borderRadius: '8px', color: '#FEFEFE', fontSize: '13px', cursor: 'pointer' }}>Cancel</button>
               <button onClick={saveEmailTemplate} style={{ padding: '11px', background: '#FED800', border: 'none', borderRadius: '8px', color: '#000', fontSize: '13px', fontWeight: '700', cursor: 'pointer' }}>Save Template</button>
             </div>
           </div>
@@ -284,7 +285,7 @@ export default function Notifications() {
           <div style={{ background: '#1A1A1A', border: '1px solid #2A2A2A', borderRadius: '16px', width: '100%', maxWidth: '500px' }}>
             <div style={{ padding: '18px 24px', borderBottom: '1px solid #2A2A2A', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
               <h2 style={{ fontSize: '16px', fontWeight: '700', color: '#FEFEFE' }}>Edit Push Template</h2>
-              <button onClick={() => setEditingPush(null)} style={{ background: 'transparent', color: '#888888', fontSize: '20px', border: 'none', cursor: 'pointer' }}>✕</button>
+              <button onClick={() => setEditingPush(null)} style={{ background: 'transparent', color: '#FEFEFE', fontSize: '20px', border: 'none', cursor: 'pointer' }}>✕</button>
             </div>
             <div style={{ padding: '20px 24px' }}>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
@@ -304,16 +305,16 @@ export default function Notifications() {
                     onFocus={e => e.target.style.borderColor = '#FED800'}
                     onBlur={e => e.target.style.borderColor = '#2A2A2A'}
                   />
-                  <p style={{ fontSize: '11px', color: '#888888', marginTop: '4px' }}>Max 100 characters recommended</p>
+                  <p style={{ fontSize: '11px', color: '#FEFEFE', marginTop: '4px' }}>Max 100 characters recommended</p>
                 </div>
 
                 {/* Phone Preview */}
                 <div style={{ background: '#111111', borderRadius: '10px', padding: '14px' }}>
-                  <p style={{ fontSize: '11px', color: '#888888', marginBottom: '10px', fontWeight: '600' }}>Preview</p>
+                  <p style={{ fontSize: '11px', color: '#FEFEFE', marginBottom: '10px', fontWeight: '600' }}>Preview</p>
                   <div style={{ background: '#2A2A2A', borderRadius: '12px', padding: '12px 14px' }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px' }}>
                       <div style={{ width: '20px', height: '20px', background: '#FED800', borderRadius: '4px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '10px' }}>🍳</div>
-                      <span style={{ fontSize: '11px', color: '#888888' }}>Eggs Ok · now</span>
+                      <span style={{ fontSize: '11px', color: '#FEFEFE' }}>Eggs Ok · now</span>
                     </div>
                     <p style={{ fontSize: '13px', fontWeight: '700', color: '#FEFEFE', marginBottom: '3px' }}>{editingPush.title || 'Notification title'}</p>
                     <p style={{ fontSize: '12px', color: '#CACACA' }}>{editingPush.body || 'Notification body text'}</p>
@@ -329,7 +330,7 @@ export default function Notifications() {
               </div>
             </div>
             <div style={{ padding: '16px 24px', borderTop: '1px solid #2A2A2A', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
-              <button onClick={() => setEditingPush(null)} style={{ padding: '11px', background: 'transparent', border: '1px solid #2A2A2A', borderRadius: '8px', color: '#888888', fontSize: '13px', cursor: 'pointer' }}>Cancel</button>
+              <button onClick={() => setEditingPush(null)} style={{ padding: '11px', background: 'transparent', border: '1px solid #2A2A2A', borderRadius: '8px', color: '#FEFEFE', fontSize: '13px', cursor: 'pointer' }}>Cancel</button>
               <button onClick={savePushTemplate} style={{ padding: '11px', background: '#FED800', border: 'none', borderRadius: '8px', color: '#000', fontSize: '13px', fontWeight: '700', cursor: 'pointer' }}>Save Template</button>
             </div>
           </div>
@@ -345,7 +346,7 @@ export default function Notifications() {
         ].map(tab => (
           <button key={tab.id} onClick={() => setActiveTab(tab.id as NotifTab)} style={{
             flex: 1, padding: '10px', background: activeTab === tab.id ? '#FED800' : 'transparent',
-            color: activeTab === tab.id ? '#000' : '#888888',
+            color: activeTab === tab.id ? '#000' : '#FEFEFE',
             border: 'none', borderRadius: '8px', fontSize: '12px', fontWeight: '600', cursor: 'pointer',
           }}>{tab.label}</button>
         ))}
@@ -354,7 +355,7 @@ export default function Notifications() {
       {/* EMAIL TEMPLATES */}
       {activeTab === 'templates' && (
         <div>
-          <p style={{ fontSize: '13px', color: '#888888', marginBottom: '16px' }}>
+          <p style={{ fontSize: '13px', color: '#FEFEFE', marginBottom: '16px' }}>
             Customize the emails sent to customers automatically. Use variables like {`{{customer_name}}`} to personalize each email.
           </p>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
@@ -363,15 +364,15 @@ export default function Notifications() {
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
                   <div style={{ flex: 1, marginRight: '16px' }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '4px' }}>
-                      <p style={{ fontSize: '14px', fontWeight: '700', color: template.active ? '#FEFEFE' : '#888888' }}>{template.name}</p>
+                      <p style={{ fontSize: '14px', fontWeight: '700', color: template.active ? '#FEFEFE' : '#FEFEFE' }}>{template.name}</p>
                       <span style={{ fontSize: '10px', padding: '2px 8px', borderRadius: '20px', fontWeight: '600', background: template.active ? '#22C55E20' : '#FC030120', color: template.active ? '#22C55E' : '#FC0301', border: `1px solid ${template.active ? '#22C55E40' : '#FC030140'}` }}>
                         {template.active ? 'Active' : 'Inactive'}
                       </span>
                     </div>
-                    <p style={{ fontSize: '12px', color: '#888888', marginBottom: '4px' }}>Trigger: {template.trigger}</p>
+                    <p style={{ fontSize: '12px', color: '#FEFEFE', marginBottom: '4px' }}>Trigger: {template.trigger}</p>
                     <p style={{ fontSize: '12px', color: '#CACACA' }}>Subject: {template.subject}</p>
                   </div>
-                  <button onClick={() => setEditingEmail(template)} style={{ padding: '7px 14px', background: 'transparent', border: '1px solid #2A2A2A', borderRadius: '8px', color: '#888888', fontSize: '12px', cursor: 'pointer', flexShrink: 0 }}>
+                  <button onClick={() => setEditingEmail(template)} style={{ padding: '7px 14px', background: 'transparent', border: '1px solid #2A2A2A', borderRadius: '8px', color: '#FEFEFE', fontSize: '12px', cursor: 'pointer', flexShrink: 0 }}>
                     Edit
                   </button>
                 </div>
@@ -387,21 +388,21 @@ export default function Notifications() {
           {/* Auto Push Templates */}
           <div style={{ background: '#1A1A1A', border: '1px solid #2A2A2A', borderRadius: '12px', padding: '20px', marginBottom: '20px' }}>
             <p style={{ fontSize: '14px', fontWeight: '700', color: '#FEFEFE', marginBottom: '4px' }}>Automatic Push Notifications</p>
-            <p style={{ fontSize: '12px', color: '#888888', marginBottom: '16px' }}>Sent automatically when order status changes</p>
+            <p style={{ fontSize: '12px', color: '#FEFEFE', marginBottom: '16px' }}>Sent automatically when order status changes</p>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
               {pushTemplates.map(template => (
                 <div key={template.id} style={{ background: '#111111', border: `1px solid ${template.active ? '#2A2A2A' : '#FC030120'}`, borderRadius: '10px', padding: '14px 16px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                   <div style={{ flex: 1 }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '3px' }}>
-                      <p style={{ fontSize: '13px', fontWeight: '600', color: template.active ? '#FEFEFE' : '#888888' }}>{template.name}</p>
+                      <p style={{ fontSize: '13px', fontWeight: '600', color: template.active ? '#FEFEFE' : '#FEFEFE' }}>{template.name}</p>
                       <span style={{ fontSize: '10px', padding: '2px 8px', borderRadius: '20px', fontWeight: '600', background: template.active ? '#22C55E20' : '#FC030120', color: template.active ? '#22C55E' : '#FC0301', border: `1px solid ${template.active ? '#22C55E40' : '#FC030140'}` }}>
                         {template.active ? 'Active' : 'Inactive'}
                       </span>
                     </div>
-                    <p style={{ fontSize: '11px', color: '#888888' }}>{template.trigger}</p>
+                    <p style={{ fontSize: '11px', color: '#FEFEFE' }}>{template.trigger}</p>
                     <p style={{ fontSize: '12px', color: '#CACACA', marginTop: '3px' }}>{template.title}</p>
                   </div>
-                  <button onClick={() => setEditingPush(template)} style={{ padding: '6px 12px', background: 'transparent', border: '1px solid #2A2A2A', borderRadius: '6px', color: '#888888', fontSize: '11px', cursor: 'pointer', flexShrink: 0, marginLeft: '12px' }}>
+                  <button onClick={() => setEditingPush(template)} style={{ padding: '6px 12px', background: 'transparent', border: '1px solid #2A2A2A', borderRadius: '6px', color: '#FEFEFE', fontSize: '11px', cursor: 'pointer', flexShrink: 0, marginLeft: '12px' }}>
                     Edit
                   </button>
                 </div>
@@ -412,7 +413,7 @@ export default function Notifications() {
           {/* Manual Push */}
           <div style={{ background: '#1A1A1A', border: '1px solid #2A2A2A', borderRadius: '12px', padding: '20px' }}>
             <p style={{ fontSize: '14px', fontWeight: '700', color: '#FEFEFE', marginBottom: '4px' }}>Send Manual Push Notification</p>
-            <p style={{ fontSize: '12px', color: '#888888', marginBottom: '16px' }}>Send a custom push notification to customers right now</p>
+            <p style={{ fontSize: '12px', color: '#FEFEFE', marginBottom: '16px' }}>Send a custom push notification to customers right now</p>
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
               <div>
@@ -446,11 +447,11 @@ export default function Notifications() {
               {/* Preview */}
               {(pushTitle || pushBody) && (
                 <div style={{ background: '#111111', borderRadius: '10px', padding: '14px' }}>
-                  <p style={{ fontSize: '11px', color: '#888888', marginBottom: '10px' }}>Preview</p>
+                  <p style={{ fontSize: '11px', color: '#FEFEFE', marginBottom: '10px' }}>Preview</p>
                   <div style={{ background: '#2A2A2A', borderRadius: '12px', padding: '12px 14px' }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px' }}>
                       <div style={{ width: '20px', height: '20px', background: '#FED800', borderRadius: '4px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '10px' }}>🍳</div>
-                      <span style={{ fontSize: '11px', color: '#888888' }}>Eggs Ok · now</span>
+                      <span style={{ fontSize: '11px', color: '#FEFEFE' }}>Eggs Ok · now</span>
                     </div>
                     <p style={{ fontSize: '13px', fontWeight: '700', color: '#FEFEFE', marginBottom: '3px' }}>{pushTitle}</p>
                     <p style={{ fontSize: '12px', color: '#CACACA' }}>{pushBody}</p>
@@ -461,7 +462,7 @@ export default function Notifications() {
               <button onClick={sendManualPush} disabled={sending || !pushTitle || !pushBody} style={{
                 padding: '12px', background: sending || !pushTitle || !pushBody ? '#2A2A2A' : '#FED800',
                 border: 'none', borderRadius: '8px',
-                color: sending || !pushTitle || !pushBody ? '#888888' : '#000',
+                color: sending || !pushTitle || !pushBody ? '#FEFEFE' : '#000',
                 fontSize: '13px', fontWeight: '700', cursor: sending ? 'not-allowed' : 'pointer',
               }}>
                 {sending ? 'Sending...' : 'Send Push Notification'}
@@ -481,7 +482,7 @@ export default function Notifications() {
               { label: 'Total This Month', value: '1,247', color: '#FED800' },
             ].map((s, i) => (
               <div key={i} style={{ background: '#1A1A1A', border: '1px solid #2A2A2A', borderRadius: '12px', padding: '16px 20px' }}>
-                <p style={{ fontSize: '12px', color: '#888888', marginBottom: '6px' }}>{s.label}</p>
+                <p style={{ fontSize: '12px', color: '#FEFEFE', marginBottom: '6px' }}>{s.label}</p>
                 <p style={{ fontSize: '24px', fontWeight: '700', color: s.color }}>{s.value}</p>
               </div>
             ))}
@@ -492,7 +493,7 @@ export default function Notifications() {
               <thead>
                 <tr style={{ borderBottom: '1px solid #2A2A2A' }}>
                   {['Type', 'Recipient', 'Message', 'Status', 'Time'].map(h => (
-                    <th key={h} style={{ padding: '12px 16px', textAlign: 'left', fontSize: '10px', fontWeight: '600', color: '#888888', textTransform: 'uppercase', letterSpacing: '0.5px' }}>{h}</th>
+                    <th key={h} style={{ padding: '12px 16px', textAlign: 'left', fontSize: '10px', fontWeight: '600', color: '#FEFEFE', textTransform: 'uppercase', letterSpacing: '0.5px' }}>{h}</th>
                   ))}
                 </tr>
               </thead>
@@ -505,13 +506,13 @@ export default function Notifications() {
                       </span>
                     </td>
                     <td style={{ padding: '12px 16px', fontSize: '12px', color: '#FEFEFE' }}>{n.recipient}</td>
-                    <td style={{ padding: '12px 16px', fontSize: '12px', color: '#888888', maxWidth: '260px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{n.subject}</td>
+                    <td style={{ padding: '12px 16px', fontSize: '12px', color: '#FEFEFE', maxWidth: '260px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{n.subject}</td>
                     <td style={{ padding: '12px 16px' }}>
                       <span style={{ fontSize: '11px', padding: '2px 8px', borderRadius: '20px', fontWeight: '600', background: `${statusColor[n.status]}20`, color: statusColor[n.status], border: `1px solid ${statusColor[n.status]}40` }}>
                         {n.status}
                       </span>
                     </td>
-                    <td style={{ padding: '12px 16px', fontSize: '11px', color: '#888888' }}>{n.time}</td>
+                    <td style={{ padding: '12px 16px', fontSize: '11px', color: '#FEFEFE' }}>{n.time}</td>
                   </tr>
                 ))}
               </tbody>

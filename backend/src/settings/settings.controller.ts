@@ -1,5 +1,6 @@
-import { Controller, Get, Put, Post, Body, Param } from '@nestjs/common';
+import { Controller, Get, Put, Post, Body, Param, UseGuards } from '@nestjs/common';
 import { SettingsService } from './settings.service';
+import { AdminGuard } from '../auth/admin.guard';
 
 @Controller('settings')
 export class SettingsController {
@@ -11,6 +12,7 @@ export class SettingsController {
   }
 
   @Put('hours')
+  @UseGuards(AdminGuard)
   updateBusinessHours(@Body() hours: any) {
     return this.settingsService.updateBusinessHours(hours);
   }
@@ -31,6 +33,7 @@ export class SettingsController {
   }
 
   @Put(':key')
+  @UseGuards(AdminGuard)
   setSetting(@Param('key') key: string, @Body() value: any) {
     return this.settingsService.setSetting(key, value);
   }

@@ -26,7 +26,8 @@ export class AuthController {
     @Post('logout')
     @HttpCode(200)
     logout(@Request() req: any) {
-        const rawToken = req.headers['authorization'].slice(7);
+        const authHeader = req.headers['authorization'] || '';
+        const rawToken = authHeader.startsWith('Bearer ') ? authHeader.slice(7) : '';
         return this.authService.logout(rawToken);
     }
 
@@ -71,6 +72,13 @@ export class AuthController {
     @Put('addresses')
     updateAddresses(@Request() req: any, @Body() data: { addresses: any[] }) {
         return this.authService.updateAddresses(req.user.id, data.addresses);
+    }
+
+    // My Orders (customer-facing)
+    @UseGuards(TokenGuard)
+    @Get('my-orders')
+    getMyOrders(@Request() req: any) {
+        return this.authService.getMyOrders(req.user.id);
     }
 
     // Loyalty

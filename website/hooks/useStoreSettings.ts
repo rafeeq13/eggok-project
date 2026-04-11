@@ -52,7 +52,11 @@ export function useStoreSettings() {
         isPickupEnabled: settings?.pickupEnabled ?? true,
         closedMessage: settings?.closedMessage ?? 'Closed',
         pickupWait: settings?.pickupWait ?? 15,
-        deliveryFee: settings?.deliveryFee ?? 3.99,
-        minOrder: settings?.minOrder ?? 10
+        deliveryFee: settings?.deliveryFee ?? 0,
+        minOrder: settings?.minOrder ?? 10,
+        taxRate: settings?.taxRate ?? 0.08,
+        storeName: settings?.storeName ?? 'Eggs Ok',
+        storeAddress: settings?.storeAddress ?? '3517 Lancaster Ave, Philadelphia, PA 19104',
+        storeTimezone: settings?.storeTimezone ?? 'America/New_York',
     };
 }

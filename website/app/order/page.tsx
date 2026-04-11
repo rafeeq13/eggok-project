@@ -8,7 +8,7 @@ import { useGoogleMaps, initAutocomplete, validateDeliveryAddress } from '../../
 
 type ModifierOption = { id: number; name: string; price: number };
 type ModifierGroup = { id: number; name: string; required: boolean; minSelections: number; maxSelections: number; options: ModifierOption[] };
-type MenuItem = { id: number; categoryId: number; name: string; description: string; pickupPrice: any; deliveryPrice: any; image: string; imageUrl: string; isPopular?: boolean; modifiers?: ModifierGroup[] };
+type MenuItem = { id: number; categoryId: number; name: string; description: string; pickupPrice: number; deliveryPrice: number; image: string; imageUrl: string; isPopular?: boolean; modifiers?: ModifierGroup[] };
 type Category = { id: number; name: string; isActive?: boolean };
 
 const API = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3002/api';
@@ -63,7 +63,7 @@ const css = `
   /* ── Burger ── */
   .burger {
     display: none; align-items: center; justify-content: center;
-    width: 40px; height: 40px;
+    width: 44px; height: 44px;
     background: var(--bg4); border: 1px solid var(--border);
     border-radius: 10px; cursor: pointer; color: var(--t2); flex-shrink: 0;
     transition: background 0.15s, border-color 0.15s;
@@ -134,7 +134,7 @@ const css = `
   .sidebar::-webkit-scrollbar { display: none; }
 
   .sidebar-search-wrap { padding: 0 16px 20px; border-bottom: 1px solid #1A1A1A; }
-  .sidebar-search-inner { position: relative; }
+  .sidebar-search-inner { position: relative; color: var(--t2); }
   .sidebar-search-icon { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); pointer-events: none; }
   .sidebar-search-input {
     width: 100%; padding: 10px 12px 10px 36px;
@@ -148,7 +148,7 @@ const css = `
 
   .sidebar-menu-wrap { padding: 16px 0; }
   .sidebar-menu-label {
-    font-size: 10px; color: var(--t4); font-weight: 700;
+    font-size: 10px; color: #ffffff; font-weight: 700;
     letter-spacing: 2px; text-transform: uppercase;
     padding: 0 16px 10px; display: block; font-family: var(--font-body);
   }
@@ -310,6 +310,14 @@ const css = `
 
   /* ── Loading ── */
   .menu-loading { color: var(--t4); text-align: center; padding: 80px 20px; font-size: 14px; font-weight: 500; }
+  @keyframes skeleton-pulse { 0%, 100% { opacity: 0.4; } 50% { opacity: 0.8; } }
+  .skeleton-card { background: var(--bg3); border-radius: 14px; border: 1px solid var(--border); overflow: hidden; }
+  .skeleton-img { height: 160px; background: var(--bg2); animation: skeleton-pulse 1.5s infinite; }
+  .skeleton-body { padding: 14px; }
+  .skeleton-line { height: 12px; background: var(--bg2); border-radius: 6px; margin-bottom: 8px; animation: skeleton-pulse 1.5s infinite; }
+  .skeleton-line.w60 { width: 60%; }
+  .skeleton-line.w40 { width: 40%; }
+  .skeleton-line.w80 { width: 80%; }
 
   /* ══ MOBILE CATEGORY BAR ══ */
   .mobile-cat-bar {
@@ -417,7 +425,7 @@ const css = `
 
   /* ══ MODAL COMMON ══ */
   .modal-backdrop { position: fixed; inset: 0; background: rgba(0,0,0,0.88); z-index: 300; display: flex; align-items: center; justify-content: center; padding: 16px; }
-  .modal-close-btn { width: 32px; height: 32px; border-radius: 50%; background: var(--bg4); border: 1px solid var(--border); color: var(--t3); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background 0.15s; flex-shrink: 0; }
+  .modal-close-btn { width: 44px; height: 44px; border-radius: 50%; background: var(--bg4); border: 1px solid var(--border); color: var(--t3); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background 0.15s; flex-shrink: 0; }
   .modal-close-btn:hover { background: #252525; color: var(--t1); }
   .modal-title { font-family: var(--font-head); font-size: 24px; letter-spacing: 1px; color: var(--t1); margin: 0; }
 
@@ -451,7 +459,7 @@ const css = `
   .delivery-suggestion-row:hover { background: #141414; }
   .delivery-suggestion-name { font-size: 14px; font-weight: 700; color: var(--t1); }
   .delivery-suggestion-city { font-size: 12px; color: var(--t4); margin-top: 2px; }
-  .delivery-field-label { font-size: 12px; color: var(--t3); display: block; margin-bottom: 6px; font-weight: 600; }
+  .delivery-field-label { font-size: 12px; color: #CACACA; display: block; margin-bottom: 6px; font-weight: 600; }
   .delivery-field-input {
     width: 100%; padding: 12px; background: var(--bg1); border: 1px solid var(--border);
     border-radius: 10px; color: var(--t1); font-size: 13px; outline: none;
@@ -492,7 +500,8 @@ const css = `
   .schedule-date-label { font-size: 13px; font-weight: 700; margin: 0; }
   .schedule-date-label.active { color: var(--y); }
   .schedule-date-label.inactive { color: var(--t1); }
-  .schedule-date-sub { font-size: 11px; color: var(--t4); margin: 2px 0 0; }
+  .schedule-date-sub { font-size: 11px; color: #888888; margin: 2px 0 0; }
+  .schedule-date-sub.active { color: #FED800; }
   .schedule-more-btn { width: 100%; padding: 10px; background: transparent; border: 1px solid var(--border); border-radius: 10px; color: var(--t2); font-size: 13px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; margin-bottom: 4px; font-family: var(--font-body); transition: border-color 0.15s; }
   .schedule-more-btn:hover { border-color: #3A3A3A; color: var(--t1); }
   .schedule-times-list { overflow-y: auto; flex: 1; padding: 0 24px 8px; }
@@ -517,7 +526,7 @@ const css = `
   .item-modal-img { width: 100%; height: 100%; object-fit: cover; }
   .item-modal-img-placeholder { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #1A1A00, var(--bg1)); }
   .item-popular-badge { position: absolute; top: 16px; left: 16px; background: var(--y); color: #000; padding: 5px 14px; border-radius: 20px; font-size: 11px; font-weight: 800; display: flex; align-items: center; gap: 4px; font-family: var(--font-head); letter-spacing: 1px; }
-  .item-modal-close { position: absolute; top: 16px; right: 16px; width: 36px; height: 36px; border-radius: 50%; background: rgba(0,0,0,0.75); border: 1px solid rgba(255,255,255,0.1); color: var(--t1); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background 0.15s; }
+  .item-modal-close { position: absolute; top: 12px; right: 12px; width: 44px; height: 44px; border-radius: 50%; background: rgba(0,0,0,0.75); border: 1px solid rgba(255,255,255,0.1); color: var(--t1); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background 0.15s; }
   .item-modal-close:hover { background: rgba(0,0,0,0.9); }
   .item-modal-body { padding: 28px; }
   .item-modal-name { font-family: var(--font-head); font-size: clamp(26px, 5vw, 34px); letter-spacing: 1px; line-height: 1; color: #e8c400; margin-bottom: 10px; }
@@ -640,6 +649,7 @@ function OrderContent() {
   } = useCart();
 
   const [mounted, setMounted] = useState(false);
+  const [fetchError, setFetchError] = useState(false);
   const [activeCategory, setActiveCategory] = useState(0);
   const [search, setSearch] = useState('');
   const [selectedItem, setSelectedItem] = useState<MenuItem | null>(null);
@@ -659,7 +669,23 @@ function OrderContent() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [showMobileSearch, setShowMobileSearch] = useState(false);
   const searchParams = useSearchParams();
-  const { isOpen, statusMessage, isDeliveryEnabled, isPickupEnabled } = useStoreSettings();
+  const { isOpen, statusMessage, isDeliveryEnabled, isPickupEnabled, storeTimezone, storeName, storeAddress, taxRate, deliveryFee: defaultDeliveryFee } = useStoreSettings();
+  const [tzAbbr, setTzAbbr] = useState('ET');
+  useEffect(() => {
+    try {
+      const tz = new Intl.DateTimeFormat('en-US', { timeZone: storeTimezone || 'America/New_York', timeZoneName: 'short' }).formatToParts(new Date()).find(p => p.type === 'timeZoneName')?.value;
+      if (tz) setTzAbbr(tz);
+    } catch {}
+  }, [storeTimezone]);
+
+  // Set default order type based on allowed options
+  useEffect(() => {
+    if (!isPickupEnabled && isDeliveryEnabled) {
+      setOrderType('delivery');
+    } else if (isPickupEnabled && !isDeliveryEnabled) {
+      setOrderType('pickup');
+    }
+  }, [isPickupEnabled, isDeliveryEnabled]);
 
   const popularScrollRef = useRef<HTMLDivElement>(null);
   const categoryRefs = useRef<Record<number, HTMLDivElement | null>>({});
@@ -730,7 +756,7 @@ function OrderContent() {
           }, 500);
         }
       }
-    }).catch(() => setLoading(false));
+    }).catch(() => { setLoading(false); setFetchError(true); });
   };
 
   useEffect(() => {
@@ -818,7 +844,7 @@ function OrderContent() {
     popularScrollRef.current?.scrollBy({ left: dir === 'right' ? 300 : -300, behavior: 'smooth' });
   };
 
-  const getItemPrice = (item: MenuItem) => parseFloat(orderType === 'pickup' ? item.pickupPrice : item.deliveryPrice);
+  const getItemPrice = (item: MenuItem) => Number(orderType === 'pickup' ? item.pickupPrice : item.deliveryPrice);
 
   const getScheduleLabel = () => {
     if (scheduleType === 'asap') return 'ASAP (15 min)';
@@ -1025,7 +1051,7 @@ function OrderContent() {
                     <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/>
                     <circle cx="12" cy="9" r="2.5" fill="#0D0D0D"/>
                   </svg>
-                  <span style={{ fontSize: '13px', color: '#ffffff' }}>3517 Lancaster Ave, Philadelphia</span>
+                  <span style={{ fontSize: '13px', color: '#ffffff' }}>{storeAddress}</span>
                 </div>
                 <span className="page-meta-dot" aria-hidden="true">·</span>
                 <div id="order-store-status" className="page-meta-status" role="status" aria-live="polite">
@@ -1087,8 +1113,33 @@ function OrderContent() {
               </div>
             </header>
 
-            {/* Loading */}
-            {loading && <p id="menu-loading" className="menu-loading">Loading menu…</p>}
+            {/* Loading Skeleton */}
+            {loading && (
+              <div style={{ padding: '20px 0' }}>
+                <div className="skeleton-line w40" style={{ height: '20px', marginBottom: '16px' }} />
+                <div className="menu-grid">
+                  {Array.from({ length: 6 }).map((_, i) => (
+                    <div key={i} className="skeleton-card">
+                      <div className="skeleton-img" />
+                      <div className="skeleton-body">
+                        <div className="skeleton-line w80" />
+                        <div className="skeleton-line w60" />
+                        <div className="skeleton-line w40" />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Fetch Error */}
+            {fetchError && !loading && (
+              <div style={{ textAlign: 'center', padding: '60px 20px' }}>
+                <p style={{ fontSize: '16px', color: '#FC0301', marginBottom: '12px' }}>Unable to load menu</p>
+                <p style={{ fontSize: '13px', color: '#666', marginBottom: '20px' }}>Please check your connection and try again.</p>
+                <button onClick={() => { setFetchError(false); setLoading(true); fetchData(); }} style={{ padding: '10px 24px', background: 'var(--y)', border: 'none', borderRadius: '8px', color: '#000', fontSize: '14px', fontWeight: '700', cursor: 'pointer' }}>Retry</button>
+              </div>
+            )}
 
             {/* Search results */}
             {search && filteredItems && (
@@ -1096,13 +1147,17 @@ function OrderContent() {
                 <p className="search-results-meta">
                   {filteredItems.length} result{filteredItems.length !== 1 ? 's' : ''} for "<span className="search-term">{search}</span>"
                 </p>
-                <div id="search-results-grid" className="menu-grid">
-                  {filteredItems.map(item => (
-                    <div key={item.id} id={`search-item-${item.id}`}>
-                      <GridCard item={item} orderType={orderType} onSelect={openItem} />
-                    </div>
-                  ))}
-                </div>
+                {filteredItems.length === 0 ? (
+                  <p style={{ textAlign: 'center', color: '#666', padding: '40px 0', fontSize: '14px' }}>No items found. Try a different search term.</p>
+                ) : (
+                  <div id="search-results-grid" className="menu-grid">
+                    {filteredItems.map(item => (
+                      <div key={item.id} id={`search-item-${item.id}`}>
+                        <GridCard item={item} orderType={orderType} onSelect={openItem} />
+                      </div>
+                    ))}
+                  </div>
+                )}
               </div>
             )}
 
@@ -1253,11 +1308,11 @@ function OrderContent() {
             {cart.length > 0 && (
               <div id="cart-footer" className="cart-footer">
                 <div className="cart-summary-row"><span className="cart-summary-label">Subtotal</span><span className="cart-summary-val">${cartTotal.toFixed(2)}</span></div>
-                {orderType === 'delivery' && <div className="cart-summary-row"><span className="cart-summary-label">Delivery fee</span><span className="cart-summary-val">${deliveryFee.toFixed(2)}</span></div>}
-                <div className="cart-summary-row"><span className="cart-summary-label">Tax</span><span className="cart-summary-val">${(cartTotal * 0.08).toFixed(2)}</span></div>
+                {orderType === 'delivery' && <div className="cart-summary-row"><span className="cart-summary-label">Delivery fee</span><span className="cart-summary-val">${(deliveryFee || defaultDeliveryFee).toFixed(2)}</span></div>}
+                <div className="cart-summary-row"><span className="cart-summary-label">Tax</span><span className="cart-summary-val">${(cartTotal * taxRate).toFixed(2)}</span></div>
                 <div className="cart-total-row">
                   <span className="cart-total-label">TOTAL</span>
-                  <span className="cart-total-val">${(cartTotal + (orderType === 'delivery' ? deliveryFee : 0) + cartTotal * 0.08).toFixed(2)}</span>
+                  <span className="cart-total-val">${(cartTotal + (orderType === 'delivery' ? (deliveryFee || defaultDeliveryFee) : 0) + cartTotal * taxRate).toFixed(2)}</span>
                 </div>
                 <Link id="cart-checkout-btn" href="/checkout" className="cart-checkout-btn" onClick={() => setShowCart(false)}>
                   Checkout →
@@ -1283,7 +1338,7 @@ function OrderContent() {
               </div>
 
               <div id="delivery-type-toggle" className="delivery-type-toggle" role="group" aria-label="Order type">
-                {(['pickup', 'delivery'] as const).map(type => (
+                {(['pickup', 'delivery'] as const).filter(type => type === 'pickup' ? isPickupEnabled : isDeliveryEnabled).map(type => (
                   <button
                     key={type}
                     id={`delivery-modal-type-${type}`}
@@ -1354,13 +1409,13 @@ function OrderContent() {
                   <div id="delivery-from-box" className="delivery-from-box">
                     <p className="delivery-from-label">Delivering from</p>
                     <div className="delivery-from-name-row">
-                      <p style={{ fontSize: '14px', fontWeight: '700', color: '#ffffff', margin: 0 }}>Eggs Ok</p>
+                      <p style={{ fontSize: '14px', fontWeight: '700', color: '#ffffff', margin: 0 }}>{storeName}</p>
                       <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-                        <div style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#22C55E' }} />
-                        <span style={{ fontSize: '12px', color: '#22C55E', fontWeight: '600' }}>Open now</span>
+                        <div style={{ width: '6px', height: '6px', borderRadius: '50%', background: isOpen ? '#22C55E' : '#FC0301' }} />
+                        <span style={{ fontSize: '12px', color: isOpen ? '#22C55E' : '#FC0301', fontWeight: '600' }}>{isOpen ? statusMessage : 'Closed Now'}</span>
                       </div>
                     </div>
-                    <p style={{ fontSize: '12px', color: '#444', marginTop: '2px' }}>3517 Lancaster Ave, Philadelphia, PA</p>
+                    <p style={{ fontSize: '12px', color: '#444', marginTop: '2px' }}>{storeAddress}</p>
                   </div>
 
                   <button id="deliver-asap-btn" className="delivery-btn-primary" onClick={() => { setScheduleType('asap'); setShowDeliveryModal(false); }}>
@@ -1409,7 +1464,7 @@ function OrderContent() {
                           onClick={() => setScheduleDate(d.value)}
                         >
                           <p className={`schedule-date-label ${selectedVal === d.value ? 'active' : 'inactive'}`}>{d.label}</p>
-                          <p className="schedule-date-sub">{d.sub}</p>
+                          <p className={`schedule-date-sub ${selectedVal === d.value ? 'active' : ''}`}>{d.sub}</p>
                         </button>
                       ))}
                     </div>
@@ -1436,7 +1491,7 @@ function OrderContent() {
               {/* Time slots */}
               {Array.from({ length: 57 }, (_, i) => {
                 const totalMins = 7 * 60 + i * 15; const h = Math.floor(totalMins / 60); const m = totalMins % 60;
-                const label = `${h > 12 ? h - 12 : h === 0 ? 12 : h}:${m.toString().padStart(2, '0')} ${h >= 12 ? 'PM' : 'AM'} EDT`;
+                const label = `${h > 12 ? h - 12 : h === 0 ? 12 : h}:${m.toString().padStart(2, '0')} ${h >= 12 ? 'PM' : 'AM'} ${tzAbbr}`;
                 const val = `${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}`;
                 const isSelected = scheduleType === 'scheduled' && scheduleTime === val;
                 return (
@@ -1491,7 +1546,7 @@ function OrderContent() {
 
               {/* Price cards */}
               <div id="item-price-row" className="item-price-row">
-                {(['pickup', 'delivery'] as const).map(type => (
+                {(['pickup', 'delivery'] as const).filter(type => type === 'pickup' ? isPickupEnabled : isDeliveryEnabled).map(type => (
                   <div
                     key={type}
                     id={`item-price-${type}`}
@@ -1502,7 +1557,7 @@ function OrderContent() {
                   >
                     <p className="item-price-type">{type}</p>
                     <p className={`item-price-val ${orderType === type ? 'active' : 'inactive'}`}>
-                      ${parseFloat(type === 'pickup' ? selectedItem.pickupPrice : selectedItem.deliveryPrice).toFixed(2)}
+                      ${Number(type === 'pickup' ? selectedItem.pickupPrice : selectedItem.deliveryPrice).toFixed(2)}
                     </p>
                   </div>
                 ))}
@@ -1573,7 +1628,7 @@ function OrderContent() {
                         <div className="upsell-card-body">
                           <p className="upsell-card-name">{item.name}</p>
                           <p className="upsell-card-price">
-                            ${parseFloat(orderType === 'pickup' ? item.pickupPrice : item.deliveryPrice).toFixed(2)}
+                            ${Number(orderType === 'pickup' ? item.pickupPrice : item.deliveryPrice).toFixed(2)}
                           </p>
                         </div>
                       </div>
@@ -1622,7 +1677,7 @@ export default function OrderPage() {
    POPULAR CARD
 ────────────────────────────────────────────── */
 function PopularCard({ item, orderType, onSelect }: { item: MenuItem; orderType: 'pickup' | 'delivery'; onSelect: (item: MenuItem) => void }) {
-  const price = parseFloat(orderType === 'pickup' ? item.pickupPrice : item.deliveryPrice);
+  const price = Number(orderType === 'pickup' ? item.pickupPrice : item.deliveryPrice);
   return (
     <div id={`popular-card-${item.id}`} className="pop-card-inner" onClick={() => onSelect(item)}>
       <div className="pop-card-img-wrap">
@@ -1653,7 +1708,7 @@ function PopularCard({ item, orderType, onSelect }: { item: MenuItem; orderType:
    GRID CARD
 ────────────────────────────────────────────── */
 function GridCard({ item, orderType, onSelect, borderRadius }: { item: MenuItem; orderType: 'pickup' | 'delivery'; onSelect: (item: MenuItem) => void; borderRadius?: string }) {
-  const price = parseFloat(orderType === 'pickup' ? item.pickupPrice : item.deliveryPrice);
+  const price = Number(orderType === 'pickup' ? item.pickupPrice : item.deliveryPrice);
   return (
     <div
       id={`grid-card-${item.id}`}

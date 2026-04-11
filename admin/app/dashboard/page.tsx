@@ -18,14 +18,13 @@ import Notifications from './components/Notifications';
 import Reviews from './components/Reviews';
 import Loyalty from './components/Loyalty';
 import Submissions from './components/Submissions';
+import { API, adminFetch, adminLogout } from '../../lib/api';
 
 const statusColor: Record<string, string> = {
   Preparing: '#F59E0B',
   Ready: '#22C55E',
-  Delivered: '#888888',
+  Delivered: '#FEFEFE',
 };
-
-const API = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3002/api';
 
 function DashboardContent() {
   const searchParams = useSearchParams();
@@ -58,7 +57,7 @@ function DashboardContent() {
     }
 
     // Fetch store status
-    fetch(`${API}/settings/status`)
+    adminFetch(`${API}/settings/status`)
       .then(r => r.ok ? r.json() : null)
       .then(data => { if (data) setStoreOpen(data.isOpen); })
       .catch(() => {});
@@ -122,22 +121,22 @@ function DashboardContent() {
           </div>
           {/* <div>
             <div style={{ fontSize: '12px', fontWeight: '800', color: '#FED800', letterSpacing: '1px' }}>EGGS OK</div>
-            <div style={{ fontSize: '10px', color: '#888888', marginTop: '1px' }}>Admin Panel</div>
+            <div style={{ fontSize: '10px', color: '#FEFEFE', marginTop: '1px' }}>Admin Panel</div>
           </div> */}
         </div>
         {isMobile && (
-          <button onClick={() => setSidebarOpen(false)} style={{ background: 'transparent', border: 'none', color: '#888888', fontSize: '20px', cursor: 'pointer', padding: '4px' }}>✕</button>
+          <button onClick={() => setSidebarOpen(false)} aria-label="Close navigation" style={{ background: 'transparent', border: 'none', color: '#FEFEFE', fontSize: '20px', cursor: 'pointer', padding: '8px', minWidth: '44px', minHeight: '44px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>✕</button>
         )}
       </div>
 
       {/* Nav */}
-      <nav style={{ padding: '12px 10px', flex: 1, overflowY: 'auto' }}>
+      <nav role="navigation" aria-label="Dashboard navigation" style={{ padding: '12px 10px', flex: 1, overflowY: 'auto' }}>
         {sidebarItems.map(item => (
-          <button key={item.id} onClick={() => handleTabChange(item.id)} style={{
+          <button key={item.id} onClick={() => handleTabChange(item.id)} aria-current={activeTab === item.id ? 'page' : undefined} style={{
             width: '100%', display: 'flex', alignItems: 'center', gap: '10px',
             padding: '10px 12px', borderRadius: '8px',
             background: activeTab === item.id ? '#FED800' : 'transparent',
-            color: activeTab === item.id ? '#000000' : '#666666',
+            color: activeTab === item.id ? '#000000' : '#c8c8c8ff',
             fontSize: '12px', fontWeight: activeTab === item.id ? '700' : '400',
             marginBottom: '1px', textAlign: 'left', border: 'none', cursor: 'pointer',
           }}>
@@ -151,10 +150,10 @@ function DashboardContent() {
 
       {/* Logout */}
       <div style={{ padding: '12px 10px', borderTop: '1px solid #2A2A2A' }}>
-        <button onClick={() => { localStorage.removeItem('admin_user'); router.push('/'); }} style={{
+        <button onClick={() => adminLogout()} style={{
           width: '100%', padding: '10px 12px',
           background: 'transparent',
-          color: '#666666', borderRadius: '8px', fontSize: '12px',
+          color: '#ffffffff', borderRadius: '8px', fontSize: '12px',
           display: 'flex', alignItems: 'center', gap: '10px',
           border: '1px solid #2A2A2A', cursor: 'pointer',
           transition: 'all 0.15s',
@@ -166,7 +165,7 @@ function DashboardContent() {
           }}
           onMouseLeave={e => {
             (e.currentTarget as HTMLButtonElement).style.background = 'transparent';
-            (e.currentTarget as HTMLButtonElement).style.color = '#666666';
+            (e.currentTarget as HTMLButtonElement).style.color = '#ffffffff';
             (e.currentTarget as HTMLButtonElement).style.borderColor = '#2A2A2A';
           }}
         >
@@ -189,13 +188,14 @@ function DashboardContent() {
     try {
       setOverviewLoading(true);
       const [statsRes, ordersRes] = await Promise.all([
-        fetch((process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3002/api') + '/orders/stats/today'),
-        fetch((process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3002/api') + '/orders')
+        adminFetch(`${API}/orders/stats/today`),
+        adminFetch(`${API}/orders`)
       ]);
       const stats = await statsRes.json();
       const orders = await ordersRes.json();
       setTodayStats(stats);
-      setRecentOrders(Array.isArray(orders) ? orders.slice(0, 5) : []);
+      const ordersList = Array.isArray(orders) ? orders : (orders.data || []);
+      setRecentOrders(ordersList.slice(0, 5));
     } catch (err) {
       console.error('Failed to fetch overview:', err);
     } finally {
@@ -261,10 +261,10 @@ function DashboardContent() {
         }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
             {isMobile && (
-              <button onClick={() => setSidebarOpen(true)} style={{
+              <button onClick={() => setSidebarOpen(true)} aria-label="Open navigation menu" style={{
                 background: 'transparent', border: 'none',
                 color: '#FEFEFE', fontSize: '22px', cursor: 'pointer', padding: '2px',
-                display: 'flex', alignItems: 'center',
+                display: 'flex', alignItems: 'center', minWidth: '44px', minHeight: '44px', justifyContent: 'center',
               }}>☰</button>
             )}
             <div>
@@ -272,7 +272,7 @@ function DashboardContent() {
                 {sidebarItems.find(i => i.id === activeTab)?.label}
               </h1>
               {!isMobile && (
-                <p style={{ fontSize: '11px', color: '#888888', marginTop: '1px' }}>
+                <p style={{ fontSize: '11px', color: '#FEFEFE', marginTop: '1px' }}>
                   3517 Lancaster Ave, Philadelphia PA 19104
                 </p>
               )}
@@ -303,9 +303,9 @@ function DashboardContent() {
               }}>
                 {stats.map((stat, i) => (
                   <div key={i} style={{ background: '#1A1A1A', border: '1px solid #2A2A2A', borderRadius: '12px', padding: isMobile ? '14px' : '18px' }}>
-                    <p style={{ fontSize: '11px', color: '#888888', marginBottom: '6px' }}>{stat.label}</p>
+                    <p style={{ fontSize: '11px', color: '#FEFEFE', marginBottom: '6px' }}>{stat.label}</p>
                     <p style={{ fontSize: isMobile ? '22px' : '26px', fontWeight: '700', color: stat.color }}>{stat.value}</p>
-                    <p style={{ fontSize: '10px', color: '#888888', marginTop: '3px' }}>{stat.sub}</p>
+                    <p style={{ fontSize: '10px', color: '#FEFEFE', marginTop: '3px' }}>{stat.sub}</p>
                   </div>
                 ))}
               </div>
@@ -324,11 +324,11 @@ function DashboardContent() {
                           <span style={{ fontSize: '13px', fontWeight: '700', color: '#FEFEFE' }}>${order.total}</span>
                         </div>
                         <p style={{ fontSize: '12px', color: '#FEFEFE', marginBottom: '4px' }}>{order.customerName}</p>
-                        <p style={{ fontSize: '11px', color: '#888888', marginBottom: '6px' }}>{Array.isArray(order.items) ? order.items.map((it: any) => it.name).join(', ') : 'No items'}</p>
+                        <p style={{ fontSize: '11px', color: '#FEFEFE', marginBottom: '6px' }}>{Array.isArray(order.items) ? order.items.map((it: any) => it.name).join(', ') : 'No items'}</p>
                         <div style={{ display: 'flex', gap: '8px' }}>
                           <span style={{ fontSize: '10px', padding: '2px 8px', borderRadius: '20px', fontWeight: '600', background: order.orderType === 'Delivery' ? '#0A1628' : '#1A1A00', color: order.orderType === 'Delivery' ? '#60A5FA' : '#FED800', border: `1px solid ${order.orderType === 'Delivery' ? '#1E3A5F' : '#3A3A00'}` }}>{order.orderType}</span>
-                          <span style={{ fontSize: '10px', padding: '2px 8px', borderRadius: '20px', fontWeight: '600', color: statusColor[order.status] || '#888888', background: `${statusColor[order.status] || '#888888'}18`, border: `1px solid ${statusColor[order.status] || '#888888'}40` }}>{order.status}</span>
-                          <span style={{ fontSize: '10px', color: '#888888', marginLeft: 'auto' }}>
+                          <span style={{ fontSize: '10px', padding: '2px 8px', borderRadius: '20px', fontWeight: '600', color: statusColor[order.status] || '#FEFEFE', background: `${statusColor[order.status] || '#FEFEFE'}18`, border: `1px solid ${statusColor[order.status] || '#FEFEFE'}40` }}>{order.status}</span>
+                          <span style={{ fontSize: '10px', color: '#FEFEFE', marginLeft: 'auto' }}>
                             {hasMounted ? new Date(order.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : '--:--'}
                           </span>
                         </div>
@@ -337,11 +337,11 @@ function DashboardContent() {
                   </div>
                 ) : (
                   <div style={{ overflowX: 'auto' }}>
-                    <table style={{ width: '100%', borderCollapse: 'collapse', minWidth: '600px' }}>
+                    <table role="table" style={{ width: '100%', borderCollapse: 'collapse', minWidth: '520px' }}>
                       <thead>
                         <tr style={{ borderBottom: '1px solid #2A2A2A' }}>
                           {['Order', 'Customer', 'Items', 'Type', 'Total', 'Status', 'Time'].map(h => (
-                            <th key={h} style={{ padding: '10px 16px', textAlign: 'left', fontSize: '10px', fontWeight: '600', color: '#888888', letterSpacing: '0.5px', textTransform: 'uppercase' }}>{h}</th>
+                            <th key={h} style={{ padding: '10px 16px', textAlign: 'left', fontSize: '10px', fontWeight: '600', color: '#FEFEFE', letterSpacing: '0.5px', textTransform: 'uppercase' }}>{h}</th>
                           ))}
                         </tr>
                       </thead>
@@ -350,15 +350,15 @@ function DashboardContent() {
                           <tr key={i} style={{ borderBottom: i < recentOrders.length - 1 ? '1px solid #2A2A2A' : 'none' }}>
                             <td style={{ padding: '12px 16px', fontSize: '12px', fontWeight: '600', color: '#FED800' }}>#{order.orderNumber?.split('-').pop()}</td>
                             <td style={{ padding: '12px 16px', fontSize: '12px', color: '#FEFEFE' }}>{order.customerName}</td>
-                            <td style={{ padding: '12px 16px', fontSize: '11px', color: '#888888' }}>{Array.isArray(order.items) ? order.items.map((it: any) => it.name).join(', ') : 'No items'}</td>
+                            <td style={{ padding: '12px 16px', fontSize: '11px', color: '#FEFEFE' }}>{Array.isArray(order.items) ? order.items.map((it: any) => it.name).join(', ') : 'No items'}</td>
                             <td style={{ padding: '12px 16px' }}>
                               <span style={{ fontSize: '10px', padding: '2px 8px', borderRadius: '20px', fontWeight: '600', background: order.orderType === 'Delivery' ? '#0A1628' : '#1A1A00', color: order.orderType === 'Delivery' ? '#60A5FA' : '#FED800', border: `1px solid ${order.orderType === 'Delivery' ? '#1E3A5F' : '#3A3A00'}` }}>{order.orderType}</span>
                             </td>
                             <td style={{ padding: '12px 16px', fontSize: '12px', fontWeight: '600', color: '#FEFEFE' }}>${order.total}</td>
                             <td style={{ padding: '12px 16px' }}>
-                              <span style={{ fontSize: '10px', padding: '2px 8px', borderRadius: '20px', fontWeight: '600', color: statusColor[order.status] || '#888888', background: `${statusColor[order.status] || '#888888'}18`, border: `1px solid ${statusColor[order.status] || '#888888'}40` }}>{order.status}</span>
+                              <span style={{ fontSize: '10px', padding: '2px 8px', borderRadius: '20px', fontWeight: '600', color: statusColor[order.status] || '#FEFEFE', background: `${statusColor[order.status] || '#FEFEFE'}18`, border: `1px solid ${statusColor[order.status] || '#FEFEFE'}40` }}>{order.status}</span>
                             </td>
-                            <td style={{ padding: '12px 16px', fontSize: '11px', color: '#888888' }}>
+                            <td style={{ padding: '12px 16px', fontSize: '11px', color: '#FEFEFE' }}>
                               {hasMounted ? new Date(order.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : '--:--'}
                             </td>
                           </tr>

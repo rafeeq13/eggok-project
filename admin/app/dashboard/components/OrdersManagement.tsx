@@ -1,8 +1,9 @@
 'use client';
 import { useState, useEffect, useCallback } from 'react';
 import DateRangePicker from './DateRangePicker';
+import Pagination from './Pagination';
 
-const API = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3002/api';
+import { API, adminFetch } from '../../../lib/api';
 
 type OrderStatus = 'pending' | 'confirmed' | 'preparing' | 'ready' | 'out_for_delivery' | 'delivered' | 'picked_up' | 'cancelled';
 type OrderType = 'pickup' | 'delivery';
@@ -46,8 +47,8 @@ const statusColor: Record<string, string> = {
   preparing: '#60A5FA',
   ready: '#22C55E',
   out_for_delivery: '#A78BFA',
-  delivered: '#888888',
-  picked_up: '#888888',
+  delivered: '#FEFEFE',
+  picked_up: '#FEFEFE',
   cancelled: '#FC0301',
 };
 
@@ -87,21 +88,32 @@ export default function OrdersManagement() {
   const [dateFrom, setDateFrom] = useState('');
   const [dateTo, setDateTo] = useState('');
   const [successMsg, setSuccessMsg] = useState('');
+  const [errorMsg, setErrorMsg] = useState('');
   const [stats, setStats] = useState<any>(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalOrders, setTotalOrders] = useState(0);
+  const pageSize = 50;
 
   const showSuccess = (msg: string) => {
     setSuccessMsg(msg);
     setTimeout(() => setSuccessMsg(''), 3000);
   };
 
-  const fetchOrders = useCallback(async () => {
+  const fetchOrders = useCallback(async (page = 1) => {
     try {
       setLoading(true);
-      const res = await fetch(`${API}/orders`);
+      const res = await adminFetch(`${API}/orders?page=${page}&limit=${pageSize}`);
       const data = await res.json();
-      setOrders(Array.isArray(data) ? data : []);
+      if (data && Array.isArray(data.data)) {
+        setOrders(data.data);
+        setTotalOrders(data.total || 0);
+        setCurrentPage(data.page || page);
+      } else {
+        setOrders(Array.isArray(data) ? data : []);
+      }
     } catch (err) {
       console.error('Failed to fetch orders:', err);
+      setErrorMsg('Failed to load orders');
     } finally {
       setLoading(false);
     }
@@ -109,11 +121,12 @@ export default function OrdersManagement() {
 
   const fetchStats = useCallback(async () => {
     try {
-      const res = await fetch(`${API}/orders/stats/today`);
+      const res = await adminFetch(`${API}/orders/stats/today`);
       const data = await res.json();
       setStats(data);
     } catch (err) {
       console.error('Failed to fetch stats:', err);
+      setErrorMsg('Failed to load order stats');
     }
   }, []);
 
@@ -130,7 +143,7 @@ export default function OrdersManagement() {
 
   const updateStatus = async (orderId: number, status: string) => {
     try {
-      const res = await fetch(`${API}/orders/${orderId}/status`, {
+      const res = await adminFetch(`${API}/orders/${orderId}/status`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ status }),
@@ -142,12 +155,13 @@ export default function OrdersManagement() {
       fetchStats();
     } catch (err) {
       console.error('Failed to update status:', err);
+      setErrorMsg('Failed to update order status'); setTimeout(() => setErrorMsg(''), 3000);
     }
   };
 
   const cancelOrder = async (orderId: number) => {
     try {
-      const res = await fetch(`${API}/orders/${orderId}/cancel`, { method: 'PATCH' });
+      const res = await adminFetch(`${API}/orders/${orderId}/cancel`, { method: 'PATCH' });
       const updated = await res.json();
       setOrders(prev => prev.map(o => o.id === orderId ? updated : o));
       setSelectedOrder(null);
@@ -155,6 +169,7 @@ export default function OrdersManagement() {
       fetchStats();
     } catch (err) {
       console.error('Failed to cancel order:', err);
+      setErrorMsg('Failed to cancel order'); setTimeout(() => setErrorMsg(''), 3000);
     }
   };
 
@@ -211,9 +226,16 @@ export default function OrdersManagement() {
         </div>
       )}
 
+      {/* Error Toast */}
+      {errorMsg && (
+        <div style={{ position: 'fixed', top: '20px', right: '20px', zIndex: 9999, background: '#FC0301', color: '#fff', padding: '12px 20px', borderRadius: '10px', fontSize: '13px', fontWeight: '600' }}>
+          {errorMsg}
+        </div>
+      )}
+
       {/* Refresh button */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
-        <p style={{ fontSize: '13px', color: '#888', margin: 0 }}>Auto-refreshes every 30 seconds</p>
+        <p style={{ fontSize: '13px', color: '#FEFEFE', margin: 0 }}>Auto-refreshes every 30 seconds</p>
         <button onClick={() => { fetchOrders(); fetchStats(); }} style={{ padding: '7px 14px', background: '#1A1A1A', border: '1px solid #2A2A2A', borderRadius: '8px', color: '#FED800', fontSize: '12px', fontWeight: '600', cursor: 'pointer' }}>
           ↻ Refresh Now
         </button>
@@ -233,7 +255,7 @@ export default function OrdersManagement() {
                   {selectedOrder.orderType === 'delivery' ? 'Delivery' : 'Pickup'}
                 </span>
               </div>
-              <button onClick={() => setSelectedOrder(null)} style={{ background: 'transparent', color: '#888', fontSize: '20px', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', width: '32px', height: '32px' }}>
+              <button onClick={() => setSelectedOrder(null)} style={{ background: 'transparent', color: '#FEFEFE', fontSize: '20px', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', width: '32px', height: '32px' }}>
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
               </button>
             </div>
@@ -241,7 +263,7 @@ export default function OrdersManagement() {
             <div style={{ overflow: 'auto', padding: '20px 24px', flex: 1 }}>
               {/* Customer */}
               <div style={{ background: '#111111', borderRadius: '10px', padding: '14px 16px', marginBottom: '14px' }}>
-                <p style={{ fontSize: '11px', color: '#888', textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: '10px' }}>Customer</p>
+                <p style={{ fontSize: '11px', color: '#FEFEFE', textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: '10px' }}>Customer</p>
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px' }}>
                   {[
                     ['Name', selectedOrder.customerName],
@@ -250,7 +272,7 @@ export default function OrdersManagement() {
                     ['Order Type', selectedOrder.orderType === 'delivery' ? 'Delivery' : 'Pickup'],
                   ].map(([label, value]) => (
                     <div key={label}>
-                      <p style={{ fontSize: '11px', color: '#888', margin: 0 }}>{label}</p>
+                      <p style={{ fontSize: '11px', color: '#FEFEFE', margin: 0 }}>{label}</p>
                       <p style={{ fontSize: '13px', color: '#FEFEFE', fontWeight: '500', marginTop: '2px' }}>{value}</p>
                     </div>
                   ))}
@@ -259,25 +281,25 @@ export default function OrdersManagement() {
 
               {/* Order Details */}
               <div style={{ background: '#111111', borderRadius: '10px', padding: '14px 16px', marginBottom: '14px' }}>
-                <p style={{ fontSize: '11px', color: '#888', textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: '10px' }}>Order Details</p>
+                <p style={{ fontSize: '11px', color: '#FEFEFE', textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: '10px' }}>Order Details</p>
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px' }}>
                   <div>
-                    <p style={{ fontSize: '11px', color: '#888', margin: 0 }}>Date</p>
+                    <p style={{ fontSize: '11px', color: '#FEFEFE', margin: 0 }}>Date</p>
                     <p style={{ fontSize: '13px', color: '#FEFEFE', fontWeight: '500', marginTop: '2px' }}>{formatDate(selectedOrder.createdAt)}</p>
                   </div>
                   <div>
-                    <p style={{ fontSize: '11px', color: '#888', margin: 0 }}>Time Placed</p>
+                    <p style={{ fontSize: '11px', color: '#FEFEFE', margin: 0 }}>Time Placed</p>
                     <p style={{ fontSize: '13px', color: '#FEFEFE', fontWeight: '500', marginTop: '2px' }}>{formatTime(selectedOrder.createdAt)}</p>
                   </div>
                   <div>
-                    <p style={{ fontSize: '11px', color: '#888', margin: 0 }}>Schedule</p>
+                    <p style={{ fontSize: '11px', color: '#FEFEFE', margin: 0 }}>Schedule</p>
                     <p style={{ fontSize: '13px', color: '#FEFEFE', fontWeight: '500', marginTop: '2px' }}>
                       {selectedOrder.scheduleType === 'asap' ? 'ASAP' : `${selectedOrder.scheduledDate} ${selectedOrder.scheduledTime}`}
                     </p>
                   </div>
                   {selectedOrder.orderType === 'delivery' && selectedOrder.deliveryAddress && (
                     <div style={{ gridColumn: '1 / -1' }}>
-                      <p style={{ fontSize: '11px', color: '#888', margin: 0 }}>Delivery Address</p>
+                      <p style={{ fontSize: '11px', color: '#FEFEFE', margin: 0 }}>Delivery Address</p>
                       <p style={{ fontSize: '13px', color: '#FEFEFE', fontWeight: '500', marginTop: '2px' }}>
                         {selectedOrder.deliveryAddress}{selectedOrder.deliveryApt ? `, ${selectedOrder.deliveryApt}` : ''}
                       </p>
@@ -285,13 +307,13 @@ export default function OrdersManagement() {
                   )}
                   {selectedOrder.deliveryInstructions && (
                     <div style={{ gridColumn: '1 / -1' }}>
-                      <p style={{ fontSize: '11px', color: '#888', margin: 0 }}>Delivery Instructions</p>
+                      <p style={{ fontSize: '11px', color: '#FEFEFE', margin: 0 }}>Delivery Instructions</p>
                       <p style={{ fontSize: '13px', color: '#FEFEFE', fontWeight: '500', marginTop: '2px' }}>{selectedOrder.deliveryInstructions}</p>
                     </div>
                   )}
                   {selectedOrder.promoCode && (
                     <div>
-                      <p style={{ fontSize: '11px', color: '#888', margin: 0 }}>Promo Code</p>
+                      <p style={{ fontSize: '11px', color: '#FEFEFE', margin: 0 }}>Promo Code</p>
                       <p style={{ fontSize: '13px', color: '#22C55E', fontWeight: '500', marginTop: '2px' }}>{selectedOrder.promoCode}</p>
                     </div>
                   )}
@@ -300,13 +322,13 @@ export default function OrdersManagement() {
 
               {/* Items */}
               <div style={{ background: '#111111', borderRadius: '10px', padding: '14px 16px', marginBottom: '14px' }}>
-                <p style={{ fontSize: '11px', color: '#888', textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: '10px' }}>Items Ordered</p>
+                <p style={{ fontSize: '11px', color: '#FEFEFE', textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: '10px' }}>Items Ordered</p>
                 {(selectedOrder.items || []).map((item: any, i: number) => (
                   <div key={i} style={{ display: 'flex', justifyContent: 'space-between', paddingBottom: i < selectedOrder.items.length - 1 ? '12px' : '0', marginBottom: i < selectedOrder.items.length - 1 ? '12px' : '0', borderBottom: i < selectedOrder.items.length - 1 ? '1px solid #2A2A2A' : 'none' }}>
                     <div>
                       <p style={{ fontSize: '13px', fontWeight: '600', color: '#FEFEFE', margin: 0 }}>{item.name} × {item.quantity}</p>
                       {item.specialInstructions && (
-                        <p style={{ fontSize: '11px', color: '#888', marginTop: '3px' }}>{item.specialInstructions}</p>
+                        <p style={{ fontSize: '11px', color: '#FEFEFE', marginTop: '3px' }}>{item.specialInstructions}</p>
                       )}
                     </div>
                     <p style={{ fontSize: '13px', fontWeight: '600', color: '#FED800', margin: 0 }}>${(item.price * item.quantity).toFixed(2)}</p>
@@ -324,7 +346,7 @@ export default function OrdersManagement() {
                   ...(Number(selectedOrder.discount) > 0 ? [['Discount', `-$${Number(selectedOrder.discount).toFixed(2)}`]] : []),
                 ].map(([label, value]) => (
                   <div key={label} style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }}>
-                    <span style={{ fontSize: '12px', color: '#888' }}>{label}</span>
+                    <span style={{ fontSize: '12px', color: '#FEFEFE' }}>{label}</span>
                     <span style={{ fontSize: '12px', color: label === 'Discount' ? '#22C55E' : '#FEFEFE' }}>{value}</span>
                   </div>
                 ))}
@@ -337,28 +359,28 @@ export default function OrdersManagement() {
               {/* Delivery Dispatch Info */}
               {selectedOrder.orderType === 'delivery' && (selectedOrder.deliveryProvider || ['ready', 'out_for_delivery'].includes(selectedOrder.status)) && (
                 <div style={{ background: '#111111', borderRadius: '10px', padding: '14px 16px', marginBottom: '14px', border: selectedOrder.deliveryTrackingUrl ? '1px solid #A78BFA40' : '1px solid #2A2A2A' }}>
-                  <p style={{ fontSize: '11px', color: '#888', textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: '10px' }}>Delivery Dispatch</p>
+                  <p style={{ fontSize: '11px', color: '#FEFEFE', textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: '10px' }}>Delivery Dispatch</p>
                   {selectedOrder.deliveryProvider ? (
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
                       <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                        <span style={{ fontSize: '12px', color: '#888' }}>Provider</span>
+                        <span style={{ fontSize: '12px', color: '#FEFEFE' }}>Provider</span>
                         <span style={{ fontSize: '12px', color: '#A78BFA', fontWeight: '600' }}>{selectedOrder.deliveryProvider === 'uber_direct' ? 'Uber Direct' : selectedOrder.deliveryProvider}</span>
                       </div>
                       {selectedOrder.deliveryDriverName && (
                         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                          <span style={{ fontSize: '12px', color: '#888' }}>Driver</span>
+                          <span style={{ fontSize: '12px', color: '#FEFEFE' }}>Driver</span>
                           <span style={{ fontSize: '12px', color: '#FEFEFE' }}>{selectedOrder.deliveryDriverName}</span>
                         </div>
                       )}
                       {selectedOrder.deliveryDriverPhone && (
                         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                          <span style={{ fontSize: '12px', color: '#888' }}>Driver Phone</span>
+                          <span style={{ fontSize: '12px', color: '#FEFEFE' }}>Driver Phone</span>
                           <a href={`tel:${selectedOrder.deliveryDriverPhone}`} style={{ fontSize: '12px', color: '#60A5FA', textDecoration: 'none' }}>{selectedOrder.deliveryDriverPhone}</a>
                         </div>
                       )}
                       {selectedOrder.deliveryEta && (
                         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                          <span style={{ fontSize: '12px', color: '#888' }}>ETA</span>
+                          <span style={{ fontSize: '12px', color: '#FEFEFE' }}>ETA</span>
                           <span style={{ fontSize: '12px', color: '#FEFEFE' }}>{new Date(selectedOrder.deliveryEta).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })}</span>
                         </div>
                       )}
@@ -374,10 +396,10 @@ export default function OrdersManagement() {
                           <button onClick={async () => {
                             if (!confirm('Cancel this delivery dispatch?')) return;
                             try {
-                              const res = await fetch(`${API}/orders/${selectedOrder.id}/cancel-delivery`, { method: 'POST' });
+                              const res = await adminFetch(`${API}/orders/${selectedOrder.id}/cancel-delivery`, { method: 'POST' });
                               const data = await res.json();
                               if (data.success) {
-                                const fresh = await fetch(`${API}/orders/${selectedOrder.id}`).then(r => r.json());
+                                const fresh = await adminFetch(`${API}/orders/${selectedOrder.id}`).then(r => r.json());
                                 setOrders(prev => prev.map(o => o.id === selectedOrder.id ? fresh : o));
                                 setSelectedOrder(fresh);
                                 showSuccess('Delivery cancelled');
@@ -395,7 +417,7 @@ export default function OrdersManagement() {
                       {/* Get Quote button */}
                       <button onClick={async () => {
                         try {
-                          const res = await fetch(`${API}/orders/${selectedOrder.id}/delivery-quote`);
+                          const res = await adminFetch(`${API}/orders/${selectedOrder.id}/delivery-quote`);
                           const data = await res.json();
                           if (data.error) { showSuccess(data.error); return; }
                           const eta = data.eta ? new Date(data.eta).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' }) : 'N/A';
@@ -403,14 +425,14 @@ export default function OrdersManagement() {
                         } catch { showSuccess('Could not get quote'); }
                       }} style={{
                         width: '100%', padding: '8px', background: 'transparent',
-                        border: '1px solid #2A2A2A', borderRadius: '8px', color: '#888',
+                        border: '1px solid #2A2A2A', borderRadius: '8px', color: '#FEFEFE',
                         fontSize: '12px', fontWeight: '600', cursor: 'pointer',
                       }}>Get Uber Quote</button>
 
                       {/* Dispatch button */}
                       <button onClick={async () => {
                         try {
-                          const res = await fetch(`${API}/orders/${selectedOrder.id}/dispatch`, { method: 'POST' });
+                          const res = await adminFetch(`${API}/orders/${selectedOrder.id}/dispatch`, { method: 'POST' });
                           if (res.ok) {
                             const updated = await res.json();
                             setOrders(prev => prev.map(o => o.id === selectedOrder.id ? updated : o));
@@ -434,7 +456,7 @@ export default function OrdersManagement() {
               {/* Status Actions */}
               {nextStatuses[selectedOrder.status]?.length > 0 && (
                 <div>
-                  <p style={{ fontSize: '11px', color: '#888', textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: '10px' }}>Update Status</p>
+                  <p style={{ fontSize: '11px', color: '#FEFEFE', textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: '10px' }}>Update Status</p>
                   <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' as const }}>
                     {nextStatuses[selectedOrder.status].map(status => (
                       <button key={status} onClick={() => updateStatus(selectedOrder.id, status)} style={{
@@ -463,12 +485,12 @@ export default function OrdersManagement() {
         ].map(tab => (
           <button key={tab.id} onClick={() => setActiveTab(tab.id as typeof activeTab)} style={{
             flex: 1, padding: '10px', background: activeTab === tab.id ? '#FED800' : 'transparent',
-            color: activeTab === tab.id ? '#000' : '#888',
+            color: activeTab === tab.id ? '#000' : '#FEFEFE',
             border: 'none', borderRadius: '8px', fontSize: '12px', fontWeight: '600', cursor: 'pointer',
             display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px',
           }}>
             {tab.label}
-            <span style={{ fontSize: '10px', fontWeight: '700', background: activeTab === tab.id ? '#00000020' : '#2A2A2A', color: activeTab === tab.id ? '#000' : '#888', padding: '1px 6px', borderRadius: '10px' }}>
+            <span style={{ fontSize: '10px', fontWeight: '700', background: activeTab === tab.id ? '#00000020' : '#2A2A2A', color: activeTab === tab.id ? '#000' : '#FEFEFE', padding: '1px 6px', borderRadius: '10px' }}>
               {tab.count}
             </span>
           </button>
@@ -483,7 +505,7 @@ export default function OrdersManagement() {
           const csv = rows.map(r => r.map(v => `"${v}"`).join(',')).join('\n');
           const blob = new Blob([csv], { type: 'text/csv' });
           const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `orders-${activeTab}-${new Date().toISOString().split('T')[0]}.csv`; a.click();
-        }} style={{ padding: '8px 14px', background: '#1A1A1A', border: '1px solid #2A2A2A', borderRadius: '8px', color: '#888', fontSize: '11px', fontWeight: '600', cursor: 'pointer' }}>
+        }} style={{ padding: '8px 14px', background: '#1A1A1A', border: '1px solid #2A2A2A', borderRadius: '8px', color: '#FEFEFE', fontSize: '11px', fontWeight: '600', cursor: 'pointer' }}>
           Export CSV
         </button>
       </div>
@@ -498,7 +520,7 @@ export default function OrdersManagement() {
             { label: 'Out for Delivery', count: orders.filter(o => o.status === 'out_for_delivery').length, color: '#A78BFA' },
           ].map((s, i) => (
             <div key={i} style={{ background: '#1A1A1A', border: `1px solid ${s.color}30`, borderRadius: '10px', padding: '14px 16px' }}>
-              <p style={{ fontSize: '11px', color: '#888', marginBottom: '6px' }}>{s.label}</p>
+              <p style={{ fontSize: '11px', color: '#FEFEFE', marginBottom: '6px' }}>{s.label}</p>
               <p style={{ fontSize: '26px', fontWeight: '700', color: s.color, margin: 0 }}>{s.count}</p>
             </div>
           ))}
@@ -515,7 +537,7 @@ export default function OrdersManagement() {
             { label: 'Pending', value: stats.pendingOrders },
           ].map((s, i) => (
             <div key={i} style={{ background: '#111111', border: '1px solid #2A2A2A', borderRadius: '10px', padding: '12px 16px' }}>
-              <p style={{ fontSize: '11px', color: '#888', marginBottom: '4px' }}>{s.label}</p>
+              <p style={{ fontSize: '11px', color: '#FEFEFE', marginBottom: '4px' }}>{s.label}</p>
               <p style={{ fontSize: '20px', fontWeight: '700', color: '#FED800', margin: 0 }}>{s.value}</p>
             </div>
           ))}
@@ -539,7 +561,7 @@ export default function OrdersManagement() {
           </select>
           <DateRangePicker from={dateFrom} to={dateTo} onChange={(f, t) => { setDateFrom(f); setDateTo(t); }} />
           <button onClick={() => { setSearch(''); setStatusFilter('all'); setTypeFilter('all'); setDateFrom(''); setDateTo(''); }}
-            style={{ padding: '8px 14px', background: 'transparent', border: '1px solid #2A2A2A', borderRadius: '8px', color: '#888', fontSize: '12px', cursor: 'pointer' }}>
+            style={{ padding: '8px 14px', background: 'transparent', border: '1px solid #2A2A2A', borderRadius: '8px', color: '#FEFEFE', fontSize: '12px', cursor: 'pointer' }}>
             Clear
           </button>
             <input placeholder="Search name, email, phone, order ID..." value={search} onChange={e => setSearch(e.target.value)}
@@ -553,7 +575,7 @@ export default function OrdersManagement() {
       <div style={{ background: '#1A1A1A', border: '1px solid #2A2A2A', borderRadius: '12px', overflow: 'hidden' }}>
         {loading ? (
           <div style={{ padding: '60px 20px', textAlign: 'center' }}>
-            <p style={{ color: '#888', fontSize: '14px' }}>Loading orders...</p>
+            <p style={{ color: '#FEFEFE', fontSize: '14px' }}>Loading orders...</p>
           </div>
         ) : displayOrders.length === 0 ? (
           <div style={{ padding: '60px 20px', textAlign: 'center' }}>
@@ -563,7 +585,7 @@ export default function OrdersManagement() {
             <p style={{ color: '#FEFEFE', fontSize: '15px', fontWeight: '600', marginBottom: '6px' }}>
               {activeTab === 'active' ? 'No active orders right now' : activeTab === 'scheduled' ? 'No scheduled orders' : 'No orders found'}
             </p>
-            <p style={{ color: '#888', fontSize: '13px' }}>
+            <p style={{ color: '#FEFEFE', fontSize: '13px' }}>
               {activeTab === 'history' ? 'Try adjusting your search or date filters' : 'New orders will appear here automatically'}
             </p>
           </div>
@@ -573,7 +595,7 @@ export default function OrdersManagement() {
               <thead>
                 <tr style={{ borderBottom: '1px solid #2A2A2A' }}>
                   {['Order ID', 'Customer', 'Type', activeTab === 'scheduled' ? 'Scheduled For' : 'Time', 'Items', 'Total', 'Status', 'Actions'].map(h => (
-                    <th key={h} style={{ padding: '12px 14px', textAlign: 'left', fontSize: '11px', fontWeight: '600', color: '#888', textTransform: 'uppercase', letterSpacing: '0.5px' }}>{h}</th>
+                    <th key={h} style={{ padding: '12px 14px', textAlign: 'left', fontSize: '11px', fontWeight: '600', color: '#FEFEFE', textTransform: 'uppercase', letterSpacing: '0.5px' }}>{h}</th>
                   ))}
                 </tr>
               </thead>
@@ -586,20 +608,20 @@ export default function OrdersManagement() {
                     </td>
                     <td style={{ padding: '13px 14px' }}>
                       <p style={{ fontSize: '13px', fontWeight: '600', color: '#FEFEFE', margin: 0 }}>{order.customerName}</p>
-                      <p style={{ fontSize: '11px', color: '#888', marginTop: '2px' }}>{order.customerPhone}</p>
+                      <p style={{ fontSize: '11px', color: '#FEFEFE', marginTop: '2px' }}>{order.customerPhone}</p>
                     </td>
                     <td style={{ padding: '13px 14px' }}>
                       <span style={{ fontSize: '11px', padding: '3px 10px', borderRadius: '20px', fontWeight: '600', background: order.orderType === 'delivery' ? '#0A1628' : '#1A1A00', color: order.orderType === 'delivery' ? '#60A5FA' : '#FED800', border: `1px solid ${order.orderType === 'delivery' ? '#1E3A5F' : '#3A3A00'}` }}>
                         {order.orderType === 'delivery' ? 'Delivery' : 'Pickup'}
                       </span>
                     </td>
-                    <td style={{ padding: '13px 14px', fontSize: '12px', color: '#888' }}>
+                    <td style={{ padding: '13px 14px', fontSize: '12px', color: '#FEFEFE' }}>
                       {activeTab === 'scheduled'
                         ? `${order.scheduledDate} ${order.scheduledTime}`
                         : formatTime(order.createdAt)}
-                      <p style={{ fontSize: '11px', color: '#444', marginTop: '1px', margin: 0 }}>{formatDate(order.createdAt)}</p>
+                      <p style={{ fontSize: '11px', color: '#FEFEFE', marginTop: '1px', margin: 0 }}>{formatDate(order.createdAt)}</p>
                     </td>
-                    <td style={{ padding: '13px 14px', fontSize: '12px', color: '#888' }}>
+                    <td style={{ padding: '13px 14px', fontSize: '12px', color: '#FEFEFE' }}>
                       {(order.items || []).length} item{(order.items || []).length !== 1 ? 's' : ''}
                     </td>
                     <td style={{ padding: '13px 14px', fontSize: '13px', fontWeight: '700', color: '#FEFEFE' }}>${Number(order.total).toFixed(2)}</td>
@@ -610,7 +632,7 @@ export default function OrdersManagement() {
                     </td>
                     <td style={{ padding: '13px 14px' }}>
                       <div style={{ display: 'flex', gap: '6px' }}>
-                        <button onClick={() => setSelectedOrder(order)} style={{ padding: '5px 12px', background: 'transparent', border: '1px solid #2A2A2A', borderRadius: '6px', color: '#888', fontSize: '11px', cursor: 'pointer' }}>
+                        <button onClick={() => setSelectedOrder(order)} style={{ padding: '5px 12px', background: 'transparent', border: '1px solid #2A2A2A', borderRadius: '6px', color: '#FEFEFE', fontSize: '11px', cursor: 'pointer' }}>
                           View
                         </button>
                         {!historyStatuses.includes(order.status) && (
@@ -625,6 +647,9 @@ export default function OrdersManagement() {
               </tbody>
             </table>
           </div>
+        )}
+        {totalOrders > pageSize && (
+          <Pagination page={currentPage} totalPages={Math.ceil(totalOrders / pageSize)} onPageChange={(p) => fetchOrders(p)} />
         )}
       </div>
     </div>

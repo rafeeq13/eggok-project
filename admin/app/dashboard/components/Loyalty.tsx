@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-const API = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3002/api';
+import { API, adminFetch } from '../../../lib/api';
 
 type RewardTier = {
   id: number;
@@ -115,16 +115,17 @@ export default function Loyalty() {
       };
 
       const [rewardsRes, membersRes, settingsRes] = await Promise.all([
-        fetch(`${API}/loyalty/rewards`),
-        fetch(`${API}/loyalty/members`),
-        fetch(`${API}/settings/loyalty`)
+        adminFetch(`${API}/loyalty/rewards`),
+        adminFetch(`${API}/loyalty/members`),
+        adminFetch(`${API}/settings/loyalty`)
       ]);
 
       const rewardsData = await safeJson(rewardsRes, []);
       setRewards(Array.isArray(rewardsData) ? rewardsData : []);
 
-      const membersData = await safeJson(membersRes, []);
-      const mapped = (Array.isArray(membersData) ? membersData : []).map((c: any) => ({
+      const membersRaw = await safeJson(membersRes, []);
+      const membersData = Array.isArray(membersRaw) ? membersRaw : (membersRaw.data || []);
+      const mapped = membersData.map((c: any) => ({
         ...c,
         totalEarned: c.totalEarned ?? c.totalPointsEarned ?? 0,
         lastActivity: c.lastActivity || c.lastOrder || '',
@@ -221,14 +222,14 @@ export default function Loyalty() {
 
     try {
       if (editingReward) {
-        await fetch(`${API}/loyalty/rewards/${editingReward.id}`, {
+        await adminFetch(`${API}/loyalty/rewards/${editingReward.id}`, {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(payload),
         });
         showSuccess('Reward updated');
       } else {
-        await fetch(`${API}/loyalty/rewards`, {
+        await adminFetch(`${API}/loyalty/rewards`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(payload),
@@ -250,7 +251,7 @@ export default function Loyalty() {
 
   const toggleReward = async (reward: Reward) => {
     try {
-      await fetch(`${API}/loyalty/rewards/${reward.id}`, {
+      await adminFetch(`${API}/loyalty/rewards/${reward.id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ active: !reward.active }),
@@ -264,7 +265,7 @@ export default function Loyalty() {
   const deleteReward = async (id: number) => {
     if (!confirm('Are you sure you want to delete this reward?')) return;
     try {
-      await fetch(`${API}/loyalty/rewards/${id}`, {
+      await adminFetch(`${API}/loyalty/rewards/${id}`, {
         method: 'DELETE',
       });
       showSuccess('Reward deleted');
@@ -283,7 +284,7 @@ export default function Loyalty() {
 
   const labelStyle = {
     fontSize: '12px', fontWeight: '500' as const,
-    color: '#888888', display: 'block' as const, marginBottom: '6px',
+    color: '#FEFEFE', display: 'block' as const, marginBottom: '6px',
   };
 
   const cardStyle = {
@@ -317,7 +318,7 @@ export default function Loyalty() {
               <h2 style={{ fontSize: '16px', fontWeight: '700', color: '#FEFEFE' }}>
                 {editingReward ? 'Edit Reward' : 'Create Reward'}
               </h2>
-              <button onClick={resetForm} style={{ background: 'transparent', color: '#888888', fontSize: '20px', border: 'none', cursor: 'pointer' }}>✕</button>
+              <button onClick={resetForm} style={{ background: 'transparent', color: '#FEFEFE', fontSize: '20px', border: 'none', cursor: 'pointer' }}>✕</button>
             </div>
             <div style={{ padding: '20px 24px' }}>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
@@ -371,7 +372,7 @@ export default function Loyalty() {
               </div>
             </div>
             <div style={{ padding: '16px 24px', borderTop: '1px solid #2A2A2A', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
-              <button onClick={resetForm} style={{ padding: '11px', background: 'transparent', border: '1px solid #2A2A2A', borderRadius: '8px', color: '#888888', fontSize: '13px', cursor: 'pointer' }}>Cancel</button>
+              <button onClick={resetForm} style={{ padding: '11px', background: 'transparent', border: '1px solid #2A2A2A', borderRadius: '8px', color: '#FEFEFE', fontSize: '13px', cursor: 'pointer' }}>Cancel</button>
               <button onClick={handleSaveReward} style={{ padding: '11px', background: '#FED800', border: 'none', borderRadius: '8px', color: '#000', fontSize: '13px', fontWeight: '700', cursor: 'pointer' }}>
                 {editingReward ? 'Save Reward' : 'Create Reward'}
               </button>
@@ -390,7 +391,7 @@ export default function Loyalty() {
         ].map(tab => (
           <button key={tab.id} onClick={() => setActiveTab(tab.id as typeof activeTab)} style={{
             flex: 1, padding: '10px', background: activeTab === tab.id ? '#FED800' : 'transparent',
-            color: activeTab === tab.id ? '#000' : '#888888',
+            color: activeTab === tab.id ? '#000' : '#FEFEFE',
             border: 'none', borderRadius: '8px', fontSize: '12px', fontWeight: '600', cursor: 'pointer',
           }}>{tab.label}</button>
         ))}
@@ -421,7 +422,7 @@ export default function Loyalty() {
               { label: 'Active Rewards', value: String(rewards.filter(r => r.active).length), color: '#FECE86' },
             ].map((s, i) => (
               <div key={i} style={{ background: '#1A1A1A', border: '1px solid #2A2A2A', borderRadius: '12px', padding: '16px' }}>
-                <p style={{ fontSize: '11px', color: '#888888', marginBottom: '6px' }}>{s.label}</p>
+                <p style={{ fontSize: '11px', color: '#FEFEFE', marginBottom: '6px' }}>{s.label}</p>
                 <p style={{ fontSize: '22px', fontWeight: '700', color: s.color }}>{s.value}</p>
               </div>
             ))}
@@ -430,7 +431,7 @@ export default function Loyalty() {
           {/* Tiers */}
           <div style={cardStyle}>
             <p style={{ fontSize: '14px', fontWeight: '700', color: '#FEFEFE', marginBottom: '4px' }}>Membership Tiers</p>
-            <p style={{ fontSize: '12px', color: '#888888', marginBottom: '16px' }}>Customers automatically advance tiers based on lifetime points earned</p>
+            <p style={{ fontSize: '12px', color: '#FEFEFE', marginBottom: '16px' }}>Customers automatically advance tiers based on lifetime points earned</p>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '12px' }}>
               {tiers.map(tier => (
                 <div key={tier.id} style={{ background: '#111111', border: `1px solid ${tier.color}30`, borderRadius: '10px', padding: '16px' }}>
@@ -438,14 +439,14 @@ export default function Loyalty() {
                     <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: `${tier.color}20`, border: `2px solid ${tier.color}`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '14px' }}>⭐</div>
                     <div>
                       <p style={{ fontSize: '14px', fontWeight: '700', color: tier.color }}>{tier.name}</p>
-                      <p style={{ fontSize: '11px', color: '#888888' }}>{tier.minPoints}+ points</p>
+                      <p style={{ fontSize: '11px', color: '#FEFEFE' }}>{tier.minPoints}+ points</p>
                     </div>
                   </div>
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
                     {tier.perks.map((perk, i) => (
                       <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
                         <span style={{ color: tier.color, fontSize: '10px', flexShrink: 0 }}>✓</span>
-                        <span style={{ fontSize: '11px', color: '#888888' }}>{perk}</span>
+                        <span style={{ fontSize: '11px', color: '#FEFEFE' }}>{perk}</span>
                       </div>
                     ))}
                   </div>
@@ -468,7 +469,7 @@ export default function Loyalty() {
                   <div style={{ width: '26px', height: '26px', borderRadius: '50%', background: '#FED80020', border: '1px solid #FED80040', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '11px', fontWeight: '700', color: '#FED800' }}>{i + 1}</div>
                   <div>
                     <p style={{ fontSize: '13px', fontWeight: '600', color: '#FEFEFE' }}>{reward.name}</p>
-                    <p style={{ fontSize: '11px', color: '#888888' }}>{reward.pointsCost} points</p>
+                    <p style={{ fontSize: '11px', color: '#FEFEFE' }}>{reward.pointsCost} points</p>
                   </div>
                 </div>
                 <span style={{ fontSize: '13px', fontWeight: '700', color: '#22C55E' }}>{reward.redemptions} redeemed</span>
@@ -482,7 +483,7 @@ export default function Loyalty() {
       {activeTab === 'rewards' && (
         <div>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '14px' }}>
-            <p style={{ fontSize: '13px', color: '#888888' }}>{rewards.filter(r => r.active).length} active · {rewards.length} total</p>
+            <p style={{ fontSize: '13px', color: '#FEFEFE' }}>{rewards.filter(r => r.active).length} active · {rewards.length} total</p>
             <button onClick={() => { setEditingReward(null); setShowRewardForm(true); }} style={{ padding: '9px 18px', background: '#FED800', border: 'none', borderRadius: '8px', color: '#000', fontSize: '13px', fontWeight: '700', cursor: 'pointer' }}>
               + Create Reward
             </button>
@@ -526,20 +527,20 @@ export default function Loyalty() {
               <div key={reward.id} style={{ background: '#1A1A1A', border: `1px solid ${reward.active ? '#2A2A2A' : '#FC030120'}`, borderRadius: '12px', padding: '16px 20px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '16px' }}>
                 <div style={{ flex: 1 }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '4px' }}>
-                    <p style={{ fontSize: '14px', fontWeight: '700', color: reward.active ? '#FEFEFE' : '#888888' }}>{reward.name}</p>
+                    <p style={{ fontSize: '14px', fontWeight: '700', color: reward.active ? '#FEFEFE' : '#FEFEFE' }}>{reward.name}</p>
                     <span style={{ fontSize: '11px', padding: '2px 8px', borderRadius: '20px', fontWeight: '600', background: reward.type === 'freeItem' ? '#22C55E20' : reward.type === 'freeDelivery' ? '#60A5FA20' : '#FED80020', color: reward.type === 'freeItem' ? '#22C55E' : reward.type === 'freeDelivery' ? '#60A5FA' : '#FED800' }}>
                       {reward.type === 'freeItem' ? 'Free Item' : reward.type === 'freeDelivery' ? 'Free Delivery' : 'Discount'}
                     </span>
                   </div>
-                  <p style={{ fontSize: '12px', color: '#888888', marginBottom: '6px' }}>{reward.description}</p>
+                  <p style={{ fontSize: '12px', color: '#FEFEFE', marginBottom: '6px' }}>{reward.description}</p>
                   <div style={{ display: 'flex', gap: '16px' }}>
                     <span style={{ fontSize: '12px', color: '#FED800', fontWeight: '600' }}>{reward.pointsCost} pts</span>
-                    <span style={{ fontSize: '12px', color: '#888888' }}>{reward.redemptions} redeemed</span>
+                    <span style={{ fontSize: '12px', color: '#FEFEFE' }}>{reward.redemptions} redeemed</span>
                   </div>
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexShrink: 0 }}>
                   {toggleSwitch(reward.active, () => toggleReward(reward))}
-                  <button onClick={() => handleEditReward(reward)} style={{ padding: '6px 12px', background: 'transparent', border: '1px solid #2A2A2A', borderRadius: '6px', color: '#888888', fontSize: '11px', cursor: 'pointer' }}>Edit</button>
+                  <button onClick={() => handleEditReward(reward)} style={{ padding: '6px 12px', background: 'transparent', border: '1px solid #2A2A2A', borderRadius: '6px', color: '#FEFEFE', fontSize: '11px', cursor: 'pointer' }}>Edit</button>
                   <button onClick={() => deleteReward(reward.id)} style={{ padding: '6px 12px', background: 'transparent', border: '1px solid #FC030130', borderRadius: '6px', color: '#FC0301', fontSize: '11px', cursor: 'pointer' }}>Delete</button>
                 </div>
               </div>
@@ -557,7 +558,7 @@ export default function Loyalty() {
               <div key={tier.id} onClick={() => setMemberTierFilter(memberTierFilter === tier.name ? 'all' : tier.name)} style={{ background: '#1A1A1A', border: `1px solid ${memberTierFilter === tier.name ? tier.color : tier.color + '30'}`, borderRadius: '12px', padding: '16px', textAlign: 'center', cursor: 'pointer', transition: 'border-color 0.15s' }}>
                 <p style={{ fontSize: '12px', color: tier.color, fontWeight: '600', marginBottom: '6px' }}>{tier.name}</p>
                 <p style={{ fontSize: '28px', fontWeight: '700', color: tier.color }}>{loyaltyCustomers.filter(c => c.tier === tier.name).length}</p>
-                <p style={{ fontSize: '11px', color: '#888888', marginTop: '4px' }}>members</p>
+                <p style={{ fontSize: '11px', color: '#FEFEFE', marginTop: '4px' }}>members</p>
               </div>
             ))}
           </div>
@@ -603,7 +604,7 @@ export default function Loyalty() {
               <thead>
                 <tr style={{ borderBottom: '1px solid #2A2A2A' }}>
                   {['Member', 'Tier', 'Current Points', 'Total Earned', 'Redemptions', 'Last Active', 'Actions'].map(h => (
-                    <th key={h} style={{ padding: '12px 16px', textAlign: 'left', fontSize: '10px', fontWeight: '600', color: '#888888', textTransform: 'uppercase', letterSpacing: '0.5px' }}>{h}</th>
+                    <th key={h} style={{ padding: '12px 16px', textAlign: 'left', fontSize: '10px', fontWeight: '600', color: '#FEFEFE', textTransform: 'uppercase', letterSpacing: '0.5px' }}>{h}</th>
                   ))}
                 </tr>
               </thead>
@@ -622,7 +623,7 @@ export default function Loyalty() {
                         </div>
                         <div>
                           <p style={{ fontSize: '13px', fontWeight: '600', color: '#FEFEFE' }}>{c.name}</p>
-                          <p style={{ fontSize: '11px', color: '#888888' }}>{c.email}</p>
+                          <p style={{ fontSize: '11px', color: '#FEFEFE' }}>{c.email}</p>
                         </div>
                       </div>
                     </td>
@@ -632,15 +633,15 @@ export default function Loyalty() {
                       </span>
                     </td>
                     <td style={{ padding: '13px 16px', fontSize: '13px', fontWeight: '700', color: '#FED800' }}>{(c.points || 0).toLocaleString()}</td>
-                    <td style={{ padding: '13px 16px', fontSize: '12px', color: '#888888' }}>{(c.totalEarned || 0).toLocaleString()}</td>
+                    <td style={{ padding: '13px 16px', fontSize: '12px', color: '#FEFEFE' }}>{(c.totalEarned || 0).toLocaleString()}</td>
                     <td style={{ padding: '13px 16px', fontSize: '12px', color: '#22C55E', fontWeight: '600' }}>{c.redemptions || 0}</td>
-                    <td style={{ padding: '13px 16px', fontSize: '11px', color: '#888888' }}>{c.lastActivity || '—'}</td>
+                    <td style={{ padding: '13px 16px', fontSize: '11px', color: '#FEFEFE' }}>{c.lastActivity || '—'}</td>
                     <td style={{ padding: '13px 16px' }}>
                       <button onClick={async () => {
                         const amount = prompt(`Adjust points for ${c.name}:\nPositive to add, negative to deduct.\nCurrent: ${c.points} pts`, '0');
                         if (!amount || isNaN(Number(amount)) || Number(amount) === 0) return;
                         try {
-                          await fetch(`${API}/customers/${c.id}`, {
+                          await adminFetch(`${API}/customers/${c.id}`, {
                             method: 'PUT',
                             headers: { 'Content-Type': 'application/json' },
                             body: JSON.stringify({ points: Math.max(0, c.points + Number(amount)) }),
@@ -679,7 +680,7 @@ export default function Loyalty() {
                     onFocus={e => e.target.style.borderColor = '#FED800'}
                     onBlur={e => e.target.style.borderColor = '#2A2A2A'}
                   />
-                  <p style={{ fontSize: '11px', color: '#888888', marginTop: '4px' }}>{item.hint}</p>
+                  <p style={{ fontSize: '11px', color: '#FEFEFE', marginTop: '4px' }}>{item.hint}</p>
                 </div>
               ))}
             </div>
@@ -687,14 +688,14 @@ export default function Loyalty() {
 
           <div style={cardStyle}>
             <p style={{ fontSize: '14px', fontWeight: '700', color: '#FEFEFE', marginBottom: '16px', paddingBottom: '12px', borderBottom: '1px solid #2A2A2A' }}>Tier Thresholds</p>
-            <p style={{ fontSize: '12px', color: '#888888', marginBottom: '16px' }}>Points needed for each tier are based on lifetime total points earned</p>
+            <p style={{ fontSize: '12px', color: '#FEFEFE', marginBottom: '16px' }}>Points needed for each tier are based on lifetime total points earned</p>
             {tiers.map(tier => (
               <div key={tier.id} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '12px 16px', background: '#111111', borderRadius: '8px', marginBottom: '8px', border: `1px solid ${tier.color}20` }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                   <div style={{ width: '12px', height: '12px', borderRadius: '50%', background: tier.color, flexShrink: 0 }} />
                   <span style={{ fontSize: '13px', fontWeight: '600', color: tier.color }}>{tier.name}</span>
                 </div>
-                <span style={{ fontSize: '13px', color: '#888888' }}>{tier.minPoints === 0 ? 'Starting tier' : `${tier.minPoints.toLocaleString()}+ points`}</span>
+                <span style={{ fontSize: '13px', color: '#FEFEFE' }}>{tier.minPoints === 0 ? 'Starting tier' : `${tier.minPoints.toLocaleString()}+ points`}</span>
               </div>
             ))}
           </div>
@@ -706,7 +707,7 @@ export default function Loyalty() {
               minRedeemPoints: Number(minRedeemPoints), referralBonus: Number(referralBonus)
             };
             try {
-              await fetch(`${API}/settings/loyalty`, {
+              await adminFetch(`${API}/settings/loyalty`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(payload),

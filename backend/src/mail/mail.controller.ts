@@ -1,6 +1,7 @@
-import { Body, Controller, Get, Post, Put } from '@nestjs/common';
+import { Body, Controller, Get, Post, Put, UseGuards } from '@nestjs/common';
 import { MailService } from './mail.service';
 import { SubmissionsService } from '../submissions/submissions.service';
+import { AdminGuard } from '../auth/admin.guard';
 
 @Controller('mail')
 export class MailController {
@@ -10,16 +11,19 @@ export class MailController {
   ) {}
 
   @Get('settings')
+  @UseGuards(AdminGuard)
   getMailSettings() {
     return this.mailService.getMailSettings();
   }
 
   @Put('settings')
+  @UseGuards(AdminGuard)
   updateMailSettings(@Body() payload: any) {
     return this.mailService.updateMailSettings(payload);
   }
 
   @Post('test')
+  @UseGuards(AdminGuard)
   async sendTestEmail(@Body() payload: { to?: string }) {
     await this.mailService.sendTestEmail(payload?.to);
     return { success: true };

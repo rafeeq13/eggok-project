@@ -64,6 +64,8 @@ const ls = {
   },
 };
 
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3002/api';
+
 export function CartProvider({ children }: { children: React.ReactNode }) {
 
   const [cart, setCart] = useState<CartItem[]>(() => ls.getJSON('eggok_cart', []));
@@ -74,9 +76,42 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   const [scheduleType, setScheduleTypeState] = useState<'asap' | 'scheduled'>(() => ls.get('eggok_scheduletype', 'asap') as 'asap' | 'scheduled');
   const [scheduleDate, setScheduleDateState] = useState(() => ls.get('eggok_scheduledate'));
   const [scheduleTime, setScheduleTimeState] = useState(() => ls.get('eggok_scheduletime'));
-  const [deliveryFee, setDeliveryFeeState] = useState(() => parseFloat(ls.get('eggok_deliveryfee', '3.99')));
+  const [deliveryFee, setDeliveryFeeState] = useState(() => parseFloat(ls.get('eggok_deliveryfee', '0')));
   const [deliveryZone, setDeliveryZoneState] = useState(() => ls.get('eggok_deliveryzone'));
   const [deliveryMinOrder, setDeliveryMinOrderState] = useState(() => parseFloat(ls.get('eggok_deliveryminorder', '0')));
+
+  // Fetch default delivery fee from backend delivery zones
+  useEffect(() => {
+    const savedZone = ls.get('eggok_deliveryzone');
+    if (savedZone) return; // Already set by zone validation
+    fetch(`${API_URL}/settings/delivery_settings`)
+      .then(r => r.ok ? r.text() : '')
+      .then(text => {
+        if (!text) return;
+        const data = JSON.parse(text);
+        const zones = data?.zones?.filter((z: any) => z.active) || [];
+        if (zones.length > 0) {
+          // Use the cheapest zone's fee as default
+          const cheapest = zones.reduce((min: any, z: any) => z.deliveryFee < min.deliveryFee ? z : min, zones[0]);
+          setDeliveryFeeState(Number(cheapest.deliveryFee));
+          ls.set('eggok_deliveryfee', String(cheapest.deliveryFee));
+        } else {
+          // Fallback to store settings base fee
+          fetch(`${API_URL}/settings/store`)
+            .then(r => r.ok ? r.text() : '')
+            .then(t => {
+              if (!t) return;
+              const store = JSON.parse(t);
+              if (store?.deliveryFee) {
+                setDeliveryFeeState(Number(store.deliveryFee));
+                ls.set('eggok_deliveryfee', String(store.deliveryFee));
+              }
+            })
+            .catch(() => {});
+        }
+      })
+      .catch(() => {});
+  }, []);
 
   // Persist cart
   useEffect(() => { ls.set('eggok_cart', JSON.stringify(cart)); }, [cart]);

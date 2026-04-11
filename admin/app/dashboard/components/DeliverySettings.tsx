@@ -17,12 +17,12 @@ type Tab = 'zones' | 'general' | 'hours';
 const zoneColors = ['#FED800', '#60A5FA', '#22C55E', '#A78BFA', '#FC0301', '#F59E0B'];
 
 const initialZones: Zone[] = [
-  { id: 1, name: 'Local Zone', radiusMiles: 1.5, deliveryFee: 2.99, minOrder: 15, estimatedMinutes: 20, active: true, color: '#FED800' },
+  { id: 1, name: 'Local Zone', radiusMiles: 1.5, deliveryFee: 9.99, minOrder: 15, estimatedMinutes: 20, active: true, color: '#FED800' },
   { id: 2, name: 'Standard Zone', radiusMiles: 3.0, deliveryFee: 3.99, minOrder: 20, estimatedMinutes: 30, active: true, color: '#60A5FA' },
   { id: 3, name: 'Extended Zone', radiusMiles: 5.0, deliveryFee: 5.99, minOrder: 25, estimatedMinutes: 45, active: true, color: '#22C55E' },
 ];
 
-const API = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3002/api';
+import { API, adminFetch } from '../../../lib/api';
 
 export default function DeliverySettings() {
   const [loading, setLoading] = useState(true);
@@ -65,9 +65,10 @@ export default function DeliverySettings() {
   const fetchSettings = async () => {
     try {
       setLoading(true);
-      const res = await fetch(`${API}/settings/delivery_settings`);
+      const res = await adminFetch(`${API}/settings/delivery_settings`);
       if (res.ok) {
-        const data = await res.json();
+        const text = await res.text();
+        const data = text ? JSON.parse(text) : null;
         if (data) {
           const v = data;
           if (v.zones) setZones(v.zones);
@@ -91,7 +92,7 @@ export default function DeliverySettings() {
   useEffect(() => {
     fetchSettings();
     // Load Google Maps API key from integrations settings
-    fetch(`${API}/settings/integrations`)
+    adminFetch(`${API}/settings/integrations`)
       .then(r => r.ok ? r.text() : '')
       .then(text => {
         if (!text) return;
@@ -124,7 +125,7 @@ export default function DeliverySettings() {
       zoom: 13,
       styles: [
         { elementType: 'geometry', stylers: [{ color: '#0D1117' }] },
-        { elementType: 'labels.text.fill', stylers: [{ color: '#888888' }] },
+        { elementType: 'labels.text.fill', stylers: [{ color: '#FEFEFE' }] },
         { elementType: 'labels.text.stroke', stylers: [{ color: '#0D1117' }] },
         { featureType: 'road', elementType: 'geometry', stylers: [{ color: '#1A1A1A' }] },
         { featureType: 'road', elementType: 'geometry.stroke', stylers: [{ color: '#2A2A2A' }] },
@@ -197,7 +198,7 @@ export default function DeliverySettings() {
     };
 
     try {
-      await fetch(`${API}/settings/delivery_settings`, {
+      await adminFetch(`${API}/settings/delivery_settings`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
@@ -294,7 +295,7 @@ export default function DeliverySettings() {
 
   const labelStyle = {
     fontSize: '12px', fontWeight: '500' as const,
-    color: '#888888', display: 'block' as const, marginBottom: '6px',
+    color: '#FEFEFE', display: 'block' as const, marginBottom: '6px',
   };
 
   const cardStyle = {
@@ -395,7 +396,7 @@ export default function DeliverySettings() {
               <h2 style={{ fontSize: '18px', fontWeight: '700', color: '#FEFEFE' }}>
                 {editingZone ? 'Edit Delivery Zone' : 'Create Delivery Zone'}
               </h2>
-              <button onClick={resetForm} style={{ background: 'transparent', color: '#888888', fontSize: '20px', border: 'none', cursor: 'pointer' }}>✕</button>
+              <button onClick={resetForm} style={{ background: 'transparent', color: '#FEFEFE', fontSize: '20px', border: 'none', cursor: 'pointer' }}>✕</button>
             </div>
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
@@ -463,7 +464,7 @@ export default function DeliverySettings() {
               </div>
 
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', marginTop: '4px' }}>
-                <button onClick={resetForm} style={{ padding: '12px', background: 'transparent', border: '1px solid #2A2A2A', borderRadius: '8px', color: '#888888', fontSize: '13px', cursor: 'pointer' }}>Cancel</button>
+                <button onClick={resetForm} style={{ padding: '12px', background: 'transparent', border: '1px solid #2A2A2A', borderRadius: '8px', color: '#FEFEFE', fontSize: '13px', cursor: 'pointer' }}>Cancel</button>
                 <button onClick={handleSaveZone} style={{ padding: '12px', background: '#FED800', border: 'none', borderRadius: '8px', color: '#000', fontSize: '13px', fontWeight: '700', cursor: 'pointer' }}>
                   {editingZone ? 'Save Zone' : 'Create Zone'}
                 </button>
@@ -482,7 +483,7 @@ export default function DeliverySettings() {
         ].map(tab => (
           <button key={tab.id} onClick={() => setActiveTab(tab.id as Tab)} style={{
             flex: 1, padding: '10px', background: activeTab === tab.id ? '#FED800' : 'transparent',
-            color: activeTab === tab.id ? '#000' : '#888888',
+            color: activeTab === tab.id ? '#000' : '#FEFEFE',
             border: 'none', borderRadius: '8px', fontSize: '12px', fontWeight: '600', cursor: 'pointer',
           }}>{tab.label}</button>
         ))}
@@ -537,7 +538,7 @@ export default function DeliverySettings() {
                   <div style={{ width: '20px', height: '20px', background: '#FC0301', borderRadius: '50%', border: '3px solid #FEFEFE', margin: '0 auto 8px' }} />
                   <div style={{ background: '#1A1A1A', border: '1px solid #2A2A2A', borderRadius: '8px', padding: '6px 12px' }}>
                     <p style={{ fontSize: '11px', fontWeight: '600', color: '#FEFEFE' }}>Egg Ok</p>
-                    <p style={{ fontSize: '10px', color: '#888888' }}>3517 Lancaster Ave</p>
+                    <p style={{ fontSize: '10px', color: '#FEFEFE' }}>3517 Lancaster Ave</p>
                   </div>
                 </div>
                 <div style={{ position: 'absolute', top: '12px', left: '12px', display: 'flex', flexDirection: 'column', gap: '4px' }}>
@@ -549,7 +550,7 @@ export default function DeliverySettings() {
                   ))}
                 </div>
                 <div style={{ position: 'absolute', bottom: '12px', right: '12px', background: '#1A1A1A', border: '1px solid #2A2A2A', borderRadius: '8px', padding: '6px 12px' }}>
-                  <p style={{ fontSize: '10px', color: '#888888' }}>Google Maps integration</p>
+                  <p style={{ fontSize: '10px', color: '#FEFEFE' }}>Google Maps integration</p>
                   <p style={{ fontSize: '10px', color: '#FED800' }}>Add API key in Integrations to enable live map</p>
                 </div>
               </div>
@@ -558,7 +559,7 @@ export default function DeliverySettings() {
 
           {/* Zone Cards */}
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '14px' }}>
-            <p style={{ fontSize: '13px', color: '#888888' }}>
+            <p style={{ fontSize: '13px', color: '#FEFEFE' }}>
               {zones.filter(z => z.active).length} active zones · {zones.length} total
             </p>
             <button onClick={() => { resetForm(); setShowZoneForm(true); }} style={{
@@ -581,7 +582,7 @@ export default function DeliverySettings() {
                 {/* Info */}
                 <div style={{ flex: 1 }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '6px' }}>
-                    <p style={{ fontSize: '14px', fontWeight: '700', color: zone.active ? '#FEFEFE' : '#888888' }}>{zone.name}</p>
+                    <p style={{ fontSize: '14px', fontWeight: '700', color: zone.active ? '#FEFEFE' : '#FEFEFE' }}>{zone.name}</p>
                     <span style={{
                       fontSize: '10px', padding: '2px 8px', borderRadius: '20px', fontWeight: '600',
                       background: zone.active ? '#22C55E20' : '#FC030120',
@@ -597,7 +598,7 @@ export default function DeliverySettings() {
                       ['Est. Time', `${zone.estimatedMinutes} mins`],
                     ].map(([label, value]) => (
                       <div key={label}>
-                        <p style={{ fontSize: '10px', color: '#888888' }}>{label}</p>
+                        <p style={{ fontSize: '10px', color: '#FEFEFE' }}>{label}</p>
                         <p style={{ fontSize: '13px', fontWeight: '600', color: '#FEFEFE' }}>{value}</p>
                       </div>
                     ))}
@@ -607,7 +608,7 @@ export default function DeliverySettings() {
                 {/* Actions */}
                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexShrink: 0 }}>
                   {toggleSwitch(zone.active, () => toggleZone(zone.id))}
-                  <button onClick={() => handleEdit(zone)} style={{ padding: '6px 12px', background: 'transparent', border: '1px solid #2A2A2A', borderRadius: '6px', color: '#888888', fontSize: '11px', cursor: 'pointer' }}>Edit</button>
+                  <button onClick={() => handleEdit(zone)} style={{ padding: '6px 12px', background: 'transparent', border: '1px solid #2A2A2A', borderRadius: '6px', color: '#FEFEFE', fontSize: '11px', cursor: 'pointer' }}>Edit</button>
                   <button onClick={() => handleDelete(zone.id)} style={{ padding: '6px 12px', background: 'transparent', border: '1px solid #FC030130', borderRadius: '6px', color: '#FC0301', fontSize: '11px', cursor: 'pointer' }}>Delete</button>
                 </div>
               </div>
@@ -617,7 +618,7 @@ export default function DeliverySettings() {
           {/* Address Checker */}
           <div style={cardStyle}>
             <p style={sectionTitle}>Test Delivery Coverage</p>
-            <p style={{ fontSize: '12px', color: '#888888', marginBottom: '12px' }}>
+            <p style={{ fontSize: '12px', color: '#FEFEFE', marginBottom: '12px' }}>
               Enter a customer address to check which delivery zone applies and what fee will be charged.
             </p>
             <div style={{ display: 'flex', gap: '10px' }}>
@@ -652,7 +653,7 @@ export default function DeliverySettings() {
                         ['Est. Time', `${testResult.zone.estimatedMinutes} mins`],
                       ].map(([label, value]) => (
                         <div key={label}>
-                          <p style={{ fontSize: '11px', color: '#888888' }}>{label}</p>
+                          <p style={{ fontSize: '11px', color: '#FEFEFE' }}>{label}</p>
                           <p style={{ fontSize: '13px', fontWeight: '600', color: '#FEFEFE' }}>{value}</p>
                         </div>
                       ))}
@@ -661,7 +662,7 @@ export default function DeliverySettings() {
                 ) : (
                   <div>
                     <p style={{ fontSize: '13px', fontWeight: '700', color: '#FC0301', marginBottom: '4px' }}>✗ Outside Delivery Area</p>
-                    <p style={{ fontSize: '12px', color: '#888888' }}>This address is outside all active delivery zones. Only pickup is available.</p>
+                    <p style={{ fontSize: '12px', color: '#FEFEFE' }}>This address is outside all active delivery zones. Only pickup is available.</p>
                   </div>
                 )}
               </div>
@@ -698,7 +699,7 @@ export default function DeliverySettings() {
               {/* Delivery Provider */}
               <div style={{ padding: '12px 16px', background: '#111111', borderRadius: '8px' }}>
                 <p style={{ fontSize: '13px', fontWeight: '600', color: '#FEFEFE', marginBottom: '4px' }}>Delivery Provider</p>
-                <p style={{ fontSize: '11px', color: '#888888', marginBottom: '10px' }}>Choose which service dispatches delivery drivers</p>
+                <p style={{ fontSize: '11px', color: '#FEFEFE', marginBottom: '10px' }}>Choose which service dispatches delivery drivers</p>
                 <div style={{ display: 'flex', gap: '8px' }}>
                   {[
                     { id: 'uber_direct', label: 'Uber Direct', color: '#A78BFA' },
@@ -719,7 +720,7 @@ export default function DeliverySettings() {
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '12px 16px', background: '#111111', borderRadius: '8px' }}>
                 <div>
                   <p style={{ fontSize: '13px', fontWeight: '600', color: '#FEFEFE' }}>Auto-Assign Driver</p>
-                  <p style={{ fontSize: '11px', color: '#888888', marginTop: '2px' }}>Automatically dispatch a driver when order status changes to "Out for Delivery"</p>
+                  <p style={{ fontSize: '11px', color: '#FEFEFE', marginTop: '2px' }}>Automatically dispatch a driver when order status changes to "Out for Delivery"</p>
                 </div>
                 {toggleSwitch(autoAssign, () => setAutoAssign(!autoAssign))}
               </div>
@@ -727,7 +728,7 @@ export default function DeliverySettings() {
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '12px 16px', background: '#111111', borderRadius: '8px' }}>
                 <div>
                   <p style={{ fontSize: '13px', fontWeight: '600', color: '#FEFEFE' }}>Free Delivery Threshold</p>
-                  <p style={{ fontSize: '11px', color: '#888888', marginTop: '2px' }}>Waive delivery fee for orders above a set amount</p>
+                  <p style={{ fontSize: '11px', color: '#FEFEFE', marginTop: '2px' }}>Waive delivery fee for orders above a set amount</p>
                 </div>
                 {toggleSwitch(freeDeliveryEnabled, () => setFreeDeliveryEnabled(!freeDeliveryEnabled))}
               </div>
@@ -751,7 +752,7 @@ export default function DeliverySettings() {
                     onFocus={e => e.target.style.borderColor = '#FED800'}
                     onBlur={e => e.target.style.borderColor = '#2A2A2A'}
                   />
-                  <p style={{ fontSize: '11px', color: '#888888', marginTop: '4px' }}>Added to delivery ETA shown to customer</p>
+                  <p style={{ fontSize: '11px', color: '#FEFEFE', marginTop: '4px' }}>Added to delivery ETA shown to customer</p>
                 </div>
                 <div>
                   <label style={labelStyle}>Max Concurrent Delivery Orders</label>
@@ -760,7 +761,7 @@ export default function DeliverySettings() {
                     onFocus={e => e.target.style.borderColor = '#FED800'}
                     onBlur={e => e.target.style.borderColor = '#2A2A2A'}
                   />
-                  <p style={{ fontSize: '11px', color: '#888888', marginTop: '4px' }}>Pause delivery when this limit is reached</p>
+                  <p style={{ fontSize: '11px', color: '#FEFEFE', marginTop: '4px' }}>Pause delivery when this limit is reached</p>
                 </div>
               </div>
             </div>
@@ -786,7 +787,7 @@ export default function DeliverySettings() {
               </div>
               <div style={{ padding: '12px 14px', background: '#111111', borderRadius: '8px', border: '1px solid #FED80030' }}>
                 <p style={{ fontSize: '12px', color: '#FED800', marginBottom: '4px', fontWeight: '600' }}>Google Maps API Required</p>
-                <p style={{ fontSize: '11px', color: '#888888', lineHeight: '1.6' }}>
+                <p style={{ fontSize: '11px', color: '#FEFEFE', lineHeight: '1.6' }}>
                   To enable live map view, zone drawing on map, and real-time distance calculation, add your Google Maps API key in the environment settings. Contact your developer to set this up.
                 </p>
               </div>
@@ -810,7 +811,7 @@ export default function DeliverySettings() {
         <div>
           <div style={cardStyle}>
             <p style={sectionTitle}>Delivery Operating Hours</p>
-            <p style={{ fontSize: '12px', color: '#888888', marginBottom: '16px' }}>
+            <p style={{ fontSize: '12px', color: '#FEFEFE', marginBottom: '16px' }}>
               Set when delivery is available. Outside these hours, customers can still place pickup orders.
             </p>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
@@ -829,14 +830,14 @@ export default function DeliverySettings() {
                         onChange={e => updateDeliveryHour(h.day, 'from', e.target.value)}
                         style={{ ...inputStyle, width: 'auto', flex: 1 }}
                       />
-                      <span style={{ color: '#888888', fontSize: '12px', flexShrink: 0 }}>to</span>
+                      <span style={{ color: '#FEFEFE', fontSize: '12px', flexShrink: 0 }}>to</span>
                       <input type="time" value={h.to}
                         onChange={e => updateDeliveryHour(h.day, 'to', e.target.value)}
                         style={{ ...inputStyle, width: 'auto', flex: 1 }}
                       />
                     </div>
                   ) : (
-                    <p style={{ fontSize: '12px', color: '#888888' }}>No delivery</p>
+                    <p style={{ fontSize: '12px', color: '#FEFEFE' }}>No delivery</p>
                   )}
                 </div>
               ))}

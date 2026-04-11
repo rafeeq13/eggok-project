@@ -2,17 +2,19 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useCart } from '../context/CartContext';
+import { useStoreSettings } from '../../hooks/useStoreSettings';
 
 export default function ConfirmationPage() {
   const { cart, cartTotal, orderType, getPrice, scheduleType, scheduleTime, deliveryAddress, deliveryFee: cartDeliveryFee } = useCart();
+  const { taxRate, storeName, storeAddress } = useStoreSettings();
   const [visible, setVisible] = useState(false);
   const [orderNumber, setOrderNumber] = useState('');
   const [lastOrder, setLastOrder] = useState<any>(null);
   const [deliveryTracking, setDeliveryTracking] = useState<any>(null);
 
   const subtotal = cartTotal;
-  const taxes = subtotal * 0.08;
-  const deliveryFee = orderType === 'delivery' ? (cartDeliveryFee || 3.99) : 0;
+  const taxes = subtotal * taxRate;
+  const deliveryFee = orderType === 'delivery' ? (cartDeliveryFee || 0) : 0;
   const API = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3002/api';
 
   const getSavedTipAmount = () => {
@@ -82,14 +84,21 @@ export default function ConfirmationPage() {
               .catch(() => {});
           };
           poll();
-          const interval = setInterval(poll, 15000); // Poll every 15 seconds
+          const finalStatuses = ['delivered', 'picked_up', 'cancelled'];
+          let pollCount = 0;
+          const maxPolls = 120; // Stop after 30 minutes (120 * 15s)
+          const interval = setInterval(() => {
+            pollCount++;
+            if (pollCount >= maxPolls) { clearInterval(interval); return; }
+            poll();
+          }, 15000);
           return () => clearInterval(interval);
         }
       } catch {
-        setOrderNumber('EO-' + Math.floor(1000 + Math.random() * 9000));
+        setOrderNumber('EO-0000');
       }
     } else {
-      setOrderNumber('EO-' + Math.floor(1000 + Math.random() * 9000));
+      setOrderNumber('EO-0000');
     }
   }, []);
 
@@ -299,7 +308,7 @@ export default function ConfirmationPage() {
                 {orderType === 'pickup' ? 'Pickup Location' : 'Delivering To'}
               </p>
               <p style={{ fontSize: '13px', color: '#ffffff', margin: 0 }}>
-                {orderType === 'pickup' ? '3517 Lancaster Ave, Philadelphia PA 19104' : deliveryAddress || '—'}
+                {orderType === 'pickup' ? storeAddress : deliveryAddress || '—'}
               </p>
               {orderType === 'pickup' && orderNumber && (
                 <p style={{ fontSize: '12px', color: '#FED800', marginTop: '4px', fontWeight: '600' }}>Show order #{orderNumber} at the counter</p>

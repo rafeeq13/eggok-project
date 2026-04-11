@@ -2,6 +2,7 @@
 import { useEffect, useState, Suspense } from 'react';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
+import { useStoreSettings } from '../../hooks/useStoreSettings';
 
 const API = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3002/api';
 
@@ -33,6 +34,7 @@ const statusDesc: Record<string, string> = {
 function OrderTrackingContent() {
   const searchParams = useSearchParams();
   const orderId = searchParams.get('id');
+  const { storeAddress } = useStoreSettings();
   const [order, setOrder] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -48,7 +50,13 @@ function OrderTrackingContent() {
     };
 
     fetchOrder();
-    const interval = setInterval(fetchOrder, 15000);
+    let pollCount = 0;
+    const maxPolls = 120;
+    const interval = setInterval(() => {
+      pollCount++;
+      if (pollCount >= maxPolls) { clearInterval(interval); return; }
+      fetchOrder();
+    }, 15000);
     return () => clearInterval(interval);
   }, [orderId]);
 
@@ -187,7 +195,7 @@ function OrderTrackingContent() {
           <div style={{ display: 'flex', justifyContent: 'space-between', padding: '8px 0', borderBottom: '1px solid #1A1A1A' }}>
             <span style={{ fontSize: '13px', color: '#888' }}>{isDelivery ? 'Deliver To' : 'Pickup At'}</span>
             <span style={{ fontSize: '13px', color: '#FEFEFE', maxWidth: '60%', textAlign: 'right' }}>
-              {isDelivery ? order.deliveryAddress : '3517 Lancaster Ave, Philadelphia PA 19104'}
+              {isDelivery ? order.deliveryAddress : storeAddress}
             </span>
           </div>
 

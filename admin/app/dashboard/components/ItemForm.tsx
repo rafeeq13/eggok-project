@@ -128,7 +128,7 @@ export default function ItemForm({ categories, modifierGroups, initialData, onSa
           <h2 style={{ fontSize: '18px', fontWeight: '700', color: '#FEFEFE' }}>
             {isEditing ? 'Edit Menu Item' : 'Add New Menu Item'}
           </h2>
-          <button onClick={onCancel} style={{ background: 'transparent', color: '#888888', fontSize: '20px', border: 'none', cursor: 'pointer' }}>✕</button>
+          <button onClick={onCancel} style={{ background: 'transparent', color: '#FEFEFE', fontSize: '20px', border: 'none', cursor: 'pointer' }}>✕</button>
         </div>
 
         {/* Tabs */}
@@ -137,7 +137,7 @@ export default function ItemForm({ categories, modifierGroups, initialData, onSa
             <button key={tab} onClick={() => setActiveSection(tab)} style={{
               flex: 1, padding: '12px', background: 'transparent',
               border: 'none', cursor: 'pointer', fontSize: '13px', fontWeight: '600',
-              color: activeSection === tab ? '#FED800' : '#888888',
+              color: activeSection === tab ? '#FED800' : '#FEFEFE',
               borderBottom: activeSection === tab ? '2px solid #FED800' : '2px solid transparent',
             }}>
               {tab === 'basic' ? 'Basic Info' : `Modifiers (${linkedModifierIds.length} linked)`}
@@ -162,8 +162,8 @@ export default function ItemForm({ categories, modifierGroups, initialData, onSa
                     <img src={imagePreview} alt="Preview" style={{ width: '80px', height: '80px', objectFit: 'cover', borderRadius: '8px' }} />
                   ) : (
                     <div>
-                      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#888888" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ margin: '0 auto 8px' }}><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
-                      <p style={{ fontSize: '12px', color: '#888888' }}>Upload photo — 800x800px JPG/PNG</p>
+                      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#FEFEFE" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ margin: '0 auto 8px' }}><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                      <p style={{ fontSize: '12px', color: '#FEFEFE' }}>Upload photo — 800x800px JPG/PNG</p>
                     </div>
                   )}
                   <input type="file" accept="image/jpeg,image/png,image/webp" onChange={handleImageUpload}
@@ -198,7 +198,7 @@ export default function ItemForm({ categories, modifierGroups, initialData, onSa
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
                   <p style={{ fontSize: '13px', fontWeight: '600', color: '#FEFEFE' }}>Pricing</p>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                    <span style={{ fontSize: '11px', color: '#888888' }}>Sync pickup & delivery price</span>
+                    <span style={{ fontSize: '11px', color: '#FEFEFE' }}>Sync pickup & delivery price</span>
                     {toggleSwitch(syncPrices, () => setSyncPrices(!syncPrices))}
                   </div>
                 </div>
@@ -211,10 +211,10 @@ export default function ItemForm({ categories, modifierGroups, initialData, onSa
                       onFocus={e => e.target.style.borderColor = '#FED800'}
                       onBlur={e => e.target.style.borderColor = '#FED80040'}
                     />
-                    <p style={{ fontSize: '10px', color: '#888888', marginTop: '4px' }}>Price for in-store pickup</p>
+                    <p style={{ fontSize: '10px', color: '#FEFEFE', marginTop: '4px' }}>Price for in-store pickup</p>
                   </div>
                   <div>
-                    <label style={{ ...labelStyle, color: syncPrices ? '#888888' : '#CACACA' }}>Delivery Price (USD)</label>
+                    <label style={{ ...labelStyle, color: syncPrices ? '#FEFEFE' : '#CACACA' }}>Delivery Price (USD)</label>
                     <input type="number" step="0.01"
                       style={{ ...inputStyle, borderColor: '#FECE8640', opacity: syncPrices ? 0.5 : 1 }}
                       placeholder="0.00" value={deliveryPrice}
@@ -223,7 +223,7 @@ export default function ItemForm({ categories, modifierGroups, initialData, onSa
                       onFocus={e => e.target.style.borderColor = '#FECE86'}
                       onBlur={e => e.target.style.borderColor = '#FECE8640'}
                     />
-                    <p style={{ fontSize: '10px', color: '#888888', marginTop: '4px' }}>
+                    <p style={{ fontSize: '10px', color: '#FEFEFE', marginTop: '4px' }}>
                       {syncPrices ? 'Same as pickup price' : 'Price for delivery orders'}
                     </p>
                   </div>
@@ -243,12 +243,12 @@ export default function ItemForm({ categories, modifierGroups, initialData, onSa
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '12px 14px', background: '#111111', borderRadius: '8px', border: '1px solid #2A2A2A' }}>
                 <div>
                   <p style={{ fontSize: '13px', fontWeight: '600', color: '#FEFEFE' }}>Available for ordering</p>
-                  <p style={{ fontSize: '11px', color: '#888888', marginTop: '2px' }}>Customers can see and order this item</p>
+                  <p style={{ fontSize: '11px', color: '#FEFEFE', marginTop: '2px' }}>Customers can see and order this item</p>
                 </div>
                 {toggleSwitch(available, () => setAvailable(!available))}
               </div>
 
-              <button onClick={() => setActiveSection('modifiers')} style={{ padding: '10px', background: 'transparent', border: '1px dashed #2A2A2A', borderRadius: '8px', color: '#888888', fontSize: '12px', cursor: 'pointer', textAlign: 'center' }}>
+              <button onClick={() => setActiveSection('modifiers')} style={{ padding: '10px', background: 'transparent', border: '1px dashed #2A2A2A', borderRadius: '8px', color: '#FEFEFE', fontSize: '12px', cursor: 'pointer', textAlign: 'center' }}>
                 Go to Modifiers tab to link modifier groups →
               </button>
             </div>
@@ -257,7 +257,7 @@ export default function ItemForm({ categories, modifierGroups, initialData, onSa
           {activeSection === 'modifiers' && (
             <div>
               <div style={{ padding: '12px 14px', background: '#111111', borderRadius: '8px', marginBottom: '12px', border: '1px solid #2A2A2A' }}>
-                <p style={{ fontSize: '12px', color: '#888888', lineHeight: '1.6' }}>
+                <p style={{ fontSize: '12px', color: '#FEFEFE', lineHeight: '1.6' }}>
                   Select modifier groups from your <span style={{ color: '#FED800' }}>Global Modifier Library</span> to link to this item. Customers will see these options when ordering.
                 </p>
               </div>
@@ -310,25 +310,25 @@ export default function ItemForm({ categories, modifierGroups, initialData, onSa
                         }}
                       >
                         {/* Drag handle */}
-                        <div style={{ flexShrink: 0, color: '#888888', display: 'flex', flexDirection: 'column', gap: '3px', padding: '2px' }}>
+                        <div style={{ flexShrink: 0, color: '#FEFEFE', display: 'flex', flexDirection: 'column', gap: '3px', padding: '2px' }}>
                           <div style={{ display: 'flex', gap: '3px' }}>
-                            <div style={{ width: '4px', height: '4px', borderRadius: '50%', background: '#888888' }} />
-                            <div style={{ width: '4px', height: '4px', borderRadius: '50%', background: '#888888' }} />
+                            <div style={{ width: '4px', height: '4px', borderRadius: '50%', background: '#FEFEFE' }} />
+                            <div style={{ width: '4px', height: '4px', borderRadius: '50%', background: '#FEFEFE' }} />
                           </div>
                           <div style={{ display: 'flex', gap: '3px' }}>
-                            <div style={{ width: '4px', height: '4px', borderRadius: '50%', background: '#888888' }} />
-                            <div style={{ width: '4px', height: '4px', borderRadius: '50%', background: '#888888' }} />
+                            <div style={{ width: '4px', height: '4px', borderRadius: '50%', background: '#FEFEFE' }} />
+                            <div style={{ width: '4px', height: '4px', borderRadius: '50%', background: '#FEFEFE' }} />
                           </div>
                           <div style={{ display: 'flex', gap: '3px' }}>
-                            <div style={{ width: '4px', height: '4px', borderRadius: '50%', background: '#888888' }} />
-                            <div style={{ width: '4px', height: '4px', borderRadius: '50%', background: '#888888' }} />
+                            <div style={{ width: '4px', height: '4px', borderRadius: '50%', background: '#FEFEFE' }} />
+                            <div style={{ width: '4px', height: '4px', borderRadius: '50%', background: '#FEFEFE' }} />
                           </div>
                         </div>
                         <div style={{ flex: 1 }}>
                           <p style={{ fontSize: '13px', fontWeight: '600', color: '#FEFEFE' }}>{group.name}</p>
-                          <p style={{ fontSize: '11px', color: '#888888' }}>{group.options.length} options · {group.required ? 'Required' : 'Optional'}</p>
+                          <p style={{ fontSize: '11px', color: '#FEFEFE' }}>{group.options.length} options · {group.required ? 'Required' : 'Optional'}</p>
                         </div>
-                        <span style={{ fontSize: '11px', color: '#888888', flexShrink: 0 }}>#{index + 1}</span>
+                        <span style={{ fontSize: '11px', color: '#FEFEFE', flexShrink: 0 }}>#{index + 1}</span>
                         <button onClick={e => { e.stopPropagation(); toggleModifier(mid); }} style={{ padding: '4px 10px', background: 'transparent', border: '1px solid #FC030130', borderRadius: '6px', color: '#FC0301', fontSize: '11px', cursor: 'pointer', flexShrink: 0 }}>Unlink</button>
                       </div>
                     );
@@ -337,14 +337,14 @@ export default function ItemForm({ categories, modifierGroups, initialData, onSa
               )}
 
               {/* All modifier groups — filtered */}
-              <p style={{ fontSize: '11px', fontWeight: '600', color: '#888888', textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: '8px' }}>
+              <p style={{ fontSize: '11px', fontWeight: '600', color: '#FEFEFE', textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: '8px' }}>
                 {modifierSearch ? 'Search Results' : 'All Modifier Groups'}
               </p>
 
               {modifierGroups.filter(g => g.name.toLowerCase().includes(modifierSearch.toLowerCase())).length === 0 ? (
                 <div style={{ padding: '40px 20px', textAlign: 'center', background: '#111111', borderRadius: '10px' }}>
-                  <p style={{ fontSize: '13px', color: '#888888', marginBottom: '8px' }}>No modifier groups created yet.</p>
-                  <p style={{ fontSize: '12px', color: '#888888' }}>Go to Menu Management → Modifier Library to create groups first.</p>
+                  <p style={{ fontSize: '13px', color: '#FEFEFE', marginBottom: '8px' }}>No modifier groups created yet.</p>
+                  <p style={{ fontSize: '12px', color: '#FEFEFE' }}>Go to Menu Management → Modifier Library to create groups first.</p>
                 </div>
               ) : modifierGroups.filter(g => g.name.toLowerCase().includes(modifierSearch.toLowerCase())).map(group => {
                 const isLinked = linkedModifierIds.includes(group.id);
@@ -362,22 +362,22 @@ export default function ItemForm({ categories, modifierGroups, initialData, onSa
                             {isLinked && <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#000" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>}
                           </div>
                           <p style={{ fontSize: '14px', fontWeight: '700', color: '#FEFEFE' }}>{group.name}</p>
-                          <span style={{ fontSize: '10px', padding: '2px 8px', borderRadius: '20px', fontWeight: '600', background: group.required ? '#FED80020' : '#2A2A2A', color: group.required ? '#FED800' : '#888888' }}>
+                          <span style={{ fontSize: '10px', padding: '2px 8px', borderRadius: '20px', fontWeight: '600', background: group.required ? '#FED80020' : '#2A2A2A', color: group.required ? '#FED800' : '#FEFEFE' }}>
                             {group.required ? 'Required' : 'Optional'}
                           </span>
                         </div>
                         <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' as const, paddingLeft: '30px' }}>
                           {group.options.slice(0, 4).map(opt => (
-                            <span key={opt.id} style={{ fontSize: '11px', padding: '2px 8px', background: '#2A2A2A', borderRadius: '20px', color: '#888888' }}>
+                            <span key={opt.id} style={{ fontSize: '11px', padding: '2px 8px', background: '#2A2A2A', borderRadius: '20px', color: '#FEFEFE' }}>
                               {opt.name}{opt.price > 0 ? ` +$${opt.price.toFixed(2)}` : ''}
                             </span>
                           ))}
                           {group.options.length > 4 && (
-                            <span style={{ fontSize: '11px', color: '#888888' }}>+{group.options.length - 4} more</span>
+                            <span style={{ fontSize: '11px', color: '#FEFEFE' }}>+{group.options.length - 4} more</span>
                           )}
                         </div>
                       </div>
-                      <span style={{ fontSize: '12px', fontWeight: '600', color: isLinked ? '#22C55E' : '#888888', flexShrink: 0, marginLeft: '12px' }}>
+                      <span style={{ fontSize: '12px', fontWeight: '600', color: isLinked ? '#22C55E' : '#FEFEFE', flexShrink: 0, marginLeft: '12px' }}>
                         {isLinked ? 'Linked ✓' : 'Not linked'}
                       </span>
                     </div>
@@ -390,7 +390,7 @@ export default function ItemForm({ categories, modifierGroups, initialData, onSa
 
         {/* Footer */}
         <div style={{ padding: '16px 24px', borderTop: '1px solid #2A2A2A', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', flexShrink: 0 }}>
-          <button onClick={onCancel} style={{ padding: '12px', background: 'transparent', border: '1px solid #2A2A2A', borderRadius: '8px', color: '#888888', fontSize: '13px', cursor: 'pointer' }}>Cancel</button>
+          <button onClick={onCancel} style={{ padding: '12px', background: 'transparent', border: '1px solid #2A2A2A', borderRadius: '8px', color: '#FEFEFE', fontSize: '13px', cursor: 'pointer' }}>Cancel</button>
           <button onClick={handleSave} style={{ padding: '12px', background: '#FED800', border: 'none', borderRadius: '8px', color: '#000000', fontSize: '13px', fontWeight: '700', cursor: 'pointer' }}>
             {isEditing ? 'Save Changes' : 'Add Item'}
           </button>

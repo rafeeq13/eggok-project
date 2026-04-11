@@ -37,9 +37,12 @@ export class LoyaltyService {
     }
 
     // Members
-    findAllMembers(): Promise<Customer[]> {
-        return this.customerRepository.find({
-            order: { points: 'DESC' }
+    async findAllMembers(page = 1, limit = 50): Promise<{ data: Customer[]; total: number; page: number; limit: number }> {
+        const [data, total] = await this.customerRepository.findAndCount({
+            order: { points: 'DESC' },
+            skip: (page - 1) * limit,
+            take: limit,
         });
+        return { data, total, page, limit };
     }
 }

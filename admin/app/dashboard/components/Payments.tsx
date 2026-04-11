@@ -20,7 +20,7 @@ type Transaction = {
   refundAmount: number;
 };
 
-const API = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3002/api';
+import { API, adminFetch } from '../../../lib/api';
 
 // monthlyData is computed from real transactions below
 
@@ -45,8 +45,8 @@ export default function Payments() {
     try {
       setLoading(true);
       const [txRes, statsRes] = await Promise.all([
-        fetch(`${API}/payments/transactions`),
-        fetch(`${API}/payments/stats`)
+        adminFetch(`${API}/payments/transactions`),
+        adminFetch(`${API}/payments/stats`)
       ]);
       const transactions = await txRes.json();
       const stats = await statsRes.json();
@@ -270,7 +270,7 @@ export default function Payments() {
     if (active && payload && payload.length) {
       return (
         <div style={{ background: '#1A1A1A', border: '1px solid #2A2A2A', borderRadius: '8px', padding: '10px 14px' }}>
-          <p style={{ fontSize: '12px', color: '#888888', marginBottom: '6px' }}>{label}</p>
+          <p style={{ fontSize: '12px', color: '#FEFEFE', marginBottom: '6px' }}>{label}</p>
           {payload.map((p: any, i: number) => (
             <p key={i} style={{ fontSize: '13px', fontWeight: '600', color: p.color }}>
               {p.name}: ${p.value.toLocaleString()}
@@ -296,7 +296,7 @@ export default function Payments() {
                   {selectedTx.status}
                 </span>
               </div>
-              <button onClick={() => setSelectedTx(null)} style={{ background: 'transparent', color: '#888888', fontSize: '20px', border: 'none', cursor: 'pointer' }}>✕</button>
+              <button onClick={() => setSelectedTx(null)} style={{ background: 'transparent', color: '#FEFEFE', fontSize: '20px', border: 'none', cursor: 'pointer' }}>✕</button>
             </div>
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
@@ -306,14 +306,14 @@ export default function Payments() {
                 ['Order Type', selectedTx.type],
               ].map(([label, value]) => (
                 <div key={label} style={{ display: 'flex', justifyContent: 'space-between', padding: '10px 14px', background: '#111111', borderRadius: '8px' }}>
-                  <span style={{ fontSize: '12px', color: '#888888' }}>{label}</span>
+                  <span style={{ fontSize: '12px', color: '#FEFEFE' }}>{label}</span>
                   <span style={{ fontSize: '13px', color: '#FEFEFE', fontWeight: '500' }}>{value}</span>
                 </div>
               ))}
             </div>
 
             <div style={{ background: '#111111', borderRadius: '10px', padding: '16px', marginTop: '12px' }}>
-              <p style={{ fontSize: '11px', color: '#888888', textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: '12px' }}>Payment Breakdown</p>
+              <p style={{ fontSize: '11px', color: '#FEFEFE', textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: '12px' }}>Payment Breakdown</p>
               {[
                 ['Order Total', `$${selectedTx.orderTotal.toFixed(2)}`, '#FEFEFE'],
                 ['Stripe Fee (2.9% + $0.30)', `-$${selectedTx.stripeFee.toFixed(2)}`, '#FC0301'],
@@ -321,7 +321,7 @@ export default function Payments() {
                 ['Refund Issued', selectedTx.refundAmount > 0 ? `-$${selectedTx.refundAmount.toFixed(2)}` : 'None', '#FC0301'],
               ].map(([label, value, color]) => (
                 <div key={label} style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }}>
-                  <span style={{ fontSize: '12px', color: '#888888' }}>{label}</span>
+                  <span style={{ fontSize: '12px', color: '#FEFEFE' }}>{label}</span>
                   <span style={{ fontSize: '12px', color: color as string, fontWeight: '600' }}>{value}</span>
                 </div>
               ))}
@@ -342,9 +342,9 @@ export default function Payments() {
           { label: 'Delivery Fees Paid', value: `$${totalDeliveryFees.toFixed(2)}`, sub: 'DoorDash Drive charges', color: '#F59E0B' },
         ].map((kpi, i) => (
           <div key={i} style={{ background: '#1A1A1A', border: '1px solid #2A2A2A', borderRadius: '12px', padding: '18px' }}>
-            <p style={{ fontSize: '11px', color: '#888888', marginBottom: '8px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>{kpi.label}</p>
+            <p style={{ fontSize: '11px', color: '#FEFEFE', marginBottom: '8px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>{kpi.label}</p>
             <p style={{ fontSize: '22px', fontWeight: '700', color: kpi.color, marginBottom: '4px' }}>{kpi.value}</p>
-            <p style={{ fontSize: '11px', color: '#888888' }}>{kpi.sub}</p>
+            <p style={{ fontSize: '11px', color: '#FEFEFE' }}>{kpi.sub}</p>
           </div>
         ))}
       </div>
@@ -356,9 +356,9 @@ export default function Payments() {
           { label: 'Net Profit', value: `$${totalProfit.toFixed(2)}`, sub: 'After all deductions', color: '#FED800' },
         ].map((kpi, i) => (
           <div key={i} style={{ background: i === 2 ? '#1A1A00' : '#1A1A1A', border: `1px solid ${i === 2 ? '#FED80030' : '#2A2A2A'}`, borderRadius: '12px', padding: '18px' }}>
-            <p style={{ fontSize: '11px', color: '#888888', marginBottom: '8px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>{kpi.label}</p>
+            <p style={{ fontSize: '11px', color: '#FEFEFE', marginBottom: '8px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>{kpi.label}</p>
             <p style={{ fontSize: '22px', fontWeight: '700', color: kpi.color, marginBottom: '4px' }}>{kpi.value}</p>
-            <p style={{ fontSize: '11px', color: '#888888' }}>{kpi.sub}</p>
+            <p style={{ fontSize: '11px', color: '#FEFEFE' }}>{kpi.sub}</p>
           </div>
         ))}
       </div>
@@ -372,7 +372,7 @@ export default function Payments() {
               <button key={c} onClick={() => setActiveChart(c)} style={{
                 padding: '6px 14px', background: activeChart === c ? '#FED800' : 'transparent',
                 border: 'none', cursor: 'pointer', fontSize: '12px', fontWeight: activeChart === c ? '700' : '400',
-                color: activeChart === c ? '#000' : '#888888', textTransform: 'capitalize',
+                color: activeChart === c ? '#000' : '#FEFEFE', textTransform: 'capitalize',
               }}>{c}</button>
             ))}
           </div>
@@ -380,8 +380,8 @@ export default function Payments() {
         <ResponsiveContainer width="100%" height={240}>
           <BarChart data={monthlyData} margin={{ top: 5, right: 10, left: 0, bottom: 5 }}>
             <CartesianGrid strokeDasharray="3 3" stroke="#2A2A2A" vertical={false} />
-            <XAxis dataKey="month" tick={{ fill: '#888888', fontSize: 11 }} axisLine={false} tickLine={false} />
-            <YAxis tick={{ fill: '#888888', fontSize: 11 }} axisLine={false} tickLine={false} />
+            <XAxis dataKey="month" tick={{ fill: '#FEFEFE', fontSize: 11 }} axisLine={false} tickLine={false} />
+            <YAxis tick={{ fill: '#FEFEFE', fontSize: 11 }} axisLine={false} tickLine={false} />
             <Tooltip content={<CustomTooltip />} />
             {activeChart === 'revenue' ? (
               <Bar dataKey="revenue" fill="#FED800" radius={[4, 4, 0, 0]} name="revenue" />
@@ -418,7 +418,7 @@ export default function Payments() {
         />
         <button onClick={downloadCSV} style={{
           padding: '8px 14px', background: 'transparent', border: '1px solid #2A2A2A',
-          borderRadius: '8px', color: '#888888', fontSize: '12px', cursor: 'pointer',
+          borderRadius: '8px', color: '#FEFEFE', fontSize: '12px', cursor: 'pointer',
           display: 'flex', alignItems: 'center', gap: '6px',
         }}>⬇ CSV</button>
         <button onClick={downloadPDF} style={{
@@ -428,7 +428,7 @@ export default function Payments() {
         }}>⬇ PDF Report</button>
       </div>
 
-      <p style={{ fontSize: '12px', color: '#888888', marginBottom: '12px' }}>
+      <p style={{ fontSize: '12px', color: '#FEFEFE', marginBottom: '12px' }}>
         Showing {filtered.length} transactions · Net Profit: <span style={{ color: '#FED800', fontWeight: '600' }}>${totalProfit.toFixed(2)}</span>
       </p>
 
@@ -439,19 +439,19 @@ export default function Payments() {
             <thead>
               <tr style={{ borderBottom: '1px solid #2A2A2A' }}>
                 {['Order ID', 'Date', 'Customer', 'Type', 'Total', 'Stripe Fee', 'Delivery', 'Refund', 'Net', 'Status', ''].map(h => (
-                  <th key={h} style={{ padding: '12px 12px', textAlign: 'left', fontSize: '10px', fontWeight: '600', color: '#888888', textTransform: 'uppercase', letterSpacing: '0.5px' }}>{h}</th>
+                  <th key={h} style={{ padding: '12px 12px', textAlign: 'left', fontSize: '10px', fontWeight: '600', color: '#FEFEFE', textTransform: 'uppercase', letterSpacing: '0.5px' }}>{h}</th>
                 ))}
               </tr>
             </thead>
             <tbody>
               {filtered.length === 0 ? (
-                <tr><td colSpan={11} style={{ padding: '40px', textAlign: 'center', color: '#888888', fontSize: '13px' }}>No transactions found</td></tr>
+                <tr><td colSpan={11} style={{ padding: '40px', textAlign: 'center', color: '#FEFEFE', fontSize: '13px' }}>No transactions found</td></tr>
               ) : filtered.map((tx, i) => (
                 <tr key={tx.id} style={{ borderBottom: i < filtered.length - 1 ? '1px solid #2A2A2A' : 'none' }}>
                   <td style={{ padding: '12px 12px', fontSize: '12px', fontWeight: '700', color: '#FED800' }}>{tx.id}</td>
                   <td style={{ padding: '12px 12px' }}>
                     <p style={{ fontSize: '11px', color: '#FEFEFE' }}>{tx.date}</p>
-                    <p style={{ fontSize: '10px', color: '#888888', marginTop: '1px' }}>{tx.time}</p>
+                    <p style={{ fontSize: '10px', color: '#FEFEFE', marginTop: '1px' }}>{tx.time}</p>
                   </td>
                   <td style={{ padding: '12px 12px', fontSize: '12px', color: '#FEFEFE' }}>{tx.customer}</td>
                   <td style={{ padding: '12px 12px' }}>
@@ -461,10 +461,10 @@ export default function Payments() {
                   </td>
                   <td style={{ padding: '12px 12px', fontSize: '12px', fontWeight: '600', color: '#FEFEFE' }}>${tx.orderTotal.toFixed(2)}</td>
                   <td style={{ padding: '12px 12px', fontSize: '12px', color: '#FC0301' }}>-${tx.stripeFee.toFixed(2)}</td>
-                  <td style={{ padding: '12px 12px', fontSize: '12px', color: tx.deliveryFee > 0 ? '#F59E0B' : '#888888' }}>
+                  <td style={{ padding: '12px 12px', fontSize: '12px', color: tx.deliveryFee > 0 ? '#F59E0B' : '#FEFEFE' }}>
                     {tx.deliveryFee > 0 ? `-$${tx.deliveryFee.toFixed(2)}` : '—'}
                   </td>
-                  <td style={{ padding: '12px 12px', fontSize: '12px', color: tx.refundAmount > 0 ? '#FC0301' : '#888888' }}>
+                  <td style={{ padding: '12px 12px', fontSize: '12px', color: tx.refundAmount > 0 ? '#FC0301' : '#FEFEFE' }}>
                     {tx.refundAmount > 0 ? `-$${tx.refundAmount.toFixed(2)}` : '—'}
                   </td>
                   <td style={{ padding: '12px 12px', fontSize: '12px', fontWeight: '700', color: '#22C55E' }}>${tx.netRevenue.toFixed(2)}</td>
@@ -474,7 +474,7 @@ export default function Payments() {
                     </span>
                   </td>
                   <td style={{ padding: '12px 12px' }}>
-                    <button onClick={() => setSelectedTx(tx)} style={{ padding: '4px 10px', background: 'transparent', border: '1px solid #2A2A2A', borderRadius: '6px', color: '#888888', fontSize: '10px', cursor: 'pointer' }}>
+                    <button onClick={() => setSelectedTx(tx)} style={{ padding: '4px 10px', background: 'transparent', border: '1px solid #2A2A2A', borderRadius: '6px', color: '#FEFEFE', fontSize: '10px', cursor: 'pointer' }}>
                       View
                     </button>
                   </td>

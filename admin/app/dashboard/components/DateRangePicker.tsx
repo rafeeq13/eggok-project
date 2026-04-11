@@ -165,11 +165,11 @@ export default function DateRangePicker({ from, to, onChange }: Props) {
           cursor: 'pointer', whiteSpace: 'nowrap',
         }}
       >
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#888888" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#FEFEFE" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
           <rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>
         </svg>
         <span>{activePreset === 'Custom' ? formatDisplay() : activePreset}</span>
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#888888" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#FEFEFE" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
           <polyline points={open ? '18 15 12 9 6 15' : '6 9 12 15 18 9'}/>
         </svg>
       </button>
@@ -192,7 +192,7 @@ export default function DateRangePicker({ from, to, onChange }: Props) {
                 style={{
                   width: '100%', padding: '9px 12px',
                   background: activePreset === preset.label ? '#FED800' : 'transparent',
-                  color: activePreset === preset.label ? '#000' : '#888888',
+                  color: activePreset === preset.label ? '#000' : '#FEFEFE',
                   border: 'none', borderRadius: '8px',
                   fontSize: '13px', fontWeight: activePreset === preset.label ? '700' : '400',
                   cursor: 'pointer', textAlign: 'left',
@@ -208,7 +208,7 @@ export default function DateRangePicker({ from, to, onChange }: Props) {
           {showCustom && (
             <div style={{ padding: '16px' }}>
               {/* Instructions */}
-              <p style={{ fontSize: '12px', color: '#888888', marginBottom: '12px' }}>
+              <p style={{ fontSize: '12px', color: '#FEFEFE', marginBottom: '12px' }}>
                 {selectingFrom ? 'Select start date' : 'Select end date'}
               </p>
 
@@ -220,7 +220,7 @@ export default function DateRangePicker({ from, to, onChange }: Props) {
                     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '12px' }}>
                       {ci === 0 && (
                         <button onClick={() => { if (leftMonth === 0) { setLeftMonth(11); setLeftYear(y => y - 1); } else setLeftMonth(m => m - 1); }}
-                          style={{ background: 'transparent', border: 'none', color: '#888888', cursor: 'pointer', fontSize: '16px' }}>‹</button>
+                          style={{ background: 'transparent', border: 'none', color: '#FEFEFE', cursor: 'pointer', fontSize: '16px' }}>‹</button>
                       )}
                       {ci === 1 && <div style={{ width: '24px' }} />}
                       <p style={{ fontSize: '13px', fontWeight: '700', color: '#FEFEFE' }}>
@@ -228,7 +228,7 @@ export default function DateRangePicker({ from, to, onChange }: Props) {
                       </p>
                       {ci === 1 && (
                         <button onClick={() => { if (leftMonth === 11) { setLeftMonth(0); setLeftYear(y => y + 1); } else setLeftMonth(m => m + 1); }}
-                          style={{ background: 'transparent', border: 'none', color: '#888888', cursor: 'pointer', fontSize: '16px' }}>›</button>
+                          style={{ background: 'transparent', border: 'none', color: '#FEFEFE', cursor: 'pointer', fontSize: '16px' }}>›</button>
                       )}
                       {ci === 0 && <div style={{ width: '24px' }} />}
                     </div>
@@ -236,7 +236,7 @@ export default function DateRangePicker({ from, to, onChange }: Props) {
                     {/* Day headers */}
                     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 32px)', gap: '2px', marginBottom: '4px' }}>
                       {DAYS.map(d => (
-                        <div key={d} style={{ width: '32px', textAlign: 'center', fontSize: '11px', color: '#888888', fontWeight: '600' }}>{d}</div>
+                        <div key={d} style={{ width: '32px', textAlign: 'center', fontSize: '11px', color: '#FEFEFE', fontWeight: '600' }}>{d}</div>
                       ))}
                     </div>
 
@@ -250,20 +250,20 @@ export default function DateRangePicker({ from, to, onChange }: Props) {
 
               {/* Footer */}
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '16px', paddingTop: '12px', borderTop: '1px solid #2A2A2A' }}>
-                <p style={{ fontSize: '12px', color: '#888888' }}>
+                <p style={{ fontSize: '12px', color: '#FEFEFE' }}>
                   {customFrom && <span style={{ color: '#FED800' }}>Start: {customFrom}</span>}
-                  {customFrom && customTo && <span style={{ color: '#888888' }}> — </span>}
+                  {customFrom && customTo && <span style={{ color: '#FEFEFE' }}> — </span>}
                   {customTo && <span style={{ color: '#FED800' }}>End: {customTo}</span>}
                 </p>
                 <div style={{ display: 'flex', gap: '8px' }}>
                   <button onClick={() => { setOpen(false); setShowCustom(false); setActivePreset('This month'); }}
-                    style={{ padding: '7px 14px', background: 'transparent', border: '1px solid #2A2A2A', borderRadius: '8px', color: '#888888', fontSize: '12px', cursor: 'pointer' }}>
+                    style={{ padding: '7px 14px', background: 'transparent', border: '1px solid #2A2A2A', borderRadius: '8px', color: '#FEFEFE', fontSize: '12px', cursor: 'pointer' }}>
                     Cancel
                   </button>
                   <button
                     onClick={() => { if (customFrom && customTo) { onChange(customFrom, customTo); setOpen(false); } }}
                     disabled={!customFrom || !customTo}
-                    style={{ padding: '7px 14px', background: customFrom && customTo ? '#FED800' : '#2A2A2A', border: 'none', borderRadius: '8px', color: customFrom && customTo ? '#000' : '#888888', fontSize: '12px', fontWeight: '700', cursor: customFrom && customTo ? 'pointer' : 'not-allowed' }}>
+                    style={{ padding: '7px 14px', background: customFrom && customTo ? '#FED800' : '#2A2A2A', border: 'none', borderRadius: '8px', color: customFrom && customTo ? '#000' : '#FEFEFE', fontSize: '12px', fontWeight: '700', cursor: customFrom && customTo ? 'pointer' : 'not-allowed' }}>
                     Apply
                   </button>
                 </div>

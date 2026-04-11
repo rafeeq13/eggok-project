@@ -1,5 +1,6 @@
-import { Controller, Get, Post, Put, Delete, Body, Param, ParseIntPipe } from '@nestjs/common';
+import { Controller, Get, Post, Put, Delete, Body, Param, ParseIntPipe, UseGuards } from '@nestjs/common';
 import { MenuService } from './menu.service';
+import { AdminGuard } from '../auth/admin.guard';
 
 @Controller('menu')
 export class MenuController {
@@ -43,42 +44,50 @@ export class MenuController {
 
   // ── ADMIN ROUTES ──
   @Post('categories')
+  @UseGuards(AdminGuard)
   createCategory(@Body() data: any) {
     return this.menuService.createCategory(data);
   }
 
   @Put('categories/:id')
+  @UseGuards(AdminGuard)
   updateCategory(@Param('id', ParseIntPipe) id: number, @Body() data: any) {
     return this.menuService.updateCategory(id, data);
   }
 
   @Delete('categories/:id')
+  @UseGuards(AdminGuard)
   deleteCategory(@Param('id', ParseIntPipe) id: number) {
     return this.menuService.deleteCategory(id);
   }
 
   @Post('items')
+  @UseGuards(AdminGuard)
   createItem(@Body() data: any) {
     return this.menuService.createItem(data);
   }
 
   @Put('items/:id')
+  @UseGuards(AdminGuard)
   updateItem(@Param('id', ParseIntPipe) id: number, @Body() data: any) {
     return this.menuService.updateItem(id, data);
   }
 
   @Delete('items/:id')
+  @UseGuards(AdminGuard)
   deleteItem(@Param('id', ParseIntPipe) id: number) {
     return this.menuService.deleteItem(id);
   }
 
   @Post('categories/reorder')
+  @UseGuards(AdminGuard)
   reorderCategories(@Body() data: { orderedIds: number[] }) {
     return this.menuService.reorderCategories(data.orderedIds);
   }
 
   // ── SEED ──
   @Post('seed')
+  @UseGuards(AdminGuard)
   seedMenu() {
     return this.menuService.seedMenu();
   }
@@ -94,22 +103,26 @@ export class MenuController {
   }
 
   @Post('modifier-groups')
+  @UseGuards(AdminGuard)
   createModifierGroup(@Body() data: any) {
     return this.menuService.createModifierGroup(data);
   }
 
   @Put('modifier-groups/:id')
+  @UseGuards(AdminGuard)
   updateModifierGroup(@Param('id', ParseIntPipe) id: number, @Body() data: any) {
     return this.menuService.updateModifierGroup(id, data);
   }
 
   @Delete('modifier-groups/:id')
+  @UseGuards(AdminGuard)
   deleteModifierGroup(@Param('id', ParseIntPipe) id: number) {
     return this.menuService.deleteModifierGroup(id);
   }
 
   // ── ITEM-MODIFIER LINKING ──
   @Post('items/:itemId/modifiers/:modifierGroupId')
+  @UseGuards(AdminGuard)
   linkModifier(
     @Param('itemId', ParseIntPipe) itemId: number,
     @Param('modifierGroupId', ParseIntPipe) modifierGroupId: number,
@@ -119,6 +132,7 @@ export class MenuController {
   }
 
   @Delete('items/:itemId/modifiers/:modifierGroupId')
+  @UseGuards(AdminGuard)
   unlinkModifier(
     @Param('itemId', ParseIntPipe) itemId: number,
     @Param('modifierGroupId', ParseIntPipe) modifierGroupId: number,

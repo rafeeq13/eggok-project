@@ -12,26 +12,36 @@ type Customer = {
   joinDate: string;
 };
 
-const API = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3002/api';
+import { API, adminFetch } from '../../../lib/api';
+import Pagination from './Pagination';
 
 export default function Customers() {
   const [customers, setCustomers] = useState<Customer[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
   const [selectedCustomer, setSelectedCustomer] = useState<Customer | null>(null);
+  const [errorMsg, setErrorMsg] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalCustomers, setTotalCustomers] = useState(0);
+  const pageSize = 50;
 
-  const fetchCustomers = async () => {
+  const fetchCustomers = async (page = 1) => {
     try {
       setLoading(true);
-      const res = await fetch(`${API}/customers`);
+      const res = await adminFetch(`${API}/customers?page=${page}&limit=${pageSize}`);
       const data = await res.json();
-      if (Array.isArray(data)) {
+      if (data && Array.isArray(data.data)) {
+        setCustomers(data.data);
+        setTotalCustomers(data.total || 0);
+        setCurrentPage(data.page || page);
+      } else if (Array.isArray(data)) {
         setCustomers(data);
       } else {
         setCustomers([]);
       }
     } catch (err) {
       console.error('Failed to fetch customers:', err);
+      setErrorMsg('Failed to load customers');
       setCustomers([]);
     } finally {
       setLoading(false);
@@ -41,6 +51,13 @@ export default function Customers() {
   useEffect(() => {
     fetchCustomers();
   }, []);
+
+  useEffect(() => {
+    if (!selectedCustomer) return;
+    const handleEsc = (e: KeyboardEvent) => { if (e.key === 'Escape') setSelectedCustomer(null); };
+    document.addEventListener('keydown', handleEsc);
+    return () => document.removeEventListener('keydown', handleEsc);
+  }, [selectedCustomer]);
 
 
 
@@ -56,13 +73,22 @@ export default function Customers() {
   return (
     <div style={{ maxWidth: '900px' }}>
 
+      {/* Error Toast */}
+      {errorMsg && (
+        <div style={{
+          position: 'fixed', top: '20px', right: '20px', zIndex: 9999,
+          background: '#FC0301', color: '#fff', padding: '12px 20px',
+          borderRadius: '10px', fontSize: '13px', fontWeight: '600',
+        }}>{errorMsg}</div>
+      )}
+
       {/* Customer Detail Modal */}
       {selectedCustomer && (
-        <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.85)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000, padding: '20px' }}>
+        <div role="dialog" aria-modal="true" style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.85)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000, padding: '20px' }}>
           <div style={{ background: '#1A1A1A', border: '1px solid #2A2A2A', borderRadius: '16px', padding: '28px', width: '100%', maxWidth: '480px' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
               <h2 style={{ fontSize: '18px', fontWeight: '700', color: '#FEFEFE' }}>Customer Details</h2>
-              <button onClick={() => setSelectedCustomer(null)} style={{ background: 'transparent', color: '#888888', fontSize: '20px', border: 'none', cursor: 'pointer' }}>✕</button>
+              <button onClick={() => setSelectedCustomer(null)} style={{ background: 'transparent', color: '#FEFEFE', fontSize: '20px', border: 'none', cursor: 'pointer' }}>✕</button>
             </div>
 
             <div style={{ display: 'flex', alignItems: 'center', gap: '14px', marginBottom: '24px' }}>
@@ -71,7 +97,7 @@ export default function Customers() {
               </div>
               <div>
                 <p style={{ fontSize: '16px', fontWeight: '700', color: '#FEFEFE' }}>{selectedCustomer.name}</p>
-                <p style={{ fontSize: '12px', color: '#888888', marginTop: '2px' }}>Customer since {selectedCustomer.joinDate}</p>
+                <p style={{ fontSize: '12px', color: '#FEFEFE', marginTop: '2px' }}>Customer since {selectedCustomer.joinDate}</p>
               </div>
             </div>
 
@@ -82,7 +108,7 @@ export default function Customers() {
                 { label: 'Last Order', value: selectedCustomer.lastOrder },
               ].map((item) => (
                 <div key={item.label} style={{ display: 'flex', justifyContent: 'space-between', padding: '10px 14px', background: '#111111', borderRadius: '8px' }}>
-                  <span style={{ fontSize: '12px', color: '#888888' }}>{item.label}</span>
+                  <span style={{ fontSize: '12px', color: '#FEFEFE' }}>{item.label}</span>
                   <span style={{ fontSize: '12px', color: '#FEFEFE', fontWeight: '500' }}>{item.value}</span>
                 </div>
               ))}
@@ -90,11 +116,11 @@ export default function Customers() {
 
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
               <div style={{ background: '#111111', borderRadius: '10px', padding: '14px', textAlign: 'center' }}>
-                <p style={{ fontSize: '11px', color: '#888888', marginBottom: '6px' }}>Total Orders</p>
+                <p style={{ fontSize: '11px', color: '#FEFEFE', marginBottom: '6px' }}>Total Orders</p>
                 <p style={{ fontSize: '24px', fontWeight: '700', color: '#FED800' }}>{selectedCustomer.totalOrders}</p>
               </div>
               <div style={{ background: '#111111', borderRadius: '10px', padding: '14px', textAlign: 'center' }}>
-                <p style={{ fontSize: '11px', color: '#888888', marginBottom: '6px' }}>Total Spent</p>
+                <p style={{ fontSize: '11px', color: '#FEFEFE', marginBottom: '6px' }}>Total Spent</p>
                 <p style={{ fontSize: '24px', fontWeight: '700', color: '#22C55E' }}>${Number(selectedCustomer.totalSpent).toFixed(2)}</p>
               </div>
             </div>
@@ -110,7 +136,7 @@ export default function Customers() {
           { label: 'Total Revenue', value: `$${totalRevenue.toFixed(2)}`, color: '#FECE86' },
         ].map((s, i) => (
           <div key={i} style={{ background: '#1A1A1A', border: '1px solid #2A2A2A', borderRadius: '12px', padding: '16px 20px' }}>
-            <p style={{ fontSize: '12px', color: '#888888', marginBottom: '6px' }}>{s.label}</p>
+            <p style={{ fontSize: '12px', color: '#FEFEFE', marginBottom: '6px' }}>{s.label}</p>
             <p style={{ fontSize: '24px', fontWeight: '700', color: s.color }}>{s.value}</p>
           </div>
         ))}
@@ -144,14 +170,14 @@ export default function Customers() {
             <thead>
               <tr style={{ borderBottom: '1px solid #2A2A2A' }}>
                 {['Customer', 'Email', 'Phone', 'Orders', 'Spent', 'Last Order', ''].map(h => (
-                  <th key={h} style={{ padding: '12px 16px', textAlign: 'left', fontSize: '11px', fontWeight: '600', color: '#888888', letterSpacing: '0.5px', textTransform: 'uppercase' }}>{h}</th>
+                  <th key={h} style={{ padding: '12px 16px', textAlign: 'left', fontSize: '11px', fontWeight: '600', color: '#FEFEFE', letterSpacing: '0.5px', textTransform: 'uppercase' }}>{h}</th>
                 ))}
               </tr>
             </thead>
             <tbody>
               {filtered.length === 0 ? (
                 <tr>
-                  <td colSpan={7} style={{ padding: '40px', textAlign: 'center', color: '#888888', fontSize: '13px' }}>
+                  <td colSpan={7} style={{ padding: '40px', textAlign: 'center', color: '#FEFEFE', fontSize: '13px' }}>
                     No customers found
                   </td>
                 </tr>
@@ -166,13 +192,13 @@ export default function Customers() {
                         <span style={{ fontSize: '13px', fontWeight: '600', color: '#FEFEFE' }}>{c.name}</span>
                       </div>
                     </td>
-                    <td style={{ padding: '14px 16px', fontSize: '12px', color: '#888888' }}>{c.email}</td>
-                    <td style={{ padding: '14px 16px', fontSize: '12px', color: '#888888' }}>{c.phone}</td>
+                    <td style={{ padding: '14px 16px', fontSize: '12px', color: '#FEFEFE' }}>{c.email}</td>
+                    <td style={{ padding: '14px 16px', fontSize: '12px', color: '#FEFEFE' }}>{c.phone}</td>
                     <td style={{ padding: '14px 16px', fontSize: '13px', fontWeight: '600', color: '#FED800' }}>{c.totalOrders}</td>
                     <td style={{ padding: '14px 16px', fontSize: '13px', fontWeight: '600', color: '#22C55E' }}>${Number(c.totalSpent).toFixed(2)}</td>
-                    <td style={{ padding: '14px 16px', fontSize: '12px', color: '#888888' }}>{c.lastOrder}</td>
+                    <td style={{ padding: '14px 16px', fontSize: '12px', color: '#FEFEFE' }}>{c.lastOrder}</td>
                     <td style={{ padding: '14px 16px' }}>
-                      <button onClick={() => setSelectedCustomer(c)} style={{ padding: '5px 12px', background: 'transparent', border: '1px solid #2A2A2A', borderRadius: '6px', color: '#888888', fontSize: '11px', cursor: 'pointer' }}>View</button>
+                      <button onClick={() => setSelectedCustomer(c)} style={{ padding: '5px 12px', background: 'transparent', border: '1px solid #2A2A2A', borderRadius: '6px', color: '#FEFEFE', fontSize: '11px', cursor: 'pointer' }}>View</button>
                     </td>
                   </tr>
                 ))
@@ -180,6 +206,9 @@ export default function Customers() {
             </tbody>
           </table>
         </div>
+        {totalCustomers > pageSize && (
+          <Pagination page={currentPage} totalPages={Math.ceil(totalCustomers / pageSize)} onPageChange={(p) => fetchCustomers(p)} />
+        )}
       </div>
     </div>
   );

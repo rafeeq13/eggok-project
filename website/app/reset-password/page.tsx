@@ -12,6 +12,7 @@ function ResetPasswordForm() {
   const [password, setPassword] = useState('');
   const [confirm, setConfirm] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState(false);
@@ -159,15 +160,24 @@ function ResetPasswordForm() {
 
           <div>
             <label style={labelStyle}>Confirm New Password</label>
-            <input
-              type="password"
-              style={inputStyle}
-              placeholder="Repeat your new password"
-              value={confirm}
-              onChange={e => setConfirm(e.target.value)}
-              onFocus={e => (e.target as HTMLInputElement).style.borderColor = '#FED800'}
-              onBlur={e => (e.target as HTMLInputElement).style.borderColor = '#1A1A1A'}
-            />
+            <div style={{ position: 'relative' }}>
+              <input
+                type={showConfirmPassword ? 'text' : 'password'}
+                style={{ ...inputStyle, paddingRight: '48px' }}
+                placeholder="Repeat your new password"
+                value={confirm}
+                onChange={e => setConfirm(e.target.value)}
+                onFocus={e => (e.target as HTMLInputElement).style.borderColor = '#FED800'}
+                onBlur={e => (e.target as HTMLInputElement).style.borderColor = '#1A1A1A'}
+              />
+              <button type="button" onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                style={{ position: 'absolute', right: '14px', top: '50%', transform: 'translateY(-50%)', background: 'transparent', border: 'none', color: '#888', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '4px' }}>
+                {showConfirmPassword
+                  ? <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0112 20c-7 0-11-8-11-8a18.45 18.45 0 015.06-5.94" /><path d="M9.9 4.24A9.12 9.12 0 0112 4c7 0 11 8 11 8a18.5 18.5 0 01-2.16 3.19" /><line x1="1" y1="1" x2="23" y2="23" /></svg>
+                  : <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" /><circle cx="12" cy="12" r="3" /></svg>
+                }
+              </button>
+            </div>
             {confirm && password !== confirm && (
               <p style={{ fontSize: '12px', color: '#FC0301', marginTop: '4px' }}>Passwords do not match</p>
             )}

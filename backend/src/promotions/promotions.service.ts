@@ -10,7 +10,15 @@ export class PromotionsService {
         private readonly promotionRepository: Repository<Promotion>,
     ) { }
 
-    findAll(): Promise<Promotion[]> {
+    async findAll(): Promise<Promotion[]> {
+        // Auto-expire promotions past their end date
+        const today = new Date().toISOString().split('T')[0];
+        await this.promotionRepository
+            .createQueryBuilder()
+            .update(Promotion)
+            .set({ status: 'Expired' })
+            .where('endDate < :today AND status = :status', { today, status: 'Active' })
+            .execute();
         return this.promotionRepository.find();
     }
 

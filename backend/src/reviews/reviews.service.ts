@@ -14,8 +14,13 @@ export class ReviewsService {
         return this.reviewRepository.save(this.reviewRepository.create(review));
     }
 
-    findAll(): Promise<Review[]> {
-        return this.reviewRepository.find({ order: { date: 'DESC' } });
+    async findAll(page = 1, limit = 50): Promise<{ data: Review[]; total: number; page: number; limit: number }> {
+        const [data, total] = await this.reviewRepository.findAndCount({
+            order: { date: 'DESC' },
+            skip: (page - 1) * limit,
+            take: limit,
+        });
+        return { data, total, page, limit };
     }
 
     findOne(id: number): Promise<Review | null> {

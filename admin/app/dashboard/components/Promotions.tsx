@@ -1,5 +1,6 @@
 'use client';
 import { useState, useEffect } from 'react';
+import SingleDatePicker from './SingleDatePicker';
 
 type Promo = {
   id: number;
@@ -13,7 +14,7 @@ type Promo = {
   active: boolean;
 };
 
-const API = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3002/api';
+import { API, adminFetch } from '../../../lib/api';
 
 export default function Promotions() {
   const [promos, setPromos] = useState<Promo[]>([]);
@@ -21,6 +22,8 @@ export default function Promotions() {
   const [showForm, setShowForm] = useState(false);
   const [editingPromo, setEditingPromo] = useState<Promo | null>(null);
   const [successMsg, setSuccessMsg] = useState('');
+  const [errorMsg, setErrorMsg] = useState('');
+  const [saving, setSaving] = useState(false);
   const [formData, setFormData] = useState({
     code: '',
     type: 'percentage' as 'percentage' | 'fixed',
@@ -34,7 +37,7 @@ export default function Promotions() {
   const fetchPromotions = async () => {
     try {
       setLoading(true);
-      const res = await fetch(`${API}/promotions`);
+      const res = await adminFetch(`${API}/promotions`);
       const data = await res.json();
       if (!Array.isArray(data)) {
         setPromos([]);
@@ -44,7 +47,7 @@ export default function Promotions() {
       const mapped = data.map((p: any) => ({
         id: p.id,
         code: p.code,
-        type: p.type === 'Percentage' ? 'percentage' : 'fixed',
+        type: (p.type === 'Percentage' ? 'percentage' : 'fixed') as 'percentage' | 'fixed',
         value: Number(p.value),
         minOrder: Number(p.minOrder),
         usageLimit: Number(p.usageLimit),
@@ -55,6 +58,7 @@ export default function Promotions() {
       setPromos(mapped);
     } catch (err) {
       console.error('Failed to fetch promotions:', err);
+      setErrorMsg('Failed to load promotions');
     } finally {
       setLoading(false);
     }
@@ -63,6 +67,13 @@ export default function Promotions() {
   useEffect(() => {
     fetchPromotions();
   }, []);
+
+  useEffect(() => {
+    if (!showForm) return;
+    const handleEsc = (e: KeyboardEvent) => { if (e.key === 'Escape') resetForm(); };
+    document.addEventListener('keydown', handleEsc);
+    return () => document.removeEventListener('keydown', handleEsc);
+  }, [showForm]);
 
   const showSuccess = (msg: string) => {
     setSuccessMsg(msg);
@@ -77,7 +88,10 @@ export default function Promotions() {
 
   const handleSave = async () => {
     if (!formData.code || !formData.value) return;
+    if (Number(formData.value) <= 0) { setErrorMsg('Discount value must be greater than 0'); setTimeout(() => setErrorMsg(''), 3000); return; }
+    if (formData.expiry && formData.expiry < new Date().toISOString().split('T')[0]) { setErrorMsg('Expiry date cannot be in the past'); setTimeout(() => setErrorMsg(''), 3000); return; }
 
+    setSaving(true);
     const payload = {
       code: formData.code.toUpperCase(),
       name: formData.code.toUpperCase(), // Backend expects a name
@@ -91,7 +105,7 @@ export default function Promotions() {
 
     try {
       if (editingPromo) {
-        const res = await fetch(`${API}/promotions/${editingPromo.id}`, {
+        const res = await adminFetch(`${API}/promotions/${editingPromo.id}`, {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(payload),
@@ -101,7 +115,7 @@ export default function Promotions() {
           fetchPromotions();
         }
       } else {
-        const res = await fetch(`${API}/promotions`, {
+        const res = await adminFetch(`${API}/promotions`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(payload),
@@ -113,6 +127,9 @@ export default function Promotions() {
       }
     } catch (err) {
       console.error('Save failed:', err);
+      setErrorMsg('Failed to save promotion'); setTimeout(() => setErrorMsg(''), 3000);
+    } finally {
+      setSaving(false);
     }
     resetForm();
   };
@@ -129,7 +146,7 @@ export default function Promotions() {
 
   const handleDelete = async (id: number) => {
     try {
-      const res = await fetch(`${API}/promotions/${id}`, { method: 'DELETE' });
+      const res = await adminFetch(`${API}/promotions/${id}`, { method: 'DELETE' });
       if (res.ok) {
         showSuccess('Promo code deleted');
         fetchPromotions();
@@ -143,7 +160,7 @@ export default function Promotions() {
     const promo = promos.find(p => p.id === id);
     if (!promo) return;
     try {
-      const res = await fetch(`${API}/promotions/${id}`, {
+      const res = await adminFetch(`${API}/promotions/${id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ status: promo.active ? 'Paused' : 'Active' }),
@@ -163,7 +180,7 @@ export default function Promotions() {
 
   const labelStyle = {
     fontSize: '12px', fontWeight: '500' as const,
-    color: '#888888', display: 'block' as const, marginBottom: '6px',
+    color: '#FEFEFE', display: 'block' as const, marginBottom: '6px',
   };
 
   return (
@@ -178,9 +195,18 @@ export default function Promotions() {
         }}>{successMsg}</div>
       )}
 
+      {/* Error Toast */}
+      {errorMsg && (
+        <div style={{
+          position: 'fixed', top: '20px', right: '20px', zIndex: 9999,
+          background: '#FC0301', color: '#fff', padding: '12px 20px',
+          borderRadius: '10px', fontSize: '13px', fontWeight: '600',
+        }}>{errorMsg}</div>
+      )}
+
       {/* Add / Edit Modal */}
       {showForm && (
-        <div style={{
+        <div role="dialog" aria-modal="true" style={{
           position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.85)',
           display: 'flex', alignItems: 'center', justifyContent: 'center',
           zIndex: 1000, padding: '20px',
@@ -193,7 +219,7 @@ export default function Promotions() {
               <h2 style={{ fontSize: '18px', fontWeight: '700', color: '#FEFEFE' }}>
                 {editingPromo ? 'Edit Promo Code' : 'Create Promo Code'}
               </h2>
-              <button onClick={resetForm} style={{ background: 'transparent', color: '#888888', fontSize: '20px', border: 'none', cursor: 'pointer' }}>✕</button>
+              <button onClick={resetForm} style={{ background: 'transparent', color: '#FEFEFE', fontSize: '20px', border: 'none', cursor: 'pointer' }}>✕</button>
             </div>
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
@@ -215,7 +241,7 @@ export default function Promotions() {
                     <button key={t} onClick={() => setFormData({ ...formData, type: t })} style={{
                       padding: '10px', borderRadius: '8px', fontSize: '13px', fontWeight: '600', cursor: 'pointer',
                       background: formData.type === t ? '#FED800' : '#111111',
-                      color: formData.type === t ? '#000000' : '#888888',
+                      color: formData.type === t ? '#000000' : '#FEFEFE',
                       border: `1px solid ${formData.type === t ? '#FED800' : '#2A2A2A'}`,
                     }}>
                       {t === 'percentage' ? '% Percentage' : '$ Fixed Amount'}
@@ -260,12 +286,10 @@ export default function Promotions() {
                 </div>
                 <div>
                   <label style={labelStyle}>Expiry Date</label>
-                  <input
-                    type="date" style={inputStyle}
+                  <SingleDatePicker
                     value={formData.expiry}
-                    onChange={e => setFormData({ ...formData, expiry: e.target.value })}
-                    onFocus={e => e.target.style.borderColor = '#FED800'}
-                    onBlur={e => e.target.style.borderColor = '#2A2A2A'}
+                    onChange={date => setFormData({ ...formData, expiry: date })}
+                    placeholder="Select expiry date"
                   />
                 </div>
               </div>
@@ -290,13 +314,13 @@ export default function Promotions() {
                 <button onClick={resetForm} style={{
                   padding: '12px', background: 'transparent',
                   border: '1px solid #2A2A2A', borderRadius: '8px',
-                  color: '#888888', fontSize: '13px', cursor: 'pointer',
+                  color: '#FEFEFE', fontSize: '13px', cursor: 'pointer',
                 }}>Cancel</button>
-                <button onClick={handleSave} style={{
-                  padding: '12px', background: '#FED800',
+                <button onClick={handleSave} disabled={saving} style={{
+                  padding: '12px', background: saving ? '#2A2A2A' : '#FED800',
                   border: 'none', borderRadius: '8px',
-                  color: '#000000', fontSize: '13px', fontWeight: '700', cursor: 'pointer',
-                }}>{editingPromo ? 'Save Changes' : 'Create Promo'}</button>
+                  color: saving ? '#FEFEFE' : '#000000', fontSize: '13px', fontWeight: '700', cursor: saving ? 'not-allowed' : 'pointer',
+                }}>{saving ? 'Saving...' : (editingPromo ? 'Save Changes' : 'Create Promo')}</button>
               </div>
             </div>
           </div>
@@ -305,7 +329,7 @@ export default function Promotions() {
 
       {/* Header */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
-        <p style={{ color: '#888888', fontSize: '13px' }}>{promos.length} promo codes · {promos.filter(p => p.active).length} active</p>
+        <p style={{ color: '#FEFEFE', fontSize: '13px' }}>{promos.length} promo codes · {promos.filter(p => p.active).length} active</p>
         <button onClick={() => { setEditingPromo(null); setShowForm(true); }} style={{
           padding: '10px 20px', background: '#FED800',
           color: '#000000', borderRadius: '8px',
@@ -321,7 +345,7 @@ export default function Promotions() {
           { label: 'Total Redemptions', value: String(promos.reduce((a, p) => a + p.usedCount, 0)), color: '#FECE86' },
         ].map((s, i) => (
           <div key={i} style={{ background: '#1A1A1A', border: '1px solid #2A2A2A', borderRadius: '12px', padding: '16px 20px' }}>
-            <p style={{ fontSize: '12px', color: '#888888', marginBottom: '6px' }}>{s.label}</p>
+            <p style={{ fontSize: '12px', color: '#FEFEFE', marginBottom: '6px' }}>{s.label}</p>
             <p style={{ fontSize: '24px', fontWeight: '700', color: s.color }}>{s.value}</p>
           </div>
         ))}
@@ -341,7 +365,7 @@ export default function Promotions() {
               <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '6px' }}>
                 <span style={{
                   fontSize: '15px', fontWeight: '800',
-                  color: promo.active ? '#FED800' : '#888888',
+                  color: promo.active ? '#FED800' : '#FEFEFE',
                   letterSpacing: '1px',
                 }}>{promo.code}</span>
                 <span style={{
@@ -352,12 +376,33 @@ export default function Promotions() {
                 }}>{promo.active ? 'Active' : 'Inactive'}</span>
               </div>
               <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' as const }}>
-                <span style={{ fontSize: '12px', color: '#888888' }}>
+                <span style={{ fontSize: '12px', color: '#FEFEFE' }}>
                   {promo.type === 'percentage' ? `${promo.value}% off` : `$${promo.value} off`}
                 </span>
-                <span style={{ fontSize: '12px', color: '#888888' }}>Min order: ${promo.minOrder}</span>
-                <span style={{ fontSize: '12px', color: '#888888' }}>Used: {promo.usedCount}/{promo.usageLimit}</span>
-                <span style={{ fontSize: '12px', color: '#888888' }}>Expires: {promo.expiry}</span>
+                <span style={{ fontSize: '12px', color: '#FEFEFE' }}>Min order: ${promo.minOrder}</span>
+                <span style={{ fontSize: '12px', color: '#FEFEFE' }}>Used: {promo.usedCount}/{promo.usageLimit}</span>
+                <span style={{ fontSize: '12px', color: '#FEFEFE', display: 'inline-flex', alignItems: 'center', gap: '4px', cursor: 'pointer', position: 'relative' }}>
+                  Expires: {promo.expiry || 'No date'}
+                  <input
+                    type="date"
+                    value={promo.expiry}
+                    onChange={async (e) => {
+                      const newDate = e.target.value;
+                      try {
+                        const res = await adminFetch(`${API}/promotions/${promo.id}`, {
+                          method: 'PUT',
+                          headers: { 'Content-Type': 'application/json' },
+                          body: JSON.stringify({ endDate: newDate }),
+                        });
+                        if (res.ok) fetchPromotions();
+                      } catch (err) {
+                        console.error('Failed to update expiry:', err);
+                      }
+                    }}
+                    onClick={(e) => e.stopPropagation()}
+                    style={{ position: 'absolute', inset: 0, opacity: 0, cursor: 'pointer', width: '100%', height: '100%' }}
+                  />
+                </span>
               </div>
             </div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexShrink: 0 }}>
@@ -376,7 +421,7 @@ export default function Promotions() {
               <button onClick={() => handleEdit(promo)} style={{
                 padding: '6px 12px', background: 'transparent',
                 border: '1px solid #2A2A2A', borderRadius: '6px',
-                color: '#888888', fontSize: '12px', cursor: 'pointer',
+                color: '#FEFEFE', fontSize: '12px', cursor: 'pointer',
               }}>Edit</button>
               <button onClick={() => handleDelete(promo.id)} style={{
                 padding: '6px 12px', background: 'transparent',

@@ -1,13 +1,15 @@
-import { Controller, Get, Patch, Delete, Param, Body, Query, ParseIntPipe } from '@nestjs/common';
+import { Controller, Get, Patch, Delete, Param, Body, Query, ParseIntPipe, UseGuards } from '@nestjs/common';
 import { SubmissionsService } from './submissions.service';
+import { AdminGuard } from '../auth/admin.guard';
 
 @Controller('submissions')
+@UseGuards(AdminGuard)
 export class SubmissionsController {
   constructor(private readonly service: SubmissionsService) {}
 
   @Get()
-  findAll(@Query('type') type?: string) {
-    return this.service.findAll(type);
+  findAll(@Query('type') type?: string, @Query('page') page?: string, @Query('limit') limit?: string) {
+    return this.service.findAll(type, page ? +page : 1, limit ? +limit : 50);
   }
 
   @Get('counts')

@@ -53,6 +53,12 @@ export interface StoreSettings {
   minOrder: number;
   deliveryRadius: number;
   deliveryFee: number;
+  taxRate: number;
+  storeName: string;
+  storeAddress: string;
+  storeLat: number;
+  storeLng: number;
+  storeTimezone: string;
   closedMessage: string;
   storePhone: string;
   storeEmail: string;

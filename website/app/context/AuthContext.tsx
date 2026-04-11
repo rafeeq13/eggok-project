@@ -40,11 +40,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
             try {
                 setToken(savedToken);
                 setUser(JSON.parse(savedUser));
-                console.log('[AUTH] Session found in localStorage, refreshing profile...');
+                // Refresh profile in background to ensure data is up to date
                 // Refresh profile in background to ensure data is up to date and token is still valid
                 fetchProfile(savedToken);
-            } catch (e) {
-                console.error('Failed to parse saved user', e);
+            } catch {
                 logout();
             }
         } else {
@@ -62,18 +61,16 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
             if (res.ok) {
                 const profile = await res.json();
-                console.log('[AUTH] Profile refreshed successfully');
+                // Profile refreshed successfully
                 setUser(profile);
                 localStorage.setItem('eggok_user', JSON.stringify(profile));
             } else {
-                console.warn(`[AUTH] Profile refresh failed with status: ${res.status}`);
                 if (res.status === 401) {
-                    console.error('[AUTH] 401 Unauthorized - logging out');
                     logout(authToken);
                 }
             }
         } catch (e) {
-            console.error('[AUTH] ERROR fetching profile:', e);
+            // Profile fetch failed - network error
         } finally {
             setLoading(false);
         }

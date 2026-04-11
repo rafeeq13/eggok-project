@@ -1,14 +1,16 @@
-import { Controller, Get, Post, Put, Delete, Body, Param } from '@nestjs/common';
+import { Controller, Get, Post, Put, Delete, Body, Param, Query, UseGuards } from '@nestjs/common';
 import { CustomersService } from './customers.service';
 import { Customer } from './customer.entity';
+import { AdminGuard } from '../auth/admin.guard';
 
 @Controller('customers')
+@UseGuards(AdminGuard)
 export class CustomersController {
     constructor(private readonly customersService: CustomersService) { }
 
     @Get()
-    findAll(): Promise<Customer[]> {
-        return this.customersService.findAll();
+    findAll(@Query('page') page?: string, @Query('limit') limit?: string) {
+        return this.customersService.findAll(page ? +page : 1, limit ? +limit : 50);
     }
 
     @Get(':id')

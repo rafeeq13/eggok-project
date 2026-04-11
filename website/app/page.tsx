@@ -151,7 +151,8 @@ export default function HomePage() {
     // Fetch published reviews
     fetch(`${API}/reviews`)
       .then(r => r.ok ? r.json() : [])
-      .then(reviews => {
+      .then(raw => {
+        const reviews = Array.isArray(raw) ? raw : (raw.data || []);
         const published = reviews
           .filter((r: any) => r.status === 'Published' && r.rating >= 4)
           .slice(0, 4)

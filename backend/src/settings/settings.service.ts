@@ -31,6 +31,12 @@ const DEFAULT_STORE = {
   minOrder: 10,
   deliveryRadius: 5,
   deliveryFee: 3.99,
+  taxRate: 0.08,
+  storeName: 'Eggs Ok',
+  storeAddress: '3517 Lancaster Ave, Philadelphia, PA 19104',
+  storeLat: 39.9612,
+  storeLng: -75.1832,
+  storeTimezone: 'America/New_York',
   closedMessage: 'We are currently closed',
   storePhone: '',
   storeEmail: '',
@@ -128,9 +134,10 @@ export class SettingsService implements OnModuleInit {
 
   async validateDeliveryAddress(lat: number, lng: number) {
     const deliverySettings = await this.getSetting('delivery_settings');
+    const storeSettings = await this.getSetting('store');
     const zones = deliverySettings?.zones || [];
-    const storeLat = 39.9612;
-    const storeLng = -75.1832;
+    const storeLat = storeSettings?.storeLat || parseFloat(process.env.STORE_LAT || '39.9612');
+    const storeLng = storeSettings?.storeLng || parseFloat(process.env.STORE_LNG || '-75.1832');
 
     // Haversine distance in miles
     const R = 3958.8;

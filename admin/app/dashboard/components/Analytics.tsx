@@ -5,7 +5,7 @@ import {
   Tooltip, ResponsiveContainer, PieChart, Pie, Cell, Legend
 } from 'recharts';
 
-const API = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3002/api';
+import { API, adminFetch } from '../../../lib/api';
 
 type Period = 'daily' | 'weekly' | 'monthly';
 
@@ -44,7 +44,7 @@ export default function Analytics() {
       const from = new Date(dateFrom);
       const to = new Date(dateTo);
       const diffDays = Math.max(1, Math.ceil((to.getTime() - from.getTime()) / 86400000));
-      const res = await fetch(`${API}/orders/stats/historical?days=${diffDays}`);
+      const res = await adminFetch(`${API}/orders/stats/historical?days=${diffDays}`);
       const data = await res.json();
       setStats(data);
     } catch (err) {

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
-const API = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3002/api';
+import { API, adminFetch } from '../../../lib/api';
+import Pagination from './Pagination';
 
 type ReviewStatus = 'Published' | 'Hidden' | 'Flagged';
 type ReviewRating = 1 | 2 | 3 | 4 | 5;
@@ -32,7 +33,7 @@ const initialReviews: Review[] = [
 
 const statusColor: Record<ReviewStatus, string> = {
   Published: '#22C55E',
-  Hidden: '#888888',
+  Hidden: '#FEFEFE',
   Flagged: '#FC0301',
 };
 
@@ -59,19 +60,28 @@ export default function Reviews() {
   const [filterRating, setFilterRating] = useState<number | 'all'>('all');
   const [search, setSearch] = useState('');
   const [successMsg, setSuccessMsg] = useState('');
+  const [errorMsg, setErrorMsg] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalReviews, setTotalReviews] = useState(0);
+  const pageSize = 50;
 
-  const fetchReviews = async () => {
+  const fetchReviews = async (page = 1) => {
     try {
       setLoading(true);
-      const res = await fetch(`${API}/reviews`);
+      const res = await adminFetch(`${API}/reviews?page=${page}&limit=${pageSize}`);
       const data = await res.json();
-      if (Array.isArray(data)) {
+      if (data && Array.isArray(data.data)) {
+        setReviews(data.data);
+        setTotalReviews(data.total || 0);
+        setCurrentPage(data.page || page);
+      } else if (Array.isArray(data)) {
         setReviews(data);
       } else {
         setReviews([]);
       }
     } catch (err) {
       console.error('Failed to fetch reviews:', err);
+      setErrorMsg('Failed to load reviews');
       setReviews([]);
     } finally {
       setLoading(false);
@@ -91,7 +101,7 @@ export default function Reviews() {
     if (!selectedReview || !replyText.trim()) return;
     try {
       const repliedAt = new Date().toISOString().split('T')[0];
-      const res = await fetch(`${API}/reviews/${selectedReview.id}`, {
+      const res = await adminFetch(`${API}/reviews/${selectedReview.id}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ reply: replyText, repliedAt }),
@@ -104,12 +114,13 @@ export default function Reviews() {
       }
     } catch (err) {
       console.error('Reply failed:', err);
+      setErrorMsg('Failed to post reply'); setTimeout(() => setErrorMsg(''), 3000);
     }
   };
 
   const updateStatus = async (id: number, status: ReviewStatus) => {
     try {
-      const res = await fetch(`${API}/reviews/${id}`, {
+      const res = await adminFetch(`${API}/reviews/${id}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ status }),
@@ -121,6 +132,7 @@ export default function Reviews() {
       }
     } catch (err) {
       console.error('Status update failed:', err);
+      setErrorMsg('Failed to update review status'); setTimeout(() => setErrorMsg(''), 3000);
     }
   };
 
@@ -160,6 +172,13 @@ export default function Reviews() {
         </div>
       )}
 
+      {/* Error Toast */}
+      {errorMsg && (
+        <div style={{ position: 'fixed', top: '20px', right: '20px', zIndex: 9999, background: '#FC0301', color: '#fff', padding: '12px 20px', borderRadius: '10px', fontSize: '13px', fontWeight: '600' }}>
+          {errorMsg}
+        </div>
+      )}
+
       {/* Review Detail Modal */}
       {selectedReview && (
         <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.88)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000, padding: '20px' }}>
@@ -167,7 +186,7 @@ export default function Reviews() {
 
             <div style={{ padding: '18px 24px', borderBottom: '1px solid #2A2A2A', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexShrink: 0 }}>
               <h2 style={{ fontSize: '16px', fontWeight: '700', color: '#FEFEFE' }}>Review Detail</h2>
-              <button onClick={() => { setSelectedReview(null); setReplyText(''); }} style={{ background: 'transparent', color: '#888888', fontSize: '20px', border: 'none', cursor: 'pointer' }}>✕</button>
+              <button onClick={() => { setSelectedReview(null); setReplyText(''); }} style={{ background: 'transparent', color: '#FEFEFE', fontSize: '20px', border: 'none', cursor: 'pointer' }}>✕</button>
             </div>
 
             <div style={{ overflow: 'auto', padding: '20px 24px', flex: 1 }}>
@@ -180,12 +199,12 @@ export default function Reviews() {
                   </div>
                   <div>
                     <p style={{ fontSize: '14px', fontWeight: '700', color: '#FEFEFE' }}>{selectedReview.customer}</p>
-                    <p style={{ fontSize: '11px', color: '#888888', marginTop: '2px' }}>{selectedReview.email}</p>
+                    <p style={{ fontSize: '11px', color: '#FEFEFE', marginTop: '2px' }}>{selectedReview.email}</p>
                   </div>
                 </div>
                 <div style={{ textAlign: 'right' }}>
                   <Stars rating={selectedReview.rating} size={16} />
-                  <p style={{ fontSize: '11px', color: '#888888', marginTop: '4px' }}>{selectedReview.date}</p>
+                  <p style={{ fontSize: '11px', color: '#FEFEFE', marginTop: '4px' }}>{selectedReview.date}</p>
                 </div>
               </div>
 
@@ -194,7 +213,7 @@ export default function Reviews() {
                 <span style={{ fontSize: '11px', padding: '3px 10px', borderRadius: '20px', fontWeight: '600', background: selectedReview.orderType === 'Delivery' ? '#0A1628' : '#1A1A00', color: selectedReview.orderType === 'Delivery' ? '#60A5FA' : '#FED800', border: `1px solid ${selectedReview.orderType === 'Delivery' ? '#1E3A5F' : '#3A3A00'}` }}>
                   {selectedReview.orderType}
                 </span>
-                <span style={{ fontSize: '11px', padding: '3px 10px', borderRadius: '20px', fontWeight: '600', background: '#2A2A2A', color: '#888888' }}>
+                <span style={{ fontSize: '11px', padding: '3px 10px', borderRadius: '20px', fontWeight: '600', background: '#2A2A2A', color: '#FEFEFE' }}>
                   {selectedReview.orderId}
                 </span>
                 <span style={{ fontSize: '11px', padding: '3px 10px', borderRadius: '20px', fontWeight: '600', background: `${statusColor[selectedReview.status]}20`, color: statusColor[selectedReview.status], border: `1px solid ${statusColor[selectedReview.status]}40` }}>
@@ -229,14 +248,14 @@ export default function Reviews() {
                   onFocus={e => e.target.style.borderColor = '#FED800'}
                   onBlur={e => e.target.style.borderColor = '#2A2A2A'}
                 />
-                <p style={{ fontSize: '11px', color: '#888888', marginTop: '4px' }}>
+                <p style={{ fontSize: '11px', color: '#FEFEFE', marginTop: '4px' }}>
                   Your reply will be visible to the customer and anyone viewing this review.
                 </p>
               </div>
 
               {/* Status Actions */}
               <div style={{ marginTop: '14px' }}>
-                <p style={{ fontSize: '12px', fontWeight: '600', color: '#888888', marginBottom: '8px' }}>Change Status</p>
+                <p style={{ fontSize: '12px', fontWeight: '600', color: '#FEFEFE', marginBottom: '8px' }}>Change Status</p>
                 <div style={{ display: 'flex', gap: '8px' }}>
                   {(['Published', 'Hidden', 'Flagged'] as ReviewStatus[]).map(s => (
                     <button key={s} onClick={() => updateStatus(selectedReview.id, s)} style={{
@@ -251,8 +270,8 @@ export default function Reviews() {
             </div>
 
             <div style={{ padding: '16px 24px', borderTop: '1px solid #2A2A2A', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', flexShrink: 0 }}>
-              <button onClick={() => { setSelectedReview(null); setReplyText(''); }} style={{ padding: '11px', background: 'transparent', border: '1px solid #2A2A2A', borderRadius: '8px', color: '#888888', fontSize: '13px', cursor: 'pointer' }}>Close</button>
-              <button onClick={handleReply} disabled={!replyText.trim()} style={{ padding: '11px', background: replyText.trim() ? '#FED800' : '#2A2A2A', border: 'none', borderRadius: '8px', color: replyText.trim() ? '#000' : '#888888', fontSize: '13px', fontWeight: '700', cursor: replyText.trim() ? 'pointer' : 'not-allowed' }}>
+              <button onClick={() => { setSelectedReview(null); setReplyText(''); }} style={{ padding: '11px', background: 'transparent', border: '1px solid #2A2A2A', borderRadius: '8px', color: '#FEFEFE', fontSize: '13px', cursor: 'pointer' }}>Close</button>
+              <button onClick={handleReply} disabled={!replyText.trim()} style={{ padding: '11px', background: replyText.trim() ? '#FED800' : '#2A2A2A', border: 'none', borderRadius: '8px', color: replyText.trim() ? '#000' : '#FEFEFE', fontSize: '13px', fontWeight: '700', cursor: replyText.trim() ? 'pointer' : 'not-allowed' }}>
                 {selectedReview.reply ? 'Update Reply' : 'Post Reply'}
               </button>
             </div>
@@ -265,23 +284,23 @@ export default function Reviews() {
 
         {/* Average Rating */}
         <div style={{ background: '#1A1A1A', border: '1px solid #2A2A2A', borderRadius: '12px', padding: '20px', textAlign: 'center' }}>
-          <p style={{ fontSize: '11px', color: '#888888', marginBottom: '8px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Average Rating</p>
+          <p style={{ fontSize: '11px', color: '#FEFEFE', marginBottom: '8px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Average Rating</p>
           <p style={{ fontSize: '52px', fontWeight: '900', color: '#FED800', lineHeight: '1' }}>{avgRating}</p>
           <Stars rating={Math.round(Number(avgRating))} size={18} />
-          <p style={{ fontSize: '11px', color: '#888888', marginTop: '8px' }}>{reviews.length} total reviews</p>
+          <p style={{ fontSize: '11px', color: '#FEFEFE', marginTop: '8px' }}>{reviews.length} total reviews</p>
         </div>
 
         {/* Rating Breakdown */}
         <div style={{ background: '#1A1A1A', border: '1px solid #2A2A2A', borderRadius: '12px', padding: '20px' }}>
-          <p style={{ fontSize: '11px', color: '#888888', marginBottom: '12px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Rating Breakdown</p>
+          <p style={{ fontSize: '11px', color: '#FEFEFE', marginBottom: '12px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Rating Breakdown</p>
           {ratingCounts.map(({ rating, count, pct }) => (
             <div key={rating} style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '8px' }}>
-              <span style={{ fontSize: '12px', color: '#888888', width: '12px', textAlign: 'right', flexShrink: 0 }}>{rating}</span>
+              <span style={{ fontSize: '12px', color: '#FEFEFE', width: '12px', textAlign: 'right', flexShrink: 0 }}>{rating}</span>
               <span style={{ fontSize: '12px', color: '#FED800', flexShrink: 0 }}>★</span>
               <div style={{ flex: 1, height: '8px', background: '#2A2A2A', borderRadius: '4px', overflow: 'hidden' }}>
                 <div style={{ width: `${pct}%`, height: '100%', background: ratingColor(rating), borderRadius: '4px', transition: 'width 0.3s' }} />
               </div>
-              <span style={{ fontSize: '11px', color: '#888888', width: '16px', textAlign: 'right', flexShrink: 0 }}>{count}</span>
+              <span style={{ fontSize: '11px', color: '#FEFEFE', width: '16px', textAlign: 'right', flexShrink: 0 }}>{count}</span>
             </div>
           ))}
         </div>
@@ -295,7 +314,7 @@ export default function Reviews() {
           { label: 'Flagged', count: reviews.filter(r => r.status === 'Flagged').length, color: '#FC0301' },
         ].map((s, i) => (
           <div key={i} style={{ background: '#1A1A1A', border: `1px solid ${s.color}30`, borderRadius: '12px', padding: '16px 20px' }}>
-            <p style={{ fontSize: '12px', color: '#888888', marginBottom: '6px' }}>{s.label}</p>
+            <p style={{ fontSize: '12px', color: '#FEFEFE', marginBottom: '6px' }}>{s.label}</p>
             <p style={{ fontSize: '24px', fontWeight: '700', color: s.color }}>{s.count}</p>
           </div>
         ))}
@@ -325,7 +344,7 @@ export default function Reviews() {
         </select>
       </div>
 
-      <p style={{ fontSize: '12px', color: '#888888', marginBottom: '12px' }}>
+      <p style={{ fontSize: '12px', color: '#FEFEFE', marginBottom: '12px' }}>
         Showing {filtered.length} of {reviews.length} reviews
       </p>
 
@@ -346,7 +365,7 @@ export default function Reviews() {
                   <p style={{ fontSize: '13px', fontWeight: '700', color: '#FEFEFE' }}>{review.customer}</p>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '2px' }}>
                     <Stars rating={review.rating} size={12} />
-                    <span style={{ fontSize: '11px', color: '#888888' }}>{review.date}</span>
+                    <span style={{ fontSize: '11px', color: '#FEFEFE' }}>{review.date}</span>
                   </div>
                 </div>
               </div>
@@ -359,14 +378,14 @@ export default function Reviews() {
                     Needs Reply
                   </span>
                 )}
-                <button onClick={() => { setSelectedReview(review); setReplyText(review.reply || ''); }} style={{ padding: '6px 12px', background: 'transparent', border: '1px solid #2A2A2A', borderRadius: '6px', color: '#888888', fontSize: '11px', cursor: 'pointer' }}>
+                <button onClick={() => { setSelectedReview(review); setReplyText(review.reply || ''); }} style={{ padding: '6px 12px', background: 'transparent', border: '1px solid #2A2A2A', borderRadius: '6px', color: '#FEFEFE', fontSize: '11px', cursor: 'pointer' }}>
                   {review.reply ? 'View' : 'Reply'}
                 </button>
               </div>
             </div>
 
             <p style={{ fontSize: '13px', fontWeight: '600', color: '#FEFEFE', marginBottom: '4px' }}>{review.title}</p>
-            <p style={{ fontSize: '12px', color: '#888888', lineHeight: '1.5', marginBottom: review.reply ? '10px' : '0' }}>
+            <p style={{ fontSize: '12px', color: '#FEFEFE', lineHeight: '1.5', marginBottom: review.reply ? '10px' : '0' }}>
               {review.body.length > 150 ? review.body.substring(0, 150) + '...' : review.body}
             </p>
 
@@ -381,6 +400,9 @@ export default function Reviews() {
           </div>
         ))}
       </div>
+      {totalReviews > pageSize && (
+        <Pagination page={currentPage} totalPages={Math.ceil(totalReviews / pageSize)} onPageChange={(p) => fetchReviews(p)} />
+      )}
     </div>
   );
 }

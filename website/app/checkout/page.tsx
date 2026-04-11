@@ -6,7 +6,8 @@ import { useCart } from '../context/CartContext';
 import { API_URL } from '../../lib/api';
 import { useGoogleMaps, initAutocomplete, validateDeliveryAddress } from '../../hooks/useGoogleMaps';
 import { loadStripe } from '@stripe/stripe-js';
-import { Elements, CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
+import { Elements, CardNumberElement, CardExpiryElement, CardCvcElement, useStripe, useElements } from '@stripe/react-stripe-js';
+import { useStoreSettings } from '../../hooks/useStoreSettings';
 
 const css = `
   *, *::before, *::after { box-sizing: border-box; }
@@ -176,14 +177,45 @@ export default function CheckoutPage() {
 
 function CheckoutInner() {
   const router = useRouter();
+  const { isOpen, statusMessage, taxRate, storeName, storeAddress, storeTimezone } = useStoreSettings();
+  const [tzAbbr, setTzAbbr] = useState('ET');
+  useEffect(() => {
+    try {
+      const tz = new Intl.DateTimeFormat('en-US', { timeZone: storeTimezone || 'America/New_York', timeZoneName: 'short' }).formatToParts(new Date()).find(p => p.type === 'timeZoneName')?.value;
+      if (tz) setTzAbbr(tz);
+    } catch {}
+  }, [storeTimezone]);
   const {
     cart, cartTotal, orderType, setOrderType, getPrice,
     deliveryAddress, setDeliveryAddress, deliveryApt, setDeliveryApt,
     deliveryInstructions, setDeliveryInstructions,
     scheduleType, setScheduleType, scheduleDate, setScheduleDate, scheduleTime, setScheduleTime,
-    deliveryFee: cartDeliveryFee, setDeliveryFee,
+    deliveryFee: cartDeliveryFee, setDeliveryFee, deliveryZone,
     clearCart,
   } = useCart();
+
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
+
+  // Refresh delivery fee from backend zones on page load
+  useEffect(() => {
+    if (orderType !== 'delivery') return;
+    fetch(`${API_URL}/settings/delivery_settings`)
+      .then(r => r.ok ? r.text() : '')
+      .then(text => {
+        if (!text) return;
+        const data = JSON.parse(text);
+        const zones = data?.zones?.filter((z: any) => z.active) || [];
+        if (deliveryZone && zones.length > 0) {
+          const matched = zones.find((z: any) => z.name === deliveryZone);
+          if (matched) setDeliveryFee(Number(matched.deliveryFee));
+        } else if (zones.length > 0) {
+          const cheapest = zones.reduce((min: any, z: any) => z.deliveryFee < min.deliveryFee ? z : min, zones[0]);
+          setDeliveryFee(Number(cheapest.deliveryFee));
+        }
+      })
+      .catch(() => {});
+  }, [orderType]);
 
   const [placing, setPlacing] = useState(false);
   const [orderError, setOrderError] = useState('');
@@ -244,7 +276,10 @@ function CheckoutInner() {
   // Stripe
   const stripe = useStripe();
   const elements = useElements();
-  const [cardComplete, setCardComplete] = useState(false);
+  const [cardNumberComplete, setCardNumberComplete] = useState(false);
+  const [cardExpiryComplete, setCardExpiryComplete] = useState(false);
+  const [cardCvcComplete, setCardCvcComplete] = useState(false);
+  const cardComplete = cardNumberComplete && cardExpiryComplete && cardCvcComplete;
   const [promoCode, setPromoCode] = useState('');
   const [promoApplied, setPromoApplied] = useState(false);
   const [promoError, setPromoError] = useState('');
@@ -273,7 +308,7 @@ function CheckoutInner() {
   }, []);
 
   const subtotal = cartTotal;
-  const taxes = subtotal * 0.08;
+  const taxes = subtotal * taxRate;
   const deliveryFee = orderType === 'delivery' ? cartDeliveryFee : 0;
   const discount = promoApplied ? promoDiscount : 0;
 
@@ -394,7 +429,7 @@ function CheckoutInner() {
       const order = await response.json();
 
       // Step 2: Process payment with REAL order number
-      const cardElement = stripe && elements ? elements.getElement(CardElement) : null;
+      const cardElement = stripe && elements ? elements.getElement(CardNumberElement) : null;
       if (stripe && cardElement) {
         const piRes = await fetch(`${API_URL}/payments/create-payment-intent`, {
           method: 'POST',
@@ -422,7 +457,7 @@ function CheckoutInner() {
       clearCart();
       router.push('/confirmation');
     } catch (err) {
-      console.error('Order failed:', err);
+      // Order placement failed
       setOrderError(err instanceof Error ? err.message : 'Unable to place your order right now.');
       setPlacing(false);
       placingRef.current = false;
@@ -437,7 +472,7 @@ function CheckoutInner() {
     });
     const dayLabel = days.find(d => d.value === scheduleDate)?.label || 'Today';
     const [h, m] = scheduleTime.split(':').map(Number);
-    const timeLabel = `${h > 12 ? h - 12 : h === 0 ? 12 : h}:${m.toString().padStart(2, '0')} ${h >= 12 ? 'PM' : 'AM'} EDT`;
+    const timeLabel = `${h > 12 ? h - 12 : h === 0 ? 12 : h}:${m.toString().padStart(2, '0')} ${h >= 12 ? 'PM' : 'AM'} ${tzAbbr}`;
     return `${dayLabel}, ${timeLabel}`;
   };
 
@@ -460,12 +495,18 @@ function CheckoutInner() {
     setShowCustomTipModal(false);
   };
 
-  const isFormValid = firstName && lastName && email && phone;
-  const isPaymentValid = (stripe && elements?.getElement(CardElement)) ? cardComplete : true;
+  const isEmailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  const isPhoneValid = phone.replace(/\D/g, '').length >= 10;
+  const hasItems = cart.length > 0;
+  const hasDeliveryAddress = orderType === 'pickup' || deliveryAddress.trim().length > 0;
+  const isFormValid = firstName && lastName && isEmailValid && isPhoneValid && hasItems && hasDeliveryAddress;
+  const isPaymentValid = (stripe && elements?.getElement(CardNumberElement)) ? cardComplete : true;
   const canPlaceOrder = isFormValid && isPaymentValid;
 
   const isPreset = (t: number) => tipMode === 'preset' && tipPercent === t;
   const isCustomActive = tipMode === 'custom';
+
+  if (!mounted) return <div style={{ background: '#000', minHeight: '100vh' }} />;
 
   return (
     <div style={{ background: '#000', minHeight: '100vh', color: '#ffffff', fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif' }}>
@@ -498,7 +539,7 @@ function CheckoutInner() {
                   <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" /><circle cx="12" cy="10" r="3" />
                 </svg>
                 <span style={{ fontSize: '14px', color: '#ffffff', flex: 1, wordBreak: 'break-word' }}>
-                  {orderType === 'pickup' ? '3517 Lancaster Ave, Philadelphia PA 19104' : deliveryAddress || 'No address , go back to set one'}
+                  {orderType === 'pickup' ? storeAddress : deliveryAddress || 'Please set a delivery address'}
                 </span>
                 <button onClick={() => setShowDeliveryModal(true)} style={{ fontSize: '12px', color: '#FED800', fontWeight: '700', background: 'none', border: 'none', cursor: 'pointer', flexShrink: 0 }}>Change</button>
               </div>
@@ -572,6 +613,7 @@ function CheckoutInner() {
                   <input type="tel" style={inputStyle} placeholder="(215) 555-0100" value={phone} onChange={e => setPhone(e.target.value)}
                     onFocus={e => (e.target as HTMLInputElement).style.borderColor = '#FED800'}
                     onBlur={e => (e.target as HTMLInputElement).style.borderColor = '#3A3A3A'} />
+                  {phone && !isPhoneValid && <p style={{ fontSize: '11px', color: '#FC0301', marginTop: '4px' }}>Please enter a valid phone number (at least 10 digits)</p>}
                 </div>
                 <div className="name-grid">
                   <div>
@@ -592,8 +634,11 @@ function CheckoutInner() {
                   <input type="email" style={inputStyle} placeholder="john@gmail.com" value={email} onChange={e => setEmail(e.target.value)}
                     onFocus={e => (e.target as HTMLInputElement).style.borderColor = '#FED800'}
                     onBlur={e => (e.target as HTMLInputElement).style.borderColor = '#3A3A3A'} />
+                  {email && !isEmailValid && <p style={{ fontSize: '11px', color: '#FC0301', marginTop: '4px' }}>Please enter a valid email address</p>}
                 </div>
               </div>
+              {!hasItems && <p style={{ fontSize: '12px', color: '#FC0301', marginTop: '8px' }}>Your cart is empty. Please add items before checking out.</p>}
+              {orderType === 'delivery' && !hasDeliveryAddress && <p style={{ fontSize: '12px', color: '#FC0301', marginTop: '8px' }}>Please set a delivery address before placing your order.</p>}
             </div>
 
             {/* Payment */}
@@ -606,16 +651,51 @@ function CheckoutInner() {
                 <span style={{ fontSize: '12px', color: '#22C55E' }}>Secured by Stripe — 256-bit SSL encryption</span>
               </div>
               {stripe ? (
-                <div style={{ padding: '14px', background: '#0A0A0A', border: '1px solid #3A3A3A', borderRadius: '10px' }}>
-                  <CardElement
-                    options={{
-                      style: {
-                        base: { fontSize: '15px', color: '#FEFEFE', '::placeholder': { color: '#555' }, iconColor: '#FED800' },
-                        invalid: { color: '#FC0301', iconColor: '#FC0301' },
-                      },
-                    }}
-                    onChange={(e) => setCardComplete(e.complete)}
-                  />
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                  <div>
+                    <label style={{ fontSize: '12px', color: '#888', display: 'block', marginBottom: '6px', fontWeight: '600' }}>Card Number</label>
+                    <div style={{ padding: '14px', background: '#0A0A0A', border: '1px solid #3A3A3A', borderRadius: '10px' }}>
+                      <CardNumberElement
+                        options={{
+                          style: {
+                            base: { fontSize: '15px', color: '#FEFEFE', '::placeholder': { color: '#555' }, iconColor: '#FED800' },
+                            invalid: { color: '#FC0301', iconColor: '#FC0301' },
+                          },
+                        }}
+                        onChange={(e) => setCardNumberComplete(e.complete)}
+                      />
+                    </div>
+                  </div>
+                  <div className="payment-grid">
+                    <div>
+                      <label style={{ fontSize: '12px', color: '#888', display: 'block', marginBottom: '6px', fontWeight: '600' }}>Expiry Date</label>
+                      <div style={{ padding: '14px', background: '#0A0A0A', border: '1px solid #3A3A3A', borderRadius: '10px' }}>
+                        <CardExpiryElement
+                          options={{
+                            style: {
+                              base: { fontSize: '15px', color: '#FEFEFE', '::placeholder': { color: '#555' } },
+                              invalid: { color: '#FC0301' },
+                            },
+                          }}
+                          onChange={(e) => setCardExpiryComplete(e.complete)}
+                        />
+                      </div>
+                    </div>
+                    <div>
+                      <label style={{ fontSize: '12px', color: '#888', display: 'block', marginBottom: '6px', fontWeight: '600' }}>CVV</label>
+                      <div style={{ padding: '14px', background: '#0A0A0A', border: '1px solid #3A3A3A', borderRadius: '10px' }}>
+                        <CardCvcElement
+                          options={{
+                            style: {
+                              base: { fontSize: '15px', color: '#FEFEFE', '::placeholder': { color: '#555' } },
+                              invalid: { color: '#FC0301' },
+                            },
+                          }}
+                          onChange={(e) => setCardCvcComplete(e.complete)}
+                        />
+                      </div>
+                    </div>
+                  </div>
                 </div>
               ) : (
                 <div style={{ padding: '20px', background: '#0A0A0A', borderRadius: '10px', border: '1px dashed #2A2A2A', textAlign: 'center' }}>
@@ -641,7 +721,7 @@ function CheckoutInner() {
                 {orderError}
               </p>
             )}
-            <p style={{ fontSize: '11px', color: '#444', textAlign: 'center', lineHeight: '1.6' }}>
+            <p style={{ fontSize: '11px', color: '#ffffffff', textAlign: 'center', lineHeight: '1.6' }}>
               By placing your order, you agree to our Terms of Service and Privacy Policy.
             </p>
           </div>
@@ -897,13 +977,13 @@ function CheckoutInner() {
                   <div className="co-del-from">
                     <p style={{ fontSize: '12px', fontWeight: '700', color: '#666', marginBottom: '6px', textTransform: 'uppercase', letterSpacing: '1px' }}>Delivering from</p>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                      <p style={{ fontSize: '14px', fontWeight: '700', color: '#fff', margin: 0 }}>Eggs Ok</p>
+                      <p style={{ fontSize: '14px', fontWeight: '700', color: '#fff', margin: 0 }}>{storeName}</p>
                       <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-                        <div style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#22C55E' }} />
-                        <span style={{ fontSize: '12px', color: '#22C55E', fontWeight: '600' }}>Open now</span>
+                        <div style={{ width: '6px', height: '6px', borderRadius: '50%', background: isOpen ? '#22C55E' : '#FC0301' }} />
+                        <span style={{ fontSize: '12px', color: isOpen ? '#22C55E' : '#FC0301', fontWeight: '600' }}>{isOpen ? statusMessage : 'Closed Now'}</span>
                       </div>
                     </div>
-                    <p style={{ fontSize: '12px', color: '#444', marginTop: '2px' }}>3517 Lancaster Ave, Philadelphia, PA</p>
+                    <p style={{ fontSize: '12px', color: '#444', marginTop: '2px' }}>{storeAddress}</p>
                   </div>
                   <button className="co-btn-primary" onClick={() => { setScheduleType('asap'); setShowDeliveryModal(false); }}>Deliver ASAP</button>
                   <button className="co-btn-secondary" onClick={() => { setShowDeliveryModal(false); setShowScheduleModal(true); }}>Schedule delivery</button>
@@ -963,7 +1043,7 @@ function CheckoutInner() {
               </div>
               {Array.from({ length: 57 }, (_, i) => {
                 const totalMins = 7 * 60 + i * 15; const h = Math.floor(totalMins / 60); const m = totalMins % 60;
-                const label = `${h > 12 ? h - 12 : h === 0 ? 12 : h}:${m.toString().padStart(2, '0')} ${h >= 12 ? 'PM' : 'AM'} EDT`;
+                const label = `${h > 12 ? h - 12 : h === 0 ? 12 : h}:${m.toString().padStart(2, '0')} ${h >= 12 ? 'PM' : 'AM'} ${tzAbbr}`;
                 const val = `${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}`;
                 const isSelected = scheduleType === 'scheduled' && scheduleTime === val;
                 return (

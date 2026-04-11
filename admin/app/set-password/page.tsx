@@ -8,6 +8,8 @@ const API = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3002/api';
 function SetPasswordContent() {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState(false);
@@ -86,7 +88,7 @@ function SetPasswordContent() {
           }}>
             <Image src="/logo.svg" alt="Eggs Ok Logo" fill style={{ objectFit: 'contain', objectPosition: 'center' }} />
           </div>
-          <p style={{ color: '#888888', fontSize: '11px', letterSpacing: '3px', textTransform: 'uppercase', marginTop: '0' }}>Admin Dashboard</p>
+          <p style={{ color: '#FEFEFE', fontSize: '11px', letterSpacing: '3px', textTransform: 'uppercase', marginTop: '0' }}>Admin Dashboard</p>
         </div>
 
         <div style={{
@@ -102,43 +104,61 @@ function SetPasswordContent() {
                   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#22C55E" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
                 </div>
                 <h2 style={{ fontSize: '20px', fontWeight: '600', color: '#ffffff', marginBottom: '8px' }}>Account activated</h2>
-                <p style={{ color: '#888888', fontSize: '14px' }}>Your password has been set. Redirecting to sign in...</p>
+                <p style={{ color: '#FEFEFE', fontSize: '14px' }}>Your password has been set. Redirecting to sign in...</p>
               </div>
             </>
           ) : (
             <>
               <h2 style={{ fontSize: '20px', fontWeight: '600', color: '#ffffff', marginBottom: '8px' }}>Set your password</h2>
-              <p style={{ color: '#888888', fontSize: '14px', marginBottom: '28px' }}>Create a password to activate your team account</p>
+              <p style={{ color: '#FEFEFE', fontSize: '14px', marginBottom: '28px' }}>Create a password to activate your team account</p>
 
               <form onSubmit={handleSubmit}>
                 <div style={{ marginBottom: '16px' }}>
                   <label style={{ display: 'block', fontSize: '13px', fontWeight: '500', color: '#CACACA', marginBottom: '8px' }}>New Password</label>
-                  <input
-                    type="password"
-                    value={password}
-                    onChange={e => setPassword(e.target.value)}
-                    placeholder="Minimum 8 characters"
-                    required
-                    minLength={8}
-                    style={inputStyle}
-                    onFocus={e => e.target.style.borderColor = '#FED800'}
-                    onBlur={e => e.target.style.borderColor = '#2A2A2A'}
-                  />
+                  <div style={{ position: 'relative' }}>
+                    <input
+                      type={showPassword ? 'text' : 'password'}
+                      value={password}
+                      onChange={e => setPassword(e.target.value)}
+                      placeholder="Minimum 8 characters"
+                      required
+                      minLength={8}
+                      style={{ ...inputStyle, paddingRight: '48px' }}
+                      onFocus={e => e.target.style.borderColor = '#FED800'}
+                      onBlur={e => e.target.style.borderColor = '#2A2A2A'}
+                    />
+                    <button type="button" onClick={() => setShowPassword(!showPassword)}
+                      style={{ position: 'absolute', right: '14px', top: '50%', transform: 'translateY(-50%)', background: 'transparent', border: 'none', color: '#888', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '4px' }}>
+                      {showPassword
+                        ? <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0112 20c-7 0-11-8-11-8a18.45 18.45 0 015.06-5.94" /><path d="M9.9 4.24A9.12 9.12 0 0112 4c7 0 11 8 11 8a18.5 18.5 0 01-2.16 3.19" /><line x1="1" y1="1" x2="23" y2="23" /></svg>
+                        : <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" /><circle cx="12" cy="12" r="3" /></svg>
+                      }
+                    </button>
+                  </div>
                 </div>
 
                 <div style={{ marginBottom: '24px' }}>
                   <label style={{ display: 'block', fontSize: '13px', fontWeight: '500', color: '#CACACA', marginBottom: '8px' }}>Confirm Password</label>
-                  <input
-                    type="password"
-                    value={confirmPassword}
-                    onChange={e => setConfirmPassword(e.target.value)}
-                    placeholder="Re-enter your password"
-                    required
-                    minLength={8}
-                    style={inputStyle}
-                    onFocus={e => e.target.style.borderColor = '#FED800'}
-                    onBlur={e => e.target.style.borderColor = '#2A2A2A'}
-                  />
+                  <div style={{ position: 'relative' }}>
+                    <input
+                      type={showConfirmPassword ? 'text' : 'password'}
+                      value={confirmPassword}
+                      onChange={e => setConfirmPassword(e.target.value)}
+                      placeholder="Re-enter your password"
+                      required
+                      minLength={8}
+                      style={{ ...inputStyle, paddingRight: '48px' }}
+                      onFocus={e => e.target.style.borderColor = '#FED800'}
+                      onBlur={e => e.target.style.borderColor = '#2A2A2A'}
+                    />
+                    <button type="button" onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                      style={{ position: 'absolute', right: '14px', top: '50%', transform: 'translateY(-50%)', background: 'transparent', border: 'none', color: '#888', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '4px' }}>
+                      {showConfirmPassword
+                        ? <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0112 20c-7 0-11-8-11-8a18.45 18.45 0 015.06-5.94" /><path d="M9.9 4.24A9.12 9.12 0 0112 4c7 0 11 8 11 8a18.5 18.5 0 01-2.16 3.19" /><line x1="1" y1="1" x2="23" y2="23" /></svg>
+                        : <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" /><circle cx="12" cy="12" r="3" /></svg>
+                      }
+                    </button>
+                  </div>
                 </div>
 
                 {error && (
@@ -159,7 +179,7 @@ function SetPasswordContent() {
                   style={{
                     width: '100%',
                     padding: '14px',
-                    background: loading || !token ? '#888888' : '#FED800',
+                    background: loading || !token ? '#FEFEFE' : '#FED800',
                     color: '#000000',
                     borderRadius: '10px',
                     fontSize: '15px',

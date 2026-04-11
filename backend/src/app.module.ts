@@ -32,7 +32,7 @@ import { SubmissionsModule } from './submissions/submissions.module';
           password: configService.get<string>('DB_PASSWORD', ''),
           database: configService.get<string>('DB_DATABASE', 'eggok'),
           entities: [__dirname + '/**/*.entity{.ts,.js}'],
-          synchronize: true,
+          synchronize: configService.get<string>('NODE_ENV', 'development') !== 'production',
           logging: false,
         };
         const socketPath = configService.get<string>('DB_SOCKET');

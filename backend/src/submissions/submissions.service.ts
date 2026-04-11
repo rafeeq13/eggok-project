@@ -10,9 +10,15 @@ export class SubmissionsService {
     private repo: Repository<Submission>,
   ) {}
 
-  findAll(type?: string): Promise<Submission[]> {
+  async findAll(type?: string, page = 1, limit = 50): Promise<{ data: Submission[]; total: number; page: number; limit: number }> {
     const where = type ? { type } : {};
-    return this.repo.find({ where, order: { createdAt: 'DESC' } });
+    const [data, total] = await this.repo.findAndCount({
+      where,
+      order: { createdAt: 'DESC' },
+      skip: (page - 1) * limit,
+      take: limit,
+    });
+    return { data, total, page, limit };
   }
 
   findOne(id: number): Promise<Submission | null> {

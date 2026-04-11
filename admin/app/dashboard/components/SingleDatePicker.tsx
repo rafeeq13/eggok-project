@@ -64,11 +64,11 @@ export default function SingleDatePicker({ value, onChange, placeholder = 'Selec
           display: 'flex', alignItems: 'center', gap: '8px',
           padding: '9px 14px', background: '#111111',
           border: '1px solid #2A2A2A', borderRadius: '8px',
-          color: value ? '#FEFEFE' : '#888888', fontSize: '13px',
+          color: value ? '#FEFEFE' : '#FEFEFE', fontSize: '13px',
           cursor: 'pointer', whiteSpace: 'nowrap', width: '100%',
         }}
       >
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#888888" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#FEFEFE" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
           <rect x="3" y="4" width="18" height="18" rx="2"/>
           <line x1="16" y1="2" x2="16" y2="6"/>
           <line x1="8" y1="2" x2="8" y2="6"/>
@@ -79,22 +79,22 @@ export default function SingleDatePicker({ value, onChange, placeholder = 'Selec
 
       {open && (
         <div style={{
-          position: 'absolute', top: 'calc(100% + 8px)', left: 0,
+          position: 'absolute', bottom: 'calc(100% + 8px)', left: 0,
           background: '#1A1A1A', border: '1px solid #2A2A2A',
           borderRadius: '12px', padding: '16px', zIndex: 999,
           boxShadow: '0 8px 32px rgba(0,0,0,0.6)', minWidth: '280px',
         }}>
           {/* Header */}
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '12px' }}>
-            <button onClick={prevMonth} style={{ background: 'transparent', border: 'none', color: '#888888', cursor: 'pointer', fontSize: '18px', padding: '4px 8px' }}>‹</button>
+            <button onClick={prevMonth} style={{ background: 'transparent', border: 'none', color: '#FEFEFE', cursor: 'pointer', fontSize: '18px', padding: '4px 8px' }}>‹</button>
             <p style={{ fontSize: '14px', fontWeight: '700', color: '#FEFEFE' }}>{MONTHS[month]} {year}</p>
-            <button onClick={nextMonth} style={{ background: 'transparent', border: 'none', color: '#888888', cursor: 'pointer', fontSize: '18px', padding: '4px 8px' }}>›</button>
+            <button onClick={nextMonth} style={{ background: 'transparent', border: 'none', color: '#FEFEFE', cursor: 'pointer', fontSize: '18px', padding: '4px 8px' }}>›</button>
           </div>
 
           {/* Day headers */}
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: '2px', marginBottom: '6px' }}>
             {DAYS.map(d => (
-              <div key={d} style={{ textAlign: 'center', fontSize: '11px', color: '#888888', fontWeight: '600', padding: '4px 0' }}>{d}</div>
+              <div key={d} style={{ textAlign: 'center', fontSize: '11px', color: '#FEFEFE', fontWeight: '600', padding: '4px 0' }}>{d}</div>
             ))}
           </div>
 
@@ -135,7 +135,7 @@ export default function SingleDatePicker({ value, onChange, placeholder = 'Selec
               style={{
                 width: '100%', marginTop: '12px', padding: '8px',
                 background: 'transparent', border: '1px solid #2A2A2A',
-                borderRadius: '8px', color: '#888888',
+                borderRadius: '8px', color: '#FEFEFE',
                 fontSize: '12px', cursor: 'pointer',
               }}
             >

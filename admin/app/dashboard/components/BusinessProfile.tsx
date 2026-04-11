@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 
 type Section = 'brand' | 'contact' | 'location' | 'social' | 'seo' | 'owner';
 
-const API = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3002/api';
+import { API, adminFetch } from '../../../lib/api';
 
 export default function BusinessProfile() {
   const [loading, setLoading] = useState(true);
@@ -57,7 +57,7 @@ export default function BusinessProfile() {
   const fetchSettings = async () => {
     try {
       setLoading(true);
-      const res = await fetch(`${API}/settings/business_profile`);
+      const res = await adminFetch(`${API}/settings/business_profile`);
       if (res.ok) {
         const text = await res.text();
         const data = text ? JSON.parse(text) : null;
@@ -119,7 +119,7 @@ export default function BusinessProfile() {
     };
 
     try {
-      const res = await fetch(`${API}/settings/business_profile`, {
+      const res = await adminFetch(`${API}/settings/business_profile`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
@@ -262,7 +262,7 @@ export default function BusinessProfile() {
             width: '100%', display: 'flex', alignItems: 'center', gap: '8px',
             padding: '10px 12px', borderRadius: '8px', border: 'none', cursor: 'pointer',
             background: activeSection === sec.id ? '#FED800' : 'transparent',
-            color: activeSection === sec.id ? '#000000' : '#666666',
+            color: activeSection === sec.id ? '#000000' : '#FEFEFE',
             fontSize: '12px', fontWeight: activeSection === sec.id ? '700' : '400',
             marginBottom: '2px', textAlign: 'left',
           }}>

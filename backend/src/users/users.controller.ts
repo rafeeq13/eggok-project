@@ -1,22 +1,26 @@
-import { Controller, Get, Post, Put, Patch, Delete, Body, Param, HttpCode } from '@nestjs/common';
+import { Controller, Get, Post, Put, Patch, Delete, Body, Param, HttpCode, UseGuards } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { User } from './user.entity';
+import { AdminGuard } from '../auth/admin.guard';
 
 @Controller('users')
 export class UsersController {
     constructor(private readonly usersService: UsersService) { }
 
     @Get()
+    @UseGuards(AdminGuard)
     findAll(): Promise<User[]> {
         return this.usersService.findAll();
     }
 
     @Get(':id')
+    @UseGuards(AdminGuard)
     findOne(@Param('id') id: string): Promise<User | null> {
         return this.usersService.findOne(id);
     }
 
     @Post()
+    @UseGuards(AdminGuard)
     create(@Body() user: Partial<User>): Promise<User> {
         return this.usersService.create(user);
     }
@@ -46,16 +50,19 @@ export class UsersController {
     }
 
     @Put(':id')
+    @UseGuards(AdminGuard)
     update(@Param('id') id: string, @Body() user: Partial<User>): Promise<User | null> {
         return this.usersService.update(id, user);
     }
 
     @Patch(':id')
+    @UseGuards(AdminGuard)
     patch(@Param('id') id: string, @Body() user: Partial<User>): Promise<User | null> {
         return this.usersService.update(id, user);
     }
 
     @Delete(':id')
+    @UseGuards(AdminGuard)
     remove(@Param('id') id: string): Promise<void> {
         return this.usersService.remove(id);
     }

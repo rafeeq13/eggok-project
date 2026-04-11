@@ -10,6 +10,7 @@ export default function LoginPage() {
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [checking, setChecking] = useState(true);
   const [showForgot, setShowForgot] = useState(false);
   const [forgotEmail, setForgotEmail] = useState('');
@@ -46,6 +47,7 @@ export default function LoginPage() {
         return;
       }
       localStorage.setItem('admin_user', JSON.stringify(data.user));
+      if (data.token) localStorage.setItem('admin_token', data.token);
       router.push('/dashboard');
     } catch {
       setError('Unable to connect to server');
@@ -58,7 +60,11 @@ export default function LoginPage() {
   return (
     <div style={{
       minHeight: '100vh',
-      background: '#000000',
+      backgroundImage: "url('/main-menu/Main-Page/order-ahead.webp')",
+      backgroundRepeat: 'no-repeat',
+      backgroundPosition: 'center center',
+      backgroundAttachment: 'fixed',
+      backgroundSize: 'cover',
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
@@ -67,7 +73,16 @@ export default function LoginPage() {
       <div style={{ width: '100%', maxWidth: '420px' }}>
 
         {/* Logo Area */}
-        <div style={{ textAlign: 'center', marginBottom: '32px' }}>
+        
+
+        {/* Login Card */}
+        <div style={{
+          background: '#000000ff',
+          border: '1px solid #000000ff',
+          borderRadius: '16px',
+          padding: '36px',
+        }}>
+          <div style={{ textAlign: 'center', marginBottom: '32px' }}>
           <div style={{
             display: 'inline-block',
             width: '160px',
@@ -91,14 +106,6 @@ export default function LoginPage() {
             marginTop: '0',
           }}>Admin Dashboard</p>
         </div>
-
-        {/* Login Card */}
-        <div style={{
-          background: '#1A1A1A',
-          border: '1px solid #2A2A2A',
-          borderRadius: '16px',
-          padding: '36px',
-        }}>
           <h2 style={{
             fontSize: '20px',
             fontWeight: '600',
@@ -106,7 +113,7 @@ export default function LoginPage() {
             marginBottom: '8px',
           }}>Welcome back</h2>
           <p style={{
-            color: '#888888',
+            color: '#c9c9c9ff',
             fontSize: '14px',
             marginBottom: '28px',
           }}>Sign in to manage your restaurant</p>
@@ -148,24 +155,34 @@ export default function LoginPage() {
                 color: '#CACACA',
                 marginBottom: '8px',
               }}>Password</label>
-              <input
-                type="password"
-                value={password}
-                onChange={e => setPassword(e.target.value)}
-                placeholder="••••••••"
-                required
-                style={{
-                  width: '100%',
-                  padding: '12px 16px',
-                  background: '#111111',
-                  border: '1px solid #2A2A2A',
-                  borderRadius: '10px',
-                  color: '#ffffff',
-                  fontSize: '14px',
-                }}
-                onFocus={e => e.target.style.borderColor = '#FED800'}
-                onBlur={e => e.target.style.borderColor = '#2A2A2A'}
-              />
+              <div style={{ position: 'relative' }}>
+                <input
+                  type={showPassword ? 'text' : 'password'}
+                  value={password}
+                  onChange={e => setPassword(e.target.value)}
+                  placeholder="••••••••"
+                  required
+                  style={{
+                    width: '100%',
+                    padding: '12px 16px',
+                    paddingRight: '48px',
+                    background: '#111111',
+                    border: '1px solid #2A2A2A',
+                    borderRadius: '10px',
+                    color: '#ffffff',
+                    fontSize: '14px',
+                  }}
+                  onFocus={e => e.target.style.borderColor = '#FED800'}
+                  onBlur={e => e.target.style.borderColor = '#2A2A2A'}
+                />
+                <button type="button" onClick={() => setShowPassword(!showPassword)}
+                  style={{ position: 'absolute', right: '14px', top: '50%', transform: 'translateY(-50%)', background: 'transparent', border: 'none', color: '#888', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '4px' }}>
+                  {showPassword
+                    ? <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0112 20c-7 0-11-8-11-8a18.45 18.45 0 015.06-5.94" /><path d="M9.9 4.24A9.12 9.12 0 0112 4c7 0 11 8 11 8a18.5 18.5 0 01-2.16 3.19" /><line x1="1" y1="1" x2="23" y2="23" /></svg>
+                    : <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" /><circle cx="12" cy="12" r="3" /></svg>
+                  }
+                </button>
+              </div>
             </div>
 
             {error && (
@@ -242,14 +259,14 @@ export default function LoginPage() {
 
         </div>
 
-        <p style={{
+        {/* <p style={{
           textAlign: 'center',
           color: '#444444',
           fontSize: '12px',
           marginTop: '24px',
         }}>
           RestoRise Business Solutions © 2026
-        </p>
+        </p> */}
       </div>
     </div>
   );

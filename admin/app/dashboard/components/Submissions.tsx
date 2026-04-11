@@ -13,17 +13,18 @@ type Submission = {
   createdAt: string;
 };
 
-const API = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3002/api';
+import { API, adminFetch } from '../../../lib/api';
 
 const typeColor: Record<string, string> = { hiring: '#A78BFA', catering: '#F59E0B', contact: '#60A5FA' };
 const typeLabel: Record<string, string> = { hiring: 'Job Application', catering: 'Catering Inquiry', contact: 'Contact Message' };
-const statusColor: Record<string, string> = { new: '#FED800', reviewed: '#22C55E', archived: '#888888' };
+const statusColor: Record<string, string> = { new: '#FED800', reviewed: '#22C55E', archived: '#FEFEFE' };
 
 export default function Submissions() {
   const [allSubmissions, setAllSubmissions] = useState<Submission[]>([]);
   const [selected, setSelected] = useState<Submission | null>(null);
   const [counts, setCounts] = useState({ hiring: 0, catering: 0, contact: 0, total: 0 });
   const [successMsg, setSuccessMsg] = useState('');
+  const [errorMsg, setErrorMsg] = useState('');
 
   // Filters
   const [filterType, setFilterType] = useState<'all' | 'hiring' | 'catering' | 'contact'>('all');
@@ -45,14 +46,17 @@ export default function Submissions() {
 
   const fetchAll = async () => {
     try {
-      const res = await fetch(`${API}/submissions`);
-      if (res.ok) setAllSubmissions(await res.json());
-    } catch (err) { console.error('Failed to fetch submissions:', err); }
+      const res = await adminFetch(`${API}/submissions`);
+      if (res.ok) {
+        const json = await res.json();
+        setAllSubmissions(Array.isArray(json) ? json : (json.data || []));
+      }
+    } catch (err) { console.error('Failed to fetch submissions:', err); setErrorMsg('Failed to load submissions'); }
   };
 
   const fetchCounts = async () => {
     try {
-      const res = await fetch(`${API}/submissions/counts`);
+      const res = await adminFetch(`${API}/submissions/counts`);
       if (res.ok) setCounts(await res.json());
     } catch {}
   };
@@ -128,7 +132,7 @@ export default function Submissions() {
 
   const updateStatus = async (id: number, status: string) => {
     try {
-      const res = await fetch(`${API}/submissions/${id}`, {
+      const res = await adminFetch(`${API}/submissions/${id}`, {
         method: 'PATCH', headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ status }),
       });
@@ -144,7 +148,7 @@ export default function Submissions() {
 
   const deleteSubmission = async (id: number) => {
     try {
-      await fetch(`${API}/submissions/${id}`, { method: 'DELETE' });
+      await adminFetch(`${API}/submissions/${id}`, { method: 'DELETE' });
       setAllSubmissions(prev => prev.filter(s => s.id !== id));
       if (selected?.id === id) setSelected(null);
       showSuccess('Deleted');
@@ -183,6 +187,13 @@ export default function Submissions() {
       {successMsg && (
         <div style={{ position: 'fixed', top: '20px', right: '20px', zIndex: 9999, background: '#22C55E', color: '#000', padding: '12px 20px', borderRadius: '10px', fontSize: '13px', fontWeight: '600' }}>
           {successMsg}
+        </div>
+      )}
+
+      {/* Error Toast */}
+      {errorMsg && (
+        <div style={{ position: 'fixed', top: '20px', right: '20px', zIndex: 9999, background: '#FC0301', color: '#fff', padding: '12px 20px', borderRadius: '10px', fontSize: '13px', fontWeight: '600' }}>
+          {errorMsg}
         </div>
       )}
 

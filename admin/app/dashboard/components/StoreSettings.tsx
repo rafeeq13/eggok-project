@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import SingleDatePicker from './SingleDatePicker';
 
-const API = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3002/api';
+import { API, adminFetch } from '../../../lib/api';
 
 const dayKeys = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
 const dayLabels = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
@@ -44,12 +44,13 @@ export default function StoreSettings() {
       try {
         setLoading(true);
         const [hoursRes, storeRes] = await Promise.all([
-          fetch(`${API}/settings/hours`),
-          fetch(`${API}/settings/store`)
+          adminFetch(`${API}/settings/hours`),
+          adminFetch(`${API}/settings/store`)
         ]);
 
         if (hoursRes.ok) {
-          const hoursData = await hoursRes.json();
+          const hoursText = await hoursRes.text();
+          const hoursData = hoursText ? JSON.parse(hoursText) : null;
           if (hoursData) {
             setHours(dayKeys.map(day => ({
               day,
@@ -62,7 +63,8 @@ export default function StoreSettings() {
         }
 
         if (storeRes.ok) {
-          const data = await storeRes.json();
+          const storeText = await storeRes.text();
+          const data = storeText ? JSON.parse(storeText) : null;
           if (data) {
             const v = data;
             setStoreOpen(v.storeOpen ?? true);
@@ -115,12 +117,12 @@ export default function StoreSettings() {
       };
 
       await Promise.all([
-        fetch(`${API}/settings/hours`, {
+        adminFetch(`${API}/settings/hours`, {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(hoursPayload),
         }),
-        fetch(`${API}/settings/store`, {
+        adminFetch(`${API}/settings/store`, {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(storePayload),
@@ -151,7 +153,7 @@ export default function StoreSettings() {
   const labelStyle = {
     fontSize: '12px',
     fontWeight: '500' as const,
-    color: '#888888',
+    color: '#FEFEFE',
     display: 'block' as const,
     marginBottom: '6px',
   };
@@ -244,14 +246,14 @@ export default function StoreSettings() {
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '12px 16px', background: '#111111', borderRadius: '8px' }}>
             <div>
               <p style={{ fontSize: '13px', fontWeight: '600', color: '#FEFEFE' }}>Pickup Orders</p>
-              <p style={{ fontSize: '11px', color: '#888888', marginTop: '2px' }}>Customers order online and pick up in store</p>
+              <p style={{ fontSize: '11px', color: '#FEFEFE', marginTop: '2px' }}>Customers order online and pick up in store</p>
             </div>
             {toggleSwitch(pickupEnabled, () => setPickupEnabled(!pickupEnabled))}
           </div>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '12px 16px', background: '#111111', borderRadius: '8px' }}>
             <div>
               <p style={{ fontSize: '13px', fontWeight: '600', color: '#FEFEFE' }}>Delivery Orders</p>
-              <p style={{ fontSize: '11px', color: '#888888', marginTop: '2px' }}>DoorDash Drive handles all deliveries</p>
+              <p style={{ fontSize: '11px', color: '#FEFEFE', marginTop: '2px' }}>DoorDash Drive handles all deliveries</p>
             </div>
             {toggleSwitch(deliveryEnabled, () => setDeliveryEnabled(!deliveryEnabled))}
           </div>
@@ -273,7 +275,7 @@ export default function StoreSettings() {
               <input type="number" value={value} onChange={e => set(e.target.value)} style={inputStyle}
                 onFocus={e => (e.target as HTMLInputElement).style.borderColor = '#FED800'}
                 onBlur={e => (e.target as HTMLInputElement).style.borderColor = '#2A2A2A'} />
-              <p style={{ fontSize: '11px', color: '#888888', marginTop: '4px' }}>{hint}</p>
+              <p style={{ fontSize: '11px', color: '#FEFEFE', marginTop: '4px' }}>{hint}</p>
             </div>
           ))}
         </div>
@@ -313,7 +315,7 @@ export default function StoreSettings() {
           <button onClick={() => {
             const first = hours[0];
             setHours(prev => prev.map(h => ({ ...h, open: first.open, from: first.from, to: first.to })));
-          }} style={{ padding: '6px 14px', background: 'transparent', border: '1px solid #2A2A2A', borderRadius: '8px', color: '#888888', fontSize: '12px', cursor: 'pointer' }}>
+          }} style={{ padding: '6px 14px', background: 'transparent', border: '1px solid #2A2A2A', borderRadius: '8px', color: '#FEFEFE', fontSize: '12px', cursor: 'pointer' }}>
             Copy Monday to All Days
           </button>
         </div>
@@ -330,7 +332,7 @@ export default function StoreSettings() {
                   style={{ ...inputStyle, width: 'auto', flex: 1, cursor: 'pointer', colorScheme: 'dark' } as React.CSSProperties}>
                   {timeOptions.map(t => <option key={t.val} value={t.val}>{t.label}</option>)}
                 </select>
-                <span style={{ color: '#888888', fontSize: '12px', flexShrink: 0 }}>to</span>
+                <span style={{ color: '#FEFEFE', fontSize: '12px', flexShrink: 0 }}>to</span>
                 <select value={h.to} onChange={e => updateHour(h.day, 'to', e.target.value)}
                   style={{ ...inputStyle, width: 'auto', flex: 1, cursor: 'pointer', colorScheme: 'dark' } as React.CSSProperties}>
                   {timeOptions.map(t => <option key={t.val} value={t.val}>{t.label}</option>)}
@@ -353,8 +355,8 @@ export default function StoreSettings() {
           </div>
           {specialHours.length === 0 ? (
             <div style={{ padding: '20px', background: '#111111', borderRadius: '10px', textAlign: 'center', border: '1px dashed #2A2A2A' }}>
-              <p style={{ fontSize: '12px', color: '#888888', margin: 0 }}>No special hours added yet</p>
-              <p style={{ fontSize: '11px', color: '#888888', marginTop: '4px' }}>Add holidays, special events or temporary closures</p>
+              <p style={{ fontSize: '12px', color: '#FEFEFE', margin: 0 }}>No special hours added yet</p>
+              <p style={{ fontSize: '11px', color: '#FEFEFE', marginTop: '4px' }}>Add holidays, special events or temporary closures</p>
             </div>
           ) : specialHours.map(sh => (
             <div key={sh.id} style={{ padding: '14px 16px', background: '#111111', borderRadius: '10px', marginBottom: '8px', border: `1px solid ${sh.closed ? '#FC030130' : '#FED80030'}` }}>
@@ -368,7 +370,7 @@ export default function StoreSettings() {
                   onFocus={e => (e.target as HTMLInputElement).style.borderColor = '#FED800'}
                   onBlur={e => (e.target as HTMLInputElement).style.borderColor = '#2A2A2A'} />
                 <div style={{ display: 'flex', alignItems: 'center', gap: '6px', flexShrink: 0 }}>
-                  <span style={{ fontSize: '12px', color: '#888888' }}>Closed</span>
+                  <span style={{ fontSize: '12px', color: '#FEFEFE' }}>Closed</span>
                   <div onClick={() => setSpecialHours(prev => prev.map(s => s.id === sh.id ? { ...s, closed: !s.closed } : s))}
                     style={{ width: '36px', height: '20px', background: sh.closed ? '#FC0301' : '#2A2A2A', borderRadius: '10px', position: 'relative', cursor: 'pointer', transition: 'background 0.2s' }}>
                     <div style={{ position: 'absolute', top: '2px', left: sh.closed ? '18px' : '2px', width: '16px', height: '16px', background: '#FEFEFE', borderRadius: '50%', transition: 'left 0.2s' }} />
@@ -379,7 +381,7 @@ export default function StoreSettings() {
                     <select value={sh.from} onChange={e => setSpecialHours(prev => prev.map(s => s.id === sh.id ? { ...s, from: e.target.value } : s))} style={{ ...inputStyle, width: 'auto', cursor: 'pointer' }}>
                       {timeOptions.map(t => <option key={t.val} value={t.val}>{t.label}</option>)}
                     </select>
-                    <span style={{ color: '#888888', fontSize: '12px' }}>to</span>
+                    <span style={{ color: '#FEFEFE', fontSize: '12px' }}>to</span>
                     <select value={sh.to} onChange={e => setSpecialHours(prev => prev.map(s => s.id === sh.id ? { ...s, to: e.target.value } : s))} style={{ ...inputStyle, width: 'auto', cursor: 'pointer' }}>
                       {timeOptions.map(t => <option key={t.val} value={t.val}>{t.label}</option>)}
                     </select>

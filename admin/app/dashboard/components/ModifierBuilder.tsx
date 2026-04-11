@@ -89,7 +89,7 @@ export default function ModifierBuilder({ groups, onChange }: Props) {
 
       {groups.length === 0 && (
         <div style={{ padding: '20px', background: '#0A0A0A', borderRadius: '8px', textAlign: 'center' }}>
-          <p style={{ fontSize: '12px', color: '#888888' }}>No modifier groups yet. Add one above.</p>
+          <p style={{ fontSize: '12px', color: '#FEFEFE' }}>No modifier groups yet. Add one above.</p>
         </div>
       )}
 
@@ -105,19 +105,19 @@ export default function ModifierBuilder({ groups, onChange }: Props) {
             justifyContent: 'space-between', cursor: 'pointer',
           }} onClick={() => setExpandedGroup(expandedGroup === group.id ? null : group.id)}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flex: 1 }}>
-              <span style={{ color: '#888888', fontSize: '12px' }}>
+              <span style={{ color: '#FEFEFE', fontSize: '12px' }}>
                 {expandedGroup === group.id ? '▼' : '▶'}
               </span>
-              <span style={{ fontSize: '13px', fontWeight: '600', color: group.name ? '#FEFEFE' : '#888888' }}>
+              <span style={{ fontSize: '13px', fontWeight: '600', color: group.name ? '#FEFEFE' : '#FEFEFE' }}>
                 {group.name || 'Unnamed Group'}
               </span>
               <span style={{
                 fontSize: '10px', padding: '2px 8px', borderRadius: '20px', fontWeight: '600',
                 background: group.required ? '#FED80020' : '#2A2A2A',
-                color: group.required ? '#FED800' : '#888888',
+                color: group.required ? '#FED800' : '#FEFEFE',
                 border: `1px solid ${group.required ? '#FED80040' : '#3A3A3A'}`,
               }}>{group.required ? 'Required' : 'Optional'}</span>
-              <span style={{ fontSize: '11px', color: '#888888' }}>
+              <span style={{ fontSize: '11px', color: '#FEFEFE' }}>
                 {group.modifiers.length} options
               </span>
             </div>
@@ -135,7 +135,7 @@ export default function ModifierBuilder({ groups, onChange }: Props) {
               {/* Group Settings */}
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px', marginBottom: '14px' }}>
                 <div style={{ gridColumn: '1 / -1' }}>
-                  <p style={{ fontSize: '11px', color: '#888888', marginBottom: '5px' }}>Group Name *</p>
+                  <p style={{ fontSize: '11px', color: '#FEFEFE', marginBottom: '5px' }}>Group Name *</p>
                   <input
                     style={inputStyle}
                     placeholder="e.g. Choose Your Bread, Add Toppings"
@@ -147,7 +147,7 @@ export default function ModifierBuilder({ groups, onChange }: Props) {
                 </div>
 
                 <div>
-                  <p style={{ fontSize: '11px', color: '#888888', marginBottom: '5px' }}>Min Selections</p>
+                  <p style={{ fontSize: '11px', color: '#FEFEFE', marginBottom: '5px' }}>Min Selections</p>
                   <input
                     type="number" min="0" style={inputStyle}
                     value={group.minSelections}
@@ -158,7 +158,7 @@ export default function ModifierBuilder({ groups, onChange }: Props) {
                 </div>
 
                 <div>
-                  <p style={{ fontSize: '11px', color: '#888888', marginBottom: '5px' }}>Max Selections</p>
+                  <p style={{ fontSize: '11px', color: '#FEFEFE', marginBottom: '5px' }}>Max Selections</p>
                   <input
                     type="number" min="1" style={inputStyle}
                     value={group.maxSelections}
@@ -176,7 +176,7 @@ export default function ModifierBuilder({ groups, onChange }: Props) {
               }}>
                 <div>
                   <p style={{ fontSize: '12px', fontWeight: '600', color: '#FEFEFE' }}>Required</p>
-                  <p style={{ fontSize: '11px', color: '#888888', marginTop: '2px' }}>Customer must select from this group</p>
+                  <p style={{ fontSize: '11px', color: '#FEFEFE', marginTop: '2px' }}>Customer must select from this group</p>
                 </div>
                 <div onClick={() => updateGroup(group.id, 'required', !group.required)} style={{
                   width: '40px', height: '22px',
@@ -194,10 +194,10 @@ export default function ModifierBuilder({ groups, onChange }: Props) {
 
               {/* Modifier Options */}
               <div style={{ marginBottom: '10px' }}>
-                <p style={{ fontSize: '11px', color: '#888888', marginBottom: '8px', fontWeight: '600', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Options</p>
+                <p style={{ fontSize: '11px', color: '#FEFEFE', marginBottom: '8px', fontWeight: '600', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Options</p>
 
                 {group.modifiers.length === 0 && (
-                  <p style={{ fontSize: '12px', color: '#888888', padding: '10px 0' }}>No options yet. Add one below.</p>
+                  <p style={{ fontSize: '12px', color: '#FEFEFE', padding: '10px 0' }}>No options yet. Add one below.</p>
                 )}
 
                 {group.modifiers.map(mod => (
@@ -237,7 +237,7 @@ export default function ModifierBuilder({ groups, onChange }: Props) {
                           background: '#FEFEFE', borderRadius: '50%', transition: 'left 0.2s',
                         }} />
                       </div>
-                      <span style={{ fontSize: '10px', color: '#888888' }}>Default</span>
+                      <span style={{ fontSize: '10px', color: '#FEFEFE' }}>Default</span>
                     </div>
                     <button onClick={() => deleteModifier(group.id, mod.id)} style={{
                       width: '32px', height: '32px', background: 'transparent',
@@ -251,7 +251,7 @@ export default function ModifierBuilder({ groups, onChange }: Props) {
                 <button onClick={() => addModifier(group.id)} style={{
                   padding: '7px 14px', background: 'transparent',
                   border: '1px dashed #2A2A2A', borderRadius: '8px',
-                  color: '#888888', fontSize: '12px', cursor: 'pointer',
+                  color: '#FEFEFE', fontSize: '12px', cursor: 'pointer',
                   width: '100%', marginTop: '4px',
                 }}>+ Add Option</button>
               </div>

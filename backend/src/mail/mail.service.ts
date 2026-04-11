@@ -801,7 +801,7 @@ export class MailService {
       </td></tr>
       <tr><td style="background-color:#000000;padding:28px 40px;text-align:center;">
         <img src="https://fooddeliveryaudit.com/logo.svg" width="120" height="50" alt="Eggs Ok" style="display:block;margin:0 auto 8px;border:0;">
-        <p style="margin:0;font-family:Arial,Helvetica,sans-serif;font-size:12px;color:#888888;letter-spacing:3px;text-transform:uppercase;">Breakfast &amp; Lunch</p>
+        <p style="margin:0;font-family:Arial,Helvetica,sans-serif;font-size:12px;color:#FEFEFE;letter-spacing:3px;text-transform:uppercase;">Breakfast &amp; Lunch</p>
       </td></tr>
     </table>
   </td></tr>
@@ -827,13 +827,13 @@ export class MailService {
       <td width="48%" style="background-color:#0d0d0d;border-radius:12px;border:1px solid #2a2a2a;padding:18px 16px;text-align:center;vertical-align:top;">
         <p style="margin:0 0 6px;font-family:Arial,Helvetica,sans-serif;"><img src="https://cdn.simpleicons.org/googlemaps/FED800" width="22" height="22" alt="Location" style="border:0;"></p>
         <p style="margin:0 0 4px;font-family:Arial,Helvetica,sans-serif;font-size:12px;font-weight:700;color:#FED800;letter-spacing:0.5px;text-transform:uppercase;">Location</p>
-        <p style="margin:0;font-family:Arial,Helvetica,sans-serif;font-size:12px;color:#888888;line-height:1.5;">3517 Lancaster Ave<br>Philadelphia, PA 19104</p>
+        <p style="margin:0;font-family:Arial,Helvetica,sans-serif;font-size:12px;color:#FEFEFE;line-height:1.5;">3517 Lancaster Ave<br>Philadelphia, PA 19104</p>
       </td>
       <td width="4%">&nbsp;</td>
       <td width="48%" style="background-color:#0d0d0d;border-radius:12px;border:1px solid #2a2a2a;padding:18px 16px;text-align:center;vertical-align:top;">
         <p style="margin:0 0 6px;font-family:Arial,Helvetica,sans-serif;"><img src="https://cdn.simpleicons.org/clockify/FED800" width="22" height="22" alt="Hours" style="border:0;"></p>
         <p style="margin:0 0 4px;font-family:Arial,Helvetica,sans-serif;font-size:12px;font-weight:700;color:#FED800;letter-spacing:0.5px;text-transform:uppercase;">Hours</p>
-        <p style="margin:0;font-family:Arial,Helvetica,sans-serif;font-size:12px;color:#888888;line-height:1.5;">Mon-Fri: 7AM-4PM<br>Sat-Sun: 8AM-3PM</p>
+        <p style="margin:0;font-family:Arial,Helvetica,sans-serif;font-size:12px;color:#FEFEFE;line-height:1.5;">Mon-Fri: 7AM-4PM<br>Sat-Sun: 8AM-3PM</p>
       </td>
     </tr></table>
   </td></tr>
@@ -862,7 +862,7 @@ export class MailService {
       <tr><td style="padding:16px 28px;text-align:center;">
         <table width="100%" cellpadding="0" cellspacing="0" border="0">
           <tr><td style="text-align:center;padding-bottom:8px;">
-            <span style="font-family:Arial,Helvetica,sans-serif;font-size:13px;color:#888888;"><img src="https://cdn.simpleicons.org/googlemaps/888888" width="13" height="13" alt="loc" style="border:0;vertical-align:middle;margin-right:4px;">3517 Lancaster Ave, Philadelphia, PA 19104</span>
+            <span style="font-family:Arial,Helvetica,sans-serif;font-size:13px;color:#FEFEFE;"><img src="https://cdn.simpleicons.org/googlemaps/FEFEFE" width="13" height="13" alt="loc" style="border:0;vertical-align:middle;margin-right:4px;">3517 Lancaster Ave, Philadelphia, PA 19104</span>
           </td></tr>
           <tr><td style="text-align:center;padding-bottom:8px;">
             <a href="tel:2159489902" style="font-family:Arial,Helvetica,sans-serif;font-size:13px;color:#FED800;text-decoration:none;"><img src="https://cdn.simpleicons.org/phonepe/FED800" width="13" height="13" alt="phone" style="border:0;vertical-align:middle;margin-right:4px;">(215) 948-9902</a>

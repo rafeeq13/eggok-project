@@ -54,6 +54,7 @@ export default function AccountPage() {
   const [userJoinDate, setUserJoinDate] = useState('');
   const [orders, setOrders] = useState<Order[]>([]);
   const [successMsg, setSuccessMsg] = useState('');
+  const [accountError, setAccountError] = useState('');
 
   // Saved Addresses
   const [addresses, setAddresses] = useState<any[]>([]);
@@ -89,6 +90,9 @@ export default function AccountPage() {
   // Password change
   const [currentPassword, setCurrentPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
+  const [showCurrentPassword, setShowCurrentPassword] = useState(false);
+  const [showNewPassword, setShowNewPassword] = useState(false);
+  const [showRegConfirm, setShowRegConfirm] = useState(false);
 
   useEffect(() => {
     setIsRendered(true);
@@ -125,14 +129,12 @@ export default function AccountPage() {
       const userData = localStorage.getItem('eggok_user');
       if (!userData) return;
       const user = JSON.parse(userData);
-      const res = await fetch(`${API_URL}/orders`, {
+      const res = await fetch(`${API_URL}/auth/my-orders`, {
         headers: { 'Authorization': `Bearer ${token}` },
       });
       if (!res.ok) return;
       const allOrders = await res.json();
-      // Filter orders by user email
-      const userOrders = allOrders
-        .filter((o: any) => o.customerEmail === user.email)
+      const userOrders = (Array.isArray(allOrders) ? allOrders : [])
         .slice(0, 20)
         .map((o: any) => ({
           id: o.orderNumber,
@@ -178,7 +180,7 @@ export default function AccountPage() {
     try {
       const res = await fetch(`${API_URL}/auth/addresses`, { headers: { 'Authorization': `Bearer ${token}` } });
       if (res.ok) setAddresses(await res.json());
-    } catch {}
+    } catch { setAccountError('Failed to load addresses'); setTimeout(() => setAccountError(''), 4000); }
   };
 
   const saveAddresses = async (newAddresses: any[]) => {
@@ -190,7 +192,7 @@ export default function AccountPage() {
         body: JSON.stringify({ addresses: newAddresses }),
       });
       setAddresses(newAddresses);
-    } catch {}
+    } catch { setAccountError('Failed to save address'); setTimeout(() => setAccountError(''), 4000); }
   };
 
   const handleSaveAddress = () => {
@@ -223,14 +225,14 @@ export default function AccountPage() {
     try {
       const res = await fetch(`${API_URL}/loyalty/rewards`);
       if (res.ok) setRewards(await res.json());
-    } catch {}
+    } catch { setAccountError('Failed to load rewards'); setTimeout(() => setAccountError(''), 4000); }
   };
 
   const loadPointsHistory = async (token: string) => {
     try {
       const res = await fetch(`${API_URL}/auth/points-history`, { headers: { 'Authorization': `Bearer ${token}` } });
       if (res.ok) setPointsHistory(await res.json());
-    } catch {}
+    } catch { setAccountError('Failed to load points history'); setTimeout(() => setAccountError(''), 4000); }
   };
 
   const handleRedeem = async (rewardId: number) => {
@@ -646,10 +648,19 @@ export default function AccountPage() {
             </div>
             <div>
               <label style={labelStyle}>Confirm Password *</label>
-              <input type="password" style={inputStyle} placeholder="Repeat password"
-                value={regConfirm} onChange={e => setRegConfirm(e.target.value)}
-                onFocus={e => (e.target as HTMLInputElement).style.borderColor = '#FED800'}
-                onBlur={e => (e.target as HTMLInputElement).style.borderColor = '#1A1A1A'} />
+              <div style={{ position: 'relative' }}>
+                <input type={showRegConfirm ? 'text' : 'password'} style={{ ...inputStyle, paddingRight: '48px' }} placeholder="Repeat password"
+                  value={regConfirm} onChange={e => setRegConfirm(e.target.value)}
+                  onFocus={e => (e.target as HTMLInputElement).style.borderColor = '#FED800'}
+                  onBlur={e => (e.target as HTMLInputElement).style.borderColor = '#1A1A1A'} />
+                <button type="button" onClick={() => setShowRegConfirm(!showRegConfirm)}
+                  style={{ position: 'absolute', right: '14px', top: '50%', transform: 'translateY(-50%)', background: 'transparent', border: 'none', color: '#888', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '4px' }}>
+                  {showRegConfirm
+                    ? <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0112 20c-7 0-11-8-11-8a18.45 18.45 0 015.06-5.94" /><path d="M9.9 4.24A9.12 9.12 0 0112 4c7 0 11 8 11 8a18.5 18.5 0 01-2.16 3.19" /><line x1="1" y1="1" x2="23" y2="23" /></svg>
+                    : <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" /><circle cx="12" cy="12" r="3" /></svg>
+                  }
+                </button>
+              </div>
               {regConfirm && regPassword !== regConfirm && (
                 <p style={{ fontSize: '12px', color: '#FC0301', marginTop: '4px' }}>Passwords do not match</p>
               )}
@@ -692,6 +703,11 @@ export default function AccountPage() {
       {successMsg && (
         <div style={{ position: 'fixed', top: '80px', right: '20px', zIndex: 9999, background: '#22C55E', color: '#000', padding: '12px 20px', borderRadius: '10px', fontSize: '13px', fontWeight: '600', boxShadow: '0 4px 20px rgba(34,197,94,0.3)' }}>
           {successMsg}
+        </div>
+      )}
+      {accountError && (
+        <div style={{ position: 'fixed', top: '80px', right: '20px', zIndex: 9999, background: '#FC0301', color: '#fff', padding: '12px 20px', borderRadius: '10px', fontSize: '13px', fontWeight: '600', boxShadow: '0 4px 20px rgba(252,3,1,0.3)' }}>
+          {accountError}
         </div>
       )}
 
@@ -810,12 +826,30 @@ export default function AccountPage() {
               <div style={{ paddingTop: '8px', borderTop: '1px solid #1A1A1A' }}>
                 <p style={{ fontSize: '14px', fontWeight: '700', color: '#ffffff', marginBottom: '12px' }}>Change Password</p>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-                  <input type="password" style={inputStyle} placeholder="Current password" value={currentPassword} onChange={e => setCurrentPassword(e.target.value)}
-                    onFocus={e => (e.target as HTMLInputElement).style.borderColor = '#FED800'}
-                    onBlur={e => (e.target as HTMLInputElement).style.borderColor = '#1A1A1A'} />
-                  <input type="password" style={inputStyle} placeholder="New password" value={newPassword} onChange={e => setNewPassword(e.target.value)}
-                    onFocus={e => (e.target as HTMLInputElement).style.borderColor = '#FED800'}
-                    onBlur={e => (e.target as HTMLInputElement).style.borderColor = '#1A1A1A'} />
+                  <div style={{ position: 'relative' }}>
+                    <input type={showCurrentPassword ? 'text' : 'password'} style={{ ...inputStyle, paddingRight: '48px' }} placeholder="Current password" value={currentPassword} onChange={e => setCurrentPassword(e.target.value)}
+                      onFocus={e => (e.target as HTMLInputElement).style.borderColor = '#FED800'}
+                      onBlur={e => (e.target as HTMLInputElement).style.borderColor = '#1A1A1A'} />
+                    <button type="button" onClick={() => setShowCurrentPassword(!showCurrentPassword)}
+                      style={{ position: 'absolute', right: '14px', top: '50%', transform: 'translateY(-50%)', background: 'transparent', border: 'none', color: '#888', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '4px' }}>
+                      {showCurrentPassword
+                        ? <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0112 20c-7 0-11-8-11-8a18.45 18.45 0 015.06-5.94" /><path d="M9.9 4.24A9.12 9.12 0 0112 4c7 0 11 8 11 8a18.5 18.5 0 01-2.16 3.19" /><line x1="1" y1="1" x2="23" y2="23" /></svg>
+                        : <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" /><circle cx="12" cy="12" r="3" /></svg>
+                      }
+                    </button>
+                  </div>
+                  <div style={{ position: 'relative' }}>
+                    <input type={showNewPassword ? 'text' : 'password'} style={{ ...inputStyle, paddingRight: '48px' }} placeholder="New password" value={newPassword} onChange={e => setNewPassword(e.target.value)}
+                      onFocus={e => (e.target as HTMLInputElement).style.borderColor = '#FED800'}
+                      onBlur={e => (e.target as HTMLInputElement).style.borderColor = '#1A1A1A'} />
+                    <button type="button" onClick={() => setShowNewPassword(!showNewPassword)}
+                      style={{ position: 'absolute', right: '14px', top: '50%', transform: 'translateY(-50%)', background: 'transparent', border: 'none', color: '#888', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '4px' }}>
+                      {showNewPassword
+                        ? <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0112 20c-7 0-11-8-11-8a18.45 18.45 0 015.06-5.94" /><path d="M9.9 4.24A9.12 9.12 0 0112 4c7 0 11 8 11 8a18.5 18.5 0 01-2.16 3.19" /><line x1="1" y1="1" x2="23" y2="23" /></svg>
+                        : <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" /><circle cx="12" cy="12" r="3" /></svg>
+                      }
+                    </button>
+                  </div>
                 </div>
               </div>
               <button onClick={handleSaveProfile} disabled={loading} style={{ padding: '14px', background: loading ? '#1A1A1A' : '#FED800', borderRadius: '10px', color: loading ? '#555' : '#000', fontSize: '15px', fontWeight: '700', cursor: loading ? 'not-allowed' : 'pointer', border: 'none' }}>

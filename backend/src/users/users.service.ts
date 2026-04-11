@@ -5,6 +5,7 @@ import { Repository } from 'typeorm';
 import * as crypto from 'crypto';
 import * as bcrypt from 'bcryptjs';
 import { User } from './user.entity';
+import { AdminToken } from '../auth/admin-token.entity';
 import { MailService } from '../mail/mail.service';
 
 const INVITE_TOKEN_TTL_MS = 7 * 24 * 60 * 60 * 1000; // 7 days
@@ -14,6 +15,8 @@ export class UsersService implements OnModuleInit {
     constructor(
         @InjectRepository(User)
         private readonly userRepository: Repository<User>,
+        @InjectRepository(AdminToken)
+        private readonly adminTokenRepository: Repository<AdminToken>,
         private readonly mailService: MailService,
         private readonly configService: ConfigService,
     ) { }
@@ -22,7 +25,8 @@ export class UsersService implements OnModuleInit {
         // Seed default Super Admin if none exists
         const existing = await this.userRepository.findOne({ where: { email: 'admin@eggok.com' } });
         if (!existing) {
-            const hashedPassword = await bcrypt.hash('admin123', 10);
+            const defaultPassword = process.env.ADMIN_DEFAULT_PASSWORD || 'ChangeMe!2026';
+            const hashedPassword = await bcrypt.hash(defaultPassword, 10);
             await this.userRepository.save({
                 name: 'Admin',
                 email: 'admin@eggok.com',
@@ -30,10 +34,11 @@ export class UsersService implements OnModuleInit {
                 role: 'Super Admin',
                 status: 'Active',
             });
-            console.log('[USERS] Default Super Admin created: admin@eggok.com / admin123');
+            console.log('[USERS] Default Super Admin created');
         } else if (existing.status === 'Invited') {
             // Fix: if admin exists but hasn't set password yet, set the default password
-            const hashedPassword = await bcrypt.hash('admin123', 10);
+            const defaultPassword = process.env.ADMIN_DEFAULT_PASSWORD || 'ChangeMe!2026';
+            const hashedPassword = await bcrypt.hash(defaultPassword, 10);
             await this.userRepository.update(existing.id, {
                 password: hashedPassword,
                 role: 'Super Admin',
@@ -41,7 +46,7 @@ export class UsersService implements OnModuleInit {
                 inviteToken: null as any,
                 inviteTokenExpiry: null as any,
             });
-            console.log('[USERS] Default Super Admin activated: admin@eggok.com / admin123');
+            console.log('[USERS] Default Super Admin activated');
         }
     }
 
@@ -145,6 +150,13 @@ export class UsersService implements OnModuleInit {
 
         await this.userRepository.update(user.id, { lastActive: new Date() });
 
+        const token = crypto.randomBytes(32).toString('hex');
+        await this.adminTokenRepository.save({
+            token,
+            userId: user.id,
+            expiresAt: Date.now() + 24 * 60 * 60 * 1000,
+        });
+
         return {
             user: {
                 id: user.id,
@@ -153,6 +165,7 @@ export class UsersService implements OnModuleInit {
                 role: user.role,
                 status: user.status,
             },
+            token,
         };
     }
 

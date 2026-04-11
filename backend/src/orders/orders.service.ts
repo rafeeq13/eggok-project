@@ -20,12 +20,18 @@ export class OrdersService {
   ) { }
 
   private async generateOrderNumber(): Promise<string> {
-    const last = await this.ordersRepository
-      .createQueryBuilder('order')
-      .orderBy('order.id', 'DESC')
-      .getOne();
-    const next = last ? last.id + 1 : 1;
-    return `EO-${next.toString().padStart(4, '0')}`;
+    for (let attempt = 0; attempt < 3; attempt++) {
+      const last = await this.ordersRepository
+        .createQueryBuilder('order')
+        .orderBy('order.id', 'DESC')
+        .getOne();
+      const next = (last ? last.id + 1 : 1) + attempt;
+      const orderNumber = `EO-${next.toString().padStart(4, '0')}`;
+      const exists = await this.ordersRepository.findOne({ where: { orderNumber } });
+      if (!exists) return orderNumber;
+    }
+    // Fallback with timestamp
+    return `EO-${Date.now().toString().slice(-6)}`;
   }
 
   /**
@@ -41,27 +47,29 @@ export class OrdersService {
     orderNumber: string;
   }): Promise<void> {
     const today = new Date().toISOString().split('T')[0];
-
     const existing = await this.customersRepository.findOne({
-      where: { email: data.email },
+      where: { email: data.email.toLowerCase().trim() },
     });
 
     if (existing) {
-      // Update existing customer stats
-      await this.customersRepository.update(existing.id, {
-        totalOrders: existing.totalOrders + 1,
-        totalSpent: Number(existing.totalSpent) + Number(data.total),
-        lastOrder: today,
-        lastActivity: today,
-        // Update name/phone if they were missing
-        name: existing.name || data.name,
-        phone: existing.phone || data.phone,
-      });
+      // Atomic increment to avoid race conditions
+      await this.customersRepository
+        .createQueryBuilder()
+        .update()
+        .set({
+          totalOrders: () => '"totalOrders" + 1',
+          totalSpent: () => `"totalSpent" + ${Number(data.total)}`,
+          lastOrder: today,
+          lastActivity: today,
+          name: existing.name || data.name,
+          phone: existing.phone || data.phone,
+        })
+        .where('id = :id', { id: existing.id })
+        .execute();
     } else {
-      // Create new customer
       const newCustomer = this.customersRepository.create({
         name: data.name,
-        email: data.email,
+        email: data.email.toLowerCase().trim(),
         phone: data.phone,
         totalOrders: 1,
         totalSpent: Number(data.total),
@@ -125,6 +133,25 @@ export class OrdersService {
       console.error('Failed to send owner notification email:', err);
     });
 
+    // Award loyalty points for authenticated users (1 point per dollar spent)
+    if (data.isAuthenticated && data.customerEmail) {
+      this.customersRepository.findOne({ where: { email: data.customerEmail } })
+        .then(customer => {
+          if (customer) {
+            const pointsEarned = Math.floor(Number(data.total));
+            const history = Array.isArray(customer.pointsHistory) ? customer.pointsHistory : [];
+            history.unshift({ description: `Order ${savedOrder.orderNumber}`, points: pointsEarned, type: 'earned', date: new Date().toISOString() });
+            if (history.length > 100) history.length = 100;
+            this.customersRepository.update(customer.id, {
+              points: (customer.points || 0) + pointsEarned,
+              totalPointsEarned: (customer.totalPointsEarned || 0) + pointsEarned,
+              pointsHistory: history,
+            });
+          }
+        })
+        .catch(() => {});
+    }
+
     // Record payment transaction
     this.paymentsService.recordTransaction({
       orderNumber: savedOrder.orderNumber,
@@ -139,10 +166,13 @@ export class OrdersService {
     return savedOrder;
   }
 
-  async getAllOrders(): Promise<Order[]> {
-    return this.ordersRepository.find({
+  async getAllOrders(page = 1, limit = 50): Promise<{ data: Order[]; total: number; page: number; limit: number }> {
+    const [data, total] = await this.ordersRepository.findAndCount({
       order: { createdAt: 'DESC' },
+      skip: (page - 1) * limit,
+      take: limit,
     });
+    return { data, total, page, limit };
   }
 
   async getOrderById(id: number): Promise<Order | null> {
@@ -408,14 +438,18 @@ export class OrdersService {
       .getMany();
   }
 
-  async getOrderHistory(): Promise<Order[]> {
-    return this.ordersRepository
-      .createQueryBuilder('order')
-      .where('order.status IN (:...statuses)', {
-        statuses: ['delivered', 'picked_up', 'cancelled'],
-      })
-      .orderBy('order.createdAt', 'DESC')
-      .getMany();
+  async getOrderHistory(page = 1, limit = 50): Promise<{ data: Order[]; total: number; page: number; limit: number }> {
+    const [data, total] = await this.ordersRepository.findAndCount({
+      where: [
+        { status: 'delivered' },
+        { status: 'picked_up' },
+        { status: 'cancelled' },
+      ],
+      order: { createdAt: 'DESC' },
+      skip: (page - 1) * limit,
+      take: limit,
+    });
+    return { data, total, page, limit };
   }
 
   async cancelOrder(id: number): Promise<Order | null> {
@@ -484,8 +518,8 @@ export class OrdersService {
       name,
       orders: data.orders,
       revenue: Number(data.revenue.toFixed(2)),
-      trend: Math.random() > 0.5 ? 'up' : 'down',
-      change: `${(Math.random() * 15).toFixed(1)}%`
+      trend: data.orders > 0 ? 'up' : 'neutral',
+      change: '0%'
     })).sort((a, b) => b.revenue - a.revenue).slice(0, 10);
 
     const pickupCount = orders.filter(o => o.orderType?.toLowerCase() === 'pickup').length;

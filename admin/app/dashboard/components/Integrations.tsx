@@ -12,7 +12,7 @@ type Integration = {
   lastSync: string;
 };
 
-const API = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3002/api';
+import { API, adminFetch } from '../../../lib/api';
 
 const clientIntegrationDefaults = {
   googleMapsKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_KEY || '',
@@ -135,7 +135,7 @@ export default function Integrations() {
   useEffect(() => {
     const loadAllSettings = async () => {
       try {
-        const res = await fetch(`${API}/settings/integrations`);
+        const res = await adminFetch(`${API}/settings/integrations`);
         if (res.ok) {
           const text = await res.text();
           const data = text ? JSON.parse(text) : null;
@@ -183,9 +183,10 @@ export default function Integrations() {
     const loadEmailSettings = async () => {
       try {
         setEmailLoading(true);
-        const response = await fetch(`${API}/mail/settings`);
+        const response = await adminFetch(`${API}/mail/settings`);
         if (!response.ok) throw new Error('Failed to load email settings');
-        const data = await response.json();
+        const text = await response.text();
+        const data = text ? JSON.parse(text) : {};
         applyEmailSettings(data);
       } catch (error) {
         console.error(error);
@@ -211,7 +212,7 @@ export default function Integrations() {
     };
 
     try {
-      await fetch(`${API}/settings/integrations`, {
+      await adminFetch(`${API}/settings/integrations`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
@@ -237,7 +238,7 @@ export default function Integrations() {
   const saveEmailSettings = async (showToast = true) => {
     setEmailSaving(true);
     try {
-      const response = await fetch(`${API}/mail/settings`, {
+      const response = await adminFetch(`${API}/mail/settings`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(buildEmailPayload()),
@@ -266,7 +267,7 @@ export default function Integrations() {
     setEmailTesting(true);
     try {
       await saveEmailSettings(false);
-      const response = await fetch(`${API}/mail/test`, {
+      const response = await adminFetch(`${API}/mail/test`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ to: emailTestRecipient.trim() || emailOwnerAddress.trim() || emailFromAddress.trim() }),
@@ -350,7 +351,7 @@ export default function Integrations() {
 
   const statusColor: Record<IntegrationStatus, string> = {
     connected: '#22C55E',
-    disconnected: '#888888',
+    disconnected: '#FEFEFE',
     error: '#FC0301',
   };
 
@@ -368,7 +369,7 @@ export default function Integrations() {
 
   const labelStyle = {
     fontSize: '12px', fontWeight: '500' as const,
-    color: '#888888', display: 'block' as const, marginBottom: '6px',
+    color: '#FEFEFE', display: 'block' as const, marginBottom: '6px',
   };
 
   const cardStyle = {
@@ -399,7 +400,7 @@ export default function Integrations() {
           style={{
             position: 'absolute', right: '10px', top: '50%',
             transform: 'translateY(-50%)', background: 'transparent',
-            border: 'none', cursor: 'pointer', fontSize: '14px', color: '#888888',
+            border: 'none', cursor: 'pointer', fontSize: '14px', color: '#FEFEFE',
           }}
         >{show ? '🙈' : '👁️'}</button>
       </div>
@@ -413,7 +414,7 @@ export default function Integrations() {
       style={{
         padding: '10px 20px', background: testingId === id ? '#2A2A2A' : '#FED800',
         border: 'none', borderRadius: '8px',
-        color: testingId === id ? '#888888' : '#000',
+        color: testingId === id ? '#FEFEFE' : '#000',
         fontSize: '13px', fontWeight: '700', cursor: testingId === id ? 'not-allowed' : 'pointer',
         minWidth: '140px',
       }}
@@ -455,7 +456,7 @@ export default function Integrations() {
             width: '100%', display: 'flex', alignItems: 'center', gap: '8px',
             padding: '10px 12px', borderRadius: '8px', border: 'none', cursor: 'pointer',
             background: activeSection === sec.id ? '#FED800' : 'transparent',
-            color: activeSection === sec.id ? '#000000' : '#666666',
+            color: activeSection === sec.id ? '#000000' : '#FEFEFE',
             fontSize: '12px', fontWeight: activeSection === sec.id ? '700' : '400',
             marginBottom: '2px', textAlign: 'left',
           }}>
@@ -474,7 +475,7 @@ export default function Integrations() {
         {activeSection === 'overview' && (
           <div>
             <div style={{ marginBottom: '20px' }}>
-              <p style={{ fontSize: '13px', color: '#888888', lineHeight: '1.6' }}>
+              <p style={{ fontSize: '13px', color: '#FEFEFE', lineHeight: '1.6' }}>
                 Connect your third-party services here. All credentials are stored securely and encrypted. Enter your API keys and click Test & Connect to verify each integration.
               </p>
             </div>
@@ -490,10 +491,10 @@ export default function Integrations() {
                 }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '8px' }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                      <span style={{ display: 'flex', alignItems: 'center', color: '#888888' }}>{integrationIcons[int.id]}</span>
+                      <span style={{ display: 'flex', alignItems: 'center', color: '#FEFEFE' }}>{integrationIcons[int.id]}</span>
                       <div>
                         <p style={{ fontSize: '13px', fontWeight: '700', color: '#FEFEFE' }}>{int.name}</p>
-                        <p style={{ fontSize: '11px', color: '#888888', marginTop: '1px' }}>{int.description}</p>
+                        <p style={{ fontSize: '11px', color: '#FEFEFE', marginTop: '1px' }}>{int.description}</p>
                       </div>
                     </div>
                     <div style={{
@@ -508,7 +509,7 @@ export default function Integrations() {
                       color: statusColor[int.status],
                       border: `1px solid ${statusColor[int.status]}40`,
                     }}>{statusLabel[int.status]}</span>
-                    <span style={{ fontSize: '10px', color: '#888888' }}>Last sync: {int.lastSync}</span>
+                    <span style={{ fontSize: '10px', color: '#FEFEFE' }}>Last sync: {int.lastSync}</span>
                   </div>
                 </div>
               ))}
@@ -549,7 +550,7 @@ export default function Integrations() {
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '16px', paddingBottom: '12px', borderBottom: '1px solid #2A2A2A' }}>
                 <div>
                   <p style={sectionTitle}>Square POS Integration</p>
-                  <p style={{ fontSize: '12px', color: '#888888', marginTop: '4px' }}>Connect Square to automatically print kitchen tickets and sync orders</p>
+                  <p style={{ fontSize: '12px', color: '#FEFEFE', marginTop: '4px' }}>Connect Square to automatically print kitchen tickets and sync orders</p>
                 </div>
                 <span style={{ fontSize: '11px', padding: '3px 10px', borderRadius: '20px', fontWeight: '600', background: `${statusColor[squareStatus]}20`, color: statusColor[squareStatus], border: `1px solid ${statusColor[squareStatus]}40`, flexShrink: 0 }}>
                   {statusLabel[squareStatus]}
@@ -558,7 +559,7 @@ export default function Integrations() {
 
               <div style={{ padding: '12px 14px', background: '#111111', borderRadius: '8px', marginBottom: '16px', border: '1px solid #FED80020' }}>
                 <p style={{ fontSize: '12px', color: '#FED800', fontWeight: '600', marginBottom: '4px' }}>Where to get these credentials</p>
-                <p style={{ fontSize: '11px', color: '#888888', lineHeight: '1.6' }}>
+                <p style={{ fontSize: '11px', color: '#FEFEFE', lineHeight: '1.6' }}>
                   1. Go to developer.squareup.com → My Applications<br />
                   2. Create or select your application<br />
                   3. Go to Credentials tab — copy Application ID and Access Token<br />
@@ -575,7 +576,7 @@ export default function Integrations() {
                         flex: 1, padding: '10px', borderRadius: '8px', cursor: 'pointer',
                         background: squareEnvironment === env ? '#FED800' : '#111111',
                         border: `1px solid ${squareEnvironment === env ? '#FED800' : '#2A2A2A'}`,
-                        color: squareEnvironment === env ? '#000' : '#888888',
+                        color: squareEnvironment === env ? '#000' : '#FEFEFE',
                         fontSize: '13px', fontWeight: '600',
                       }}>
                         {env === 'sandbox' ? 'Sandbox (Testing)' : 'Production (Live)'}
@@ -602,7 +603,7 @@ export default function Integrations() {
                     onFocus={e => e.target.style.borderColor = '#FED800'}
                     onBlur={e => e.target.style.borderColor = '#2A2A2A'}
                   />
-                  <p style={{ fontSize: '11px', color: '#888888', marginTop: '4px' }}>Found in Square Dashboard → Locations</p>
+                  <p style={{ fontSize: '11px', color: '#FEFEFE', marginTop: '4px' }}>Found in Square Dashboard → Locations</p>
                 </div>
                 <ConnectButton id="square" />
               </div>
@@ -617,7 +618,7 @@ export default function Integrations() {
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '16px', paddingBottom: '12px', borderBottom: '1px solid #2A2A2A' }}>
                 <div>
                   <p style={sectionTitle}>Stripe Payment Integration</p>
-                  <p style={{ fontSize: '12px', color: '#888888', marginTop: '4px' }}>Process online payments securely through Stripe</p>
+                  <p style={{ fontSize: '12px', color: '#FEFEFE', marginTop: '4px' }}>Process online payments securely through Stripe</p>
                 </div>
                 <span style={{ fontSize: '11px', padding: '3px 10px', borderRadius: '20px', fontWeight: '600', background: `${statusColor[stripeStatus]}20`, color: statusColor[stripeStatus], border: `1px solid ${statusColor[stripeStatus]}40`, flexShrink: 0 }}>
                   {statusLabel[stripeStatus]}
@@ -626,7 +627,7 @@ export default function Integrations() {
 
               <div style={{ padding: '12px 14px', background: '#111111', borderRadius: '8px', marginBottom: '16px', border: '1px solid #FED80020' }}>
                 <p style={{ fontSize: '12px', color: '#FED800', fontWeight: '600', marginBottom: '4px' }}>Where to get these credentials</p>
-                <p style={{ fontSize: '11px', color: '#888888', lineHeight: '1.6' }}>
+                <p style={{ fontSize: '11px', color: '#FEFEFE', lineHeight: '1.6' }}>
                   1. Go to dashboard.stripe.com → Developers → API Keys<br />
                   2. Copy Publishable key and Secret key<br />
                   3. For webhook secret: Developers → Webhooks → Add endpoint → copy Signing secret
@@ -642,7 +643,7 @@ export default function Integrations() {
                         flex: 1, padding: '10px', borderRadius: '8px', cursor: 'pointer',
                         background: stripeEnvironment === env ? '#FED800' : '#111111',
                         border: `1px solid ${stripeEnvironment === env ? '#FED800' : '#2A2A2A'}`,
-                        color: stripeEnvironment === env ? '#000' : '#888888',
+                        color: stripeEnvironment === env ? '#000' : '#FEFEFE',
                         fontSize: '13px', fontWeight: '600',
                       }}>
                         {env === 'test' ? 'Test Mode' : 'Live Mode'}
@@ -663,14 +664,14 @@ export default function Integrations() {
                   <PasswordInput value={stripeSecretKey} onChange={setStripeSecretKey}
                     placeholder={stripeEnvironment === 'test' ? 'your_test_secret_key' : 'your_live_secret_key'}
                   />
-                  <p style={{ fontSize: '11px', color: '#888888', marginTop: '4px' }}>
+                  <p style={{ fontSize: '11px', color: '#FEFEFE', marginTop: '4px' }}>
                     Server-side secrets from `.env.local` are not prefilled in the browser.
                   </p>
                 </div>
                 <div>
                   <label style={labelStyle}>Webhook Signing Secret</label>
                   <PasswordInput value={stripeWebhookSecret} onChange={setStripeWebhookSecret} placeholder="your_webhook_signing_secret" />
-                  <p style={{ fontSize: '11px', color: '#888888', marginTop: '4px' }}>Required for payment confirmations and refund processing</p>
+                  <p style={{ fontSize: '11px', color: '#FEFEFE', marginTop: '4px' }}>Required for payment confirmations and refund processing</p>
                 </div>
                 <ConnectButton id="stripe" />
               </div>
@@ -685,7 +686,7 @@ export default function Integrations() {
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '16px', paddingBottom: '12px', borderBottom: '1px solid #2A2A2A' }}>
                 <div>
                   <p style={sectionTitle}>DoorDash Drive Integration</p>
-                  <p style={{ fontSize: '12px', color: '#888888', marginTop: '4px' }}>Auto-dispatch DoorDash drivers for delivery orders</p>
+                  <p style={{ fontSize: '12px', color: '#FEFEFE', marginTop: '4px' }}>Auto-dispatch DoorDash drivers for delivery orders</p>
                 </div>
                 <span style={{ fontSize: '11px', padding: '3px 10px', borderRadius: '20px', fontWeight: '600', background: `${statusColor[doordashStatus]}20`, color: statusColor[doordashStatus], border: `1px solid ${statusColor[doordashStatus]}40`, flexShrink: 0 }}>
                   {statusLabel[doordashStatus]}
@@ -694,7 +695,7 @@ export default function Integrations() {
 
               <div style={{ padding: '12px 14px', background: '#111111', borderRadius: '8px', marginBottom: '16px', border: '1px solid #FED80020' }}>
                 <p style={{ fontSize: '12px', color: '#FED800', fontWeight: '600', marginBottom: '4px' }}>Where to get these credentials</p>
-                <p style={{ fontSize: '11px', color: '#888888', lineHeight: '1.6' }}>
+                <p style={{ fontSize: '11px', color: '#FEFEFE', lineHeight: '1.6' }}>
                   1. Go to developer.doordash.com → Portal<br />
                   2. Create a new application under DoorDash Drive<br />
                   3. Copy Developer ID, Key ID, and Signing Secret from credentials page
@@ -710,7 +711,7 @@ export default function Integrations() {
                         flex: 1, padding: '10px', borderRadius: '8px', cursor: 'pointer',
                         background: doordashEnvironment === env ? '#FED800' : '#111111',
                         border: `1px solid ${doordashEnvironment === env ? '#FED800' : '#2A2A2A'}`,
-                        color: doordashEnvironment === env ? '#000' : '#888888',
+                        color: doordashEnvironment === env ? '#000' : '#FEFEFE',
                         fontSize: '13px', fontWeight: '600',
                       }}>
                         {env === 'sandbox' ? '🧪 Sandbox (Testing)' : '🚀 Production (Live)'}
@@ -751,7 +752,7 @@ export default function Integrations() {
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '16px', paddingBottom: '12px', borderBottom: '1px solid #2A2A2A' }}>
                 <div>
                   <p style={sectionTitle}>Uber Direct Integration</p>
-                  <p style={{ fontSize: '12px', color: '#888888', marginTop: '4px' }}>On-demand delivery dispatch via Uber's courier network</p>
+                  <p style={{ fontSize: '12px', color: '#FEFEFE', marginTop: '4px' }}>On-demand delivery dispatch via Uber's courier network</p>
                 </div>
                 <span style={{ fontSize: '11px', padding: '3px 10px', borderRadius: '20px', fontWeight: '600', background: `${statusColor[uberDirectStatus]}20`, color: statusColor[uberDirectStatus], border: `1px solid ${statusColor[uberDirectStatus]}40`, flexShrink: 0 }}>
                   {statusLabel[uberDirectStatus]}
@@ -760,7 +761,7 @@ export default function Integrations() {
 
               <div style={{ padding: '12px 14px', background: '#111111', borderRadius: '8px', marginBottom: '16px', border: '1px solid #FED80020' }}>
                 <p style={{ fontSize: '12px', color: '#FED800', fontWeight: '600', marginBottom: '4px' }}>Where to get these credentials</p>
-                <p style={{ fontSize: '11px', color: '#888888', lineHeight: '1.6' }}>
+                <p style={{ fontSize: '11px', color: '#FEFEFE', lineHeight: '1.6' }}>
                   1. Go to developer.uber.com → Dashboard<br />
                   2. Create a new app or select existing one<br />
                   3. Enable the Direct API scope<br />
@@ -777,7 +778,7 @@ export default function Integrations() {
                         flex: 1, padding: '10px', borderRadius: '8px', cursor: 'pointer',
                         background: uberDirectEnvironment === env ? '#FED800' : '#111111',
                         border: `1px solid ${uberDirectEnvironment === env ? '#FED800' : '#2A2A2A'}`,
-                        color: uberDirectEnvironment === env ? '#000' : '#888888',
+                        color: uberDirectEnvironment === env ? '#000' : '#FEFEFE',
                         fontSize: '13px', fontWeight: '600',
                       }}>
                         {env === 'sandbox' ? 'Sandbox (Testing)' : 'Production (Live)'}
@@ -817,7 +818,7 @@ export default function Integrations() {
                   ].map((feature, i) => (
                     <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px' }}>
                       <span style={{ color: '#22C55E', fontSize: '12px' }}>✓</span>
-                      <span style={{ fontSize: '12px', color: '#888888' }}>{feature}</span>
+                      <span style={{ fontSize: '12px', color: '#FEFEFE' }}>{feature}</span>
                     </div>
                   ))}
                 </div>
@@ -835,7 +836,7 @@ export default function Integrations() {
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '16px', paddingBottom: '12px', borderBottom: '1px solid #2A2A2A' }}>
                 <div>
                   <p style={sectionTitle}>Email Service Integration</p>
-                  <p style={{ fontSize: '12px', color: '#888888', marginTop: '4px' }}>Send order confirmations and notifications to customers</p>
+                  <p style={{ fontSize: '12px', color: '#FEFEFE', marginTop: '4px' }}>Send order confirmations and notifications to customers</p>
                 </div>
                 <span style={{ fontSize: '11px', padding: '3px 10px', borderRadius: '20px', fontWeight: '600', background: `${statusColor[emailStatus]}20`, color: statusColor[emailStatus], border: `1px solid ${statusColor[emailStatus]}40`, flexShrink: 0 }}>
                   {statusLabel[emailStatus]}
@@ -854,7 +855,7 @@ export default function Integrations() {
                         flex: 1, padding: '10px', borderRadius: '8px', cursor: 'pointer',
                         background: emailProvider === provider.id ? '#FED800' : '#111111',
                         border: `1px solid ${emailProvider === provider.id ? '#FED800' : '#2A2A2A'}`,
-                        color: emailProvider === provider.id ? '#000' : '#888888',
+                        color: emailProvider === provider.id ? '#000' : '#FEFEFE',
                         fontSize: '13px', fontWeight: '600',
                       }}>
                         {provider.label}
@@ -889,7 +890,7 @@ export default function Integrations() {
                       cursor: 'pointer',
                     }}>
                       <span>{emailSecure ? 'SSL / TLS' : 'STARTTLS / Standard SMTP'}</span>
-                      <span style={{ color: emailSecure ? '#FED800' : '#888888', fontWeight: '700' }}>{emailSecure ? 'ON' : 'OFF'}</span>
+                      <span style={{ color: emailSecure ? '#FED800' : '#FEFEFE', fontWeight: '700' }}>{emailSecure ? 'ON' : 'OFF'}</span>
                     </button>
                   </div>
                 </div>
@@ -944,7 +945,7 @@ export default function Integrations() {
                   />
                 </div>
                 <div style={{ padding: '12px 14px', background: '#111111', borderRadius: '8px', border: '1px solid #2A2A2A' }}>
-                  <p style={{ fontSize: '11px', color: '#888888', lineHeight: '1.6' }}>
+                  <p style={{ fontSize: '11px', color: '#FEFEFE', lineHeight: '1.6' }}>
                     This mail setup is used across the application for order confirmations, owner order alerts, contact page submissions, catering requests, hiring applications, and gift card emails.
                   </p>
                 </div>
@@ -957,7 +958,7 @@ export default function Integrations() {
                       background: emailSaving || emailLoading ? '#2A2A2A' : '#FED800',
                       border: 'none',
                       borderRadius: '8px',
-                      color: emailSaving || emailLoading ? '#888888' : '#000',
+                      color: emailSaving || emailLoading ? '#FEFEFE' : '#000',
                       fontSize: '13px',
                       fontWeight: '700',
                       cursor: emailSaving || emailLoading ? 'not-allowed' : 'pointer',
@@ -996,7 +997,7 @@ export default function Integrations() {
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '16px', paddingBottom: '12px', borderBottom: '1px solid #2A2A2A' }}>
                 <div>
                   <p style={sectionTitle}>Push Notifications</p>
-                  <p style={{ fontSize: '12px', color: '#888888', marginTop: '4px' }}>Send real-time order updates to iOS and Android apps</p>
+                  <p style={{ fontSize: '12px', color: '#FEFEFE', marginTop: '4px' }}>Send real-time order updates to iOS and Android apps</p>
                 </div>
                 <span style={{ fontSize: '11px', padding: '3px 10px', borderRadius: '20px', fontWeight: '600', background: `${statusColor[pushStatus]}20`, color: statusColor[pushStatus], border: `1px solid ${statusColor[pushStatus]}40`, flexShrink: 0 }}>
                   {statusLabel[pushStatus]}
@@ -1008,7 +1009,7 @@ export default function Integrations() {
                   Android — Firebase Cloud Messaging (FCM)
                 </p>
                 <div style={{ padding: '10px 14px', background: '#111111', borderRadius: '8px', marginBottom: '12px', border: '1px solid #FED80020' }}>
-                  <p style={{ fontSize: '11px', color: '#888888', lineHeight: '1.6' }}>
+                  <p style={{ fontSize: '11px', color: '#FEFEFE', lineHeight: '1.6' }}>
                     Go to console.firebase.google.com → Project Settings → Cloud Messaging → Copy Server Key
                   </p>
                 </div>
@@ -1023,7 +1024,7 @@ export default function Integrations() {
                   iOS — Apple Push Notification Service (APNs)
                 </p>
                 <div style={{ padding: '10px 14px', background: '#111111', borderRadius: '8px', marginBottom: '12px', border: '1px solid #FED80020' }}>
-                  <p style={{ fontSize: '11px', color: '#888888', lineHeight: '1.6' }}>
+                  <p style={{ fontSize: '11px', color: '#FEFEFE', lineHeight: '1.6' }}>
                     Go to developer.apple.com → Certificates → Keys → Create a new key with APNs enabled → Copy Key ID and Team ID
                   </p>
                 </div>
@@ -1068,7 +1069,7 @@ export default function Integrations() {
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '16px', paddingBottom: '12px', borderBottom: '1px solid #2A2A2A' }}>
                 <div>
                   <p style={sectionTitle}>Google Maps Integration</p>
-                  <p style={{ fontSize: '12px', color: '#888888', marginTop: '4px' }}>Enable live map, delivery zone drawing, and address autocomplete</p>
+                  <p style={{ fontSize: '12px', color: '#FEFEFE', marginTop: '4px' }}>Enable live map, delivery zone drawing, and address autocomplete</p>
                 </div>
                 <span style={{ fontSize: '11px', padding: '3px 10px', borderRadius: '20px', fontWeight: '600', background: `${statusColor[googleMapsStatus]}20`, color: statusColor[googleMapsStatus], border: `1px solid ${statusColor[googleMapsStatus]}40`, flexShrink: 0 }}>
                   {statusLabel[googleMapsStatus]}
@@ -1077,7 +1078,7 @@ export default function Integrations() {
 
               <div style={{ padding: '12px 14px', background: '#111111', borderRadius: '8px', marginBottom: '16px', border: '1px solid #FED80020' }}>
                 <p style={{ fontSize: '12px', color: '#FED800', fontWeight: '600', marginBottom: '4px' }}>Where to get this key</p>
-                <p style={{ fontSize: '11px', color: '#888888', lineHeight: '1.6' }}>
+                <p style={{ fontSize: '11px', color: '#FEFEFE', lineHeight: '1.6' }}>
                   1. Go to console.cloud.google.com<br />
                   2. Create a new project or select existing<br />
                   3. Enable Maps JavaScript API and Places API<br />
@@ -1089,7 +1090,7 @@ export default function Integrations() {
                 <div>
                   <label style={labelStyle}>Google Maps API Key *</label>
                   <PasswordInput value={googleMapsKey} onChange={setGoogleMapsKey} placeholder="your_google_maps_api_key" />
-                  <p style={{ fontSize: '11px', color: '#888888', marginTop: '4px' }}>
+                  <p style={{ fontSize: '11px', color: '#FEFEFE', marginTop: '4px' }}>
                     Browser-loaded defaults use `NEXT_PUBLIC_GOOGLE_MAPS_KEY` from `admin/.env.local`.
                   </p>
                 </div>
@@ -1105,7 +1106,7 @@ export default function Integrations() {
                   ].map((feature, i) => (
                     <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px' }}>
                       <span style={{ color: '#22C55E', fontSize: '12px' }}>✓</span>
-                      <span style={{ fontSize: '12px', color: '#888888' }}>{feature}</span>
+                      <span style={{ fontSize: '12px', color: '#FEFEFE' }}>{feature}</span>
                     </div>
                   ))}
                 </div>
