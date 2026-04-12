@@ -362,14 +362,16 @@ export class SquareService {
   }
 
   /**
-   * Update order state in Square when status changes.
+   * Update fulfillment state in Square when order status changes.
+   * Note: We update fulfillment state (not order state) because order
+   * completion requires payment, and payments go through Stripe not Square.
    */
   async updateOrderState(squareOrderId: string, status: string): Promise<boolean> {
     const creds = await this.getCredentials();
     if (!creds || !squareOrderId) return false;
 
-    // Map our statuses to Square order fulfillment states
-    const stateMap: Record<string, string> = {
+    // Map our statuses to Square fulfillment states
+    const fulfillmentStateMap: Record<string, string> = {
       confirmed: 'RESERVED',
       preparing: 'PREPARED',
       ready: 'COMPLETED',
@@ -379,31 +381,44 @@ export class SquareService {
       cancelled: 'CANCELED',
     };
 
-    const squareState = stateMap[status];
-    if (!squareState) return false;
+    const fulfillmentState = fulfillmentStateMap[status];
+    if (!fulfillmentState) return false;
 
     try {
       const client = this.getClient(creds);
 
-      // Get current order version for optimistic concurrency
+      // Get current order to find fulfillment ID and version
       const currentOrder = await client.orders.get({ orderId: squareOrderId });
       const version = currentOrder.order?.version;
+      const fulfillments = currentOrder.order?.fulfillments || [];
+
+      if (fulfillments.length === 0) {
+        console.log(`[SQUARE] No fulfillments found for ${squareOrderId}, skipping`);
+        return false;
+      }
+
+      // Update fulfillment state (not order state)
+      const updatedFulfillments = fulfillments.map((f: any) => ({
+        uid: f.uid,
+        type: f.type,
+        state: fulfillmentState as any,
+      }));
 
       await client.orders.update({
         orderId: squareOrderId,
         order: {
           locationId: creds.squareLocationId,
-          state: squareState as any,
           version,
+          fulfillments: updatedFulfillments,
         },
         idempotencyKey: `eggok-update-${squareOrderId}-${status}-${Date.now()}`,
       });
 
-      console.log(`[SQUARE] Order ${squareOrderId} state → ${squareState}`);
+      console.log(`[SQUARE] Order ${squareOrderId} fulfillment → ${fulfillmentState}`);
       return true;
     } catch (err: any) {
       const message = err?.errors?.[0]?.detail || err?.message || 'Unknown error';
-      console.error(`[SQUARE] State update failed for ${squareOrderId}:`, message);
+      console.error(`[SQUARE] Fulfillment update failed for ${squareOrderId}:`, message);
       return false;
     }
   }
