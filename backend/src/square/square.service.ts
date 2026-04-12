@@ -165,6 +165,7 @@ export class SquareService {
                 amount: BigInt(Math.round(order.tip * 100)),
                 currency: 'USD' as const,
               },
+              calculationPhase: 'SUBTOTAL_PHASE' as const,
             },
           ] : undefined,
           metadata: {
