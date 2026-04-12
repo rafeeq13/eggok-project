@@ -60,7 +60,7 @@ export default function LoginPage() {
   return (
     <div style={{
       minHeight: '100vh',
-      backgroundImage: "url('/main-menu/Main-Page/order-ahead.webp')",
+      backgroundImage: "url('/main-menu/Main-Page/admin-background.webp')",
       backgroundRepeat: 'no-repeat',
       backgroundPosition: 'center center',
       backgroundAttachment: 'fixed',
