@@ -62,7 +62,7 @@ export class SquareService {
           : SquareEnvironment.Sandbox,
       });
 
-      const response = await client.locations.get(settings.squareLocationId);
+      const response = await client.locations.get({ locationId: settings.squareLocationId });
       const locationName = response.location?.name || 'Unknown';
       return { success: true, locationName, message: `Connected to "${locationName}"` };
     } catch (err: any) {
