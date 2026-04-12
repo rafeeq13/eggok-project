@@ -168,6 +168,31 @@ export class SquareService {
               calculationPhase: 'SUBTOTAL_PHASE' as const,
             },
           ] : undefined,
+          fulfillments: [
+            {
+              type: order.orderType === 'delivery' ? 'DELIVERY' : 'PICKUP',
+              state: 'PROPOSED',
+              ...(order.orderType === 'delivery'
+                ? {
+                    deliveryDetails: {
+                      recipient: {
+                        displayName: order.customerName,
+                        phoneNumber: order.customerPhone,
+                        address: order.deliveryAddress ? { addressLine1: order.deliveryAddress } : undefined,
+                      },
+                    },
+                  }
+                : {
+                    pickupDetails: {
+                      recipient: {
+                        displayName: order.customerName,
+                        phoneNumber: order.customerPhone,
+                      },
+                      pickupAt: new Date(Date.now() + 15 * 60000).toISOString(),
+                    },
+                  }),
+            },
+          ],
           metadata: {
             source: 'eggok_online',
             order_number: order.orderNumber,
