@@ -40,6 +40,30 @@ export class SettingsController {
     return this.squareService.testConnection();
   }
 
+  @Get('square/terminal-devices')
+  @UseGuards(AdminGuard)
+  listTerminalDevices() {
+    return this.squareService.listTerminalDevices();
+  }
+
+  @Post('square/terminal-checkout')
+  @UseGuards(AdminGuard)
+  createTerminalCheckout(@Body() body: { squareOrderId: string; orderNumber: string; total: number; note?: string }) {
+    return this.squareService.createTerminalCheckout(body);
+  }
+
+  @Get('square/terminal-checkout/:checkoutId')
+  @UseGuards(AdminGuard)
+  getTerminalCheckoutStatus(@Param('checkoutId') checkoutId: string) {
+    return this.squareService.getTerminalCheckoutStatus(checkoutId);
+  }
+
+  @Post('square/terminal-checkout/:checkoutId/cancel')
+  @UseGuards(AdminGuard)
+  cancelTerminalCheckout(@Param('checkoutId') checkoutId: string) {
+    return this.squareService.cancelTerminalCheckout(checkoutId);
+  }
+
   @Post('test-connection/uberdirect')
   @UseGuards(AdminGuard)
   async testUberDirect() {

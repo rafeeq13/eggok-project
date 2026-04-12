@@ -32,6 +32,9 @@ export default function Integrations() {
   const [squareLocationId, setSquareLocationId] = useState('');
   const [squareEnvironment, setSquareEnvironment] = useState('sandbox');
   const [squareStatus, setSquareStatus] = useState<IntegrationStatus>('disconnected');
+  const [squareTerminalDeviceId, setSquareTerminalDeviceId] = useState('');
+  const [terminalDevices, setTerminalDevices] = useState<any[]>([]);
+  const [loadingDevices, setLoadingDevices] = useState(false);
 
   // Stripe
   const [stripePublishableKey, setStripePublishableKey] = useState(clientIntegrationDefaults.stripePublishableKey);
@@ -146,6 +149,7 @@ export default function Integrations() {
             if (v.squareLocationId) setSquareLocationId(v.squareLocationId);
             if (v.squareEnvironment) setSquareEnvironment(v.squareEnvironment);
             if (v.squareStatus) setSquareStatus(v.squareStatus);
+            if (v.squareTerminalDeviceId) setSquareTerminalDeviceId(v.squareTerminalDeviceId);
 
             if (v.stripePublishableKey) setStripePublishableKey(v.stripePublishableKey);
             if (v.stripeSecretKey) setStripeSecretKey(v.stripeSecretKey);
@@ -203,7 +207,7 @@ export default function Integrations() {
 
   const saveIntegrations = async (statusUpdate?: any) => {
     const payload = {
-      squareAppId, squareAccessToken, squareLocationId, squareEnvironment, squareStatus: statusUpdate?.squareStatus || squareStatus,
+      squareAppId, squareAccessToken, squareLocationId, squareEnvironment, squareTerminalDeviceId, squareStatus: statusUpdate?.squareStatus || squareStatus,
       stripePublishableKey, stripeSecretKey, stripeWebhookSecret, stripeEnvironment, stripeStatus: statusUpdate?.stripeStatus || stripeStatus,
       doordashDeveloperId, doordashKeyId, doordashSigningSecret, doordashEnvironment, doordashStatus: statusUpdate?.doordashStatus || doordashStatus,
       fcmServerKey, apnsKeyId, apnsTeamId, apnsBundleId, pushStatus: statusUpdate?.pushStatus || pushStatus,
@@ -368,7 +372,7 @@ export default function Integrations() {
   };
 
   const integrations: Integration[] = [
-    { id: 'square', name: 'Square POS', description: 'Kitchen printing & order sync', icon: 'square', status: squareStatus, lastSync: squareStatus === 'connected' ? 'Just now' : 'Never' },
+    { id: 'square', name: 'Square POS', description: 'Kitchen printing, order sync & terminal display', icon: 'square', status: squareStatus, lastSync: squareStatus === 'connected' ? 'Just now' : 'Never' },
     { id: 'stripe', name: 'Stripe Payments', description: 'Online payment processing', icon: 'stripe', status: stripeStatus, lastSync: stripeStatus === 'connected' ? 'Just now' : 'Never' },
     { id: 'doordash', name: 'DoorDash Drive', description: 'Delivery dispatch & tracking', icon: 'doordash', status: doordashStatus, lastSync: doordashStatus === 'connected' ? 'Just now' : 'Never' },
     { id: 'uberdirect', name: 'Uber Direct', description: 'On-demand delivery via Uber', icon: 'uberdirect', status: uberDirectStatus, lastSync: uberDirectStatus === 'connected' ? 'Just now' : 'Never' },
@@ -578,7 +582,7 @@ export default function Integrations() {
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '16px', paddingBottom: '12px', borderBottom: '1px solid #2A2A2A' }}>
                 <div>
                   <p style={sectionTitle}>Square POS Integration</p>
-                  <p style={{ fontSize: '12px', color: '#FEFEFE', marginTop: '4px' }}>Connect Square to automatically print kitchen tickets and sync orders</p>
+                  <p style={{ fontSize: '12px', color: '#FEFEFE', marginTop: '4px' }}>Connect Square to print kitchen tickets, sync orders & display on terminal</p>
                 </div>
                 <span style={{ fontSize: '11px', padding: '3px 10px', borderRadius: '20px', fontWeight: '600', background: `${statusColor[squareStatus]}20`, color: statusColor[squareStatus], border: `1px solid ${statusColor[squareStatus]}40`, flexShrink: 0 }}>
                   {statusLabel[squareStatus]}
@@ -633,6 +637,75 @@ export default function Integrations() {
                   />
                   <p style={{ fontSize: '11px', color: '#FEFEFE', marginTop: '4px' }}>Found in Square Dashboard → Locations</p>
                 </div>
+
+                {/* Terminal Device */}
+                <div style={{ padding: '14px', background: '#111111', borderRadius: '8px', border: '1px solid #2A2A2A' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
+                    <div>
+                      <p style={{ fontSize: '13px', fontWeight: '600', color: '#FED800' }}>Square Terminal Device</p>
+                      <p style={{ fontSize: '11px', color: '#FEFEFE', marginTop: '2px' }}>Orders will be pushed to this terminal for POS display</p>
+                    </div>
+                    <button
+                      onClick={async () => {
+                        setLoadingDevices(true);
+                        try {
+                          const res = await adminFetch(`${API}/settings/square/terminal-devices`);
+                          const data = await res.json();
+                          setTerminalDevices(data.devices || []);
+                          if (data.error) showError(data.error);
+                        } catch { showError('Failed to fetch devices'); }
+                        setLoadingDevices(false);
+                      }}
+                      disabled={loadingDevices || squareStatus !== 'connected'}
+                      style={{
+                        padding: '6px 14px', borderRadius: '6px', border: '1px solid #2A2A2A',
+                        background: '#1A1A1A', color: '#FEFEFE', fontSize: '11px', cursor: 'pointer',
+                        opacity: squareStatus !== 'connected' ? 0.5 : 1,
+                      }}
+                    >
+                      {loadingDevices ? 'Loading...' : 'Fetch Devices'}
+                    </button>
+                  </div>
+
+                  {terminalDevices.length > 0 && (
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', marginBottom: '10px' }}>
+                      {terminalDevices.map((d: any) => (
+                        <button
+                          key={d.deviceId}
+                          onClick={() => setSquareTerminalDeviceId(d.deviceId)}
+                          style={{
+                            padding: '8px 12px', borderRadius: '6px', textAlign: 'left', cursor: 'pointer',
+                            background: squareTerminalDeviceId === d.deviceId ? '#FED80015' : '#0A0A0A',
+                            border: `1px solid ${squareTerminalDeviceId === d.deviceId ? '#FED800' : '#2A2A2A'}`,
+                            display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+                          }}
+                        >
+                          <span style={{ fontSize: '12px', color: '#FEFEFE' }}>{d.name}</span>
+                          <span style={{
+                            fontSize: '10px', padding: '2px 8px', borderRadius: '10px',
+                            background: d.status === 'CONNECTED' ? '#22C55E20' : '#FF444420',
+                            color: d.status === 'CONNECTED' ? '#22C55E' : '#FF4444',
+                          }}>
+                            {d.status}
+                          </span>
+                        </button>
+                      ))}
+                    </div>
+                  )}
+
+                  <input
+                    style={inputStyle}
+                    value={squareTerminalDeviceId}
+                    onChange={e => setSquareTerminalDeviceId(e.target.value)}
+                    placeholder="Device ID (select above or enter manually)"
+                    onFocus={e => e.target.style.borderColor = '#FED800'}
+                    onBlur={e => e.target.style.borderColor = '#2A2A2A'}
+                  />
+                  <p style={{ fontSize: '11px', color: '#FEFEFE', marginTop: '4px' }}>
+                    {squareTerminalDeviceId ? `Terminal: ${squareTerminalDeviceId.slice(0, 20)}...` : 'No terminal selected — orders will sync to Square but won\'t appear on terminal'}
+                  </p>
+                </div>
+
                 <ConnectButton id="square" />
               </div>
             </div>

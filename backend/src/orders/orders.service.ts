@@ -179,7 +179,7 @@ export class OrdersService {
       console.error('Failed to record transaction:', err.message);
     });
 
-    // Sync order to Square POS for kitchen printing
+    // Sync order to Square POS for kitchen printing, then push to terminal
     this.squareService.syncOrder({
       orderNumber: savedOrder.orderNumber,
       customerName: savedOrder.customerName,
@@ -194,9 +194,19 @@ export class OrdersService {
       total: Number(savedOrder.total),
       deliveryAddress: savedOrder.deliveryAddress,
       notes: savedOrder.notes,
-    }).then(result => {
+    }).then(async result => {
       if (result?.squareOrderId) {
-        this.ordersRepository.update(savedOrder.id, { squareOrderId: result.squareOrderId });
+        await this.ordersRepository.update(savedOrder.id, { squareOrderId: result.squareOrderId });
+
+        // Push order to Square Terminal device
+        this.squareService.createTerminalCheckout({
+          squareOrderId: result.squareOrderId,
+          orderNumber: savedOrder.orderNumber,
+          total: Number(savedOrder.total),
+          note: `${savedOrder.orderType === 'delivery' ? 'DELIVERY' : 'PICKUP'} - ${savedOrder.customerName}`,
+        }).catch(err => {
+          console.error(`[SQUARE] Terminal push failed for ${savedOrder.orderNumber}:`, err?.message);
+        });
       }
     }).catch(err => {
       console.error('Failed to sync order to Square:', err.message);

@@ -218,6 +218,150 @@ export class SquareService {
   }
 
   /**
+   * List paired Square Terminal devices for this location.
+   */
+  async listTerminalDevices(): Promise<{ devices: any[]; error?: string }> {
+    const creds = await this.getCredentials();
+    if (!creds) return { devices: [], error: 'Square not configured' };
+
+    try {
+      const client = this.getClient(creds);
+      const response = await client.devices.list({
+        locationId: creds.squareLocationId,
+      });
+
+      const devices = (response.data || [])
+        .filter((d: any) => d.components?.some((c: any) => c.type === 'APPLICATION' && c.applicationDetails?.applicationType === 'TERMINAL_API'))
+        .map((d: any) => ({
+          deviceId: d.id,
+          name: d.name || 'Square Terminal',
+          code: d.components?.find((c: any) => c.type === 'APPLICATION')?.applicationDetails?.deviceCodeId,
+          status: d.components?.find((c: any) => c.type === 'APPLICATION')?.applicationDetails?.sessionStatus || 'UNKNOWN',
+        }));
+
+      return { devices };
+    } catch (err: any) {
+      const message = err?.errors?.[0]?.detail || err?.message || 'Failed to list devices';
+      console.error('[SQUARE] List devices failed:', message);
+      return { devices: [], error: message };
+    }
+  }
+
+  /**
+   * Create a device code to pair a new Square Terminal.
+   */
+  async createTerminalDeviceCode(): Promise<{ deviceCode?: any; error?: string }> {
+    const creds = await this.getCredentials();
+    if (!creds) return { error: 'Square not configured' };
+
+    try {
+      const client = this.getClient(creds);
+      const response = await (client as any).devicesApi?.createDeviceCode?.({
+        idempotencyKey: `eggok-pair-${Date.now()}`,
+        deviceCode: {
+          productType: 'TERMINAL_API',
+          locationId: creds.squareLocationId,
+          name: 'EggOk Terminal',
+        },
+      });
+
+      return { deviceCode: response?.result?.deviceCode };
+    } catch (err: any) {
+      const message = err?.errors?.[0]?.detail || err?.message || 'Failed to create device code';
+      console.error('[SQUARE] Create device code failed:', message);
+      return { error: message };
+    }
+  }
+
+  /**
+   * Push an order to a Square Terminal device as a checkout.
+   * This makes the order appear on the terminal screen.
+   */
+  async createTerminalCheckout(order: {
+    squareOrderId: string;
+    orderNumber: string;
+    total: number;
+    note?: string;
+  }): Promise<{ checkoutId?: string; error?: string }> {
+    const creds = await this.getCredentials();
+    if (!creds) return { error: 'Square not configured' };
+
+    // Get terminal device ID from settings
+    const settings = await this.settingsService.getSetting('integrations');
+    const deviceId = settings?.squareTerminalDeviceId;
+    if (!deviceId) {
+      console.log('[SQUARE] No terminal device configured, skipping terminal checkout');
+      return { error: 'No terminal device configured' };
+    }
+
+    try {
+      const client = this.getClient(creds);
+      const response = await client.terminal.checkouts.create({
+        idempotencyKey: `eggok-terminal-${order.orderNumber}-${Date.now()}`,
+        checkout: {
+          amountMoney: {
+            amount: BigInt(Math.round(order.total * 100)),
+            currency: 'USD' as const,
+          },
+          deviceOptions: {
+            deviceId,
+            skipReceiptScreen: true,
+            collectSignature: false,
+            showItemizedCart: true,
+          },
+          referenceId: order.orderNumber,
+          orderId: order.squareOrderId,
+          note: order.note || `Online Order ${order.orderNumber}`,
+          paymentType: 'CARD_PRESENT' as const,
+        },
+      });
+
+      const checkoutId = response.checkout?.id || '';
+      console.log(`[SQUARE] Terminal checkout created: ${order.orderNumber} → ${checkoutId}`);
+      return { checkoutId };
+    } catch (err: any) {
+      const message = err?.errors?.[0]?.detail || err?.message || 'Terminal checkout failed';
+      console.error(`[SQUARE] Terminal checkout failed for ${order.orderNumber}:`, message);
+      return { error: message };
+    }
+  }
+
+  /**
+   * Get the status of a terminal checkout.
+   */
+  async getTerminalCheckoutStatus(checkoutId: string): Promise<{ status?: string; error?: string }> {
+    const creds = await this.getCredentials();
+    if (!creds || !checkoutId) return { error: 'Invalid request' };
+
+    try {
+      const client = this.getClient(creds);
+      const response = await client.terminal.checkouts.get({ checkoutId });
+      return { status: response.checkout?.status || 'UNKNOWN' };
+    } catch (err: any) {
+      const message = err?.errors?.[0]?.detail || err?.message || 'Failed to get checkout status';
+      return { error: message };
+    }
+  }
+
+  /**
+   * Cancel a pending terminal checkout.
+   */
+  async cancelTerminalCheckout(checkoutId: string): Promise<boolean> {
+    const creds = await this.getCredentials();
+    if (!creds || !checkoutId) return false;
+
+    try {
+      const client = this.getClient(creds);
+      await client.terminal.checkouts.cancel({ checkoutId });
+      console.log(`[SQUARE] Terminal checkout cancelled: ${checkoutId}`);
+      return true;
+    } catch (err: any) {
+      console.error(`[SQUARE] Cancel checkout failed:`, err?.message);
+      return false;
+    }
+  }
+
+  /**
    * Update order state in Square when status changes.
    */
   async updateOrderState(squareOrderId: string, status: string): Promise<boolean> {
