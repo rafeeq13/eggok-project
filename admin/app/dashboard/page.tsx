@@ -18,6 +18,7 @@ import Notifications from './components/Notifications';
 import Reviews from './components/Reviews';
 import Loyalty from './components/Loyalty';
 import Submissions from './components/Submissions';
+import KitchenDisplay from './components/KitchenDisplay';
 import { API, adminFetch, adminLogout } from '../../lib/api';
 
 const statusColor: Record<string, string> = {
@@ -69,6 +70,7 @@ function DashboardContent() {
   const allSidebarItems = [
     { id: 'overview', label: 'Overview', icon: '📊', roles: ['Staff', 'Manager', 'Super Admin'] },
     { id: 'orders', label: 'Orders', icon: '🧾', roles: ['Staff', 'Manager', 'Super Admin'] },
+    { id: 'kitchen', label: 'Kitchen Display', icon: '🖨️', roles: ['Staff', 'Manager', 'Super Admin'] },
     { id: 'menu', label: 'Menu Management', icon: '🍽️', roles: ['Manager', 'Super Admin'] },
     { id: 'customers', label: 'Customers', icon: '👥', roles: ['Manager', 'Super Admin'] },
     { id: 'promotions', label: 'Promotions', icon: '🎟️', roles: ['Manager', 'Super Admin'] },
@@ -96,6 +98,7 @@ function DashboardContent() {
   const sidebarIcons: Record<string, React.ReactElement> = {
     overview: <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="7" height="7" /><rect x="14" y="3" width="7" height="7" /><rect x="3" y="14" width="7" height="7" /><rect x="14" y="14" width="7" height="7" /></svg>,
     orders: <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2" /><rect x="9" y="3" width="6" height="4" rx="2" /><path d="M9 12h6M9 16h4" /></svg>,
+    kitchen: <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M6 9V2h12v7" /><path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2" /><rect x="6" y="14" width="12" height="8" /></svg>,
     menu: <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 6h18M3 12h18M3 18h18" /></svg>,
     customers: <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75" /></svg>,
     promotions: <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83 0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z" /><line x1="7" y1="7" x2="7.01" y2="7" /></svg>,
@@ -372,6 +375,7 @@ function DashboardContent() {
           )}
 
           {activeTab === 'orders' && <OrdersManagement />}
+          {activeTab === 'kitchen' && <KitchenDisplay />}
           {activeTab === 'menu' && <MenuManagement />}
           {activeTab === 'customers' && <Customers />}
           {activeTab === 'promotions' && <Promotions />}
