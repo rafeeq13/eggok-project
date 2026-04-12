@@ -72,6 +72,68 @@ export default function Loyalty() {
   const [editingReward, setEditingReward] = useState<Reward | null>(null);
   const [successMsg, setSuccessMsg] = useState('');
 
+  // Member detail modal
+  const [selectedMember, setSelectedMember] = useState<any | null>(null);
+  const [memberAdjustAmount, setMemberAdjustAmount] = useState('');
+  const [memberNewTier, setMemberNewTier] = useState('');
+  const [memberSaving, setMemberSaving] = useState(false);
+
+  const openMemberModal = (member: any) => {
+    setSelectedMember(member);
+    setMemberAdjustAmount('');
+    setMemberNewTier(member.tier || 'Bronze');
+  };
+
+  const handleMemberAdjustPoints = async () => {
+    if (!selectedMember || !memberAdjustAmount || isNaN(Number(memberAdjustAmount)) || Number(memberAdjustAmount) === 0) return;
+    setMemberSaving(true);
+    try {
+      const newPoints = Math.max(0, selectedMember.points + Number(memberAdjustAmount));
+      await adminFetch(`${API}/customers/${selectedMember.id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ points: newPoints }),
+      });
+      showSuccess(`${Number(memberAdjustAmount) > 0 ? '+' : ''}${memberAdjustAmount} points for ${selectedMember.name}`);
+      setMemberAdjustAmount('');
+      fetchData();
+      setSelectedMember((prev: any) => prev ? { ...prev, points: newPoints } : null);
+    } catch { showSuccess('Failed to adjust points'); }
+    setMemberSaving(false);
+  };
+
+  const handleMemberChangeTier = async () => {
+    if (!selectedMember || memberNewTier === selectedMember.tier) return;
+    setMemberSaving(true);
+    try {
+      await adminFetch(`${API}/customers/${selectedMember.id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ tier: memberNewTier }),
+      });
+      showSuccess(`${selectedMember.name} moved to ${memberNewTier}`);
+      fetchData();
+      setSelectedMember((prev: any) => prev ? { ...prev, tier: memberNewTier } : null);
+    } catch { showSuccess('Failed to change tier'); }
+    setMemberSaving(false);
+  };
+
+  const handleRevokeRewardCode = async (codeIndex: number) => {
+    if (!selectedMember) return;
+    const rewards = Array.isArray(selectedMember.redeemedRewards) ? [...selectedMember.redeemedRewards] : [];
+    rewards.splice(codeIndex, 1);
+    try {
+      await adminFetch(`${API}/customers/${selectedMember.id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ redeemedRewards: rewards }),
+      });
+      showSuccess('Reward code revoked');
+      fetchData();
+      setSelectedMember((prev: any) => prev ? { ...prev, redeemedRewards: rewards } : null);
+    } catch { showSuccess('Failed to revoke'); }
+  };
+
   // Members filters
   const [memberSearch, setMemberSearch] = useState('');
   const [memberTierFilter, setMemberTierFilter] = useState('all');
@@ -381,6 +443,128 @@ export default function Loyalty() {
         </div>
       )}
 
+      {/* Member Detail Modal */}
+      {selectedMember && (
+        <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.88)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000, padding: '20px' }}>
+          <div style={{ background: '#1A1A1A', border: '1px solid #2A2A2A', borderRadius: '16px', width: '100%', maxWidth: '560px', maxHeight: '90vh', overflowY: 'auto' }}>
+
+            {/* Header */}
+            <div style={{ padding: '20px 24px', borderBottom: '1px solid #2A2A2A', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                <div style={{ width: '40px', height: '40px', borderRadius: '50%', background: `${tierColor[selectedMember.tier] || '#888'}20`, border: `1px solid ${tierColor[selectedMember.tier] || '#888'}40`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '16px', fontWeight: '700', color: tierColor[selectedMember.tier] || '#888' }}>
+                  {selectedMember.name.charAt(0)}
+                </div>
+                <div>
+                  <p style={{ fontSize: '16px', fontWeight: '700', color: '#FEFEFE', margin: 0 }}>{selectedMember.name}</p>
+                  <p style={{ fontSize: '12px', color: '#888', margin: 0 }}>{selectedMember.email}</p>
+                </div>
+              </div>
+              <button onClick={() => setSelectedMember(null)} style={{ background: 'transparent', color: '#888', fontSize: '20px', border: 'none', cursor: 'pointer' }}>✕</button>
+            </div>
+
+            <div style={{ padding: '20px 24px' }}>
+              {/* Stats */}
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '10px', marginBottom: '20px' }}>
+                {[
+                  { label: 'Points', value: selectedMember.points, color: '#FED800' },
+                  { label: 'Total Earned', value: selectedMember.totalEarned || selectedMember.totalPointsEarned || 0, color: '#22C55E' },
+                  { label: 'Redemptions', value: selectedMember.redemptions || 0, color: '#60A5FA' },
+                  { label: 'Tier', value: selectedMember.tier, color: tierColor[selectedMember.tier] || '#888' },
+                ].map((s, i) => (
+                  <div key={i} style={{ background: '#111', borderRadius: '10px', padding: '12px', textAlign: 'center', border: '1px solid #2A2A2A' }}>
+                    <p style={{ fontSize: '10px', color: '#888', textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: '4px' }}>{s.label}</p>
+                    <p style={{ fontSize: '18px', fontWeight: '700', color: s.color, margin: 0 }}>{s.value}</p>
+                  </div>
+                ))}
+              </div>
+
+              {/* Adjust Points */}
+              <div style={{ background: '#111', borderRadius: '10px', padding: '16px', border: '1px solid #2A2A2A', marginBottom: '16px' }}>
+                <p style={{ fontSize: '12px', fontWeight: '700', color: '#FEFEFE', marginBottom: '10px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Adjust Points</p>
+                <div style={{ display: 'flex', gap: '8px' }}>
+                  <input type="number" placeholder="e.g. 50 or -20" value={memberAdjustAmount} onChange={e => setMemberAdjustAmount(e.target.value)}
+                    style={{ flex: 1, padding: '9px 12px', background: '#0A0A0A', border: '1px solid #2A2A2A', borderRadius: '8px', color: '#FEFEFE', fontSize: '13px', outline: 'none' }}
+                    onFocus={e => e.target.style.borderColor = '#FED800'}
+                    onBlur={e => e.target.style.borderColor = '#2A2A2A'}
+                  />
+                  <button onClick={handleMemberAdjustPoints} disabled={memberSaving || !memberAdjustAmount}
+                    style={{ padding: '9px 18px', background: '#FED800', border: 'none', borderRadius: '8px', color: '#000', fontSize: '12px', fontWeight: '700', cursor: 'pointer', opacity: memberSaving ? 0.5 : 1 }}>
+                    {memberSaving ? '...' : 'Apply'}
+                  </button>
+                </div>
+              </div>
+
+              {/* Change Tier */}
+              <div style={{ background: '#111', borderRadius: '10px', padding: '16px', border: '1px solid #2A2A2A', marginBottom: '16px' }}>
+                <p style={{ fontSize: '12px', fontWeight: '700', color: '#FEFEFE', marginBottom: '10px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Change Tier</p>
+                <div style={{ display: 'flex', gap: '8px' }}>
+                  <select value={memberNewTier} onChange={e => setMemberNewTier(e.target.value)}
+                    style={{ flex: 1, padding: '9px 12px', background: '#0A0A0A', border: '1px solid #2A2A2A', borderRadius: '8px', color: '#FEFEFE', fontSize: '13px', cursor: 'pointer' }}>
+                    <option value="Bronze">Bronze</option>
+                    <option value="Silver">Silver</option>
+                    <option value="Gold">Gold</option>
+                  </select>
+                  <button onClick={handleMemberChangeTier} disabled={memberSaving || memberNewTier === selectedMember.tier}
+                    style={{ padding: '9px 18px', background: memberNewTier === selectedMember.tier ? '#2A2A2A' : '#FED800', border: 'none', borderRadius: '8px', color: memberNewTier === selectedMember.tier ? '#555' : '#000', fontSize: '12px', fontWeight: '700', cursor: memberNewTier === selectedMember.tier ? 'not-allowed' : 'pointer' }}>
+                    Update
+                  </button>
+                </div>
+              </div>
+
+              {/* Unused Reward Codes */}
+              <div style={{ background: '#111', borderRadius: '10px', padding: '16px', border: '1px solid #2A2A2A', marginBottom: '16px' }}>
+                <p style={{ fontSize: '12px', fontWeight: '700', color: '#FEFEFE', marginBottom: '10px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+                  Reward Codes ({(Array.isArray(selectedMember.redeemedRewards) ? selectedMember.redeemedRewards : []).filter((r: any) => !r.used).length} unused)
+                </p>
+                {(Array.isArray(selectedMember.redeemedRewards) ? selectedMember.redeemedRewards : []).length === 0 ? (
+                  <p style={{ fontSize: '12px', color: '#555', margin: 0 }}>No redeemed rewards</p>
+                ) : (
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                    {(Array.isArray(selectedMember.redeemedRewards) ? selectedMember.redeemedRewards : []).map((r: any, i: number) => (
+                      <div key={i} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '8px 12px', borderRadius: '8px', background: r.used ? '#0A0A0A' : '#22C55E10', border: `1px solid ${r.used ? '#1A1A1A' : '#22C55E30'}` }}>
+                        <div>
+                          <p style={{ fontSize: '12px', color: r.used ? '#555' : '#FEFEFE', fontWeight: '600', margin: 0 }}>
+                            {r.rewardName} {r.used && <span style={{ color: '#555', fontWeight: '400' }}>(used)</span>}
+                          </p>
+                          <p style={{ fontSize: '11px', color: '#888', fontFamily: 'monospace', marginTop: '2px' }}>{r.code}</p>
+                        </div>
+                        {!r.used && (
+                          <button onClick={() => handleRevokeRewardCode(i)} style={{ padding: '4px 10px', background: 'transparent', border: '1px solid #FC030130', borderRadius: '6px', color: '#FC0301', fontSize: '10px', cursor: 'pointer' }}>
+                            Revoke
+                          </button>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              {/* Points History */}
+              <div style={{ background: '#111', borderRadius: '10px', padding: '16px', border: '1px solid #2A2A2A' }}>
+                <p style={{ fontSize: '12px', fontWeight: '700', color: '#FEFEFE', marginBottom: '10px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Points History</p>
+                {(Array.isArray(selectedMember.pointsHistory) ? selectedMember.pointsHistory : []).length === 0 ? (
+                  <p style={{ fontSize: '12px', color: '#555', margin: 0 }}>No history yet</p>
+                ) : (
+                  <div style={{ maxHeight: '200px', overflowY: 'auto' }}>
+                    {(Array.isArray(selectedMember.pointsHistory) ? selectedMember.pointsHistory : []).slice(0, 20).map((h: any, i: number) => (
+                      <div key={i} style={{ display: 'flex', justifyContent: 'space-between', padding: '8px 0', borderBottom: '1px solid #1A1A1A' }}>
+                        <div>
+                          <p style={{ fontSize: '12px', color: '#FEFEFE', margin: 0 }}>{h.description}</p>
+                          <p style={{ fontSize: '10px', color: '#555', marginTop: '2px' }}>{h.date ? new Date(h.date).toLocaleDateString() : ''}</p>
+                        </div>
+                        <span style={{ fontSize: '13px', fontWeight: '700', color: h.type === 'redeemed' ? '#FC0301' : '#22C55E' }}>
+                          {h.points > 0 ? '+' : ''}{h.points}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Tab Bar */}
       <div style={{ display: 'flex', gap: '4px', background: '#111111', padding: '4px', borderRadius: '10px', marginBottom: '20px', border: '1px solid #2A2A2A' }}>
         {[
@@ -406,7 +590,7 @@ export default function Loyalty() {
               <div>
                 <p style={{ fontSize: '15px', fontWeight: '700', color: '#FEFEFE', marginBottom: '4px' }}>Loyalty Program</p>
                 <p style={{ fontSize: '12px', color: loyaltyEnabled ? '#22C55E' : '#FC0301' }}>
-                  {loyaltyEnabled ? 'Active — customers are earning and redeeming points' : 'Disabled — loyalty program is paused'}
+                  {loyaltyEnabled ? 'Active customers are earning and redeeming points' : 'Disabled — loyalty program is paused'}
                 </p>
               </div>
               {toggleSwitch(loyaltyEnabled, () => setLoyaltyEnabled(!loyaltyEnabled))}
@@ -637,19 +821,9 @@ export default function Loyalty() {
                     <td style={{ padding: '13px 16px', fontSize: '12px', color: '#22C55E', fontWeight: '600' }}>{c.redemptions || 0}</td>
                     <td style={{ padding: '13px 16px', fontSize: '11px', color: '#FEFEFE' }}>{c.lastActivity || '—'}</td>
                     <td style={{ padding: '13px 16px' }}>
-                      <button onClick={async () => {
-                        const amount = prompt(`Adjust points for ${c.name}:\nPositive to add, negative to deduct.\nCurrent: ${c.points} pts`, '0');
-                        if (!amount || isNaN(Number(amount)) || Number(amount) === 0) return;
-                        try {
-                          await adminFetch(`${API}/customers/${c.id}`, {
-                            method: 'PUT',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({ points: Math.max(0, c.points + Number(amount)) }),
-                          });
-                          showSuccess(`${Number(amount) > 0 ? '+' : ''}${amount} points for ${c.name}`);
-                          fetchData();
-                        } catch { showSuccess('Failed to adjust points'); }
-                      }} style={{ padding: '4px 10px', background: 'transparent', border: '1px solid #2A2A2A', borderRadius: '6px', color: '#888', fontSize: '10px', cursor: 'pointer' }}>Adjust</button>
+                      <div style={{ display: 'flex', gap: '6px' }}>
+                        <button onClick={() => openMemberModal(c)} style={{ padding: '4px 10px', background: '#FED80015', border: '1px solid #FED80030', borderRadius: '6px', color: '#FED800', fontSize: '10px', cursor: 'pointer', fontWeight: '600' }}>Manage</button>
+                      </div>
                     </td>
                   </tr>
                 ))}

@@ -66,6 +66,7 @@ export class PaymentsService {
         type: string;
         orderTotal: number;
         deliveryFee: number;
+        tip: number;
         paymentIntentId?: string;
     }): Promise<Transaction> {
         const stripeFee = Number((data.orderTotal * 0.029 + 0.30).toFixed(2));
@@ -78,9 +79,34 @@ export class PaymentsService {
             orderTotal: data.orderTotal,
             stripeFee,
             deliveryFee: data.deliveryFee,
+            tip: data.tip || 0,
             netRevenue,
             status: 'Paid',
         }));
+    }
+
+    async refundTransaction(orderNumber: string, amount: number): Promise<Transaction> {
+        const tx = await this.transactionRepository.findOne({ where: { id: orderNumber } });
+        if (!tx) throw new BadRequestException('Transaction not found');
+
+        const refundAmount = Number(amount);
+        if (refundAmount <= 0) throw new BadRequestException('Refund amount must be positive');
+        if (refundAmount > Number(tx.orderTotal) - Number(tx.refundAmount)) {
+            throw new BadRequestException('Refund amount exceeds remaining balance');
+        }
+
+        const totalRefunded = Number(tx.refundAmount) + refundAmount;
+        const isFullRefund = totalRefunded >= Number(tx.orderTotal);
+
+        // Recalculate net revenue after refund
+        const stripeFee = Number(tx.stripeFee);
+        const newNet = Number(tx.orderTotal) - totalRefunded - stripeFee;
+
+        tx.refundAmount = totalRefunded;
+        tx.status = isFullRefund ? 'Refunded' : 'Partial Refund';
+        tx.netRevenue = Math.max(0, Number(newNet.toFixed(2)));
+
+        return this.transactionRepository.save(tx);
     }
 
     findAll(): Promise<Transaction[]> {
@@ -95,6 +121,7 @@ export class PaymentsService {
         const totalDeliveryFees = transactions.reduce((acc, t) => acc + Number(t.deliveryFee), 0);
         const totalRefunds = transactions.reduce((acc, t) => acc + Number(t.refundAmount), 0);
         const totalNet = transactions.reduce((acc, t) => acc + Number(t.netRevenue), 0);
+        const totalTips = transactions.reduce((acc, t) => acc + Number(t.tip || 0), 0);
 
         return {
             totalRevenue,
@@ -102,6 +129,7 @@ export class PaymentsService {
             totalDeliveryFees,
             totalRefunds,
             totalNet,
+            totalTips,
             totalProfit: totalRevenue - totalStripeFees - totalDeliveryFees - totalRefunds,
             transactionCount: transactions.length,
             recentTransactions: transactions.slice(0, 10),

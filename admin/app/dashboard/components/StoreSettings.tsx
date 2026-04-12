@@ -223,7 +223,7 @@ export default function StoreSettings() {
           <div>
             <p style={{ fontSize: '15px', fontWeight: '700', color: '#FEFEFE', marginBottom: '4px' }}>Store Status</p>
             <p style={{ fontSize: '12px', color: storeOpen ? '#22C55E' : '#FC0301' }}>
-              {storeOpen ? 'Your store is open — accepting orders' : 'Your store is closed — not accepting orders'}
+              {storeOpen ? 'Store is open' : 'Store is closed '}
             </p>
           </div>
           {toggleSwitch(storeOpen, () => setStoreOpen(!storeOpen))}

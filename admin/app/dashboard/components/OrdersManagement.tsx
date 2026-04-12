@@ -500,8 +500,8 @@ export default function OrdersManagement() {
       {/* Export */}
       <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '10px' }}>
         <button onClick={() => {
-          const rows = [['Order #', 'Customer', 'Email', 'Phone', 'Type', 'Status', 'Total', 'Date']];
-          displayOrders.forEach((o: any) => rows.push([o.orderNumber, o.customerName, o.customerEmail, o.customerPhone, o.orderType, o.status, `$${Number(o.total).toFixed(2)}`, new Date(o.createdAt).toLocaleDateString()]));
+          const rows = [['Order #', 'Customer', 'Email', 'Phone', 'Type', 'Status', 'Tip', 'Total', 'Date']];
+          displayOrders.forEach((o: any) => rows.push([o.orderNumber, o.customerName, o.customerEmail, o.customerPhone, o.orderType, o.status, `$${Number(o.tip || 0).toFixed(2)}`, `$${Number(o.total).toFixed(2)}`, new Date(o.createdAt).toLocaleDateString()]));
           const csv = rows.map(r => r.map(v => `"${v}"`).join(',')).join('\n');
           const blob = new Blob([csv], { type: 'text/csv' });
           const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `orders-${activeTab}-${new Date().toISOString().split('T')[0]}.csv`; a.click();

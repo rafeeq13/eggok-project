@@ -2,8 +2,11 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Eggs OK — Admin Dashboard",
-  description: "RestoRise Business Solutions",
+  title: "Eggs OK Admin Dashboard",
+  description: "",
+  icons: {
+    icon: '/favicon.webp',
+  },
 };
 
 export default function RootLayout({

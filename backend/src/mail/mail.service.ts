@@ -481,7 +481,7 @@ export class MailService {
                 html: this.wrapEmail({
                     eyebrow: 'Picked Up',
                     title: 'Enjoy your meal!',
-                    preheader: 'Thanks for choosing Eggs Ok — we hope you love it!',
+                    preheader: 'Thanks for choosing Eggs Ok we hope you love it!',
                     intro: `Hi ${this.safeText(order.customerName)}, your order #${this.safeText(order.orderNumber)} has been picked up. Thank you for choosing Eggs Ok!`,
                     cta: { text: 'Leave a Review', link: `${websiteUrl}/review?order=${order.orderNumber}` },
                     footer: 'We hope you love your food! Consider leaving us a review.',

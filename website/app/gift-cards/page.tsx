@@ -587,7 +587,7 @@ export default function GiftCardsPage() {
               &copy; {new Date().getFullYear()} Eggs Ok. All rights reserved.
             </p>
             <p id="footer-credit" style={{ fontSize: '13px', color: '#ffffff' }}>
-              Built by <span id="footer-credit-brand" style={{ color: '#FED800' }}>RestoRise Business Solutions</span>
+              {/* Built by <span id="footer-credit-brand" style={{ color: '#FED800' }}>RestoRise Business Solutions</span> */}
             </p>
           </div>
         </div>

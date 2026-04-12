@@ -12,18 +12,19 @@ import {
   Gift,
   ArrowRight,
   ShoppingCart,
+  ChevronLeft,
+  ChevronRight,
+  X,
+  Plus,
+  Minus,
 } from 'lucide-react';
 import { useStoreSettings } from '../hooks/useStoreSettings';
+import { useCart } from './context/CartContext';
 
 /* ─────────────────────────────────────────────
    DATA
 ───────────────────────────────────────────── */
-const FAVORITES = [
-  { id: 1, name: 'Ultimate Sammies Sandwich',  img: '/main-menu/Fully Loaded Sandwich.jpg',    price: '$14.50', tag: 'Best Seller', desc: '2 fried eggs, Cheddar, hashbrown, applewood smoked bacon' },
-  { id: 2, name: 'Breakfast BLT Sandwich',     img: '/main-menu/Breakfast BLT Sandwich.jpg',   price: '$14.50', tag: 'Popular',    desc: 'Applewood smoked bacon, romaine, tomato, 2 fried eggs' },
-  { id: 3, name: 'Fully Loaded Sandwich',      img: '/main-menu/Fully Loaded Sandwich.jpg',    price: '$14.50', tag: 'Fan Fave',   desc: 'Scrambled eggs, Cheddar, tomato, avocado, spinach' },
-  { id: 4, name: 'Sunrise Burrito',            img: '/main-menu/Sunrise Burrito.jpg',          price: '$13.00', tag: 'New',        desc: 'Scrambled eggs, black beans, salsa, sour cream, cheddar' },
-];
+// No static favorites — all come from menu management (isPopular items)
 
 const MENU_TILES = [
   { label: 'Breakfast Sandwiches', img: '/main-menu/Our-Gallery/1.webp', items: '9 items' },
@@ -34,7 +35,7 @@ const MENU_TILES = [
   { label: 'Burritos',             img: '/main-menu/Our-Gallery/6.webp',        items: '9 items' },
   { label: 'Smoothies',            img: '/main-menu/Our-Gallery/7.webp',        items: '7 items' },
   { label: 'Omelettes',            img: '/main-menu/Our-Gallery/8.webp',       items: '4 items' },
-  { label: 'Burritos',             img: '/main-menu/Our-Gallery/8.webp',        items: '9 items' },
+  { label: 'Burritos',             img: '/main-menu/Our-Gallery/9.webp',        items: '9 items' },
 ];
 
 const REVIEWS = [
@@ -122,29 +123,101 @@ const API = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3002/api';
 
 export default function HomePage() {
   const [openFaq, setOpenFaq] = useState<number | null>(null);
-  const { isOpen, statusMessage } = useStoreSettings();
+  const { isOpen, statusMessage, isDeliveryEnabled, isPickupEnabled } = useStoreSettings();
+  const { addToCart, orderType, setOrderType } = useCart();
+
+  // Favorites carousel
+  const favScrollRef = useRef<HTMLDivElement>(null);
+  const scrollFavorites = (dir: 'left' | 'right') => {
+    favScrollRef.current?.scrollBy({ left: dir === 'right' ? 320 : -320, behavior: 'smooth' });
+  };
+
+  // Add-to-cart modal state
+  const [selectedFav, setSelectedFav] = useState<any | null>(null);
+  const [favQty, setFavQty] = useState(1);
+  const [fullMenuItem, setFullMenuItem] = useState<any | null>(null);
+  const [allMenuItems, setAllMenuItems] = useState<any[]>([]);
+  const [selectedModifiers, setSelectedModifiers] = useState<Record<number, number[]>>({});
+  const [favInstructions, setFavInstructions] = useState('');
+
+  const openFavModal = (fav: any) => {
+    setSelectedFav(fav);
+    setFavQty(1);
+    setSelectedModifiers({});
+    setFavInstructions('');
+    // Use already-fetched full item data
+    const match = allMenuItems.find((i: any) => i.id === fav.id);
+    if (match) {
+      setFullMenuItem(match);
+    } else {
+      // Fallback: fetch if not yet loaded
+      setFullMenuItem(null);
+      fetch(`${API}/menu/items`)
+        .then(r => r.ok ? r.json() : [])
+        .then(items => {
+          const found = items.find((i: any) => i.id === fav.id);
+          if (found) setFullMenuItem(found);
+        })
+        .catch(() => {});
+    }
+  };
+
+  const toggleModifier = (groupId: number, optId: number, maxSel: number) => {
+    setSelectedModifiers(prev => {
+      const current = prev[groupId] || [];
+      if (current.includes(optId)) return { ...prev, [groupId]: current.filter(id => id !== optId) };
+      if (maxSel === 1) return { ...prev, [groupId]: [optId] };
+      if (current.length >= maxSel) return prev;
+      return { ...prev, [groupId]: [...current, optId] };
+    });
+  };
+
+  const canAddFav = () => {
+    if (!fullMenuItem?.modifiers) return true;
+    return fullMenuItem.modifiers.filter((g: any) => g.required).every((g: any) => (selectedModifiers[g.id] || []).length >= Math.max(g.minSelections, 1));
+  };
+
+  const handleAddFav = () => {
+    if (!fullMenuItem || !canAddFav()) return;
+    addToCart(fullMenuItem, favQty, selectedModifiers, favInstructions);
+    setSelectedFav(null);
+    setFullMenuItem(null);
+  };
+
+  const getModifierTotal = () => {
+    if (!fullMenuItem?.modifiers) return 0;
+    let total = 0;
+    fullMenuItem.modifiers.forEach((group: any) => {
+      (selectedModifiers[group.id] || []).forEach((optId: number) => {
+        const opt = group.options.find((o: any) => o.id === optId);
+        if (opt) total += Number(opt.price);
+      });
+    });
+    return total;
+  };
 
   // Dynamic data with static fallbacks
   const [livePopular, setLivePopular] = useState<any[] | null>(null);
   const [liveReviews, setLiveReviews] = useState<any[] | null>(null);
 
   useEffect(() => {
-    // Fetch popular menu items
+    // Fetch menu items from menu management
     fetch(`${API}/menu/items`)
       .then(r => r.ok ? r.json() : [])
       .then(items => {
-        const popular = items
-          .filter((i: any) => i.isAvailable && i.isPopular)
-          .slice(0, 4)
+        const activeItems = items.filter((i: any) => !i.isDeleted);
+        setAllMenuItems(activeItems);
+        const available = activeItems
+          .filter((i: any) => i.isAvailable)
           .map((i: any) => ({
             id: i.id,
             name: i.name,
-            img: i.image || '/main-menu/Fully Loaded Sandwich.jpg',
+            img: i.image || '',
             price: `$${Number(i.pickupPrice).toFixed(2)}`,
-            tag: 'Popular',
+            tag: i.isPopular ? 'Popular' : '',
             desc: i.description || '',
           }));
-        if (popular.length > 0) setLivePopular(popular);
+        if (available.length > 0) setLivePopular(available);
       })
       .catch(() => {});
 
@@ -154,8 +227,7 @@ export default function HomePage() {
       .then(raw => {
         const reviews = Array.isArray(raw) ? raw : (raw.data || []);
         const published = reviews
-          .filter((r: any) => r.status === 'Published' && r.rating >= 4)
-          .slice(0, 4)
+          .filter((r: any) => r.status === 'Published')
           .map((r: any) => ({
             name: r.customer,
             stars: r.rating,
@@ -167,8 +239,16 @@ export default function HomePage() {
       .catch(() => {});
   }, []);
 
-  const displayFavorites = livePopular || FAVORITES;
-  const displayReviews = liveReviews || REVIEWS;
+  const displayFavorites = livePopular || [];
+  const allReviews = liveReviews || REVIEWS;
+
+  // Reviews carousel + star filter
+  const [starFilter, setStarFilter] = useState<number | null>(null);
+  const reviewScrollRef = useRef<HTMLDivElement>(null);
+  const scrollReviews = (dir: 'left' | 'right') => {
+    reviewScrollRef.current?.scrollBy({ left: dir === 'right' ? 380 : -380, behavior: 'smooth' });
+  };
+  const displayReviews = starFilter ? allReviews.filter(r => r.stars === starFilter) : allReviews;
 
   const heroReveal      = useReveal();
   const featuredReveal  = useReveal();
@@ -258,18 +338,98 @@ export default function HomePage() {
         .hero-cta { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
         .hero-stats { display: flex; gap: 40px; margin-top: 40px; justify-content: center; flex-wrap: wrap; }
 
-        /* ── Favorites ── */
-        .fav-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 20px; }
+        /* ── Favorites Carousel ── */
+        .fav-carousel-wrap { position: relative; }
+        .fav-grid {
+          display: flex; gap: 20px; overflow-x: auto; scroll-behavior: smooth;
+          scrollbar-width: none; -ms-overflow-style: none; padding: 4px 0;
+        }
+        .fav-grid::-webkit-scrollbar { display: none; }
         .fav-card {
           background: #111; display: flex; flex-direction: column; align-items: center;
-          text-align: center; border-radius: 18px; padding: 0 0 20px; overflow: hidden;
+          text-align: center; border-radius: 16px; padding: 0 0 16px; overflow: hidden;
           transition: background 0.18s, transform 0.25s, box-shadow 0.25s;
           cursor: pointer; text-decoration: none; border: 1px solid #1A1A1A;
+          min-width: calc(25% - 15px); max-width: calc(25% - 15px); flex-shrink: 0;
         }
         .fav-card:hover { background: #161616; transform: translateY(-4px); box-shadow: 0 12px 40px rgba(254,216,0,0.08); border-color: #FED80030; }
-        .fav-img-wrap { height: 220px; width: 100%; overflow: hidden; position: relative; margin-bottom: 20px; flex-shrink: 0; }
+        .fav-img-wrap { height: 180px; width: 100%; overflow: hidden; position: relative; margin-bottom: 14px; flex-shrink: 0; }
         .fav-img-wrap img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.5s cubic-bezier(0.16,1,0.3,1); }
         .fav-card:hover .fav-img-wrap img { transform: scale(1.06); }
+        .fav-arrow {
+          position: absolute; top: 50%; transform: translateY(-50%); z-index: 10;
+          width: 44px; height: 44px; border-radius: 50%;
+          background: rgba(0,0,0,0.85); border: 1px solid #2A2A2A;
+          color: #FED800; cursor: pointer;
+          display: flex; align-items: center; justify-content: center;
+          transition: background 0.15s, border-color 0.15s;
+        }
+        .fav-arrow:hover { background: #111; border-color: #FED800; }
+        .fav-arrow-left { left: -22px; }
+        .fav-arrow-right { right: -22px; }
+
+        /* ── Add-to-cart Modal (Home Page) ── */
+        .home-modal-backdrop {
+          position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 500;
+          display: flex; align-items: center; justify-content: center; padding: 16px;
+        }
+        .home-modal-box {
+          background: #111; border: 1px solid #1E1E1E; border-radius: 24px;
+          max-width: 480px; width: 100%; max-height: 90vh; overflow-y: auto;
+        }
+        .home-modal-box::-webkit-scrollbar { width: 4px; }
+        .home-modal-box::-webkit-scrollbar-thumb { background: #333; border-radius: 4px; }
+        .home-modal-img-wrap { position: relative; height: 260px; overflow: hidden; border-radius: 24px 24px 0 0; }
+        .home-modal-img-wrap img { width: 100%; height: 100%; object-fit: cover; }
+        .home-modal-close {
+          position: absolute; top: 12px; right: 12px; width: 40px; height: 40px;
+          border-radius: 50%; background: rgba(0,0,0,0.75); border: 1px solid rgba(255,255,255,0.1);
+          color: #fff; cursor: pointer; display: flex; align-items: center; justify-content: center;
+        }
+        .home-modal-close:hover { background: rgba(0,0,0,0.95); }
+        .home-modal-body { padding: 24px; }
+        .home-modal-name { font-family: 'Bebas Neue', sans-serif; font-size: 28px; letter-spacing: 1px; color: #FED800; margin-bottom: 8px; }
+        .home-modal-desc { font-size: 14px; color: #999; line-height: 1.7; margin-bottom: 20px; }
+        .home-modal-price-row { display: flex; gap: 10px; margin-bottom: 20px; }
+        .home-modal-price-card {
+          flex: 1; padding: 12px; border-radius: 10px; cursor: pointer; text-align: center;
+          border: 1px solid #2A2A2A; background: #0A0A0A; transition: all 0.15s;
+        }
+        .home-modal-price-card.active { border-color: #FED800; background: #FED80010; }
+        .home-modal-modifier-group { margin-bottom: 16px; }
+        .home-modal-modifier-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+        .home-modal-modifier-name { font-size: 13px; font-weight: 700; color: #fff; text-transform: uppercase; letter-spacing: 0.5px; }
+        .home-modal-modifier-badge { font-size: 11px; padding: 2px 8px; border-radius: 20px; font-weight: 600; }
+        .home-modal-modifier-opt {
+          display: flex; justify-content: space-between; align-items: center;
+          padding: 10px 12px; border-radius: 10px; cursor: pointer;
+          border: 1px solid #1A1A1A; margin-bottom: 6px; transition: all 0.12s;
+        }
+        .home-modal-modifier-opt.selected { border-color: #FED800; background: #FED80010; }
+        .home-modal-modifier-opt:hover { border-color: #333; }
+        .home-modal-add-row {
+          display: flex; align-items: center; gap: 12px; margin-top: 20px;
+          padding-top: 16px; border-top: 1px solid #1E1E1E;
+        }
+        .home-modal-qty-wrap {
+          display: flex; align-items: center; gap: 0; border: 1px solid #2A2A2A;
+          border-radius: 10px; overflow: hidden;
+        }
+        .home-modal-qty-btn {
+          width: 40px; height: 40px; background: #0A0A0A; border: none;
+          color: #fff; font-size: 18px; cursor: pointer; display: flex;
+          align-items: center; justify-content: center;
+        }
+        .home-modal-qty-btn:hover { background: #1A1A1A; }
+        .home-modal-qty-val { width: 44px; text-align: center; font-size: 15px; font-weight: 700; color: #fff; background: #0A0A0A; }
+        .home-modal-add-btn {
+          flex: 1; padding: 14px; border-radius: 10px; border: none;
+          font-size: 15px; font-weight: 700; cursor: pointer;
+          transition: background 0.15s;
+        }
+        .home-modal-add-btn.enabled { background: #FED800; color: #000; }
+        .home-modal-add-btn.enabled:hover { background: #e8c400; }
+        .home-modal-add-btn.disabled { background: #1A1A1A; color: #555; cursor: not-allowed; }
 
         /* ── Menu Tiles ── */
         .menu-tiles { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; margin-bottom: 44px; }
@@ -387,16 +547,45 @@ export default function HomePage() {
         }
         .delivery-buttons img:hover { transform: translateY(-3px); opacity: 1; }
 
-        /* ── Reviews ── */
-        .reviews-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 16px; }
+        /* ── Reviews Carousel ── */
+        .reviews-carousel-wrap { position: relative; }
+        .reviews-grid {
+          display: flex; gap: 16px; overflow-x: auto; scroll-behavior: smooth;
+          scrollbar-width: none; -ms-overflow-style: none; padding: 4px 0;
+        }
+        .reviews-grid::-webkit-scrollbar { display: none; }
         .review-card {
           background: #0D0D0D;
           border: 1px solid #1A1A1A;
           border-left: 3px solid #FED800;
-          border-radius: 18px; padding: 32px;
+          border-radius: 18px; padding: 28px;
           transition: transform 0.25s, box-shadow 0.25s;
+          min-width: calc(33.33% - 11px); max-width: calc(33.33% - 11px); flex-shrink: 0;
         }
         .review-card:hover { transform: translateY(-2px); box-shadow: 0 12px 36px rgba(254,216,0,0.06); }
+        .review-arrow {
+          position: absolute; top: 50%; transform: translateY(-50%); z-index: 10;
+          width: 44px; height: 44px; border-radius: 50%;
+          background: rgba(0,0,0,0.85); border: 1px solid #2A2A2A;
+          color: #FED800; cursor: pointer;
+          display: flex; align-items: center; justify-content: center;
+          transition: background 0.15s, border-color 0.15s;
+        }
+        .review-arrow:hover { background: #111; border-color: #FED800; }
+        .review-arrow-left { left: -22px; }
+        .review-arrow-right { right: -22px; }
+        .star-filter-wrap {
+          display: flex; justify-content: center; gap: 8px; margin-top: 20px; flex-wrap: wrap;
+        }
+        .star-filter-btn {
+          display: inline-flex; align-items: center; gap: 5px;
+          padding: 7px 16px; border-radius: 20px;
+          border: 1px solid #2A2A2A; background: transparent;
+          color: #888; font-size: 13px; font-weight: 600;
+          cursor: pointer; transition: all 0.15s; font-family: inherit;
+        }
+        .star-filter-btn:hover { border-color: #FED80060; color: #FED800; }
+        .star-filter-btn.active { border-color: #FED800; background: #FED80015; color: #FED800; }
 
         /* ── Rewards ── */
         .rewards-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
@@ -438,8 +627,8 @@ export default function HomePage() {
 
         /* ═══ RESPONSIVE ═══ */
         @media (max-width: 1024px) {
-          .fav-grid { grid-template-columns: repeat(2,1fr); }
-          .reviews-grid { grid-template-columns: 1fr; }
+          .fav-card { min-width: calc(33.33% - 14px); max-width: calc(33.33% - 14px); }
+          .review-card { min-width: calc(50% - 8px); max-width: calc(50% - 8px); }
           .rewards-grid { grid-template-columns: 1fr; gap: 40px; }
           .location-grid { grid-template-columns: 1fr; }
           .menu-tiles { grid-template-columns: repeat(2,1fr); }
@@ -456,7 +645,8 @@ export default function HomePage() {
           .order-card-box { margin: 40px auto; max-width: 92%; }
         }
         @media (max-width: 768px) {
-          .fav-grid { grid-template-columns: 1fr; }
+          .fav-card { min-width: calc(50% - 10px); max-width: calc(50% - 10px); }
+          .review-card { min-width: 85%; max-width: 85%; }
           .hero-stats { gap: 24px; flex-wrap: wrap; }
           .footer-grid { grid-template-columns: 1fr; gap: 28px; }
           .footer-brand { grid-column: unset; }
@@ -564,31 +754,45 @@ export default function HomePage() {
             <Link href="/order" className="btn-outline featured-view-all-btn">View Full Menu <ArrowRight size={15} aria-hidden="true" /></Link>
           </div>
 
-          <div id="favorites-grid" className="fav-grid" role="list" aria-label="Featured menu items">
-            {displayFavorites.map((item, i) => (
-              <Link
-                href={`/order?productId=${item.id}`} key={item.id}
-                id={`fav-card-${item.id}`}
-                className={`fav-card reveal ${featuredReveal.visible ? 'visible' : ''}`}
-                style={{ transitionDelay: `${0.08 * i}s` }}
-                role="listitem" aria-label={`${item.name} — ${item.price}`}
-              >
-                <div className="fav-img-wrap">
-                  <Image src={item.img} alt={item.name} width={400} height={220} style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
-                  <div className="fav-tag-badge" style={{ position: 'absolute', top: '14px', left: '14px', background: '#000000CC', backdropFilter: 'blur(8px)', border: '1px solid #FED80040', borderRadius: '20px', padding: '4px 12px' }}>
-                    <span className="fav-tag-text" style={{ fontSize: '11px', fontWeight: '700', color: '#FED800', letterSpacing: '0.5px' }}>{item.tag}</span>
+          <div className="fav-carousel-wrap">
+            <button className="fav-arrow fav-arrow-left" onClick={() => scrollFavorites('left')} aria-label="Scroll left">
+              <ChevronLeft size={22} />
+            </button>
+            <div id="favorites-grid" className="fav-grid" ref={favScrollRef} role="list" aria-label="Featured menu items">
+              {displayFavorites.map((item, i) => (
+                <div
+                  key={`fav-${item.id}-${i}`}
+                  id={`fav-card-${item.id}`}
+                  className={`fav-card reveal ${featuredReveal.visible ? 'visible' : ''}`}
+                  style={{ transitionDelay: `${0.08 * i}s` }}
+                  role="listitem" aria-label={`${item.name} — ${item.price}`}
+                  onClick={() => openFavModal(item)}
+                >
+                  <div className="fav-img-wrap">
+                    {item.img
+                      ? <img src={item.img} alt={item.name} style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
+                      : <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'linear-gradient(135deg, #1A1A00, #0A0A0A)' }}>
+                          <svg width="40" height="40" viewBox="0 0 64 64" fill="none"><circle cx="32" cy="32" r="22" stroke="#2A2A2A" strokeWidth="1.5"/><path d="M20 32 Q32 20 44 32" stroke="#2A2A2A" strokeWidth="1.5" strokeLinecap="round"/><circle cx="32" cy="38" r="6" stroke="#2A2A2A" strokeWidth="1.5"/></svg>
+                        </div>
+                    }
+                    {item.tag && <div className="fav-tag-badge" style={{ position: 'absolute', top: '14px', left: '14px', background: '#000000CC', backdropFilter: 'blur(8px)', border: '1px solid #FED80040', borderRadius: '20px', padding: '4px 12px' }}>
+                      <span className="fav-tag-text" style={{ fontSize: '11px', fontWeight: '700', color: '#FED800', letterSpacing: '0.5px' }}>{item.tag}</span>
+                    </div>}
+                    <div className="fav-add-btn" style={{ position: 'absolute', bottom: '14px', right: '14px', width: '36px', height: '36px', borderRadius: '50%', background: '#FED800', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 4px 12px rgba(0,0,0,0.4)' }} aria-hidden="true">
+                      <Plus size={15} color="#000" strokeWidth={2.8} />
+                    </div>
                   </div>
-                  <div className="fav-add-btn" style={{ position: 'absolute', bottom: '14px', right: '14px', width: '36px', height: '36px', borderRadius: '50%', background: '#FED800', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 4px 12px rgba(0,0,0,0.4)' }} aria-hidden="true">
-                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#000" strokeWidth="2.8" strokeLinecap="round"><line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" /></svg>
+                  <div className="fav-card-body" style={{ padding: '0 14px 4px', width: '100%' }}>
+                    <p className="fav-card-name" style={{ fontSize: '14px', fontWeight: '700', color: '#ffffff', marginBottom: '4px', lineHeight: 1.3 }}>{item.name}</p>
+                    <p className="fav-card-desc" style={{ fontSize: '12px', color: '#999', lineHeight: 1.4, marginBottom: '8px', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical' as any, overflow: 'hidden' }}>{item.desc}</p>
+                    <p className="fav-card-price" style={{ fontSize: '16px', fontWeight: '800', color: '#FED800' }}>{item.price}</p>
                   </div>
                 </div>
-                <div className="fav-card-body" style={{ padding: '0 20px 4px', width: '100%' }}>
-                  <p className="fav-card-name" style={{ fontSize: '15px', fontWeight: '700', color: '#ffffff', marginBottom: '6px', lineHeight: 1.3 }}>{item.name}</p>
-                  <p className="fav-card-desc" style={{ fontSize: '13px', color: '#999', lineHeight: 1.5, marginBottom: '10px' }}>{item.desc}</p>
-                  <p className="fav-card-price" style={{ fontSize: '17px', fontWeight: '800', color: '#FED800' }}>{item.price}</p>
-                </div>
-              </Link>
-            ))}
+              ))}
+            </div>
+            <button className="fav-arrow fav-arrow-right" onClick={() => scrollFavorites('right')} aria-label="Scroll right">
+              <ChevronRight size={22} />
+            </button>
           </div>
         </div>
       </section>
@@ -608,7 +812,7 @@ export default function HomePage() {
               <h2 id="story-heading" className="story-heading">Born in the Heart <span className="text-accent" style={{ color: '#FED800' }}>of West Philly</span></h2>
 
               <p className="story-body">
-                Eggs Ok started with a simple idea — great breakfast should be fast, fresh, and made with
+                Eggs Ok started with a simple idea  great breakfast should be fast, fresh, and made with
                 real ingredients. Located at 3517 Lancaster Ave, we&apos;ve been serving the neighborhood
                 made-to-order sandwiches, burritos, omelettes, and specialty drinks since day one.
                 Every item on our menu is crafted with care and ready in about 15 minutes.
@@ -743,43 +947,71 @@ export default function HomePage() {
       ══════════════════════════════════════════ */}
       <section id="reviews" className="section-reviews" style={{ background: '#0A0A0A', padding: '80px 0' }} aria-labelledby="reviews-heading">
         <div className="container reviews-container" ref={reviewsReveal.ref}>
-          <div className={`reviews-header reveal ${reviewsReveal.visible ? 'visible' : ''}`} style={{ textAlign: 'center', marginBottom: '56px' }}>
+          <div className={`reviews-header reveal ${reviewsReveal.visible ? 'visible' : ''}`} style={{ textAlign: 'center', marginBottom: '40px' }}>
             <span className="sec-label">Reviews</span>
             <h2 id="reviews-heading" className="sec-heading">
               WHAT OUR GUESTS <span className="text-accent" style={{ color: '#FED800' }}>ARE SAYING</span>
             </h2>
             <div id="reviews-rating-bar" className="reviews-rating-bar" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '5px', marginTop: '14px' }}>
               {[0,1,2,3,4].map(i => <Star key={i} size={19} color="#FED800" fill="#FED800" aria-hidden="true" />)}
-              <span className="reviews-rating-text" style={{ fontSize: '14px', color: '#999', marginLeft: '8px' }}>5.0 average from 200+ reviews</span>
+              <span className="reviews-rating-text" style={{ fontSize: '14px', color: '#999', marginLeft: '8px' }}>
+                {allReviews.length > 0
+                  ? `${(allReviews.reduce((a, r) => a + r.stars, 0) / allReviews.length).toFixed(1)} average from ${allReviews.length} reviews`
+                  : '5.0 average'}
+              </span>
+            </div>
+
+            {/* Star Filters */}
+            <div className="star-filter-wrap">
+              <button className={`star-filter-btn ${starFilter === null ? 'active' : ''}`} onClick={() => setStarFilter(null)}>
+                All
+              </button>
+              {[5, 4, 3, 2, 1].map(s => (
+                <button key={s} className={`star-filter-btn ${starFilter === s ? 'active' : ''}`} onClick={() => setStarFilter(starFilter === s ? null : s)}>
+                  {s} <Star size={12} color="#FED800" fill="#FED800" />
+                </button>
+              ))}
             </div>
           </div>
 
-          <div id="reviews-grid" className="reviews-grid" role="list" aria-label="Customer reviews">
-            {displayReviews.map((r, i) => (
-              <article
-                key={i}
-                id={`review-card-${i}`}
-                className={`review-card reveal ${reviewsReveal.visible ? 'visible' : ''}`}
-                style={{ transitionDelay: `${0.1 * i}s` }}
-                role="listitem"
-              >
-                <div className="review-stars" style={{ display: 'flex', gap: '3px', marginBottom: '18px' }} aria-label={`${r.stars} out of 5 stars`}>
-                  {[0,1,2,3,4].map(s => <Star key={s} size={13} color="#FED800" fill="#FED800" aria-hidden="true" />)}
+          <div className="reviews-carousel-wrap">
+            <button className="review-arrow review-arrow-left" onClick={() => scrollReviews('left')} aria-label="Scroll reviews left">
+              <ChevronLeft size={22} />
+            </button>
+            <div id="reviews-grid" className="reviews-grid" ref={reviewScrollRef} role="list" aria-label="Customer reviews">
+              {displayReviews.length === 0 ? (
+                <div style={{ minWidth: '100%', textAlign: 'center', padding: '40px 20px' }}>
+                  <p style={{ fontSize: '14px', color: '#555' }}>No {starFilter}-star reviews yet</p>
                 </div>
-                <blockquote className="review-quote" style={{ fontSize: '15px', color: '#ffffff', lineHeight: 1.75, marginBottom: '24px', fontStyle: 'italic' }}>
-                  &ldquo;{r.text}&rdquo;
-                </blockquote>
-                <div className="review-footer" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <div className="review-author" style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                    <div className="review-avatar" style={{ width: '38px', height: '38px', borderRadius: '50%', background: '#FED80020', border: '1px solid #FED80050', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }} aria-hidden="true">
-                      <span className="review-avatar-initial" style={{ fontSize: '14px', fontWeight: '700', color: '#FED800' }}>{r.name[0]}</span>
-                    </div>
-                    <cite className="review-name" style={{ fontSize: '14px', fontWeight: '600', color: '#ffffff', fontStyle: 'normal' }}>{r.name}</cite>
+              ) : displayReviews.map((r, i) => (
+                <article
+                  key={i}
+                  id={`review-card-${i}`}
+                  className={`review-card reveal ${reviewsReveal.visible ? 'visible' : ''}`}
+                  style={{ transitionDelay: `${0.1 * i}s` }}
+                  role="listitem"
+                >
+                  <div className="review-stars" style={{ display: 'flex', gap: '3px', marginBottom: '18px' }} aria-label={`${r.stars} out of 5 stars`}>
+                    {[0,1,2,3,4].map(s => <Star key={s} size={13} color={s < r.stars ? '#FED800' : '#333'} fill={s < r.stars ? '#FED800' : 'none'} aria-hidden="true" />)}
                   </div>
-                  <time className="review-date" style={{ fontSize: '12px', color: '#555' }}>{r.date}</time>
-                </div>
-              </article>
-            ))}
+                  <blockquote className="review-quote" style={{ fontSize: '15px', color: '#ffffff', lineHeight: 1.75, marginBottom: '24px', fontStyle: 'italic' }}>
+                    &ldquo;{r.text}&rdquo;
+                  </blockquote>
+                  <div className="review-footer" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <div className="review-author" style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                      <div className="review-avatar" style={{ width: '38px', height: '38px', borderRadius: '50%', background: '#FED80020', border: '1px solid #FED80050', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }} aria-hidden="true">
+                        <span className="review-avatar-initial" style={{ fontSize: '14px', fontWeight: '700', color: '#FED800' }}>{r.name[0]}</span>
+                      </div>
+                      <cite className="review-name" style={{ fontSize: '14px', fontWeight: '600', color: '#ffffff', fontStyle: 'normal' }}>{r.name}</cite>
+                    </div>
+                    <time className="review-date" style={{ fontSize: '12px', color: '#555' }}>{r.date}</time>
+                  </div>
+                </article>
+              ))}
+            </div>
+            <button className="review-arrow review-arrow-right" onClick={() => scrollReviews('right')} aria-label="Scroll reviews right">
+              <ChevronRight size={22} />
+            </button>
           </div>
         </div>
       </section>
@@ -943,7 +1175,7 @@ export default function HomePage() {
             <div id="location-map" className="location-map-panel" style={{ background: '#0A0A0A', minHeight: '460px', position: 'relative', overflow: 'hidden' }}>
               <iframe
                 id="location-map-iframe"
-                title="Eggs Ok location on Google Maps — 3517 Lancaster Ave, Philadelphia PA 19104"
+                title="Eggs Ok location on Google Maps  3517 Lancaster Ave, Philadelphia PA 19104"
                 src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3058.7!2d-75.2!3d39.96!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c6c65b7a6a5555%3A0x0!2s3517+Lancaster+Ave%2C+Philadelphia%2C+PA+19104!5e0!3m2!1sen!2sus!4v1234567890"
                 width="100%" height="100%"
                 style={{ border: 0, filter: 'invert(90%) hue-rotate(180deg)', minHeight: '460px', display: 'block' }}
@@ -1035,10 +1267,110 @@ export default function HomePage() {
 
           <div id="footer-bottom" className="footer-bottom">
             <p id="footer-copyright" className="footer-copyright" style={{ fontSize: '13px', color: '#ffffff' }}>&copy; {new Date().getFullYear()} Eggs Ok. All rights reserved.</p>
-            <p id="footer-credit" className="footer-credit" style={{ fontSize: '13px', color: '#ffffff' }}>Built by <span className="footer-credit-brand" style={{ color: '#FED800' }}>RestoRise Business Solutions</span></p>
+            {/* <p id="footer-credit" className="footer-credit" style={{ fontSize: '13px', color: '#ffffff' }}>Built by <span className="footer-credit-brand" style={{ color: '#FED800' }}>RestoRise Business Solutions</span></p> */}
           </div>
         </div>
       </footer>
+
+      {/* ══════════════════════════════════════════
+          ADD-TO-CART MODAL (from favorites)
+      ══════════════════════════════════════════ */}
+      {selectedFav && (
+        <div className="home-modal-backdrop" onClick={() => { setSelectedFav(null); setFullMenuItem(null); }}>
+          <div className="home-modal-box" onClick={e => e.stopPropagation()}>
+            <div className="home-modal-img-wrap">
+              {selectedFav.img
+                ? <img src={selectedFav.img} alt={selectedFav.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                : <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'linear-gradient(135deg, #1A1A00, #0A0A0A)' }}>
+                    <svg width="48" height="48" viewBox="0 0 64 64" fill="none"><circle cx="32" cy="32" r="22" stroke="#2A2A2A" strokeWidth="1.5"/><path d="M20 32 Q32 20 44 32" stroke="#2A2A2A" strokeWidth="1.5" strokeLinecap="round"/><circle cx="32" cy="38" r="6" stroke="#2A2A2A" strokeWidth="1.5"/></svg>
+                  </div>
+              }
+              <button className="home-modal-close" onClick={() => { setSelectedFav(null); setFullMenuItem(null); }}>
+                <X size={16} />
+              </button>
+            </div>
+            <div className="home-modal-body">
+              <h2 className="home-modal-name">{selectedFav.name}</h2>
+              <p className="home-modal-desc">{selectedFav.desc}</p>
+
+              {fullMenuItem ? (
+                <>
+                  {/* Price cards */}
+                  <div className="home-modal-price-row">
+                    {(['pickup', 'delivery'] as const).filter(type => type === 'pickup' ? isPickupEnabled : isDeliveryEnabled).map(type => (
+                      <div key={type} className={`home-modal-price-card ${orderType === type ? 'active' : ''}`} onClick={() => setOrderType(type)}>
+                        <p style={{ fontSize: '11px', color: '#888', fontWeight: '600', textTransform: 'uppercase', marginBottom: '4px' }}>{type}</p>
+                        <p style={{ fontSize: '18px', fontWeight: '800', color: orderType === type ? '#FED800' : '#fff' }}>
+                          ${(Number(type === 'pickup' ? fullMenuItem.pickupPrice : fullMenuItem.deliveryPrice) || 0).toFixed(2)}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* Modifiers */}
+                  {fullMenuItem.modifiers?.map((group: any) => (
+                    <div key={group.id} className="home-modal-modifier-group">
+                      <div className="home-modal-modifier-header">
+                        <p className="home-modal-modifier-name">{group.name}</p>
+                        <span className="home-modal-modifier-badge" style={{ background: group.required ? '#FC030120' : '#22C55E20', color: group.required ? '#FC0301' : '#22C55E', border: `1px solid ${group.required ? '#FC030140' : '#22C55E40'}` }}>
+                          {group.required ? 'Required' : 'Optional'} · {group.maxSelections === 1 ? 'Choose 1' : `Up to ${group.maxSelections}`}
+                        </span>
+                      </div>
+                      {group.options.map((opt: any) => {
+                        const isSel = (selectedModifiers[group.id] || []).includes(opt.id);
+                        return (
+                          <div key={opt.id} className={`home-modal-modifier-opt ${isSel ? 'selected' : ''}`} onClick={() => toggleModifier(group.id, opt.id, group.maxSelections)}>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                              <div style={{ width: '20px', height: '20px', borderRadius: group.maxSelections === 1 ? '50%' : '4px', border: isSel ? '2px solid #FED800' : '1px solid #2A2A2A', background: isSel ? '#FED800' : 'transparent', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                                {isSel && <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#000" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>}
+                              </div>
+                              <span style={{ fontSize: '14px', color: '#fff' }}>{opt.name}</span>
+                            </div>
+                            <span style={{ fontSize: '13px', color: Number(opt.price) > 0 ? '#FED800' : '#555' }}>
+                              {Number(opt.price) > 0 ? `+$${Number(opt.price).toFixed(2)}` : 'Free'}
+                            </span>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  ))}
+
+                  {/* Special instructions */}
+                  <div style={{ marginBottom: '8px' }}>
+                    <p style={{ fontSize: '12px', fontWeight: '700', color: '#888', textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: '6px' }}>Special Instructions</p>
+                    <textarea
+                      placeholder="Add a note (extra sauce, no onions, etc.)"
+                      value={favInstructions}
+                      onChange={e => setFavInstructions(e.target.value)}
+                      style={{ width: '100%', padding: '10px 14px', background: '#0A0A0A', border: '1px solid #2A2A2A', borderRadius: '10px', color: '#fff', fontSize: '13px', resize: 'none', height: '60px', outline: 'none', fontFamily: 'inherit' }}
+                    />
+                  </div>
+
+                  {/* Add to cart row */}
+                  <div className="home-modal-add-row">
+                    <div className="home-modal-qty-wrap">
+                      <button className="home-modal-qty-btn" onClick={() => setFavQty(q => Math.max(1, q - 1))}>
+                        <Minus size={16} />
+                      </button>
+                      <span className="home-modal-qty-val">{favQty}</span>
+                      <button className="home-modal-qty-btn" onClick={() => setFavQty(q => q + 1)}>
+                        <Plus size={16} />
+                      </button>
+                    </div>
+                    <button className={`home-modal-add-btn ${canAddFav() ? 'enabled' : 'disabled'}`} onClick={handleAddFav} disabled={!canAddFav()}>
+                      Add to Cart · ${(((Number(orderType === 'pickup' ? fullMenuItem.pickupPrice : fullMenuItem.deliveryPrice) || 0) + getModifierTotal()) * favQty).toFixed(2)}
+                    </button>
+                  </div>
+                </>
+              ) : (
+                <div style={{ textAlign: 'center', padding: '20px 0' }}>
+                  <p style={{ fontSize: '13px', color: '#888' }}>Loading item details...</p>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
     </main>
   );
 }

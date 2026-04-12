@@ -47,6 +47,9 @@ export class Customer {
     @Column({ type: 'json', nullable: true })
     pointsHistory: any; // Array of { date, description, points, type: 'earned'|'redeemed' }
 
+    @Column({ type: 'json', nullable: true })
+    redeemedRewards: any; // Array of { id, code, rewardName, type, value, redeemedAt, used }
+
     @Column({ default: 'Active' })
     status: string; // 'Active' | 'Inactive' | 'Blocked'
 

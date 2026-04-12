@@ -177,7 +177,7 @@ export default function CheckoutPage() {
 
 function CheckoutInner() {
   const router = useRouter();
-  const { isOpen, statusMessage, taxRate, storeName, storeAddress, storeTimezone } = useStoreSettings();
+  const { isOpen, statusMessage, taxRate, storeName, storeAddress, storeTimezone, isDeliveryEnabled, isPickupEnabled } = useStoreSettings();
   const [tzAbbr, setTzAbbr] = useState('ET');
   useEffect(() => {
     try {
@@ -191,11 +191,20 @@ function CheckoutInner() {
     deliveryInstructions, setDeliveryInstructions,
     scheduleType, setScheduleType, scheduleDate, setScheduleDate, scheduleTime, setScheduleTime,
     deliveryFee: cartDeliveryFee, setDeliveryFee, deliveryZone,
-    clearCart,
+    clearCart, updateQuantity, removeFromCart,
   } = useCart();
 
   const [mounted, setMounted] = useState(false);
   useEffect(() => setMounted(true), []);
+
+  // Set default order type based on allowed options
+  useEffect(() => {
+    if (!isPickupEnabled && isDeliveryEnabled) {
+      setOrderType('delivery');
+    } else if (isPickupEnabled && !isDeliveryEnabled) {
+      setOrderType('pickup');
+    }
+  }, [isPickupEnabled, isDeliveryEnabled]);
 
   // Refresh delivery fee from backend zones on page load
   useEffect(() => {
@@ -454,8 +463,9 @@ function CheckoutInner() {
       }
 
       localStorage.setItem('eggok_last_order', JSON.stringify(order));
-      clearCart();
       router.push('/confirmation');
+      // Clear cart after navigation starts so the "empty cart" error doesn't flash
+      setTimeout(() => clearCart(), 500);
     } catch (err) {
       // Order placement failed
       setOrderError(err instanceof Error ? err.message : 'Unable to place your order right now.');
@@ -637,7 +647,7 @@ function CheckoutInner() {
                   {email && !isEmailValid && <p style={{ fontSize: '11px', color: '#FC0301', marginTop: '4px' }}>Please enter a valid email address</p>}
                 </div>
               </div>
-              {!hasItems && <p style={{ fontSize: '12px', color: '#FC0301', marginTop: '8px' }}>Your cart is empty. Please add items before checking out.</p>}
+              {!hasItems && !placing && <p style={{ fontSize: '12px', color: '#FC0301', marginTop: '8px' }}>Your cart is empty. Please add items before checking out.</p>}
               {orderType === 'delivery' && !hasDeliveryAddress && <p style={{ fontSize: '12px', color: '#FC0301', marginTop: '8px' }}>Please set a delivery address before placing your order.</p>}
             </div>
 
@@ -648,7 +658,7 @@ function CheckoutInner() {
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#22C55E" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
                 </svg>
-                <span style={{ fontSize: '12px', color: '#22C55E' }}>Secured by Stripe — 256-bit SSL encryption</span>
+                <span style={{ fontSize: '12px', color: '#22C55E' }}>Secured by Stripe 256-bit SSL encryption</span>
               </div>
               {stripe ? (
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
@@ -820,7 +830,11 @@ function CheckoutInner() {
                         )}
 
                         {cartItem.specialInstructions && <p style={{ fontSize: '11px', color: '#666', margin: '2px 0 0' }}>{cartItem.specialInstructions}</p>}
-                        <p style={{ fontSize: '12px', color: '#ffffff', margin: '2px 0 0' }}>Qty: {cartItem.quantity}</p>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '0', marginTop: '6px', border: '1px solid #2A2A2A', borderRadius: '6px', overflow: 'hidden', width: 'fit-content' }}>
+                          <button onClick={() => updateQuantity(cartItem.id, cartItem.quantity - 1)} style={{ width: '28px', height: '28px', background: '#0A0A0A', border: 'none', color: '#fff', fontSize: '14px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>−</button>
+                          <span style={{ width: '30px', textAlign: 'center', fontSize: '12px', fontWeight: '700', color: '#fff', background: '#0A0A0A' }}>{cartItem.quantity}</span>
+                          <button onClick={() => updateQuantity(cartItem.id, cartItem.quantity + 1)} style={{ width: '28px', height: '28px', background: '#0A0A0A', border: 'none', color: '#fff', fontSize: '14px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>+</button>
+                        </div>
                       </div>
                       <p style={{ fontSize: '14px', fontWeight: '700', color: '#ffffff', flexShrink: 0 }}>${(getPrice(cartItem.item) * cartItem.quantity).toFixed(2)}</p>
                     </div>
@@ -905,7 +919,7 @@ function CheckoutInner() {
 
             <button onClick={applyCustomTip} disabled={!customTipAmount || parseFloat(customTipAmount) <= 0}
               style={{ width: '100%', padding: '14px', background: customTipAmount && parseFloat(customTipAmount) > 0 ? '#FED800' : '#1A1A1A', border: 'none', borderRadius: '12px', color: customTipAmount && parseFloat(customTipAmount) > 0 ? '#000' : '#555', fontSize: '15px', fontWeight: '800', cursor: customTipAmount && parseFloat(customTipAmount) > 0 ? 'pointer' : 'not-allowed' }}>
-              Done â†’
+              Done
             </button>
           </div>
         </div>
@@ -924,7 +938,7 @@ function CheckoutInner() {
               </div>
 
               <div className="co-type-toggle">
-                {(['pickup', 'delivery'] as const).map(type => (
+                {(['pickup', 'delivery'] as const).filter(type => type === 'pickup' ? isPickupEnabled : isDeliveryEnabled).map(type => (
                   <button key={type} className={`co-type-btn ${orderType === type ? 'active' : 'inactive'}`}
                     onClick={() => { setOrderType(type); if (type === 'pickup') setShowDeliveryModal(false); }}>
                     {type === 'pickup' ? 'Pickup' : 'Delivery'}

@@ -218,12 +218,15 @@ export default function CateringPage() {
         .form-input:focus { border-color: var(--y); }
         .form-input::placeholder { color: var(--t3); }
         .form-select {
-          width: 100%; padding: 13px 16px;
+          width: 100%; padding: 13px 16px; padding-right: 40px;
           background: #0D0D0D; border: 1px solid #2A2A2A;
           border-radius: 10px; color: var(--t1);
           font-size: 14px; outline: none; cursor: pointer;
           transition: border-color 0.15s; font-family: var(--font-body);
           appearance: none;
+          background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23888888' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+          background-repeat: no-repeat;
+          background-position: right 14px center;
         }
         .form-select:focus { border-color: var(--y); }
         .form-textarea {
@@ -322,7 +325,7 @@ export default function CateringPage() {
             FEED YOUR <span style={{ color: '#FED800' }}>WHOLE CREW</span>
           </h1>
           <p id="hero-subtitle" style={{ fontSize: 'clamp(15px, 2vw, 18px)', color: '#ffffff', lineHeight: '1.8', maxWidth: '520px', margin: '0 auto 40px' }}>
-            From office breakfasts to special events — Eggs Ok caters for groups of all sizes. Fresh, made-to-order food delivered to your door.
+            From office breakfasts to special events  Eggs Ok caters for groups of all sizes. Fresh, made-to-order food delivered to your door.
           </p>
           <div id="hero-cta" style={{ display: 'flex', gap: '14px', justifyContent: 'center', flexWrap: 'wrap' }}>
             <a id="hero-packages-btn" href="#packages" className="btn-yellow" style={{ fontSize: '16px', padding: '16px 34px' }}>
@@ -658,7 +661,7 @@ export default function CateringPage() {
               &copy; {new Date().getFullYear()} Eggs Ok. All rights reserved.
             </p>
             <p id="footer-credit" style={{ fontSize: '13px', color: '#ffffff' }}>
-              Built by <span id="footer-credit-brand" style={{ color: '#FED800' }}>RestoRise Business Solutions</span>
+              {/* Built by <span id="footer-credit-brand" style={{ color: '#FED800' }}>RestoRise Business Solutions</span> */}
             </p>
           </div>
         </div>

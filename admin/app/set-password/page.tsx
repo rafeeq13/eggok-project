@@ -197,7 +197,7 @@ function SetPasswordContent() {
         </div>
 
         <p style={{ textAlign: 'center', color: '#444444', fontSize: '12px', marginTop: '24px' }}>
-          RestoRise Business Solutions &copy; 2026
+          {/* RestoRise Business Solutions &copy; 2026 */}
         </p>
       </div>
     </div>

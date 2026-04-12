@@ -11,6 +11,7 @@ type User = {
     totalOrders?: number;
     totalSpent?: number;
     joinDate?: string;
+    redeemedRewards?: any[];
 };
 
 type AuthContextType = {

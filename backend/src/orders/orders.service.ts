@@ -6,6 +6,7 @@ import { Customer } from '../customers/customer.entity';
 import { MailService } from '../mail/mail.service';
 import { DeliveryService } from '../delivery/delivery.service';
 import { PaymentsService } from '../payments/payments.service';
+import { LoyaltyService } from '../loyalty/loyalty.service';
 
 @Injectable()
 export class OrdersService {
@@ -17,6 +18,7 @@ export class OrdersService {
     private mailService: MailService,
     private deliveryService: DeliveryService,
     private paymentsService: PaymentsService,
+    private loyaltyService: LoyaltyService,
   ) { }
 
   private async generateOrderNumber(): Promise<string> {
@@ -133,23 +135,34 @@ export class OrdersService {
       console.error('Failed to send owner notification email:', err);
     });
 
-    // Award loyalty points for authenticated users (1 point per dollar spent)
+    // Award loyalty points for authenticated users
     if (data.isAuthenticated && data.customerEmail) {
-      this.customersRepository.findOne({ where: { email: data.customerEmail } })
-        .then(customer => {
-          if (customer) {
-            const pointsEarned = Math.floor(Number(data.total));
-            const history = Array.isArray(customer.pointsHistory) ? customer.pointsHistory : [];
-            history.unshift({ description: `Order ${savedOrder.orderNumber}`, points: pointsEarned, type: 'earned', date: new Date().toISOString() });
-            if (history.length > 100) history.length = 100;
-            this.customersRepository.update(customer.id, {
-              points: (customer.points || 0) + pointsEarned,
-              totalPointsEarned: (customer.totalPointsEarned || 0) + pointsEarned,
-              pointsHistory: history,
-            });
-          }
-        })
-        .catch(() => {});
+      this.loyaltyService.getLoyaltySettings().then(settings => {
+        if (!settings.loyaltyEnabled) return;
+        this.customersRepository.findOne({ where: { email: data.customerEmail } })
+          .then(customer => {
+            if (customer) {
+              const multiplier = LoyaltyService.getTierMultiplier(customer.tier);
+              const basePoints = Math.floor(Number(data.total) * (settings.pointsPerDollar || 1));
+              const pointsEarned = Math.floor(basePoints * multiplier);
+              const history = Array.isArray(customer.pointsHistory) ? customer.pointsHistory : [];
+              const desc = multiplier > 1
+                ? `Order ${savedOrder.orderNumber} (${multiplier}x ${customer.tier} bonus)`
+                : `Order ${savedOrder.orderNumber}`;
+              history.unshift({ description: desc, points: pointsEarned, type: 'earned', date: new Date().toISOString() });
+              if (history.length > 100) history.length = 100;
+              const newTotalEarned = (customer.totalPointsEarned || 0) + pointsEarned;
+              const newTier = LoyaltyService.calculateTier(newTotalEarned);
+              this.customersRepository.update(customer.id, {
+                points: (customer.points || 0) + pointsEarned,
+                totalPointsEarned: newTotalEarned,
+                tier: newTier,
+                pointsHistory: history,
+              });
+            }
+          })
+          .catch(() => {});
+      }).catch(() => {});
     }
 
     // Record payment transaction
@@ -159,6 +172,7 @@ export class OrdersService {
       type: savedOrder.orderType === 'delivery' ? 'Delivery' : 'Pickup',
       orderTotal: Number(savedOrder.total),
       deliveryFee: Number(savedOrder.deliveryFee),
+      tip: Number(savedOrder.tip) || 0,
     }).catch(err => {
       console.error('Failed to record transaction:', err.message);
     });
@@ -545,11 +559,23 @@ export class OrdersService {
     }).sort((a, b) => a.rawHour - b.rawHour);
 
     const uniqueEmails = new Set(orders.map(o => o.customerEmail)).size;
+
+    // Calculate actual new vs returning customers
+    const emailOrderCounts: Record<string, number> = {};
+    orders.forEach(o => {
+      const email = o.customerEmail?.toLowerCase();
+      if (email) emailOrderCounts[email] = (emailOrderCounts[email] || 0) + 1;
+    });
+    const singleOrderCustomers = Object.values(emailOrderCounts).filter(c => c === 1).length;
+    const repeatCustomers = Object.values(emailOrderCounts).filter(c => c > 1).length;
+    const newCustomerPct = uniqueEmails > 0 ? Math.round((singleOrderCustomers / uniqueEmails) * 100) : 0;
+    const retentionPct = uniqueEmails > 0 ? Math.round((repeatCustomers / uniqueEmails) * 100) : 0;
+
     const customerData = [
       { label: 'Total Customers', value: String(uniqueEmails), color: '#22C55E', detail: 'Unique customers in period' },
-      { label: 'New Customers', value: '45%', color: '#FED800', detail: 'Estimated from first-time emails' },
+      { label: 'New Customers', value: `${newCustomerPct}%`, color: '#FED800', detail: `${singleOrderCustomers} first-time customers` },
       { label: 'Avg Orders / Cust', value: (totalCount / (uniqueEmails || 1)).toFixed(1), color: '#60A5FA', detail: 'Loyalty engagement' },
-      { label: 'Retention Rate', value: '68%', color: '#FECE86', detail: 'Repeat order probability' },
+      { label: 'Retention Rate', value: `${retentionPct}%`, color: '#FECE86', detail: `${repeatCustomers} repeat customers` },
     ];
 
     return {
@@ -559,6 +585,7 @@ export class OrdersService {
       peakHoursData,
       customerData,
       totalRevenue: Number(orders.reduce((sum, o) => sum + Number(o.total), 0).toFixed(2)),
+      totalTips: Number(orders.reduce((sum, o) => sum + (Number(o.tip) || 0), 0).toFixed(2)),
       totalOrders: totalCount,
     };
   }

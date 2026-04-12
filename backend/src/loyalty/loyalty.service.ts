@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Reward } from './reward.entity';
 import { Customer } from '../customers/customer.entity';
+import { SettingsService } from '../settings/settings.service';
 
 @Injectable()
 export class LoyaltyService {
@@ -11,7 +12,48 @@ export class LoyaltyService {
         private readonly rewardRepository: Repository<Reward>,
         @InjectRepository(Customer)
         private readonly customerRepository: Repository<Customer>,
+        private readonly settingsService: SettingsService,
     ) { }
+
+    // Calculate tier based on lifetime points
+    static calculateTier(totalPointsEarned: number): string {
+        if (totalPointsEarned >= 1500) return 'Gold';
+        if (totalPointsEarned >= 500) return 'Silver';
+        return 'Bronze';
+    }
+
+    // Get tier-based point multiplier
+    static getTierMultiplier(tier: string): number {
+        switch (tier) {
+            case 'Gold': return 2;
+            case 'Silver': return 1.5;
+            default: return 1;
+        }
+    }
+
+    // Update customer tier if needed
+    async updateCustomerTier(customerId: number): Promise<void> {
+        const customer = await this.customerRepository.findOne({ where: { id: customerId } });
+        if (!customer) return;
+        const newTier = LoyaltyService.calculateTier(customer.totalPointsEarned);
+        if (newTier !== customer.tier) {
+            await this.customerRepository.update(customerId, { tier: newTier });
+        }
+    }
+
+    // Get loyalty settings
+    async getLoyaltySettings() {
+        const settings = await this.settingsService.getSetting('loyalty');
+        return {
+            loyaltyEnabled: settings?.loyaltyEnabled ?? true,
+            pointsPerDollar: settings?.pointsPerDollar ?? 1,
+            signupBonus: settings?.signupBonus ?? 50,
+            minRedeemPoints: settings?.minRedeemPoints ?? 100,
+            pointsExpiry: settings?.pointsExpiry ?? 12,
+            birthdayBonus: settings?.birthdayBonus ?? 100,
+            referralBonus: settings?.referralBonus ?? 75,
+        };
+    }
 
     // Rewards CRUD
     findAllRewards(): Promise<Reward[]> {

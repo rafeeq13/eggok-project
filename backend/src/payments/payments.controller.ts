@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Body, UseGuards, Param } from '@nestjs/common';
 import { PaymentsService } from './payments.service';
 import { Transaction } from './transaction.entity';
 import { AdminGuard } from '../auth/admin.guard';
@@ -32,5 +32,11 @@ export class PaymentsController {
     @UseGuards(AdminGuard)
     getStats() {
         return this.paymentsService.getStats();
+    }
+
+    @Post('refund/:orderNumber')
+    @UseGuards(AdminGuard)
+    refund(@Param('orderNumber') orderNumber: string, @Body('amount') amount: number) {
+        return this.paymentsService.refundTransaction(orderNumber, amount);
     }
 }

@@ -4,11 +4,14 @@ import { CartProvider } from './context/CartContext';
 import { AuthProvider } from './context/AuthContext';
 
 export const metadata: Metadata = {
-  title: 'Eggs Ok — Breakfast & Lunch Philadelphia',
+  title: 'Eggs Ok  Breakfast & Lunch Philadelphia',
   description: 'Order online from Eggs Ok in Philadelphia. Fresh breakfast sandwiches, burritos, omelettes, and specialty drinks. Pickup and delivery available.',
   keywords: 'breakfast philadelphia, eggs ok, breakfast sandwiches, lunch philadelphia, burritos, online ordering',
+  icons: {
+    icon: '/favicon.webp',
+  },
   openGraph: {
-    title: 'Eggs Ok — Breakfast & Lunch Philadelphia',
+    title: 'Eggs Ok  Breakfast & Lunch Philadelphia',
     description: 'Order online from Eggs Ok. Fresh breakfast made daily.',
     url: 'https://eggsokphilly.com',
     siteName: 'Eggs Ok',

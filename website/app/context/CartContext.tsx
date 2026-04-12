@@ -80,6 +80,14 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   const [deliveryZone, setDeliveryZoneState] = useState(() => ls.get('eggok_deliveryzone'));
   const [deliveryMinOrder, setDeliveryMinOrderState] = useState(() => parseFloat(ls.get('eggok_deliveryminorder', '0')));
 
+  // Hydrate cart from localStorage on client mount (SSR returns empty)
+  useEffect(() => {
+    const saved = ls.getJSON<CartItem[]>('eggok_cart', []);
+    if (saved.length > 0) setCart(saved);
+    const savedType = ls.get('eggok_ordertype', 'pickup') as 'pickup' | 'delivery';
+    if (savedType) setOrderTypeState(savedType);
+  }, []);
+
   // Fetch default delivery fee from backend delivery zones
   useEffect(() => {
     const savedZone = ls.get('eggok_deliveryzone');
@@ -152,7 +160,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
           : c
         );
       }
-      return [...prev, { id: Date.now(), item, quantity, selectedModifiers, specialInstructions }];
+      return [...prev, { id: Date.now() + Math.random(), item, quantity, selectedModifiers, specialInstructions }];
     });
   };
 

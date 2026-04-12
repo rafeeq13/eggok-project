@@ -9,6 +9,7 @@ import { CustomerToken } from './customer-token.entity';
 import { Reward } from '../loyalty/reward.entity';
 import { Order } from '../orders/order.entity';
 import { MailService } from '../mail/mail.service';
+import { SettingsService } from '../settings/settings.service';
 
 const TOKEN_TTL_MS = 30 * 24 * 60 * 60 * 1000; // 30 days
 
@@ -23,6 +24,7 @@ export class AuthService {
         private rewardRepository: Repository<Reward>,
         private mailService: MailService,
         private configService: ConfigService,
+        private settingsService: SettingsService,
     ) { }
 
     private async issueToken(customerId: number): Promise<string> {
@@ -71,6 +73,13 @@ export class AuthService {
         const today = new Date().toISOString().split('T')[0];
         const hashedPassword = await bcrypt.hash(data.password, 10);
 
+        // Get signup bonus from loyalty settings
+        let signupBonus = 50;
+        try {
+            const loyaltySettings = await this.settingsService.getSetting('loyalty');
+            if (loyaltySettings?.signupBonus !== undefined) signupBonus = loyaltySettings.signupBonus;
+        } catch {}
+
         const customer = this.customersRepository.create({
             name: `${data.firstName} ${data.lastName}`,
             email: data.email.toLowerCase().trim(),
@@ -78,12 +87,13 @@ export class AuthService {
             password: hashedPassword,
             totalOrders: 0,
             totalSpent: 0,
-            points: 50,
-            totalPointsEarned: 50,
+            points: signupBonus,
+            totalPointsEarned: signupBonus,
             tier: 'Bronze',
             redemptions: 0,
             lastActivity: today,
             status: 'Active',
+            pointsHistory: signupBonus > 0 ? [{ description: 'Welcome bonus', points: signupBonus, type: 'earned', date: new Date().toISOString() }] : [],
         });
 
         const saved = await this.customersRepository.save(customer);
@@ -165,6 +175,7 @@ export class AuthService {
             joinDate: customer.joinDate,
             status: customer.status,
             savedAddresses: customer.savedAddresses || [],
+            redeemedRewards: (customer.redeemedRewards || []).filter((r: any) => !r.used),
         };
     }
 
@@ -323,7 +334,7 @@ export class AuthService {
         await this.customersRepository.update(customerId, { pointsHistory: history });
     }
 
-    // Redeem Reward
+    // Redeem Reward — generates a discount code the user can apply at checkout
     async redeemReward(customerId: number, rewardId: number) {
         return await this.customersRepository.manager.transaction(async (manager) => {
             const customer = await manager.findOne(Customer, { where: { id: customerId }, lock: { mode: 'pessimistic_write' } });
@@ -333,10 +344,31 @@ export class AuthService {
             if (!reward || !reward.active) throw new BadRequestException('Reward not found or inactive');
             if (customer.points < reward.pointsCost) throw new BadRequestException(`Not enough points. You need ${reward.pointsCost} but have ${customer.points}.`);
 
+            // Generate unique reward code
+            const code = `RW-${Date.now().toString(36).toUpperCase()}-${Math.random().toString(36).substring(2, 6).toUpperCase()}`;
+
             // Deduct points atomically within transaction
+            const newPoints = customer.points - reward.pointsCost;
+            const newTotalEarned = customer.totalPointsEarned || 0;
+            const newTier = newTotalEarned >= 1500 ? 'Gold' : newTotalEarned >= 500 ? 'Silver' : 'Bronze';
+
+            // Store redeemed reward as usable discount
+            const redeemedRewards = Array.isArray(customer.redeemedRewards) ? customer.redeemedRewards : [];
+            redeemedRewards.unshift({
+                id: reward.id,
+                code,
+                rewardName: reward.name,
+                type: reward.type,
+                value: reward.value,
+                redeemedAt: new Date().toISOString(),
+                used: false,
+            });
+
             await manager.update(Customer, customerId, {
-                points: customer.points - reward.pointsCost,
+                points: newPoints,
+                tier: newTier,
                 redemptions: customer.redemptions + 1,
+                redeemedRewards,
             });
 
             await manager.update(Reward, rewardId, { redemptions: reward.redemptions + 1 });
@@ -349,9 +381,10 @@ export class AuthService {
 
             return {
                 success: true,
-                message: `Successfully redeemed ${reward.name}!`,
-                reward: { name: reward.name, type: reward.type, value: reward.value },
-                remainingPoints: customer.points - reward.pointsCost,
+                message: `Successfully redeemed ${reward.name}! Use code ${code} at checkout.`,
+                reward: { name: reward.name, type: reward.type, value: reward.value, code },
+                remainingPoints: newPoints,
+                code,
             };
         });
     }

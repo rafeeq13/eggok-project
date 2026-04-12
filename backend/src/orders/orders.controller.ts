@@ -24,6 +24,11 @@ export class OrdersController {
     return this.ordersService.searchOrder(q);
   }
 
+  @Get('track')
+  trackOrder(@Query('q') q: string) {
+    return this.ordersService.searchOrder(q);
+  }
+
   @Get('active')
   @UseGuards(AdminGuard)
   getActiveOrders() {

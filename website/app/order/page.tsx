@@ -138,7 +138,7 @@ const css = `
   .sidebar-search-icon { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); pointer-events: none; }
   .sidebar-search-input {
     width: 100%; padding: 10px 12px 10px 36px;
-    background: var(--bg4); border: 1px solid var(--border);
+    background: var(--bg4); border: 1px solid #ffffff;
     border-radius: 10px; color: var(--t1); font-size: 14px;
     outline: none; font-family: var(--font-body);
     transition: border-color 0.15s;
@@ -148,7 +148,7 @@ const css = `
 
   .sidebar-menu-wrap { padding: 16px 0; }
   .sidebar-menu-label {
-    font-size: 10px; color: #ffffff; font-weight: 700;
+    font-size: 15px; color: #ffffff; font-weight: 900;
     letter-spacing: 2px; text-transform: uppercase;
     padding: 0 16px 10px; display: block; font-family: var(--font-body);
   }
@@ -1248,7 +1248,7 @@ function OrderContent() {
 
             <div id="cart-type-section" className="cart-type-wrap">
               <div id="cart-type-toggle" className="cart-type-toggle" role="group" aria-label="Order type">
-                {(['pickup', 'delivery'] as const).map(type => (
+                {(['pickup', 'delivery'] as const).filter(type => type === 'pickup' ? isPickupEnabled : isDeliveryEnabled).map(type => (
                   <button
                     key={type}
                     id={`cart-type-${type}`}

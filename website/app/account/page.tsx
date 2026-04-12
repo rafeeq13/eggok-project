@@ -53,8 +53,20 @@ export default function AccountPage() {
   const [userTotalOrders, setUserTotalOrders] = useState(0);
   const [userJoinDate, setUserJoinDate] = useState('');
   const [orders, setOrders] = useState<Order[]>([]);
+  const [orderSearch, setOrderSearch] = useState('');
   const [successMsg, setSuccessMsg] = useState('');
   const [accountError, setAccountError] = useState('');
+
+  const filteredOrders = orders.filter(order => {
+    if (!orderSearch.trim()) return true;
+    const q = orderSearch.toLowerCase();
+    return order.id.toLowerCase().includes(q) ||
+      order.items.toLowerCase().includes(q) ||
+      order.status.toLowerCase().includes(q) ||
+      order.date.toLowerCase().includes(q) ||
+      order.total.toLowerCase().includes(q) ||
+      (order.orderType && order.orderType.toLowerCase().includes(q));
+  });
 
   // Saved Addresses
   const [addresses, setAddresses] = useState<any[]>([]);
@@ -108,6 +120,9 @@ export default function AccountPage() {
         setUserTier(user.tier || 'Bronze');
         setUserTotalOrders(user.totalOrders || 0);
         setUserJoinDate(user.joinDate || '');
+
+        // Load unused reward codes from profile
+        if (user.redeemedRewards) loadUnusedRewards(user);
 
         const token = localStorage.getItem('eggok_token');
         if (token) {
@@ -235,6 +250,13 @@ export default function AccountPage() {
     } catch { setAccountError('Failed to load points history'); setTimeout(() => setAccountError(''), 4000); }
   };
 
+  const [unusedRewardCodes, setUnusedRewardCodes] = useState<any[]>([]);
+
+  const loadUnusedRewards = (userData: any) => {
+    const redeemed = Array.isArray(userData.redeemedRewards) ? userData.redeemedRewards : [];
+    setUnusedRewardCodes(redeemed);
+  };
+
   const handleRedeem = async (rewardId: number) => {
     const token = localStorage.getItem('eggok_token');
     if (!token) return;
@@ -245,11 +267,27 @@ export default function AccountPage() {
         body: JSON.stringify({ rewardId }),
       });
       const data = await res.json();
-      if (!res.ok) { setSuccessMsg(data.message || 'Redemption failed'); setTimeout(() => setSuccessMsg(''), 3000); return; }
+      if (!res.ok) { setSuccessMsg(data.message || 'Redemption failed'); setTimeout(() => setSuccessMsg(''), 5000); return; }
       setUserPoints(data.remainingPoints);
       setSuccessMsg(data.message);
-      setTimeout(() => setSuccessMsg(''), 3000);
+      setTimeout(() => setSuccessMsg(''), 8000);
+      // Immediately add the new code to displayed list
+      if (data.code) {
+        setUnusedRewardCodes(prev => [{
+          code: data.code,
+          rewardName: data.reward?.name || 'Reward',
+          type: data.reward?.type || 'discount',
+          value: data.reward?.value || '',
+          used: false,
+          redeemedAt: new Date().toISOString(),
+        }, ...prev]);
+      }
       loadPointsHistory(token);
+      // Also refresh user profile for tier update
+      fetch(`${API_URL}/auth/me`, { headers: { 'Authorization': `Bearer ${token}` } })
+        .then(r => r.ok ? r.json() : null)
+        .then(u => { if (u) { setUserTier(u.tier || 'Bronze'); setUserPoints(u.points || 0); loadUnusedRewards(u); } })
+        .catch(() => {});
     } catch {
       setSuccessMsg('Failed to redeem');
       setTimeout(() => setSuccessMsg(''), 3000);
@@ -755,18 +793,31 @@ export default function AccountPage() {
         {/* ORDER HISTORY */}
         {activeTab === 'orders' && (
           <div>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
-              <p style={{ fontSize: '13px', color: '#888', margin: 0 }}>{orders.length} orders</p>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px', gap: '12px', flexWrap: 'wrap' }}>
+              <div style={{ flex: 1, minWidth: '200px', position: 'relative' }}>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#666" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)' }}>
+                  <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                </svg>
+                <input
+                  placeholder="Search orders by ID, item, or status..."
+                  value={orderSearch}
+                  onChange={e => setOrderSearch(e.target.value)}
+                  style={{ width: '100%', padding: '9px 12px 9px 34px', background: '#0A0A0A', border: '1px solid #1A1A1A', borderRadius: '8px', color: '#fff', fontSize: '13px', outline: 'none', fontFamily: 'inherit' }}
+                  onFocus={e => e.target.style.borderColor = '#FED800'}
+                  onBlur={e => e.target.style.borderColor = '#1A1A1A'}
+                />
+              </div>
+              <p style={{ fontSize: '13px', color: '#888', margin: 0 }}>{filteredOrders.length} of {orders.length} orders</p>
               <Link href="/order" style={{ padding: '8px 16px', background: '#FED800', borderRadius: '8px', color: '#000', fontSize: '13px', fontWeight: '700', textDecoration: 'none' }}>Order Again</Link>
             </div>
-            {orders.length === 0 ? (
+            {filteredOrders.length === 0 ? (
               <div style={{ padding: '40px 20px', background: '#111111', border: '1px dashed #2A2A2A', borderRadius: '12px', textAlign: 'center' }}>
-                <p style={{ fontSize: '14px', fontWeight: '600', color: '#ffffff', marginBottom: '6px' }}>No orders yet</p>
-                <p style={{ fontSize: '13px', color: '#888', margin: 0 }}>Place your first order to see it here</p>
+                <p style={{ fontSize: '14px', fontWeight: '600', color: '#ffffff', marginBottom: '6px' }}>{orders.length === 0 ? 'No orders yet' : 'No matching orders'}</p>
+                <p style={{ fontSize: '13px', color: '#888', margin: 0 }}>{orders.length === 0 ? 'Place your first order to see it here' : 'Try a different search term'}</p>
               </div>
             ) : (
               <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-                {orders.map(order => (
+                {filteredOrders.map(order => (
                   <div key={order.id} style={{ padding: '16px 20px', background: '#111111', border: '1px solid #1A1A1A', borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '16px' }}>
                     <div style={{ flex: 1 }}>
                       <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '4px' }}>
@@ -927,11 +978,44 @@ export default function AccountPage() {
               <div style={{ position: 'absolute', bottom: '-60px', left: '-20px', width: '160px', height: '160px', borderRadius: '50%', background: 'rgba(0,0,0,0.05)' }} />
               <p style={{ fontSize: '12px', fontWeight: '700', color: '#00000080', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '8px' }}>Your Points Balance</p>
               <p style={{ fontSize: '56px', fontWeight: '900', color: '#000', lineHeight: '1', marginBottom: '8px' }}>{userPoints}</p>
-              <p style={{ fontSize: '14px', color: '#00000070', marginBottom: '16px' }}>{userTier} Member · {Math.max(0, 500 - userPoints)} points to {userTier === 'Bronze' ? 'Silver' : userTier === 'Silver' ? 'Gold' : 'Platinum'}</p>
+              <p style={{ fontSize: '14px', color: '#00000070', marginBottom: '4px' }}>
+                {userTier} Member
+                {userTier === 'Gold'
+                  ? ' · 2x points per order'
+                  : userTier === 'Silver'
+                  ? ' · 1.5x points per order'
+                  : ''}
+              </p>
+              <p style={{ fontSize: '12px', color: '#00000060', marginBottom: '12px' }}>
+                {userTier === 'Gold' ? 'Top tier reached!' : `${Math.max(0, (userTier === 'Bronze' ? 500 : 1500) - userPoints)} points to ${userTier === 'Bronze' ? 'Silver' : 'Gold'}`}
+              </p>
               <div style={{ height: '6px', background: 'rgba(0,0,0,0.15)', borderRadius: '3px' }}>
-                <div style={{ width: `${Math.min(100, (userPoints / 500) * 100)}%`, height: '100%', background: '#000', borderRadius: '3px' }} />
+                <div style={{ width: `${Math.min(100, userTier === 'Gold' ? 100 : userTier === 'Silver' ? (userPoints / 1500) * 100 : (userPoints / 500) * 100)}%`, height: '100%', background: '#000', borderRadius: '3px' }} />
               </div>
             </div>
+
+            {/* Unused Reward Codes */}
+            {unusedRewardCodes.length > 0 && (
+              <div style={{ marginBottom: '20px' }}>
+                <p style={{ fontSize: '14px', fontWeight: '700', color: '#22C55E', marginBottom: '10px' }}>Your Reward Codes</p>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                  {unusedRewardCodes.map((r: any, i: number) => (
+                    <div key={i} style={{ padding: '14px 18px', background: '#22C55E10', border: '1px solid #22C55E30', borderRadius: '10px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '8px' }}>
+                      <div>
+                        <p style={{ fontSize: '13px', color: '#fff', fontWeight: '600', margin: 0 }}>{r.rewardName}</p>
+                        <p style={{ fontSize: '11px', color: '#888', marginTop: '2px' }}>
+                          {r.type === 'discount' ? `$${r.value} off` : r.type === 'freeDelivery' ? 'Free delivery' : r.value}
+                        </p>
+                      </div>
+                      <div style={{ textAlign: 'right' }}>
+                        <p style={{ fontSize: '16px', fontWeight: '900', color: '#22C55E', letterSpacing: '1.5px', fontFamily: 'monospace', margin: 0 }}>{r.code}</p>
+                        <p style={{ fontSize: '10px', color: '#666', marginTop: '2px' }}>Use at checkout</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
 
             {/* Rewards */}
             <p style={{ fontSize: '18px', fontWeight: '800', color: '#ffffff', marginBottom: '14px' }}>Available Rewards</p>

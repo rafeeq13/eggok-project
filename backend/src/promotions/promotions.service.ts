@@ -2,12 +2,15 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Promotion } from './promotion.entity';
+import { Customer } from '../customers/customer.entity';
 
 @Injectable()
 export class PromotionsService {
     constructor(
         @InjectRepository(Promotion)
         private readonly promotionRepository: Repository<Promotion>,
+        @InjectRepository(Customer)
+        private readonly customerRepository: Repository<Customer>,
     ) { }
 
     async findAll(): Promise<Promotion[]> {
@@ -51,7 +54,8 @@ export class PromotionsService {
         });
 
         if (!promo) {
-            return { valid: false, discountAmount: 0, discountLabel: '', message: 'Invalid promo code' };
+            // Check if it's a loyalty reward code (RW-xxx format)
+            return this.validateRewardCode(code, subtotal);
         }
 
         if (promo.status !== 'Active') {
@@ -96,7 +100,65 @@ export class PromotionsService {
             valid: true,
             discountAmount: parseFloat(discountAmount.toFixed(2)),
             discountLabel,
-            message: `${promo.name} applied — ${discountLabel}!`,
+            message: `${promo.name} applied  ${discountLabel}!`,
+        };
+    }
+
+    private async validateRewardCode(code: string, subtotal: number): Promise<{
+        valid: boolean;
+        discountAmount: number;
+        discountLabel: string;
+        message: string;
+    }> {
+        const invalid = { valid: false, discountAmount: 0, discountLabel: '', message: 'Invalid promo code' };
+
+        if (!code.startsWith('RW-')) return invalid;
+
+        // Find customer with this reward code
+        const customers = await this.customerRepository.find();
+        let matchedCustomer: Customer | null = null;
+        let matchedReward: any = null;
+        let rewardIndex = -1;
+
+        for (const customer of customers) {
+            const rewards = Array.isArray(customer.redeemedRewards) ? customer.redeemedRewards : [];
+            const idx = rewards.findIndex((r: any) => r.code === code && !r.used);
+            if (idx !== -1) {
+                matchedCustomer = customer;
+                matchedReward = rewards[idx];
+                rewardIndex = idx;
+                break;
+            }
+        }
+
+        if (!matchedCustomer || !matchedReward) {
+            return { valid: false, discountAmount: 0, discountLabel: '', message: 'Invalid or already used reward code' };
+        }
+
+        let discountAmount = 0;
+        let discountLabel = '';
+
+        if (matchedReward.type === 'discount') {
+            discountAmount = Math.min(Number(matchedReward.value), subtotal);
+            discountLabel = `$${Number(matchedReward.value).toFixed(2)} off (Reward)`;
+        } else if (matchedReward.type === 'freeDelivery') {
+            discountAmount = 0; // Delivery fee handled separately
+            discountLabel = 'Free Delivery (Reward)';
+        } else if (matchedReward.type === 'freeItem') {
+            discountAmount = 0;
+            discountLabel = `${matchedReward.value} (Reward)`;
+        }
+
+        // Mark the reward code as used
+        const rewards = Array.isArray(matchedCustomer.redeemedRewards) ? matchedCustomer.redeemedRewards : [];
+        rewards[rewardIndex].used = true;
+        await this.customerRepository.update(matchedCustomer.id, { redeemedRewards: rewards });
+
+        return {
+            valid: true,
+            discountAmount: parseFloat(discountAmount.toFixed(2)),
+            discountLabel,
+            message: `${matchedReward.rewardName} applied! ${discountLabel}`,
         };
     }
 }

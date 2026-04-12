@@ -8,12 +8,14 @@ import { useAuth } from '../context/AuthContext';
 
 export default function Header() {
   const { cartCount } = useCart();
-  const { user } = useAuth();
+  const { user, logout } = useAuth();
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [moreOpen, setMoreOpen] = useState(false);
+  const [userMenuOpen, setUserMenuOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
   const moreRef = useRef<HTMLDivElement>(null);
+  const userMenuRef = useRef<HTMLDivElement>(null);
   const pathname = usePathname();
 
   useEffect(() => { setMounted(true); }, []);
@@ -22,7 +24,20 @@ export default function Header() {
   useEffect(() => {
     setMoreOpen(false);
     setMobileMenuOpen(false);
+    setUserMenuOpen(false);
   }, [pathname]);
+
+  // Close user menu on click outside
+  useEffect(() => {
+    if (!userMenuOpen) return;
+    const handleClickOutside = (e: MouseEvent) => {
+      if (userMenuRef.current && !userMenuRef.current.contains(e.target as Node)) {
+        setUserMenuOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside, true);
+    return () => document.removeEventListener('mousedown', handleClickOutside, true);
+  }, [userMenuOpen]);
 
   // Close "More" dropdown on any click outside it
   useEffect(() => {
@@ -114,14 +129,14 @@ const css = `
               onMouseLeave={e => (e.currentTarget as HTMLAnchorElement).style.color = '#ffffffff'}
             >Catering</Link>
 
-            {/* More Dropdown */}
-            <div ref={moreRef} style={{ position: 'relative' }}>
+            {/* More Dropdown — hover to open */}
+            <div ref={moreRef} style={{ position: 'relative' }}
+              onMouseEnter={() => setMoreOpen(true)}
+              onMouseLeave={() => setMoreOpen(false)}
+            >
               <button
               className="navLink"
-                onClick={() => setMoreOpen(!moreOpen)}
                 style={{ padding: '8px 14px', color: '#f9f9f9ff', fontSize: '14px', fontWeight: '500', borderRadius: '8px', transition: 'color 0.2s', display: 'flex', alignItems: 'center', gap: '4px', background: 'transparent' }}
-                onMouseEnter={e => (e.currentTarget as HTMLButtonElement).style.color = '#FEFEFE'}
-                onMouseLeave={e => (e.currentTarget as HTMLButtonElement).style.color = '#ffffffff'}
               >
                 More
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -131,23 +146,27 @@ const css = `
               {moreOpen && (
                 <>
                   <div style={{
-                    position: 'absolute', top: 'calc(100% + 8px)', left: '50%',
+                    position: 'absolute', top: '100%', left: '50%',
                     transform: 'translateX(-50%)',
-                    background: '#111111', border: '1px solid #2A2A2A',
-                    borderRadius: '12px', padding: '8px', zIndex: 20,
-                    minWidth: '180px',
-                    boxShadow: '0 8px 32px rgba(0,0,0,0.6)',
+                    paddingTop: '8px',
                   }}>
-                    {moreLinks.map(link => (
-                      <Link key={link.href} className="navLink" href={link.href} onClick={() => setMoreOpen(false)} style={{
-                        display: 'block', padding: '10px 14px',
-                        color: '#ffffff', fontSize: '14px', borderRadius: '8px',
-                        transition: 'all 0.15s',
-                      }}
-                        onMouseEnter={e => { (e.currentTarget as HTMLAnchorElement).style.color = '#FEFEFE'; (e.currentTarget as HTMLAnchorElement).style.background = '#1A1A1A'; }}
-                        onMouseLeave={e => { (e.currentTarget as HTMLAnchorElement).style.color = '#ffffff'; (e.currentTarget as HTMLAnchorElement).style.background = 'transparent'; }}
-                      >{link.label}</Link>
-                    ))}
+                    <div style={{
+                      background: '#111111', border: '1px solid #2A2A2A',
+                      borderRadius: '12px', padding: '8px', zIndex: 20,
+                      minWidth: '180px',
+                      boxShadow: '0 8px 32px rgba(0,0,0,0.6)',
+                    }}>
+                      {moreLinks.map(link => (
+                        <Link key={link.href} className="navLink" href={link.href} onClick={() => setMoreOpen(false)} style={{
+                          display: 'block', padding: '10px 14px',
+                          color: '#ffffff', fontSize: '14px', borderRadius: '8px',
+                          transition: 'all 0.15s',
+                        }}
+                          onMouseEnter={e => { (e.currentTarget as HTMLAnchorElement).style.color = '#FEFEFE'; (e.currentTarget as HTMLAnchorElement).style.background = '#1A1A1A'; }}
+                          onMouseLeave={e => { (e.currentTarget as HTMLAnchorElement).style.color = '#ffffff'; (e.currentTarget as HTMLAnchorElement).style.background = 'transparent'; }}
+                        >{link.label}</Link>
+                      ))}
+                    </div>
                   </div>
                 </>
               )}
@@ -155,20 +174,65 @@ const css = `
 
             {/* Auth / Account */}
             {mounted && user ? (
-              <Link href="/account" style={{
-                padding: '9px 18px', color: '#FED800', fontSize: '14px',
-                fontWeight: '600', borderRadius: '8px',
-                border: '1px solid #FED80030', background: 'rgba(254, 216, 0, 0.05)',
-                transition: 'all 0.2s', display: 'inline-flex', alignItems: 'center', gap: '6px',
-              }}
-                onMouseEnter={e => { (e.currentTarget as HTMLAnchorElement).style.background = 'rgba(254, 216, 0, 0.1)'; }}
-                onMouseLeave={e => { (e.currentTarget as HTMLAnchorElement).style.background = 'rgba(254, 216, 0, 0.05)'; }}
-              >
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2" /><circle cx="12" cy="7" r="4" />
-                </svg>
-                {user.name.split(' ')[0]}
-              </Link>
+              <div ref={userMenuRef} style={{ position: 'relative' }}>
+                <button
+                  onClick={() => setUserMenuOpen(!userMenuOpen)}
+                  style={{
+                    padding: '9px 18px', color: '#FED800', fontSize: '14px',
+                    fontWeight: '600', borderRadius: '8px',
+                    border: '1px solid #FED80030', background: 'rgba(254, 216, 0, 0.05)',
+                    transition: 'all 0.2s', display: 'inline-flex', alignItems: 'center', gap: '6px',
+                    cursor: 'pointer', fontFamily: 'inherit',
+                  }}
+                  onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.background = 'rgba(254, 216, 0, 0.1)'; }}
+                  onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.background = 'rgba(254, 216, 0, 0.05)'; }}
+                >
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2" /><circle cx="12" cy="7" r="4" />
+                  </svg>
+                  {user.name.split(' ')[0]}
+                  <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <polyline points={userMenuOpen ? '18 15 12 9 6 15' : '6 9 12 15 18 9'} />
+                  </svg>
+                </button>
+                {userMenuOpen && (
+                  <div style={{
+                    position: 'absolute', top: 'calc(100% + 8px)', right: 0,
+                    background: '#111111', border: '1px solid #2A2A2A',
+                    borderRadius: '12px', padding: '8px', zIndex: 20,
+                    minWidth: '170px',
+                    boxShadow: '0 8px 32px rgba(0,0,0,0.6)',
+                  }}>
+                    <Link href="/account" onClick={() => setUserMenuOpen(false)} style={{
+                      display: 'flex', alignItems: 'center', gap: '8px', padding: '10px 14px',
+                      color: '#ffffff', fontSize: '14px', borderRadius: '8px',
+                      transition: 'all 0.15s', textDecoration: 'none',
+                    }}
+                      onMouseEnter={e => { e.currentTarget.style.color = '#FED800'; e.currentTarget.style.background = '#1A1A1A'; }}
+                      onMouseLeave={e => { e.currentTarget.style.color = '#ffffff'; e.currentTarget.style.background = 'transparent'; }}
+                    >
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2" /><circle cx="12" cy="7" r="4" />
+                      </svg>
+                      My Account
+                    </Link>
+                    <button onClick={() => { logout(); setUserMenuOpen(false); }} style={{
+                      display: 'flex', alignItems: 'center', gap: '8px', padding: '10px 14px',
+                      color: '#ffffff', fontSize: '14px', borderRadius: '8px',
+                      transition: 'all 0.15s', background: 'transparent', border: 'none',
+                      cursor: 'pointer', width: '100%', textAlign: 'left', fontFamily: 'inherit',
+                    }}
+                      onMouseEnter={e => { e.currentTarget.style.color = '#FC0301'; e.currentTarget.style.background = '#1A1A1A'; }}
+                      onMouseLeave={e => { e.currentTarget.style.color = '#ffffff'; e.currentTarget.style.background = 'transparent'; }}
+                    >
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4" /><polyline points="16 17 21 12 16 7" /><line x1="21" y1="12" x2="9" y2="12" />
+                      </svg>
+                      Sign Out
+                    </button>
+                  </div>
+                )}
+              </div>
             ) : (
               <Link href="/account" style={{
                 padding: '9px 18px', color: '#FEFEFE', fontSize: '14px',
@@ -266,6 +330,11 @@ const css = `
           <Link href="/order" onClick={() => setMobileMenuOpen(false)} style={{ marginTop: '8px', padding: '14px 40px', background: '#FED800', borderRadius: '12px', fontSize: '18px', fontWeight: '700', color: '#000', fontFamily: 'Bebas Neue, sans-serif', letterSpacing: '2px' }}>
             ORDER NOW
           </Link>
+          {mounted && user && (
+            <button onClick={() => { logout(); setMobileMenuOpen(false); }} style={{ marginTop: '8px', padding: '12px 40px', background: 'transparent', border: '1px solid #FC030140', borderRadius: '12px', fontSize: '16px', fontWeight: '700', color: '#FC0301', fontFamily: 'Bebas Neue, sans-serif', letterSpacing: '2px', cursor: 'pointer' }}>
+              SIGN OUT
+            </button>
+          )}
         </div>
       )}
 

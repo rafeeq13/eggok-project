@@ -78,7 +78,7 @@ const initialEmailTemplates: EmailTemplate[] = [
 const initialPushTemplates: PushTemplate[] = [
   { id: 'order_confirmed_push', name: 'Order Confirmed', title: 'Order Confirmed! 🎉', body: 'Your order #{{order_id}} has been received. Estimated time: {{estimated_time}}', trigger: 'When order is placed', active: true },
   { id: 'order_preparing_push', name: 'Order Preparing', title: 'We\'re cooking! 👨‍🍳', body: 'Your order #{{order_id}} is being prepared right now.', trigger: 'When status changes to Preparing', active: true },
-  { id: 'order_ready_push', name: 'Order Ready', title: 'Your order is ready! ✅', body: 'Come pick up your order #{{order_id}} at Eggs Ok — 3517 Lancaster Ave', trigger: 'When status changes to Ready', active: true },
+  { id: 'order_ready_push', name: 'Order Ready', title: 'Your order is ready! ✅', body: 'Come pick up your order #{{order_id}} at Eggs Ok , 3517 Lancaster Ave', trigger: 'When status changes to Ready', active: true },
   { id: 'driver_assigned_push', name: 'Driver Assigned', title: 'Driver on the way! 🚗', body: 'Your Dasher has been assigned and is heading to pick up your order.', trigger: 'When DoorDash assigns a driver', active: true },
   { id: 'order_delivered_push', name: 'Order Delivered', title: 'Delivered! 🎊', body: 'Your Eggs Ok order has been delivered. Enjoy your meal!', trigger: 'When order is delivered', active: true },
   { id: 'promo_push', name: 'Promotional', title: '{{promo_title}}', body: '{{promo_body}}', trigger: 'Manual — sent from promotions', active: false },

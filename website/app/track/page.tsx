@@ -18,7 +18,7 @@ export default function TrackPage() {
     setError('');
 
     try {
-      const res = await fetch(`${API}/orders/search?q=${encodeURIComponent(query.trim())}`);
+      const res = await fetch(`${API}/orders/track?q=${encodeURIComponent(query.trim())}`);
       if (!res.ok) throw new Error('Failed to search');
       const match = await res.json();
 

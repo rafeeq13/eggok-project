@@ -15,7 +15,7 @@ export default function BusinessProfile() {
 
   // Brand
   const [restaurantName, setRestaurantName] = useState('Eggs Ok');
-  const [tagline, setTagline] = useState('Breakfast & Lunch — Philadelphia');
+  const [tagline, setTagline] = useState('Breakfast & Lunch  Philadelphia');
   const [description, setDescription] = useState('Eggs Ok is a modern breakfast and lunch restaurant located in Philadelphia, PA. We serve fresh, made-to-order sandwiches, burritos, omelettes, and specialty drinks.');
   const [cuisine, setCuisine] = useState('American, Indonesian, Fusion');
   const [priceRange, setPriceRange] = useState('$$');
@@ -44,7 +44,7 @@ export default function BusinessProfile() {
   const [googleBusiness, setGoogleBusiness] = useState('');
 
   // SEO
-  const [seoTitle, setSeoTitle] = useState('Eggs Ok — Best Breakfast & Lunch in Philadelphia');
+  const [seoTitle, setSeoTitle] = useState('Eggs Ok  Best Breakfast & Lunch in Philadelphia');
   const [seoDescription, setSeoDescription] = useState('Order online from Eggs Ok in Philadelphia. Fresh breakfast sandwiches, burritos, omelettes, and specialty drinks. Pickup and delivery available.');
   const [seoKeywords, setSeoKeywords] = useState('breakfast philadelphia, eggs ok, breakfast sandwiches, lunch philadelphia, burritos, online ordering');
 
