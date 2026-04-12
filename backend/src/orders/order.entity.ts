@@ -74,6 +74,9 @@ export class Order {
 
   // Delivery dispatch tracking
   @Column({ nullable: true })
+  squareOrderId: string;
+
+  @Column({ nullable: true })
   deliveryProvider: string; // 'uber_direct' | 'doordash' | null
 
   @Column({ nullable: true })

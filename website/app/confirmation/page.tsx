@@ -104,24 +104,25 @@ export default function ConfirmationPage() {
 
   const displayItems = lastOrder?.items || cart;
   const displayTotal = lastOrder ? Number(lastOrder.total) : total;
+  const displayOrderType = lastOrder?.orderType || orderType;
 
   const orderStatus = lastOrder?.status || 'pending';
   const pickupSteps = ['pending', 'confirmed', 'preparing', 'ready', 'picked_up'];
   const deliverySteps = ['pending', 'confirmed', 'preparing', 'ready', 'out_for_delivery', 'delivered'];
-  const currentSteps = orderType === 'pickup' ? pickupSteps : deliverySteps;
+  const currentSteps = displayOrderType === 'pickup' ? pickupSteps : deliverySteps;
   const currentIdx = currentSteps.indexOf(orderStatus);
 
   const stepLabels: Record<string, [string, string]> = {
     pending: ['Order Received', 'We got your order'],
     confirmed: ['Confirmed', 'Restaurant confirmed'],
     preparing: ['Preparing', 'Kitchen is working on it'],
-    ready: ['Ready', orderType === 'pickup' ? 'Come pick it up!' : 'Waiting for driver'],
+    ready: ['Ready', displayOrderType === 'pickup' ? 'Come pick it up!' : 'Waiting for driver'],
     out_for_delivery: ['Out for Delivery', 'On the way to you'],
     delivered: ['Delivered', 'Enjoy your meal!'],
     picked_up: ['Picked Up', 'Enjoy your meal!'],
   };
 
-  const steps = currentSteps.slice(0, orderType === 'pickup' ? 4 : 5).map((s, i) => ({
+  const steps = currentSteps.slice(0, displayOrderType === 'pickup' ? 4 : 5).map((s, i) => ({
     label: stepLabels[s]?.[0] || s,
     desc: stepLabels[s]?.[1] || '',
     done: i <= currentIdx,
@@ -173,7 +174,7 @@ export default function ConfirmationPage() {
                 <p style={{ fontSize: '26px', fontWeight: '900', color: '#FED800', letterSpacing: '2px', margin: '4px 0 0' }}>{orderNumber || '...'}</p>
               </div>
               <div style={{ textAlign: 'right' }}>
-                <p style={{ fontSize: '11px', color: '#ffffff', marginBottom: '4px', textTransform: 'uppercase', letterSpacing: '1px', margin: 0 }}>Est. {orderType === 'delivery' ? 'Delivery' : 'Ready'}</p>
+                <p style={{ fontSize: '11px', color: '#ffffff', marginBottom: '4px', textTransform: 'uppercase', letterSpacing: '1px', margin: 0 }}>Est. {displayOrderType === 'delivery' ? 'Delivery' : 'Ready'}</p>
                 <p style={{ fontSize: '26px', fontWeight: '900', color: '#ffffff', letterSpacing: '1px', margin: '4px 0 0' }}>{getEstimatedTime()}</p>
               </div>
             </div>
@@ -243,7 +244,7 @@ export default function ConfirmationPage() {
                 <span style={{ fontSize: '13px', color: '#ffffff' }}>Taxes & fees</span>
                 <span style={{ fontSize: '13px', color: '#ffffff' }}>${lastOrder ? Number(lastOrder.tax).toFixed(2) : taxes.toFixed(2)}</span>
               </div>
-              {orderType === 'delivery' && (
+              {displayOrderType === 'delivery' && (
                 <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                   <span style={{ fontSize: '13px', color: '#ffffff' }}>Delivery fee</span>
                   <span style={{ fontSize: '13px', color: '#ffffff' }}>${lastOrder ? Number(lastOrder.deliveryFee).toFixed(2) : deliveryFee.toFixed(2)}</span>
@@ -299,19 +300,19 @@ export default function ConfirmationPage() {
             </div>
             <div>
               <p style={{ fontSize: '14px', fontWeight: '700', color: '#ffffff', marginBottom: '4px' }}>
-                {orderType === 'pickup' ? 'Pickup Location' : 'Delivering To'}
+                {displayOrderType === 'pickup' ? 'Pickup Location' : 'Delivering To'}
               </p>
               <p style={{ fontSize: '13px', color: '#ffffff', margin: 0 }}>
-                {orderType === 'pickup' ? storeAddress : deliveryAddress || '—'}
+                {displayOrderType === 'pickup' ? storeAddress : (lastOrder?.deliveryAddress || deliveryAddress || '—')}
               </p>
-              {orderType === 'pickup' && orderNumber && (
+              {displayOrderType === 'pickup' && orderNumber && (
                 <p style={{ fontSize: '12px', color: '#FED800', marginTop: '4px', fontWeight: '600' }}>Show order #{orderNumber} at the counter</p>
               )}
             </div>
           </div>
 
           {/* Delivery Tracking */}
-          {deliveryTracking && orderType === 'delivery' && (
+          {deliveryTracking && displayOrderType === 'delivery' && (
             <div style={{ background: '#A78BFA10', border: '1px solid #A78BFA30', borderRadius: '16px', padding: '20px', marginBottom: '20px' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '12px' }}>
                 <div style={{ width: '36px', height: '36px', borderRadius: '10px', background: '#A78BFA20', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>

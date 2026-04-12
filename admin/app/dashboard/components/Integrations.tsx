@@ -290,19 +290,47 @@ export default function Integrations() {
 
   const testConnection = async (id: string) => {
     setTestingId(id);
-    await new Promise(r => setTimeout(r, 2000));
-    setTestingId(null);
-    // Simulate test result
-    const hasCredentials = (
-      (id === 'square' && squareAppId && squareAccessToken && squareLocationId) ||
-      (id === 'stripe' && stripePublishableKey && stripeSecretKey) ||
-      (id === 'doordash' && doordashDeveloperId && doordashKeyId) ||
-      (id === 'uberdirect' && uberDirectCustomerId && uberDirectClientId && uberDirectClientSecret) ||
-      (id === 'push' && fcmServerKey) ||
-      (id === 'maps' && googleMapsKey)
-    );
 
-    let newStatus: IntegrationStatus = hasCredentials ? 'connected' : 'error';
+    // Save credentials first so the backend has them for testing
+    await saveIntegrations();
+
+    // Integrations with real backend test endpoints
+    const realTestEndpoints: Record<string, string> = {
+      square: 'test-connection/square',
+      stripe: 'test-connection/stripe',
+      uberdirect: 'test-connection/uberdirect',
+    };
+
+    let newStatus: IntegrationStatus = 'error';
+    let message = 'Connection failed - please check your credentials';
+
+    if (realTestEndpoints[id]) {
+      try {
+        const res = await adminFetch(`${API}/settings/${realTestEndpoints[id]}`, { method: 'POST' });
+        const data = await res.json().catch(() => ({ success: false, message: 'Invalid response' }));
+        if (data.success) {
+          newStatus = 'connected';
+          message = data.message || 'Connected successfully';
+        } else {
+          newStatus = 'error';
+          message = data.message || 'Connection failed';
+        }
+      } catch {
+        newStatus = 'error';
+        message = 'Could not reach the server';
+      }
+    } else {
+      // Fallback for integrations without backend test (doordash, push, maps)
+      const hasCredentials = (
+        (id === 'doordash' && doordashDeveloperId && doordashKeyId) ||
+        (id === 'push' && fcmServerKey) ||
+        (id === 'maps' && googleMapsKey)
+      );
+      newStatus = hasCredentials ? 'connected' : 'error';
+      message = hasCredentials ? 'Credentials saved' : 'Missing required credentials';
+    }
+
+    setTestingId(null);
 
     if (id === 'square') setSquareStatus(newStatus);
     if (id === 'stripe') setStripeStatus(newStatus);
@@ -311,10 +339,10 @@ export default function Integrations() {
     if (id === 'push') setPushStatus(newStatus);
     if (id === 'maps') setGoogleMapsStatus(newStatus);
 
-    if (hasCredentials) {
-      showSuccess(`${id.charAt(0).toUpperCase() + id.slice(1)} connected successfully`);
+    if (newStatus === 'connected') {
+      showSuccess(message);
     } else {
-      showError('Connection failed - please check your credentials');
+      showError(message);
     }
 
     // Persist the status change

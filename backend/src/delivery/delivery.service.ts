@@ -153,17 +153,17 @@ export class DeliveryService {
     if (!creds) return null;
 
     try {
-      const token = await this.getAccessToken(creds);
       const baseUrl = this.getBaseUrl(creds.uberDirectEnvironment);
       const payload = this.buildPayload(order);
 
-      const res = await this.retryFetch(() =>
-        fetch(`${baseUrl}/v1/customers/${creds.uberDirectCustomerId}/delivery_quotes`, {
+      const res = await this.retryFetch(async () => {
+        const token = await this.getAccessToken(creds);
+        return fetch(`${baseUrl}/v1/customers/${creds.uberDirectCustomerId}/delivery_quotes`, {
           method: 'POST',
           headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
           body: JSON.stringify(payload),
-        })
-      );
+        });
+      });
 
       if (!res.ok) {
         const errText = await res.text();
@@ -201,19 +201,19 @@ export class DeliveryService {
     }
 
     try {
-      const token = await this.getAccessToken(creds);
       const baseUrl = this.getBaseUrl(creds.uberDirectEnvironment);
       const payload = this.buildPayload(order);
 
       console.log(`[UBER] Creating delivery for order ${order.orderNumber}`);
 
-      const res = await this.retryFetch(() =>
-        fetch(`${baseUrl}/v1/customers/${creds.uberDirectCustomerId}/deliveries`, {
+      const res = await this.retryFetch(async () => {
+        const token = await this.getAccessToken(creds);
+        return fetch(`${baseUrl}/v1/customers/${creds.uberDirectCustomerId}/deliveries`, {
           method: 'POST',
           headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
           body: JSON.stringify(payload),
-        })
-      );
+        });
+      });
 
       if (!res.ok) {
         const errText = await res.text();
@@ -272,15 +272,15 @@ export class DeliveryService {
     if (!creds || !quoteId) return false;
 
     try {
-      const token = await this.getAccessToken(creds);
       const baseUrl = this.getBaseUrl(creds.uberDirectEnvironment);
 
-      const res = await this.retryFetch(() =>
-        fetch(`${baseUrl}/v1/customers/${creds.uberDirectCustomerId}/deliveries/${quoteId}/cancel`, {
+      const res = await this.retryFetch(async () => {
+        const token = await this.getAccessToken(creds);
+        return fetch(`${baseUrl}/v1/customers/${creds.uberDirectCustomerId}/deliveries/${quoteId}/cancel`, {
           method: 'POST',
           headers: { 'Authorization': `Bearer ${token}` },
-        })
-      );
+        });
+      });
 
       console.log(`[UBER] Delivery ${quoteId} cancel: ${res.ok ? 'success' : 'failed'}`);
       return res.ok;

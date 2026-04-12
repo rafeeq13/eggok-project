@@ -800,7 +800,7 @@ function OrderContent() {
     selectedItem.modifiers.forEach(group => {
       (selectedModifiers[group.id] || []).forEach(optId => {
         const opt = group.options.find(o => o.id === optId);
-        if (opt) total += opt.price;
+        if (opt) total += Number(opt.price);
       });
     });
     return total;

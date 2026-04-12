@@ -98,7 +98,6 @@ export class OrdersController {
   }
 
   @Get(':id/delivery-status')
-  @UseGuards(AdminGuard)
   getDeliveryStatus(@Param('id', ParseIntPipe) id: number) {
     return this.ordersService.getDeliveryStatus(id);
   }

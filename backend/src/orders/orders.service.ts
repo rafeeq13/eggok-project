@@ -7,6 +7,7 @@ import { MailService } from '../mail/mail.service';
 import { DeliveryService } from '../delivery/delivery.service';
 import { PaymentsService } from '../payments/payments.service';
 import { LoyaltyService } from '../loyalty/loyalty.service';
+import { SquareService } from '../square/square.service';
 
 @Injectable()
 export class OrdersService {
@@ -19,6 +20,7 @@ export class OrdersService {
     private deliveryService: DeliveryService,
     private paymentsService: PaymentsService,
     private loyaltyService: LoyaltyService,
+    private squareService: SquareService,
   ) { }
 
   private async generateOrderNumber(): Promise<string> {
@@ -177,6 +179,29 @@ export class OrdersService {
       console.error('Failed to record transaction:', err.message);
     });
 
+    // Sync order to Square POS for kitchen printing
+    this.squareService.syncOrder({
+      orderNumber: savedOrder.orderNumber,
+      customerName: savedOrder.customerName,
+      customerEmail: savedOrder.customerEmail,
+      customerPhone: savedOrder.customerPhone,
+      orderType: savedOrder.orderType,
+      items: savedOrder.items,
+      subtotal: Number(savedOrder.subtotal),
+      tax: Number(savedOrder.tax),
+      deliveryFee: Number(savedOrder.deliveryFee),
+      tip: Number(savedOrder.tip) || 0,
+      total: Number(savedOrder.total),
+      deliveryAddress: savedOrder.deliveryAddress,
+      notes: savedOrder.notes,
+    }).then(result => {
+      if (result?.squareOrderId) {
+        this.ordersRepository.update(savedOrder.id, { squareOrderId: result.squareOrderId });
+      }
+    }).catch(err => {
+      console.error('Failed to sync order to Square:', err.message);
+    });
+
     return savedOrder;
   }
 
@@ -201,6 +226,11 @@ export class OrdersService {
     await this.ordersRepository.update(id, { status });
     const order = await this.getOrderById(id);
     if (!order) return null;
+
+    // Sync status to Square POS
+    if (order.squareOrderId) {
+      this.squareService.updateOrderState(order.squareOrderId, status).catch(() => {});
+    }
 
     // Send status update emails for all transitions
     const emailStatuses = ['confirmed', 'preparing', 'ready'];

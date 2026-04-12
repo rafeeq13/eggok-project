@@ -1074,9 +1074,9 @@ export default function AccountPage() {
         {/* Sign Out */}
         <button
           onClick={handleSignOut}
-          style={{ marginTop: '24px', marginBottom: '48px', width: '100%', padding: '13px', background: 'transparent', border: '1px solid #2A2A2A', borderRadius: '12px', color: '#888', fontSize: '14px', cursor: 'pointer', transition: 'all 0.2s' }}
+          style={{ marginTop: '24px', marginBottom: '48px', width: '100%', padding: '13px', background: 'transparent', border: '1px solid #ffffffff', borderRadius: '12px', color: '#ffffffff', fontSize: '14px', cursor: 'pointer', transition: 'all 0.2s' }}
           onMouseEnter={e => { const b = e.currentTarget as HTMLButtonElement; b.style.borderColor = '#FED800'; b.style.color = '#FED800'; }}
-          onMouseLeave={e => { const b = e.currentTarget as HTMLButtonElement; b.style.borderColor = '#2A2A2A'; b.style.color = '#888'; }}
+          onMouseLeave={e => { const b = e.currentTarget as HTMLButtonElement; b.style.borderColor = '#2A2A2A'; b.style.color = '#ffffffff'; }}
         >
           Sign Out
         </button>
