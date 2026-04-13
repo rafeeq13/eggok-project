@@ -158,27 +158,18 @@ export class SquareService {
           ] : undefined,
           fulfillments: [
             {
-              type: order.orderType === 'delivery' ? 'DELIVERY' : 'PICKUP',
+              type: 'PICKUP' as const,
               state: 'PROPOSED',
-              ...(order.orderType === 'delivery'
-                ? {
-                    deliveryDetails: {
-                      recipient: {
-                        displayName: order.customerName,
-                        phoneNumber: order.customerPhone,
-                        address: order.deliveryAddress ? { addressLine1: order.deliveryAddress } : undefined,
-                      },
-                    },
-                  }
-                : {
-                    pickupDetails: {
-                      recipient: {
-                        displayName: order.customerName,
-                        phoneNumber: order.customerPhone,
-                      },
-                      pickupAt: new Date(Date.now() + 15 * 60000).toISOString(),
-                    },
-                  }),
+              pickupDetails: {
+                recipient: {
+                  displayName: order.customerName,
+                  phoneNumber: order.customerPhone,
+                },
+                note: order.orderType === 'delivery'
+                  ? `DELIVERY to: ${order.deliveryAddress || 'N/A'}`
+                  : undefined,
+                pickupAt: new Date(Date.now() + 15 * 60000).toISOString(),
+              },
             },
           ],
           metadata: {
