@@ -460,6 +460,13 @@ function CheckoutInner() {
         if (stripeError) {
           throw new Error(stripeError.message || 'Payment failed');
         }
+
+        // Payment succeeded — sync order to Square POS
+        fetch(`${API_URL}/orders/confirm-payment`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ orderNumber: order.orderNumber }),
+        }).catch(() => {});
       }
 
       localStorage.setItem('eggok_last_order', JSON.stringify(order));

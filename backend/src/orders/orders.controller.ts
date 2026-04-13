@@ -18,6 +18,11 @@ export class OrdersController {
     return this.ordersService.getAllOrders(page ? +page : 1, limit ? +limit : 50);
   }
 
+  @Post('confirm-payment')
+  confirmPayment(@Body('orderNumber') orderNumber: string) {
+    return this.ordersService.confirmOrderPayment(orderNumber);
+  }
+
   @Get('search')
   @UseGuards(AdminGuard)
   searchOrder(@Query('q') q: string) {

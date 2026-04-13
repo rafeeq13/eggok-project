@@ -179,40 +179,56 @@ export class OrdersService {
       console.error('Failed to record transaction:', err.message);
     });
 
-    // Sync order to Square POS for kitchen printing, then push to terminal
-    this.squareService.syncOrder({
-      orderNumber: savedOrder.orderNumber,
-      customerName: savedOrder.customerName,
-      customerEmail: savedOrder.customerEmail,
-      customerPhone: savedOrder.customerPhone,
-      orderType: savedOrder.orderType,
-      items: savedOrder.items,
-      subtotal: Number(savedOrder.subtotal),
-      tax: Number(savedOrder.tax),
-      deliveryFee: Number(savedOrder.deliveryFee),
-      tip: Number(savedOrder.tip) || 0,
-      total: Number(savedOrder.total),
-      deliveryAddress: savedOrder.deliveryAddress,
-      notes: savedOrder.notes,
-    }).then(async result => {
-      if (result?.squareOrderId) {
-        await this.ordersRepository.update(savedOrder.id, { squareOrderId: result.squareOrderId });
-
-        // Push order to Square Terminal device
-        this.squareService.createTerminalCheckout({
-          squareOrderId: result.squareOrderId,
-          orderNumber: savedOrder.orderNumber,
-          total: Number(savedOrder.total),
-          note: `${savedOrder.orderType === 'delivery' ? 'DELIVERY' : 'PICKUP'} - ${savedOrder.customerName}`,
-        }).catch(err => {
-          console.error(`[SQUARE] Terminal push failed for ${savedOrder.orderNumber}:`, err?.message);
-        });
-      }
-    }).catch(err => {
-      console.error('Failed to sync order to Square:', err.message);
-    });
+    // Square sync is triggered AFTER payment confirmation via confirmOrderPayment()
 
     return savedOrder;
+  }
+
+  /**
+   * Called after Stripe payment succeeds — syncs order to Square POS.
+   */
+  async confirmOrderPayment(orderNumber: string): Promise<{ success: boolean; squareOrderId?: string }> {
+    const order = await this.ordersRepository.findOne({ where: { orderNumber } });
+    if (!order) return { success: false };
+    if (order.squareOrderId) return { success: true, squareOrderId: order.squareOrderId };
+
+    try {
+      const result = await this.squareService.syncOrder({
+        orderNumber: order.orderNumber,
+        customerName: order.customerName,
+        customerEmail: order.customerEmail,
+        customerPhone: order.customerPhone,
+        orderType: order.orderType,
+        items: order.items,
+        subtotal: Number(order.subtotal),
+        tax: Number(order.tax),
+        deliveryFee: Number(order.deliveryFee),
+        tip: Number(order.tip) || 0,
+        total: Number(order.total),
+        deliveryAddress: order.deliveryAddress,
+        notes: order.notes,
+      });
+
+      if (result?.squareOrderId) {
+        await this.ordersRepository.update(order.id, { squareOrderId: result.squareOrderId });
+
+        // Push to Square Terminal if configured
+        this.squareService.createTerminalCheckout({
+          squareOrderId: result.squareOrderId,
+          orderNumber: order.orderNumber,
+          total: Number(order.total),
+          note: `${order.orderType === 'delivery' ? 'DELIVERY' : 'PICKUP'} - ${order.customerName}`,
+        }).catch(err => {
+          console.error(`[SQUARE] Terminal push failed for ${order.orderNumber}:`, err?.message);
+        });
+
+        return { success: true, squareOrderId: result.squareOrderId };
+      }
+    } catch (err: any) {
+      console.error(`[SQUARE] Payment confirm sync failed for ${orderNumber}:`, err?.message);
+    }
+
+    return { success: false };
   }
 
   async getAllOrders(page = 1, limit = 50): Promise<{ data: Order[]; total: number; page: number; limit: number }> {
