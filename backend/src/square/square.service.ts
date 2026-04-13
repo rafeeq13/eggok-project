@@ -102,16 +102,17 @@ export class SquareService {
 
       // Build line items from order items
       const lineItems = (order.items || []).map((item: any) => {
-        const itemTotal = Math.round((item.price || 0) * (item.quantity || 1) * 100);
-        const modTotal = (item.modifiers || []).reduce((sum: number, mod: any) => {
-          return sum + Math.round((mod.price || 0) * (item.quantity || 1) * 100);
+        // Unit price only — Square multiplies by quantity automatically
+        const itemUnit = Math.round((item.price || 0) * 100);
+        const modUnit = (item.modifiers || []).reduce((sum: number, mod: any) => {
+          return sum + Math.round((mod.price || 0) * 100);
         }, 0);
 
         return {
           name: item.name || 'Item',
           quantity: String(item.quantity || 1),
           basePriceMoney: {
-            amount: BigInt(itemTotal + modTotal),
+            amount: BigInt(itemUnit + modUnit),
             currency: 'USD' as const,
           },
           note: [
