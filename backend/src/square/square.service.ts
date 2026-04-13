@@ -206,14 +206,15 @@ export class SquareService {
       const squareOrderId = response.order?.id || '';
       console.log(`[SQUARE] Order synced: ${order.orderNumber} → Square ${squareOrderId}`);
 
-      // Record external payment so order shows as "Paid" in Square Dashboard/POS
-      if (squareOrderId && order.total > 0) {
+      // Record external payment using Square's calculated total (avoids rounding mismatch)
+      const squareTotal = response.order?.totalMoney?.amount;
+      if (squareOrderId && squareTotal && squareTotal > 0n) {
         try {
           await client.payments.create({
             sourceId: 'EXTERNAL',
             idempotencyKey: `eggok-pay-${order.orderNumber}`,
             amountMoney: {
-              amount: BigInt(Math.round(order.total * 100)),
+              amount: squareTotal,
               currency: 'USD' as const,
             },
             orderId: squareOrderId,
@@ -224,7 +225,7 @@ export class SquareService {
             },
             note: `Online Order ${order.orderNumber} - Paid via Stripe`,
           });
-          console.log(`[SQUARE] External payment recorded for ${order.orderNumber}`);
+          console.log(`[SQUARE] External payment recorded for ${order.orderNumber} ($${Number(squareTotal) / 100})`);
         } catch (payErr: any) {
           const payMsg = payErr?.errors?.[0]?.detail || payErr?.message || 'Unknown';
           console.error(`[SQUARE] External payment failed for ${order.orderNumber}:`, payMsg);
