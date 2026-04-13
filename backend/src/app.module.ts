@@ -16,6 +16,7 @@ import { AuthModule } from './auth/auth.module';
 import { DeliveryModule } from './delivery/delivery.module';
 import { SquareModule } from './square/square.module';
 import { SubmissionsModule } from './submissions/submissions.module';
+import { WebhooksModule } from './webhooks/webhooks.module';
 
 @Module({
   imports: [
@@ -59,6 +60,7 @@ import { SubmissionsModule } from './submissions/submissions.module';
     DeliveryModule,
     SquareModule,
     SubmissionsModule,
+    WebhooksModule,
   ],
 })
 

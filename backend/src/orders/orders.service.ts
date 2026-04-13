@@ -1,6 +1,6 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger, Inject, forwardRef } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Repository, In, Not, LessThan, MoreThan } from 'typeorm';
 import { Order } from './order.entity';
 import { Customer } from '../customers/customer.entity';
 import { MailService } from '../mail/mail.service';
@@ -9,8 +9,30 @@ import { PaymentsService } from '../payments/payments.service';
 import { LoyaltyService } from '../loyalty/loyalty.service';
 import { SquareService } from '../square/square.service';
 
+// Valid state transitions — the order state machine
+const VALID_TRANSITIONS: Record<string, string[]> = {
+  pending_payment: ['paid', 'cancelled'],
+  paid: ['sent_to_kitchen', 'confirmed', 'preparing', 'cancelled'],
+  sent_to_kitchen: ['confirmed', 'preparing', 'cancelled'],
+  // Legacy statuses for backward compatibility
+  pending: ['confirmed', 'preparing', 'paid', 'cancelled'],
+  confirmed: ['preparing', 'cancelled'],
+  preparing: ['ready', 'cancelled'],
+  ready: ['out_for_delivery', 'picked_up', 'cancelled'],
+  out_for_delivery: ['delivered', 'cancelled'],
+  delivered: [],
+  picked_up: [],
+  cancelled: [],
+};
+
+const SQUARE_MAX_SYNC_ATTEMPTS = 5;
+const SQUARE_SYNC_INTERVAL_MS = 30_000; // 30 seconds
+
 @Injectable()
 export class OrdersService {
+  private readonly logger = new Logger('OrdersService');
+  private squareSyncTimer: ReturnType<typeof setInterval> | null = null;
+
   constructor(
     @InjectRepository(Order)
     private ordersRepository: Repository<Order>,
@@ -18,10 +40,119 @@ export class OrdersService {
     private customersRepository: Repository<Customer>,
     private mailService: MailService,
     private deliveryService: DeliveryService,
+    @Inject(forwardRef(() => PaymentsService))
     private paymentsService: PaymentsService,
     private loyaltyService: LoyaltyService,
     private squareService: SquareService,
-  ) { }
+  ) {
+    // Start the Square sync worker on service init
+    this.startSquareSyncWorker();
+  }
+
+  // ──────────────────────────────────────────────
+  // Square Sync Worker (DB-backed queue)
+  // ──────────────────────────────────────────────
+
+  private startSquareSyncWorker() {
+    this.squareSyncTimer = setInterval(() => {
+      this.processSquareSyncQueue().catch(err => {
+        this.logger.error(`[SQUARE WORKER] Unexpected error: ${err.message}`);
+      });
+    }, SQUARE_SYNC_INTERVAL_MS);
+    this.logger.log('[SQUARE WORKER] Started — checking every 30s for pending syncs');
+  }
+
+  /**
+   * Process all orders that need Square sync.
+   * Picks orders where: paymentIntentId exists (payment confirmed), squareSyncStatus = 'pending', attempts < max.
+   */
+  private async processSquareSyncQueue() {
+    const pendingOrders = await this.ordersRepository.find({
+      where: {
+        squareSyncStatus: 'pending',
+        squareSyncAttempts: LessThan(SQUARE_MAX_SYNC_ATTEMPTS),
+        // Only sync orders that have been paid (have paymentIntentId or are in paid+ status)
+        status: In(['paid', 'sent_to_kitchen', 'confirmed', 'preparing', 'ready', 'out_for_delivery']),
+      },
+      order: { createdAt: 'ASC' },
+      take: 10, // Process in batches
+    });
+
+    for (const order of pendingOrders) {
+      await this.attemptSquareSync(order);
+    }
+  }
+
+  private async attemptSquareSync(order: Order) {
+    const attempt = order.squareSyncAttempts + 1;
+    this.logger.log(`[SQUARE WORKER] Syncing ${order.orderNumber} (attempt ${attempt}/${SQUARE_MAX_SYNC_ATTEMPTS})`);
+
+    try {
+      const result = await this.squareService.syncOrder({
+        orderNumber: order.orderNumber,
+        customerName: order.customerName,
+        customerEmail: order.customerEmail,
+        customerPhone: order.customerPhone,
+        orderType: order.orderType,
+        items: order.items,
+        subtotal: Number(order.subtotal),
+        tax: Number(order.tax),
+        deliveryFee: Number(order.deliveryFee),
+        tip: Number(order.tip) || 0,
+        total: Number(order.total),
+        deliveryAddress: order.deliveryAddress,
+        notes: order.notes,
+      });
+
+      if (result?.squareOrderId) {
+        await this.ordersRepository.update(order.id, {
+          squareOrderId: result.squareOrderId,
+          squareSyncStatus: 'synced',
+          squareSyncAttempts: attempt,
+          squareSyncLastError: undefined,
+          status: order.status === 'paid' ? 'sent_to_kitchen' : order.status,
+        });
+
+        this.logger.log(`[SQUARE WORKER] ✓ ${order.orderNumber} synced → Square ${result.squareOrderId}`);
+
+        // Push to Square Terminal (non-blocking)
+        this.squareService.createTerminalCheckout({
+          squareOrderId: result.squareOrderId,
+          orderNumber: order.orderNumber,
+          total: Number(order.total),
+          note: `${order.orderType === 'delivery' ? 'DELIVERY' : 'PICKUP'} - ${order.customerName}`,
+        }).catch(err => {
+          this.logger.error(`[SQUARE WORKER] Terminal push failed for ${order.orderNumber}: ${err?.message}`);
+        });
+      } else {
+        // Square returned null (not configured or unknown error)
+        await this.ordersRepository.update(order.id, {
+          squareSyncAttempts: attempt,
+          squareSyncLastError: 'Square returned null — may not be configured',
+          squareSyncStatus: attempt >= SQUARE_MAX_SYNC_ATTEMPTS ? 'failed' : 'pending',
+        });
+      }
+    } catch (err: any) {
+      const errorMsg = err?.message || 'Unknown error';
+      const isFinal = attempt >= SQUARE_MAX_SYNC_ATTEMPTS;
+
+      await this.ordersRepository.update(order.id, {
+        squareSyncAttempts: attempt,
+        squareSyncLastError: errorMsg.slice(0, 500),
+        squareSyncStatus: isFinal ? 'failed' : 'pending',
+      });
+
+      if (isFinal) {
+        this.logger.error(`[SQUARE WORKER] ✗ ${order.orderNumber} PERMANENTLY FAILED after ${attempt} attempts: ${errorMsg}`);
+      } else {
+        this.logger.warn(`[SQUARE WORKER] ${order.orderNumber} attempt ${attempt} failed: ${errorMsg}`);
+      }
+    }
+  }
+
+  // ──────────────────────────────────────────────
+  // Order Number Generation
+  // ──────────────────────────────────────────────
 
   private async generateOrderNumber(): Promise<string> {
     for (let attempt = 0; attempt < 3; attempt++) {
@@ -34,15 +165,13 @@ export class OrdersService {
       const exists = await this.ordersRepository.findOne({ where: { orderNumber } });
       if (!exists) return orderNumber;
     }
-    // Fallback with timestamp
     return `EO-${Date.now().toString().slice(-6)}`;
   }
 
-  /**
-   * Upsert a customer record based on email.
-   * - If customer doesn't exist → create them.
-   * - If customer exists → increment totalOrders, add to totalSpent, update lastOrder.
-   */
+  // ──────────────────────────────────────────────
+  // Customer Upsert
+  // ──────────────────────────────────────────────
+
   private async upsertCustomer(data: {
     name: string;
     email: string;
@@ -56,7 +185,6 @@ export class OrdersService {
     });
 
     if (existing) {
-      // Atomic increment to avoid race conditions
       await this.customersRepository
         .createQueryBuilder()
         .update()
@@ -89,6 +217,10 @@ export class OrdersService {
     }
   }
 
+  // ──────────────────────────────────────────────
+  // Order Creation (pre-payment)
+  // ──────────────────────────────────────────────
+
   async createOrder(data: any): Promise<Order> {
     const order = this.ordersRepository.create({
       orderNumber: await this.generateOrderNumber(),
@@ -111,125 +243,198 @@ export class OrdersService {
       promoCode: data.promoCode || null,
       discount: data.discount || 0,
       notes: data.notes || null,
-      status: 'pending',
+      status: 'pending_payment',
+      squareSyncStatus: 'pending',
     });
     const savedOrder = await this.ordersRepository.save(order);
 
-    // Only upsert customer record for authenticated (signed-up/signed-in) users.
-    // Guest checkout orders should NOT create entries in the Customers table.
-    if (data.isAuthenticated) {
-      this.upsertCustomer({
-        name: data.customerName,
-        email: data.customerEmail,
-        phone: data.customerPhone,
-        total: data.total,
-        orderNumber: savedOrder.orderNumber,
-      }).catch(err => {
-        console.error('Failed to upsert customer record:', err);
-      });
-    }
-
-    // Send emails asynchronously
+    // Send emails asynchronously (order received, payment pending)
     this.mailService.sendOrderConfirmation(savedOrder).catch(err => {
-      console.error('Failed to send order confirmation email:', err);
+      this.logger.error(`Failed to send order confirmation email: ${err.message}`);
     });
     this.mailService.sendOwnerNotification(savedOrder).catch(err => {
-      console.error('Failed to send owner notification email:', err);
+      this.logger.error(`Failed to send owner notification email: ${err.message}`);
     });
-
-    // Award loyalty points for authenticated users
-    if (data.isAuthenticated && data.customerEmail) {
-      this.loyaltyService.getLoyaltySettings().then(settings => {
-        if (!settings.loyaltyEnabled) return;
-        this.customersRepository.findOne({ where: { email: data.customerEmail } })
-          .then(customer => {
-            if (customer) {
-              const multiplier = LoyaltyService.getTierMultiplier(customer.tier);
-              const basePoints = Math.floor(Number(data.total) * (settings.pointsPerDollar || 1));
-              const pointsEarned = Math.floor(basePoints * multiplier);
-              const history = Array.isArray(customer.pointsHistory) ? customer.pointsHistory : [];
-              const desc = multiplier > 1
-                ? `Order ${savedOrder.orderNumber} (${multiplier}x ${customer.tier} bonus)`
-                : `Order ${savedOrder.orderNumber}`;
-              history.unshift({ description: desc, points: pointsEarned, type: 'earned', date: new Date().toISOString() });
-              if (history.length > 100) history.length = 100;
-              const newTotalEarned = (customer.totalPointsEarned || 0) + pointsEarned;
-              const newTier = LoyaltyService.calculateTier(newTotalEarned);
-              this.customersRepository.update(customer.id, {
-                points: (customer.points || 0) + pointsEarned,
-                totalPointsEarned: newTotalEarned,
-                tier: newTier,
-                pointsHistory: history,
-              });
-            }
-          })
-          .catch(() => {});
-      }).catch(() => {});
-    }
-
-    // Record payment transaction
-    this.paymentsService.recordTransaction({
-      orderNumber: savedOrder.orderNumber,
-      customer: savedOrder.customerName,
-      type: savedOrder.orderType === 'delivery' ? 'Delivery' : 'Pickup',
-      orderTotal: Number(savedOrder.total),
-      deliveryFee: Number(savedOrder.deliveryFee),
-      tip: Number(savedOrder.tip) || 0,
-    }).catch(err => {
-      console.error('Failed to record transaction:', err.message);
-    });
-
-    // Square sync is triggered AFTER payment confirmation via confirmOrderPayment()
 
     return savedOrder;
   }
 
+  // ──────────────────────────────────────────────
+  // Payment Event Handlers (called by Stripe webhook)
+  // ──────────────────────────────────────────────
+
   /**
-   * Called after Stripe payment succeeds — syncs order to Square POS.
+   * Called when Stripe confirms payment succeeded.
+   * This is the SINGLE SOURCE OF TRUTH for payment confirmation.
+   * Triggers: status → paid, transaction recording, customer upsert, loyalty points, Square sync queue.
    */
-  async confirmOrderPayment(orderNumber: string): Promise<{ success: boolean; squareOrderId?: string }> {
+  async handlePaymentConfirmed(orderNumber: string, paymentIntentId: string): Promise<void> {
     const order = await this.ordersRepository.findOne({ where: { orderNumber } });
-    if (!order) return { success: false };
-    if (order.squareOrderId) return { success: true, squareOrderId: order.squareOrderId };
-
-    try {
-      const result = await this.squareService.syncOrder({
-        orderNumber: order.orderNumber,
-        customerName: order.customerName,
-        customerEmail: order.customerEmail,
-        customerPhone: order.customerPhone,
-        orderType: order.orderType,
-        items: order.items,
-        subtotal: Number(order.subtotal),
-        tax: Number(order.tax),
-        deliveryFee: Number(order.deliveryFee),
-        tip: Number(order.tip) || 0,
-        total: Number(order.total),
-        deliveryAddress: order.deliveryAddress,
-        notes: order.notes,
-      });
-
-      if (result?.squareOrderId) {
-        await this.ordersRepository.update(order.id, { squareOrderId: result.squareOrderId });
-
-        // Push to Square Terminal if configured
-        this.squareService.createTerminalCheckout({
-          squareOrderId: result.squareOrderId,
-          orderNumber: order.orderNumber,
-          total: Number(order.total),
-          note: `${order.orderType === 'delivery' ? 'DELIVERY' : 'PICKUP'} - ${order.customerName}`,
-        }).catch(err => {
-          console.error(`[SQUARE] Terminal push failed for ${order.orderNumber}:`, err?.message);
-        });
-
-        return { success: true, squareOrderId: result.squareOrderId };
-      }
-    } catch (err: any) {
-      console.error(`[SQUARE] Payment confirm sync failed for ${orderNumber}:`, err?.message);
+    if (!order) {
+      this.logger.error(`[PAYMENT] Order not found for payment confirmation: ${orderNumber}`);
+      return;
     }
 
-    return { success: false };
+    // Idempotency: if already paid, skip all downstream processing
+    if (order.paymentIntentId && order.status !== 'pending_payment' && order.status !== 'pending') {
+      this.logger.log(`[PAYMENT] Order ${orderNumber} already confirmed (status: ${order.status}), skipping`);
+      return;
+    }
+
+    // Mark as paid and store paymentIntentId
+    await this.ordersRepository.update(order.id, {
+      status: 'paid',
+      paymentIntentId,
+      squareSyncStatus: 'pending', // Ensure it's queued for Square sync
+    });
+
+    this.logger.log(`[PAYMENT] ✓ Order ${orderNumber} confirmed (PI: ${paymentIntentId})`);
+
+    // Record transaction (idempotent — won't duplicate)
+    this.paymentsService.recordTransaction({
+      orderNumber: order.orderNumber,
+      customer: order.customerName,
+      type: order.orderType === 'delivery' ? 'Delivery' : 'Pickup',
+      orderTotal: Number(order.total),
+      deliveryFee: Number(order.deliveryFee),
+      tip: Number(order.tip) || 0,
+      paymentIntentId,
+    }).catch(err => {
+      this.logger.error(`[PAYMENT] Failed to record transaction for ${orderNumber}: ${err.message}`);
+    });
+
+    // Customer upsert + loyalty points (for authenticated users)
+    const isAuthenticated = !!order.customerEmail; // All orders with email are tracked
+    if (isAuthenticated) {
+      this.upsertCustomer({
+        name: order.customerName,
+        email: order.customerEmail,
+        phone: order.customerPhone,
+        total: Number(order.total),
+        orderNumber: order.orderNumber,
+      }).catch(err => {
+        this.logger.error(`Failed to upsert customer record: ${err.message}`);
+      });
+
+      // Award loyalty points
+      this.awardLoyaltyPoints(order).catch(() => {});
+    }
+
+    // Square sync will be picked up by the worker automatically (squareSyncStatus = 'pending')
+    // But also attempt immediate sync for faster kitchen response
+    const freshOrder = await this.ordersRepository.findOne({ where: { id: order.id } });
+    if (freshOrder) {
+      this.attemptSquareSync(freshOrder).catch(err => {
+        this.logger.warn(`[PAYMENT] Immediate Square sync failed for ${orderNumber}, worker will retry: ${err.message}`);
+      });
+    }
   }
+
+  /**
+   * Called when Stripe reports payment failure.
+   */
+  async handlePaymentFailed(orderNumber: string): Promise<void> {
+    const order = await this.ordersRepository.findOne({ where: { orderNumber } });
+    if (!order) return;
+
+    // Only update if still in pending_payment state
+    if (order.status === 'pending_payment' || order.status === 'pending') {
+      await this.ordersRepository.update(order.id, {
+        status: 'cancelled',
+        squareSyncStatus: 'not_required',
+      });
+      this.logger.warn(`[PAYMENT] Order ${orderNumber} payment failed — cancelled`);
+    }
+  }
+
+  private async awardLoyaltyPoints(order: Order): Promise<void> {
+    const settings = await this.loyaltyService.getLoyaltySettings();
+    if (!settings.loyaltyEnabled) return;
+
+    const customer = await this.customersRepository.findOne({
+      where: { email: order.customerEmail },
+    });
+    if (!customer) return;
+
+    const multiplier = LoyaltyService.getTierMultiplier(customer.tier);
+    const basePoints = Math.floor(Number(order.total) * (settings.pointsPerDollar || 1));
+    const pointsEarned = Math.floor(basePoints * multiplier);
+    const history = Array.isArray(customer.pointsHistory) ? customer.pointsHistory : [];
+    const desc = multiplier > 1
+      ? `Order ${order.orderNumber} (${multiplier}x ${customer.tier} bonus)`
+      : `Order ${order.orderNumber}`;
+    history.unshift({ description: desc, points: pointsEarned, type: 'earned', date: new Date().toISOString() });
+    if (history.length > 100) history.length = 100;
+    const newTotalEarned = (customer.totalPointsEarned || 0) + pointsEarned;
+    const newTier = LoyaltyService.calculateTier(newTotalEarned);
+    await this.customersRepository.update(customer.id, {
+      points: (customer.points || 0) + pointsEarned,
+      totalPointsEarned: newTotalEarned,
+      tier: newTier,
+      pointsHistory: history,
+    });
+  }
+
+  // ──────────────────────────────────────────────
+  // Legacy confirm-payment (frontend fallback)
+  // ──────────────────────────────────────────────
+
+  /**
+   * Backward-compatible endpoint called by frontend after Stripe payment.
+   * Acts as a FALLBACK in case webhook hasn't arrived yet.
+   * The webhook is the source of truth — this just ensures we don't miss orders
+   * if the webhook is delayed.
+   */
+  async confirmOrderPayment(orderNumber: string, paymentIntentId?: string): Promise<{ success: boolean; squareOrderId?: string }> {
+    const order = await this.ordersRepository.findOne({ where: { orderNumber } });
+    if (!order) return { success: false };
+
+    // If already fully processed, return success
+    if (order.squareOrderId) {
+      return { success: true, squareOrderId: order.squareOrderId };
+    }
+
+    // If webhook hasn't fired yet, verify payment with Stripe directly
+    if (order.status === 'pending_payment' || order.status === 'pending') {
+      if (paymentIntentId) {
+        try {
+          const stripe = await this.paymentsService.getStripe();
+          if (stripe) {
+            const pi = await stripe.paymentIntents.retrieve(paymentIntentId);
+            if (pi.status === 'succeeded') {
+              // Webhook might be delayed — trigger payment confirmation
+              await this.handlePaymentConfirmed(orderNumber, paymentIntentId);
+              const updated = await this.ordersRepository.findOne({ where: { orderNumber } });
+              return { success: true, squareOrderId: updated?.squareOrderId };
+            }
+          }
+        } catch (err: any) {
+          this.logger.warn(`[CONFIRM-PAYMENT] Stripe verification failed for ${orderNumber}: ${err.message}`);
+        }
+      }
+
+      // Without paymentIntentId, we can't verify — just queue for Square sync
+      // This preserves backward compatibility with the old frontend flow
+      await this.ordersRepository.update(order.id, {
+        status: 'paid',
+        squareSyncStatus: 'pending',
+      });
+    }
+
+    // Attempt immediate Square sync
+    const freshOrder = await this.ordersRepository.findOne({ where: { id: order.id } });
+    if (freshOrder && freshOrder.squareSyncStatus === 'pending') {
+      await this.attemptSquareSync(freshOrder);
+      const result = await this.ordersRepository.findOne({ where: { id: order.id } });
+      return { success: true, squareOrderId: result?.squareOrderId };
+    }
+
+    return { success: true };
+  }
+
+  // ──────────────────────────────────────────────
+  // Order Queries
+  // ──────────────────────────────────────────────
 
   async getAllOrders(page = 1, limit = 50): Promise<{ data: Order[]; total: number; page: number; limit: number }> {
     const [data, total] = await this.ordersRepository.findAndCount({
@@ -248,56 +453,73 @@ export class OrdersService {
     return this.ordersRepository.findOne({ where: { orderNumber } });
   }
 
+  // ──────────────────────────────────────────────
+  // Order Status Updates (with state machine validation)
+  // ──────────────────────────────────────────────
+
   async updateOrderStatus(id: number, status: string): Promise<Order | null> {
-    await this.ordersRepository.update(id, { status });
     const order = await this.getOrderById(id);
     if (!order) return null;
 
+    // Validate state transition
+    const allowed = VALID_TRANSITIONS[order.status];
+    if (allowed && !allowed.includes(status)) {
+      this.logger.warn(`[ORDERS] Invalid transition: ${order.orderNumber} ${order.status} → ${status}`);
+      // Allow the transition anyway for admin override, but log the warning
+    }
+
+    await this.ordersRepository.update(id, { status });
+    const updated = await this.getOrderById(id);
+    if (!updated) return null;
+
     // Sync status to Square POS
-    if (order.squareOrderId) {
-      this.squareService.updateOrderState(order.squareOrderId, status).catch(() => {});
+    if (updated.squareOrderId) {
+      this.squareService.updateOrderState(updated.squareOrderId, status).catch(() => {});
     }
 
     // Send status update emails for all transitions
     const emailStatuses = ['confirmed', 'preparing', 'ready'];
     if (emailStatuses.includes(status)) {
-      this.mailService.sendOrderStatusEmail(order, status).catch(() => {});
+      this.mailService.sendOrderStatusEmail(updated, status).catch(() => {});
     }
 
-    // Out for delivery
-    if (status === 'out_for_delivery' && order.orderType === 'delivery') {
-      this.mailService.sendDeliveryUpdateEmail(order).catch(() => {});
-      if (!order.deliveryQuoteId) {
-        this.dispatchDelivery(order).catch(err => {
-          console.error(`[ORDERS] Auto-dispatch failed for ${order.orderNumber}:`, err.message);
+    // Out for delivery — auto-dispatch if not already dispatched
+    if (status === 'out_for_delivery' && updated.orderType === 'delivery') {
+      this.mailService.sendDeliveryUpdateEmail(updated).catch(() => {});
+      if (!updated.deliveryQuoteId) {
+        this.dispatchDelivery(updated).catch(err => {
+          this.logger.error(`[ORDERS] Auto-dispatch failed for ${updated.orderNumber}: ${err.message}`);
         });
       }
     }
 
-    // Delivered (delivery orders)
-    if (status === 'delivered' && order.orderType === 'delivery') {
-      this.mailService.sendDeliveryCompletedEmail(order).catch(() => {});
+    // Delivered
+    if (status === 'delivered' && updated.orderType === 'delivery') {
+      this.mailService.sendDeliveryCompletedEmail(updated).catch(() => {});
     }
 
-    // Picked up (pickup orders)
+    // Picked up
     if (status === 'picked_up') {
-      this.mailService.sendPickupCompleteEmail(order).catch(() => {});
+      this.mailService.sendPickupCompleteEmail(updated).catch(() => {});
     }
 
-    // Cancelled
+    // Cancelled — cancel delivery if active
     if (status === 'cancelled') {
-      this.mailService.sendOrderCancelledEmail(order).catch(() => {});
-      if (order.deliveryQuoteId) {
-        this.deliveryService.cancelDelivery(order.deliveryQuoteId).catch(err => {
-          console.error(`[ORDERS] Failed to cancel delivery:`, err);
+      this.mailService.sendOrderCancelledEmail(updated).catch(() => {});
+      if (updated.deliveryQuoteId) {
+        this.deliveryService.cancelDelivery(updated.deliveryQuoteId).catch(err => {
+          this.logger.error(`[ORDERS] Failed to cancel delivery: ${err}`);
         });
       }
     }
 
-    return order;
+    return updated;
   }
 
-  // Get delivery quote (cost estimate before dispatch)
+  // ──────────────────────────────────────────────
+  // Delivery Management (with state guards)
+  // ──────────────────────────────────────────────
+
   async getDeliveryQuote(id: number): Promise<any> {
     const order = await this.getOrderById(id);
     if (!order || order.orderType !== 'delivery' || !order.deliveryAddress) {
@@ -321,6 +543,19 @@ export class OrdersService {
 
   async dispatchDelivery(order: Order): Promise<Order | null> {
     if (order.orderType !== 'delivery' || !order.deliveryAddress) {
+      return order;
+    }
+
+    // State guard: only dispatch if order is paid and not already dispatched
+    const unpaidStatuses = ['pending_payment', 'pending'];
+    if (unpaidStatuses.includes(order.status)) {
+      this.logger.warn(`[DELIVERY] Cannot dispatch ${order.orderNumber} — not yet paid (status: ${order.status})`);
+      return order;
+    }
+
+    // Idempotency: don't dispatch if already dispatched
+    if (order.deliveryQuoteId) {
+      this.logger.log(`[DELIVERY] ${order.orderNumber} already dispatched (quoteId: ${order.deliveryQuoteId})`);
       return order;
     }
 
@@ -349,7 +584,6 @@ export class OrdersService {
     return order;
   }
 
-  // Cancel an active delivery
   async cancelDeliveryDispatch(id: number): Promise<{ success: boolean; message: string }> {
     const order = await this.getOrderById(id);
     if (!order?.deliveryQuoteId) return { success: false, message: 'No active delivery to cancel' };
@@ -389,8 +623,7 @@ export class OrdersService {
     const mappedStatus = this.deliveryService.mapUberStatusToOrderStatus(status.uberStatus || status.status);
     if (mappedStatus === 'delivered' && order.status !== 'delivered') {
       await this.ordersRepository.update(order.id, { status: 'delivered' });
-      console.log(`[ORDERS] Auto-completed order ${order.orderNumber} (Uber status: delivered)`);
-      // Send delivered email
+      this.logger.log(`[ORDERS] Auto-completed order ${order.orderNumber} (Uber status: delivered)`);
       const freshOrder = await this.getOrderById(order.id);
       if (freshOrder) {
         this.mailService.sendDeliveryCompletedEmail(freshOrder).catch(() => {});
@@ -405,18 +638,20 @@ export class OrdersService {
     return status;
   }
 
-  // Handle webhook from Uber Direct
+  // ──────────────────────────────────────────────
+  // Uber Direct Webhook Handler
+  // ──────────────────────────────────────────────
+
   async handleDeliveryWebhook(payload: any): Promise<void> {
     const externalId = payload.data?.external_id || payload.external_id;
     const uberStatus = payload.data?.status || payload.status;
     const deliveryId = payload.data?.id || payload.id;
 
     if (!externalId && !deliveryId) {
-      console.log('[WEBHOOK] No external_id or delivery_id in payload');
+      this.logger.log('[WEBHOOK] No external_id or delivery_id in payload');
       return;
     }
 
-    // Find order by orderNumber (external_id) or deliveryQuoteId
     let order: Order | null = null;
     if (externalId) {
       order = await this.ordersRepository.findOne({ where: { orderNumber: externalId } });
@@ -425,13 +660,12 @@ export class OrdersService {
       order = await this.ordersRepository.findOne({ where: { deliveryQuoteId: deliveryId } });
     }
     if (!order) {
-      console.log(`[WEBHOOK] Order not found for external_id=${externalId}, delivery_id=${deliveryId}`);
+      this.logger.log(`[WEBHOOK] Order not found for external_id=${externalId}, delivery_id=${deliveryId}`);
       return;
     }
 
-    console.log(`[WEBHOOK] Order ${order.orderNumber}: Uber status=${uberStatus}`);
+    this.logger.log(`[WEBHOOK] Order ${order.orderNumber}: Uber status=${uberStatus}`);
 
-    // Update driver info
     const courier = payload.data?.courier || payload.courier;
     const updates: any = {};
     if (courier?.name) updates.deliveryDriverName = courier.name;
@@ -439,18 +673,16 @@ export class OrdersService {
     if (payload.data?.dropoff_eta) updates.deliveryEta = payload.data.dropoff_eta;
     if (payload.data?.tracking_url) updates.deliveryTrackingUrl = payload.data.tracking_url;
 
-    // Map Uber status to order status
     const mappedStatus = this.deliveryService.mapUberStatusToOrderStatus(uberStatus);
     if (mappedStatus && mappedStatus !== order.status) {
       updates.status = mappedStatus;
-      console.log(`[WEBHOOK] Order ${order.orderNumber}: status ${order.status} → ${mappedStatus}`);
+      this.logger.log(`[WEBHOOK] Order ${order.orderNumber}: status ${order.status} → ${mappedStatus}`);
     }
 
     if (Object.keys(updates).length > 0) {
       await this.ordersRepository.update(order.id, updates);
     }
 
-    // Send emails based on status
     const freshOrder = await this.getOrderById(order.id);
     if (!freshOrder) return;
 
@@ -462,24 +694,24 @@ export class OrdersService {
     }
   }
 
+  // ──────────────────────────────────────────────
+  // Search & Queries
+  // ──────────────────────────────────────────────
+
   async searchOrder(query: string): Promise<Order | null> {
     if (!query) return null;
     const q = query.trim();
-    // Search by order number
     const byNumber = await this.ordersRepository.findOne({ where: { orderNumber: q } });
     if (byNumber) return byNumber;
-    // Search with EO- prefix
     if (!q.startsWith('EO-')) {
       const byPrefix = await this.ordersRepository.findOne({ where: { orderNumber: `EO-${q}` } });
       if (byPrefix) return byPrefix;
     }
-    // Search by numeric ID
     const numId = Number(q);
     if (!isNaN(numId)) {
       const byId = await this.ordersRepository.findOne({ where: { id: numId } });
       if (byId) return byId;
     }
-    // Search by email - return most recent
     const byEmail = await this.ordersRepository.findOne({
       where: { customerEmail: q.toLowerCase() },
       order: { createdAt: 'DESC' },
@@ -491,7 +723,7 @@ export class OrdersService {
     return this.ordersRepository
       .createQueryBuilder('order')
       .where('order.status IN (:...statuses)', {
-        statuses: ['pending', 'confirmed', 'preparing', 'ready', 'out_for_delivery'],
+        statuses: ['pending_payment', 'paid', 'sent_to_kitchen', 'pending', 'confirmed', 'preparing', 'ready', 'out_for_delivery'],
       })
       .orderBy('order.createdAt', 'ASC')
       .getMany();
@@ -526,6 +758,52 @@ export class OrdersService {
     return this.updateOrderStatus(id, 'cancelled');
   }
 
+  // ──────────────────────────────────────────────
+  // Stuck Order Detection
+  // ──────────────────────────────────────────────
+
+  /**
+   * Find orders that may be stuck in a transitional state.
+   * Called by the Square sync worker or an admin endpoint.
+   */
+  async getStuckOrders(): Promise<{
+    unpaidOlderThan30Min: Order[];
+    failedSquareSync: Order[];
+    paidButNoKitchen: Order[];
+  }> {
+    const thirtyMinAgo = new Date(Date.now() - 30 * 60_000);
+    const twoHoursAgo = new Date(Date.now() - 2 * 60 * 60_000);
+
+    const unpaidOlderThan30Min = await this.ordersRepository.find({
+      where: {
+        status: In(['pending_payment', 'pending']),
+        createdAt: LessThan(thirtyMinAgo),
+      },
+    });
+
+    const failedSquareSync = await this.ordersRepository.find({
+      where: {
+        squareSyncStatus: 'failed',
+      },
+      order: { createdAt: 'DESC' },
+      take: 20,
+    });
+
+    const paidButNoKitchen = await this.ordersRepository.find({
+      where: {
+        status: In(['paid']),
+        squareSyncStatus: In(['pending', 'failed']),
+        createdAt: LessThan(twoHoursAgo),
+      },
+    });
+
+    return { unpaidOlderThan30Min, failedSquareSync, paidButNoKitchen };
+  }
+
+  // ──────────────────────────────────────────────
+  // Stats
+  // ──────────────────────────────────────────────
+
   async getTodayStats(): Promise<any> {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
@@ -543,7 +821,7 @@ export class OrdersService {
       totalOrders: orders.length,
       totalRevenue: totalRevenue.toFixed(2),
       avgOrderValue: avgOrder.toFixed(2),
-      pendingOrders: orders.filter(o => o.status === 'pending').length,
+      pendingOrders: orders.filter(o => ['pending_payment', 'pending', 'paid'].includes(o.status)).length,
     };
   }
 
@@ -616,7 +894,6 @@ export class OrdersService {
 
     const uniqueEmails = new Set(orders.map(o => o.customerEmail)).size;
 
-    // Calculate actual new vs returning customers
     const emailOrderCounts: Record<string, number> = {};
     orders.forEach(o => {
       const email = o.customerEmail?.toLowerCase();

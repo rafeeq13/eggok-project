@@ -58,8 +58,8 @@ export class Order {
 
   @Column({
     type: 'enum',
-    enum: ['pending', 'confirmed', 'preparing', 'ready', 'out_for_delivery', 'delivered', 'picked_up', 'cancelled'],
-    default: 'pending'
+    enum: ['pending_payment', 'paid', 'sent_to_kitchen', 'pending', 'confirmed', 'preparing', 'ready', 'out_for_delivery', 'delivered', 'picked_up', 'cancelled'],
+    default: 'pending_payment'
   })
   status: string;
 
@@ -72,10 +72,24 @@ export class Order {
   @Column({ nullable: true })
   notes: string;
 
-  // Delivery dispatch tracking
+  // Stripe payment tracking
+  @Column({ nullable: true, unique: true })
+  paymentIntentId: string;
+
+  // Square POS sync tracking
   @Column({ nullable: true })
   squareOrderId: string;
 
+  @Column({ default: 'pending' })
+  squareSyncStatus: string; // 'pending' | 'synced' | 'failed' | 'not_required'
+
+  @Column({ default: 0 })
+  squareSyncAttempts: number;
+
+  @Column({ nullable: true })
+  squareSyncLastError: string;
+
+  // Delivery dispatch tracking
   @Column({ nullable: true })
   deliveryProvider: string; // 'uber_direct' | 'doordash' | null
 

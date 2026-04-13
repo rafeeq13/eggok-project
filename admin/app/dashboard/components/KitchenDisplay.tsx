@@ -180,6 +180,9 @@ export default function KitchenDisplay() {
   };
 
   const statusColors: Record<string, { bg: string; text: string; border: string }> = {
+    pending_payment: { bg: '#6B728015', text: '#9CA3AF', border: '#6B728040' },
+    paid: { bg: '#10B98115', text: '#10B981', border: '#10B98140' },
+    sent_to_kitchen: { bg: '#FED80015', text: '#FED800', border: '#FED80040' },
     pending: { bg: '#FED80015', text: '#FED800', border: '#FED80040' },
     confirmed: { bg: '#3B82F615', text: '#3B82F6', border: '#3B82F640' },
     preparing: { bg: '#F59E0B15', text: '#F59E0B', border: '#F59E0B40' },

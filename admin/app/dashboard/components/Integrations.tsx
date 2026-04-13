@@ -33,6 +33,7 @@ export default function Integrations() {
   const [squareEnvironment, setSquareEnvironment] = useState('sandbox');
   const [squareStatus, setSquareStatus] = useState<IntegrationStatus>('disconnected');
   const [squareTerminalDeviceId, setSquareTerminalDeviceId] = useState('');
+  const [squareWebhookSigningKey, setSquareWebhookSigningKey] = useState('');
   const [terminalDevices, setTerminalDevices] = useState<any[]>([]);
   const [loadingDevices, setLoadingDevices] = useState(false);
 
@@ -150,6 +151,7 @@ export default function Integrations() {
             if (v.squareEnvironment) setSquareEnvironment(v.squareEnvironment);
             if (v.squareStatus) setSquareStatus(v.squareStatus);
             if (v.squareTerminalDeviceId) setSquareTerminalDeviceId(v.squareTerminalDeviceId);
+            if (v.squareWebhookSigningKey) setSquareWebhookSigningKey(v.squareWebhookSigningKey);
 
             if (v.stripePublishableKey) setStripePublishableKey(v.stripePublishableKey);
             if (v.stripeSecretKey) setStripeSecretKey(v.stripeSecretKey);
@@ -207,7 +209,7 @@ export default function Integrations() {
 
   const saveIntegrations = async (statusUpdate?: any) => {
     const payload = {
-      squareAppId, squareAccessToken, squareLocationId, squareEnvironment, squareTerminalDeviceId, squareStatus: statusUpdate?.squareStatus || squareStatus,
+      squareAppId, squareAccessToken, squareLocationId, squareEnvironment, squareTerminalDeviceId, squareWebhookSigningKey, squareStatus: statusUpdate?.squareStatus || squareStatus,
       stripePublishableKey, stripeSecretKey, stripeWebhookSecret, stripeEnvironment, stripeStatus: statusUpdate?.stripeStatus || stripeStatus,
       doordashDeveloperId, doordashKeyId, doordashSigningSecret, doordashEnvironment, doordashStatus: statusUpdate?.doordashStatus || doordashStatus,
       fcmServerKey, apnsKeyId, apnsTeamId, apnsBundleId, pushStatus: statusUpdate?.pushStatus || pushStatus,
@@ -706,6 +708,14 @@ export default function Integrations() {
                   </p>
                 </div>
 
+                <div style={{ marginTop: '12px' }}>
+                  <label style={labelStyle}>Webhook Signing Key</label>
+                  <PasswordInput value={squareWebhookSigningKey} onChange={setSquareWebhookSigningKey} placeholder="your_square_webhook_signing_key" />
+                  <p style={{ fontSize: '11px', color: '#FEFEFE', marginTop: '4px' }}>
+                    Webhook URL: <span style={{ color: '#FED800' }}>https://eggsokpa.com/api/square/webhook</span>
+                  </p>
+                </div>
+
                 <ConnectButton id="square" />
               </div>
             </div>
@@ -771,8 +781,10 @@ export default function Integrations() {
                 </div>
                 <div>
                   <label style={labelStyle}>Webhook Signing Secret</label>
-                  <PasswordInput value={stripeWebhookSecret} onChange={setStripeWebhookSecret} placeholder="your_webhook_signing_secret" />
-                  <p style={{ fontSize: '11px', color: '#FEFEFE', marginTop: '4px' }}>Required for payment confirmations and refund processing</p>
+                  <PasswordInput value={stripeWebhookSecret} onChange={setStripeWebhookSecret} placeholder="whsec_..." />
+                  <p style={{ fontSize: '11px', color: '#FEFEFE', marginTop: '4px' }}>
+                    Webhook URL: <span style={{ color: '#FED800' }}>https://eggsokpa.com/api/stripe/webhook</span>
+                  </p>
                 </div>
                 <ConnectButton id="stripe" />
               </div>

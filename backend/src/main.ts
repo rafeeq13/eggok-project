@@ -4,7 +4,9 @@ import { ValidationPipe } from '@nestjs/common';
 import { json } from 'express';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  // rawBody: true stores raw request bytes on req.rawBody for all requests
+  // This is needed for Stripe/Square webhook signature verification
+  const app = await NestFactory.create(AppModule, { rawBody: true });
 
   // Increase body size limit for base64 file uploads (resumes, images)
   app.use(json({ limit: '10mb' }));

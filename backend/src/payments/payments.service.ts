@@ -1,4 +1,4 @@
-import { Injectable, BadRequestException } from '@nestjs/common';
+import { Injectable, BadRequestException, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Transaction } from './transaction.entity';
@@ -8,17 +8,24 @@ const Stripe = require('stripe');
 
 @Injectable()
 export class PaymentsService {
+    private readonly logger = new Logger('PaymentsService');
+
     constructor(
         @InjectRepository(Transaction)
         private readonly transactionRepository: Repository<Transaction>,
         private readonly settingsService: SettingsService,
     ) { }
 
-    private async getStripe(): Promise<any> {
+    async getStripe(): Promise<any> {
         const settings = await this.settingsService.getSetting('integrations');
         const secretKey = settings?.stripeSecretKey;
         if (!secretKey) return null;
         return new Stripe(secretKey);
+    }
+
+    async getWebhookSecret(): Promise<string | null> {
+        const settings = await this.settingsService.getSetting('integrations');
+        return settings?.stripeWebhookSecret || null;
     }
 
     async getPublishableKey(): Promise<{ key: string | null }> {
@@ -60,6 +67,19 @@ export class PaymentsService {
         };
     }
 
+    /**
+     * Verify Stripe webhook signature and parse event.
+     * Returns null if verification fails (signature mismatch or missing secret).
+     */
+    verifyWebhookEvent(rawBody: Buffer, signature: string, webhookSecret: string): any {
+        try {
+            return Stripe.webhooks.constructEvent(rawBody, signature, webhookSecret);
+        } catch (err: any) {
+            this.logger.error(`[STRIPE WEBHOOK] Signature verification failed: ${err.message}`);
+            return null;
+        }
+    }
+
     async recordTransaction(data: {
         orderNumber: string;
         customer: string;
@@ -69,6 +89,13 @@ export class PaymentsService {
         tip: number;
         paymentIntentId?: string;
     }): Promise<Transaction> {
+        // Idempotency: check if transaction already exists for this order
+        const existing = await this.transactionRepository.findOne({ where: { id: data.orderNumber } });
+        if (existing) {
+            this.logger.log(`[TRANSACTION] Already exists for ${data.orderNumber}, skipping`);
+            return existing;
+        }
+
         const stripeFee = Number((data.orderTotal * 0.029 + 0.30).toFixed(2));
         const netRevenue = Number((data.orderTotal - stripeFee).toFixed(2));
 

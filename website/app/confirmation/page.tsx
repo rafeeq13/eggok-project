@@ -106,7 +106,22 @@ export default function ConfirmationPage() {
   const displayTotal = lastOrder ? Number(lastOrder.total) : total;
   const displayOrderType = lastOrder?.orderType || orderType;
 
-  const orderStatus = lastOrder?.status || 'pending';
+  // Map new backend statuses to display-friendly tracking steps
+  const rawStatus = lastOrder?.status || 'pending_payment';
+  const statusDisplayMap: Record<string, string> = {
+    pending_payment: 'pending',
+    paid: 'confirmed',
+    sent_to_kitchen: 'confirmed',
+    pending: 'pending',
+    confirmed: 'confirmed',
+    preparing: 'preparing',
+    ready: 'ready',
+    out_for_delivery: 'out_for_delivery',
+    delivered: 'delivered',
+    picked_up: 'picked_up',
+    cancelled: 'cancelled',
+  };
+  const orderStatus = statusDisplayMap[rawStatus] || rawStatus;
   const pickupSteps = ['pending', 'confirmed', 'preparing', 'ready', 'picked_up'];
   const deliverySteps = ['pending', 'confirmed', 'preparing', 'ready', 'out_for_delivery', 'delivered'];
   const currentSteps = displayOrderType === 'pickup' ? pickupSteps : deliverySteps;

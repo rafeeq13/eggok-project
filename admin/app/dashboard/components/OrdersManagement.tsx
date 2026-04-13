@@ -5,7 +5,7 @@ import Pagination from './Pagination';
 
 import { API, adminFetch } from '../../../lib/api';
 
-type OrderStatus = 'pending' | 'confirmed' | 'preparing' | 'ready' | 'out_for_delivery' | 'delivered' | 'picked_up' | 'cancelled';
+type OrderStatus = 'pending_payment' | 'paid' | 'sent_to_kitchen' | 'pending' | 'confirmed' | 'preparing' | 'ready' | 'out_for_delivery' | 'delivered' | 'picked_up' | 'cancelled';
 type OrderType = 'pickup' | 'delivery';
 
 type Order = {
@@ -42,6 +42,9 @@ type Order = {
 };
 
 const statusColor: Record<string, string> = {
+  pending_payment: '#9CA3AF',
+  paid: '#10B981',
+  sent_to_kitchen: '#F59E0B',
   pending: '#F59E0B',
   confirmed: '#60A5FA',
   preparing: '#60A5FA',
@@ -53,6 +56,9 @@ const statusColor: Record<string, string> = {
 };
 
 const statusLabel: Record<string, string> = {
+  pending_payment: 'Awaiting Payment',
+  paid: 'Paid',
+  sent_to_kitchen: 'Sent to Kitchen',
   pending: 'Pending',
   confirmed: 'Confirmed',
   preparing: 'Preparing',
@@ -64,6 +70,9 @@ const statusLabel: Record<string, string> = {
 };
 
 const nextStatuses: Record<string, string[]> = {
+  pending_payment: ['cancelled'],
+  paid: ['preparing', 'cancelled'],
+  sent_to_kitchen: ['preparing', 'cancelled'],
   pending: ['preparing', 'cancelled'],
   confirmed: ['preparing', 'cancelled'],
   preparing: ['ready', 'cancelled'],
@@ -74,7 +83,7 @@ const nextStatuses: Record<string, string[]> = {
   cancelled: [],
 };
 
-const activeStatuses = ['pending', 'confirmed', 'preparing', 'ready', 'out_for_delivery'];
+const activeStatuses = ['pending_payment', 'paid', 'sent_to_kitchen', 'pending', 'confirmed', 'preparing', 'ready', 'out_for_delivery'];
 const historyStatuses = ['delivered', 'picked_up', 'cancelled'];
 
 export default function OrdersManagement() {
@@ -514,7 +523,7 @@ export default function OrdersManagement() {
       {activeTab === 'active' && (
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '10px', marginBottom: '16px' }}>
           {[
-            { label: 'Pending', count: orders.filter(o => o.status === 'pending').length, color: '#F59E0B' },
+            { label: 'Pending', count: orders.filter(o => ['pending_payment', 'paid', 'sent_to_kitchen', 'pending'].includes(o.status)).length, color: '#F59E0B' },
             { label: 'Preparing', count: orders.filter(o => o.status === 'preparing').length, color: '#60A5FA' },
             { label: 'Ready', count: orders.filter(o => o.status === 'ready').length, color: '#22C55E' },
             { label: 'Out for Delivery', count: orders.filter(o => o.status === 'out_for_delivery').length, color: '#A78BFA' },

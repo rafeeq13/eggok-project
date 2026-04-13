@@ -451,7 +451,7 @@ function CheckoutInner() {
           throw new Error(err.message || 'Payment setup failed');
         }
 
-        const { clientSecret } = await piRes.json();
+        const { clientSecret, paymentIntentId } = await piRes.json();
 
         const { error: stripeError } = await stripe.confirmCardPayment(clientSecret, {
           payment_method: { card: cardElement, billing_details: { name: `${firstName} ${lastName}`, email } },
@@ -461,11 +461,11 @@ function CheckoutInner() {
           throw new Error(stripeError.message || 'Payment failed');
         }
 
-        // Payment succeeded — sync order to Square POS
+        // Payment succeeded — notify backend (Stripe webhook is primary, this is fallback)
         fetch(`${API_URL}/orders/confirm-payment`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ orderNumber: order.orderNumber }),
+          body: JSON.stringify({ orderNumber: order.orderNumber, paymentIntentId }),
         }).catch(() => {});
       }
 

@@ -18,9 +18,14 @@ export class OrdersController {
     return this.ordersService.getAllOrders(page ? +page : 1, limit ? +limit : 50);
   }
 
+  /**
+   * Backward-compatible confirm-payment endpoint.
+   * Now accepts optional paymentIntentId for Stripe verification.
+   * The Stripe webhook is the primary source of truth; this is a fallback.
+   */
   @Post('confirm-payment')
-  confirmPayment(@Body('orderNumber') orderNumber: string) {
-    return this.ordersService.confirmOrderPayment(orderNumber);
+  confirmPayment(@Body() body: { orderNumber: string; paymentIntentId?: string }) {
+    return this.ordersService.confirmOrderPayment(body.orderNumber, body.paymentIntentId);
   }
 
   @Get('search')
@@ -64,6 +69,14 @@ export class OrdersController {
     return this.ordersService.getHistoricalStats(days ? +days : 30);
   }
 
+  /**
+   * Admin endpoint: view orders stuck in various states.
+   */
+  @Get('stuck')
+  @UseGuards(AdminGuard)
+  getStuckOrders() {
+    return this.ordersService.getStuckOrders();
+  }
 
   @Get(':id')
   getOrderById(@Param('id', ParseIntPipe) id: number) {

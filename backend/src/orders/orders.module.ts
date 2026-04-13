@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Module, forwardRef } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Order } from './order.entity';
 import { Customer } from '../customers/customer.entity';
@@ -8,7 +8,11 @@ import { PaymentsModule } from '../payments/payments.module';
 import { LoyaltyModule } from '../loyalty/loyalty.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Order, Customer]), PaymentsModule, LoyaltyModule],
+  imports: [
+    TypeOrmModule.forFeature([Order, Customer]),
+    forwardRef(() => PaymentsModule),
+    LoyaltyModule,
+  ],
   controllers: [OrdersController],
   providers: [OrdersService],
   exports: [OrdersService],

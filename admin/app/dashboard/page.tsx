@@ -22,9 +22,20 @@ import KitchenDisplay from './components/KitchenDisplay';
 import { API, adminFetch, adminLogout } from '../../lib/api';
 
 const statusColor: Record<string, string> = {
+  pending_payment: '#9CA3AF',
+  paid: '#10B981',
+  sent_to_kitchen: '#F59E0B',
+  pending: '#F59E0B',
+  confirmed: '#60A5FA',
   Preparing: '#F59E0B',
+  preparing: '#F59E0B',
   Ready: '#22C55E',
+  ready: '#22C55E',
+  out_for_delivery: '#A78BFA',
   Delivered: '#FEFEFE',
+  delivered: '#FEFEFE',
+  picked_up: '#FEFEFE',
+  cancelled: '#FC0301',
 };
 
 function DashboardContent() {
