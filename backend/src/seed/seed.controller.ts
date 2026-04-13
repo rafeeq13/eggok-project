@@ -31,6 +31,7 @@ export class SeedController {
      * Safe to run multiple times — all operations are idempotent.
      */
     @Post('migrate')
+    @UseGuards(AdminGuard)
     async migrate() {
         const results: string[] = [];
         const runner = this.dataSource.createQueryRunner();
@@ -123,6 +124,7 @@ export class SeedController {
      * Check current migration status
      */
     @Get('migrate/status')
+    @UseGuards(AdminGuard)
     async migrateStatus() {
         const runner = this.dataSource.createQueryRunner();
         await runner.connect();
