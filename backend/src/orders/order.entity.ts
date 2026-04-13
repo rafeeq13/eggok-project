@@ -56,11 +56,7 @@ export class Order {
   @Column({ type: 'decimal', precision: 10, scale: 2 })
   total: number;
 
-  @Column({
-    type: 'enum',
-    enum: ['pending_payment', 'paid', 'sent_to_kitchen', 'pending', 'confirmed', 'preparing', 'ready', 'out_for_delivery', 'delivered', 'picked_up', 'cancelled'],
-    default: 'pending_payment'
-  })
+  @Column({ type: 'varchar', length: 50, default: 'pending_payment' })
   status: string;
 
   @Column({ nullable: true })
