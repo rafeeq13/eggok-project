@@ -103,20 +103,18 @@ export class SquareService {
       // Build line items from order items
       const lineItems = (order.items || []).map((item: any) => {
         // Unit price only — Square multiplies by quantity automatically
+        // Modifiers go in note only (not in price) to keep Square total matching ours
         const itemUnit = Math.round((item.price || 0) * 100);
-        const modUnit = (item.modifiers || []).reduce((sum: number, mod: any) => {
-          return sum + Math.round((mod.price || 0) * 100);
-        }, 0);
 
         return {
           name: item.name || 'Item',
           quantity: String(item.quantity || 1),
           basePriceMoney: {
-            amount: BigInt(itemUnit + modUnit),
+            amount: BigInt(itemUnit),
             currency: 'USD' as const,
           },
           note: [
-            ...(item.modifiers || []).map((m: any) => `+ ${m.name}`),
+            ...(item.modifiers || []).map((m: any) => `+ ${m.name}${m.price > 0 ? ` ($${m.price})` : ''}`),
             item.specialInstructions ? `Note: ${item.specialInstructions}` : '',
           ].filter(Boolean).join('\n') || undefined,
         };
