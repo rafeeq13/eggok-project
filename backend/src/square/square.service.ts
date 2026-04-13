@@ -206,6 +206,31 @@ export class SquareService {
       const squareOrderId = response.order?.id || '';
       console.log(`[SQUARE] Order synced: ${order.orderNumber} → Square ${squareOrderId}`);
 
+      // Record external payment so order shows as "Paid" in Square Dashboard/POS
+      if (squareOrderId && order.total > 0) {
+        try {
+          await client.payments.create({
+            sourceId: 'EXTERNAL',
+            idempotencyKey: `eggok-pay-${order.orderNumber}`,
+            amountMoney: {
+              amount: BigInt(Math.round(order.total * 100)),
+              currency: 'USD' as const,
+            },
+            orderId: squareOrderId,
+            locationId: creds.squareLocationId,
+            externalDetails: {
+              type: 'OTHER' as const,
+              source: 'Stripe Online Payment',
+            },
+            note: `Online Order ${order.orderNumber} - Paid via Stripe`,
+          });
+          console.log(`[SQUARE] External payment recorded for ${order.orderNumber}`);
+        } catch (payErr: any) {
+          const payMsg = payErr?.errors?.[0]?.detail || payErr?.message || 'Unknown';
+          console.error(`[SQUARE] External payment failed for ${order.orderNumber}:`, payMsg);
+        }
+      }
+
       return {
         squareOrderId,
         squareReceiptUrl: response.order?.netAmounts ? undefined : undefined,
