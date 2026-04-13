@@ -102,19 +102,30 @@ export class SquareService {
 
       // Build line items from order items
       const lineItems = (order.items || []).map((item: any) => {
-        // Unit price only — Square multiplies by quantity automatically
-        // Modifiers go in note only (not in price) to keep Square total matching ours
-        const itemUnit = Math.round((item.price || 0) * 100);
+        // Base price + all modifier prices = true unit price
+        const basePrice = Number(item.price) || 0;
+        const modifierTotal = (item.modifiers || []).reduce(
+          (sum: number, m: any) => sum + (Number(m.price) || 0), 0
+        );
+        const itemUnit = Math.round((basePrice + modifierTotal) * 100);
+
+        // Build item name with modifiers for kitchen clarity
+        const modifierNames = (item.modifiers || [])
+          .map((m: any) => m.name)
+          .filter(Boolean);
+        const displayName = modifierNames.length > 0
+          ? `${item.name || 'Item'} (${modifierNames.join(', ')})`
+          : (item.name || 'Item');
 
         return {
-          name: item.name || 'Item',
+          name: displayName,
           quantity: String(item.quantity || 1),
           basePriceMoney: {
             amount: BigInt(itemUnit),
             currency: 'USD' as const,
           },
           note: [
-            ...(item.modifiers || []).map((m: any) => `+ ${m.name}${m.price > 0 ? ` ($${m.price})` : ''}`),
+            ...(item.modifiers || []).map((m: any) => `+ ${m.name}${Number(m.price) > 0 ? ` ($${Number(m.price).toFixed(2)})` : ''}`),
             item.specialInstructions ? `Note: ${item.specialInstructions}` : '',
           ].filter(Boolean).join('\n') || undefined,
         };
