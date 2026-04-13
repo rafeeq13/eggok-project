@@ -120,18 +120,8 @@ export class SquareService {
         };
       });
 
-      // Add delivery fee as a line item if present
-      if (order.deliveryFee && order.deliveryFee > 0) {
-        lineItems.push({
-          name: 'Delivery Fee',
-          quantity: '1',
-          basePriceMoney: {
-            amount: BigInt(Math.round(order.deliveryFee * 100)),
-            currency: 'USD' as const,
-          },
-          note: undefined,
-        });
-      }
+      // Delivery fee added as non-taxable service charge (not line item)
+      // to prevent Square from taxing it and causing total mismatch
 
       // Build order note with relevant info
       const orderNotes = [
@@ -154,19 +144,29 @@ export class SquareService {
               percentage: order.subtotal > 0
                 ? ((order.tax / order.subtotal) * 100).toFixed(4)
                 : '0',
-              scope: 'ORDER' as const,
+              scope: 'LINE_ITEM' as const,
             },
           ],
-          serviceCharges: order.tip && order.tip > 0 ? [
-            {
+          serviceCharges: [
+            ...(order.deliveryFee && order.deliveryFee > 0 ? [{
+              name: 'Delivery Fee',
+              amountMoney: {
+                amount: BigInt(Math.round(order.deliveryFee * 100)),
+                currency: 'USD' as const,
+              },
+              calculationPhase: 'SUBTOTAL_PHASE' as const,
+              taxable: false,
+            }] : []),
+            ...(order.tip && order.tip > 0 ? [{
               name: 'Tip',
               amountMoney: {
                 amount: BigInt(Math.round(order.tip * 100)),
                 currency: 'USD' as const,
               },
               calculationPhase: 'SUBTOTAL_PHASE' as const,
-            },
-          ] : undefined,
+              taxable: false,
+            }] : []),
+          ],
           fulfillments: [
             {
               type: order.orderType === 'delivery' ? 'DELIVERY' : 'PICKUP',
