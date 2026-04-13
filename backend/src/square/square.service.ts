@@ -144,7 +144,7 @@ export class SquareService {
               percentage: order.subtotal > 0
                 ? ((order.tax / order.subtotal) * 100).toFixed(4)
                 : '0',
-              scope: 'LINE_ITEM' as const,
+              scope: 'ORDER' as const,
             },
           ],
           serviceCharges: [
