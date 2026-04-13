@@ -120,9 +120,6 @@ export class SquareService {
         };
       });
 
-      // Delivery fee added as non-taxable service charge (not line item)
-      // to prevent Square from taxing it and causing total mismatch
-
       // Build order note with relevant info
       const orderNotes = [
         `Online Order: ${order.orderNumber}`,
@@ -130,6 +127,7 @@ export class SquareService {
         `Customer: ${order.customerName}`,
         order.customerPhone ? `Phone: ${order.customerPhone}` : '',
         order.orderType === 'delivery' && order.deliveryAddress ? `Deliver to: ${order.deliveryAddress}` : '',
+        order.deliveryFee && order.deliveryFee > 0 ? `Delivery Fee: $${order.deliveryFee.toFixed(2)}` : '',
         order.notes ? `Notes: ${order.notes}` : '',
       ].filter(Boolean).join(' | ');
 
@@ -147,17 +145,8 @@ export class SquareService {
               scope: 'ORDER' as const,
             },
           ],
-          serviceCharges: [
-            ...(order.deliveryFee && order.deliveryFee > 0 ? [{
-              name: 'Delivery Fee',
-              amountMoney: {
-                amount: BigInt(Math.round(order.deliveryFee * 100)),
-                currency: 'USD' as const,
-              },
-              calculationPhase: 'SUBTOTAL_PHASE' as const,
-              taxable: false,
-            }] : []),
-            ...(order.tip && order.tip > 0 ? [{
+          serviceCharges: order.tip && order.tip > 0 ? [
+            {
               name: 'Tip',
               amountMoney: {
                 amount: BigInt(Math.round(order.tip * 100)),
@@ -165,8 +154,8 @@ export class SquareService {
               },
               calculationPhase: 'SUBTOTAL_PHASE' as const,
               taxable: false,
-            }] : []),
-          ],
+            },
+          ] : undefined,
           fulfillments: [
             {
               type: order.orderType === 'delivery' ? 'DELIVERY' : 'PICKUP',
