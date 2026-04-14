@@ -24,7 +24,7 @@
   <tr><td style="padding:20px 20px 4px;">
     <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#1a1a1a;border:2px solid #2a2a2a;border-radius:14px;">
       <tr><td style="padding:28px 20px 24px;text-align:center;">
-        <span style="font-size:30px;display:block;margin-bottom:12px;"><img src="/webicons/order-received.webp" style="width:30px;height:30px;" /></span>
+        <span style="font-size:52px;display:block;margin-bottom:12px;"><img src="/webicons/order-received.webp" style="width:52px;height:52px;" /></span>
         <h1 style="margin:0 0 6px;font-size:26px;font-weight:900;color:#ffffff;line-height:1.2;">You've Received a New Order!</h1>
         <p style="margin:0;font-size:13px;color:#aaaaaa;font-weight:600;letter-spacing:0.3px;">Order received! Let's get it ready for <%= orderType === 'delivery' ? 'delivery' : 'pickup' %>.</p>
       </td></tr>
@@ -125,12 +125,12 @@
         <td width="48%" valign="top" style="padding-right:6px;">
           <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:#F5C200;border:1.5px solid #2e2e2e;border-radius:10px;">
             <tr><td style="padding:14px;">
-              <p style="margin:0 0 8px;font-size:13px;font-weight:900;color:#000000letter-spacing:0.3px;">Order Summary</p>
+              <p style="margin:0 0 8px;font-size:13px;font-weight:900;color:#ffffff;letter-spacing:0.3px;">Order Summary</p>
               <table width="100%" cellpadding="0" cellspacing="0" border="0">
-                <tr><td style="font-size:11.5px;color:#000000;font-weight:700;padding:2px 0;width:68px;">Order ID:</td><td style="font-size:11.5px;color:#000000;font-weight:600;padding:2px 0;"><%= orderNumber %></td></tr>
-                <tr><td style="font-size:11.5px;color:#000000;font-weight:700;padding:2px 0;">Order Date:</td><td style="font-size:11.5px;color:#000000;font-weight:600;padding:2px 0;"><%= new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'long', year: 'numeric' }).replace(/ /g, '-') %></td></tr>
-                <tr><td style="font-size:11.5px;color:#000000;font-weight:700;padding:2px 0;">Item QTY:</td><td style="font-size:11.5px;color:#000000;font-weight:600;padding:2px 0;"><%= itemCount %></td></tr>
-                <tr><td style="font-size:11.5px;color:#000000;font-weight:700;padding:2px 0;">Order Total:</td><td style="font-size:11.5px;color:#000000;font-weight:600;padding:2px 0;">$<%= total %></td></tr>
+                <tr><td style="font-size:11.5px;color:#888;font-weight:700;padding:2px 0;width:68px;">Order ID:</td><td style="font-size:11.5px;color:#cccccc;font-weight:600;padding:2px 0;"><%= orderNumber %></td></tr>
+                <tr><td style="font-size:11.5px;color:#888;font-weight:700;padding:2px 0;">Order Date:</td><td style="font-size:11.5px;color:#cccccc;font-weight:600;padding:2px 0;"><%= new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'long', year: 'numeric' }).replace(/ /g, '-') %></td></tr>
+                <tr><td style="font-size:11.5px;color:#888;font-weight:700;padding:2px 0;">Item QTY:</td><td style="font-size:11.5px;color:#cccccc;font-weight:600;padding:2px 0;"><%= itemCount %></td></tr>
+                <tr><td style="font-size:11.5px;color:#888;font-weight:700;padding:2px 0;">Order Total:</td><td style="font-size:11.5px;color:#cccccc;font-weight:600;padding:2px 0;">$<%= total %></td></tr>
               </table>
             </td></tr>
           </table>
@@ -139,12 +139,12 @@
         <td width="48%" valign="top" style="padding-left:6px;">
           <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:#F5C200;border:1.5px solid #2e2e2e;border-radius:10px;">
             <tr><td style="padding:14px;">
-              <p style="margin:0 0 8px;font-size:13px;font-weight:900;color:#000000;letter-spacing:0.3px;">Customer Details</p>
+              <p style="margin:0 0 8px;font-size:13px;font-weight:900;color:#ffffff;letter-spacing:0.3px;">Customer Details</p>
               <table width="100%" cellpadding="0" cellspacing="0" border="0">
-                <tr><td style="font-size:11.5px;color:#000000;font-weight:700;padding:2px 0;width:30px;">Name:</td><td style="font-size:11.5px;color:#000000;font-weight:600;padding:2px 0;"><%= customerName %></td></tr>
-                <tr><td style="font-size:11.5px;color:#000000;font-weight:700;padding:2px 0;">Contact:</td><td style="font-size:11.5px;color:#000000;font-weight:600;padding:2px 0;"><%= customerPhone %></td></tr>
+                <tr><td style="font-size:11.5px;color:#888;font-weight:700;padding:2px 0;width:52px;">Name:</td><td style="font-size:11.5px;color:#cccccc;font-weight:600;padding:2px 0;"><%= customerName %></td></tr>
+                <tr><td style="font-size:11.5px;color:#888;font-weight:700;padding:2px 0;">Contact:</td><td style="font-size:11.5px;color:#cccccc;font-weight:600;padding:2px 0;"><%= customerPhone %></td></tr>
                 <% if (orderType === 'delivery' && deliveryAddress) { %>
-                <tr><td style="font-size:11.5px;color:#000000;font-weight:700;padding:2px 0;vertical-align:top;">Address:</td><td style="font-size:11.5px;color:#000000;font-weight:600;padding:2px 0;line-height:1.4;"><%= deliveryAddress %><% if (deliveryApt) { %> <%= deliveryApt %><% } %></td></tr>
+                <tr><td style="font-size:11.5px;color:#888;font-weight:700;padding:2px 0;vertical-align:top;">Address:</td><td style="font-size:11.5px;color:#cccccc;font-weight:600;padding:2px 0;line-height:1.4;"><%= deliveryAddress %><% if (deliveryApt) { %> <%= deliveryApt %><% } %></td></tr>
                 <% } %>
               </table>
             </td></tr>
@@ -168,7 +168,7 @@
           <a href="mailto:eggsok3517@gmail.com" style="text-decoration:none;display:block;">
             <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#e63b2e;border-radius:10px;">
               <tr><td style="padding:14px 12px;text-align:center;">
-                <span style="font-size:22px;display:block;margin-bottom:4px;"><img src="/webicons/email.webp" style="width:30px;height:30px;" /></span>
+                <span style="font-size:22px;display:block;margin-bottom:4px;"><img src="/webicons/email.webp" style="width:52px;height:52px;" /></span>
                 <span style="font-size:14px;font-weight:900;color:#ffffff;display:block;">Email Us</span>
                 <span style="font-size:11px;color:rgba(255,255,255,0.8);font-weight:700;display:block;margin-top:2px;">eggsok3517@gmail.com</span>
               </td></tr>
@@ -179,7 +179,7 @@
           <a href="tel:+12159489902" style="text-decoration:none;display:block;">
             <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#e63b2e;border-radius:10px;">
               <tr><td style="padding:14px 12px;text-align:center;">
-                <span style="font-size:22px;display:block;margin-bottom:4px;"><img src="/webicons/Contact.webp" style="width:30px;height:30px;" /></span>
+                <span style="font-size:22px;display:block;margin-bottom:4px;"><img src="/webicons/Contact.webp" style="width:52px;height:52px;" /></span>
                 <span style="font-size:14px;font-weight:900;color:#ffffff;display:block;">Speak To Us</span>
                 <span style="font-size:11px;color:rgba(255,255,255,0.8);font-weight:700;display:block;margin-top:2px;">(215) 948-9902</span>
               </td></tr>
@@ -191,51 +191,33 @@
   </td></tr>
 
   <!-- ══════ FOOTER ══════ -->
-  <tr><td style="background:#0d0d0d;padding:16px 20px;border-top:2px solid #d5d5d5ff;">
+  <tr><td style="background:#0d0d0d;padding:16px 20px;border-top:2px solid #1e1e1e;">
     <!-- Info row -->
     <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:12px;">
       <tr>
         <td style="text-align:center;padding:2px 0;">
-          <span style="font-size:11px;color:#777777;font-weight:700;"><img src="/webicons/Location.webp" style="width:20px;height:20px;" /> 3517 Lancaster Ave, Philadelphia, PA 19104</span>
+          <span style="font-size:11px;color:#777777;font-weight:700;"><img src="/webicons/Location.webp" style="width:52px;height:52px;" />; 3517 Lancaster Ave, Philadelphia, PA 19104</span>
           <span style="color:#444;"> &nbsp; </span>
-          <span style="font-size:11px;color:#777777;font-weight:700;"><img src="/webicons/Website.webp" style="width:20px;height:20px;" />www.eggsokphilly.com</span>
+          <span style="font-size:11px;color:#777777;font-weight:700;"><img src="/webicons/Website.webp" style="width:52px;height:52px;" />; www.eggsokphilly.com</span>
           <span style="color:#444;"> &nbsp; </span>
-          <span style="font-size:11px;color:#777777;font-weight:700;"><img src="/webicons/Contact.webp" style="width20px;height:20px;" />(215) 948-9902</span>
+          <span style="font-size:11px;color:#777777;font-weight:700;"><img src="/webicons/Contact.webp" style="width:52px;height:52px;" />; (215) 948-9902</span>
         </td>
       </tr>
     </table>
     <!-- Hours -->
-<tr>
-  <td style="padding:10px 0;">
-    <table width="100%" cellpadding="0" cellspacing="0" border="0">
-      <tr>
-        <td style="height:1px;background:#d5d5d5;"></td>
-      </tr>
-    </table>
-  </td>
-</tr>
     <p style="margin:0 0 12px;text-align:center;font-size:11px;color:#F5C200;font-weight:800;letter-spacing:0.5px;">Mon-Fri: 7AM-4PM &middot; Sat-Sun: 8AM-3PM</p>
     <!-- Social -->
-<tr>
-  <td style="padding:10px 0;">
-    <table width="100%" cellpadding="0" cellspacing="0" border="0">
-      <tr>
-        <td style="height:1px;background:#d5d5d5;"></td>
-      </tr>
-    </table>
-  </td>
-</tr>
     <table cellpadding="0" cellspacing="0" border="0" align="center" style="margin-bottom:14px;">
       <tr>
         <td style="font-size:11px;color:#666;font-weight:700;padding-right:10px;">Connect with us on social networks</td>
-        <td style="padding:0 3px;"><a href="#" style="display:inline-block;width:28px;height:28px;background:#1877f2;border-radius:6px;text-align:center;line-height:28px;font-size:15px;color:#fff;text-decoration:none;font-weight:700;"><img src="/webicons/FB.webp" style="width:30px;height:30px;" /></a></td>
-        <td style="padding:0 3px;"><a href="#" style="display:inline-block;width:28px;height:28px;background:linear-gradient(135deg,#f58529,#dd2a7b,#8134af);border-radius:6px;text-align:center;line-height:28px;font-size:13px;color:#fff;text-decoration:none;"><img src="/webicons/Insta.webp" style="width:30px;height:30px;" /></a></td>
-        <td style="padding:0 3px;"><a href="#" style="display:inline-block;width:28px;height:28px;background:#000000;border:1px solid #333;border-radius:6px;text-align:center;line-height:28px;font-size:13px;color:#fff;text-decoration:none;"><img src="/webicons/tiktok.webp" style="width:30px;height:30px;" /></a></td>
-        <td style="padding:0 3px;"><a href="#" style="display:inline-block;width:28px;height:28px;background:#ea4335;border-radius:6px;text-align:center;line-height:28px;font-size:12px;color:#fff;text-decoration:none;font-weight:700;"><img src="/webicons/googleplus.webp" style="width:30px;height:30px;" /></a></td>
+        <td style="padding:0 3px;"><a href="#" style="display:inline-block;width:28px;height:28px;background:#1877f2;border-radius:6px;text-align:center;line-height:28px;font-size:15px;color:#fff;text-decoration:none;font-weight:700;"><img src="/webicons/FB.webp" style="width:52px;height:52px;" /></a></td>
+        <td style="padding:0 3px;"><a href="#" style="display:inline-block;width:28px;height:28px;background:linear-gradient(135deg,#f58529,#dd2a7b,#8134af);border-radius:6px;text-align:center;line-height:28px;font-size:13px;color:#fff;text-decoration:none;"><img src="/webicons/Insta.webp" style="width:52px;height:52px;" /></a></td>
+        <td style="padding:0 3px;"><a href="#" style="display:inline-block;width:28px;height:28px;background:#000000;border:1px solid #333;border-radius:6px;text-align:center;line-height:28px;font-size:13px;color:#fff;text-decoration:none;"><img src="/webicons/tiktok.webp" style="width:52px;height:52px;" />;</a></td>
+        <td style="padding:0 3px;"><a href="#" style="display:inline-block;width:28px;height:28px;background:#ea4335;border-radius:6px;text-align:center;line-height:28px;font-size:12px;color:#fff;text-decoration:none;font-weight:700;"><img src="/webicons/googleplus.webp" style="width:52px;height:52px;" /></a></td>
       </tr>
     </table>
     <!-- Copyright -->
-    <table width="100%"><tr><td style="height:1px;background:#d5d5d5;"></td></tr></table>
+    <table width="100%"><tr><td style="height:1px;background:#1e1e1e;"></td></tr></table>
     <p style="margin:0;text-align:center;font-size:11px;color:#444;font-weight:700;padding-top:12px;">&copy; <%= new Date().getFullYear() %> Eggs Ok. All rights reserved.</p>
   </td></tr>
 

@@ -105,13 +105,17 @@ export class MailService {
         const settings = await this.getResolvedMailSettings();
         if (!this.isConfigured(settings) || !settings.enabled) return false;
 
-        const itemsHtml = this.renderOrderItems(order.items || []);
+        const items = order.items || [];
+        const itemsHtml = this.renderOwnerOrderItems(items);
+        const itemCount = items.reduce((sum: number, i: any) => sum + (Number(i.quantity) || 1), 0);
+
         const html = await this.renderTemplate('owner_notification', {
             orderNumber: this.safeText(order.orderNumber),
             customerName: this.safeText(order.customerName),
             customerEmail: this.safeText(order.customerEmail),
             customerPhone: this.safeText(order.customerPhone),
             itemsHtml,
+            itemCount,
             subtotal: Number(order.subtotal || 0).toFixed(2),
             tax: Number(order.tax || 0).toFixed(2),
             tip: Number(order.tip || 0).toFixed(2),
@@ -119,6 +123,8 @@ export class MailService {
             total: Number(order.total || 0).toFixed(2),
             orderType: this.safeText(order.orderType),
             deliveryAddress: this.safeText(order.deliveryAddress || ''),
+            deliveryApt: this.safeText(order.deliveryApt || ''),
+            deliveryInstructions: this.safeText(order.deliveryInstructions || ''),
         });
 
         await this.sendMail(
@@ -722,6 +728,44 @@ export class MailService {
     private async renderTemplate(templateName: string, context: Record<string, unknown>) {
         const templatePath = join(process.cwd(), 'src', 'mail', 'templates', `${templateName}.ejs`);
         return ejs.renderFile(templatePath, context);
+    }
+
+    private renderOwnerOrderItems(items: any[]) {
+        return items
+            .map((item, index) => {
+                const quantity = Number(item?.quantity || 1);
+                const price = Number(item?.price || 0);
+                const name = this.escapeHtml(item?.name || 'Item');
+                const modifierTotal = (item.modifiers || []).reduce((sum: number, m: any) => sum + (Number(m.price) || 0), 0);
+                const itemTotal = (price + modifierTotal) * quantity;
+                const isLast = index === items.length - 1;
+
+                let html = `<table width="100%" cellpadding="0" cellspacing="0" border="0" style="${!isLast ? 'border-bottom:1px solid #2a2a2a;margin-bottom:14px;' : ''}">
+                    <tr>
+                        <td style="padding-bottom:14px;">
+                            <p style="margin:0;font-size:15px;font-weight:900;color:#F5C200;line-height:1.2;">${name}</p>
+                            <p style="margin:2px 0 0;font-size:12px;color:#888888;font-weight:700;">QTY: X${quantity}</p>
+                        </td>
+                        <td align="right" valign="top" style="padding-bottom:14px;padding-left:12px;white-space:nowrap;">
+                            <p style="margin:0;font-size:15px;font-weight:900;color:#ffffff;">$${itemTotal.toFixed(2)}</p>
+                        </td>
+                    </tr>`;
+
+                if (item.modifiers && Array.isArray(item.modifiers) && item.modifiers.length > 0) {
+                    item.modifiers.forEach((mod: any) => {
+                        const modPrice = Number(mod.price) || 0;
+                        html += `<tr><td colspan="2" style="padding:0 0 2px 8px;"><span style="font-size:11px;color:#888;">+ ${this.escapeHtml(mod.name)}${modPrice > 0 ? ` ($${modPrice.toFixed(2)})` : ''}</span></td></tr>`;
+                    });
+                }
+
+                if (item.specialInstructions) {
+                    html += `<tr><td colspan="2" style="padding:2px 0 4px 8px;"><span style="font-size:11px;color:#F5C200;font-style:italic;">Note: ${this.escapeHtml(item.specialInstructions)}</span></td></tr>`;
+                }
+
+                html += '</table>';
+                return html;
+            })
+            .join('');
     }
 
     private renderOrderItems(items: any[]) {
