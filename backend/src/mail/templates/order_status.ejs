@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>New Order - Eggs Ok</title></head>
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title><%= heroTitle %> - Eggs Ok</title></head>
 <body style="
   margin:0;
   padding:30px 16px 50px;
@@ -24,34 +24,33 @@
   <tr><td style="padding:20px 20px 4px;">
     <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#1a1a1a;border:2px solid #dfdfdfff;border-radius:14px;">
       <tr><td style="padding:28px 20px 24px;text-align:center;">
-        <span style="font-size:30px;display:block;margin-bottom:12px;"><img src="https://eggsokpa.com/webicons/order-received.webp" style="width:60px;height:60px;" /></span>
-        <h1 style="margin:0 0 6px;font-size:26px;font-weight:900;color:#ffffff;line-height:1.2;">Your Order is Confirmed!</h1>
-        <p style="margin:0;font-size:13px;color:#ffffffff;font-weight:600;letter-spacing:0.3px;">Thanks for your order. Will be Ready very soon.</p>
+        <span style="font-size:30px;display:block;margin-bottom:12px;"><img src="<%= heroIcon %>" style="width:60px;height:60px;" /></span>
+        <h1 style="margin:0 0 6px;font-size:26px;font-weight:900;color:#ffffff;line-height:1.2;"><%= heroTitle %></h1>
+        <p style="margin:0;font-size:13px;color:#ffffffff;font-weight:600;letter-spacing:0.3px;"><%= heroSubtitle %></p>
       </td></tr>
     </table>
   </td></tr>
-
 
     <!-- GREETING -->
   <tr><td style="padding:24px 28px 0;">
     <table width="100%" cellpadding="0" cellspacing="0" border="0" style="">
       <tr><td style="padding:20px 24px;">
         <p style="margin:0 0 8px;font-size:20px;font-weight:900;color:#F5C200;">Hey <%= customerName %>!</p>
-        <p style="margin:0;font-size:13px;color:#ffffff;font-weight:600;line-height:1.6;">Your order has been received and we're already getting it ready for you. Get ready for something delicious!</p>
+        <p style="margin:0;font-size:13px;color:#ffffff;font-weight:600;line-height:1.6;"><%= greetingMessage %></p>
       </td></tr>
     </table>
   </td></tr>
 
-<!-- ORDER STATUS TRACKER -->
+<% if (!isCancelled) { %>
 <!-- ORDER STATUS TRACKER -->
 <tr>
   <td style="padding:20px;background:#000000;">
     <table width="100%" cellpadding="0" cellspacing="0" border="0">
       <tr>
 
-        <!-- STEP 1 (ACTIVE) -->
+        <!-- STEP 1: Order Confirmed -->
         <td align="center" width="18%">
-          <table width="60" height="70" cellpadding="0" cellspacing="0" style="background:#F5C200;border-radius:10px;">
+          <table width="60" height="70" cellpadding="0" cellspacing="0" style="background:<%= activeStep >= 1 ? '#F5C200' : '#F5E6A0' %>;border-radius:10px;">
             <tr>
               <td align="center" valign="middle">
                 <img src="https://eggsokpa.com/webicons/OrderconfirmationBlack.webp" width="35" height="35" style="display:block;margin-bottom:4px;">
@@ -66,9 +65,9 @@
         <!-- ARROW -->
         <td align="center" width="1%" style="color:#F5C200;font-size:18px;">&raquo;</td>
 
-        <!-- STEP 2 -->
+        <!-- STEP 2: Order Prepared -->
         <td align="center" width="18%">
-          <table width="60" height="70" cellpadding="0" cellspacing="0" style="background:#F5E6A0;border-radius:10px;">
+          <table width="60" height="70" cellpadding="0" cellspacing="0" style="background:<%= activeStep >= 2 ? '#F5C200' : '#F5E6A0' %>;border-radius:10px;">
             <tr>
               <td align="center" valign="middle">
                 <img src="https://eggsokpa.com/webicons/orderpreparedblack.webp" width="35" height="35" style="display:block;margin-bottom:4px;">
@@ -83,15 +82,15 @@
         <!-- ARROW -->
         <td align="center" width="2%" style="color:#F5C200;font-size:16px;">&raquo;</td>
 
-        <!-- STEP 3 -->
+        <!-- STEP 3: Rider Picked Up -->
         <td align="center" width="18%">
-          <table width="60" height="70" cellpadding="0" cellspacing="0" style="background:#F5E6A0;border-radius:10px;">
+          <table width="60" height="70" cellpadding="0" cellspacing="0" style="background:<%= activeStep >= 3 ? '#F5C200' : '#F5E6A0' %>;border-radius:10px;">
             <tr>
               <td align="center" valign="middle">
                 <img src="https://eggsokpa.com/webicons/Readyforpickupblack.webp" width="35" height="35" style="display:block;margin-bottom:4px;">
                 <div style="font-size:10px;color:#000000;font-weight:bold;line-height:1.2;">
-                  Ready For<br>
-                  <%= orderType === 'delivery' ? 'Delivery' : 'Pick Up' %>
+                  Rider<br>
+                  <%= orderType === 'delivery' ? 'Picked Up' : 'Pickedup' %>
                 </div>
               </td>
             </tr>
@@ -101,9 +100,9 @@
         <!-- ARROW -->
         <td align="center" width="2%" style="color:#F5C200;font-size:16px;">&raquo;</td>
 
-        <!-- STEP 4 -->
+        <!-- STEP 4: On The Way -->
         <td align="center" width="18%">
-          <table width="60" height="70" cellpadding="0" cellspacing="0" style="background:#F5E6A0;border-radius:10px;">
+          <table width="60" height="70" cellpadding="0" cellspacing="0" style="background:<%= activeStep >= 4 ? '#F5C200' : '#F5E6A0' %>;border-radius:10px;">
             <tr>
               <td align="center" valign="middle">
                 <img src="https://eggsokpa.com/webicons/onthewayblack.webp" width="35" height="35" style="display:block;margin-bottom:4px;">
@@ -118,15 +117,14 @@
         <!-- ARROW -->
         <td align="center" width="2%" style="color:#F5C200;font-size:16px;">&raquo;</td>
 
-        <!-- STEP 5 -->
+        <!-- STEP 5: Order Delivered/Picked Up -->
         <td align="center" width="18%">
-          <table width="60" height="70" cellpadding="0" cellspacing="0" style="background:#F5E6A0;border-radius:10px;">
+          <table width="60" height="70" cellpadding="0" cellspacing="0" style="background:<%= activeStep >= 5 ? '#F5C200' : '#F5E6A0' %>;border-radius:10px;">
             <tr>
               <td align="center" valign="middle">
                 <img src="https://eggsokpa.com/webicons/orderdeliveredyellow.webp" width="35" height="35" style="display:block;margin-bottom:4px;">
                 <div style="font-size:10px;color:#000000;font-weight:bold;line-height:1.2;">
-                  Order<br>
-                  <%= orderType === 'delivery' ? 'Delivered' : 'Picked Up' %>
+                  Order<br>Delivered
                 </div>
               </td>
             </tr>
@@ -137,15 +135,46 @@
     </table>
   </td>
 </tr>
+<% } else { %>
+<!-- CANCELLED STATUS -->
+<tr>
+  <td style="padding:20px;background:#000000;">
+    <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#1a1a1a;border:2px solid #e63b2e;border-radius:14px;">
+      <tr><td style="padding:20px;text-align:center;">
+        <p style="margin:0;font-size:16px;font-weight:900;color:#e63b2e;letter-spacing:0.5px;">ORDER CANCELLED</p>
+        <p style="margin:8px 0 0;font-size:12px;color:#ffffff;font-weight:600;">This order has been cancelled. If you have questions, please contact us.</p>
+      </td></tr>
+    </table>
+  </td>
+</tr>
+<% } %>
 
-  <!-- TRACK ORDER BUTTON -->
+  <!-- CTA BUTTON -->
   <tr><td style="padding:16px 40px 0;text-align:center;">
     <table cellpadding="0" cellspacing="0" border="0" style="margin:0 auto;">
-      <tr><td style="background:#e63b2e;border-radius:50px;padding:14px 40px;">
-        <a href="<%= trackOrderUrl %>" style="font-size:10px;font-weight:900;color:#ffffff;text-decoration:none;letter-spacing:0.5px;text-transform:uppercase;">Track Your Order</a>
+      <tr><td style="background:#e63b2e;border-radius:50px;padding:14px 40px;text-align:center;">
+        <a href="<%= ctaUrl %>" style="font-size:10px;font-weight:900;color:#ffffff;text-decoration:none;letter-spacing:0.5px;text-transform:uppercase;"><%= ctaText %></a>
+        <% if (showReviewStars) { %>
+        <div style="margin-top:6px;font-size:16px;color:#F5C200;letter-spacing:2px;">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <% } %>
       </td></tr>
     </table>
   </td></tr>
+
+<% if (driverName) { %>
+  <!-- DRIVER INFO -->
+  <tr><td style="padding:16px 20px 0;">
+    <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#1a1a1a;border:2px solid #F5C200;border-radius:14px;overflow:hidden;">
+      <tr><td style="padding:18px 20px;text-align:center;">
+        <p style="margin:0 0 6px;font-size:14px;font-weight:900;color:#F5C200;">Your Driver</p>
+        <p style="margin:0;font-size:15px;font-weight:700;color:#ffffff;"><%= driverName %></p>
+        <% if (driverEta) { %>
+        <p style="margin:6px 0 0;font-size:12px;font-weight:600;color:#ffffff;">Estimated Arrival: <%= driverEta %></p>
+        <% } %>
+      </td></tr>
+    </table>
+  </td></tr>
+<% } %>
 
   <!-- Divider -->
   <tr><td style="padding:12px 20px 0;"><table width="100%"><tr><td style="height:1px;background:linear-gradient(to right,transparent,#2e2e2e,transparent);"></td></tr></table></td></tr>
@@ -179,7 +208,7 @@
       <tr>
         <td style="padding:8px 18px 18px;" align="right">
           <table width="40%" align="right" cellpadding="0" cellspacing="0" border="0">
-            
+
             <tr>
               <td style="font-size:13px;color:#ffffffff;font-weight:700;padding:5px 0;border-bottom:1px solid #252525;">Subtotal</td>
               <td align="right" style="font-size:13px;color:#ffffffff;font-weight:700;padding:5px 0;border-bottom:1px solid #252525;">$<%= subtotal %></td>
@@ -210,59 +239,52 @@
           </table>
         </td>
       </tr>
-        <!-- ══════ BOTTOM CARDS ══════ -->
-  <tr><td style="padding:14px 18px 20px;">
-<table width="100%" cellpadding="0" cellspacing="0" border="0">
-  <tr>
 
-    <!-- LEFT -->
-    <td width="50%" valign="top" style="padding-right:6px;">
-      <table width="100%" cellpadding="0" cellspacing="0" border="0"
-        style="background:#F5C200;border:1.5px solid #2e2e2e;border-radius:10px;">
-        <tr>
-          <td style="padding:14px; vertical-align:top; height:100px;">
+      <!-- ══════ BOTTOM CARDS ══════ -->
+      <tr><td style="padding:14px 18px 20px;">
+        <table width="100%" cellpadding="0" cellspacing="0" border="0">
+          <tr>
+            <!-- LEFT -->
+            <td width="50%" valign="top" style="padding-right:6px;">
+              <table width="100%" cellpadding="0" cellspacing="0" border="0"
+                style="background:#F5C200;border:1.5px solid #2e2e2e;border-radius:10px;">
+                <tr>
+                  <td style="padding:14px; vertical-align:top; height:100px;">
+                    <p style="margin:0 0 8px;font-size:13px;font-weight:900;">Order Summary</p>
+                    <table width="100%">
+                      <tr><td style="font-size:11px;font-weight:700;padding:2px 0;">Order ID:</td><td style="font-size:11px;font-weight:700;padding:2px 0;"><%= orderNumber %></td></tr>
+                      <tr><td style="font-size:11px;font-weight:700;padding:2px 0;">Item QTY:</td><td style="font-size:11px;font-weight:700;padding:2px 0;"><%= itemCount %></td></tr>
+                      <tr><td style="font-size:11px;font-weight:700;padding:2px 0;">Order Total:</td><td style="font-size:11px;font-weight:700;padding:2px 0;">$<%= total %></td></tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+            </td>
 
-            <p style="margin:0 0 8px;font-size:13px;font-weight:900;">Order Summary</p>
+            <!-- RIGHT -->
+            <td width="50%" valign="top" style="padding-left:6px;">
+              <table width="100%" cellpadding="0" cellspacing="0" border="0"
+                style="background:#F5C200;border:1.5px solid #2e2e2e;border-radius:10px;">
+                <tr>
+                  <td style="padding:14px; vertical-align:top; height:123px;">
+                    <p style="margin:0 0 8px;font-size:13px;font-weight:900;">Customer Details</p>
+                    <table width="100%">
+                      <tr><td style="font-size:11px;font-weight:700;padding:2px 0;">Name:</td><td style="font-size:11px;font-weight:700;padding:2px 0;"><%= customerName %></td></tr>
+                      <tr><td style="font-size:11px;font-weight:700;padding:2px 0;">Contact:</td><td style="font-size:11px;font-weight:700;padding:2px 0;"><%= customerPhone %></td></tr>
+                      <% if (orderType === 'delivery' && deliveryAddress) { %>
+                      <tr><td style="font-size:11px;font-weight:700;padding:2px 0;">Address:</td><td style="font-size:11px;font-weight:700;padding:2px 0;"><%= deliveryAddress %><%= deliveryApt ? ', ' + deliveryApt : '' %></td></tr>
+                      <% } %>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table>
+      </td></tr>
 
-            <table width="100%">
-              <tr><td>Order ID:</td><td>EO-0118</td></tr>
-              <tr><td>Order Date:</td><td>15/04/2026</td></tr>
-              <tr><td>Item QTY:</td><td>1</td></tr>
-              <tr><td>Order Total:</td><td>$20.75</td></tr>
-            </table>
-
-          </td>
-        </tr>
-      </table>
-    </td>
-
-    <!-- RIGHT -->
-    <td width="50%" valign="top" style="padding-left:6px;">
-      <table width="100%" cellpadding="0" cellspacing="0" border="0"
-        style="background:#F5C200;border:1.5px solid #2e2e2e;border-radius:10px;">
-        <tr>
-          <td style="padding:14px; vertical-align:top; height:123px;">
-
-            <p style="margin:0 0 8px;font-size:13px;font-weight:900;">Customer Details</p>
-
-            <table width="100%">
-              <tr><td>Name:</td><td>rafeeq</td></tr>
-              <tr><td>Contact:</td><td>234444444444</td></tr>
-              <tr><td>Address:</td><td>Philadelphia, PA, USA</td></tr>
-            </table>
-
-          </td>
-        </tr>
-      </table>
-    </td>
-
-  </tr>
-</table>
-  </td></tr>
     </table>
   </td></tr>
-
-
 
   <!-- ══════ CONCERN ══════ -->
   <tr><td style="padding:28px 24px 22px;text-align:center;border-top:3px solid #1e1e1e;">
@@ -297,7 +319,6 @@
   </td></tr>
 
   <!-- ══════ FOOTER ══════ -->
-<!-- ══════ FOOTER ══════ -->
 <tr>
   <td style="background:#0d0d0d;padding:12px 18px;">
  <table width="100%" cellpadding="0" cellspacing="0" border="0">
@@ -308,7 +329,7 @@
       <tr>
         <td align="center" style="font-size:11px;color:#ffffff;font-weight:700;line-height:18px;">
 
-          <img src="https://eggsokpa.com/webicons/Location.webp" width="14" height="14" style="vertical-align:middle;"> 
+          <img src="https://eggsokpa.com/webicons/Location.webp" width="14" height="14" style="vertical-align:middle;">
           3517 Lancaster Ave, Philadelphia, PA 19104
 
           &nbsp;&nbsp;

@@ -79,11 +79,16 @@ export class MailService {
 
         const websiteUrl = this.configService.get<string>('FRONTEND_URL') || 'http://localhost:3000';
         const trackOrderUrl = `${websiteUrl}/order-tracking?id=${order.id}`;
-        const itemsHtml = this.renderOrderItems(order.items || []);
+        const items = order.items || [];
+        const itemsHtml = this.renderOwnerOrderItems(items);
+        const itemCount = items.reduce((sum: number, i: any) => sum + (Number(i.quantity) || 1), 0);
+
         const html = await this.renderTemplate('confirmation', {
             customerName: this.safeText(order.customerName),
+            customerPhone: this.safeText(order.customerPhone),
             orderNumber: this.safeText(order.orderNumber),
             itemsHtml,
+            itemCount,
             subtotal: Number(order.subtotal || 0).toFixed(2),
             tax: Number(order.tax || 0).toFixed(2),
             tip: Number(order.tip || 0).toFixed(2),
@@ -91,6 +96,7 @@ export class MailService {
             total: Number(order.total || 0).toFixed(2),
             orderType: this.safeText(order.orderType),
             deliveryAddress: this.safeText(order.deliveryAddress || ''),
+            deliveryApt: this.safeText(order.deliveryApt || ''),
             trackOrderUrl,
         });
 
@@ -317,30 +323,42 @@ export class MailService {
 
         const websiteUrl = this.configService.get<string>('FRONTEND_URL') || 'http://localhost:3000';
         const trackingUrl = order.deliveryTrackingUrl || `${websiteUrl}/order-tracking?id=${order.id}`;
+        const items = order.items || [];
+        const itemsHtml = this.renderOwnerOrderItems(items);
+        const itemCount = items.reduce((sum: number, i: any) => sum + (Number(i.quantity) || 1), 0);
 
-        const sections: Array<{ title: string; lines: string[] }> = [
-            { title: 'Order details', lines: [`Order: #${this.safeText(order.orderNumber)}`, `Delivering to: ${this.safeText(order.deliveryAddress || '')}`] },
-        ];
-        if (order.deliveryDriverName) {
-            sections.push({
-                title: 'Your driver',
-                lines: [`Name: ${this.safeText(order.deliveryDriverName)}`, ...(order.deliveryEta ? [`ETA: ${this.safeText(order.deliveryEta)}`] : [])],
-            });
-        }
+        const html = await this.renderTemplate('order_status', {
+            activeStep: 4,
+            heroIcon: 'https://eggsokpa.com/webicons/onthewayblack.webp',
+            heroTitle: 'Your order is on the way!',
+            heroSubtitle: 'Great news! Your order has been picked up and is heading your way.',
+            greetingMessage: `Great news! Your order ${this.safeText(order.orderNumber)} has been picked up and is heading your way.`,
+            customerName: this.safeText(order.customerName),
+            customerPhone: this.safeText(order.customerPhone),
+            orderNumber: this.safeText(order.orderNumber),
+            orderType: this.safeText(order.orderType),
+            itemsHtml,
+            itemCount,
+            subtotal: Number(order.subtotal || 0).toFixed(2),
+            tax: Number(order.tax || 0).toFixed(2),
+            tip: Number(order.tip || 0).toFixed(2),
+            deliveryFee: Number(order.deliveryFee || 0).toFixed(2),
+            total: Number(order.total || 0).toFixed(2),
+            deliveryAddress: this.safeText(order.deliveryAddress || ''),
+            deliveryApt: this.safeText(order.deliveryApt || ''),
+            ctaText: 'Track Your Order',
+            ctaUrl: trackingUrl,
+            isCancelled: false,
+            showReviewStars: false,
+            driverName: this.safeText(order.deliveryDriverName || ''),
+            driverEta: this.safeText(order.deliveryEta || ''),
+        });
 
         await this.sendMail(
             {
                 to: order.customerEmail,
                 subject: `Your order #${order.orderNumber} is on the way!`,
-                html: this.wrapEmail({
-                    eyebrow: 'Delivery Update',
-                    title: 'Your order is on the way!',
-                    preheader: `Order #${order.orderNumber} has been picked up and is heading to you.`,
-                    intro: `Hi ${this.safeText(order.customerName)}, great news! Your order #${this.safeText(order.orderNumber)} has been picked up and is heading your way.`,
-                    cta: { text: 'Track Your Delivery', link: trackingUrl },
-                    sections,
-                    footer: 'You can track your delivery in real-time using the button above. If you have any questions, reply to this email or call the store.',
-                }),
+                html,
                 text: `Hi ${order.customerName}, your order #${order.orderNumber} is on the way! Track: ${trackingUrl}`,
             },
             settings,
@@ -354,19 +372,41 @@ export class MailService {
 
         const websiteUrl = this.configService.get<string>('FRONTEND_URL') || 'http://localhost:3000';
         const trackingUrl = order.deliveryTrackingUrl || `${websiteUrl}/order-tracking?id=${order.id}`;
+        const items = order.items || [];
+        const itemsHtml = this.renderOwnerOrderItems(items);
+        const itemCount = items.reduce((sum: number, i: any) => sum + (Number(i.quantity) || 1), 0);
+
+        const html = await this.renderTemplate('order_status', {
+            activeStep: 3,
+            heroIcon: 'https://eggsokpa.com/webicons/Readyforpickupblack.webp',
+            heroTitle: 'Your order is Picked Up!',
+            heroSubtitle: 'Great news! Your order has been picked up.',
+            greetingMessage: `Great news! Your order ${this.safeText(order.orderNumber)} has been picked up and is heading your way.`,
+            customerName: this.safeText(order.customerName),
+            customerPhone: this.safeText(order.customerPhone),
+            orderNumber: this.safeText(order.orderNumber),
+            orderType: this.safeText(order.orderType),
+            itemsHtml,
+            itemCount,
+            subtotal: Number(order.subtotal || 0).toFixed(2),
+            tax: Number(order.tax || 0).toFixed(2),
+            tip: Number(order.tip || 0).toFixed(2),
+            deliveryFee: Number(order.deliveryFee || 0).toFixed(2),
+            total: Number(order.total || 0).toFixed(2),
+            deliveryAddress: this.safeText(order.deliveryAddress || ''),
+            deliveryApt: this.safeText(order.deliveryApt || ''),
+            ctaText: 'Track Your Order',
+            ctaUrl: trackingUrl,
+            isCancelled: false,
+            showReviewStars: false,
+            driverName: this.safeText(driverName),
+            driverEta: this.safeText(eta || ''),
+        });
 
         await this.sendMail({
             to: order.customerEmail,
             subject: `Driver assigned for order #${order.orderNumber}`,
-            html: this.wrapEmail({
-                eyebrow: 'Driver Assigned',
-                title: `${this.safeText(driverName)} is on the way!`,
-                preheader: `Your driver has been assigned${eta ? ` — ETA ${eta}` : ''}.`,
-                intro: `Hi ${this.safeText(order.customerName)}, a driver has been assigned to deliver your order #${this.safeText(order.orderNumber)}.${eta ? ` Estimated delivery: ${this.safeText(eta)}.` : ''}`,
-                cta: { text: 'Track Your Delivery', link: trackingUrl },
-                sections: [{ title: 'Driver details', lines: [`Name: ${this.safeText(driverName)}`] }],
-                footer: 'You will receive another update when your order is delivered.',
-            }),
+            html,
             text: `Hi ${order.customerName}, driver ${driverName} has been assigned to your order #${order.orderNumber}. Track: ${trackingUrl}`,
         }, settings);
         return true;
@@ -377,23 +417,42 @@ export class MailService {
         if (!this.isConfigured(settings) || !settings.enabled) return false;
 
         const websiteUrl = this.configService.get<string>('FRONTEND_URL') || 'http://localhost:3000';
-        const sections: Array<{ title: string; lines: string[] }> = [];
-        if (order.deliveryDriverName) {
-            sections.push({ title: 'Delivered by', lines: [`Driver: ${this.safeText(order.deliveryDriverName)}`] });
-        }
+        const reviewUrl = `${websiteUrl}/review?order=${order.orderNumber}`;
+        const items = order.items || [];
+        const itemsHtml = this.renderOwnerOrderItems(items);
+        const itemCount = items.reduce((sum: number, i: any) => sum + (Number(i.quantity) || 1), 0);
+
+        const html = await this.renderTemplate('order_status', {
+            activeStep: 5,
+            heroIcon: 'https://eggsokpa.com/webicons/orderdeliveredyellow.webp',
+            heroTitle: 'Your order has been Delivered!',
+            heroSubtitle: `Great news! your order ${this.safeText(order.orderNumber)} has been delivered. Enjoy your meal!`,
+            greetingMessage: `Great news! your order ${this.safeText(order.orderNumber)} has been delivered.\nEnjoy your meal!`,
+            customerName: this.safeText(order.customerName),
+            customerPhone: this.safeText(order.customerPhone),
+            orderNumber: this.safeText(order.orderNumber),
+            orderType: this.safeText(order.orderType),
+            itemsHtml,
+            itemCount,
+            subtotal: Number(order.subtotal || 0).toFixed(2),
+            tax: Number(order.tax || 0).toFixed(2),
+            tip: Number(order.tip || 0).toFixed(2),
+            deliveryFee: Number(order.deliveryFee || 0).toFixed(2),
+            total: Number(order.total || 0).toFixed(2),
+            deliveryAddress: this.safeText(order.deliveryAddress || ''),
+            deliveryApt: this.safeText(order.deliveryApt || ''),
+            ctaText: 'Leave A Review',
+            ctaUrl: reviewUrl,
+            isCancelled: false,
+            showReviewStars: true,
+            driverName: this.safeText(order.deliveryDriverName || ''),
+            driverEta: '',
+        });
 
         await this.sendMail({
             to: order.customerEmail,
             subject: `Order #${order.orderNumber} has been delivered!`,
-            html: this.wrapEmail({
-                eyebrow: 'Delivered',
-                title: 'Your order has arrived!',
-                preheader: 'Enjoy your food — and leave us a review if you loved it!',
-                intro: `Hi ${this.safeText(order.customerName)}, your order #${this.safeText(order.orderNumber)} has been delivered. Enjoy your meal!`,
-                cta: { text: 'Leave a Review', link: `${websiteUrl}/review?order=${order.orderNumber}` },
-                sections,
-                footer: 'Thank you for ordering from Eggs Ok! We would love to hear your feedback.',
-            }),
+            html,
             text: `Hi ${order.customerName}, your order #${order.orderNumber} has been delivered. Enjoy!`,
         }, settings);
         return true;
@@ -405,45 +464,70 @@ export class MailService {
 
         const websiteUrl = this.configService.get<string>('FRONTEND_URL') || 'http://localhost:3000';
         const trackUrl = `${websiteUrl}/order-tracking?id=${order.id}`;
+        const items = order.items || [];
+        const itemsHtml = this.renderOwnerOrderItems(items);
+        const itemCount = items.reduce((sum: number, i: any) => sum + (Number(i.quantity) || 1), 0);
 
-        const statusMessages: Record<string, { title: string; intro: string; preheader: string }> = {
+        const statusConfig: Record<string, { activeStep: number; heroIcon: string; heroTitle: string; heroSubtitle: string; greetingMessage: string }> = {
             confirmed: {
-                title: 'Order Confirmed!',
-                preheader: `Order #${order.orderNumber} confirmed — the kitchen is getting ready.`,
-                intro: `Great news! Your order #${this.safeText(order.orderNumber)} has been confirmed and the kitchen is getting ready.`,
+                activeStep: 1,
+                heroIcon: 'https://eggsokpa.com/webicons/OrderconfirmationBlack.webp',
+                heroTitle: 'Your Order is Confirmed!',
+                heroSubtitle: 'Thanks for your order. Will be Ready very soon.',
+                greetingMessage: 'Your order has been received and we\'re already getting it ready for you. Get ready for something delicious!',
             },
             preparing: {
-                title: 'Your order is being prepared',
-                preheader: `The kitchen is working on order #${order.orderNumber} right now.`,
-                intro: `The kitchen is now preparing your order #${this.safeText(order.orderNumber)}. It won't be long!`,
+                activeStep: 2,
+                heroIcon: 'https://eggsokpa.com/webicons/orderpreparedblack.webp',
+                heroTitle: 'Your Order is Being Prepared!',
+                heroSubtitle: 'Our kitchen is working on your delicious meal right now.',
+                greetingMessage: `The kitchen is now preparing your order #${this.safeText(order.orderNumber)}. It won't be long — get ready for something delicious!`,
             },
             ready: {
-                title: order.orderType === 'delivery' ? 'Ready for driver pickup' : 'Your order is ready!',
-                preheader: order.orderType === 'delivery'
-                    ? `Order #${order.orderNumber} is ready and waiting for a driver.`
-                    : `Come grab order #${order.orderNumber} at 3517 Lancaster Ave.`,
-                intro: order.orderType === 'delivery'
-                    ? `Your order #${this.safeText(order.orderNumber)} is ready and waiting for a driver.`
-                    : `Your order #${this.safeText(order.orderNumber)} is ready! Head to 3517 Lancaster Ave to pick it up.`,
+                activeStep: 3,
+                heroIcon: 'https://eggsokpa.com/webicons/Readyforpickupblack.webp',
+                heroTitle: order.orderType === 'delivery' ? 'Ready for Delivery!' : 'Your Order is Ready!',
+                heroSubtitle: order.orderType === 'delivery'
+                    ? 'Your order is packed and waiting for the driver.'
+                    : 'Your order is ready for pick up at 3517 Lancaster Ave.',
+                greetingMessage: order.orderType === 'delivery'
+                    ? `Your order #${this.safeText(order.orderNumber)} is ready and waiting for a driver. We'll notify you once it's on the way!`
+                    : `Your order #${this.safeText(order.orderNumber)} is ready! Head to 3517 Lancaster Ave, Philadelphia to pick it up.`,
             },
         };
 
-        const msg = statusMessages[newStatus];
-        if (!msg) return false;
+        const config = statusConfig[newStatus];
+        if (!config) return false;
+
+        const html = await this.renderTemplate('order_status', {
+            ...config,
+            customerName: this.safeText(order.customerName),
+            customerPhone: this.safeText(order.customerPhone),
+            orderNumber: this.safeText(order.orderNumber),
+            orderType: this.safeText(order.orderType),
+            itemsHtml,
+            itemCount,
+            subtotal: Number(order.subtotal || 0).toFixed(2),
+            tax: Number(order.tax || 0).toFixed(2),
+            tip: Number(order.tip || 0).toFixed(2),
+            deliveryFee: Number(order.deliveryFee || 0).toFixed(2),
+            total: Number(order.total || 0).toFixed(2),
+            deliveryAddress: this.safeText(order.deliveryAddress || ''),
+            deliveryApt: this.safeText(order.deliveryApt || ''),
+            ctaText: 'Track Your Order',
+            ctaUrl: trackUrl,
+            isCancelled: false,
+            showReviewStars: false,
+            driverName: '',
+            driverEta: '',
+        });
 
         await this.sendMail(
             {
                 to: order.customerEmail,
-                subject: `Order #${order.orderNumber} — ${msg.title}`,
-                html: this.wrapEmail({
-                    eyebrow: 'Order Update',
-                    title: msg.title,
-                    preheader: msg.preheader,
-                    intro: `Hi ${this.safeText(order.customerName)}, ${msg.intro}`,
-                    cta: { text: 'Track Your Order', link: trackUrl },
-                    footer: 'You can track your order status in real-time using the button above.',
-                }),
-                text: `Hi ${order.customerName}, ${msg.intro} Track: ${trackUrl}`,
+                subject: `Order #${order.orderNumber} — ${config.heroTitle}`,
+                html,
+                text: `Hi ${order.customerName}, ${config.greetingMessage} Track: ${trackUrl}`,
             },
             settings,
         );
@@ -455,19 +539,42 @@ export class MailService {
         if (!this.isConfigured(settings) || !settings.enabled) return false;
 
         const websiteUrl = this.configService.get<string>('FRONTEND_URL') || 'http://localhost:3000';
+        const items = order.items || [];
+        const itemsHtml = this.renderOwnerOrderItems(items);
+        const itemCount = items.reduce((sum: number, i: any) => sum + (Number(i.quantity) || 1), 0);
+
+        const html = await this.renderTemplate('order_status', {
+            activeStep: 0,
+            heroIcon: 'https://eggsokpa.com/webicons/OrderconfirmationBlack.webp',
+            heroTitle: 'Your Order has been Cancelled',
+            heroSubtitle: `Order #${this.safeText(order.orderNumber)} was cancelled. If you didn't request this, please contact us.`,
+            greetingMessage: `Your order #${this.safeText(order.orderNumber)} has been cancelled. If you didn't request this, please contact us right away.`,
+            customerName: this.safeText(order.customerName),
+            customerPhone: this.safeText(order.customerPhone),
+            orderNumber: this.safeText(order.orderNumber),
+            orderType: this.safeText(order.orderType),
+            itemsHtml,
+            itemCount,
+            subtotal: Number(order.subtotal || 0).toFixed(2),
+            tax: Number(order.tax || 0).toFixed(2),
+            tip: Number(order.tip || 0).toFixed(2),
+            deliveryFee: Number(order.deliveryFee || 0).toFixed(2),
+            total: Number(order.total || 0).toFixed(2),
+            deliveryAddress: this.safeText(order.deliveryAddress || ''),
+            deliveryApt: this.safeText(order.deliveryApt || ''),
+            ctaText: 'Order Again',
+            ctaUrl: `${websiteUrl}/order`,
+            isCancelled: true,
+            showReviewStars: false,
+            driverName: '',
+            driverEta: '',
+        });
+
         await this.sendMail(
             {
                 to: order.customerEmail,
                 subject: `Order #${order.orderNumber} has been cancelled`,
-                html: this.wrapEmail({
-                    eyebrow: 'Order Cancelled',
-                    title: 'Your order has been cancelled',
-                    preheader: `Order #${order.orderNumber} was cancelled. Questions? Reply to this email.`,
-                    intro: `Hi ${this.safeText(order.customerName)}, your order #${this.safeText(order.orderNumber)} has been cancelled. If you didn't request this, please contact us.`,
-                    cta: { text: 'Order Again', link: `${websiteUrl}/order` },
-                    sections: [{ title: 'Order details', lines: [`Order: #${this.safeText(order.orderNumber)}`, `Total: $${Number(order.total).toFixed(2)}`] }],
-                    footer: 'If you have any questions, reply to this email or call us.',
-                }),
+                html,
                 text: `Hi ${order.customerName}, your order #${order.orderNumber} has been cancelled.`,
             },
             settings,
@@ -480,18 +587,43 @@ export class MailService {
         if (!this.isConfigured(settings) || !settings.enabled) return false;
 
         const websiteUrl = this.configService.get<string>('FRONTEND_URL') || 'http://localhost:3000';
+        const reviewUrl = `${websiteUrl}/review?order=${order.orderNumber}`;
+        const items = order.items || [];
+        const itemsHtml = this.renderOwnerOrderItems(items);
+        const itemCount = items.reduce((sum: number, i: any) => sum + (Number(i.quantity) || 1), 0);
+
+        const html = await this.renderTemplate('order_status', {
+            activeStep: 5,
+            heroIcon: 'https://eggsokpa.com/webicons/orderdeliveredyellow.webp',
+            heroTitle: 'Your order has been Delivered!',
+            heroSubtitle: `Great news! your order ${this.safeText(order.orderNumber)} has been delivered. Enjoy your meal!`,
+            greetingMessage: `Great news! your order ${this.safeText(order.orderNumber)} has been delivered.\nEnjoy your meal!`,
+            customerName: this.safeText(order.customerName),
+            customerPhone: this.safeText(order.customerPhone),
+            orderNumber: this.safeText(order.orderNumber),
+            orderType: this.safeText(order.orderType || 'pickup'),
+            itemsHtml,
+            itemCount,
+            subtotal: Number(order.subtotal || 0).toFixed(2),
+            tax: Number(order.tax || 0).toFixed(2),
+            tip: Number(order.tip || 0).toFixed(2),
+            deliveryFee: Number(order.deliveryFee || 0).toFixed(2),
+            total: Number(order.total || 0).toFixed(2),
+            deliveryAddress: this.safeText(order.deliveryAddress || ''),
+            deliveryApt: this.safeText(order.deliveryApt || ''),
+            ctaText: 'Leave A Review',
+            ctaUrl: reviewUrl,
+            isCancelled: false,
+            showReviewStars: true,
+            driverName: '',
+            driverEta: '',
+        });
+
         await this.sendMail(
             {
                 to: order.customerEmail,
                 subject: `Order #${order.orderNumber} picked up — Enjoy!`,
-                html: this.wrapEmail({
-                    eyebrow: 'Picked Up',
-                    title: 'Enjoy your meal!',
-                    preheader: 'Thanks for choosing Eggs Ok we hope you love it!',
-                    intro: `Hi ${this.safeText(order.customerName)}, your order #${this.safeText(order.orderNumber)} has been picked up. Thank you for choosing Eggs Ok!`,
-                    cta: { text: 'Leave a Review', link: `${websiteUrl}/review?order=${order.orderNumber}` },
-                    footer: 'We hope you love your food! Consider leaving us a review.',
-                }),
+                html,
                 text: `Hi ${order.customerName}, your order #${order.orderNumber} has been picked up. Enjoy!`,
             },
             settings,
@@ -740,21 +872,21 @@ export class MailService {
                 const itemTotal = (price + modifierTotal) * quantity;
                 const isLast = index === items.length - 1;
 
-                let html = `<table width="100%" cellpadding="0" cellspacing="0" border="0" style="${!isLast ? 'border-bottom:1px solid #2a2a2a;margin-bottom:14px;' : ''}">
+                let html = `<table width="100%" cellpadding="0" cellspacing="0" border="0" style="${!isLast ? 'border-bottom:1px solid #ffffff;margin-bottom:14px;' : ''}">
                     <tr>
                         <td style="padding-bottom:14px;">
                             <p style="margin:0;font-size:15px;font-weight:900;color:#F5C200;line-height:1.2;">${name}</p>
-                            <p style="margin:2px 0 0;font-size:12px;color:#888888;font-weight:700;">QTY: X${quantity}</p>
+                            <p style="margin:2px 0 0;font-size:12px;color:#ffffff;font-weight:700;">QTY: X${quantity}</p>
                         </td>
                         <td align="right" valign="top" style="padding-bottom:14px;padding-left:12px;white-space:nowrap;">
-                            <p style="margin:0;font-size:15px;font-weight:900;color:#ffffff;">$${itemTotal.toFixed(2)}</p>
+                            <p style="margin:0;font-size:15px;font-weight:900;color:#F5C200;">$${itemTotal.toFixed(2)}</p>
                         </td>
                     </tr>`;
 
                 if (item.modifiers && Array.isArray(item.modifiers) && item.modifiers.length > 0) {
                     item.modifiers.forEach((mod: any) => {
                         const modPrice = Number(mod.price) || 0;
-                        html += `<tr><td colspan="2" style="padding:0 0 2px 8px;"><span style="font-size:11px;color:#888;">+ ${this.escapeHtml(mod.name)}${modPrice > 0 ? ` ($${modPrice.toFixed(2)})` : ''}</span></td></tr>`;
+                        html += `<tr><td colspan="2" style="padding:0 0 2px 8px;"><span style="font-size:11px;color:#ffffff;">+ ${this.escapeHtml(mod.name)}${modPrice > 0 ? ` ($${modPrice.toFixed(2)})` : ''}</span></td></tr>`;
                     });
                 }
 
