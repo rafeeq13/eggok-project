@@ -66,7 +66,7 @@ export default function Header() {
   ];
 const css = `
   .navLink:hover{
-  color:#FED800 !important;
+  color:#B8A000 !important;
   }
 `
   return (
@@ -74,9 +74,9 @@ const css = `
       <style>{css}</style>
       <header style={{
         position: 'fixed', top: 0, left: 0, right: 0, zIndex: 100,
-        background: scrolled ? 'rgba(0,0,0,0.95)' : 'transparent',
+        background: scrolled ? 'rgba(255,255,255,0.98)' : 'transparent',
         backdropFilter: scrolled ? 'blur(12px)' : 'none',
-        borderBottom: scrolled ? '1px solid #1A1A1A' : 'none',
+        borderBottom: scrolled ? '1px solid #E5E5E5' : 'none',
         transition: 'all 0.3s ease',
         padding: '0 24px',
       }}>
@@ -88,7 +88,7 @@ const css = `
         }}>
           {/* Logo */}
           <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-            <div style={{  borderRadius: '10px', overflow: 'hidden', background: '#000', flexShrink: 0 }}>
+            <div style={{  borderRadius: '10px', overflow: 'hidden', background: 'transparent', flexShrink: 0 }}>
               <Image src="/logo.svg" alt="EggsOK Eatery" width={135} height={60} style={{ objectFit: 'contain' }} />
             </div>
             <div>
@@ -99,34 +99,34 @@ const css = `
 
           {/* Desktop Nav */}
           <nav style={{ display: 'flex', alignItems: 'center', gap: '4px' }} className="hide-mobile">
-            <Link href="/" className="navLink" style={{ padding: '8px 14px', color: '#f9f9f9ff', fontSize: '14px', fontWeight: '500', borderRadius: '8px', transition: 'color 0.2s' }}
-              onMouseEnter={e => (e.currentTarget as HTMLAnchorElement).style.color = '#FEFEFE'}
-              onMouseLeave={e => (e.currentTarget as HTMLAnchorElement).style.color = '#ffffffff'}
+            <Link href="/" className="navLink" style={{ padding: '8px 14px', color: '#333333', fontSize: '14px', fontWeight: '500', borderRadius: '8px', transition: 'color 0.2s' }}
+              onMouseEnter={e => (e.currentTarget as HTMLAnchorElement).style.color = '#B8A000'}
+              onMouseLeave={e => (e.currentTarget as HTMLAnchorElement).style.color = '#333333'}
             >Home</Link>
 
-            <Link href="/story" className="navLink" style={{ padding: '8px 14px', color: '#f9f9f9ff', fontSize: '14px', fontWeight: '500', borderRadius: '8px', transition: 'color 0.2s' }}
-              onMouseEnter={e => (e.currentTarget as HTMLAnchorElement).style.color = '#FEFEFE'}
-              onMouseLeave={e => (e.currentTarget as HTMLAnchorElement).style.color = '#ffffffff'}
+            <Link href="/story" className="navLink" style={{ padding: '8px 14px', color: '#333333', fontSize: '14px', fontWeight: '500', borderRadius: '8px', transition: 'color 0.2s' }}
+              onMouseEnter={e => (e.currentTarget as HTMLAnchorElement).style.color = '#B8A000'}
+              onMouseLeave={e => (e.currentTarget as HTMLAnchorElement).style.color = '#333333'}
             >Our Story</Link>
 
-            {/* <Link href="/catering" style={{ padding: '8px 14px', color: '#888888', fontSize: '14px', fontWeight: '500', borderRadius: '8px', transition: 'color 0.2s' }}
-              onMouseEnter={e => (e.currentTarget as HTMLAnchorElement).style.color = '#FEFEFE'}
-              onMouseLeave={e => (e.currentTarget as HTMLAnchorElement).style.color = '#ffffffff'}
+            {/* <Link href="/catering" style={{ padding: '8px 14px', color: '#777777', fontSize: '14px', fontWeight: '500', borderRadius: '8px', transition: 'color 0.2s' }}
+              onMouseEnter={e => (e.currentTarget as HTMLAnchorElement).style.color = '#1A1A1A'}
+              onMouseLeave={e => (e.currentTarget as HTMLAnchorElement).style.color = '#333333'}
             >Events</Link> */}
 
-            <Link href="/hiring" className="navLink" style={{ padding: '8px 14px', color: '#f9f9f9ff', fontSize: '14px', fontWeight: '500', borderRadius: '8px', transition: 'color 0.2s' }}
-              onMouseEnter={e => (e.currentTarget as HTMLAnchorElement).style.color = '#FEFEFE'}
-              onMouseLeave={e => (e.currentTarget as HTMLAnchorElement).style.color = '#ffffffff'}
+            <Link href="/hiring" className="navLink" style={{ padding: '8px 14px', color: '#333333', fontSize: '14px', fontWeight: '500', borderRadius: '8px', transition: 'color 0.2s' }}
+              onMouseEnter={e => (e.currentTarget as HTMLAnchorElement).style.color = '#B8A000'}
+              onMouseLeave={e => (e.currentTarget as HTMLAnchorElement).style.color = '#333333'}
             >We're Hiring</Link>
 
-            <Link href="/order" className="navLink" style={{ padding: '8px 14px', color: '#ffffffff', fontSize: '14px', fontWeight: '500', borderRadius: '8px', transition: 'color 0.2s' }}
-              onMouseEnter={e => (e.currentTarget as HTMLAnchorElement).style.color = '#FEFEFE'}
-              onMouseLeave={e => (e.currentTarget as HTMLAnchorElement).style.color = '#ffffffff'}
+            <Link href="/order" className="navLink" style={{ padding: '8px 14px', color: '#333333', fontSize: '14px', fontWeight: '500', borderRadius: '8px', transition: 'color 0.2s' }}
+              onMouseEnter={e => (e.currentTarget as HTMLAnchorElement).style.color = '#B8A000'}
+              onMouseLeave={e => (e.currentTarget as HTMLAnchorElement).style.color = '#333333'}
             >Menu</Link>
 
-            <Link href="/catering" className="navLink" style={{ padding: '8px 14px', color: '#f9f9f9ff', fontSize: '14px', fontWeight: '500', borderRadius: '8px', transition: 'color 0.2s' }}
-              onMouseEnter={e => (e.currentTarget as HTMLAnchorElement).style.color = '#FEFEFE'}
-              onMouseLeave={e => (e.currentTarget as HTMLAnchorElement).style.color = '#ffffffff'}
+            <Link href="/catering" className="navLink" style={{ padding: '8px 14px', color: '#333333', fontSize: '14px', fontWeight: '500', borderRadius: '8px', transition: 'color 0.2s' }}
+              onMouseEnter={e => (e.currentTarget as HTMLAnchorElement).style.color = '#B8A000'}
+              onMouseLeave={e => (e.currentTarget as HTMLAnchorElement).style.color = '#333333'}
             >Catering</Link>
 
             {/* More Dropdown — hover to open */}
@@ -136,7 +136,7 @@ const css = `
             >
               <button
               className="navLink"
-                style={{ padding: '8px 14px', color: '#f9f9f9ff', fontSize: '14px', fontWeight: '500', borderRadius: '8px', transition: 'color 0.2s', display: 'flex', alignItems: 'center', gap: '4px', background: 'transparent' }}
+                style={{ padding: '8px 14px', color: '#333333', fontSize: '14px', fontWeight: '500', borderRadius: '8px', transition: 'color 0.2s', display: 'flex', alignItems: 'center', gap: '4px', background: 'transparent' }}
               >
                 More
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -151,19 +151,19 @@ const css = `
                     paddingTop: '8px',
                   }}>
                     <div style={{
-                      background: '#111111', border: '1px solid #2A2A2A',
+                      background: '#FFFFFF', border: '1px solid #E5E5E5',
                       borderRadius: '12px', padding: '8px', zIndex: 20,
                       minWidth: '180px',
-                      boxShadow: '0 8px 32px rgba(0,0,0,0.6)',
+                      boxShadow: '0 8px 32px rgba(0,0,0,0.1)',
                     }}>
                       {moreLinks.map(link => (
                         <Link key={link.href} className="navLink" href={link.href} onClick={() => setMoreOpen(false)} style={{
                           display: 'block', padding: '10px 14px',
-                          color: '#ffffff', fontSize: '14px', borderRadius: '8px',
+                          color: '#333333', fontSize: '14px', borderRadius: '8px',
                           transition: 'all 0.15s',
                         }}
-                          onMouseEnter={e => { (e.currentTarget as HTMLAnchorElement).style.color = '#FEFEFE'; (e.currentTarget as HTMLAnchorElement).style.background = '#1A1A1A'; }}
-                          onMouseLeave={e => { (e.currentTarget as HTMLAnchorElement).style.color = '#ffffff'; (e.currentTarget as HTMLAnchorElement).style.background = 'transparent'; }}
+                          onMouseEnter={e => { (e.currentTarget as HTMLAnchorElement).style.color = '#1A1A1A'; (e.currentTarget as HTMLAnchorElement).style.background = '#F5F5F5'; }}
+                          onMouseLeave={e => { (e.currentTarget as HTMLAnchorElement).style.color = '#333333'; (e.currentTarget as HTMLAnchorElement).style.background = 'transparent'; }}
                         >{link.label}</Link>
                       ))}
                     </div>
@@ -178,14 +178,14 @@ const css = `
                 <button
                   onClick={() => setUserMenuOpen(!userMenuOpen)}
                   style={{
-                    padding: '9px 18px', color: '#FED800', fontSize: '14px',
+                    padding: '9px 18px', color: '#B8A000', fontSize: '14px',
                     fontWeight: '600', borderRadius: '8px',
-                    border: '1px solid #FED80030', background: 'rgba(254, 216, 0, 0.05)',
+                    border: '1px solid #FED80040', background: 'rgba(254, 216, 0, 0.08)',
                     transition: 'all 0.2s', display: 'inline-flex', alignItems: 'center', gap: '6px',
                     cursor: 'pointer', fontFamily: 'inherit',
                   }}
-                  onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.background = 'rgba(254, 216, 0, 0.1)'; }}
-                  onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.background = 'rgba(254, 216, 0, 0.05)'; }}
+                  onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.background = 'rgba(254, 216, 0, 0.12)'; }}
+                  onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.background = 'rgba(254, 216, 0, 0.08)'; }}
                 >
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                     <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2" /><circle cx="12" cy="7" r="4" />
@@ -198,18 +198,18 @@ const css = `
                 {userMenuOpen && (
                   <div style={{
                     position: 'absolute', top: 'calc(100% + 8px)', right: 0,
-                    background: '#111111', border: '1px solid #2A2A2A',
+                    background: '#FFFFFF', border: '1px solid #E5E5E5',
                     borderRadius: '12px', padding: '8px', zIndex: 20,
                     minWidth: '170px',
-                    boxShadow: '0 8px 32px rgba(0,0,0,0.6)',
+                    boxShadow: '0 8px 32px rgba(0,0,0,0.1)',
                   }}>
                     <Link href="/account" onClick={() => setUserMenuOpen(false)} style={{
                       display: 'flex', alignItems: 'center', gap: '8px', padding: '10px 14px',
-                      color: '#ffffff', fontSize: '14px', borderRadius: '8px',
+                      color: '#333333', fontSize: '14px', borderRadius: '8px',
                       transition: 'all 0.15s', textDecoration: 'none',
                     }}
-                      onMouseEnter={e => { e.currentTarget.style.color = '#FED800'; e.currentTarget.style.background = '#1A1A1A'; }}
-                      onMouseLeave={e => { e.currentTarget.style.color = '#ffffff'; e.currentTarget.style.background = 'transparent'; }}
+                      onMouseEnter={e => { e.currentTarget.style.color = '#FED800'; e.currentTarget.style.background = '#F5F5F5'; }}
+                      onMouseLeave={e => { e.currentTarget.style.color = '#333333'; e.currentTarget.style.background = 'transparent'; }}
                     >
                       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                         <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2" /><circle cx="12" cy="7" r="4" />
@@ -218,12 +218,12 @@ const css = `
                     </Link>
                     <button onClick={() => { logout(); setUserMenuOpen(false); }} style={{
                       display: 'flex', alignItems: 'center', gap: '8px', padding: '10px 14px',
-                      color: '#ffffff', fontSize: '14px', borderRadius: '8px',
+                      color: '#333333', fontSize: '14px', borderRadius: '8px',
                       transition: 'all 0.15s', background: 'transparent', border: 'none',
                       cursor: 'pointer', width: '100%', textAlign: 'left', fontFamily: 'inherit',
                     }}
-                      onMouseEnter={e => { e.currentTarget.style.color = '#FC0301'; e.currentTarget.style.background = '#1A1A1A'; }}
-                      onMouseLeave={e => { e.currentTarget.style.color = '#ffffff'; e.currentTarget.style.background = 'transparent'; }}
+                      onMouseEnter={e => { e.currentTarget.style.color = '#FC0301'; e.currentTarget.style.background = '#F5F5F5'; }}
+                      onMouseLeave={e => { e.currentTarget.style.color = '#333333'; e.currentTarget.style.background = 'transparent'; }}
                     >
                       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                         <path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4" /><polyline points="16 17 21 12 16 7" /><line x1="21" y1="12" x2="9" y2="12" />
@@ -235,13 +235,13 @@ const css = `
               </div>
             ) : (
               <Link href="/account" style={{
-                padding: '9px 18px', color: '#FEFEFE', fontSize: '14px',
+                padding: '9px 18px', color: '#1A1A1A', fontSize: '14px',
                 fontWeight: '600', borderRadius: '8px',
-                border: '1px solid #2A2A2A', background: 'transparent',
+                border: '1px solid #D0D0D0', background: 'transparent',
                 transition: 'all 0.2s', display: 'inline-flex', alignItems: 'center', gap: '6px',
               }}
-                onMouseEnter={e => { (e.currentTarget as HTMLAnchorElement).style.borderColor = '#FED800'; (e.currentTarget as HTMLAnchorElement).style.color = '#FED800'; }}
-                onMouseLeave={e => { (e.currentTarget as HTMLAnchorElement).style.borderColor = '#2A2A2A'; (e.currentTarget as HTMLAnchorElement).style.color = '#FEFEFE'; }}
+                onMouseEnter={e => { (e.currentTarget as HTMLAnchorElement).style.borderColor = '#FED800'; (e.currentTarget as HTMLAnchorElement).style.color = '#B8A000'; }}
+                onMouseLeave={e => { (e.currentTarget as HTMLAnchorElement).style.borderColor = '#D0D0D0'; (e.currentTarget as HTMLAnchorElement).style.color = '#1A1A1A'; }}
               >
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2" /><circle cx="12" cy="7" r="4" />
@@ -259,10 +259,10 @@ const css = `
             <Link href="/order"  style={{
               position: 'relative', width: '42px', height: '42px',
               display: 'flex', alignItems: 'center', justifyContent: 'center',
-              background: '#111111', borderRadius: '10px', border: '1px solid #1A1A1A',
+              background: '#F5F5F5', borderRadius: '10px', border: '1px solid #E5E5E5',
               marginLeft: '4px',
             }}>
-              <svg width="18"  className="navLink" height="18" viewBox="0 0 24 24" fill="none" stroke="#FEFEFE" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <svg width="18"  className="navLink" height="18" viewBox="0 0 24 24" fill="none" stroke="#333333" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <circle cx="9" cy="21" r="1" /><circle cx="20" cy="21" r="1" />
                 <path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 001.95-1.57l1.65-7.43H6" />
               </svg>
@@ -282,16 +282,16 @@ const css = `
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }} className="hide-desktop">
             <Link href="/account" style={{
               width: '38px', height: '38px', display: 'flex', alignItems: 'center', justifyContent: 'center',
-              background: user ? 'rgba(254, 216, 0, 0.1)' : '#111111',
-              border: user ? '1px solid #FED80030' : '1px solid #1A1A1A',
-              borderRadius: '8px', color: user ? '#FED800' : '#FEFEFE'
+              background: user ? 'rgba(254, 216, 0, 0.08)' : '#F5F5F5',
+              border: user ? '1px solid #FED80040' : '1px solid #E5E5E5',
+              borderRadius: '8px', color: user ? '#B8A000' : '#333333'
             }}>
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2" /><circle cx="12" cy="7" r="4" />
               </svg>
             </Link>
-            <Link href="/order" style={{ position: 'relative', width: '38px', height: '38px', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#111111', borderRadius: '8px' }}>
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FEFEFE" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <Link href="/order" style={{ position: 'relative', width: '38px', height: '38px', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#F5F5F5', border: '1px solid #E5E5E5', borderRadius: '8px' }}>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#333333" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <circle cx="9" cy="21" r="1" /><circle cx="20" cy="21" r="1" />
                 <path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 001.95-1.57l1.65-7.43H6" />
               </svg>
@@ -299,7 +299,7 @@ const css = `
                 <span style={{ position: 'absolute', top: '-5px', right: '-5px', width: '18px', height: '18px', background: '#FED800', borderRadius: '50%', fontSize: '10px', fontWeight: '700', color: '#000', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>{cartCount}</span>
               )}
             </Link>
-            <button onClick={() => setMobileMenuOpen(!mobileMenuOpen)} style={{ width: '38px', height: '38px', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#111111', borderRadius: '8px', color: '#FEFEFE', fontSize: '18px' }}>
+            <button onClick={() => setMobileMenuOpen(!mobileMenuOpen)} style={{ width: '38px', height: '38px', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#F5F5F5', border: '1px solid #E5E5E5', borderRadius: '8px', color: '#333333', fontSize: '18px' }}>
               {mobileMenuOpen ? '✕' : '☰'}
             </button>
           </div>
@@ -308,8 +308,8 @@ const css = `
 
       {/* Mobile Menu */}
       {mobileMenuOpen && (
-        <div style={{ position: 'fixed', inset: 0, zIndex: 99, background: 'rgba(0,0,0,0.98)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '16px' }}>
-          <button onClick={() => setMobileMenuOpen(false)} style={{ position: 'absolute', top: '20px', right: '24px', color: '#888888', fontSize: '24px', background: 'transparent' }}>✕</button>
+        <div style={{ position: 'fixed', inset: 0, zIndex: 99, background: 'rgba(255,255,255,0.98)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '16px' }}>
+          <button onClick={() => setMobileMenuOpen(false)} style={{ position: 'absolute', top: '20px', right: '24px', color: '#777777', fontSize: '24px', background: 'transparent' }}>✕</button>
           <div style={{ width: '70px', height: '70px', borderRadius: '16px', overflow: 'hidden', marginBottom: '8px' }}>
             {/* <Image src="/logo.svg" alt="EggsOK Eatery" width={70} height={70} style={{ objectFit: 'contain' }} /> */}
           </div>
@@ -323,7 +323,7 @@ const css = `
             { label: 'Track My Order', href: '/track' },
             { label: "We're Hiring", href: '/hiring' },
           ].map(item => (
-            <Link key={item.href} href={item.href} onClick={() => setMobileMenuOpen(false)} style={{ fontSize: '32px', fontWeight: '800', color: '#ffffffff', fontFamily: 'Bebas Neue, sans-serif', letterSpacing: '2px' }}>
+            <Link key={item.href} href={item.href} onClick={() => setMobileMenuOpen(false)} style={{ fontSize: '32px', fontWeight: '800', color: '#1A1A1A', fontFamily: 'Bebas Neue, sans-serif', letterSpacing: '2px' }}>
               {item.label}
             </Link>
           ))}

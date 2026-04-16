@@ -9,15 +9,15 @@
 :root {
   --yellow: #FED800;
   --yellow-dark: #E5C200;
-  --yellow-light: #FEE84D;
+  --yellow-light: #FFF3A0;
   --red: #FC0301;
-  --black: #000000;
-  --black-soft: #0A0A0A;
-  --black-card: #111111;
-  --black-border: #1A1A1A;
-  --white: #FEFEFE;
-  --gray: #CACACA;
-  --gray-text: #888888;
+  --black: #FFFFFF;
+  --black-soft: #F8F9FA;
+  --black-card: #FFFFFF;
+  --black-border: #E5E5E5;
+  --white: #1A1A1A;
+  --gray: #555555;
+  --gray-text: #777777;
   --cream: #FECE86;
   --success: #22C55E;
   --max-width: 1280px;
@@ -26,8 +26,8 @@
 html { scroll-behavior: smooth; }
 
 body {
-  background-color: var(--black);
-  color: var(--white);
+  background-color: #FFFFFF;
+  color: #1A1A1A;
   font-family: 'DM Sans', sans-serif;
   min-height: 100vh;
   overflow-x: hidden;
@@ -49,8 +49,8 @@ button { cursor: pointer; border: none; background: none; }
 
 /* Scrollbar */
 ::-webkit-scrollbar { width: 4px; }
-::-webkit-scrollbar-track { background: #0A0A0A; }
-::-webkit-scrollbar-thumb { background: #2A2A2A; border-radius: 2px; }
+::-webkit-scrollbar-track { background: #F5F5F5; }
+::-webkit-scrollbar-thumb { background: #D0D0D0; border-radius: 2px; }
 ::-webkit-scrollbar-thumb:hover { background: var(--yellow); }
 
 /* Utilities */
@@ -62,31 +62,33 @@ button { cursor: pointer; border: none; background: none; }
 
 .btn-primary {
   background: var(--yellow);
-  color: var(--black);
+  color: #000000;
   padding: 14px 28px;
   border-radius: 10px;
   font-weight: 700;
   font-size: 15px;
-  transition: all 0.2s;
+  border: 2px solid transparent;
+  transition: all 0.3s ease;
   display: inline-flex;
   align-items: center;
   gap: 8px;
 }
 
 .btn-primary:hover {
-  background: var(--yellow-light);
-  transform: translateY(-1px);
+  background: transparent;
+  color: #000000;
+  border-color: #FED800;
 }
 
 .btn-secondary {
   background: transparent;
-  color: var(--yellow);
+  color: #1A1A1A;
   padding: 13px 28px;
   border-radius: 10px;
   font-weight: 700;
   font-size: 15px;
-  border: 2px solid var(--yellow);
-  transition: all 0.2s;
+  border: 2px solid #1A1A1A;
+  transition: all 0.3s ease;
   display: inline-flex;
   align-items: center;
   gap: 8px;
@@ -94,7 +96,8 @@ button { cursor: pointer; border: none; background: none; }
 
 .btn-secondary:hover {
   background: var(--yellow);
-  color: var(--black);
+  color: #000000;
+  border-color: var(--yellow);
 }
 
 /* Animations */
@@ -148,17 +151,17 @@ input[type=number] {
 /* Google Places Autocomplete dropdown */
 .pac-container {
   z-index: 10000 !important;
-  background: #111 !important;
-  border: 1px solid #2A2A2A !important;
+  background: #FFFFFF !important;
+  border: 1px solid #E5E5E5 !important;
   border-radius: 12px !important;
-  box-shadow: 0 8px 32px rgba(0,0,0,0.6) !important;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.1) !important;
   margin-top: 4px !important;
   font-family: 'DM Sans', -apple-system, sans-serif !important;
 }
 .pac-item {
   padding: 10px 14px !important;
-  border-top: 1px solid #1A1A1A !important;
-  color: #FEFEFE !important;
+  border-top: 1px solid #F0F0F0 !important;
+  color: #1A1A1A !important;
   font-size: 13px !important;
   cursor: pointer !important;
 }
@@ -166,14 +169,14 @@ input[type=number] {
   border-top: none !important;
 }
 .pac-item:hover {
-  background: #1A1A1A !important;
+  background: #F5F5F5 !important;
 }
 .pac-item-query {
-  color: #FED800 !important;
+  color: #B8A000 !important;
   font-weight: 600 !important;
 }
 .pac-matched {
-  color: #FED800 !important;
+  color: #B8A000 !important;
 }
 .pac-icon {
   display: none !important;

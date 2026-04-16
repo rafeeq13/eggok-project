@@ -62,16 +62,16 @@ function OrderTrackingContent() {
 
   if (loading) {
     return (
-      <div style={{ background: '#000', minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-        <p style={{ color: '#888', fontSize: '16px' }}>Loading order...</p>
+      <div style={{ background: '#FFFFFF', minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <p style={{ color: '#777777', fontSize: '16px' }}>Loading order...</p>
       </div>
     );
   }
 
   if (error || !order) {
     return (
-      <div style={{ background: '#000', minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '16px' }}>
-        <p style={{ color: '#888', fontSize: '16px' }}>{error || 'Order not found'}</p>
+      <div style={{ background: '#FFFFFF', minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '16px' }}>
+        <p style={{ color: '#777777', fontSize: '16px' }}>{error || 'Order not found'}</p>
         <Link href="/" style={{ color: '#FED800', fontSize: '14px', textDecoration: 'none' }}>Back to Home</Link>
       </div>
     );
@@ -83,10 +83,10 @@ function OrderTrackingContent() {
   const isCancelled = order.status === 'cancelled';
 
   return (
-    <div style={{ background: '#000', minHeight: '100vh', color: '#FEFEFE', fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif' }}>
+    <div style={{ background: '#FFFFFF', minHeight: '100vh', color: '#1A1A1A', fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif' }}>
 
       {/* Nav */}
-      <div style={{ position: 'fixed', top: 0, left: 0, right: 0, zIndex: 100, background: 'rgba(10,10,10,0.98)', backdropFilter: 'blur(20px)', borderBottom: '1px solid #1E1E1E', height: '64px', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '0 28px' }}>
+      <div style={{ position: 'fixed', top: 0, left: 0, right: 0, zIndex: 100, background: 'rgba(255,255,255,0.98)', backdropFilter: 'blur(20px)', borderBottom: '1px solid #E5E5E5', height: '64px', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '0 28px' }}>
         <Link href="/" style={{ display: 'flex', alignItems: 'center', textDecoration: 'none' }}>
           <img src="/logo.svg" alt="Eggs Ok" style={{ height: '40px', objectFit: 'contain' }} onError={e => { (e.target as HTMLImageElement).style.display = 'none'; }} />
         </Link>
@@ -104,14 +104,14 @@ function OrderTrackingContent() {
             )}
           </div>
           <h1 style={{ fontSize: '28px', fontWeight: '800', marginBottom: '8px' }}>Order #{order.orderNumber}</h1>
-          <p style={{ fontSize: '14px', color: '#888' }}>
+          <p style={{ fontSize: '14px', color: '#777777' }}>
             {isCancelled ? 'This order was cancelled' : statusDesc[order.status] || 'Processing'}
           </p>
         </div>
 
         {/* Progress Steps */}
         {!isCancelled && (
-          <div style={{ background: '#111', borderRadius: '16px', padding: '24px', marginBottom: '20px', border: '1px solid #1E1E1E' }}>
+          <div style={{ background: '#FFFFFF', borderRadius: '16px', padding: '24px', marginBottom: '20px', border: '1px solid #E0E0E0' }}>
             {steps.map((step, i) => {
               const done = i <= currentIdx;
               const active = i === currentIdx;
@@ -120,19 +120,19 @@ function OrderTrackingContent() {
                   <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                     <div style={{
                       width: '28px', height: '28px', borderRadius: '50%',
-                      background: done ? '#FED800' : '#1A1A1A',
-                      border: active ? '2px solid #FED800' : done ? 'none' : '2px solid #2A2A2A',
+                      background: done ? '#FED800' : '#F0F0F0',
+                      border: active ? '2px solid #FED800' : done ? 'none' : '2px solid #D0D0D0',
                       display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
                     }}>
                       {done && <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#000" strokeWidth="3" strokeLinecap="round"><polyline points="20 6 9 17 4 12"/></svg>}
                     </div>
                     {i < steps.length - 1 && (
-                      <div style={{ width: '2px', height: '20px', background: done ? '#FED800' : '#2A2A2A', marginTop: '4px' }} />
+                      <div style={{ width: '2px', height: '20px', background: done ? '#FED800' : '#D0D0D0', marginTop: '4px' }} />
                     )}
                   </div>
                   <div style={{ paddingTop: '3px' }}>
-                    <p style={{ fontSize: '14px', fontWeight: active ? '700' : '500', color: done ? '#FEFEFE' : '#555', margin: 0 }}>{statusLabel[step]}</p>
-                    {active && <p style={{ fontSize: '12px', color: '#888', margin: '2px 0 0' }}>{statusDesc[step]}</p>}
+                    <p style={{ fontSize: '14px', fontWeight: active ? '700' : '500', color: done ? '#1A1A1A' : '#AAAAAA', margin: 0 }}>{statusLabel[step]}</p>
+                    {active && <p style={{ fontSize: '12px', color: '#777777', margin: '2px 0 0' }}>{statusDesc[step]}</p>}
                   </div>
                 </div>
               );
@@ -150,26 +150,26 @@ function OrderTrackingContent() {
                 </svg>
               </div>
               <div>
-                <p style={{ fontSize: '14px', fontWeight: '700', color: '#FEFEFE', margin: 0 }}>Delivery In Progress</p>
+                <p style={{ fontSize: '14px', fontWeight: '700', color: '#1A1A1A', margin: 0 }}>Delivery In Progress</p>
                 <p style={{ fontSize: '12px', color: '#A78BFA', margin: 0 }}>via {order.deliveryProvider === 'uber_direct' ? 'Uber Direct' : order.deliveryProvider}</p>
               </div>
             </div>
             {order.deliveryDriverName && (
-              <div style={{ display: 'flex', justifyContent: 'space-between', padding: '10px 0', borderTop: '1px solid #2A2A2A' }}>
-                <span style={{ fontSize: '13px', color: '#888' }}>Driver</span>
-                <span style={{ fontSize: '13px', color: '#FEFEFE', fontWeight: '600' }}>{order.deliveryDriverName}</span>
+              <div style={{ display: 'flex', justifyContent: 'space-between', padding: '10px 0', borderTop: '1px solid #D0D0D0' }}>
+                <span style={{ fontSize: '13px', color: '#777777' }}>Driver</span>
+                <span style={{ fontSize: '13px', color: '#1A1A1A', fontWeight: '600' }}>{order.deliveryDriverName}</span>
               </div>
             )}
             {order.deliveryDriverPhone && (
-              <div style={{ display: 'flex', justifyContent: 'space-between', padding: '10px 0', borderTop: '1px solid #2A2A2A' }}>
-                <span style={{ fontSize: '13px', color: '#888' }}>Driver Phone</span>
+              <div style={{ display: 'flex', justifyContent: 'space-between', padding: '10px 0', borderTop: '1px solid #D0D0D0' }}>
+                <span style={{ fontSize: '13px', color: '#777777' }}>Driver Phone</span>
                 <a href={`tel:${order.deliveryDriverPhone}`} style={{ fontSize: '13px', color: '#60A5FA', textDecoration: 'none', fontWeight: '600' }}>{order.deliveryDriverPhone}</a>
               </div>
             )}
             {order.deliveryEta && (
-              <div style={{ display: 'flex', justifyContent: 'space-between', padding: '10px 0', borderTop: '1px solid #2A2A2A' }}>
-                <span style={{ fontSize: '13px', color: '#888' }}>ETA</span>
-                <span style={{ fontSize: '13px', color: '#FEFEFE' }}>{new Date(order.deliveryEta).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })}</span>
+              <div style={{ display: 'flex', justifyContent: 'space-between', padding: '10px 0', borderTop: '1px solid #D0D0D0' }}>
+                <span style={{ fontSize: '13px', color: '#777777' }}>ETA</span>
+                <span style={{ fontSize: '13px', color: '#1A1A1A' }}>{new Date(order.deliveryEta).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })}</span>
               </div>
             )}
             {order.deliveryTrackingUrl && (
@@ -185,16 +185,16 @@ function OrderTrackingContent() {
         )}
 
         {/* Order Details */}
-        <div style={{ background: '#111', borderRadius: '16px', padding: '20px', marginBottom: '20px', border: '1px solid #1E1E1E' }}>
-          <p style={{ fontSize: '11px', color: '#888', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '14px' }}>Order Details</p>
+        <div style={{ background: '#FFFFFF', borderRadius: '16px', padding: '20px', marginBottom: '20px', border: '1px solid #E0E0E0' }}>
+          <p style={{ fontSize: '11px', color: '#777777', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '14px' }}>Order Details</p>
 
-          <div style={{ display: 'flex', justifyContent: 'space-between', padding: '8px 0', borderBottom: '1px solid #1A1A1A' }}>
-            <span style={{ fontSize: '13px', color: '#888' }}>Type</span>
-            <span style={{ fontSize: '13px', color: '#FEFEFE', textTransform: 'capitalize' }}>{order.orderType}</span>
+          <div style={{ display: 'flex', justifyContent: 'space-between', padding: '8px 0', borderBottom: '1px solid #E5E5E5' }}>
+            <span style={{ fontSize: '13px', color: '#777777' }}>Type</span>
+            <span style={{ fontSize: '13px', color: '#1A1A1A', textTransform: 'capitalize' }}>{order.orderType}</span>
           </div>
-          <div style={{ display: 'flex', justifyContent: 'space-between', padding: '8px 0', borderBottom: '1px solid #1A1A1A' }}>
-            <span style={{ fontSize: '13px', color: '#888' }}>{isDelivery ? 'Deliver To' : 'Pickup At'}</span>
-            <span style={{ fontSize: '13px', color: '#FEFEFE', maxWidth: '60%', textAlign: 'right' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', padding: '8px 0', borderBottom: '1px solid #E5E5E5' }}>
+            <span style={{ fontSize: '13px', color: '#777777' }}>{isDelivery ? 'Deliver To' : 'Pickup At'}</span>
+            <span style={{ fontSize: '13px', color: '#1A1A1A', maxWidth: '60%', textAlign: 'right' }}>
               {isDelivery ? order.deliveryAddress : storeAddress}
             </span>
           </div>
@@ -202,8 +202,8 @@ function OrderTrackingContent() {
           {/* Items */}
           <div style={{ marginTop: '14px' }}>
             {(order.items || []).map((item: any, i: number) => (
-              <div key={i} style={{ display: 'flex', justifyContent: 'space-between', padding: '8px 0', borderBottom: '1px solid #1A1A1A' }}>
-                <span style={{ fontSize: '13px', color: '#FEFEFE' }}>{item.quantity}x {item.name}</span>
+              <div key={i} style={{ display: 'flex', justifyContent: 'space-between', padding: '8px 0', borderBottom: '1px solid #E5E5E5' }}>
+                <span style={{ fontSize: '13px', color: '#1A1A1A' }}>{item.quantity}x {item.name}</span>
                 <span style={{ fontSize: '13px', color: '#FED800' }}>${((item.price || 0) * (item.quantity || 1)).toFixed(2)}</span>
               </div>
             ))}
@@ -223,7 +223,7 @@ function OrderTrackingContent() {
           <Link href="/order" style={{ padding: '14px 32px', background: '#FED800', borderRadius: '12px', fontSize: '15px', fontWeight: '700', color: '#000', textDecoration: 'none' }}>
             Order Again
           </Link>
-          <Link href="/" style={{ padding: '14px 32px', background: 'transparent', border: '1px solid #2A2A2A', borderRadius: '12px', fontSize: '15px', fontWeight: '600', color: '#888', textDecoration: 'none' }}>
+          <Link href="/" style={{ padding: '14px 32px', background: 'transparent', border: '1px solid #D0D0D0', borderRadius: '12px', fontSize: '15px', fontWeight: '600', color: '#777777', textDecoration: 'none' }}>
             Back to Home
           </Link>
         </div>
@@ -235,7 +235,7 @@ function OrderTrackingContent() {
 
 export default function OrderTrackingPage() {
   return (
-    <Suspense fallback={<div style={{ background: '#000', minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><p style={{ color: '#888' }}>Loading...</p></div>}>
+    <Suspense fallback={<div style={{ background: '#FFFFFF', minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><p style={{ color: '#777777' }}>Loading...</p></div>}>
       <OrderTrackingContent />
     </Suspense>
   );

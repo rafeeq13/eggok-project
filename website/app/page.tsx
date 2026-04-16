@@ -261,7 +261,7 @@ export default function HomePage() {
   const toggleFaq = useCallback((i: number) => setOpenFaq(prev => prev === i ? null : i), []);
 
   return (
-    <main id="main-content" className="homepage-main" style={{ background: '#000', minHeight: '100vh', fontFamily: 'DM Sans, -apple-system, BlinkMacSystemFont, sans-serif' }}>
+    <main id="main-content" className="homepage-main" style={{ background: '#FFFFFF', minHeight: '100vh', fontFamily: 'DM Sans, -apple-system, BlinkMacSystemFont, sans-serif' }}>
 
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(JSON_LD) }} />
 
@@ -297,20 +297,20 @@ export default function HomePage() {
           display: inline-flex; align-items: center; gap: 8px;
           padding: 14px 28px; background: #FED800; color: #000;
           border-radius: 10px; font-size: 15px; font-weight: 700;
-          text-decoration: none; border: none; cursor: pointer;
-          transition: transform 0.18s, box-shadow 0.18s; font-family: inherit;
+          text-decoration: none; border: 2px solid transparent; cursor: pointer;
+          transition: all 0.3s ease; font-family: inherit;
         }
-        .btn-yellow:hover { transform: translateY(-2px); box-shadow: 0 10px 28px #FED80050; }
+        .btn-yellow:hover { background: transparent; color: #000; border-color: #FED800; transform: none; box-shadow: none; }
         .btn-yellow:active { transform: translateY(0); }
 
         .btn-outline {
           display: inline-flex; align-items: center; gap: 8px;
-          padding: 14px 28px; background: transparent; color: #ffffff;
+          padding: 14px 28px; background: transparent; color: #1A1A1A;
           border-radius: 10px; font-size: 15px; font-weight: 700;
-          text-decoration: none; border: 1.5px solid #ffffff;
+          text-decoration: none; border: 1.5px solid #1A1A1A;
           transition: border-color 0.15s, color 0.15s, background 0.15s; font-family: inherit; cursor: pointer;
         }
-        .btn-outline:hover { border-color: #FED800; color: #FED800; }
+        .btn-outline:hover { border-color: #FED800; color: #B8A000; }
         .btn-outline:active { background: #f4f4f410; }
 
         /* ── Section Label — consistent across all sections ── */
@@ -325,7 +325,7 @@ export default function HomePage() {
           font-size: clamp(36px, 6vw, 62px);
           letter-spacing: 1px;
           line-height: 0.95;
-          color: #ffffff;
+          color: #1A1A1A;
         }
 
         /* ── Hero ── */
@@ -346,39 +346,39 @@ export default function HomePage() {
         }
         .fav-grid::-webkit-scrollbar { display: none; }
         .fav-card {
-          background: #111; display: flex; flex-direction: column; align-items: center;
+          background: #FFFFFF; display: flex; flex-direction: column; align-items: center;
           text-align: center; border-radius: 16px; padding: 0 0 16px; overflow: hidden;
           transition: background 0.18s, transform 0.25s, box-shadow 0.25s;
-          cursor: pointer; text-decoration: none; border: 1px solid #1A1A1A;
+          cursor: pointer; text-decoration: none; border: 1px solid #E5E5E5;
           min-width: calc(25% - 15px); max-width: calc(25% - 15px); flex-shrink: 0;
         }
-        .fav-card:hover { background: #161616; transform: translateY(-4px); box-shadow: 0 12px 40px rgba(254,216,0,0.08); border-color: #FED80030; }
+        .fav-card:hover { background: #F8F8F8; transform: translateY(-4px); box-shadow: 0 12px 40px rgba(0,0,0,0.06); border-color: #FED80030; }
         .fav-img-wrap { height: 180px; width: 100%; overflow: hidden; position: relative; margin-bottom: 14px; flex-shrink: 0; }
         .fav-img-wrap img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.5s cubic-bezier(0.16,1,0.3,1); }
         .fav-card:hover .fav-img-wrap img { transform: scale(1.06); }
         .fav-arrow {
           position: absolute; top: 50%; transform: translateY(-50%); z-index: 10;
           width: 44px; height: 44px; border-radius: 50%;
-          background: rgba(0,0,0,0.85); border: 1px solid #2A2A2A;
-          color: #FED800; cursor: pointer;
+          background: rgba(255,255,255,0.95); border: 1px solid #E5E5E5;
+          color: #B8A000; cursor: pointer;
           display: flex; align-items: center; justify-content: center;
           transition: background 0.15s, border-color 0.15s;
         }
-        .fav-arrow:hover { background: #111; border-color: #FED800; }
+        .fav-arrow:hover { background: #FFFFFF; border-color: #FED800; }
         .fav-arrow-left { left: -22px; }
         .fav-arrow-right { right: -22px; }
 
         /* ── Add-to-cart Modal (Home Page) ── */
         .home-modal-backdrop {
-          position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 500;
+          position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 500;
           display: flex; align-items: center; justify-content: center; padding: 16px;
         }
         .home-modal-box {
-          background: #111; border: 1px solid #1E1E1E; border-radius: 24px;
+          background: #FFFFFF; border: 1px solid #E5E5E5; border-radius: 24px;
           max-width: 480px; width: 100%; max-height: 90vh; overflow-y: auto;
         }
         .home-modal-box::-webkit-scrollbar { width: 4px; }
-        .home-modal-box::-webkit-scrollbar-thumb { background: #333; border-radius: 4px; }
+        .home-modal-box::-webkit-scrollbar-thumb { background: #D0D0D0; border-radius: 4px; }
         .home-modal-img-wrap { position: relative; height: 260px; overflow: hidden; border-radius: 24px 24px 0 0; }
         .home-modal-img-wrap img { width: 100%; height: 100%; object-fit: cover; }
         .home-modal-close {
@@ -388,40 +388,40 @@ export default function HomePage() {
         }
         .home-modal-close:hover { background: rgba(0,0,0,0.95); }
         .home-modal-body { padding: 24px; }
-        .home-modal-name { font-family: 'Bebas Neue', sans-serif; font-size: 28px; letter-spacing: 1px; color: #FED800; margin-bottom: 8px; }
-        .home-modal-desc { font-size: 14px; color: #999; line-height: 1.7; margin-bottom: 20px; }
+        .home-modal-name { font-family: 'Bebas Neue', sans-serif; font-size: 28px; letter-spacing: 1px; color: #B8A000; margin-bottom: 8px; }
+        .home-modal-desc { font-size: 14px; color: #666; line-height: 1.7; margin-bottom: 20px; }
         .home-modal-price-row { display: flex; gap: 10px; margin-bottom: 20px; }
         .home-modal-price-card {
           flex: 1; padding: 12px; border-radius: 10px; cursor: pointer; text-align: center;
-          border: 1px solid #2A2A2A; background: #0A0A0A; transition: all 0.15s;
+          border: 1px solid #D0D0D0; background: #F8F9FA; transition: all 0.15s;
         }
         .home-modal-price-card.active { border-color: #FED800; background: #FED80010; }
         .home-modal-modifier-group { margin-bottom: 16px; }
         .home-modal-modifier-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
-        .home-modal-modifier-name { font-size: 13px; font-weight: 700; color: #fff; text-transform: uppercase; letter-spacing: 0.5px; }
+        .home-modal-modifier-name { font-size: 13px; font-weight: 700; color: #1A1A1A; text-transform: uppercase; letter-spacing: 0.5px; }
         .home-modal-modifier-badge { font-size: 11px; padding: 2px 8px; border-radius: 20px; font-weight: 600; }
         .home-modal-modifier-opt {
           display: flex; justify-content: space-between; align-items: center;
           padding: 10px 12px; border-radius: 10px; cursor: pointer;
-          border: 1px solid #1A1A1A; margin-bottom: 6px; transition: all 0.12s;
+          border: 1px solid #E5E5E5; margin-bottom: 6px; transition: all 0.12s;
         }
         .home-modal-modifier-opt.selected { border-color: #FED800; background: #FED80010; }
-        .home-modal-modifier-opt:hover { border-color: #333; }
+        .home-modal-modifier-opt:hover { border-color: #D0D0D0; }
         .home-modal-add-row {
           display: flex; align-items: center; gap: 12px; margin-top: 20px;
-          padding-top: 16px; border-top: 1px solid #1E1E1E;
+          padding-top: 16px; border-top: 1px solid #E0E0E0;
         }
         .home-modal-qty-wrap {
-          display: flex; align-items: center; gap: 0; border: 1px solid #2A2A2A;
+          display: flex; align-items: center; gap: 0; border: 1px solid #D0D0D0;
           border-radius: 10px; overflow: hidden;
         }
         .home-modal-qty-btn {
-          width: 40px; height: 40px; background: #0A0A0A; border: none;
-          color: #fff; font-size: 18px; cursor: pointer; display: flex;
+          width: 40px; height: 40px; background: #F5F5F5; border: none;
+          color: #1A1A1A; font-size: 18px; cursor: pointer; display: flex;
           align-items: center; justify-content: center;
         }
-        .home-modal-qty-btn:hover { background: #1A1A1A; }
-        .home-modal-qty-val { width: 44px; text-align: center; font-size: 15px; font-weight: 700; color: #fff; background: #0A0A0A; }
+        .home-modal-qty-btn:hover { background: #E5E5E5; }
+        .home-modal-qty-val { width: 44px; text-align: center; font-size: 15px; font-weight: 700; color: #1A1A1A; background: #F5F5F5; }
         .home-modal-add-btn {
           flex: 1; padding: 14px; border-radius: 10px; border: none;
           font-size: 15px; font-weight: 700; cursor: pointer;
@@ -429,16 +429,16 @@ export default function HomePage() {
         }
         .home-modal-add-btn.enabled { background: #FED800; color: #000; }
         .home-modal-add-btn.enabled:hover { background: #e8c400; }
-        .home-modal-add-btn.disabled { background: #1A1A1A; color: #555; cursor: not-allowed; }
+        .home-modal-add-btn.disabled { background: #F0F0F0; color: #AAAAAA; cursor: not-allowed; }
 
         /* ── Menu Tiles ── */
         .menu-tiles { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; margin-bottom: 44px; }
         .menu-tile {
-          border: 1px solid #1A1A1A; border-radius: 16px; overflow: hidden;
+          border: 1px solid #E5E5E5; border-radius: 16px; overflow: hidden;
           text-decoration: none; display: flex; flex-direction: column;
-          transition: border-color 0.2s, transform 0.25s, box-shadow 0.25s; background: #0D0D0D;
+          transition: border-color 0.2s, transform 0.25s, box-shadow 0.25s; background: #FFFFFF;
         }
-        .menu-tile:hover { border-color: #FED80060; transform: translateY(-4px); box-shadow: 0 10px 30px rgba(254,216,0,0.06); }
+        .menu-tile:hover { border-color: #FED80060; transform: translateY(-4px); box-shadow: 0 10px 30px rgba(0,0,0,0.06); }
         .menu-tile-img { width: 100%; height: 220px; overflow: hidden; position: relative; flex-shrink: 0; }
         .menu-tile-img img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.5s cubic-bezier(0.16,1,0.3,1); }
         .menu-tile:hover .menu-tile-img img { transform: scale(1.06); }
@@ -458,9 +458,9 @@ export default function HomePage() {
           font-family: 'Bebas Neue', sans-serif;
           font-size: clamp(32px, 4vw, 52px);
           letter-spacing: 1px; line-height: 1;
-          color: #ffffffff; margin-bottom: 20px;
+          color: #1A1A1A; margin-bottom: 20px;
         }
-        .about-content p { color: #ffffff; line-height: 1.75; font-size: 15px; max-width: 520px; }
+        .about-content p { color: #1A1A1A; line-height: 1.75; font-size: 15px; max-width: 520px; }
 
         /* ── Order Ahead CTA (Section 5) ── */
         .order-ahead-hero {
@@ -479,27 +479,27 @@ export default function HomePage() {
         }
         .order-card-box {
           position: relative; z-index: 1;
-          background: rgba(8,8,8,0.92); padding: 44px 48px;
+          background: rgba(255,255,255,0.95); padding: 44px 48px;
           border-radius: 20px; max-width: 440px;
           margin: 40px 48px 40px auto;
-          border: 1px solid #222;
+          border: 1px solid #E0E0E0;
           backdrop-filter: blur(16px);
         }
         .order-card-box h2 {
           font-family: 'Bebas Neue', sans-serif;
           font-size: clamp(28px, 3.5vw, 44px);
           letter-spacing: 1px; line-height: 1;
-          color: #ffffff; margin-bottom: 14px;
+          color: #1A1A1A; margin-bottom: 14px;
         }
-        .order-card-box p { color: #AAAAAA; font-size: 14px; line-height: 1.75; margin-bottom: 24px; }
+        .order-card-box p { color: #666666; font-size: 14px; line-height: 1.75; margin-bottom: 24px; }
         .order-btn {
           display: inline-flex; align-items: center; gap: 8px;
           background: #FED800; color: #000;
           padding: 13px 26px; border-radius: 10px; font-weight: 700;
           font-size: 15px; text-decoration: none; font-family: inherit;
-          transition: transform 0.18s, box-shadow 0.18s;
+          transition: all 0.3s ease; border: 2px solid transparent;
         }
-        .order-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 28px #FED80050; }
+        .order-btn:hover { background: transparent; color: #000; border-color: #FED800; transform: none; box-shadow: none; }
 
         /* ── Delivery CTA Section (Section 12) ── */
         .delivery-hero {
@@ -511,7 +511,7 @@ export default function HomePage() {
         }
         .delivery-overlay {
           position: absolute; inset: 0;
-          background: rgba(0,0,0,0.72);
+          background: rgba(0,0,0,0.55);
         }
         .delivery-content {
           position: relative; z-index: 1;
@@ -555,23 +555,23 @@ export default function HomePage() {
         }
         .reviews-grid::-webkit-scrollbar { display: none; }
         .review-card {
-          background: #0D0D0D;
-          border: 1px solid #1A1A1A;
+          background: #FFFFFF;
+          border: 1px solid #E5E5E5;
           border-left: 3px solid #FED800;
           border-radius: 18px; padding: 28px;
           transition: transform 0.25s, box-shadow 0.25s;
           min-width: calc(33.33% - 11px); max-width: calc(33.33% - 11px); flex-shrink: 0;
         }
-        .review-card:hover { transform: translateY(-2px); box-shadow: 0 12px 36px rgba(254,216,0,0.06); }
+        .review-card:hover { transform: translateY(-2px); box-shadow: 0 12px 36px rgba(0,0,0,0.06); }
         .review-arrow {
           position: absolute; top: 50%; transform: translateY(-50%); z-index: 10;
           width: 44px; height: 44px; border-radius: 50%;
-          background: rgba(0,0,0,0.85); border: 1px solid #2A2A2A;
-          color: #FED800; cursor: pointer;
+          background: rgba(255,255,255,0.95); border: 1px solid #E5E5E5;
+          color: #B8A000; cursor: pointer;
           display: flex; align-items: center; justify-content: center;
           transition: background 0.15s, border-color 0.15s;
         }
-        .review-arrow:hover { background: #111; border-color: #FED800; }
+        .review-arrow:hover { background: #FFFFFF; border-color: #FED800; }
         .review-arrow-left { left: -22px; }
         .review-arrow-right { right: -22px; }
         .star-filter-wrap {
@@ -580,7 +580,7 @@ export default function HomePage() {
         .star-filter-btn {
           display: inline-flex; align-items: center; gap: 5px;
           padding: 7px 16px; border-radius: 20px;
-          border: 1px solid #2A2A2A; background: transparent;
+          border: 1px solid #D0D0D0; background: transparent;
           color: #888; font-size: 13px; font-weight: 600;
           cursor: pointer; transition: all 0.15s; font-family: inherit;
         }
@@ -591,37 +591,37 @@ export default function HomePage() {
         .rewards-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
         .rewards-steps { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; }
         .reward-step {
-          background: #0D0D0D; border: 1px solid #1A1A1A; border-radius: 16px;
+          background: #FFFFFF; border: 1px solid #E5E5E5; border-radius: 16px;
           padding: 26px 20px; position: relative; overflow: hidden;
           transition: border-color 0.2s, transform 0.25s;
         }
         .reward-step:hover { transform: translateY(-3px); }
 
         /* ── FAQ ── */
-        .faq-item { border-bottom: 1px solid #1A1A1A; }
+        .faq-item { border-bottom: 1px solid #E5E5E5; }
         .faq-q {
-          width: 100%; background: none; border: none; color: #ffffff;
+          width: 100%; background: none; border: none; color: #1A1A1A;
           font-size: 16px; font-weight: 600; cursor: pointer;
           display: flex; justify-content: space-between; align-items: center;
           padding: 22px 0; gap: 16px; text-align: left;
           font-family: inherit; transition: color 0.15s;
         }
-        .faq-q:hover { color: #FED800; }
+        .faq-q:hover { color: #B8A000; }
         .faq-answer-wrap {
-          background: #111; border-radius: 0 0 12px 12px; overflow: hidden;
+          background: #F8F9FA; border-radius: 0 0 12px 12px; overflow: hidden;
           display: grid; grid-template-rows: 0fr;
           transition: grid-template-rows 0.3s cubic-bezier(0.16,1,0.3,1);
         }
         .faq-answer-wrap[data-open="true"] { grid-template-rows: 1fr; }
         .faq-answer-inner { overflow: hidden; }
-        .faq-a { font-size: 14px; color: #ffffff; line-height: 1.8; padding: 16px 20px; max-width: 760px; }
+        .faq-a { font-size: 14px; color: #444444; line-height: 1.8; padding: 16px 20px; max-width: 760px; }
 
         /* ── Location ── */
-        .location-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0; border-radius: 22px; overflow: hidden; border: 1px solid #1E1E1E; }
+        .location-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0; border-radius: 22px; overflow: hidden; border: 1px solid #E0E0E0; }
 
         /* ── Footer ── */
         .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 48px; margin-bottom: 40px; }
-        .footer-bottom { border-top: 1px solid #1A1A1A; padding-top: 24px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
+        .footer-bottom { border-top: 1px solid #2A2A2A; padding-top: 24px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
         .footer-link { display: block; font-size: 14px; color: #ffffff; margin-bottom: 11px; text-decoration: none; transition: color 0.15s, padding-left 0.15s; }
         .footer-link:hover { color: #FED800; padding-left: 4px; }
 
@@ -641,7 +641,7 @@ export default function HomePage() {
           .about-grid { grid-template-columns: 1fr; }
           .about-img { height: 340px; }
           .order-ahead-hero { justify-content: center; }
-          .order-ahead-overlay { background: rgba(0,0,0,0.80); }
+          .order-ahead-overlay { background: rgba(0,0,0,0.55); }
           .order-card-box { margin: 40px auto; max-width: 92%; }
         }
         @media (max-width: 768px) {
@@ -684,7 +684,7 @@ export default function HomePage() {
           1. HERO
       ══════════════════════════════════════════ */}
       <section id="hero" className="hero-section" aria-label="Welcome to Eggs Ok">
-        <div className="hero-overlay" style={{ position: 'absolute', inset: 0, background: 'rgba(0,0,0,0.75)', zIndex: 0 }} />
+        <div className="hero-overlay" style={{ position: 'absolute', inset: 0, background: 'rgba(0,0,0,0.55)', zIndex: 0 }} />
 
         <div className="container hero-container" style={{ position: 'relative', zIndex: 1, width: '100%' }}>
           <div
@@ -724,7 +724,7 @@ export default function HomePage() {
               <Link href="/order" className="btn-yellow hero-order-btn" style={{ fontSize: '16px', padding: '16px 34px' }}>
                 <ShoppingCart size={18} /> Order Now
               </Link>
-              <a href="#menu" className="btn-outline hero-menu-btn" style={{ fontSize: '16px', padding: '16px 34px' }}>
+              <a href="#menu" className="btn-outline hero-menu-btn" style={{ fontSize: '16px', padding: '16px 34px', color: '#ffffff', borderColor: '#ffffff' }}>
                 View Menu
               </a>
             </div>
@@ -744,7 +744,7 @@ export default function HomePage() {
       {/* ══════════════════════════════════════════
           2. FEATURED FAVORITES
       ══════════════════════════════════════════ */}
-      <section id="featured" className="section-featured" style={{ background: '#0A0A0A', padding: '80px 0' }} aria-labelledby="featured-heading">
+      <section id="featured" className="section-featured" style={{ background: '#F8F9FA', padding: '80px 0' }} aria-labelledby="featured-heading">
         <div className="container featured-container" ref={featuredReveal.ref}>
           <div className={`featured-header reveal ${featuredReveal.visible ? 'visible' : ''}`} style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', marginBottom: '52px', flexWrap: 'wrap', gap: '20px' }}>
             <div className="featured-header-text">
@@ -771,20 +771,20 @@ export default function HomePage() {
                   <div className="fav-img-wrap">
                     {item.img
                       ? <img src={item.img} alt={item.name} style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
-                      : <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'linear-gradient(135deg, #1A1A00, #0A0A0A)' }}>
-                          <svg width="40" height="40" viewBox="0 0 64 64" fill="none"><circle cx="32" cy="32" r="22" stroke="#2A2A2A" strokeWidth="1.5"/><path d="M20 32 Q32 20 44 32" stroke="#2A2A2A" strokeWidth="1.5" strokeLinecap="round"/><circle cx="32" cy="38" r="6" stroke="#2A2A2A" strokeWidth="1.5"/></svg>
+                      : <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'linear-gradient(135deg, #F5F5E8, #F8F9FA)' }}>
+                          <svg width="40" height="40" viewBox="0 0 64 64" fill="none"><circle cx="32" cy="32" r="22" stroke="#D0D0D0" strokeWidth="1.5"/><path d="M20 32 Q32 20 44 32" stroke="#D0D0D0" strokeWidth="1.5" strokeLinecap="round"/><circle cx="32" cy="38" r="6" stroke="#D0D0D0" strokeWidth="1.5"/></svg>
                         </div>
                     }
-                    {item.tag && <div className="fav-tag-badge" style={{ position: 'absolute', top: '14px', left: '14px', background: '#000000CC', backdropFilter: 'blur(8px)', border: '1px solid #FED80040', borderRadius: '20px', padding: '4px 12px' }}>
+                    {item.tag && <div className="fav-tag-badge" style={{ position: 'absolute', top: '14px', left: '14px', background: 'rgba(255,255,255,0.9)', backdropFilter: 'blur(8px)', border: '1px solid #FED80040', borderRadius: '20px', padding: '4px 12px' }}>
                       <span className="fav-tag-text" style={{ fontSize: '11px', fontWeight: '700', color: '#FED800', letterSpacing: '0.5px' }}>{item.tag}</span>
                     </div>}
-                    <div className="fav-add-btn" style={{ position: 'absolute', bottom: '14px', right: '14px', width: '36px', height: '36px', borderRadius: '50%', background: '#FED800', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 4px 12px rgba(0,0,0,0.4)' }} aria-hidden="true">
+                    <div className="fav-add-btn" style={{ position: 'absolute', bottom: '14px', right: '14px', width: '36px', height: '36px', borderRadius: '50%', background: '#FED800', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }} aria-hidden="true">
                       <Plus size={15} color="#000" strokeWidth={2.8} />
                     </div>
                   </div>
                   <div className="fav-card-body" style={{ padding: '0 14px 4px', width: '100%' }}>
-                    <p className="fav-card-name" style={{ fontSize: '14px', fontWeight: '700', color: '#ffffff', marginBottom: '4px', lineHeight: 1.3 }}>{item.name}</p>
-                    <p className="fav-card-desc" style={{ fontSize: '12px', color: '#999', lineHeight: 1.4, marginBottom: '8px', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical' as any, overflow: 'hidden' }}>{item.desc}</p>
+                    <p className="fav-card-name" style={{ fontSize: '14px', fontWeight: '700', color: '#1A1A1A', marginBottom: '4px', lineHeight: 1.3 }}>{item.name}</p>
+                    <p className="fav-card-desc" style={{ fontSize: '12px', color: '#888888', lineHeight: 1.4, marginBottom: '8px', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical' as any, overflow: 'hidden' }}>{item.desc}</p>
                     <p className="fav-card-price" style={{ fontSize: '16px', fontWeight: '800', color: '#FED800' }}>{item.price}</p>
                   </div>
                 </div>
@@ -800,7 +800,7 @@ export default function HomePage() {
       {/* ══════════════════════════════════════════
           3. OUR STORY
       ══════════════════════════════════════════ */}
-      <section id="our-story" className="section-story" style={{ background: '#000', padding: '80px 0' }}>
+      <section id="our-story" className="section-story" style={{ background: '#FFFFFF', padding: '80px 0' }}>
         <div className="container story-container">
           <div className="about-grid story-grid">
             <div className="about-img story-img">
@@ -828,7 +828,7 @@ export default function HomePage() {
       {/* ══════════════════════════════════════════
           4. FRESH INGREDIENTS
       ══════════════════════════════════════════ */}
-      <section id="quality" className="section-quality" style={{ background: '#0A0A0A', padding: '80px 0' }}>
+      <section id="quality" className="section-quality" style={{ background: '#F8F9FA', padding: '80px 0' }}>
         <div className="container quality-container">
           <div className="about-grid quality-grid">
             <div className="about-content quality-content">
@@ -870,14 +870,14 @@ export default function HomePage() {
       {/* ══════════════════════════════════════════
           6. OUR MENU GALLERY
       ══════════════════════════════════════════ */}
-      <section id="menu" className="section-menu" style={{ background: '#0A0A0A', padding: '80px 0' }} aria-labelledby="menu-heading">
+      <section id="menu" className="section-menu" style={{ background: '#F8F9FA', padding: '80px 0' }} aria-labelledby="menu-heading">
         <div className="container menu-container" ref={menuReveal.ref}>
           <div className={`menu-header reveal ${menuReveal.visible ? 'visible' : ''}`} style={{ textAlign: 'left', marginBottom: '52px' }}>
             <span className="sec-label">Explore</span>
             <h2 id="menu-heading" className="sec-heading">
              A Taste Of  <span className="text-accent" style={{ color: '#FED800' }}> OUR MENU</span>
             </h2>
-            <p className="menu-subheading" style={{ color: '#ffffff', marginTop: '14px', fontSize: '15px' }}>
+            <p className="menu-subheading" style={{ color: '#1A1A1A', marginTop: '14px', fontSize: '15px' }}>
               Bright Flavors, warm atmosphere, and a menu that has something for everyone. <br /> From classic breakfast sandwiches to bold specialty drinks,  get a glimpse of what we offer <br /> before you order. 
             </p>
           </div>
@@ -898,7 +898,7 @@ export default function HomePage() {
                     style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
                 </div>
                 <div className="menu-tile-body">
-                  <p className="menu-tile-label" style={{ fontSize: '15px', fontWeight: '700', color: '#ffffff', marginBottom: '4px' }}>{tile.label}</p>
+                  <p className="menu-tile-label" style={{ fontSize: '15px', fontWeight: '700', color: '#1A1A1A', marginBottom: '4px' }}>{tile.label}</p>
                   <p className="menu-tile-count" style={{ fontSize: '12px', color: '#FED800', fontWeight: '600' }}>{tile.items}</p>
                 </div>
               </Link>
@@ -919,7 +919,7 @@ export default function HomePage() {
       {/* ══════════════════════════════════════════
           7. CATERING
       ══════════════════════════════════════════ */}
-      <section id="catering" className="section-catering" style={{ background: '#000', padding: '80px 0' }} aria-labelledby="catering-heading">
+      <section id="catering" className="section-catering" style={{ background: '#FFFFFF', padding: '80px 0' }} aria-labelledby="catering-heading">
         <div className="container catering-container">
           <div className="about-grid catering-grid">
             <div className="about-img catering-img">
@@ -945,7 +945,7 @@ export default function HomePage() {
       {/* ══════════════════════════════════════════
           8. REVIEWS
       ══════════════════════════════════════════ */}
-      <section id="reviews" className="section-reviews" style={{ background: '#0A0A0A', padding: '80px 0' }} aria-labelledby="reviews-heading">
+      <section id="reviews" className="section-reviews" style={{ background: '#F8F9FA', padding: '80px 0' }} aria-labelledby="reviews-heading">
         <div className="container reviews-container" ref={reviewsReveal.ref}>
           <div className={`reviews-header reveal ${reviewsReveal.visible ? 'visible' : ''}`} style={{ textAlign: 'center', marginBottom: '40px' }}>
             <span className="sec-label">Reviews</span>
@@ -954,7 +954,7 @@ export default function HomePage() {
             </h2>
             <div id="reviews-rating-bar" className="reviews-rating-bar" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '5px', marginTop: '14px' }}>
               {[0,1,2,3,4].map(i => <Star key={i} size={19} color="#FED800" fill="#FED800" aria-hidden="true" />)}
-              <span className="reviews-rating-text" style={{ fontSize: '14px', color: '#999', marginLeft: '8px' }}>
+              <span className="reviews-rating-text" style={{ fontSize: '14px', color: '#888888', marginLeft: '8px' }}>
                 {allReviews.length > 0
                   ? `${(allReviews.reduce((a, r) => a + r.stars, 0) / allReviews.length).toFixed(1)} average from ${allReviews.length} reviews`
                   : '5.0 average'}
@@ -981,7 +981,7 @@ export default function HomePage() {
             <div id="reviews-grid" className="reviews-grid" ref={reviewScrollRef} role="list" aria-label="Customer reviews">
               {displayReviews.length === 0 ? (
                 <div style={{ minWidth: '100%', textAlign: 'center', padding: '40px 20px' }}>
-                  <p style={{ fontSize: '14px', color: '#555' }}>No {starFilter}-star reviews yet</p>
+                  <p style={{ fontSize: '14px', color: '#AAAAAA' }}>No {starFilter}-star reviews yet</p>
                 </div>
               ) : displayReviews.map((r, i) => (
                 <article
@@ -992,9 +992,9 @@ export default function HomePage() {
                   role="listitem"
                 >
                   <div className="review-stars" style={{ display: 'flex', gap: '3px', marginBottom: '18px' }} aria-label={`${r.stars} out of 5 stars`}>
-                    {[0,1,2,3,4].map(s => <Star key={s} size={13} color={s < r.stars ? '#FED800' : '#333'} fill={s < r.stars ? '#FED800' : 'none'} aria-hidden="true" />)}
+                    {[0,1,2,3,4].map(s => <Star key={s} size={13} color={s < r.stars ? '#FED800' : '#D0D0D0'} fill={s < r.stars ? '#FED800' : 'none'} aria-hidden="true" />)}
                   </div>
-                  <blockquote className="review-quote" style={{ fontSize: '15px', color: '#ffffff', lineHeight: 1.75, marginBottom: '24px', fontStyle: 'italic' }}>
+                  <blockquote className="review-quote" style={{ fontSize: '15px', color: '#1A1A1A', lineHeight: 1.75, marginBottom: '24px', fontStyle: 'italic' }}>
                     &ldquo;{r.text}&rdquo;
                   </blockquote>
                   <div className="review-footer" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -1002,9 +1002,9 @@ export default function HomePage() {
                       <div className="review-avatar" style={{ width: '38px', height: '38px', borderRadius: '50%', background: '#FED80020', border: '1px solid #FED80050', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }} aria-hidden="true">
                         <span className="review-avatar-initial" style={{ fontSize: '14px', fontWeight: '700', color: '#FED800' }}>{r.name[0]}</span>
                       </div>
-                      <cite className="review-name" style={{ fontSize: '14px', fontWeight: '600', color: '#ffffff', fontStyle: 'normal' }}>{r.name}</cite>
+                      <cite className="review-name" style={{ fontSize: '14px', fontWeight: '600', color: '#1A1A1A', fontStyle: 'normal' }}>{r.name}</cite>
                     </div>
-                    <time className="review-date" style={{ fontSize: '12px', color: '#555' }}>{r.date}</time>
+                    <time className="review-date" style={{ fontSize: '12px', color: '#AAAAAA' }}>{r.date}</time>
                   </div>
                 </article>
               ))}
@@ -1019,7 +1019,7 @@ export default function HomePage() {
       {/* ══════════════════════════════════════════
           9. REWARDS
       ══════════════════════════════════════════ */}
-      <section id="rewards" className="section-rewards" style={{ background: '#000', padding: '80px 0' }} aria-labelledby="rewards-heading">
+      <section id="rewards" className="section-rewards" style={{ background: '#FFFFFF', padding: '80px 0' }} aria-labelledby="rewards-heading">
         <div className="container rewards-container" ref={rewardsReveal.ref}>
           <div className="rewards-grid">
             <div className={`rewards-left reveal ${rewardsReveal.visible ? 'visible' : ''}`}>
@@ -1027,7 +1027,7 @@ export default function HomePage() {
               <h2 id="rewards-heading" className="sec-heading" style={{ marginBottom: '16px' }}>
                 EGGS OK <span className="text-accent" style={{ color: '#FED800' }}>REWARDS</span>
               </h2>
-              <p className="rewards-body" style={{ fontSize: '15px', color: '#ffffff', lineHeight: 1.8, marginBottom: '36px', maxWidth: '440px' }}>
+              <p className="rewards-body" style={{ fontSize: '15px', color: '#1A1A1A', lineHeight: 1.8, marginBottom: '36px', maxWidth: '440px' }}>
                 Every order earns you points. Redeem for free food, exclusive deals, and early access
                 to new menu items. The more you eat, the more you earn.
               </p>
@@ -1053,8 +1053,8 @@ export default function HomePage() {
                   <div className="reward-step-icon" style={{ width: '38px', height: '38px', borderRadius: '10px', background: `${s.color}20`, border: `1px solid ${s.color}40`, display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '16px' }}>
                     <p className="reward-step-number bebas" style={{ fontSize: '16px', color: s.color }}>{s.step}</p>
                   </div>
-                  <p className="reward-step-title" style={{ fontSize: '14px', fontWeight: '800', color: '#ffffff', marginBottom: '8px' }}>{s.title}</p>
-                  <p className="reward-step-desc" style={{ fontSize: '13px', color: '#AAAAAA', lineHeight: 1.65 }}>{s.desc}</p>
+                  <p className="reward-step-title" style={{ fontSize: '14px', fontWeight: '800', color: '#1A1A1A', marginBottom: '8px' }}>{s.title}</p>
+                  <p className="reward-step-desc" style={{ fontSize: '13px', color: '#666666', lineHeight: 1.65 }}>{s.desc}</p>
                 </div>
               ))}
             </div>
@@ -1065,7 +1065,7 @@ export default function HomePage() {
       {/* ══════════════════════════════════════════
           10. FAQ
       ══════════════════════════════════════════ */}
-      <section id="faq" className="section-faq" style={{ background: '#0A0A0A', padding: '80px 0' }} aria-labelledby="faq-heading">
+      <section id="faq" className="section-faq" style={{ background: '#F8F9FA', padding: '80px 0' }} aria-labelledby="faq-heading">
         <div className="container faq-container" ref={faqReveal.ref}>
           <div className={`faq-header reveal ${faqReveal.visible ? 'visible' : ''}`} style={{ textAlign: 'center', marginBottom: '60px' }}>
             <span className="sec-label">FAQ</span>
@@ -1087,7 +1087,7 @@ export default function HomePage() {
                   <span className="faq-question-text">{faq.q}</span>
                   <ChevronDown
                     size={18} aria-hidden="true"
-                    color={openFaq === i ? '#FED800' : '#888'}
+                    color={openFaq === i ? '#FED800' : '#777777'}
                     style={{ flexShrink: 0, transform: openFaq === i ? 'rotate(180deg)' : 'rotate(0deg)', transition: 'transform 0.3s cubic-bezier(0.16,1,0.3,1)' }}
                   />
                 </button>
@@ -1101,7 +1101,7 @@ export default function HomePage() {
           </div>
 
           <div id="faq-contact-cta" className="faq-contact-cta" style={{ textAlign: 'center', marginTop: '52px' }}>
-            <p className="faq-contact-text" style={{ fontSize: '14px', color: '#ffffff', marginBottom: '16px' }}>Still have questions?</p>
+            <p className="faq-contact-text" style={{ fontSize: '14px', color: '#1A1A1A', marginBottom: '16px' }}>Still have questions?</p>
             <Link href="/contact" className="btn-outline faq-contact-btn">Contact Us</Link>
           </div>
         </div>
@@ -1110,7 +1110,7 @@ export default function HomePage() {
       {/* ══════════════════════════════════════════
           11. OUR LOCATION
       ══════════════════════════════════════════ */}
-      <section id="location" className="section-location" style={{ background: '#000', padding: '80px 0' }} aria-labelledby="location-heading">
+      <section id="location" className="section-location" style={{ background: '#FFFFFF', padding: '80px 0' }} aria-labelledby="location-heading">
         <div className="container location-container" ref={locationReveal.ref}>
           <div className={`location-header reveal ${locationReveal.visible ? 'visible' : ''}`} style={{ textAlign: 'center', marginBottom: '56px' }}>
             <span className="sec-label">Find Us</span>
@@ -1121,7 +1121,7 @@ export default function HomePage() {
 
           <div id="location-grid" className={`location-grid reveal ${locationReveal.visible ? 'visible' : ''} reveal-d1`}>
             {/* Info panel */}
-            <div id="location-info" className="location-info-panel" style={{ background: '#0D0D0D', padding: 'clamp(32px, 5vw, 60px)', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', gap: '36px' }}>
+            <div id="location-info" className="location-info-panel" style={{ background: '#F8F9FA', padding: 'clamp(32px, 5vw, 60px)', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', gap: '36px' }}>
               <div className="location-info-body">
                 <div
                   id="location-status-badge"
@@ -1133,7 +1133,7 @@ export default function HomePage() {
                   <span className="location-status-text" style={{ fontSize: '12px', color: isOpen ? '#22C55E' : '#FC0301', fontWeight: '600' }}>{isOpen ? 'Open Now' : 'Closed'}</span>
                 </div>
 
-                <h3 id="location-name" className="location-name bebas" style={{ fontSize: 'clamp(28px, 4vw, 44px)', color: '#ffffff', marginBottom: '28px' }}>
+                <h3 id="location-name" className="location-name bebas" style={{ fontSize: 'clamp(28px, 4vw, 44px)', color: '#1A1A1A', marginBottom: '28px' }}>
                   EGGS OK<br /><span className="location-name-accent" style={{ color: '#FED800' }}>WEST PHILADELPHIA</span>
                 </h3>
 
@@ -1141,8 +1141,8 @@ export default function HomePage() {
                   <div className="location-address-row" style={{ display: 'flex', gap: '14px', alignItems: 'flex-start' }}>
                     <MapPin size={16} color="#FED800" style={{ flexShrink: 0, marginTop: '2px' }} aria-hidden="true" />
                     <div className="location-address-text">
-                      <p className="location-street" style={{ fontSize: '14px', color: '#ffffff', fontWeight: '600' }}>3517 Lancaster Ave</p>
-                      <p className="location-city" style={{ fontSize: '13px', color: '#999' }}>Philadelphia, PA 19104</p>
+                      <p className="location-street" style={{ fontSize: '14px', color: '#1A1A1A', fontWeight: '600' }}>3517 Lancaster Ave</p>
+                      <p className="location-city" style={{ fontSize: '13px', color: '#888888' }}>Philadelphia, PA 19104</p>
                     </div>
                   </div>
                   <div className="location-hours-row" style={{ display: 'flex', gap: '14px', alignItems: 'flex-start' }}>
@@ -1150,15 +1150,15 @@ export default function HomePage() {
                     <div id="location-hours-list" className="location-hours-list" style={{ display: 'flex', flexDirection: 'column', gap: '5px' }}>
                       {HOURS.map((row, i) => (
                         <div key={i} className={`location-hours-row-item location-hours-${row.d.toLowerCase()}`} style={{ display: 'flex', gap: '14px' }}>
-                          <span className="location-hours-day" style={{ fontSize: '13px', color: '#ffffff', fontWeight: '600', minWidth: '96px' }}>{row.d}</span>
-                          <span className="location-hours-time" style={{ fontSize: '13px', color: '#BBBBBB' }}>{row.h}</span>
+                          <span className="location-hours-day" style={{ fontSize: '13px', color: '#1A1A1A', fontWeight: '600', minWidth: '96px' }}>{row.d}</span>
+                          <span className="location-hours-time" style={{ fontSize: '13px', color: '#777777' }}>{row.h}</span>
                         </div>
                       ))}
                     </div>
                   </div>
                   <div className="location-phone-row" style={{ display: 'flex', gap: '14px', alignItems: 'center' }}>
                     <Smartphone size={16} color="#FED800" style={{ flexShrink: 0 }} aria-hidden="true" />
-                    <a href="tel:2159489902" className="location-phone" style={{ fontSize: '14px', color: '#ffffff', textDecoration: 'none', fontWeight: '600' }}>215-948-9902</a>
+                    <a href="tel:2159489902" className="location-phone" style={{ fontSize: '14px', color: '#1A1A1A', textDecoration: 'none', fontWeight: '600' }}>215-948-9902</a>
                   </div>
                 </address>
               </div>
@@ -1172,18 +1172,18 @@ export default function HomePage() {
             </div>
 
             {/* Map */}
-            <div id="location-map" className="location-map-panel" style={{ background: '#0A0A0A', minHeight: '460px', position: 'relative', overflow: 'hidden' }}>
+            <div id="location-map" className="location-map-panel" style={{ background: '#F8F9FA', minHeight: '460px', position: 'relative', overflow: 'hidden' }}>
               <iframe
                 id="location-map-iframe"
                 title="Eggs Ok location on Google Maps  3517 Lancaster Ave, Philadelphia PA 19104"
                 src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3058.7!2d-75.2!3d39.96!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c6c65b7a6a5555%3A0x0!2s3517+Lancaster+Ave%2C+Philadelphia%2C+PA+19104!5e0!3m2!1sen!2sus!4v1234567890"
                 width="100%" height="100%"
-                style={{ border: 0, filter: 'invert(90%) hue-rotate(180deg)', minHeight: '460px', display: 'block' }}
+                style={{ border: 0, minHeight: '460px', display: 'block' }}
                 allowFullScreen loading="lazy" referrerPolicy="no-referrer-when-downgrade"
               />
-              <div id="location-map-pin" className="location-map-pin" style={{ position: 'absolute', bottom: '20px', left: '20px', background: 'rgba(0,0,0,0.92)', backdropFilter: 'blur(12px)', borderRadius: '10px', padding: '10px 16px', border: '1px solid #FED80040', pointerEvents: 'none' }} aria-hidden="true">
+              <div id="location-map-pin" className="location-map-pin" style={{ position: 'absolute', bottom: '20px', left: '20px', background: 'rgba(255,255,255,0.95)', backdropFilter: 'blur(12px)', borderRadius: '10px', padding: '10px 16px', border: '1px solid #FED80040', pointerEvents: 'none' }} aria-hidden="true">
                 <p className="location-map-pin-name bebas" style={{ fontSize: '14px', color: '#FED800', letterSpacing: '1px' }}>EGGS OK</p>
-                <p className="location-map-pin-address" style={{ fontSize: '11px', color: '#999' }}>3517 Lancaster Ave</p>
+                <p className="location-map-pin-address" style={{ fontSize: '11px', color: '#888888' }}>3517 Lancaster Ave</p>
               </div>
             </div>
           </div>
@@ -1215,7 +1215,7 @@ export default function HomePage() {
       {/* ══════════════════════════════════════════
           FOOTER
       ══════════════════════════════════════════ */}
-      <footer id="footer" className="site-footer" style={{ background: '#050505', padding: '68px 0 32px', borderTop: '1px solid #141414' }}>
+      <footer id="footer" className="site-footer" style={{ background: '#111111', padding: '68px 0 32px', borderTop: '1px solid #2A2A2A' }}>
         <div className="container footer-container">
           <div className="footer-grid">
             <div id="footer-brand" className="footer-brand">
@@ -1281,8 +1281,8 @@ export default function HomePage() {
             <div className="home-modal-img-wrap">
               {selectedFav.img
                 ? <img src={selectedFav.img} alt={selectedFav.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                : <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'linear-gradient(135deg, #1A1A00, #0A0A0A)' }}>
-                    <svg width="48" height="48" viewBox="0 0 64 64" fill="none"><circle cx="32" cy="32" r="22" stroke="#2A2A2A" strokeWidth="1.5"/><path d="M20 32 Q32 20 44 32" stroke="#2A2A2A" strokeWidth="1.5" strokeLinecap="round"/><circle cx="32" cy="38" r="6" stroke="#2A2A2A" strokeWidth="1.5"/></svg>
+                : <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'linear-gradient(135deg, #F5F5E8, #F8F9FA)' }}>
+                    <svg width="48" height="48" viewBox="0 0 64 64" fill="none"><circle cx="32" cy="32" r="22" stroke="#D0D0D0" strokeWidth="1.5"/><path d="M20 32 Q32 20 44 32" stroke="#D0D0D0" strokeWidth="1.5" strokeLinecap="round"/><circle cx="32" cy="38" r="6" stroke="#D0D0D0" strokeWidth="1.5"/></svg>
                   </div>
               }
               <button className="home-modal-close" onClick={() => { setSelectedFav(null); setFullMenuItem(null); }}>
@@ -1299,8 +1299,8 @@ export default function HomePage() {
                   <div className="home-modal-price-row">
                     {(['pickup', 'delivery'] as const).filter(type => type === 'pickup' ? isPickupEnabled : isDeliveryEnabled).map(type => (
                       <div key={type} className={`home-modal-price-card ${orderType === type ? 'active' : ''}`} onClick={() => setOrderType(type)}>
-                        <p style={{ fontSize: '11px', color: '#888', fontWeight: '600', textTransform: 'uppercase', marginBottom: '4px' }}>{type}</p>
-                        <p style={{ fontSize: '18px', fontWeight: '800', color: orderType === type ? '#FED800' : '#fff' }}>
+                        <p style={{ fontSize: '11px', color: '#777777', fontWeight: '600', textTransform: 'uppercase', marginBottom: '4px' }}>{type}</p>
+                        <p style={{ fontSize: '18px', fontWeight: '800', color: orderType === type ? '#FED800' : '#1A1A1A' }}>
                           ${(Number(type === 'pickup' ? fullMenuItem.pickupPrice : fullMenuItem.deliveryPrice) || 0).toFixed(2)}
                         </p>
                       </div>
@@ -1321,12 +1321,12 @@ export default function HomePage() {
                         return (
                           <div key={opt.id} className={`home-modal-modifier-opt ${isSel ? 'selected' : ''}`} onClick={() => toggleModifier(group.id, opt.id, group.maxSelections)}>
                             <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                              <div style={{ width: '20px', height: '20px', borderRadius: group.maxSelections === 1 ? '50%' : '4px', border: isSel ? '2px solid #FED800' : '1px solid #2A2A2A', background: isSel ? '#FED800' : 'transparent', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                              <div style={{ width: '20px', height: '20px', borderRadius: group.maxSelections === 1 ? '50%' : '4px', border: isSel ? '2px solid #FED800' : '1px solid #D0D0D0', background: isSel ? '#FED800' : 'transparent', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                                 {isSel && <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#000" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>}
                               </div>
-                              <span style={{ fontSize: '14px', color: '#fff' }}>{opt.name}</span>
+                              <span style={{ fontSize: '14px', color: '#1A1A1A' }}>{opt.name}</span>
                             </div>
-                            <span style={{ fontSize: '13px', color: Number(opt.price) > 0 ? '#FED800' : '#555' }}>
+                            <span style={{ fontSize: '13px', color: Number(opt.price) > 0 ? '#FED800' : '#AAAAAA' }}>
                               {Number(opt.price) > 0 ? `+$${Number(opt.price).toFixed(2)}` : 'Free'}
                             </span>
                           </div>
@@ -1337,12 +1337,12 @@ export default function HomePage() {
 
                   {/* Special instructions */}
                   <div style={{ marginBottom: '8px' }}>
-                    <p style={{ fontSize: '12px', fontWeight: '700', color: '#888', textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: '6px' }}>Special Instructions</p>
+                    <p style={{ fontSize: '12px', fontWeight: '700', color: '#777777', textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: '6px' }}>Special Instructions</p>
                     <textarea
                       placeholder="Add a note (extra sauce, no onions, etc.)"
                       value={favInstructions}
                       onChange={e => setFavInstructions(e.target.value)}
-                      style={{ width: '100%', padding: '10px 14px', background: '#0A0A0A', border: '1px solid #2A2A2A', borderRadius: '10px', color: '#fff', fontSize: '13px', resize: 'none', height: '60px', outline: 'none', fontFamily: 'inherit' }}
+                      style={{ width: '100%', padding: '10px 14px', background: '#F8F9FA', border: '1px solid #D0D0D0', borderRadius: '10px', color: '#1A1A1A', fontSize: '13px', resize: 'none', height: '60px', outline: 'none', fontFamily: 'inherit' }}
                     />
                   </div>
 
@@ -1364,7 +1364,7 @@ export default function HomePage() {
                 </>
               ) : (
                 <div style={{ textAlign: 'center', padding: '20px 0' }}>
-                  <p style={{ fontSize: '13px', color: '#888' }}>Loading item details...</p>
+                  <p style={{ fontSize: '13px', color: '#777777' }}>Loading item details...</p>
                 </div>
               )}
             </div>

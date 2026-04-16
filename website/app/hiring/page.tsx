@@ -73,7 +73,7 @@ export default function HiringPage() {
   };
 
   return (
-    <div id="hiring-page" style={{ background: '#000', minHeight: '100vh', fontFamily: 'DM Sans, -apple-system, BlinkMacSystemFont, sans-serif' }}>
+    <div id="hiring-page" style={{ background: '#FFFFFF', minHeight: '100vh', fontFamily: 'DM Sans, -apple-system, BlinkMacSystemFont, sans-serif' }}>
 
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;0,9..40,800;1,9..40,400&display=swap');
@@ -84,15 +84,15 @@ export default function HiringPage() {
           --y: #FED800;
           --r: #FC0301;
           --green: #22C55E;
-          --bg0: #000;
-          --bg1: #0A0A0A;
-          --bg2: #111111;
-          --bg3: #1A1A1A;
-          --bg4: #181818;
-          --border: #1E1E1E;
-          --t1: #ffffff;
-          --t2: #ffffff;
-          --t3: #666666;
+          --bg0: #FFFFFF;
+          --bg1: #F8F9FA;
+          --bg2: #FFFFFF;
+          --bg3: #F0F0F0;
+          --bg4: #F2F2F2;
+          --border: #E0E0E0;
+          --t1: #1A1A1A;
+          --t2: #333333;
+          --t3: #888888;
           --font-head: 'Bebas Neue', sans-serif;
           --font-body: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
         }
@@ -110,21 +110,21 @@ export default function HiringPage() {
           display: inline-flex; align-items: center; gap: 8px;
           padding: 14px 28px; background: var(--y); color: #000;
           border-radius: 10px; font-size: 15px; font-weight: 700;
-          text-decoration: none; border: none; cursor: pointer;
-          transition: transform 0.18s, box-shadow 0.18s;
+          text-decoration: none; border: 2px solid transparent; cursor: pointer;
+          transition: all 0.3s ease;
           font-family: var(--font-body);
         }
-        .btn-yellow:hover { transform: translateY(-2px); box-shadow: 0 10px 28px rgba(254,216,0,0.25); }
+        .btn-yellow:hover { background: transparent; color: #000; border-color: #FED800; transform: none; box-shadow: none; }
         .btn-yellow:active { transform: translateY(0); }
         .btn-outline {
           display: inline-flex; align-items: center; gap: 8px;
-          padding: 14px 28px; background: transparent; color: var(--t1);
+          padding: 14px 28px; background: transparent; color: #1A1A1A;
           border-radius: 10px; font-size: 15px; font-weight: 700;
-          text-decoration: none; border: 1.5px solid #333;
+          text-decoration: none; border: 1.5px solid #1A1A1A;
           transition: border-color 0.15s, color 0.15s;
           font-family: var(--font-body);
         }
-        .btn-outline:hover { border-color: var(--y); color: var(--y); }
+        .btn-outline:hover { border-color: #FED800; color: #B8A000; }
 
         /* ── Section label ── */
         .sec-label {
@@ -150,10 +150,10 @@ export default function HiringPage() {
           border-radius: 16px; display: flex; align-items: flex-start; gap: 18px;
           transition: border-color 0.2s, transform 0.25s, box-shadow 0.25s;
         }
-        .perk-card:hover { border-color: rgba(254,216,0,0.2); transform: translateY(-3px); box-shadow: 0 10px 30px rgba(0,0,0,0.4); }
+        .perk-card:hover { border-color: rgba(254,216,0,0.15); transform: translateY(-3px); box-shadow: 0 10px 30px rgba(0,0,0,0.06); }
         .perk-icon {
           width: 50px; height: 50px; border-radius: 12px;
-          background: rgba(254,216,0,0.08); border: 1px solid rgba(254,216,0,0.2);
+          background: rgba(254,216,0,0.06); border: 1px solid rgba(254,216,0,0.15);
           display: flex; align-items: center; justify-content: center; flex-shrink: 0;
         }
         .perk-title { font-size: 14px; font-weight: 700; color: var(--t1); margin-bottom: 4px; }
@@ -168,8 +168,8 @@ export default function HiringPage() {
           border-radius: 14px; overflow: hidden; cursor: pointer;
           transition: border-color 0.2s, background 0.2s;
         }
-        .job-card.active { background: #141400; border-color: rgba(254,216,0,0.3); }
-        .job-card:not(.active):hover { border-color: #2A2A2A; background: #131313; }
+        .job-card.active { background: #FFFFF0; border-color: rgba(254,216,0,0.3); }
+        .job-card:not(.active):hover { border-color: #D0D0D0; background: #FAFAFA; }
         .job-card-header {
           padding: 20px 22px; display: flex;
           justify-content: space-between; align-items: center; gap: 12px;
@@ -178,13 +178,13 @@ export default function HiringPage() {
         .job-meta { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
         .job-type-badge {
           font-size: 11px; padding: 3px 10px; border-radius: 20px;
-          background: rgba(254,216,0,0.08); color: var(--y);
-          border: 1px solid rgba(254,216,0,0.2); font-weight: 600;
+          background: rgba(254,216,0,0.06); color: var(--y);
+          border: 1px solid rgba(254,216,0,0.15); font-weight: 600;
         }
         .job-pay { font-size: 13px; color: var(--green); font-weight: 700; }
         .job-chevron { color: var(--t3); flex-shrink: 0; transition: color 0.15s; }
         .job-card.active .job-chevron { color: var(--y); }
-        .job-body { padding: 0 22px 22px; border-top: 1px solid #2A2A2A; }
+        .job-body { padding: 0 22px 22px; border-top: 1px solid #D0D0D0; }
         .job-desc { font-size: 14px; color: var(--t2); line-height: 1.7; margin: 16px 0 14px; }
         .job-reqs-label {
           font-size: 11px; font-weight: 700; color: var(--t3);
@@ -193,7 +193,7 @@ export default function HiringPage() {
         .job-req-item { display: flex; align-items: center; gap: 10px; margin-bottom: 7px; }
         .job-req-check {
           width: 18px; height: 18px; border-radius: 50%; flex-shrink: 0;
-          background: rgba(254,216,0,0.08); border: 1px solid rgba(254,216,0,0.3);
+          background: rgba(254,216,0,0.06); border: 1px solid rgba(254,216,0,0.3);
           display: flex; align-items: center; justify-content: center;
         }
         .job-req-text { font-size: 13px; color: var(--t2); }
@@ -206,7 +206,7 @@ export default function HiringPage() {
         .form-header { display: flex; align-items: center; gap: 14px; margin-bottom: 24px; padding-bottom: 20px; border-bottom: 1px solid var(--border); }
         .form-icon {
           width: 48px; height: 48px; border-radius: 12px;
-          background: rgba(254,216,0,0.08); border: 1px solid rgba(254,216,0,0.2);
+          background: rgba(254,216,0,0.06); border: 1px solid rgba(254,216,0,0.15);
           display: flex; align-items: center; justify-content: center; flex-shrink: 0;
         }
         .form-title { font-family: var(--font-head); font-size: 26px; letter-spacing: 1px; color: var(--t1); margin: 0 0 3px; line-height: 1; }
@@ -216,8 +216,8 @@ export default function HiringPage() {
         .form-label { font-size: 12px; font-weight: 700; color: var(--t2); display: block; margin-bottom: 6px; letter-spacing: 0.5px; text-transform: uppercase; }
         .form-input {
           width: 100%; padding: 12px 16px;
-          background: #0D0D0D; border: 1px solid #2A2A2A;
-          border-radius: 10px; color: var(--t1);
+          background: #F8F9FA; border: 1px solid #D0D0D0;
+          border-radius: 10px; color: #1A1A1A;
           font-size: 14px; outline: none;
           transition: border-color 0.15s;
           font-family: var(--font-body);
@@ -226,8 +226,8 @@ export default function HiringPage() {
         .form-input::placeholder { color: var(--t3); }
         .form-select {
           width: 100%; padding: 12px 16px;
-          background: #0D0D0D; border: 1px solid #2A2A2A;
-          border-radius: 10px; color: var(--t1);
+          background: #F8F9FA; border: 1px solid #D0D0D0;
+          border-radius: 10px; color: #1A1A1A;
           font-size: 14px; outline: none; cursor: pointer;
           transition: border-color 0.15s;
           font-family: var(--font-body); appearance: none;
@@ -235,8 +235,8 @@ export default function HiringPage() {
         .form-select:focus { border-color: var(--y); }
         .form-textarea {
           width: 100%; padding: 12px 16px;
-          background: #0D0D0D; border: 1px solid #2A2A2A;
-          border-radius: 10px; color: var(--t1);
+          background: #F8F9FA; border: 1px solid #D0D0D0;
+          border-radius: 10px; color: #1A1A1A;
           font-size: 14px; outline: none; resize: none; height: 90px;
           transition: border-color 0.15s;
           font-family: var(--font-body);
@@ -251,7 +251,7 @@ export default function HiringPage() {
           font-family: var(--font-body);
           transition: transform 0.15s, box-shadow 0.15s;
         }
-        .form-submit-btn:hover { transform: translateY(-1px); box-shadow: 0 8px 24px rgba(254,216,0,0.25); }
+        .form-submit-btn:hover { transform: translateY(-1px); box-shadow: 0 8px 24px rgba(254,216,0,0.15); }
 
         /* ── Success state ── */
         .success-card {
@@ -269,7 +269,7 @@ export default function HiringPage() {
         /* ── Footer ── */
         .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 48px; margin-bottom: 40px; }
         .footer-bottom { border-top: 1px solid #1A1A1A; padding-top: 24px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
-        .footer-link { display: block; font-size: 14px; color: var(--t1); margin-bottom: 11px; text-decoration: none; transition: color 0.15s, padding-left 0.15s; }
+        .footer-link { display: block; font-size: 14px; color: #ffffff; margin-bottom: 11px; text-decoration: none; transition: color 0.15s, padding-left 0.15s; }
         .footer-link:hover { color: var(--y); padding-left: 4px; }
 
         /* ═══ RESPONSIVE ═══ */
@@ -302,18 +302,18 @@ export default function HiringPage() {
       {/* ══════════════════════════════════════════
           HERO
       ══════════════════════════════════════════ */}
-      <section id="hiring-hero" style={{ padding: '110px 0 80px', background: '#000', position: 'relative', overflow: 'hidden', borderBottom: '1px solid #141414' }}>
+      <section id="hiring-hero" style={{ padding: '110px 0 80px', background: '#FFFFFF', position: 'relative', overflow: 'hidden', borderBottom: '1px solid #EBEBEB' }}>
 
         {/* Glow */}
-        <div className="hero-glow" style={{ position: 'absolute', top: '-80px', right: '-80px', width: '500px', height: '500px', borderRadius: '50%', background: 'radial-gradient(circle, rgba(254,216,0,0.06) 0%, transparent 70%)', pointerEvents: 'none' }} aria-hidden="true" />
-        <div className="hero-glow-left" style={{ position: 'absolute', bottom: '-60px', left: '-60px', width: '400px', height: '400px', borderRadius: '50%', background: 'radial-gradient(circle, rgba(252,3,1,0.04) 0%, transparent 70%)', pointerEvents: 'none' }} aria-hidden="true" />
+        <div className="hero-glow" style={{ position: 'absolute', top: '-80px', right: '-80px', width: '500px', height: '500px', borderRadius: '50%', background: 'radial-gradient(circle, rgba(254,216,0,0.04) 0%, transparent 70%)', pointerEvents: 'none' }} aria-hidden="true" />
+        <div className="hero-glow-left" style={{ position: 'absolute', bottom: '-60px', left: '-60px', width: '400px', height: '400px', borderRadius: '50%', background: 'radial-gradient(circle, rgba(252,3,1,0.03) 0%, transparent 70%)', pointerEvents: 'none' }} aria-hidden="true" />
 
         <div className="container hero-container" style={{ position: 'relative', textAlign: 'center' }}>
           <span id="hero-label" className="sec-label" style={{ display: 'block' }}>Join Our Team</span>
-          <h1 id="hero-title" className="bebas" style={{ fontSize: 'clamp(52px, 9vw, 80px)', color: '#ffffff', lineHeight: '0.93', marginBottom: '24px' }}>
+          <h1 id="hero-title" className="bebas" style={{ fontSize: 'clamp(52px, 9vw, 80px)', color: '#1A1A1A', lineHeight: '0.93', marginBottom: '24px' }}>
             WORK WITH <span style={{ color: '#FED800' }}>THE BEST</span>
           </h1>
-          <p id="hero-subtitle" style={{ fontSize: 'clamp(15px, 2vw, 18px)', color: '#ffffff', lineHeight: '1.8', maxWidth: '520px', margin: '0 auto 40px' }}>
+          <p id="hero-subtitle" style={{ fontSize: 'clamp(15px, 2vw, 18px)', color: '#1A1A1A', lineHeight: '1.8', maxWidth: '520px', margin: '0 auto 40px' }}>
             We are always looking for passionate, hardworking people to join the Eggs Ok family. Great pay, flexible hours, and free food every shift.
           </p>
           <div id="hero-cta" style={{ display: 'flex', gap: '14px', justifyContent: 'center', flexWrap: 'wrap' }}>
@@ -330,7 +330,7 @@ export default function HiringPage() {
       {/* ══════════════════════════════════════════
           PERKS
       ══════════════════════════════════════════ */}
-      <section id="perks" style={{ padding: '88px 0', background: '#0A0A0A' }}>
+      <section id="perks" style={{ padding: '88px 0', background: '#F8F9FA' }}>
         <div className="container perks-container">
 
           <div id="perks-header" style={{ textAlign: 'center', marginBottom: '52px' }}>
@@ -359,7 +359,7 @@ export default function HiringPage() {
       {/* ══════════════════════════════════════════
           JOBS + FORM
       ══════════════════════════════════════════ */}
-      <section id="positions" style={{ padding: '88px 0', background: '#000' }}>
+      <section id="positions" style={{ padding: '88px 0', background: '#FFFFFF' }}>
         <div className="container positions-container">
           <div id="jobs-form-grid" className="jobs-grid">
 
@@ -542,9 +542,9 @@ export default function HiringPage() {
                     <div id="form-group-resume">
                       <label className="form-label">Resume / CV (optional, max 5MB)</label>
                       <div style={{
-                        border: `2px dashed ${resumeFile ? '#22C55E' : '#2A2A2A'}`,
+                        border: `2px dashed ${resumeFile ? '#22C55E' : '#D0D0D0'}`,
                         borderRadius: '12px', padding: '20px', textAlign: 'center',
-                        background: resumeFile ? '#22C55E08' : '#0A0A0A',
+                        background: resumeFile ? '#22C55E08' : '#F8F9FA',
                         cursor: 'pointer', transition: 'border-color 0.2s',
                       }}
                         onClick={() => document.getElementById('resume-input')?.click()}
@@ -554,12 +554,12 @@ export default function HiringPage() {
                           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}>
                             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#22C55E" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
                             <span style={{ fontSize: '13px', color: '#22C55E', fontWeight: '600' }}>{resumeFile.name}</span>
-                            <button type="button" onClick={(e) => { e.stopPropagation(); setResumeFile(null); }} style={{ background: 'none', border: 'none', color: '#888', cursor: 'pointer', fontSize: '16px', padding: '0 4px' }}>✕</button>
+                            <button type="button" onClick={(e) => { e.stopPropagation(); setResumeFile(null); }} style={{ background: 'none', border: 'none', color: '#777777', cursor: 'pointer', fontSize: '16px', padding: '0 4px' }}>✕</button>
                           </div>
                         ) : (
                           <div>
                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#555" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ marginBottom: '8px' }}><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-                            <p style={{ fontSize: '13px', color: '#888', margin: 0 }}>Click to upload PDF or Word document</p>
+                            <p style={{ fontSize: '13px', color: '#777777', margin: 0 }}>Click to upload PDF or Word document</p>
                           </div>
                         )}
                       </div>

@@ -5,7 +5,7 @@ import { Flame, Globe, Users, MapPin, Smartphone, ArrowRight } from 'lucide-reac
 
 export default function StoryPage() {
   return (
-    <div id="story-page" style={{ background: '#000', minHeight: '100vh', fontFamily: 'DM Sans, -apple-system, BlinkMacSystemFont, sans-serif' }}>
+    <div id="story-page" style={{ background: '#FFFFFF', minHeight: '100vh', fontFamily: 'DM Sans, -apple-system, BlinkMacSystemFont, sans-serif' }}>
 
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;0,9..40,800;1,9..40,400&display=swap');
@@ -15,13 +15,13 @@ export default function StoryPage() {
         :root {
           --y: #FED800;
           --r: #FC0301;
-          --bg0: #000;
-          --bg1: #0A0A0A;
-          --bg2: #111;
-          --bg3: #1A1A1A;
-          --t1: #ffffff;
-          --t2: #ffffff;
-          --t3: #666666;
+          --bg0: #FFFFFF;
+          --bg1: #F8F9FA;
+          --bg2: #FFFFFF;
+          --bg3: #F0F0F0;
+          --t1: #1A1A1A;
+          --t2: #333333;
+          --t3: #888888;
           --font-head: 'Bebas Neue', sans-serif;
           --font-body: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
         }
@@ -39,20 +39,20 @@ export default function StoryPage() {
           display: inline-flex; align-items: center; gap: 8px;
           padding: 14px 28px; background: var(--y); color: #000;
           border-radius: 10px; font-size: 15px; font-weight: 700;
-          text-decoration: none; border: none; cursor: pointer;
-          transition: transform 0.18s, box-shadow 0.18s;
+          text-decoration: none; border: 2px solid transparent; cursor: pointer;
+          transition: all 0.3s ease;
           font-family: var(--font-body);
         }
-        .btn-yellow:hover { transform: translateY(-2px); box-shadow: 0 10px 28px rgba(254,216,0,0.25); }
+        .btn-yellow:hover { background: transparent; color: #000; border-color: #FED800; transform: none; box-shadow: none; }
         .btn-outline {
           display: inline-flex; align-items: center; gap: 8px;
-          padding: 14px 28px; background: transparent; color: var(--t1);
+          padding: 14px 28px; background: transparent; color: #1A1A1A;
           border-radius: 10px; font-size: 15px; font-weight: 700;
-          text-decoration: none; border: 1.5px solid #333;
+          text-decoration: none; border: 1.5px solid #1A1A1A;
           transition: border-color 0.15s, color 0.15s;
           font-family: var(--font-body);
         }
-        .btn-outline:hover { border-color: var(--y); color: var(--y); }
+        .btn-outline:hover { border-color: #FED800; color: #B8A000; }
 
         /* ── Section label ── */
         .sec-label {
@@ -72,7 +72,7 @@ export default function StoryPage() {
         /* ── Story badge ── */
         .story-badge {
           display: inline-flex; align-items: center; gap: 6px;
-          background: rgba(254,216,0,0.08); border: 1px solid rgba(254,216,0,0.2);
+          background: rgba(254,216,0,0.06); border: 1px solid rgba(254,216,0,0.15);
           border-radius: 100px; padding: 5px 14px;
           font-size: 11px; color: var(--y); font-weight: 700;
           letter-spacing: 2.5px; text-transform: uppercase;
@@ -123,21 +123,21 @@ export default function StoryPage() {
         }
         .img-float-badge-dark {
           position: absolute; bottom: -14px; right: -14px;
-          background: var(--bg2); border: 1px solid rgba(254,216,0,0.2);
+          background: var(--bg2); border: 1px solid rgba(254,216,0,0.15);
           color: var(--y); font-family: var(--font-head);
           font-size: 13px; letter-spacing: 2px;
           padding: 7px 14px; border-radius: 8px; z-index: 2;
         }
         .img-float-badge-top {
           position: absolute; top: -14px; right: -14px;
-          background: var(--bg2); border: 1px solid rgba(254,216,0,0.2);
+          background: var(--bg2); border: 1px solid rgba(254,216,0,0.15);
           color: var(--y); font-family: var(--font-head);
           font-size: 13px; letter-spacing: 2px;
           padding: 7px 14px; border-radius: 8px; z-index: 2;
         }
         .img-float-location {
           position: absolute; bottom: -14px; right: -14px;
-          background: var(--bg2); border: 1px solid #333;
+          background: var(--bg2); border: 1px solid #D0D0D0;
           border-radius: 10px; padding: 10px 14px;
           display: flex; align-items: center; gap: 7px; z-index: 2;
         }
@@ -152,7 +152,7 @@ export default function StoryPage() {
         .pull-quote {
           border-left: 3px solid var(--y);
           padding: 12px 20px;
-          background: #0D0D0D; border-radius: 0 8px 8px 0;
+          background: #F5F5F5; border-radius: 0 8px 8px 0;
           margin: 22px 0;
         }
         .pull-quote p {
@@ -164,11 +164,11 @@ export default function StoryPage() {
         .stat-pills { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 32px; }
         .stat-pill {
           display: inline-flex; flex-direction: column; align-items: center;
-          background: var(--bg2); border: 1px solid #1E1E1E;
+          background: var(--bg2); border: 1px solid #E0E0E0;
           border-radius: 12px; padding: 14px 20px; min-width: 88px;
           transition: border-color 0.2s;
         }
-        .stat-pill:hover { border-color: rgba(254,216,0,0.2); }
+        .stat-pill:hover { border-color: rgba(254,216,0,0.15); }
         .stat-pill-value {
           font-size: 24px; font-family: var(--font-head); color: var(--y); line-height: 1;
         }
@@ -187,7 +187,7 @@ export default function StoryPage() {
         .cta-group { display: flex; gap: 14px; flex-wrap: wrap; }
 
         /* ── Divider ── */
-        .section-divider { border: none; border-top: 1px solid #141414; margin: 0; }
+        .section-divider { border: none; border-top: 1px solid #EBEBEB; margin: 0; }
 
         /* ── FOOTER ── */
         .footer-grid {
@@ -200,7 +200,7 @@ export default function StoryPage() {
           align-items: center; flex-wrap: wrap; gap: 12px;
         }
         .footer-link {
-          display: block; font-size: 14px; color: var(--t1);
+          display: block; font-size: 14px; color: #ffffff;
           margin-bottom: 11px; text-decoration: none;
           transition: color 0.15s, padding-left 0.15s;
         }
@@ -240,16 +240,16 @@ export default function StoryPage() {
       {/* ══════════════════════════════════════════
           HERO
       ══════════════════════════════════════════ */}
-      <section id="story-hero" className="hero-section" style={{ padding: '120px 0 88px', background: '#000', position: 'relative', overflow: 'hidden' }}>
+      <section id="story-hero" className="hero-section" style={{ padding: '120px 0 88px', background: '#FFFFFF', position: 'relative', overflow: 'hidden' }}>
 
         {/* Glow */}
-        <div className="hero-glow" style={{ position: 'absolute', top: 0, left: '50%', transform: 'translateX(-50%)', width: '600px', height: '600px', borderRadius: '50%', background: 'radial-gradient(circle, rgba(254,216,0,0.06) 0%, transparent 70%)', pointerEvents: 'none' }} aria-hidden="true" />
+        <div className="hero-glow" style={{ position: 'absolute', top: 0, left: '50%', transform: 'translateX(-50%)', width: '600px', height: '600px', borderRadius: '50%', background: 'radial-gradient(circle, rgba(254,216,0,0.04) 0%, transparent 70%)', pointerEvents: 'none' }} aria-hidden="true" />
         {/* Bottom fade */}
-        <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: '1px', background: '#141414' }} aria-hidden="true" />
+        <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: '1px', background: '#EBEBEB' }} aria-hidden="true" />
 
         <div className="container hero-container" style={{ textAlign: 'center', position: 'relative' }}>
           <span id="hero-label" className="sec-label" style={{ justifyContent: 'center', display: 'block' }}>Our Story</span>
-          <h1 id="hero-title" className="bebas" style={{ fontSize: 'clamp(52px, 10vw, 80px)', color: '#ffffff', lineHeight: '0.93', marginBottom: '24px' }}>
+          <h1 id="hero-title" className="bebas" style={{ fontSize: 'clamp(52px, 10vw, 80px)', color: '#1A1A1A', lineHeight: '0.93', marginBottom: '24px' }}>
             MADE WITH <span style={{ color: 'var(--y)' }}>PURPOSE</span>
           </h1>
           <p id="hero-subtitle" style={{ fontSize: 'clamp(15px, 2vw, 18px)', color: 'var(--t2)', lineHeight: '1.8', maxWidth: '540px', margin: '0 auto 40px' }}>
@@ -269,7 +269,7 @@ export default function StoryPage() {
       {/* ══════════════════════════════════════════
           SECTION 1 — THE ORIGIN
       ══════════════════════════════════════════ */}
-      <section id="story-origin" className="section-pad" style={{ padding: '96px 0', background: '#000', position: 'relative', overflow: 'hidden' }}>
+      <section id="story-origin" className="section-pad" style={{ padding: '96px 0', background: '#FFFFFF', position: 'relative', overflow: 'hidden' }}>
         <div className="section-bg-glow" style={{ position: 'absolute', inset: 0, backgroundImage: 'radial-gradient(circle at 80% 50%, rgba(254,216,0,0.04) 0%, transparent 60%)', pointerEvents: 'none' }} aria-hidden="true" />
 
         <div className="container origin-container">
@@ -325,7 +325,7 @@ export default function StoryPage() {
       {/* ══════════════════════════════════════════
           SECTION 2 — THE FOOD
       ══════════════════════════════════════════ */}
-      <section id="story-food" className="section-pad" style={{ padding: '96px 0', background: '#060606', position: 'relative', overflow: 'hidden' }}>
+      <section id="story-food" className="section-pad" style={{ padding: '96px 0', background: '#F8F9FA', position: 'relative', overflow: 'hidden' }}>
         <div className="section-bg-glow" style={{ position: 'absolute', inset: 0, backgroundImage: 'radial-gradient(circle at 20% 50%, rgba(254,216,0,0.04) 0%, transparent 60%)', pointerEvents: 'none' }} aria-hidden="true" />
 
         <div className="container food-container">
@@ -378,7 +378,7 @@ export default function StoryPage() {
       {/* ══════════════════════════════════════════
           SECTION 3 — COMMUNITY
       ══════════════════════════════════════════ */}
-      <section id="story-community" className="section-pad" style={{ padding: '96px 0', background: '#000', position: 'relative', overflow: 'hidden' }}>
+      <section id="story-community" className="section-pad" style={{ padding: '96px 0', background: '#FFFFFF', position: 'relative', overflow: 'hidden' }}>
         <div className="section-bg-glow" style={{ position: 'absolute', inset: 0, backgroundImage: 'radial-gradient(circle at 70% 60%, rgba(254,216,0,0.04) 0%, transparent 55%)', pointerEvents: 'none' }} aria-hidden="true" />
 
         <div className="container community-container">
@@ -441,26 +441,26 @@ export default function StoryPage() {
                   <Image src="/logo.svg" alt="Eggs Ok" width={100} height={50} style={{ objectFit: 'contain' }} />
                 </div>
               </div>
-              <p id="footer-tagline" style={{ fontSize: '14px', color: 'var(--t1)', lineHeight: '1.75', maxWidth: '280px', marginBottom: '22px' }}>
+              <p id="footer-tagline" style={{ fontSize: '14px', color: '#ffffff', lineHeight: '1.75', maxWidth: '280px', marginBottom: '22px' }}>
                 Fresh breakfast and lunch in West Philadelphia. Made to order, every time.
               </p>
               <address id="footer-address" style={{ fontStyle: 'normal' }}>
-                <p id="footer-address-line" style={{ fontSize: '13px', color: 'var(--t1)', display: 'flex', alignItems: 'center', gap: '7px', marginBottom: '8px' }}>
+                <p id="footer-address-line" style={{ fontSize: '13px', color: '#ffffff', display: 'flex', alignItems: 'center', gap: '7px', marginBottom: '8px' }}>
                   <MapPin size={13} color="#FED800" aria-hidden="true" />
-                  <a href="https://www.google.com/maps?q=3517+Lancaster+Ave,+Philadelphia+PA+19104" id="footer-address-link" style={{ color: 'var(--t1)', textDecoration: 'none', transition: 'color 0.15s' }}>
+                  <a href="https://www.google.com/maps?q=3517+Lancaster+Ave,+Philadelphia+PA+19104" id="footer-address-link" style={{ color: '#ffffff', textDecoration: 'none', transition: 'color 0.15s' }}>
                     3517 Lancaster Ave, Philadelphia PA 19104
                   </a>
                 </p>
-                <p id="footer-phone-line" style={{ fontSize: '13px', color: 'var(--t1)', display: 'flex', alignItems: 'center', gap: '7px' }}>
+                <p id="footer-phone-line" style={{ fontSize: '13px', color: '#ffffff', display: 'flex', alignItems: 'center', gap: '7px' }}>
                   <Smartphone size={13} color="#FED800" aria-hidden="true" />
-                  <a href="tel:2159489902" id="footer-phone-link" style={{ color: 'var(--t1)', textDecoration: 'none', transition: 'color 0.15s' }}>215-948-9902</a>
+                  <a href="tel:2159489902" id="footer-phone-link" style={{ color: '#ffffff', textDecoration: 'none', transition: 'color 0.15s' }}>215-948-9902</a>
                 </p>
               </address>
             </div>
 
             {/* Quick links */}
             <nav id="footer-nav" aria-label="Quick links">
-              <p id="footer-nav-heading" style={{ fontSize: '15px', fontWeight: '700', color: 'var(--t1)', letterSpacing: '2px', textTransform: 'uppercase', marginBottom: '20px' }}>Quick Links</p>
+              <p id="footer-nav-heading" style={{ fontSize: '15px', fontWeight: '700', color: '#ffffff', letterSpacing: '2px', textTransform: 'uppercase', marginBottom: '20px' }}>Quick Links</p>
               {[
                 { label: 'Home',         href: '/'           },
                 { label: 'Order Online', href: '/order'      },
@@ -475,7 +475,7 @@ export default function StoryPage() {
 
             {/* Hours */}
             <div id="footer-hours">
-              <p id="footer-hours-heading" style={{ fontSize: '15px', fontWeight: '700', color: 'var(--t1)', letterSpacing: '2px', textTransform: 'uppercase', marginBottom: '20px' }}>Hours</p>
+              <p id="footer-hours-heading" style={{ fontSize: '15px', fontWeight: '700', color: '#ffffff', letterSpacing: '2px', textTransform: 'uppercase', marginBottom: '20px' }}>Hours</p>
               <div id="footer-hours-list" style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
                 {[
                   { day: 'Monday',  hours: '8:00 AM – 10:00 PM' },
@@ -497,10 +497,10 @@ export default function StoryPage() {
           </div>
 
           <div id="footer-bottom" className="footer-bottom">
-            <p id="footer-copyright" style={{ fontSize: '13px', color: 'var(--t1)' }}>
+            <p id="footer-copyright" style={{ fontSize: '13px', color: '#ffffff' }}>
               &copy; {new Date().getFullYear()} Eggs Ok. All rights reserved.
             </p>
-            <p id="footer-credit" style={{ fontSize: '13px', color: 'var(--t1)' }}>
+            <p id="footer-credit" style={{ fontSize: '13px', color: '#ffffff' }}>
               {/* Built by <span id="footer-credit-brand" style={{ color: 'var(--y)' }}>RestoRise Business Solutions</span> */}
             </p>
           </div>

@@ -59,7 +59,7 @@ export default function ContactPage() {
   ];
 
   return (
-    <div id="contact-page" style={{ background: '#000', minHeight: '100vh', fontFamily: 'DM Sans, -apple-system, BlinkMacSystemFont, sans-serif' }}>
+    <div id="contact-page" style={{ background: '#FFFFFF', minHeight: '100vh', fontFamily: 'DM Sans, -apple-system, BlinkMacSystemFont, sans-serif' }}>
 
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;0,9..40,800;1,9..40,400&display=swap');
@@ -70,14 +70,14 @@ export default function ContactPage() {
           --y: #FED800;
           --r: #FC0301;
           --green: #22C55E;
-          --bg0: #000;
-          --bg1: #0A0A0A;
-          --bg2: #111111;
-          --bg3: #1A1A1A;
-          --border: #1E1E1E;
-          --t1: #ffffff;
-          --t2: #ffffff;
-          --t3: #666666;
+          --bg0: #FFFFFF;
+          --bg1: #F8F9FA;
+          --bg2: #FFFFFF;
+          --bg3: #F0F0F0;
+          --border: #E0E0E0;
+          --t1: #1A1A1A;
+          --t2: #333333;
+          --t3: #888888;
           --font-head: 'Bebas Neue', sans-serif;
           --font-body: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
         }
@@ -95,21 +95,21 @@ export default function ContactPage() {
           display: inline-flex; align-items: center; gap: 8px;
           padding: 14px 28px; background: var(--y); color: #000;
           border-radius: 10px; font-size: 15px; font-weight: 700;
-          text-decoration: none; border: none; cursor: pointer;
-          transition: transform 0.18s, box-shadow 0.18s;
+          text-decoration: none; border: 2px solid transparent; cursor: pointer;
+          transition: all 0.3s ease;
           font-family: var(--font-body);
         }
-        .btn-yellow:hover { transform: translateY(-2px); box-shadow: 0 10px 28px rgba(254,216,0,0.25); }
+        .btn-yellow:hover { background: transparent; color: #000; border-color: #FED800; transform: none; box-shadow: none; }
         .btn-yellow:active { transform: translateY(0); }
         .btn-outline {
           display: inline-flex; align-items: center; gap: 8px;
-          padding: 14px 28px; background: transparent; color: var(--t1);
+          padding: 14px 28px; background: transparent; color: #1A1A1A;
           border-radius: 10px; font-size: 15px; font-weight: 700;
-          text-decoration: none; border: 1.5px solid #333;
+          text-decoration: none; border: 1.5px solid #1A1A1A;
           transition: border-color 0.15s, color 0.15s;
           font-family: var(--font-body); cursor: pointer;
         }
-        .btn-outline:hover { border-color: var(--y); color: var(--y); }
+        .btn-outline:hover { border-color: #FED800; color: #B8A000; }
 
         /* ── Section label ── */
         .sec-label {
@@ -130,16 +130,16 @@ export default function ContactPage() {
         .contact-hero {
           text-align: center;
           padding: 110px 0 80px;
-          background: #000;
+          background: #FFFFFF;
           position: relative;
           overflow: hidden;
-          border-bottom: 1px solid #141414;
+          border-bottom: 1px solid #EBEBEB;
         }
 
         /* ── Main section ── */
         .contact-main {
           padding: 88px 0;
-          background: #0A0A0A;
+          background: #F8F9FA;
         }
 
         /* ── Contact grid ── */
@@ -152,10 +152,10 @@ export default function ContactPage() {
           border-radius: 14px; transition: border-color 0.2s, background 0.2s;
           text-decoration: none;
         }
-        .contact-info-card:hover { border-color: rgba(254,216,0,0.25); background: #141414; }
+        .contact-info-card:hover { border-color: rgba(254,216,0,0.15); background: #F8F8F8; }
         .contact-card-icon {
           width: 46px; height: 46px; border-radius: 12px;
-          background: rgba(254,216,0,0.08); border: 1px solid rgba(254,216,0,0.2);
+          background: rgba(254,216,0,0.06); border: 1px solid rgba(254,216,0,0.15);
           display: flex; align-items: center; justify-content: center; flex-shrink: 0;
         }
         .contact-card-label { font-size: 10px; color: var(--t3); text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 3px; font-weight: 600; }
@@ -174,7 +174,7 @@ export default function ContactPage() {
         .hours-open-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green); flex-shrink: 0; }
         .hours-open-text { font-size: 12px; color: var(--green); font-weight: 600; }
         .hours-row { display: flex; justify-content: space-between; align-items: center; padding: 6px 0; gap: 8px; }
-        .hours-row + .hours-row { border-top: 1px solid #141414; }
+        .hours-row + .hours-row { border-top: 1px solid #EBEBEB; }
         .hours-row-day { font-size: 13px; color: var(--t2); white-space: nowrap; }
         .hours-row-time { font-size: 13px; font-weight: 600; color: var(--t1); text-align: right; white-space: nowrap; }
 
@@ -185,7 +185,7 @@ export default function ContactPage() {
         }
         .map-placeholder {
           height: 210px;
-          background: linear-gradient(135deg, #0A0A0A, #111100);
+          background: linear-gradient(135deg, #F8F9FA, #FFFFF0);
           display: flex; flex-direction: column;
           align-items: center; justify-content: center;
           gap: 12px; position: relative;
@@ -194,7 +194,7 @@ export default function ContactPage() {
         .map-grid-line-v { position: absolute; top: 0; bottom: 0; width: 1px; background: rgba(254,216,0,0.06); }
         .map-pin-dot { width: 16px; height: 16px; border-radius: 50%; background: var(--r); border: 3px solid #fff; z-index: 1; box-shadow: 0 0 0 6px rgba(252,3,1,0.15); }
         .map-address-chip {
-          background: var(--bg2); border: 1px solid #2A2A2A;
+          background: var(--bg2); border: 1px solid #D0D0D0;
           border-radius: 10px; padding: 9px 16px; z-index: 1;
           max-width: calc(100% - 32px);
         }
@@ -202,12 +202,12 @@ export default function ContactPage() {
         .map-address-sub  { font-size: 11px; color: var(--t3); }
         .map-open-link {
           display: flex; align-items: center; justify-content: center; gap: 8px;
-          padding: 14px; background: #0D0D0D; color: var(--y);
-          font-size: 13px; font-weight: 700; border-top: 1px solid #141414;
+          padding: 14px; background: #F8F9FA; color: var(--y);
+          font-size: 13px; font-weight: 700; border-top: 1px solid #EBEBEB;
           text-decoration: none; transition: background 0.15s; font-family: var(--font-body);
           letter-spacing: 0.5px;
         }
-        .map-open-link:hover { background: var(--bg2); }
+        .map-open-link:hover { background: #F0F0F0; }
 
         /* ── Form wrap ── */
         .form-wrap {
@@ -221,24 +221,24 @@ export default function ContactPage() {
         .form-label { font-size: 12px; font-weight: 700; color: var(--t2); display: block; margin-bottom: 6px; letter-spacing: 0.5px; text-transform: uppercase; }
         .form-input {
           width: 100%; padding: 13px 16px;
-          background: #0D0D0D; border: 1px solid #2A2A2A;
-          border-radius: 10px; color: var(--t1); font-size: 14px; outline: none;
+          background: #F8F9FA; border: 1px solid #D0D0D0;
+          border-radius: 10px; color: #1A1A1A; font-size: 14px; outline: none;
           transition: border-color 0.15s; font-family: var(--font-body);
         }
         .form-input:focus { border-color: var(--y); }
         .form-input::placeholder { color: var(--t3); }
         .form-select {
           width: 100%; padding: 13px 16px;
-          background: #0D0D0D; border: 1px solid #2A2A2A;
-          border-radius: 10px; color: var(--t1); font-size: 14px; outline: none;
+          background: #F8F9FA; border: 1px solid #D0D0D0;
+          border-radius: 10px; color: #1A1A1A; font-size: 14px; outline: none;
           cursor: pointer; appearance: none;
           transition: border-color 0.15s; font-family: var(--font-body);
         }
         .form-select:focus { border-color: var(--y); }
         .form-textarea {
           width: 100%; padding: 13px 16px;
-          background: #0D0D0D; border: 1px solid #2A2A2A;
-          border-radius: 10px; color: var(--t1); font-size: 14px; outline: none;
+          background: #F8F9FA; border: 1px solid #D0D0D0;
+          border-radius: 10px; color: #1A1A1A; font-size: 14px; outline: none;
           resize: none; height: 140px;
           transition: border-color 0.15s; font-family: var(--font-body);
         }
@@ -252,11 +252,11 @@ export default function ContactPage() {
           font-family: var(--font-body);
           transition: transform 0.15s, box-shadow 0.15s;
         }
-        .form-submit-btn:hover { transform: translateY(-1px); box-shadow: 0 8px 24px rgba(254,216,0,0.25); }
+        .form-submit-btn:hover { transform: translateY(-1px); box-shadow: 0 8px 24px rgba(254,216,0,0.15); }
         .form-phone-note {
           margin-top: 18px; padding: 14px 18px;
-          background: #0D0D0D; border-radius: 10px;
-          border: 1px solid #1A1A1A; display: flex; align-items: center; gap: 10px;
+          background: #F5F5F5; border-radius: 10px;
+          border: 1px solid #E0E0E0; display: flex; align-items: center; gap: 10px;
           flex-wrap: wrap;
         }
         .form-phone-note-text { font-size: 13px; color: var(--t2); }
@@ -281,7 +281,7 @@ export default function ContactPage() {
         .site-footer { background: #050505; padding: 68px 0 32px; border-top: 1px solid #141414; }
         .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 48px; margin-bottom: 40px; }
         .footer-bottom { border-top: 1px solid #1A1A1A; padding-top: 24px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
-        .footer-link { display: block; font-size: 14px; color: var(--t1); margin-bottom: 11px; text-decoration: none; transition: color 0.15s, padding-left 0.15s; }
+        .footer-link { display: block; font-size: 14px; color: #ffffff; margin-bottom: 11px; text-decoration: none; transition: color 0.15s, padding-left 0.15s; }
         .footer-link:hover { color: var(--y); padding-left: 4px; }
         .footer-hours-row { display: flex; gap: 14px; }
         .footer-hours-day { font-size: 13px; color: #ffffff; font-weight: 600; min-width: 90px; }
@@ -352,14 +352,14 @@ export default function ContactPage() {
       ══════════════════════════════════════════ */}
       <section id="contact-hero" className="contact-hero">
 
-        <div className="hero-glow" style={{ position: 'absolute', top: '-60px', left: '50%', transform: 'translateX(-50%)', width: '600px', height: '600px', borderRadius: '50%', background: 'radial-gradient(circle, rgba(254,216,0,0.05) 0%, transparent 70%)', pointerEvents: 'none' }} aria-hidden="true" />
+        <div className="hero-glow" style={{ position: 'absolute', top: '-60px', left: '50%', transform: 'translateX(-50%)', width: '600px', height: '600px', borderRadius: '50%', background: 'radial-gradient(circle, rgba(254,216,0,0.04) 0%, transparent 70%)', pointerEvents: 'none' }} aria-hidden="true" />
 
         <div className="container hero-container" style={{ position: 'relative' }}>
           <span id="hero-label" className="sec-label">Get In Touch</span>
-          <h1 id="hero-title" className="bebas" style={{ fontSize: 'clamp(40px, 9vw, 80px)', color: '#ffffff', lineHeight: '0.93', marginBottom: '22px' }}>
+          <h1 id="hero-title" className="bebas" style={{ fontSize: 'clamp(40px, 9vw, 80px)', color: '#1A1A1A', lineHeight: '0.93', marginBottom: '22px' }}>
             WE&apos;D LOVE TO <span style={{ color: '#FED800' }}>HEAR FROM YOU</span>
           </h1>
-          <p id="hero-subtitle" style={{ fontSize: 'clamp(14px, 2vw, 18px)', color: '#ffffff', lineHeight: '1.8', maxWidth: '500px', margin: '0 auto' }}>
+          <p id="hero-subtitle" style={{ fontSize: 'clamp(14px, 2vw, 18px)', color: '#1A1A1A', lineHeight: '1.8', maxWidth: '500px', margin: '0 auto' }}>
             Questions, feedback, catering inquiries, or just want to say hi — we are here for it.
           </p>
         </div>
@@ -378,7 +378,7 @@ export default function ContactPage() {
               {/* Section header */}
               <div id="contact-info-header" style={{ marginBottom: '28px' }}>
                 <span className="sec-label">Contact Info</span>
-                <h2 id="contact-info-heading" className="bebas" style={{ fontSize: 'clamp(26px, 4vw, 40px)', color: '#ffffff', lineHeight: '0.95' }}>
+                <h2 id="contact-info-heading" className="bebas" style={{ fontSize: 'clamp(26px, 4vw, 40px)', color: '#1A1A1A', lineHeight: '0.95' }}>
                   REACH <span style={{ color: '#FED800' }}>US ANYTIME</span>
                 </h2>
               </div>

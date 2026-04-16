@@ -146,10 +146,10 @@
             <p style="margin:0 0 8px;font-size:13px;font-weight:900;">Order Summary</p>
 
             <table width="100%">
-              <tr><td>Order ID:</td><td>EO-0118</td></tr>
-              <tr><td>Order Date:</td><td>15/04/2026</td></tr>
-              <tr><td>Item QTY:</td><td>1</td></tr>
-              <tr><td>Order Total:</td><td>$20.75</td></tr>
+              <tr><td>Order ID:</td><td><%= orderNumber %></td></tr>
+              <tr><td>Order Date:</td><td><%= new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) %></td></tr>
+              <tr><td>Item QTY:</td><td><%= itemCount %></td></tr>
+              <tr><td>Order Total:</td><td>$<%= total %></td></tr>
             </table>
 
           </td>
@@ -167,9 +167,13 @@
             <p style="margin:0 0 8px;font-size:13px;font-weight:900;">Customer Details</p>
 
             <table width="100%">
-              <tr><td>Name:</td><td>rafeeq</td></tr>
-              <tr><td>Contact:</td><td>234444444444</td></tr>
-              <tr><td>Address:</td><td>Philadelphia, PA, USA</td></tr>
+              <tr><td>Name:</td><td><%= customerName %></td></tr>
+              <tr><td>Contact:</td><td><%= customerPhone %></td></tr>
+              <% if (orderType === 'delivery' && deliveryAddress) { %>
+              <tr><td>Address:</td><td><%= deliveryAddress %></td></tr>
+              <% } else { %>
+              <tr><td>Type:</td><td style="text-transform:capitalize;"><%= orderType %></td></tr>
+              <% } %>
             </table>
 
           </td>

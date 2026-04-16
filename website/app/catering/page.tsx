@@ -77,7 +77,7 @@ export default function CateringPage() {
   };
 
   return (
-    <div id="catering-page" style={{ background: '#000', minHeight: '100vh', fontFamily: 'DM Sans, -apple-system, BlinkMacSystemFont, sans-serif' }}>
+    <div id="catering-page" style={{ background: '#FFFFFF', minHeight: '100vh', fontFamily: 'DM Sans, -apple-system, BlinkMacSystemFont, sans-serif' }}>
 
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;0,9..40,800;1,9..40,400&display=swap');
@@ -88,14 +88,14 @@ export default function CateringPage() {
           --y: #FED800;
           --r: #FC0301;
           --green: #22C55E;
-          --bg0: #000;
-          --bg1: #0A0A0A;
-          --bg2: #111111;
-          --bg3: #1A1A1A;
-          --border: #1E1E1E;
-          --t1: #ffffff;
-          --t2: #ffffff;
-          --t3: #666666;
+          --bg0: #FFFFFF;
+          --bg1: #F8F9FA;
+          --bg2: #FFFFFF;
+          --bg3: #F0F0F0;
+          --border: #E0E0E0;
+          --t1: #1A1A1A;
+          --t2: #333333;
+          --t3: #888888;
           --font-head: 'Bebas Neue', sans-serif;
           --font-body: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
         }
@@ -113,21 +113,21 @@ export default function CateringPage() {
           display: inline-flex; align-items: center; gap: 8px;
           padding: 14px 28px; background: var(--y); color: #000;
           border-radius: 10px; font-size: 15px; font-weight: 700;
-          text-decoration: none; border: none; cursor: pointer;
-          transition: transform 0.18s, box-shadow 0.18s;
+          text-decoration: none; border: 2px solid transparent; cursor: pointer;
+          transition: all 0.3s ease;
           font-family: var(--font-body);
         }
-        .btn-yellow:hover { transform: translateY(-2px); box-shadow: 0 10px 28px rgba(254,216,0,0.25); }
+        .btn-yellow:hover { background: transparent; color: #000; border-color: #FED800; transform: none; box-shadow: none; }
         .btn-yellow:active { transform: translateY(0); }
         .btn-outline {
           display: inline-flex; align-items: center; gap: 8px;
-          padding: 14px 28px; background: transparent; color: var(--t1);
+          padding: 14px 28px; background: transparent; color: #1A1A1A;
           border-radius: 10px; font-size: 15px; font-weight: 700;
-          text-decoration: none; border: 1.5px solid #333;
+          text-decoration: none; border: 1.5px solid #1A1A1A;
           transition: border-color 0.15s, color 0.15s;
           font-family: var(--font-body);
         }
-        .btn-outline:hover { border-color: var(--y); color: var(--y); }
+        .btn-outline:hover { border-color: #FED800; color: #B8A000; }
 
         /* ── Section label ── */
         .sec-label {
@@ -153,10 +153,10 @@ export default function CateringPage() {
           border-radius: 16px; text-align: center;
           transition: border-color 0.2s, transform 0.25s, box-shadow 0.25s;
         }
-        .why-card:hover { border-color: rgba(254,216,0,0.2); transform: translateY(-3px); box-shadow: 0 10px 30px rgba(0,0,0,0.4); }
+        .why-card:hover { border-color: rgba(254,216,0,0.15); transform: translateY(-3px); box-shadow: 0 10px 30px rgba(0,0,0,0.06); }
         .why-icon {
           width: 56px; height: 56px; border-radius: 14px;
-          background: rgba(254,216,0,0.08); border: 1px solid rgba(254,216,0,0.2);
+          background: rgba(254,216,0,0.06); border: 1px solid rgba(254,216,0,0.15);
           display: flex; align-items: center; justify-content: center;
           margin: 0 auto 18px;
         }
@@ -168,7 +168,7 @@ export default function CateringPage() {
 
         /* ── Package card ── */
         .pkg-card { background: var(--bg2); border-radius: 18px; overflow: hidden; position: relative; transition: transform 0.25s, box-shadow 0.25s; }
-        .pkg-card:hover { transform: translateY(-4px); box-shadow: 0 14px 40px rgba(0,0,0,0.5); }
+        .pkg-card:hover { transform: translateY(-4px); box-shadow: 0 14px 40px rgba(0,0,0,0.08); }
         .pkg-popular-bar { padding: 9px; text-align: center; font-family: var(--font-head); font-size: 13px; font-weight: 700; letter-spacing: 2px; color: #000; }
         .pkg-body { padding: 28px 26px; }
         .pkg-icon { width: 52px; height: 52px; border-radius: 14px; display: flex; align-items: center; justify-content: center; margin-bottom: 18px; }
@@ -187,16 +187,16 @@ export default function CateringPage() {
           font-family: var(--font-body); cursor: pointer;
           text-decoration: none;
         }
-        .pkg-cta-solid:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(0,0,0,0.3); }
+        .pkg-cta-solid:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(0,0,0,0.08); }
         .pkg-cta-outline:hover { filter: brightness(1.2); }
 
         /* ── Tip banner ── */
         .tip-banner {
           display: flex; align-items: center; gap: 18px;
-          padding: 22px 28px; background: var(--bg2);
-          border: 1px solid rgba(254,216,0,0.15); border-radius: 14px;
+          padding: 22px 28px; background: #FFFFFF;
+          border: 1px solid rgba(254,216,0,0.12); border-radius: 14px;
         }
-        .tip-icon { width: 44px; height: 44px; border-radius: 10px; background: rgba(254,216,0,0.08); border: 1px solid rgba(254,216,0,0.2); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+        .tip-icon { width: 44px; height: 44px; border-radius: 10px; background: rgba(254,216,0,0.06); border: 1px solid rgba(254,216,0,0.15); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
         .tip-text { font-size: 14px; color: var(--t2); line-height: 1.7; }
         .tip-link { color: var(--y); font-weight: 700; text-decoration: none; }
         .tip-link:hover { text-decoration: underline; }
@@ -210,8 +210,8 @@ export default function CateringPage() {
         .form-label { font-size: 12px; font-weight: 700; color: var(--t2); display: block; margin-bottom: 6px; letter-spacing: 0.5px; text-transform: uppercase; }
         .form-input {
           width: 100%; padding: 13px 16px;
-          background: #0D0D0D; border: 1px solid #2A2A2A;
-          border-radius: 10px; color: var(--t1);
+          background: #F8F9FA; border: 1px solid #D0D0D0;
+          border-radius: 10px; color: #1A1A1A;
           font-size: 14px; outline: none;
           transition: border-color 0.15s; font-family: var(--font-body);
         }
@@ -219,8 +219,8 @@ export default function CateringPage() {
         .form-input::placeholder { color: var(--t3); }
         .form-select {
           width: 100%; padding: 13px 16px; padding-right: 40px;
-          background: #0D0D0D; border: 1px solid #2A2A2A;
-          border-radius: 10px; color: var(--t1);
+          background: #F8F9FA; border: 1px solid #D0D0D0;
+          border-radius: 10px; color: #1A1A1A;
           font-size: 14px; outline: none; cursor: pointer;
           transition: border-color 0.15s; font-family: var(--font-body);
           appearance: none;
@@ -231,8 +231,8 @@ export default function CateringPage() {
         .form-select:focus { border-color: var(--y); }
         .form-textarea {
           width: 100%; padding: 13px 16px;
-          background: #0D0D0D; border: 1px solid #2A2A2A;
-          border-radius: 10px; color: var(--t1);
+          background: #F8F9FA; border: 1px solid #D0D0D0;
+          border-radius: 10px; color: #1A1A1A;
           font-size: 14px; outline: none; resize: none; height: 110px;
           transition: border-color 0.15s; font-family: var(--font-body);
         }
@@ -246,7 +246,7 @@ export default function CateringPage() {
           font-family: var(--font-body);
           transition: transform 0.15s, box-shadow 0.15s;
         }
-        .form-submit-btn:hover { transform: translateY(-1px); box-shadow: 0 8px 24px rgba(254,216,0,0.25); }
+        .form-submit-btn:hover { transform: translateY(-1px); box-shadow: 0 8px 24px rgba(254,216,0,0.15); }
 
         /* ── Success card ── */
         .success-card {
@@ -264,8 +264,8 @@ export default function CateringPage() {
 
         /* ── Phone CTA ── */
         .phone-cta-section {
-          padding: 72px 0; background: #060606;
-          border-top: 1px solid #141414; text-align: center;
+          padding: 72px 0; background: #F8F9FA;
+          border-top: 1px solid #EBEBEB; text-align: center;
         }
         .phone-cta-number {
           font-family: var(--font-head);
@@ -278,7 +278,7 @@ export default function CateringPage() {
         /* ── Footer ── */
         .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 48px; margin-bottom: 40px; }
         .footer-bottom { border-top: 1px solid #1A1A1A; padding-top: 24px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
-        .footer-link { display: block; font-size: 14px; color: var(--t1); margin-bottom: 11px; text-decoration: none; transition: color 0.15s, padding-left 0.15s; }
+        .footer-link { display: block; font-size: 14px; color: #ffffff; margin-bottom: 11px; text-decoration: none; transition: color 0.15s, padding-left 0.15s; }
         .footer-link:hover { color: var(--y); padding-left: 4px; }
 
         /* ═══ RESPONSIVE ═══ */
@@ -314,17 +314,17 @@ export default function CateringPage() {
       {/* ══════════════════════════════════════════
           HERO
       ══════════════════════════════════════════ */}
-      <section id="catering-hero" style={{ padding: '110px 0 80px', background: '#000', position: 'relative', overflow: 'hidden', borderBottom: '1px solid #141414' }}>
+      <section id="catering-hero" style={{ padding: '110px 0 80px', background: '#FFFFFF', position: 'relative', overflow: 'hidden', borderBottom: '1px solid #EBEBEB' }}>
 
-        <div className="hero-glow" style={{ position: 'absolute', top: '-100px', right: '-100px', width: '560px', height: '560px', borderRadius: '50%', background: 'radial-gradient(circle, rgba(254,216,0,0.06) 0%, transparent 70%)', pointerEvents: 'none' }} aria-hidden="true" />
-        <div className="hero-glow-bottom" style={{ position: 'absolute', bottom: '-80px', left: '-80px', width: '400px', height: '400px', borderRadius: '50%', background: 'radial-gradient(circle, rgba(252,3,1,0.04) 0%, transparent 70%)', pointerEvents: 'none' }} aria-hidden="true" />
+        <div className="hero-glow" style={{ position: 'absolute', top: '-100px', right: '-100px', width: '560px', height: '560px', borderRadius: '50%', background: 'radial-gradient(circle, rgba(254,216,0,0.04) 0%, transparent 70%)', pointerEvents: 'none' }} aria-hidden="true" />
+        <div className="hero-glow-bottom" style={{ position: 'absolute', bottom: '-80px', left: '-80px', width: '400px', height: '400px', borderRadius: '50%', background: 'radial-gradient(circle, rgba(252,3,1,0.03) 0%, transparent 70%)', pointerEvents: 'none' }} aria-hidden="true" />
 
         <div className="container hero-container" style={{ position: 'relative', textAlign: 'center' }}>
           <span id="hero-label" className="sec-label">Catering Services</span>
-          <h1 id="hero-title" className="bebas" style={{ fontSize: 'clamp(52px, 9vw, 80px)', color: '#ffffff', lineHeight: '0.93', marginBottom: '24px' }}>
+          <h1 id="hero-title" className="bebas" style={{ fontSize: 'clamp(52px, 9vw, 80px)', color: '#1A1A1A', lineHeight: '0.93', marginBottom: '24px' }}>
             FEED YOUR <span style={{ color: '#FED800' }}>WHOLE CREW</span>
           </h1>
-          <p id="hero-subtitle" style={{ fontSize: 'clamp(15px, 2vw, 18px)', color: '#ffffff', lineHeight: '1.8', maxWidth: '520px', margin: '0 auto 40px' }}>
+          <p id="hero-subtitle" style={{ fontSize: 'clamp(15px, 2vw, 18px)', color: '#1A1A1A', lineHeight: '1.8', maxWidth: '520px', margin: '0 auto 40px' }}>
             From office breakfasts to special events  Eggs Ok caters for groups of all sizes. Fresh, made-to-order food delivered to your door.
           </p>
           <div id="hero-cta" style={{ display: 'flex', gap: '14px', justifyContent: 'center', flexWrap: 'wrap' }}>
@@ -341,7 +341,7 @@ export default function CateringPage() {
       {/* ══════════════════════════════════════════
           WHY CHOOSE US
       ══════════════════════════════════════════ */}
-      <section id="why-us" style={{ padding: '88px 0', background: '#0A0A0A' }}>
+      <section id="why-us" style={{ padding: '88px 0', background: '#F8F9FA' }}>
         <div className="container why-container">
 
           <div id="why-header" style={{ textAlign: 'center', marginBottom: '52px' }}>
@@ -368,7 +368,7 @@ export default function CateringPage() {
       {/* ══════════════════════════════════════════
           PACKAGES
       ══════════════════════════════════════════ */}
-      <section id="packages" style={{ padding: '88px 0', background: '#000' }}>
+      <section id="packages" style={{ padding: '88px 0', background: '#FFFFFF' }}>
         <div className="container packages-container">
 
           <div id="packages-header" style={{ marginBottom: '52px' }}>
@@ -380,7 +380,7 @@ export default function CateringPage() {
 
           <div id="packages-grid" className="packages-grid" role="list" aria-label="Catering packages">
             {packages.map((pkg, i) => (
-              <div key={i} id={`pkg-card-${i}`} className="pkg-card" style={{ border: `1px solid ${pkg.popular ? pkg.color + '50' : '#1E1E1E'}` }} role="listitem">
+              <div key={i} id={`pkg-card-${i}`} className="pkg-card" style={{ border: `1px solid ${pkg.popular ? pkg.color + '50' : '#E0E0E0'}` }} role="listitem">
 
                 {pkg.popular && (
                   <div id={`pkg-popular-bar-${i}`} className="pkg-popular-bar" style={{ background: pkg.color }}>
@@ -442,7 +442,7 @@ export default function CateringPage() {
       {/* ══════════════════════════════════════════
           CONTACT FORM
       ══════════════════════════════════════════ */}
-      <section id="contact" style={{ padding: '88px 0', background: '#0A0A0A' }}>
+      <section id="contact" style={{ padding: '88px 0', background: '#F8F9FA' }}>
         <div className="container contact-container">
           <div id="contact-inner" style={{ maxWidth: '700px', margin: '0 auto' }}>
 
@@ -451,7 +451,7 @@ export default function CateringPage() {
               <h2 id="contact-heading" className="sec-heading">
                 LET&apos;S PLAN YOUR <span className="accent">EVENT</span>
               </h2>
-              <p id="contact-subtitle" style={{ fontSize: '15px', color: '#ffffff', marginTop: '14px', lineHeight: '1.7' }}>
+              <p id="contact-subtitle" style={{ fontSize: '15px', color: '#1A1A1A', marginTop: '14px', lineHeight: '1.7' }}>
                 Fill out the form below and we will get back to you within 24 hours.
               </p>
             </div>
@@ -511,7 +511,7 @@ export default function CateringPage() {
                     <div id="form-group-date">
                       <label htmlFor="input-date" className="form-label">Event Date *</label>
                       <input id="input-date" type="date" className="form-input" required
-                        style={{ colorScheme: 'dark' } as React.CSSProperties}
+                        style={{ colorScheme: 'light' } as React.CSSProperties}
                         value={formData.eventDate} onChange={e => setFormData({ ...formData, eventDate: e.target.value })} />
                     </div>
                     <div id="form-group-guests">
@@ -578,12 +578,12 @@ export default function CateringPage() {
       ══════════════════════════════════════════ */}
       <section id="phone-cta" className="phone-cta-section">
         <div className="container">
-          <div id="phone-cta-icon" style={{ width: '56px', height: '56px', borderRadius: '14px', background: 'rgba(254,216,0,0.08)', border: '1px solid rgba(254,216,0,0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 18px' }}>
+          <div id="phone-cta-icon" style={{ width: '56px', height: '56px', borderRadius: '14px', background: 'rgba(254,216,0,0.06)', border: '1px solid rgba(254,216,0,0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 18px' }}>
             <Phone size={24} color="#FED800" strokeWidth={2} aria-hidden="true" />
           </div>
-          <p id="phone-cta-label" style={{ fontSize: '13px', color: '#ffffff', marginBottom: '10px', textTransform: 'uppercase', letterSpacing: '2px', fontWeight: '700' }}>Catering Hotline</p>
+          <p id="phone-cta-label" style={{ fontSize: '13px', color: '#1A1A1A', marginBottom: '10px', textTransform: 'uppercase', letterSpacing: '2px', fontWeight: '700' }}>Catering Hotline</p>
           <a id="phone-cta-number" href="tel:2673707993" className="phone-cta-number">267-370-7993</a>
-          <p id="phone-cta-hours" style={{ fontSize: '13px', color: '#ffffff', marginTop: '12px' }}>Mon–Fri 8AM–6PM · Sat 9AM–4PM</p>
+          <p id="phone-cta-hours" style={{ fontSize: '13px', color: '#1A1A1A', marginTop: '12px' }}>Mon–Fri 8AM–6PM · Sat 9AM–4PM</p>
         </div>
       </section>
 

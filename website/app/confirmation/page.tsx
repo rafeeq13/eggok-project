@@ -145,10 +145,10 @@ export default function ConfirmationPage() {
   }));
 
   return (
-    <div style={{ background: '#000', minHeight: '100vh', color: '#ffffff', fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif' }}>
+    <div style={{ background: '#FFFFFF', minHeight: '100vh', color: '#1A1A1A', fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif' }}>
 
       {/* NAV */}
-      <div style={{ position: 'fixed', top: 0, left: 0, right: 0, zIndex: 100, background: 'rgba(10,10,10,0.98)', backdropFilter: 'blur(20px)', borderBottom: '1px solid #1E1E1E', height: '64px', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '0 28px' }}>
+      <div style={{ position: 'fixed', top: 0, left: 0, right: 0, zIndex: 100, background: 'rgba(255,255,255,0.98)', backdropFilter: 'blur(20px)', borderBottom: '1px solid #E0E0E0', height: '64px', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '0 28px' }}>
         <Link href="/" style={{ display: 'flex', alignItems: 'center', textDecoration: 'none' }}>
           <img src="/logo.svg" alt="Eggs Ok" style={{ height: '40px', objectFit: 'contain' }} onError={e => { (e.target as HTMLImageElement).style.display = 'none'; }} />
         </Link>
@@ -173,32 +173,32 @@ export default function ConfirmationPage() {
 
         <div style={{ opacity: visible ? 1 : 0, transform: visible ? 'translateY(0)' : 'translateY(20px)', transition: 'all 0.5s ease 0.2s' }}>
 
-          <h1 style={{ fontSize: 'clamp(36px, 8vw, 64px)', fontWeight: '900', color: '#ffffff', marginBottom: '8px', letterSpacing: '-1px' }}>
+          <h1 style={{ fontSize: 'clamp(36px, 8vw, 64px)', fontWeight: '900', color: '#1A1A1A', marginBottom: '8px', letterSpacing: '-1px' }}>
             ORDER <span style={{ color: '#FED800' }}>CONFIRMED!</span>
           </h1>
-          <p style={{ fontSize: '16px', color: '#ffffff', marginBottom: '32px' }}>
+          <p style={{ fontSize: '16px', color: '#1A1A1A', marginBottom: '32px' }}>
             Thank you! Your order has been received and we are getting started right away.
           </p>
 
           {/* Order Info Card */}
-          <div style={{ background: '#111111', border: '1px solid #1A1A1A', borderRadius: '16px', padding: '24px', marginBottom: '20px', textAlign: 'left' }}>
+          <div style={{ background: '#FFFFFF', border: '1px solid #E5E5E5', borderRadius: '16px', padding: '24px', marginBottom: '20px', textAlign: 'left' }}>
 
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px', paddingBottom: '16px', borderBottom: '1px solid #1A1A1A' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px', paddingBottom: '16px', borderBottom: '1px solid #E5E5E5' }}>
               <div>
-                <p style={{ fontSize: '11px', color: '#ffffff', marginBottom: '4px', textTransform: 'uppercase', letterSpacing: '1px', margin: 0 }}>Order Number</p>
+                <p style={{ fontSize: '11px', color: '#1A1A1A', marginBottom: '4px', textTransform: 'uppercase', letterSpacing: '1px', margin: 0 }}>Order Number</p>
                 <p style={{ fontSize: '26px', fontWeight: '900', color: '#FED800', letterSpacing: '2px', margin: '4px 0 0' }}>{orderNumber || '...'}</p>
               </div>
               <div style={{ textAlign: 'right' }}>
-                <p style={{ fontSize: '11px', color: '#ffffff', marginBottom: '4px', textTransform: 'uppercase', letterSpacing: '1px', margin: 0 }}>Est. {displayOrderType === 'delivery' ? 'Delivery' : 'Ready'}</p>
-                <p style={{ fontSize: '26px', fontWeight: '900', color: '#ffffff', letterSpacing: '1px', margin: '4px 0 0' }}>{getEstimatedTime()}</p>
+                <p style={{ fontSize: '11px', color: '#1A1A1A', marginBottom: '4px', textTransform: 'uppercase', letterSpacing: '1px', margin: 0 }}>Est. {displayOrderType === 'delivery' ? 'Delivery' : 'Ready'}</p>
+                <p style={{ fontSize: '26px', fontWeight: '900', color: '#1A1A1A', letterSpacing: '1px', margin: '4px 0 0' }}>{getEstimatedTime()}</p>
               </div>
             </div>
 
             {/* Items */}
             <div style={{ marginBottom: '20px' }}>
-              <p style={{ fontSize: '11px', color: '#ffffff', marginBottom: '12px', textTransform: 'uppercase', letterSpacing: '1px' }}>Items Ordered</p>
+              <p style={{ fontSize: '11px', color: '#1A1A1A', marginBottom: '12px', textTransform: 'uppercase', letterSpacing: '1px' }}>Items Ordered</p>
               {displayItems.length === 0 ? (
-                <p style={{ fontSize: '14px', color: '#555' }}>No items</p>
+                <p style={{ fontSize: '14px', color: '#AAAAAA' }}>No items</p>
               ) : displayItems.map((item: any, i: number) => {
                 const isCartItem = 'item' in item;
                 const name = isCartItem ? item.item.name : item.name;
@@ -206,17 +206,17 @@ export default function ConfirmationPage() {
                 const price = isCartItem ? getPrice(item.item) * item.quantity : item.price * item.quantity;
                 const note = isCartItem ? item.specialInstructions : item.specialInstructions;
                 return (
-                  <div key={i} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '10px 0', borderBottom: i < displayItems.length - 1 ? '1px solid #1A1A1A' : 'none' }}>
+                  <div key={i} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '10px 0', borderBottom: i < displayItems.length - 1 ? '1px solid #E5E5E5' : 'none' }}>
                     <div style={{ flex: 1, marginRight: '12px' }}>
-                      <p style={{ fontSize: '14px', fontWeight: '600', color: '#ffffff', margin: 0 }}>{qty}x {name}</p>
+                      <p style={{ fontSize: '14px', fontWeight: '600', color: '#1A1A1A', margin: 0 }}>{qty}x {name}</p>
 
                       {/* Modifiers for lastOrder items */}
                       {!isCartItem && item.modifiers && item.modifiers.length > 0 && (
                         <div style={{ marginTop: '4px' }}>
                           {item.modifiers.map((mod: any, mi: number) => (
                             <div key={mi} style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '1px' }}>
-                              <p style={{ fontSize: '12px', color: '#666', margin: 0 }}>+ {mod.name}</p>
-                              <p style={{ fontSize: '12px', color: '#666', margin: 0 }}>${(Number(mod.price) * qty).toFixed(2)}</p>
+                              <p style={{ fontSize: '12px', color: '#777777', margin: 0 }}>+ {mod.name}</p>
+                              <p style={{ fontSize: '12px', color: '#777777', margin: 0 }}>${(Number(mod.price) * qty).toFixed(2)}</p>
                             </div>
                           ))}
                         </div>
@@ -232,8 +232,8 @@ export default function ConfirmationPage() {
                               if (!opt) return null;
                               return (
                                 <div key={`${group.id}-${optId}`} style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '1px' }}>
-                                  <p style={{ fontSize: '12px', color: '#666', margin: 0 }}>+ {opt.name}</p>
-                                  <p style={{ fontSize: '12px', color: '#666', margin: 0 }}>${(opt.price * qty).toFixed(2)}</p>
+                                  <p style={{ fontSize: '12px', color: '#777777', margin: 0 }}>+ {opt.name}</p>
+                                  <p style={{ fontSize: '12px', color: '#777777', margin: 0 }}>${(opt.price * qty).toFixed(2)}</p>
                                 </div>
                               );
                             });
@@ -241,7 +241,7 @@ export default function ConfirmationPage() {
                         </div>
                       )}
 
-                      {note && <p style={{ fontSize: '12px', color: '#ffffff', margin: '2px 0 0' }}>{note}</p>}
+                      {note && <p style={{ fontSize: '12px', color: '#1A1A1A', margin: '2px 0 0' }}>{note}</p>}
                     </div>
                     <p style={{ fontSize: '14px', fontWeight: '600', color: '#FED800', flexShrink: 0, margin: 0 }}>${Number(price).toFixed(2)}</p>
                   </div>
@@ -250,55 +250,55 @@ export default function ConfirmationPage() {
             </div>
 
             {/* Bill */}
-            <div style={{ borderTop: '1px solid #1A1A1A', paddingTop: '14px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
+            <div style={{ borderTop: '1px solid #E5E5E5', paddingTop: '14px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                <span style={{ fontSize: '13px', color: '#ffffff' }}>Subtotal</span>
-                <span style={{ fontSize: '13px', color: '#ffffff' }}>${lastOrder ? Number(lastOrder.subtotal).toFixed(2) : subtotal.toFixed(2)}</span>
+                <span style={{ fontSize: '13px', color: '#1A1A1A' }}>Subtotal</span>
+                <span style={{ fontSize: '13px', color: '#1A1A1A' }}>${lastOrder ? Number(lastOrder.subtotal).toFixed(2) : subtotal.toFixed(2)}</span>
               </div>
               <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                <span style={{ fontSize: '13px', color: '#ffffff' }}>Taxes & fees</span>
-                <span style={{ fontSize: '13px', color: '#ffffff' }}>${lastOrder ? Number(lastOrder.tax).toFixed(2) : taxes.toFixed(2)}</span>
+                <span style={{ fontSize: '13px', color: '#1A1A1A' }}>Taxes & fees</span>
+                <span style={{ fontSize: '13px', color: '#1A1A1A' }}>${lastOrder ? Number(lastOrder.tax).toFixed(2) : taxes.toFixed(2)}</span>
               </div>
               {displayOrderType === 'delivery' && (
                 <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                  <span style={{ fontSize: '13px', color: '#ffffff' }}>Delivery fee</span>
-                  <span style={{ fontSize: '13px', color: '#ffffff' }}>${lastOrder ? Number(lastOrder.deliveryFee).toFixed(2) : deliveryFee.toFixed(2)}</span>
+                  <span style={{ fontSize: '13px', color: '#1A1A1A' }}>Delivery fee</span>
+                  <span style={{ fontSize: '13px', color: '#1A1A1A' }}>${lastOrder ? Number(lastOrder.deliveryFee).toFixed(2) : deliveryFee.toFixed(2)}</span>
                 </div>
               )}
               {tipAmount > 0 && (
                 <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                  <span style={{ fontSize: '13px', color: '#ffffff' }}>Tip</span>
-                  <span style={{ fontSize: '13px', color: '#ffffff' }}>${lastOrder ? Number(lastOrder.tip).toFixed(2) : tipAmount.toFixed(2)}</span>
+                  <span style={{ fontSize: '13px', color: '#1A1A1A' }}>Tip</span>
+                  <span style={{ fontSize: '13px', color: '#1A1A1A' }}>${lastOrder ? Number(lastOrder.tip).toFixed(2) : tipAmount.toFixed(2)}</span>
                 </div>
               )}
-              <div style={{ display: 'flex', justifyContent: 'space-between', paddingTop: '10px', borderTop: '1px solid #1A1A1A', marginTop: '4px' }}>
-                <span style={{ fontSize: '16px', fontWeight: '800', color: '#ffffff' }}>Total Paid</span>
+              <div style={{ display: 'flex', justifyContent: 'space-between', paddingTop: '10px', borderTop: '1px solid #E5E5E5', marginTop: '4px' }}>
+                <span style={{ fontSize: '16px', fontWeight: '800', color: '#1A1A1A' }}>Total Paid</span>
                 <span style={{ fontSize: '18px', fontWeight: '800', color: '#FED800' }}>${displayTotal.toFixed(2)}</span>
               </div>
             </div>
           </div>
 
           {/* Order Status */}
-          <div style={{ background: '#111111', border: '1px solid #1A1A1A', borderRadius: '16px', padding: '24px', marginBottom: '20px' }}>
-            <p style={{ fontSize: '11px', color: '#ffffff', marginBottom: '20px', textTransform: 'uppercase', letterSpacing: '1px', textAlign: 'left' }}>Order Status</p>
+          <div style={{ background: '#FFFFFF', border: '1px solid #E5E5E5', borderRadius: '16px', padding: '24px', marginBottom: '20px' }}>
+            <p style={{ fontSize: '11px', color: '#1A1A1A', marginBottom: '20px', textTransform: 'uppercase', letterSpacing: '1px', textAlign: 'left' }}>Order Status</p>
             <div style={{ position: 'relative' }}>
-              <div style={{ position: 'absolute', top: '20px', left: '20px', right: '20px', height: '2px', background: '#1A1A1A', zIndex: 0 }} />
+              <div style={{ position: 'absolute', top: '20px', left: '20px', right: '20px', height: '2px', background: '#E5E5E5', zIndex: 0 }} />
               <div style={{ position: 'absolute', top: '20px', left: '20px', width: '33%', height: '2px', background: '#FED800', zIndex: 1 }} />
               <div style={{ display: 'flex', justifyContent: 'space-between', position: 'relative', zIndex: 2 }}>
                 {steps.map((step, i) => (
                   <div key={i} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px', flex: 1 }}>
-                    <div style={{ width: '40px', height: '40px', borderRadius: '50%', background: step.done ? '#22C55E' : step.active ? '#FED800' : '#1A1A1A', border: `2px solid ${step.done ? '#22C55E' : step.active ? '#FED800' : '#2A2A2A'}`, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    <div style={{ width: '40px', height: '40px', borderRadius: '50%', background: step.done ? '#22C55E' : step.active ? '#FED800' : '#F0F0F0', border: `2px solid ${step.done ? '#22C55E' : step.active ? '#FED800' : '#D0D0D0'}`, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                       {step.done ? (
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#000" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12" /></svg>
                       ) : step.active ? (
                         <div style={{ width: '10px', height: '10px', borderRadius: '50%', background: '#000' }} />
                       ) : (
-                        <div style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#ffffff' }} />
+                        <div style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#1A1A1A' }} />
                       )}
                     </div>
                     <div style={{ textAlign: 'center' }}>
-                      <p style={{ fontSize: '12px', fontWeight: '700', color: step.done ? '#22C55E' : step.active ? '#FED800' : '#ffffff', margin: 0 }}>{step.label}</p>
-                      <p style={{ fontSize: '11px', color: '#ffffff', marginTop: '2px' }}>{step.desc}</p>
+                      <p style={{ fontSize: '12px', fontWeight: '700', color: step.done ? '#22C55E' : step.active ? '#FED800' : '#1A1A1A', margin: 0 }}>{step.label}</p>
+                      <p style={{ fontSize: '11px', color: '#1A1A1A', marginTop: '2px' }}>{step.desc}</p>
                     </div>
                   </div>
                 ))}
@@ -314,10 +314,10 @@ export default function ConfirmationPage() {
               </svg>
             </div>
             <div>
-              <p style={{ fontSize: '14px', fontWeight: '700', color: '#ffffff', marginBottom: '4px' }}>
+              <p style={{ fontSize: '14px', fontWeight: '700', color: '#1A1A1A', marginBottom: '4px' }}>
                 {displayOrderType === 'pickup' ? 'Pickup Location' : 'Delivering To'}
               </p>
-              <p style={{ fontSize: '13px', color: '#ffffff', margin: 0 }}>
+              <p style={{ fontSize: '13px', color: '#1A1A1A', margin: 0 }}>
                 {displayOrderType === 'pickup' ? storeAddress : (lastOrder?.deliveryAddress || deliveryAddress || '—')}
               </p>
               {displayOrderType === 'pickup' && orderNumber && (
@@ -336,26 +336,26 @@ export default function ConfirmationPage() {
                   </svg>
                 </div>
                 <div>
-                  <p style={{ fontSize: '14px', fontWeight: '700', color: '#ffffff', margin: 0 }}>Delivery In Progress</p>
+                  <p style={{ fontSize: '14px', fontWeight: '700', color: '#1A1A1A', margin: 0 }}>Delivery In Progress</p>
                   <p style={{ fontSize: '12px', color: '#A78BFA', margin: 0 }}>via Uber Direct</p>
                 </div>
               </div>
               {deliveryTracking.driverName && (
-                <div style={{ display: 'flex', justifyContent: 'space-between', padding: '8px 0', borderTop: '1px solid #2A2A2A' }}>
-                  <span style={{ fontSize: '13px', color: '#ffffff' }}>Driver</span>
-                  <span style={{ fontSize: '13px', color: '#ffffff', fontWeight: '600' }}>{deliveryTracking.driverName}</span>
+                <div style={{ display: 'flex', justifyContent: 'space-between', padding: '8px 0', borderTop: '1px solid #D0D0D0' }}>
+                  <span style={{ fontSize: '13px', color: '#1A1A1A' }}>Driver</span>
+                  <span style={{ fontSize: '13px', color: '#1A1A1A', fontWeight: '600' }}>{deliveryTracking.driverName}</span>
                 </div>
               )}
               {deliveryTracking.driverPhone && (
-                <div style={{ display: 'flex', justifyContent: 'space-between', padding: '8px 0', borderTop: '1px solid #2A2A2A' }}>
-                  <span style={{ fontSize: '13px', color: '#888' }}>Driver Phone</span>
+                <div style={{ display: 'flex', justifyContent: 'space-between', padding: '8px 0', borderTop: '1px solid #D0D0D0' }}>
+                  <span style={{ fontSize: '13px', color: '#777777' }}>Driver Phone</span>
                   <a href={`tel:${deliveryTracking.driverPhone}`} style={{ fontSize: '13px', color: '#60A5FA', textDecoration: 'none', fontWeight: '600' }}>{deliveryTracking.driverPhone}</a>
                 </div>
               )}
               {deliveryTracking.eta && (
-                <div style={{ display: 'flex', justifyContent: 'space-between', padding: '8px 0', borderTop: '1px solid #2A2A2A' }}>
-                  <span style={{ fontSize: '13px', color: '#888' }}>ETA</span>
-                  <span style={{ fontSize: '13px', color: '#ffffff' }}>{new Date(deliveryTracking.eta).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })}</span>
+                <div style={{ display: 'flex', justifyContent: 'space-between', padding: '8px 0', borderTop: '1px solid #D0D0D0' }}>
+                  <span style={{ fontSize: '13px', color: '#777777' }}>ETA</span>
+                  <span style={{ fontSize: '13px', color: '#1A1A1A' }}>{new Date(deliveryTracking.eta).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })}</span>
                 </div>
               )}
               {deliveryTracking.trackingUrl && (
@@ -371,8 +371,8 @@ export default function ConfirmationPage() {
           )}
 
           {/* Email note */}
-          <div style={{ padding: '14px', background: '#111111', border: '1px solid #1A1A1A', borderRadius: '12px', marginBottom: '32px' }}>
-            <p style={{ fontSize: '13px', color: '#ffffff', margin: 0 }}>
+          <div style={{ padding: '14px', background: '#FFFFFF', border: '1px solid #E5E5E5', borderRadius: '12px', marginBottom: '32px' }}>
+            <p style={{ fontSize: '13px', color: '#1A1A1A', margin: 0 }}>
               A confirmation has been sent to your email. Check your inbox for order details and updates.
             </p>
           </div>
@@ -391,7 +391,7 @@ export default function ConfirmationPage() {
                 Track Order
               </Link>
             )}
-            <Link href="/" style={{ padding: '14px 32px', background: 'transparent', border: '1px solid #2A2A2A', borderRadius: '12px', fontSize: '15px', fontWeight: '600', color: '#888', textDecoration: 'none' }}>
+            <Link href="/" style={{ padding: '14px 32px', background: 'transparent', border: '1px solid #D0D0D0', borderRadius: '12px', fontSize: '15px', fontWeight: '600', color: '#777777', textDecoration: 'none' }}>
               Back to Home
             </Link>
           </div>

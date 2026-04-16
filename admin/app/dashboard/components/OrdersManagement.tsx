@@ -212,12 +212,22 @@ export default function OrdersManagement() {
   const displayOrders = getTabOrders();
 
   const formatTime = (dateStr: string) => {
+    if (!dateStr) return '—';
     const d = new Date(dateStr);
+    if (isNaN(d.getTime())) return '—';
     return d.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true });
   };
 
   const formatDate = (dateStr: string) => {
-    return new Date(dateStr).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+    if (!dateStr) return '—';
+    const d = new Date(dateStr);
+    if (isNaN(d.getTime())) return '—';
+    return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+  };
+
+  const safePrice = (val: any) => {
+    const n = Number(val);
+    return isNaN(n) ? '0.00' : n.toFixed(2);
   };
 
   const inputStyle = {
@@ -303,7 +313,7 @@ export default function OrdersManagement() {
                   <div>
                     <p style={{ fontSize: '11px', color: '#FEFEFE', margin: 0 }}>Schedule</p>
                     <p style={{ fontSize: '13px', color: '#FEFEFE', fontWeight: '500', marginTop: '2px' }}>
-                      {selectedOrder.scheduleType === 'asap' ? 'ASAP' : `${selectedOrder.scheduledDate} ${selectedOrder.scheduledTime}`}
+                      {selectedOrder.scheduleType === 'asap' || !selectedOrder.scheduledDate ? 'ASAP' : `${selectedOrder.scheduledDate} ${selectedOrder.scheduledTime || ''}`}
                     </p>
                   </div>
                   {selectedOrder.orderType === 'delivery' && selectedOrder.deliveryAddress && (
@@ -340,7 +350,7 @@ export default function OrdersManagement() {
                         <p style={{ fontSize: '11px', color: '#FEFEFE', marginTop: '3px' }}>{item.specialInstructions}</p>
                       )}
                     </div>
-                    <p style={{ fontSize: '13px', fontWeight: '600', color: '#FED800', margin: 0 }}>${(item.price * item.quantity).toFixed(2)}</p>
+                    <p style={{ fontSize: '13px', fontWeight: '600', color: '#FED800', margin: 0 }}>${safePrice((Number(item.price) || 0) * (Number(item.quantity) || 1))}</p>
                   </div>
                 ))}
               </div>
@@ -348,11 +358,11 @@ export default function OrdersManagement() {
               {/* Totals */}
               <div style={{ background: '#111111', borderRadius: '10px', padding: '14px 16px', marginBottom: '14px' }}>
                 {[
-                  ['Subtotal', `$${Number(selectedOrder.subtotal).toFixed(2)}`],
-                  ['Tax', `$${Number(selectedOrder.tax).toFixed(2)}`],
-                  ...(Number(selectedOrder.deliveryFee) > 0 ? [['Delivery Fee', `$${Number(selectedOrder.deliveryFee).toFixed(2)}`]] : []),
-                  ...(Number(selectedOrder.tip) > 0 ? [['Tip', `$${Number(selectedOrder.tip).toFixed(2)}`]] : []),
-                  ...(Number(selectedOrder.discount) > 0 ? [['Discount', `-$${Number(selectedOrder.discount).toFixed(2)}`]] : []),
+                  ['Subtotal', `$${safePrice(selectedOrder.subtotal)}`],
+                  ['Tax', `$${safePrice(selectedOrder.tax)}`],
+                  ...(Number(selectedOrder.deliveryFee) > 0 ? [['Delivery Fee', `$${safePrice(selectedOrder.deliveryFee)}`]] : []),
+                  ...(Number(selectedOrder.tip) > 0 ? [['Tip', `$${safePrice(selectedOrder.tip)}`]] : []),
+                  ...(Number(selectedOrder.discount) > 0 ? [['Discount', `-$${safePrice(selectedOrder.discount)}`]] : []),
                 ].map(([label, value]) => (
                   <div key={label} style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }}>
                     <span style={{ fontSize: '12px', color: '#FEFEFE' }}>{label}</span>
@@ -361,7 +371,7 @@ export default function OrdersManagement() {
                 ))}
                 <div style={{ display: 'flex', justifyContent: 'space-between', paddingTop: '10px', borderTop: '1px solid #2A2A2A', marginTop: '4px' }}>
                   <span style={{ fontSize: '14px', fontWeight: '700', color: '#FEFEFE' }}>Total</span>
-                  <span style={{ fontSize: '16px', fontWeight: '700', color: '#FED800' }}>${Number(selectedOrder.total).toFixed(2)}</span>
+                  <span style={{ fontSize: '16px', fontWeight: '700', color: '#FED800' }}>${safePrice(selectedOrder.total)}</span>
                 </div>
               </div>
 

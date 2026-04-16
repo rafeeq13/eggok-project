@@ -100,7 +100,17 @@ export class OrdersController {
   async dispatchDelivery(@Param('id', ParseIntPipe) id: number) {
     const order = await this.ordersService.getOrderById(id);
     if (!order) throw new NotFoundException('Order not found');
-    return this.ordersService.dispatchDelivery(order);
+    if (order.orderType !== 'delivery' || !order.deliveryAddress) {
+      return { error: 'Not a delivery order or missing delivery address' };
+    }
+    try {
+      const result = await this.ordersService.dispatchDelivery(order);
+      return result;
+    } catch (err: any) {
+      const message = err?.message || 'Dispatch failed';
+      console.error(`[DISPATCH] Error dispatching order ${id}:`, message);
+      return { error: message };
+    }
   }
 
   @Get(':id/delivery-quote')

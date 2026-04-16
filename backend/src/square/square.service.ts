@@ -142,10 +142,39 @@ export class SquareService {
         order.notes ? `Notes: ${order.notes}` : '',
       ].filter(Boolean).join(' | ');
 
+      // Build fulfillment based on order type
+      const isDelivery = order.orderType === 'delivery';
+      const fulfillment = isDelivery
+        ? {
+            type: 'DELIVERY' as const,
+            state: 'PROPOSED' as const,
+            deliveryDetails: {
+              recipient: {
+                displayName: order.customerName,
+                phoneNumber: order.customerPhone,
+              },
+              scheduleType: 'ASAP' as const,
+              note: order.deliveryAddress || undefined,
+              dropoffNotes: order.notes || undefined,
+            },
+          }
+        : {
+            type: 'PICKUP' as const,
+            state: 'PROPOSED' as const,
+            pickupDetails: {
+              recipient: {
+                displayName: order.customerName,
+                phoneNumber: order.customerPhone,
+              },
+              pickupAt: new Date(Date.now() + 15 * 60000).toISOString(),
+            },
+          };
+
       const response = await client.orders.create({
         order: {
           locationId: creds.squareLocationId,
           referenceId: order.orderNumber,
+          source: { name: 'Website' },
           lineItems,
           taxes: [
             {
@@ -167,22 +196,7 @@ export class SquareService {
               taxable: false,
             },
           ] : undefined,
-          fulfillments: [
-            {
-              type: 'PICKUP' as const,
-              state: 'PROPOSED',
-              pickupDetails: {
-                recipient: {
-                  displayName: order.customerName,
-                  phoneNumber: order.customerPhone,
-                },
-                note: order.orderType === 'delivery'
-                  ? `DELIVERY to: ${order.deliveryAddress || 'N/A'}`
-                  : undefined,
-                pickupAt: new Date(Date.now() + 15 * 60000).toISOString(),
-              },
-            },
-          ],
+          fulfillments: [fulfillment],
           metadata: {
             source: 'eggok_online',
             order_number: order.orderNumber,

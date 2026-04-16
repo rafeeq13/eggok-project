@@ -114,14 +114,34 @@ export class DeliveryService {
     throw new Error('Max retries reached');
   }
 
+  private formatPhoneE164(phone: string): string {
+    // Strip all non-digit characters
+    const digits = phone.replace(/\D/g, '');
+    // If already has country code (11+ digits starting with 1), use as-is
+    if (digits.length === 11 && digits.startsWith('1')) {
+      return `+${digits}`;
+    }
+    // If 10 digits (US number without country code), prepend +1
+    if (digits.length === 10) {
+      return `+1${digits}`;
+    }
+    // If already starts with +, return as-is
+    if (phone.startsWith('+')) {
+      return phone;
+    }
+    // Fallback: prepend +1 and take last 10 digits
+    const last10 = digits.slice(-10);
+    return `+1${last10}`;
+  }
+
   private buildPayload(order: { customerName: string; customerPhone: string; deliveryAddress: string; deliveryApt?: string; deliveryInstructions?: string; items: any[]; total: number; orderNumber: string }) {
     return {
       pickup_name: 'Eggs Ok',
       pickup_address: '3517 Lancaster Ave, Philadelphia, PA 19104',
-      pickup_phone_number: '+12155550100',
+      pickup_phone_number: '+12159489902',
       dropoff_name: order.customerName,
       dropoff_address: order.deliveryAddress,
-      dropoff_phone_number: order.customerPhone.startsWith('+') ? order.customerPhone : `+1${order.customerPhone.replace(/\D/g, '')}`,
+      dropoff_phone_number: this.formatPhoneE164(order.customerPhone),
       dropoff_notes: [order.deliveryApt, order.deliveryInstructions].filter(Boolean).join(' - ') || undefined,
       manifest_items: (order.items || []).map((item: any) => ({
         name: item.name || 'Item',
@@ -156,6 +176,9 @@ export class DeliveryService {
       const baseUrl = this.getBaseUrl(creds.uberDirectEnvironment);
       const payload = this.buildPayload(order);
 
+      console.log(`[UBER] Requesting quote for order ${order.orderNumber}, address: ${order.deliveryAddress}`);
+      console.log(`[UBER] Customer ID: ${creds.uberDirectCustomerId}, env: ${creds.uberDirectEnvironment}`);
+
       const res = await this.retryFetch(async () => {
         const token = await this.getAccessToken(creds);
         return fetch(`${baseUrl}/v1/customers/${creds.uberDirectCustomerId}/delivery_quotes`, {
@@ -168,6 +191,7 @@ export class DeliveryService {
       if (!res.ok) {
         const errText = await res.text();
         console.error(`[UBER] Quote failed (${res.status}):`, errText);
+        console.error(`[UBER] Quote payload was:`, JSON.stringify(payload, null, 2));
         return null;
       }
 
@@ -204,7 +228,8 @@ export class DeliveryService {
       const baseUrl = this.getBaseUrl(creds.uberDirectEnvironment);
       const payload = this.buildPayload(order);
 
-      console.log(`[UBER] Creating delivery for order ${order.orderNumber}`);
+      console.log(`[UBER] Creating delivery for order ${order.orderNumber}, address: ${order.deliveryAddress}`);
+      console.log(`[UBER] Dispatch payload:`, JSON.stringify(payload, null, 2));
 
       const res = await this.retryFetch(async () => {
         const token = await this.getAccessToken(creds);
@@ -218,7 +243,7 @@ export class DeliveryService {
       if (!res.ok) {
         const errText = await res.text();
         console.error(`[UBER] Delivery creation failed (${res.status}):`, errText);
-        throw new Error(`Uber Direct API error: ${res.status} - ${errText}`);
+        throw new Error(`Uber Direct API error (${res.status}): ${errText}`);
       }
 
       const delivery = await res.json();
