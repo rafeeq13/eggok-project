@@ -55,7 +55,7 @@ function ReviewContent() {
             </div>
             <h1 style={{ fontSize: '28px', fontWeight: '800', marginBottom: '8px' }}>Thank You!</h1>
             <p style={{ color: '#777777', fontSize: '14px', marginBottom: '24px' }}>Your review has been submitted. We appreciate your feedback!</p>
-            <Link href="/order" style={{ padding: '12px 28px', background: '#FED800', borderRadius: '10px', color: '#000', fontWeight: '700', fontSize: '14px', textDecoration: 'none' }}>Order Again</Link>
+            <Link href="/order" style={{ padding: '12px 28px', background: '#E5B800', borderRadius: '10px', color: '#000', fontWeight: '700', fontSize: '14px', textDecoration: 'none' }}>Order Again</Link>
           </div>
         ) : (
           <>
@@ -69,7 +69,7 @@ function ReviewContent() {
                 <div style={{ display: 'flex', gap: '8px' }}>
                   {[1, 2, 3, 4, 5].map(star => (
                     <button key={star} type="button" onClick={() => setRating(star)} onMouseEnter={() => setHoverRating(star)} onMouseLeave={() => setHoverRating(0)}
-                      style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: '32px', color: star <= (hoverRating || rating) ? '#FED800' : '#D0D0D0', transition: 'color 0.15s' }}>
+                      style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: '32px', color: star <= (hoverRating || rating) ? '#E5B800' : '#D0D0D0', transition: 'color 0.15s' }}>
                       ★
                     </button>
                   ))}
@@ -93,9 +93,9 @@ function ReviewContent() {
                   {['Pickup', 'Delivery'].map(t => (
                     <button key={t} type="button" onClick={() => setOrderType(t)} style={{
                       flex: 1, padding: '10px', borderRadius: '8px', cursor: 'pointer',
-                      background: orderType === t ? '#FED80020' : '#F8F9FA',
-                      border: orderType === t ? '1px solid #FED800' : '1px solid #D0D0D0',
-                      color: orderType === t ? '#FED800' : '#777777', fontSize: '13px', fontWeight: '600',
+                      background: orderType === t ? '#E5B80020' : '#F8F9FA',
+                      border: orderType === t ? '1px solid #E5B800' : '1px solid #D0D0D0',
+                      color: orderType === t ? '#1A1A1A' : '#777777', fontSize: '13px', fontWeight: '600',
                     }}>{t}</button>
                   ))}
                 </div>
@@ -114,7 +114,7 @@ function ReviewContent() {
               {error && <p style={{ color: '#FC0301', fontSize: '13px', margin: 0 }}>{error}</p>}
 
               <button type="submit" disabled={submitting} style={{
-                padding: '14px', background: submitting ? '#E5E5E5' : '#FED800', border: 'none',
+                padding: '14px', background: submitting ? '#E5E5E5' : '#E5B800', border: 'none',
                 borderRadius: '10px', color: submitting ? '#777777' : '#000', fontSize: '15px', fontWeight: '700',
                 cursor: submitting ? 'not-allowed' : 'pointer',
               }}>

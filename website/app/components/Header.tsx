@@ -66,13 +66,19 @@ export default function Header() {
   ];
 const css = `
   .navLink:hover{
-  color:#B8A000 !important;
+  color:#000000 !important;
+  background: #F0F0F0 !important;
+  }
+  .navLink.active{
+  background: #F0F0F0 !important;
+  color:#000000 !important;
+  font-weight: 600 !important;
   }
 `
   return (
     <>
       <style>{css}</style>
-      <header style={{
+      <header className="header-wrap" style={{
         position: 'fixed', top: 0, left: 0, right: 0, zIndex: 100,
         background: scrolled ? 'rgba(255,255,255,0.98)' : 'transparent',
         backdropFilter: scrolled ? 'blur(12px)' : 'none',
@@ -80,53 +86,38 @@ const css = `
         transition: 'all 0.3s ease',
         padding: '0 24px',
       }}>
-        <div style={{
+        <div className="header-inner" style={{
           maxWidth: '1280px', margin: '0 auto',
           display: 'flex', alignItems: 'center',
           justifyContent: 'space-between',
-          height: '70px',
+          height: '80px',
         }}>
           {/* Logo */}
           <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-            <div style={{  borderRadius: '10px', overflow: 'hidden', background: 'transparent', flexShrink: 0 }}>
+            <div className="header-logo" style={{  borderRadius: '10px', overflow: 'hidden', background: 'transparent', flexShrink: 0 }}>
               <Image src="/logo.svg" alt="EggsOK Eatery" width={135} height={60} style={{ objectFit: 'contain' }} />
             </div>
             <div>
-              {/* <p style={{ fontSize: '17px', fontWeight: '800', color: '#FED800', letterSpacing: '1px', fontFamily: 'Bebas Neue, sans-serif' }}>EggsOK</p>
+              {/* <p style={{ fontSize: '17px', fontWeight: '800', color: '#E5B800', letterSpacing: '1px', fontFamily: 'DM Sans, sans-serif' }}>EggsOK</p>
               <p style={{ fontSize: '10px', color: '#888888', letterSpacing: '1px' }}>EATERY WEST PHILLY</p> */}
             </div>
           </Link>
 
           {/* Desktop Nav */}
-          <nav style={{ display: 'flex', alignItems: 'center', gap: '4px' }} className="hide-mobile">
-            <Link href="/" className="navLink" style={{ padding: '8px 14px', color: '#333333', fontSize: '14px', fontWeight: '500', borderRadius: '8px', transition: 'color 0.2s' }}
-              onMouseEnter={e => (e.currentTarget as HTMLAnchorElement).style.color = '#B8A000'}
-              onMouseLeave={e => (e.currentTarget as HTMLAnchorElement).style.color = '#333333'}
+          <nav style={{ display: 'flex', alignItems: 'center', gap: '4px' }} className="hide-mobile nav-desktop-gap">
+            <Link href="/" className={`navLink${pathname === '/' ? ' active' : ''}`} style={{ padding: '8px 14px', color: '#333333', fontSize: '14px', fontWeight: '500', borderRadius: '8px', transition: 'all 0.2s' }}
             >Home</Link>
 
-            <Link href="/story" className="navLink" style={{ padding: '8px 14px', color: '#333333', fontSize: '14px', fontWeight: '500', borderRadius: '8px', transition: 'color 0.2s' }}
-              onMouseEnter={e => (e.currentTarget as HTMLAnchorElement).style.color = '#B8A000'}
-              onMouseLeave={e => (e.currentTarget as HTMLAnchorElement).style.color = '#333333'}
+            <Link href="/story" className={`navLink${pathname === '/story' ? ' active' : ''}`} style={{ padding: '8px 14px', color: '#333333', fontSize: '14px', fontWeight: '500', borderRadius: '8px', transition: 'all 0.2s' }}
             >Our Story</Link>
 
-            {/* <Link href="/catering" style={{ padding: '8px 14px', color: '#777777', fontSize: '14px', fontWeight: '500', borderRadius: '8px', transition: 'color 0.2s' }}
-              onMouseEnter={e => (e.currentTarget as HTMLAnchorElement).style.color = '#1A1A1A'}
-              onMouseLeave={e => (e.currentTarget as HTMLAnchorElement).style.color = '#333333'}
-            >Events</Link> */}
-
-            <Link href="/hiring" className="navLink" style={{ padding: '8px 14px', color: '#333333', fontSize: '14px', fontWeight: '500', borderRadius: '8px', transition: 'color 0.2s' }}
-              onMouseEnter={e => (e.currentTarget as HTMLAnchorElement).style.color = '#B8A000'}
-              onMouseLeave={e => (e.currentTarget as HTMLAnchorElement).style.color = '#333333'}
+            <Link href="/hiring" className={`navLink${pathname === '/hiring' ? ' active' : ''}`} style={{ padding: '8px 14px', color: '#333333', fontSize: '14px', fontWeight: '500', borderRadius: '8px', transition: 'all 0.2s' }}
             >We're Hiring</Link>
 
-            <Link href="/order" className="navLink" style={{ padding: '8px 14px', color: '#333333', fontSize: '14px', fontWeight: '500', borderRadius: '8px', transition: 'color 0.2s' }}
-              onMouseEnter={e => (e.currentTarget as HTMLAnchorElement).style.color = '#B8A000'}
-              onMouseLeave={e => (e.currentTarget as HTMLAnchorElement).style.color = '#333333'}
+            <Link href="/order" className={`navLink${pathname === '/order' ? ' active' : ''}`} style={{ padding: '8px 14px', color: '#333333', fontSize: '14px', fontWeight: '500', borderRadius: '8px', transition: 'all 0.2s' }}
             >Menu</Link>
 
-            <Link href="/catering" className="navLink" style={{ padding: '8px 14px', color: '#333333', fontSize: '14px', fontWeight: '500', borderRadius: '8px', transition: 'color 0.2s' }}
-              onMouseEnter={e => (e.currentTarget as HTMLAnchorElement).style.color = '#B8A000'}
-              onMouseLeave={e => (e.currentTarget as HTMLAnchorElement).style.color = '#333333'}
+            <Link href="/catering" className={`navLink${pathname === '/catering' ? ' active' : ''}`} style={{ padding: '8px 14px', color: '#333333', fontSize: '14px', fontWeight: '500', borderRadius: '8px', transition: 'all 0.2s' }}
             >Catering</Link>
 
             {/* More Dropdown — hover to open */}
@@ -135,8 +126,8 @@ const css = `
               onMouseLeave={() => setMoreOpen(false)}
             >
               <button
-              className="navLink"
-                style={{ padding: '8px 14px', color: '#333333', fontSize: '14px', fontWeight: '500', borderRadius: '8px', transition: 'color 0.2s', display: 'flex', alignItems: 'center', gap: '4px', background: 'transparent' }}
+              className={`navLink${['/contact', '/gift-cards', '/track'].includes(pathname) ? ' active' : ''}`}
+                style={{ padding: '8px 14px', color: '#333333', fontSize: '14px', fontWeight: '500', borderRadius: '8px', transition: 'all 0.2s', display: 'flex', alignItems: 'center', gap: '4px', background: 'transparent' }}
               >
                 More
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -178,9 +169,9 @@ const css = `
                 <button
                   onClick={() => setUserMenuOpen(!userMenuOpen)}
                   style={{
-                    padding: '9px 18px', color: '#B8A000', fontSize: '14px',
+                    padding: '9px 18px', color: '#333333', fontSize: '14px',
                     fontWeight: '600', borderRadius: '8px',
-                    border: '1px solid #FED80040', background: 'rgba(254, 216, 0, 0.08)',
+                    border: '1px solid #E5B80040', background: 'rgba(254, 216, 0, 0.08)',
                     transition: 'all 0.2s', display: 'inline-flex', alignItems: 'center', gap: '6px',
                     cursor: 'pointer', fontFamily: 'inherit',
                   }}
@@ -208,7 +199,7 @@ const css = `
                       color: '#333333', fontSize: '14px', borderRadius: '8px',
                       transition: 'all 0.15s', textDecoration: 'none',
                     }}
-                      onMouseEnter={e => { e.currentTarget.style.color = '#FED800'; e.currentTarget.style.background = '#F5F5F5'; }}
+                      onMouseEnter={e => { e.currentTarget.style.color = '#000000'; e.currentTarget.style.background = '#F5F5F5'; }}
                       onMouseLeave={e => { e.currentTarget.style.color = '#333333'; e.currentTarget.style.background = 'transparent'; }}
                     >
                       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -240,7 +231,7 @@ const css = `
                 border: '1px solid #D0D0D0', background: 'transparent',
                 transition: 'all 0.2s', display: 'inline-flex', alignItems: 'center', gap: '6px',
               }}
-                onMouseEnter={e => { (e.currentTarget as HTMLAnchorElement).style.borderColor = '#FED800'; (e.currentTarget as HTMLAnchorElement).style.color = '#B8A000'; }}
+                onMouseEnter={e => { (e.currentTarget as HTMLAnchorElement).style.borderColor = '#1A1A1A'; (e.currentTarget as HTMLAnchorElement).style.color = '#000000'; }}
                 onMouseLeave={e => { (e.currentTarget as HTMLAnchorElement).style.borderColor = '#D0D0D0'; (e.currentTarget as HTMLAnchorElement).style.color = '#1A1A1A'; }}
               >
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -270,8 +261,8 @@ const css = `
                 <span style={{
                   position: 'absolute', top: '-6px', right: '-6px',
                   width: '20px', height: '20px',
-                  background: '#FED800', borderRadius: '50%',
-                  fontSize: '11px', fontWeight: '700', color: '#000',
+                  background: '#E5B800', borderRadius: '50%',
+                  fontSize: '12px', fontWeight: '700', color: '#000',
                   display: 'flex', alignItems: 'center', justifyContent: 'center',
                 }}>{cartCount}</span>
               )}
@@ -283,8 +274,8 @@ const css = `
             <Link href="/account" style={{
               width: '38px', height: '38px', display: 'flex', alignItems: 'center', justifyContent: 'center',
               background: user ? 'rgba(254, 216, 0, 0.08)' : '#F5F5F5',
-              border: user ? '1px solid #FED80040' : '1px solid #E5E5E5',
-              borderRadius: '8px', color: user ? '#B8A000' : '#333333'
+              border: user ? '1px solid #E5B80040' : '1px solid #E5E5E5',
+              borderRadius: '8px', color: user ? '#333333' : '#333333'
             }}>
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2" /><circle cx="12" cy="7" r="4" />
@@ -296,7 +287,7 @@ const css = `
                 <path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 001.95-1.57l1.65-7.43H6" />
               </svg>
               {mounted && cartCount > 0 && (
-                <span style={{ position: 'absolute', top: '-5px', right: '-5px', width: '18px', height: '18px', background: '#FED800', borderRadius: '50%', fontSize: '10px', fontWeight: '700', color: '#000', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>{cartCount}</span>
+                <span style={{ position: 'absolute', top: '-5px', right: '-5px', width: '18px', height: '18px', background: '#E5B800', borderRadius: '50%', fontSize: '12px', fontWeight: '700', color: '#000', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>{cartCount}</span>
               )}
             </Link>
             <button onClick={() => setMobileMenuOpen(!mobileMenuOpen)} style={{ width: '38px', height: '38px', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#F5F5F5', border: '1px solid #E5E5E5', borderRadius: '8px', color: '#333333', fontSize: '18px' }}>
@@ -323,22 +314,22 @@ const css = `
             { label: 'Track My Order', href: '/track' },
             { label: "We're Hiring", href: '/hiring' },
           ].map(item => (
-            <Link key={item.href} href={item.href} onClick={() => setMobileMenuOpen(false)} style={{ fontSize: '32px', fontWeight: '800', color: '#1A1A1A', fontFamily: 'Bebas Neue, sans-serif', letterSpacing: '2px' }}>
+            <Link key={item.href} href={item.href} onClick={() => setMobileMenuOpen(false)} style={{ fontSize: '32px', fontWeight: '800', color: '#1A1A1A', fontFamily: 'DM Sans, sans-serif', letterSpacing: '2px' }}>
               {item.label}
             </Link>
           ))}
-          <Link href="/order" onClick={() => setMobileMenuOpen(false)} style={{ marginTop: '8px', padding: '14px 40px', background: '#FED800', borderRadius: '12px', fontSize: '18px', fontWeight: '700', color: '#000', fontFamily: 'Bebas Neue, sans-serif', letterSpacing: '2px' }}>
-            ORDER NOW
+          <Link href="/order" onClick={() => setMobileMenuOpen(false)} style={{ marginTop: '8px', padding: '14px 40px', background: '#E5B800', borderRadius: '12px', fontSize: '18px', fontWeight: '700', color: '#000', fontFamily: 'DM Sans, sans-serif', letterSpacing: '2px' }}>
+            Order Now
           </Link>
           {mounted && user && (
-            <button onClick={() => { logout(); setMobileMenuOpen(false); }} style={{ marginTop: '8px', padding: '12px 40px', background: 'transparent', border: '1px solid #FC030140', borderRadius: '12px', fontSize: '16px', fontWeight: '700', color: '#FC0301', fontFamily: 'Bebas Neue, sans-serif', letterSpacing: '2px', cursor: 'pointer' }}>
-              SIGN OUT
+            <button onClick={() => { logout(); setMobileMenuOpen(false); }} style={{ marginTop: '8px', padding: '12px 40px', background: 'transparent', border: '1px solid #FC030140', borderRadius: '12px', fontSize: '16px', fontWeight: '700', color: '#FC0301', fontFamily: 'DM Sans, sans-serif', letterSpacing: '2px', cursor: 'pointer' }}>
+              Sign Out
             </button>
           )}
         </div>
       )}
 
-      <div style={{ height: '70px' }} />
+      <div className="header-spacer" style={{ height: '80px' }} />
     </>
   );
 }

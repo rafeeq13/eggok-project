@@ -142,7 +142,7 @@ export default function LoginPage() {
                   color: '#ffffff',
                   fontSize: '14px',
                 }}
-                onFocus={e => e.target.style.borderColor = '#FED800'}
+                onFocus={e => e.target.style.borderColor = '#E5B800'}
                 onBlur={e => e.target.style.borderColor = '#2A2A2A'}
               />
             </div>
@@ -172,7 +172,7 @@ export default function LoginPage() {
                     color: '#ffffff',
                     fontSize: '14px',
                   }}
-                  onFocus={e => e.target.style.borderColor = '#FED800'}
+                  onFocus={e => e.target.style.borderColor = '#E5B800'}
                   onBlur={e => e.target.style.borderColor = '#2A2A2A'}
                 />
                 <button type="button" onClick={() => setShowPassword(!showPassword)}
@@ -203,7 +203,7 @@ export default function LoginPage() {
               style={{
                 width: '100%',
                 padding: '14px',
-                background: loading ? '#888888' : '#FED800',
+                background: loading ? '#888888' : '#E5B800',
                 color: '#000000',
                 borderRadius: '10px',
                 fontSize: '15px',
@@ -232,7 +232,7 @@ export default function LoginPage() {
                 <p style={{ fontSize: '13px', color: '#888', marginBottom: '16px' }}>Enter your email and we'll send you a password reset link.</p>
                 <input value={forgotEmail} onChange={e => setForgotEmail(e.target.value)} placeholder="your@email.com" type="email"
                   style={{ width: '100%', padding: '12px 16px', background: '#111', border: '1px solid #2A2A2A', borderRadius: '10px', color: '#fff', fontSize: '14px', marginBottom: '12px' }}
-                  onFocus={e => e.target.style.borderColor = '#FED800'} onBlur={e => e.target.style.borderColor = '#2A2A2A'}
+                  onFocus={e => e.target.style.borderColor = '#E5B800'} onBlur={e => e.target.style.borderColor = '#2A2A2A'}
                 />
                 {forgotMsg && <p style={{ fontSize: '13px', color: forgotMsg.includes('sent') ? '#22C55E' : '#FC0301', marginBottom: '12px' }}>{forgotMsg}</p>}
                 <button disabled={forgotLoading || !forgotEmail.trim()} onClick={async () => {
@@ -247,7 +247,7 @@ export default function LoginPage() {
                   } catch { setForgotMsg('Failed to send. Try again.'); }
                   finally { setForgotLoading(false); }
                 }} style={{
-                  width: '100%', padding: '12px', background: forgotLoading ? '#888' : '#FED800',
+                  width: '100%', padding: '12px', background: forgotLoading ? '#888' : '#E5B800',
                   border: 'none', borderRadius: '10px', color: '#000', fontSize: '14px', fontWeight: '700',
                   cursor: forgotLoading ? 'not-allowed' : 'pointer',
                 }}>

@@ -81,7 +81,7 @@ export default function ModifierBuilder({ groups, onChange }: Props) {
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
         <p style={{ fontSize: '13px', fontWeight: '600', color: '#FEFEFE' }}>Modifier Groups</p>
         <button onClick={addGroup} style={{
-          padding: '6px 14px', background: '#FED800',
+          padding: '6px 14px', background: '#E5B800',
           border: 'none', borderRadius: '6px',
           color: '#000', fontSize: '12px', fontWeight: '700', cursor: 'pointer',
         }}>+ Add Group</button>
@@ -113,9 +113,9 @@ export default function ModifierBuilder({ groups, onChange }: Props) {
               </span>
               <span style={{
                 fontSize: '10px', padding: '2px 8px', borderRadius: '20px', fontWeight: '600',
-                background: group.required ? '#FED80020' : '#2A2A2A',
-                color: group.required ? '#FED800' : '#FEFEFE',
-                border: `1px solid ${group.required ? '#FED80040' : '#3A3A3A'}`,
+                background: group.required ? '#E5B80020' : '#2A2A2A',
+                color: group.required ? '#E5B800' : '#FEFEFE',
+                border: `1px solid ${group.required ? '#E5B80040' : '#3A3A3A'}`,
               }}>{group.required ? 'Required' : 'Optional'}</span>
               <span style={{ fontSize: '11px', color: '#FEFEFE' }}>
                 {group.modifiers.length} options
@@ -141,7 +141,7 @@ export default function ModifierBuilder({ groups, onChange }: Props) {
                     placeholder="e.g. Choose Your Bread, Add Toppings"
                     value={group.name}
                     onChange={e => updateGroup(group.id, 'name', e.target.value)}
-                    onFocus={e => e.target.style.borderColor = '#FED800'}
+                    onFocus={e => e.target.style.borderColor = '#E5B800'}
                     onBlur={e => e.target.style.borderColor = '#2A2A2A'}
                   />
                 </div>
@@ -152,7 +152,7 @@ export default function ModifierBuilder({ groups, onChange }: Props) {
                     type="number" min="0" style={inputStyle}
                     value={group.minSelections}
                     onChange={e => updateGroup(group.id, 'minSelections', Number(e.target.value))}
-                    onFocus={e => e.target.style.borderColor = '#FED800'}
+                    onFocus={e => e.target.style.borderColor = '#E5B800'}
                     onBlur={e => e.target.style.borderColor = '#2A2A2A'}
                   />
                 </div>
@@ -163,7 +163,7 @@ export default function ModifierBuilder({ groups, onChange }: Props) {
                     type="number" min="1" style={inputStyle}
                     value={group.maxSelections}
                     onChange={e => updateGroup(group.id, 'maxSelections', Number(e.target.value))}
-                    onFocus={e => e.target.style.borderColor = '#FED800'}
+                    onFocus={e => e.target.style.borderColor = '#E5B800'}
                     onBlur={e => e.target.style.borderColor = '#2A2A2A'}
                   />
                 </div>
@@ -180,7 +180,7 @@ export default function ModifierBuilder({ groups, onChange }: Props) {
                 </div>
                 <div onClick={() => updateGroup(group.id, 'required', !group.required)} style={{
                   width: '40px', height: '22px',
-                  background: group.required ? '#FED800' : '#2A2A2A',
+                  background: group.required ? '#E5B800' : '#2A2A2A',
                   borderRadius: '11px', position: 'relative', cursor: 'pointer',
                 }}>
                   <div style={{
@@ -212,7 +212,7 @@ export default function ModifierBuilder({ groups, onChange }: Props) {
                       placeholder="Option name (e.g. Brioche Bun)"
                       value={mod.name}
                       onChange={e => updateModifier(group.id, mod.id, 'name', e.target.value)}
-                      onFocus={e => e.target.style.borderColor = '#FED800'}
+                      onFocus={e => e.target.style.borderColor = '#E5B800'}
                       onBlur={e => e.target.style.borderColor = '#2A2A2A'}
                     />
                     <input
@@ -221,13 +221,13 @@ export default function ModifierBuilder({ groups, onChange }: Props) {
                       placeholder="Price"
                       value={mod.price}
                       onChange={e => updateModifier(group.id, mod.id, 'price', Number(e.target.value))}
-                      onFocus={e => e.target.style.borderColor = '#FED800'}
+                      onFocus={e => e.target.style.borderColor = '#E5B800'}
                       onBlur={e => e.target.style.borderColor = '#2A2A2A'}
                     />
                     <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
                       <div onClick={() => updateModifier(group.id, mod.id, 'isDefault', !mod.isDefault)} style={{
                         width: '34px', height: '20px',
-                        background: mod.isDefault ? '#FED800' : '#2A2A2A',
+                        background: mod.isDefault ? '#E5B800' : '#2A2A2A',
                         borderRadius: '10px', position: 'relative', cursor: 'pointer', flexShrink: 0,
                       }}>
                         <div style={{

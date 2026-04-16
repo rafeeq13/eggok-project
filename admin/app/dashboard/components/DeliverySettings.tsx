@@ -14,10 +14,10 @@ type Zone = {
 
 type Tab = 'zones' | 'general' | 'hours';
 
-const zoneColors = ['#FED800', '#60A5FA', '#22C55E', '#A78BFA', '#FC0301', '#F59E0B'];
+const zoneColors = ['#E5B800', '#60A5FA', '#22C55E', '#A78BFA', '#FC0301', '#F59E0B'];
 
 const initialZones: Zone[] = [
-  { id: 1, name: 'Local Zone', radiusMiles: 1.5, deliveryFee: 9.99, minOrder: 15, estimatedMinutes: 20, active: true, color: '#FED800' },
+  { id: 1, name: 'Local Zone', radiusMiles: 1.5, deliveryFee: 9.99, minOrder: 15, estimatedMinutes: 20, active: true, color: '#E5B800' },
   { id: 2, name: 'Standard Zone', radiusMiles: 3.0, deliveryFee: 3.99, minOrder: 20, estimatedMinutes: 30, active: true, color: '#60A5FA' },
   { id: 3, name: 'Extended Zone', radiusMiles: 5.0, deliveryFee: 5.99, minOrder: 25, estimatedMinutes: 45, active: true, color: '#22C55E' },
 ];
@@ -210,7 +210,7 @@ export default function DeliverySettings() {
 
   const [formData, setFormData] = useState({
     name: '', radiusMiles: '', deliveryFee: '',
-    minOrder: '', estimatedMinutes: '', active: true, color: '#FED800',
+    minOrder: '', estimatedMinutes: '', active: true, color: '#E5B800',
   });
 
   const showSuccess = (msg: string) => {
@@ -219,7 +219,7 @@ export default function DeliverySettings() {
   };
 
   const resetForm = () => {
-    setFormData({ name: '', radiusMiles: '', deliveryFee: '', minOrder: '', estimatedMinutes: '', active: true, color: '#FED800' });
+    setFormData({ name: '', radiusMiles: '', deliveryFee: '', minOrder: '', estimatedMinutes: '', active: true, color: '#E5B800' });
     setEditingZone(null);
     setShowZoneForm(false);
   };
@@ -312,7 +312,7 @@ export default function DeliverySettings() {
   const toggleSwitch = (value: boolean, onChange: () => void, disabled = false) => (
     <div onClick={disabled ? undefined : onChange} style={{
       width: '46px', height: '26px',
-      background: value ? '#FED800' : '#2A2A2A',
+      background: value ? '#E5B800' : '#2A2A2A',
       borderRadius: '13px', position: 'relative',
       cursor: disabled ? 'not-allowed' : 'pointer',
       opacity: disabled ? 0.5 : 1,
@@ -404,7 +404,7 @@ export default function DeliverySettings() {
                 <label style={labelStyle}>Zone Name *</label>
                 <input style={inputStyle} placeholder="e.g. Local Zone, University Area"
                   value={formData.name} onChange={e => setFormData({ ...formData, name: e.target.value })}
-                  onFocus={e => e.target.style.borderColor = '#FED800'}
+                  onFocus={e => e.target.style.borderColor = '#E5B800'}
                   onBlur={e => e.target.style.borderColor = '#2A2A2A'}
                 />
               </div>
@@ -414,7 +414,7 @@ export default function DeliverySettings() {
                   <label style={labelStyle}>Radius (miles) *</label>
                   <input type="number" step="0.1" min="0.1" style={inputStyle} placeholder="3.0"
                     value={formData.radiusMiles} onChange={e => setFormData({ ...formData, radiusMiles: e.target.value })}
-                    onFocus={e => e.target.style.borderColor = '#FED800'}
+                    onFocus={e => e.target.style.borderColor = '#E5B800'}
                     onBlur={e => e.target.style.borderColor = '#2A2A2A'}
                   />
                 </div>
@@ -422,7 +422,7 @@ export default function DeliverySettings() {
                   <label style={labelStyle}>Delivery Fee ($)</label>
                   <input type="number" step="0.01" min="0" style={inputStyle} placeholder="3.99"
                     value={formData.deliveryFee} onChange={e => setFormData({ ...formData, deliveryFee: e.target.value })}
-                    onFocus={e => e.target.style.borderColor = '#FED800'}
+                    onFocus={e => e.target.style.borderColor = '#E5B800'}
                     onBlur={e => e.target.style.borderColor = '#2A2A2A'}
                   />
                 </div>
@@ -430,7 +430,7 @@ export default function DeliverySettings() {
                   <label style={labelStyle}>Minimum Order ($)</label>
                   <input type="number" step="0.01" min="0" style={inputStyle} placeholder="20.00"
                     value={formData.minOrder} onChange={e => setFormData({ ...formData, minOrder: e.target.value })}
-                    onFocus={e => e.target.style.borderColor = '#FED800'}
+                    onFocus={e => e.target.style.borderColor = '#E5B800'}
                     onBlur={e => e.target.style.borderColor = '#2A2A2A'}
                   />
                 </div>
@@ -438,7 +438,7 @@ export default function DeliverySettings() {
                   <label style={labelStyle}>Est. Delivery Time (mins)</label>
                   <input type="number" min="1" style={inputStyle} placeholder="30"
                     value={formData.estimatedMinutes} onChange={e => setFormData({ ...formData, estimatedMinutes: e.target.value })}
-                    onFocus={e => e.target.style.borderColor = '#FED800'}
+                    onFocus={e => e.target.style.borderColor = '#E5B800'}
                     onBlur={e => e.target.style.borderColor = '#2A2A2A'}
                   />
                 </div>
@@ -465,7 +465,7 @@ export default function DeliverySettings() {
 
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', marginTop: '4px' }}>
                 <button onClick={resetForm} style={{ padding: '12px', background: 'transparent', border: '1px solid #2A2A2A', borderRadius: '8px', color: '#FEFEFE', fontSize: '13px', cursor: 'pointer' }}>Cancel</button>
-                <button onClick={handleSaveZone} style={{ padding: '12px', background: '#FED800', border: 'none', borderRadius: '8px', color: '#000', fontSize: '13px', fontWeight: '700', cursor: 'pointer' }}>
+                <button onClick={handleSaveZone} style={{ padding: '12px', background: '#E5B800', border: 'none', borderRadius: '8px', color: '#000', fontSize: '13px', fontWeight: '700', cursor: 'pointer' }}>
                   {editingZone ? 'Save Zone' : 'Create Zone'}
                 </button>
               </div>
@@ -482,7 +482,7 @@ export default function DeliverySettings() {
           { id: 'hours', label: 'Delivery Hours' },
         ].map(tab => (
           <button key={tab.id} onClick={() => setActiveTab(tab.id as Tab)} style={{
-            flex: 1, padding: '10px', background: activeTab === tab.id ? '#FED800' : 'transparent',
+            flex: 1, padding: '10px', background: activeTab === tab.id ? '#E5B800' : 'transparent',
             color: activeTab === tab.id ? '#000' : '#FEFEFE',
             border: 'none', borderRadius: '8px', fontSize: '12px', fontWeight: '600', cursor: 'pointer',
           }}>{tab.label}</button>
@@ -551,7 +551,7 @@ export default function DeliverySettings() {
                 </div>
                 <div style={{ position: 'absolute', bottom: '12px', right: '12px', background: '#1A1A1A', border: '1px solid #2A2A2A', borderRadius: '8px', padding: '6px 12px' }}>
                   <p style={{ fontSize: '10px', color: '#FEFEFE' }}>Google Maps integration</p>
-                  <p style={{ fontSize: '10px', color: '#FED800' }}>Add API key in Integrations to enable live map</p>
+                  <p style={{ fontSize: '10px', color: '#E5B800' }}>Add API key in Integrations to enable live map</p>
                 </div>
               </div>
             )}
@@ -563,7 +563,7 @@ export default function DeliverySettings() {
               {zones.filter(z => z.active).length} active zones · {zones.length} total
             </p>
             <button onClick={() => { resetForm(); setShowZoneForm(true); }} style={{
-              padding: '9px 18px', background: '#FED800', border: 'none',
+              padding: '9px 18px', background: '#E5B800', border: 'none',
               borderRadius: '8px', color: '#000', fontSize: '13px', fontWeight: '700', cursor: 'pointer',
             }}>+ Create Zone</button>
           </div>
@@ -627,10 +627,10 @@ export default function DeliverySettings() {
                 placeholder="e.g. 123 Main St, Philadelphia PA 19103"
                 value={testAddress}
                 onChange={e => setTestAddress(e.target.value)}
-                onFocus={e => e.target.style.borderColor = '#FED800'}
+                onFocus={e => e.target.style.borderColor = '#E5B800'}
                 onBlur={e => e.target.style.borderColor = '#2A2A2A'}
               />
-              <button onClick={checkAddress} style={{ padding: '9px 18px', background: '#FED800', border: 'none', borderRadius: '8px', color: '#000', fontSize: '13px', fontWeight: '700', cursor: 'pointer' }}>
+              <button onClick={checkAddress} style={{ padding: '9px 18px', background: '#E5B800', border: 'none', borderRadius: '8px', color: '#000', fontSize: '13px', fontWeight: '700', cursor: 'pointer' }}>
                 Check
               </button>
             </div>
@@ -738,7 +738,7 @@ export default function DeliverySettings() {
                   <label style={labelStyle}>Free delivery on orders above ($)</label>
                   <input type="number" style={{ ...inputStyle, maxWidth: '200px' }} value={freeDeliveryThreshold}
                     onChange={e => setFreeDeliveryThreshold(e.target.value)}
-                    onFocus={e => e.target.style.borderColor = '#FED800'}
+                    onFocus={e => e.target.style.borderColor = '#E5B800'}
                     onBlur={e => e.target.style.borderColor = '#2A2A2A'}
                   />
                 </div>
@@ -749,7 +749,7 @@ export default function DeliverySettings() {
                   <label style={labelStyle}>Food Prep Time (minutes)</label>
                   <input type="number" style={inputStyle} value={prepTime}
                     onChange={e => setPrepTime(e.target.value)}
-                    onFocus={e => e.target.style.borderColor = '#FED800'}
+                    onFocus={e => e.target.style.borderColor = '#E5B800'}
                     onBlur={e => e.target.style.borderColor = '#2A2A2A'}
                   />
                   <p style={{ fontSize: '11px', color: '#FEFEFE', marginTop: '4px' }}>Added to delivery ETA shown to customer</p>
@@ -758,7 +758,7 @@ export default function DeliverySettings() {
                   <label style={labelStyle}>Max Concurrent Delivery Orders</label>
                   <input type="number" style={inputStyle} value={maxActiveOrders}
                     onChange={e => setMaxActiveOrders(e.target.value)}
-                    onFocus={e => e.target.style.borderColor = '#FED800'}
+                    onFocus={e => e.target.style.borderColor = '#E5B800'}
                     onBlur={e => e.target.style.borderColor = '#2A2A2A'}
                   />
                   <p style={{ fontSize: '11px', color: '#FEFEFE', marginTop: '4px' }}>Pause delivery when this limit is reached</p>
@@ -785,8 +785,8 @@ export default function DeliverySettings() {
                   <input style={{ ...inputStyle, opacity: 0.6 }} value={storeLng} readOnly />
                 </div>
               </div>
-              <div style={{ padding: '12px 14px', background: '#111111', borderRadius: '8px', border: '1px solid #FED80030' }}>
-                <p style={{ fontSize: '12px', color: '#FED800', marginBottom: '4px', fontWeight: '600' }}>Google Maps API Required</p>
+              <div style={{ padding: '12px 14px', background: '#111111', borderRadius: '8px', border: '1px solid #E5B80030' }}>
+                <p style={{ fontSize: '12px', color: '#E5B800', marginBottom: '4px', fontWeight: '600' }}>Google Maps API Required</p>
                 <p style={{ fontSize: '11px', color: '#FEFEFE', lineHeight: '1.6' }}>
                   To enable live map view, zone drawing on map, and real-time distance calculation, add your Google Maps API key in the environment settings. Contact your developer to set this up.
                 </p>
@@ -799,7 +799,7 @@ export default function DeliverySettings() {
             saveAll();
             showSuccess('General settings saved');
           }} style={{
-            width: '100%', padding: '14px', background: '#FED800',
+            width: '100%', padding: '14px', background: '#E5B800',
             border: 'none', borderRadius: '10px', color: '#000',
             fontSize: '14px', fontWeight: '700', cursor: 'pointer', marginBottom: '32px',
           }}>Save General Settings</button>
@@ -847,7 +847,7 @@ export default function DeliverySettings() {
             saveAll(undefined, deliveryHours);
             showSuccess('Delivery hours saved');
           }} style={{
-            width: '100%', padding: '14px', background: '#FED800',
+            width: '100%', padding: '14px', background: '#E5B800',
             border: 'none', borderRadius: '10px', color: '#000',
             fontSize: '14px', fontWeight: '700', cursor: 'pointer', marginBottom: '32px',
           }}>Save Delivery Hours</button>

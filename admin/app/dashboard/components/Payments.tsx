@@ -207,20 +207,20 @@ export default function Payments() {
           body { font-family: Arial, sans-serif; font-size: 12px; color: #222; }
           .header { background: #000; color: #fff; padding: 24px 32px; display: flex; justify-content: space-between; align-items: center; }
           .brand-logo { display: flex; align-items: center; gap: 14px; }
-          .brand { color: #FED800; font-size: 28px; font-weight: 900; letter-spacing: 2px; }
+          .brand { color: #E5B800; font-size: 28px; font-weight: 900; letter-spacing: 2px; }
           .brand-sub { color: #aaa; font-size: 11px; margin-top: 4px; }
           .report-meta { text-align: right; color: #aaa; font-size: 11px; line-height: 1.8; }
           .content { padding: 24px 32px; }
-          .section-title { font-size: 14px; font-weight: 700; color: #111; margin: 20px 0 10px; border-bottom: 2px solid #FED800; padding-bottom: 6px; }
+          .section-title { font-size: 14px; font-weight: 700; color: #111; margin: 20px 0 10px; border-bottom: 2px solid #E5B800; padding-bottom: 6px; }
           .summary-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 8px; }
           .summary-card { border: 1px solid #ddd; border-radius: 8px; padding: 14px; }
           .summary-label { font-size: 10px; color: #888; text-transform: uppercase; margin-bottom: 4px; }
           .summary-value { font-size: 20px; font-weight: 700; }
-          .profit-card { background: #000; color: #FED800; border-radius: 8px; padding: 14px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; }
+          .profit-card { background: #000; color: #E5B800; border-radius: 8px; padding: 14px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; }
           .profit-label { font-size: 13px; color: #aaa; }
-          .profit-value { font-size: 28px; font-weight: 900; color: #FED800; }
+          .profit-value { font-size: 28px; font-weight: 900; color: #E5B800; }
           table { width: 100%; border-collapse: collapse; font-size: 10px; }
-          thead tr { background: #000; color: #FED800; }
+          thead tr { background: #000; color: #E5B800; }
           thead th { padding: 6px 8px; text-align: left; font-size: 9px; letter-spacing: 0.5px; }
           tbody tr:nth-child(even) { background: #f9f9f9; }
           tbody td { padding: 6px 8px; border-bottom: 1px solid #eee; }
@@ -233,7 +233,7 @@ export default function Payments() {
           <div class="brand-logo">
             ${logoImg}
             <div>
-              <div class="brand-sub" style="font-size:13px;color:#FED800;font-weight:700;margin-bottom:4px;">Payment & Revenue Report</div>
+              <div class="brand-sub" style="font-size:13px;color:#E5B800;font-weight:700;margin-bottom:4px;">Payment & Revenue Report</div>
               <div class="brand-sub">3517 Lancaster Ave, Philadelphia PA 19104</div>
             </div>
           </div>
@@ -247,7 +247,7 @@ export default function Payments() {
           <div class="summary-grid">
             <div class="summary-card">
               <div class="summary-label">Gross Revenue</div>
-              <div class="summary-value" style="color:#FED800">$${totalRevenue.toFixed(2)}</div>
+              <div class="summary-value" style="color:#E5B800">$${totalRevenue.toFixed(2)}</div>
             </div>
             <div class="summary-card">
               <div class="summary-label">Tips Collected</div>
@@ -378,7 +378,7 @@ export default function Payments() {
               ))}
               <div style={{ display: 'flex', justifyContent: 'space-between', paddingTop: '10px', borderTop: '1px solid #2A2A2A', marginTop: '4px' }}>
                 <span style={{ fontSize: '14px', fontWeight: '700', color: '#FEFEFE' }}>Net Revenue</span>
-                <span style={{ fontSize: '16px', fontWeight: '700', color: '#FED800' }}>${selectedTx.netRevenue.toFixed(2)}</span>
+                <span style={{ fontSize: '16px', fontWeight: '700', color: '#E5B800' }}>${selectedTx.netRevenue.toFixed(2)}</span>
               </div>
             </div>
 
@@ -409,7 +409,7 @@ export default function Payments() {
             <div style={{ background: '#111111', borderRadius: '8px', padding: '14px', marginBottom: '16px' }}>
               <p style={{ fontSize: '12px', color: '#888', marginBottom: '4px' }}>Order {refundTx.id}</p>
               <p style={{ fontSize: '14px', color: '#FEFEFE', fontWeight: '600' }}>{refundTx.customer}</p>
-              <p style={{ fontSize: '13px', color: '#FED800', marginTop: '4px' }}>Total: ${refundTx.orderTotal.toFixed(2)}</p>
+              <p style={{ fontSize: '13px', color: '#E5B800', marginTop: '4px' }}>Total: ${refundTx.orderTotal.toFixed(2)}</p>
               {refundTx.refundAmount > 0 && (
                 <p style={{ fontSize: '12px', color: '#FC0301', marginTop: '2px' }}>Already refunded: ${refundTx.refundAmount.toFixed(2)}</p>
               )}
@@ -425,12 +425,12 @@ export default function Payments() {
               value={refundAmount}
               onChange={e => setRefundAmount(e.target.value)}
               style={{ width: '100%', padding: '10px 14px', background: '#111111', border: '1px solid #2A2A2A', borderRadius: '8px', color: '#FEFEFE', fontSize: '14px', marginBottom: '8px', outline: 'none' }}
-              onFocus={e => e.target.style.borderColor = '#FED800'}
+              onFocus={e => e.target.style.borderColor = '#E5B800'}
               onBlur={e => e.target.style.borderColor = '#2A2A2A'}
             />
             <button
               onClick={() => setRefundAmount((refundTx.orderTotal - refundTx.refundAmount).toFixed(2))}
-              style={{ fontSize: '11px', color: '#FED800', background: 'transparent', border: 'none', cursor: 'pointer', marginBottom: '12px' }}
+              style={{ fontSize: '11px', color: '#E5B800', background: 'transparent', border: 'none', cursor: 'pointer', marginBottom: '12px' }}
             >
               Full refund (${(refundTx.orderTotal - refundTx.refundAmount).toFixed(2)})
             </button>
@@ -454,7 +454,7 @@ export default function Payments() {
       {/* KPI Cards */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '12px', marginBottom: '12px' }}>
         {[
-          { label: 'Gross Revenue', value: `$${totalRevenue.toFixed(2)}`, sub: `${filtered.length} transactions`, color: '#FED800' },
+          { label: 'Gross Revenue', value: `$${totalRevenue.toFixed(2)}`, sub: `${filtered.length} transactions`, color: '#E5B800' },
           { label: 'Tips Collected', value: `$${totalTips.toFixed(2)}`, sub: `Included in gross revenue`, color: '#22C55E' },
           { label: 'Stripe Fees Paid', value: `$${totalStripeFees.toFixed(2)}`, sub: `${stripePct}% of gross revenue`, color: '#FC0301' },
           { label: 'Delivery Fees Paid', value: `$${totalDeliveryFees.toFixed(2)}`, sub: 'DoorDash Drive charges', color: '#F59E0B' },
@@ -471,9 +471,9 @@ export default function Payments() {
         {[
           { label: 'Total Refunds', value: `$${totalRefunds.toFixed(2)}`, sub: `${filtered.filter(t => t.status !== 'Paid').length} refund transactions`, color: '#FC0301' },
           { label: 'Net Revenue', value: `$${totalNet.toFixed(2)}`, sub: 'After fees, before refunds', color: '#22C55E' },
-          { label: 'Net Profit', value: `$${totalProfit.toFixed(2)}`, sub: 'After all deductions', color: '#FED800' },
+          { label: 'Net Profit', value: `$${totalProfit.toFixed(2)}`, sub: 'After all deductions', color: '#E5B800' },
         ].map((kpi, i) => (
-          <div key={i} style={{ background: i === 2 ? '#1A1A00' : '#1A1A1A', border: `1px solid ${i === 2 ? '#FED80030' : '#2A2A2A'}`, borderRadius: '12px', padding: '18px' }}>
+          <div key={i} style={{ background: i === 2 ? '#1A1A00' : '#1A1A1A', border: `1px solid ${i === 2 ? '#E5B80030' : '#2A2A2A'}`, borderRadius: '12px', padding: '18px' }}>
             <p style={{ fontSize: '11px', color: '#FEFEFE', marginBottom: '8px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>{kpi.label}</p>
             <p style={{ fontSize: '22px', fontWeight: '700', color: kpi.color, marginBottom: '4px' }}>{kpi.value}</p>
             <p style={{ fontSize: '11px', color: '#FEFEFE' }}>{kpi.sub}</p>
@@ -488,7 +488,7 @@ export default function Payments() {
           <div style={{ display: 'flex', background: '#111111', border: '1px solid #2A2A2A', borderRadius: '8px', overflow: 'hidden' }}>
             {(['revenue', 'profit'] as const).map(c => (
               <button key={c} onClick={() => setActiveChart(c)} style={{
-                padding: '6px 14px', background: activeChart === c ? '#FED800' : 'transparent',
+                padding: '6px 14px', background: activeChart === c ? '#E5B800' : 'transparent',
                 border: 'none', cursor: 'pointer', fontSize: '12px', fontWeight: activeChart === c ? '700' : '400',
                 color: activeChart === c ? '#000' : '#FEFEFE', textTransform: 'capitalize',
               }}>{c}</button>
@@ -502,7 +502,7 @@ export default function Payments() {
             <YAxis tick={{ fill: '#FEFEFE', fontSize: 11 }} axisLine={false} tickLine={false} />
             <Tooltip content={<CustomTooltip />} />
             {activeChart === 'revenue' ? (
-              <Bar dataKey="revenue" fill="#FED800" radius={[4, 4, 0, 0]} name="revenue" />
+              <Bar dataKey="revenue" fill="#E5B800" radius={[4, 4, 0, 0]} name="revenue" />
             ) : (
               <Bar dataKey="profit" fill="#22C55E" radius={[4, 4, 0, 0]} name="profit" />
             )}
@@ -515,7 +515,7 @@ export default function Payments() {
         <input placeholder="Search order ID or customer..."
           value={search} onChange={e => setSearch(e.target.value)}
           style={{ ...inputStyle, flex: 1, minWidth: '200px' }}
-          onFocus={e => e.target.style.borderColor = '#FED800'}
+          onFocus={e => e.target.style.borderColor = '#E5B800'}
           onBlur={e => e.target.style.borderColor = '#2A2A2A'}
         />
         <select value={statusFilter} onChange={e => setStatusFilter(e.target.value)} style={{ ...inputStyle, cursor: 'pointer' }}>
@@ -540,14 +540,14 @@ export default function Payments() {
           display: 'flex', alignItems: 'center', gap: '6px',
         }}>⬇ CSV</button>
         <button onClick={downloadPDF} style={{
-          padding: '8px 14px', background: '#FED800', border: 'none',
+          padding: '8px 14px', background: '#E5B800', border: 'none',
           borderRadius: '8px', color: '#000', fontSize: '12px', fontWeight: '700', cursor: 'pointer',
           display: 'flex', alignItems: 'center', gap: '6px',
         }}>⬇ PDF Report</button>
       </div>
 
       <p style={{ fontSize: '12px', color: '#FEFEFE', marginBottom: '12px' }}>
-        Showing {filtered.length} transactions · Net Profit: <span style={{ color: '#FED800', fontWeight: '600' }}>${totalProfit.toFixed(2)}</span>
+        Showing {filtered.length} transactions · Net Profit: <span style={{ color: '#E5B800', fontWeight: '600' }}>${totalProfit.toFixed(2)}</span>
       </p>
 
       {/* Transactions Table */}
@@ -566,14 +566,14 @@ export default function Payments() {
                 <tr><td colSpan={12} style={{ padding: '40px', textAlign: 'center', color: '#FEFEFE', fontSize: '13px' }}>No transactions found</td></tr>
               ) : filtered.map((tx, i) => (
                 <tr key={tx.id} style={{ borderBottom: i < filtered.length - 1 ? '1px solid #2A2A2A' : 'none' }}>
-                  <td style={{ padding: '12px 12px', fontSize: '12px', fontWeight: '700', color: '#FED800' }}>{tx.id}</td>
+                  <td style={{ padding: '12px 12px', fontSize: '12px', fontWeight: '700', color: '#E5B800' }}>{tx.id}</td>
                   <td style={{ padding: '12px 12px' }}>
                     <p style={{ fontSize: '11px', color: '#FEFEFE' }}>{tx.date}</p>
                     <p style={{ fontSize: '10px', color: '#FEFEFE', marginTop: '1px' }}>{tx.time}</p>
                   </td>
                   <td style={{ padding: '12px 12px', fontSize: '12px', color: '#FEFEFE' }}>{tx.customer}</td>
                   <td style={{ padding: '12px 12px' }}>
-                    <span style={{ fontSize: '10px', padding: '2px 8px', borderRadius: '20px', fontWeight: '600', background: tx.type === 'Delivery' ? '#0A1628' : '#1A1A00', color: tx.type === 'Delivery' ? '#60A5FA' : '#FED800', border: `1px solid ${tx.type === 'Delivery' ? '#1E3A5F' : '#3A3A00'}` }}>
+                    <span style={{ fontSize: '10px', padding: '2px 8px', borderRadius: '20px', fontWeight: '600', background: tx.type === 'Delivery' ? '#0A1628' : '#1A1A00', color: tx.type === 'Delivery' ? '#60A5FA' : '#E5B800', border: `1px solid ${tx.type === 'Delivery' ? '#1E3A5F' : '#3A3A00'}` }}>
                       {tx.type}
                     </span>
                   </td>

@@ -7,7 +7,7 @@
 }
 
 :root {
-  --yellow: #FED800;
+  --yellow: #E5B800;
   --yellow-dark: #E5C200;
   --yellow-light: #FFF3A0;
   --red: #FC0301;
@@ -34,8 +34,9 @@ body {
 }
 
 h1, h2, h3, h4 {
-  font-family: 'Bebas Neue', sans-serif;
-  letter-spacing: 1px;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 800;
+  letter-spacing: 0.5px;
   line-height: 1.1;
 }
 
@@ -75,9 +76,9 @@ button { cursor: pointer; border: none; background: none; }
 }
 
 .btn-primary:hover {
-  background: transparent;
+  background: #E5B800;
   color: #000000;
-  border-color: #FED800;
+  border-color: transparent;
 }
 
 .btn-secondary {
@@ -95,9 +96,9 @@ button { cursor: pointer; border: none; background: none; }
 }
 
 .btn-secondary:hover {
-  background: var(--yellow);
-  color: #000000;
-  border-color: var(--yellow);
+  background: #F0F0F0;
+  color: #1A1A1A;
+  border-color: #1A1A1A;
 }
 
 /* Animations */
@@ -138,6 +139,17 @@ button { cursor: pointer; border: none; background: none; }
   .hide-desktop { display: none !important; }
 }
 
+/* ── Navbar responsive ── */
+@media (max-width: 1024px) {
+  .nav-desktop-gap { gap: 2px !important; }
+}
+@media (max-width: 768px) {
+  .header-inner { height: 64px !important; }
+  .header-spacer { height: 64px !important; }
+  .header-logo img { width: 100px !important; height: 44px !important; }
+  .header-wrap { padding: 0 16px !important; }
+}
+
 input[type=number]::-webkit-inner-spin-button,
 input[type=number]::-webkit-outer-spin-button {
   -webkit-appearance: none;
@@ -172,11 +184,11 @@ input[type=number] {
   background: #F5F5F5 !important;
 }
 .pac-item-query {
-  color: #B8A000 !important;
+  color: #1A1A1A !important;
   font-weight: 600 !important;
 }
 .pac-matched {
-  color: #B8A000 !important;
+  color: #1A1A1A !important;
 }
 .pac-icon {
   display: none !important;

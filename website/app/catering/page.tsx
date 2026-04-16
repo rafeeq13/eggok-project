@@ -21,7 +21,7 @@ export default function CateringPage() {
       name: 'Breakfast Box',
       price: 'From $12/person',
       minGuests: '10',
-      color: '#FED800',
+      color: '#E5B800',
       items: ['Choice of 2 Breakfast Sandwiches', 'Hash Browns', 'Fresh Fruit Cup', 'Coffee or Juice'],
       popular: false,
     },
@@ -85,7 +85,7 @@ export default function CateringPage() {
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
         :root {
-          --y: #FED800;
+          --y: #E5B800;
           --r: #FC0301;
           --green: #22C55E;
           --bg0: #FFFFFF;
@@ -96,7 +96,7 @@ export default function CateringPage() {
           --t1: #1A1A1A;
           --t2: #333333;
           --t3: #888888;
-          --font-head: 'Bebas Neue', sans-serif;
+          --font-head: 'DM Sans', sans-serif;
           --font-body: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
         }
 
@@ -117,7 +117,7 @@ export default function CateringPage() {
           transition: all 0.3s ease;
           font-family: var(--font-body);
         }
-        .btn-yellow:hover { background: transparent; color: #000; border-color: #FED800; transform: none; box-shadow: none; }
+        .btn-yellow:hover { background: #E5B800; color: #000; border-color: transparent; transform: none; box-shadow: none; }
         .btn-yellow:active { transform: translateY(0); }
         .btn-outline {
           display: inline-flex; align-items: center; gap: 8px;
@@ -127,22 +127,23 @@ export default function CateringPage() {
           transition: border-color 0.15s, color 0.15s;
           font-family: var(--font-body);
         }
-        .btn-outline:hover { border-color: #FED800; color: #B8A000; }
+        .btn-outline:hover { background: #F0F0F0; border-color: #1A1A1A; color: #1A1A1A; }
 
         /* ── Section label ── */
         .sec-label {
-          font-size: 11px; font-weight: 700; letter-spacing: 3.5px;
-          text-transform: uppercase; color: var(--y);
+          font-size: 12px; font-weight: 700; letter-spacing: 3.5px;
+          text-transform: uppercase; color: #888888;
           margin-bottom: 10px; display: block;
         }
 
         /* ── Section heading ── */
         .sec-heading {
           font-family: var(--font-head);
-          font-size: clamp(36px, 6vw, 62px);
-          letter-spacing: 1px; line-height: 0.95; color: var(--t1);
+          font-size: 32px;
+          font-weight: 800;
+          letter-spacing: 0.5px; line-height: 0.95; color: var(--t1);
         }
-        .sec-heading .accent { color: var(--y); }
+        .sec-heading .accent { color: var(--t1); }
 
         /* ── Why grid ── */
         .why-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
@@ -174,7 +175,7 @@ export default function CateringPage() {
         .pkg-icon { width: 52px; height: 52px; border-radius: 14px; display: flex; align-items: center; justify-content: center; margin-bottom: 18px; }
         .pkg-name { font-family: var(--font-head); font-size: clamp(22px, 3vw, 30px); letter-spacing: 1px; color: var(--t1); margin-bottom: 6px; line-height: 1; }
         .pkg-price { font-family: var(--font-head); font-size: 22px; letter-spacing: 1px; margin-bottom: 4px; }
-        .pkg-min-guests { font-size: 12px; color: var(--t3); margin-bottom: 22px; font-weight: 500; }
+        .pkg-min-guests { font-size: 13px; color: var(--t3); margin-bottom: 22px; font-weight: 500; }
         .pkg-items { display: flex; flex-direction: column; gap: 9px; margin-bottom: 26px; }
         .pkg-item { display: flex; align-items: center; gap: 10px; }
         .pkg-item-check { width: 18px; height: 18px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
@@ -187,7 +188,7 @@ export default function CateringPage() {
           font-family: var(--font-body); cursor: pointer;
           text-decoration: none;
         }
-        .pkg-cta-solid:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(0,0,0,0.08); }
+        .pkg-cta-solid:hover { background: #E5B800; color: #000; border: 2px solid transparent; transform: none; box-shadow: none; }
         .pkg-cta-outline:hover { filter: brightness(1.2); }
 
         /* ── Tip banner ── */
@@ -198,7 +199,7 @@ export default function CateringPage() {
         }
         .tip-icon { width: 44px; height: 44px; border-radius: 10px; background: rgba(254,216,0,0.06); border: 1px solid rgba(254,216,0,0.15); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
         .tip-text { font-size: 14px; color: var(--t2); line-height: 1.7; }
-        .tip-link { color: var(--y); font-weight: 700; text-decoration: none; }
+        .tip-link { color: var(--t1); font-weight: 700; text-decoration: none; }
         .tip-link:hover { text-decoration: underline; }
 
         /* ── Form section ── */
@@ -241,12 +242,12 @@ export default function CateringPage() {
         .form-submit-btn {
           width: 100%; padding: 16px; background: var(--y);
           border-radius: 12px; font-size: 16px; font-weight: 800;
-          color: #000; cursor: pointer; border: none;
+          color: #000; cursor: pointer; border: 2px solid transparent;
           display: flex; align-items: center; justify-content: center; gap: 8px;
           font-family: var(--font-body);
-          transition: transform 0.15s, box-shadow 0.15s;
+          transition: all 0.3s ease;
         }
-        .form-submit-btn:hover { transform: translateY(-1px); box-shadow: 0 8px 24px rgba(254,216,0,0.15); }
+        .form-submit-btn:hover { background: #E5B800; color: #000; border-color: transparent; transform: none; box-shadow: none; }
 
         /* ── Success card ── */
         .success-card {
@@ -270,16 +271,17 @@ export default function CateringPage() {
         .phone-cta-number {
           font-family: var(--font-head);
           font-size: clamp(36px, 6vw, 64px);
-          color: var(--y); letter-spacing: 3px; display: block;
+          font-weight: 800;
+          color: var(--t1); letter-spacing: 3px; display: block;
           transition: color 0.15s;
         }
-        .phone-cta-number:hover { color: #e8c400; }
+        .phone-cta-number:hover { color: #555555; }
 
         /* ── Footer ── */
         .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 48px; margin-bottom: 40px; }
-        .footer-bottom { border-top: 1px solid #1A1A1A; padding-top: 24px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
-        .footer-link { display: block; font-size: 14px; color: #ffffff; margin-bottom: 11px; text-decoration: none; transition: color 0.15s, padding-left 0.15s; }
-        .footer-link:hover { color: var(--y); padding-left: 4px; }
+        .footer-bottom { border-top: 1px solid #E5E5E5; padding-top: 24px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
+        .footer-link { display: block; font-size: 14px; color: #1A1A1A; margin-bottom: 11px; text-decoration: none; transition: color 0.15s, padding-left 0.15s; }
+        .footer-link:hover { color: #555555; padding-left: 4px; }
 
         /* ═══ RESPONSIVE ═══ */
         @media (max-width: 1024px) {
@@ -321,8 +323,8 @@ export default function CateringPage() {
 
         <div className="container hero-container" style={{ position: 'relative', textAlign: 'center' }}>
           <span id="hero-label" className="sec-label">Catering Services</span>
-          <h1 id="hero-title" className="bebas" style={{ fontSize: 'clamp(52px, 9vw, 80px)', color: '#1A1A1A', lineHeight: '0.93', marginBottom: '24px' }}>
-            FEED YOUR <span style={{ color: '#FED800' }}>WHOLE CREW</span>
+          <h1 id="hero-title" className="bebas" style={{ fontSize: '40px', color: '#1A1A1A', lineHeight: '0.93', marginBottom: '24px' }}>
+            Feed Your <span style={{ color: '#1A1A1A' }}>Whole Crew</span>
           </h1>
           <p id="hero-subtitle" style={{ fontSize: 'clamp(15px, 2vw, 18px)', color: '#1A1A1A', lineHeight: '1.8', maxWidth: '520px', margin: '0 auto 40px' }}>
             From office breakfasts to special events  Eggs Ok caters for groups of all sizes. Fresh, made-to-order food delivered to your door.
@@ -347,7 +349,7 @@ export default function CateringPage() {
           <div id="why-header" style={{ textAlign: 'center', marginBottom: '52px' }}>
             <span className="sec-label">Why Eggs Ok</span>
             <h2 id="why-heading" className="sec-heading">
-              THE <span className="accent">DIFFERENCE</span>
+              The <span className="accent">Difference</span>
             </h2>
           </div>
 
@@ -355,7 +357,7 @@ export default function CateringPage() {
             {whyItems.map((item, i) => (
               <div key={i} id={`why-card-${i}`} className="why-card" role="listitem">
                 <div className="why-icon" aria-hidden="true">
-                  <item.icon size={26} color="#FED800" strokeWidth={2} />
+                  <item.icon size={26} color="#E5B800" strokeWidth={2} />
                 </div>
                 <p className="why-title">{item.title}</p>
                 <p className="why-desc">{item.desc}</p>
@@ -374,7 +376,7 @@ export default function CateringPage() {
           <div id="packages-header" style={{ marginBottom: '52px' }}>
             <span className="sec-label">Catering Packages</span>
             <h2 id="packages-heading" className="sec-heading">
-              CHOOSE YOUR <span className="accent">PACKAGE</span>
+              Choose Your <span className="accent">Package</span>
             </h2>
           </div>
 
@@ -392,7 +394,7 @@ export default function CateringPage() {
                   <div id={`pkg-icon-${i}`} className="pkg-icon" style={{ background: `${pkg.color}15`, border: `1px solid ${pkg.color}30` }}>
                     <UtensilsCrossed size={24} color={pkg.color} strokeWidth={2} />
                   </div>
-                  <h3 id={`pkg-name-${i}`} className="pkg-name">{pkg.name.toUpperCase()}</h3>
+                  <h3 id={`pkg-name-${i}`} className="pkg-name">{pkg.name}</h3>
                   <p id={`pkg-price-${i}`} className="pkg-price" style={{ color: pkg.color }}>{pkg.price}</p>
                   <p id={`pkg-guests-${i}`} className="pkg-min-guests">Minimum {pkg.minGuests} guests</p>
 
@@ -428,7 +430,7 @@ export default function CateringPage() {
           {/* Tip banner */}
           <div id="tip-banner" className="tip-banner">
             <div id="tip-icon" className="tip-icon" aria-hidden="true">
-              <Lightbulb size={20} color="#FED800" strokeWidth={2} />
+              <Lightbulb size={20} color="#E5B800" strokeWidth={2} />
             </div>
             <p id="tip-text" className="tip-text">
               Need something custom? We can build a catering menu specifically for your event. Call us at{' '}
@@ -449,7 +451,7 @@ export default function CateringPage() {
             <div id="contact-header" style={{ marginBottom: '44px' }}>
               <span className="sec-label">Get A Quote</span>
               <h2 id="contact-heading" className="sec-heading">
-                LET&apos;S PLAN YOUR <span className="accent">EVENT</span>
+                Let&apos;s Plan Your <span className="accent">Event</span>
               </h2>
               <p id="contact-subtitle" style={{ fontSize: '15px', color: '#1A1A1A', marginTop: '14px', lineHeight: '1.7' }}>
                 Fill out the form below and we will get back to you within 24 hours.
@@ -461,11 +463,11 @@ export default function CateringPage() {
                 <div id="success-icon" className="success-icon-wrap" aria-hidden="true">
                   <Check size={36} color="#22C55E" strokeWidth={2.5} />
                 </div>
-                <h3 id="success-title" className="success-title">REQUEST SENT!</h3>
+                <h3 id="success-title" className="success-title">Request Sent!</h3>
                 <p id="success-msg" className="success-msg">
                   Thank you, {formData.name}! We received your catering request.<br />
                   Our team will contact you at{' '}
-                  <span style={{ color: '#FED800' }}>{formData.email}</span>{' '}
+                  <span style={{ color: '#1A1A1A', fontWeight: 700 }}>{formData.email}</span>{' '}
                   within 24 hours.
                 </p>
                 <div id="success-actions" className="success-actions">
@@ -579,7 +581,7 @@ export default function CateringPage() {
       <section id="phone-cta" className="phone-cta-section">
         <div className="container">
           <div id="phone-cta-icon" style={{ width: '56px', height: '56px', borderRadius: '14px', background: 'rgba(254,216,0,0.06)', border: '1px solid rgba(254,216,0,0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 18px' }}>
-            <Phone size={24} color="#FED800" strokeWidth={2} aria-hidden="true" />
+            <Phone size={24} color="#E5B800" strokeWidth={2} aria-hidden="true" />
           </div>
           <p id="phone-cta-label" style={{ fontSize: '13px', color: '#1A1A1A', marginBottom: '10px', textTransform: 'uppercase', letterSpacing: '2px', fontWeight: '700' }}>Catering Hotline</p>
           <a id="phone-cta-number" href="tel:2673707993" className="phone-cta-number">267-370-7993</a>
@@ -590,7 +592,7 @@ export default function CateringPage() {
       {/* ══════════════════════════════════════════
           FOOTER
       ══════════════════════════════════════════ */}
-      <footer id="catering-footer" className="site-footer" style={{ background: '#050505', padding: '68px 0 32px', borderTop: '1px solid #141414' }}>
+      <footer id="catering-footer" className="site-footer" style={{ background: '#F8F9FA', padding: '68px 0 32px', borderTop: '1px solid #E5E5E5' }}>
         <div className="container footer-container">
           <div id="footer-grid" className="footer-grid">
 
@@ -601,26 +603,26 @@ export default function CateringPage() {
                   <Image src="/logo.svg" alt="Eggs Ok" width={100} height={50} style={{ objectFit: 'contain' }} />
                 </div>
               </div>
-              <p id="footer-tagline" style={{ fontSize: '14px', color: '#ffffff', lineHeight: '1.75', maxWidth: '280px', marginBottom: '22px' }}>
+              <p id="footer-tagline" style={{ fontSize: '14px', color: '#1A1A1A', lineHeight: '1.75', maxWidth: '280px', marginBottom: '22px' }}>
                 Fresh breakfast and lunch in West Philadelphia. Made to order, every time.
               </p>
               <address id="footer-address" style={{ fontStyle: 'normal' }}>
-                <p id="footer-address-line" style={{ fontSize: '13px', color: '#ffffff', display: 'flex', alignItems: 'center', gap: '7px', marginBottom: '8px' }}>
-                  <MapPin size={13} color="#FED800" aria-hidden="true" />
-                  <a id="footer-address-link" href="https://www.google.com/maps?q=3517+Lancaster+Ave,+Philadelphia+PA+19104" style={{ color: '#ffffff', textDecoration: 'none' }}>
+                <p id="footer-address-line" style={{ fontSize: '13px', color: '#1A1A1A', display: 'flex', alignItems: 'center', gap: '7px', marginBottom: '8px' }}>
+                  <MapPin size={13} color="#E5B800" aria-hidden="true" />
+                  <a id="footer-address-link" href="https://www.google.com/maps?q=3517+Lancaster+Ave,+Philadelphia+PA+19104" style={{ color: '#1A1A1A', textDecoration: 'none' }}>
                     3517 Lancaster Ave, Philadelphia PA 19104
                   </a>
                 </p>
-                <p id="footer-phone-line" style={{ fontSize: '13px', color: '#ffffff', display: 'flex', alignItems: 'center', gap: '7px' }}>
-                  <Smartphone size={13} color="#FED800" aria-hidden="true" />
-                  <a id="footer-phone-link" href="tel:2159489902" style={{ color: '#ffffff', textDecoration: 'none' }}>215-948-9902</a>
+                <p id="footer-phone-line" style={{ fontSize: '13px', color: '#1A1A1A', display: 'flex', alignItems: 'center', gap: '7px' }}>
+                  <Smartphone size={13} color="#E5B800" aria-hidden="true" />
+                  <a id="footer-phone-link" href="tel:2159489902" style={{ color: '#1A1A1A', textDecoration: 'none' }}>215-948-9902</a>
                 </p>
               </address>
             </div>
 
             {/* Quick links */}
             <nav id="footer-nav" aria-label="Quick links">
-              <p id="footer-nav-heading" style={{ fontSize: '15px', fontWeight: '700', color: '#ffffff', letterSpacing: '2px', textTransform: 'uppercase', marginBottom: '20px' }}>Quick Links</p>
+              <p id="footer-nav-heading" style={{ fontSize: '15px', fontWeight: '700', color: '#1A1A1A', letterSpacing: '2px', textTransform: 'uppercase', marginBottom: '20px' }}>Quick Links</p>
               {[
                 { label: 'Home',          href: '/'         },
                 { label: 'Order Online',  href: '/order'    },
@@ -635,7 +637,7 @@ export default function CateringPage() {
 
             {/* Hours */}
             <div id="footer-hours">
-              <p id="footer-hours-heading" style={{ fontSize: '15px', fontWeight: '700', color: '#ffffff', letterSpacing: '2px', textTransform: 'uppercase', marginBottom: '20px' }}>Hours</p>
+              <p id="footer-hours-heading" style={{ fontSize: '15px', fontWeight: '700', color: '#1A1A1A', letterSpacing: '2px', textTransform: 'uppercase', marginBottom: '20px' }}>Hours</p>
               <div id="footer-hours-list" style={{ display: 'flex', flexDirection: 'column', gap: '5px' }}>
                 {[
                   { day: 'Monday',    hours: '8:00 AM – 10:00 PM' },
@@ -647,8 +649,8 @@ export default function CateringPage() {
                   { day: 'Sunday',    hours: '9:00 AM – 9:00 PM'  },
                 ].map((h, i) => (
                   <div key={i} id={`footer-hours-row-${i}`} style={{ display: 'flex', gap: '14px' }}>
-                    <span style={{ fontSize: '13px', color: '#ffffff', fontWeight: '600', minWidth: '96px' }}>{h.day}</span>
-                    <span style={{ fontSize: '13px', color: '#BBBBBB' }}>{h.hours}</span>
+                    <span style={{ fontSize: '13px', color: '#1A1A1A', fontWeight: '600', minWidth: '96px' }}>{h.day}</span>
+                    <span style={{ fontSize: '13px', color: '#666666' }}>{h.hours}</span>
                   </div>
                 ))}
               </div>
@@ -657,11 +659,11 @@ export default function CateringPage() {
           </div>
 
           <div id="footer-bottom" className="footer-bottom">
-            <p id="footer-copyright" style={{ fontSize: '13px', color: '#ffffff' }}>
+            <p id="footer-copyright" style={{ fontSize: '13px', color: '#888888' }}>
               &copy; {new Date().getFullYear()} Eggs Ok. All rights reserved.
             </p>
-            <p id="footer-credit" style={{ fontSize: '13px', color: '#ffffff' }}>
-              {/* Built by <span id="footer-credit-brand" style={{ color: '#FED800' }}>RestoRise Business Solutions</span> */}
+            <p id="footer-credit" style={{ fontSize: '13px', color: '#888888' }}>
+              {/* Built by <span id="footer-credit-brand" style={{ color: '#E5B800' }}>RestoRise Business Solutions</span> */}
             </p>
           </div>
         </div>

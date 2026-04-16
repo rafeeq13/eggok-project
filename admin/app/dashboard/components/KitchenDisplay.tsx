@@ -182,8 +182,8 @@ export default function KitchenDisplay() {
   const statusColors: Record<string, { bg: string; text: string; border: string }> = {
     pending_payment: { bg: '#6B728015', text: '#9CA3AF', border: '#6B728040' },
     paid: { bg: '#10B98115', text: '#10B981', border: '#10B98140' },
-    sent_to_kitchen: { bg: '#FED80015', text: '#FED800', border: '#FED80040' },
-    pending: { bg: '#FED80015', text: '#FED800', border: '#FED80040' },
+    sent_to_kitchen: { bg: '#E5B80015', text: '#E5B800', border: '#E5B80040' },
+    pending: { bg: '#E5B80015', text: '#E5B800', border: '#E5B80040' },
     confirmed: { bg: '#3B82F615', text: '#3B82F6', border: '#3B82F640' },
     preparing: { bg: '#F59E0B15', text: '#F59E0B', border: '#F59E0B40' },
     ready: { bg: '#22C55E15', text: '#22C55E', border: '#22C55E40' },
@@ -216,8 +216,8 @@ export default function KitchenDisplay() {
           </button>
           <button onClick={() => setAutoPrint(!autoPrint)} style={{
             padding: '6px 14px', borderRadius: '6px', fontSize: '11px', fontWeight: '600', cursor: 'pointer',
-            background: autoPrint ? '#FED80018' : '#1A1A1A', color: autoPrint ? '#FED800' : '#888',
-            border: `1px solid ${autoPrint ? '#FED80040' : '#2A2A2A'}`,
+            background: autoPrint ? '#E5B80018' : '#1A1A1A', color: autoPrint ? '#E5B800' : '#888',
+            border: `1px solid ${autoPrint ? '#E5B80040' : '#2A2A2A'}`,
           }}>
             {autoPrint ? 'Auto-Print ON' : 'Auto-Print OFF'}
           </button>
@@ -246,22 +246,22 @@ export default function KitchenDisplay() {
 
             return (
               <div key={order.id} style={{
-                background: '#1A1A1A', border: `1px solid ${order.status === 'pending' ? '#FED80060' : '#2A2A2A'}`,
+                background: '#1A1A1A', border: `1px solid ${order.status === 'pending' ? '#E5B80060' : '#2A2A2A'}`,
                 borderRadius: '12px', overflow: 'hidden',
                 animation: order.status === 'pending' ? 'glow 2s infinite' : 'none',
               }}>
                 {/* Header */}
                 <div style={{
                   padding: '12px 14px', display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-                  borderBottom: '1px solid #2A2A2A', background: order.status === 'pending' ? '#FED80008' : 'transparent',
+                  borderBottom: '1px solid #2A2A2A', background: order.status === 'pending' ? '#E5B80008' : 'transparent',
                 }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                    <span style={{ fontSize: '16px', fontWeight: '800', color: '#FED800' }}>{order.orderNumber}</span>
+                    <span style={{ fontSize: '16px', fontWeight: '800', color: '#E5B800' }}>{order.orderNumber}</span>
                     <span style={{
                       fontSize: '10px', padding: '2px 8px', borderRadius: '10px', fontWeight: '700',
-                      background: order.orderType === 'delivery' ? '#3B82F618' : '#FED80018',
-                      color: order.orderType === 'delivery' ? '#3B82F6' : '#FED800',
-                      border: `1px solid ${order.orderType === 'delivery' ? '#3B82F640' : '#FED80040'}`,
+                      background: order.orderType === 'delivery' ? '#3B82F618' : '#E5B80018',
+                      color: order.orderType === 'delivery' ? '#3B82F6' : '#E5B800',
+                      border: `1px solid ${order.orderType === 'delivery' ? '#3B82F640' : '#E5B80040'}`,
                     }}>
                       {order.orderType === 'delivery' ? 'DELIVERY' : 'PICKUP'}
                     </span>
@@ -291,7 +291,7 @@ export default function KitchenDisplay() {
                     <div key={i} style={{ marginBottom: i < items.length - 1 ? '8px' : 0 }}>
                       <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                         <span style={{ fontSize: '13px', fontWeight: '700', color: '#FEFEFE' }}>{item.name}</span>
-                        <span style={{ fontSize: '13px', fontWeight: '700', color: '#FED800', flexShrink: 0, marginLeft: '8px' }}>x{item.quantity || 1}</span>
+                        <span style={{ fontSize: '13px', fontWeight: '700', color: '#E5B800', flexShrink: 0, marginLeft: '8px' }}>x{item.quantity || 1}</span>
                       </div>
                       {(item.modifiers || []).map((m: any, mi: number) => (
                         <div key={mi} style={{ fontSize: '11px', color: '#888', paddingLeft: '8px' }}>+ {m.name}</div>
@@ -323,7 +323,7 @@ export default function KitchenDisplay() {
                     </button>
                     <button onClick={() => setSelectedOrder(order)} style={{
                       padding: '6px 12px', borderRadius: '6px', fontSize: '11px', fontWeight: '600', cursor: 'pointer',
-                      background: '#FED800', color: '#000', border: 'none',
+                      background: '#E5B800', color: '#000', border: 'none',
                     }}>
                       View
                     </button>
@@ -347,12 +347,12 @@ export default function KitchenDisplay() {
           }}>
             <div style={{ padding: '16px', borderBottom: '1px solid #2A2A2A', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
               <div>
-                <span style={{ fontSize: '20px', fontWeight: '800', color: '#FED800' }}>{selectedOrder.orderNumber}</span>
+                <span style={{ fontSize: '20px', fontWeight: '800', color: '#E5B800' }}>{selectedOrder.orderNumber}</span>
                 <span style={{
                   fontSize: '11px', padding: '3px 10px', borderRadius: '10px', fontWeight: '700', marginLeft: '10px',
-                  background: selectedOrder.orderType === 'delivery' ? '#3B82F618' : '#FED80018',
-                  color: selectedOrder.orderType === 'delivery' ? '#3B82F6' : '#FED800',
-                  border: `1px solid ${selectedOrder.orderType === 'delivery' ? '#3B82F640' : '#FED80040'}`,
+                  background: selectedOrder.orderType === 'delivery' ? '#3B82F618' : '#E5B80018',
+                  color: selectedOrder.orderType === 'delivery' ? '#3B82F6' : '#E5B800',
+                  border: `1px solid ${selectedOrder.orderType === 'delivery' ? '#3B82F640' : '#E5B80040'}`,
                 }}>
                   {selectedOrder.orderType === 'delivery' ? 'DELIVERY' : 'PICKUP'}
                 </span>
@@ -374,7 +374,7 @@ export default function KitchenDisplay() {
                   <div key={i} style={{ marginBottom: '10px' }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                       <span style={{ fontSize: '14px', fontWeight: '700', color: '#FEFEFE' }}>{item.name}</span>
-                      <span style={{ fontSize: '14px', fontWeight: '700', color: '#FED800' }}>x{item.quantity || 1}</span>
+                      <span style={{ fontSize: '14px', fontWeight: '700', color: '#E5B800' }}>x{item.quantity || 1}</span>
                     </div>
                     {(item.modifiers || []).map((m: any, mi: number) => (
                       <div key={mi} style={{ fontSize: '12px', color: '#888', paddingLeft: '8px' }}>+ {m.name}{m.price > 0 ? ` ($${m.price})` : ''}</div>
@@ -393,7 +393,7 @@ export default function KitchenDisplay() {
                 {Number(selectedOrder.tip) > 0 && <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '4px' }}><span style={{ color: '#888', fontSize: '12px' }}>Tip</span><span style={{ color: '#FEFEFE', fontSize: '12px' }}>${Number(selectedOrder.tip).toFixed(2)}</span></div>}
                 <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '8px', paddingTop: '8px', borderTop: '1px solid #2A2A2A' }}>
                   <span style={{ color: '#FEFEFE', fontSize: '16px', fontWeight: '800' }}>TOTAL</span>
-                  <span style={{ color: '#FED800', fontSize: '16px', fontWeight: '800' }}>${Number(selectedOrder.total).toFixed(2)}</span>
+                  <span style={{ color: '#E5B800', fontSize: '16px', fontWeight: '800' }}>${Number(selectedOrder.total).toFixed(2)}</span>
                 </div>
               </div>
 
@@ -405,7 +405,7 @@ export default function KitchenDisplay() {
 
               <button onClick={() => { printOrder(selectedOrder); setSelectedOrder(null); }} style={{
                 width: '100%', marginTop: '16px', padding: '12px', borderRadius: '8px',
-                background: '#FED800', color: '#000', fontSize: '14px', fontWeight: '700',
+                background: '#E5B800', color: '#000', fontSize: '14px', fontWeight: '700',
                 border: 'none', cursor: 'pointer',
               }}>
                 Print Ticket
@@ -418,8 +418,8 @@ export default function KitchenDisplay() {
       {/* Pulse animation */}
       <style>{`
         @keyframes glow {
-          0%, 100% { box-shadow: 0 0 5px #FED80020; }
-          50% { box-shadow: 0 0 20px #FED80040; }
+          0%, 100% { box-shadow: 0 0 5px #E5B80020; }
+          50% { box-shadow: 0 0 20px #E5B80040; }
         }
         @keyframes pulse {
           0%, 100% { opacity: 1; }

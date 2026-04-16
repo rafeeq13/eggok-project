@@ -46,7 +46,7 @@ const ratingColor = (r: number) => {
 const Stars = ({ rating, size = 14 }: { rating: number; size?: number }) => (
   <div style={{ display: 'flex', gap: '2px' }}>
     {[1, 2, 3, 4, 5].map(i => (
-      <span key={i} style={{ fontSize: `${size}px`, color: i <= rating ? '#FED800' : '#2A2A2A' }}>★</span>
+      <span key={i} style={{ fontSize: `${size}px`, color: i <= rating ? '#E5B800' : '#2A2A2A' }}>★</span>
     ))}
   </div>
 );
@@ -194,7 +194,7 @@ export default function Reviews() {
               {/* Customer + Rating */}
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '14px' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                  <div style={{ width: '40px', height: '40px', borderRadius: '50%', background: '#FED80020', border: '1px solid #FED80040', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '16px', fontWeight: '700', color: '#FED800', flexShrink: 0 }}>
+                  <div style={{ width: '40px', height: '40px', borderRadius: '50%', background: '#E5B80020', border: '1px solid #E5B80040', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '16px', fontWeight: '700', color: '#E5B800', flexShrink: 0 }}>
                     {selectedReview.customer.charAt(0)}
                   </div>
                   <div>
@@ -210,7 +210,7 @@ export default function Reviews() {
 
               {/* Order info */}
               <div style={{ display: 'flex', gap: '8px', marginBottom: '14px' }}>
-                <span style={{ fontSize: '11px', padding: '3px 10px', borderRadius: '20px', fontWeight: '600', background: selectedReview.orderType === 'Delivery' ? '#0A1628' : '#1A1A00', color: selectedReview.orderType === 'Delivery' ? '#60A5FA' : '#FED800', border: `1px solid ${selectedReview.orderType === 'Delivery' ? '#1E3A5F' : '#3A3A00'}` }}>
+                <span style={{ fontSize: '11px', padding: '3px 10px', borderRadius: '20px', fontWeight: '600', background: selectedReview.orderType === 'Delivery' ? '#0A1628' : '#1A1A00', color: selectedReview.orderType === 'Delivery' ? '#60A5FA' : '#E5B800', border: `1px solid ${selectedReview.orderType === 'Delivery' ? '#1E3A5F' : '#3A3A00'}` }}>
                   {selectedReview.orderType}
                 </span>
                 <span style={{ fontSize: '11px', padding: '3px 10px', borderRadius: '20px', fontWeight: '600', background: '#2A2A2A', color: '#FEFEFE' }}>
@@ -245,7 +245,7 @@ export default function Reviews() {
                   placeholder="Write a professional, friendly response..."
                   value={replyText}
                   onChange={e => setReplyText(e.target.value)}
-                  onFocus={e => e.target.style.borderColor = '#FED800'}
+                  onFocus={e => e.target.style.borderColor = '#E5B800'}
                   onBlur={e => e.target.style.borderColor = '#2A2A2A'}
                 />
                 <p style={{ fontSize: '11px', color: '#FEFEFE', marginTop: '4px' }}>
@@ -271,7 +271,7 @@ export default function Reviews() {
 
             <div style={{ padding: '16px 24px', borderTop: '1px solid #2A2A2A', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', flexShrink: 0 }}>
               <button onClick={() => { setSelectedReview(null); setReplyText(''); }} style={{ padding: '11px', background: 'transparent', border: '1px solid #2A2A2A', borderRadius: '8px', color: '#FEFEFE', fontSize: '13px', cursor: 'pointer' }}>Close</button>
-              <button onClick={handleReply} disabled={!replyText.trim()} style={{ padding: '11px', background: replyText.trim() ? '#FED800' : '#2A2A2A', border: 'none', borderRadius: '8px', color: replyText.trim() ? '#000' : '#FEFEFE', fontSize: '13px', fontWeight: '700', cursor: replyText.trim() ? 'pointer' : 'not-allowed' }}>
+              <button onClick={handleReply} disabled={!replyText.trim()} style={{ padding: '11px', background: replyText.trim() ? '#E5B800' : '#2A2A2A', border: 'none', borderRadius: '8px', color: replyText.trim() ? '#000' : '#FEFEFE', fontSize: '13px', fontWeight: '700', cursor: replyText.trim() ? 'pointer' : 'not-allowed' }}>
                 {selectedReview.reply ? 'Update Reply' : 'Post Reply'}
               </button>
             </div>
@@ -285,7 +285,7 @@ export default function Reviews() {
         {/* Average Rating */}
         <div style={{ background: '#1A1A1A', border: '1px solid #2A2A2A', borderRadius: '12px', padding: '20px', textAlign: 'center' }}>
           <p style={{ fontSize: '11px', color: '#FEFEFE', marginBottom: '8px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Average Rating</p>
-          <p style={{ fontSize: '52px', fontWeight: '900', color: '#FED800', lineHeight: '1' }}>{avgRating}</p>
+          <p style={{ fontSize: '52px', fontWeight: '900', color: '#E5B800', lineHeight: '1' }}>{avgRating}</p>
           <Stars rating={Math.round(Number(avgRating))} size={18} />
           <p style={{ fontSize: '11px', color: '#FEFEFE', marginTop: '8px' }}>{reviews.length} total reviews</p>
         </div>
@@ -296,7 +296,7 @@ export default function Reviews() {
           {ratingCounts.map(({ rating, count, pct }) => (
             <div key={rating} style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '8px' }}>
               <span style={{ fontSize: '12px', color: '#FEFEFE', width: '12px', textAlign: 'right', flexShrink: 0 }}>{rating}</span>
-              <span style={{ fontSize: '12px', color: '#FED800', flexShrink: 0 }}>★</span>
+              <span style={{ fontSize: '12px', color: '#E5B800', flexShrink: 0 }}>★</span>
               <div style={{ flex: 1, height: '8px', background: '#2A2A2A', borderRadius: '4px', overflow: 'hidden' }}>
                 <div style={{ width: `${pct}%`, height: '100%', background: ratingColor(rating), borderRadius: '4px', transition: 'width 0.3s' }} />
               </div>
@@ -327,7 +327,7 @@ export default function Reviews() {
           value={search}
           onChange={e => setSearch(e.target.value)}
           style={{ ...inputStyle, flex: 1, minWidth: '200px' }}
-          onFocus={e => e.target.style.borderColor = '#FED800'}
+          onFocus={e => e.target.style.borderColor = '#E5B800'}
           onBlur={e => e.target.style.borderColor = '#2A2A2A'}
         />
         <select value={filterStatus} onChange={e => setFilterStatus(e.target.value as typeof filterStatus)}
@@ -358,7 +358,7 @@ export default function Reviews() {
           }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '10px' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                <div style={{ width: '36px', height: '36px', borderRadius: '50%', background: '#FED80015', border: '1px solid #FED80030', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '14px', fontWeight: '700', color: '#FED800', flexShrink: 0 }}>
+                <div style={{ width: '36px', height: '36px', borderRadius: '50%', background: '#E5B80015', border: '1px solid #E5B80030', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '14px', fontWeight: '700', color: '#E5B800', flexShrink: 0 }}>
                   {review.customer.charAt(0)}
                 </div>
                 <div>

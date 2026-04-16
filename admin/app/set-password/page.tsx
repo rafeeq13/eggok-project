@@ -124,7 +124,7 @@ function SetPasswordContent() {
                       required
                       minLength={8}
                       style={{ ...inputStyle, paddingRight: '48px' }}
-                      onFocus={e => e.target.style.borderColor = '#FED800'}
+                      onFocus={e => e.target.style.borderColor = '#E5B800'}
                       onBlur={e => e.target.style.borderColor = '#2A2A2A'}
                     />
                     <button type="button" onClick={() => setShowPassword(!showPassword)}
@@ -148,7 +148,7 @@ function SetPasswordContent() {
                       required
                       minLength={8}
                       style={{ ...inputStyle, paddingRight: '48px' }}
-                      onFocus={e => e.target.style.borderColor = '#FED800'}
+                      onFocus={e => e.target.style.borderColor = '#E5B800'}
                       onBlur={e => e.target.style.borderColor = '#2A2A2A'}
                     />
                     <button type="button" onClick={() => setShowConfirmPassword(!showConfirmPassword)}
@@ -179,7 +179,7 @@ function SetPasswordContent() {
                   style={{
                     width: '100%',
                     padding: '14px',
-                    background: loading || !token ? '#FEFEFE' : '#FED800',
+                    background: loading || !token ? '#FEFEFE' : '#E5B800',
                     color: '#000000',
                     borderRadius: '10px',
                     fontSize: '15px',

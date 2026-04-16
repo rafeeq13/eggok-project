@@ -26,7 +26,7 @@ const rolePermissions: Record<Role, string[]> = {
 };
 
 const roleColor: Record<Role, string> = {
-  'Super Admin': '#FED800',
+  'Super Admin': '#E5B800',
   'Manager': '#60A5FA',
   'Staff': '#22C55E',
 };
@@ -234,7 +234,7 @@ export default function TeamManagement() {
                   placeholder="e.g. John Smith"
                   value={formData.name}
                   onChange={e => setFormData({ ...formData, name: e.target.value })}
-                  onFocus={e => e.target.style.borderColor = '#FED800'}
+                  onFocus={e => e.target.style.borderColor = '#E5B800'}
                   onBlur={e => e.target.style.borderColor = '#2A2A2A'}
                 />
               </div>
@@ -246,7 +246,7 @@ export default function TeamManagement() {
                   placeholder="e.g. john@eggok.com"
                   value={formData.email}
                   onChange={e => setFormData({ ...formData, email: e.target.value })}
-                  onFocus={e => e.target.style.borderColor = '#FED800'}
+                  onFocus={e => e.target.style.borderColor = '#E5B800'}
                   onBlur={e => e.target.style.borderColor = '#2A2A2A'}
                 />
               </div>
@@ -261,24 +261,24 @@ export default function TeamManagement() {
                       style={{
                         padding: '12px 16px',
                         background: formData.role === role ? '#1A1A00' : '#111111',
-                        border: `1px solid ${formData.role === role ? '#FED800' : '#2A2A2A'}`,
+                        border: `1px solid ${formData.role === role ? '#E5B800' : '#2A2A2A'}`,
                         borderRadius: '8px', cursor: 'pointer',
                       }}
                     >
                       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                         <div>
-                          <p style={{ fontSize: '13px', fontWeight: '600', color: formData.role === role ? '#FED800' : '#FEFEFE', marginBottom: '4px' }}>{role}</p>
+                          <p style={{ fontSize: '13px', fontWeight: '600', color: formData.role === role ? '#E5B800' : '#FEFEFE', marginBottom: '4px' }}>{role}</p>
                           <p style={{ fontSize: '11px', color: '#FEFEFE' }}>
                             {role === 'Manager' ? 'Menu, orders, promotions, store settings' : 'View and update orders only'}
                           </p>
                         </div>
                         <div style={{
                           width: '18px', height: '18px', borderRadius: '50%',
-                          border: `2px solid ${formData.role === role ? '#FED800' : '#2A2A2A'}`,
+                          border: `2px solid ${formData.role === role ? '#E5B800' : '#2A2A2A'}`,
                           display: 'flex', alignItems: 'center', justifyContent: 'center',
                         }}>
                           {formData.role === role && (
-                            <div style={{ width: '10px', height: '10px', borderRadius: '50%', background: '#FED800' }} />
+                            <div style={{ width: '10px', height: '10px', borderRadius: '50%', background: '#E5B800' }} />
                           )}
                         </div>
                       </div>
@@ -302,7 +302,7 @@ export default function TeamManagement() {
                   color: '#FEFEFE', fontSize: '13px', cursor: 'pointer',
                 }}>Cancel</button>
                 <button onClick={handleSave} style={{
-                  padding: '12px', background: '#FED800',
+                  padding: '12px', background: '#E5B800',
                   border: 'none', borderRadius: '8px',
                   color: '#000', fontSize: '13px', fontWeight: '700', cursor: 'pointer',
                 }}>{editingMember ? 'Save Changes' : 'Send Invite'}</button>
@@ -345,7 +345,7 @@ export default function TeamManagement() {
       {/* Stats */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '12px', marginBottom: '20px' }}>
         {[
-          { label: 'Total Members', value: String(team.length), color: '#FED800' },
+          { label: 'Total Members', value: String(team.length), color: '#E5B800' },
           { label: 'Active', value: String(team.filter(m => m.status === 'Active').length), color: '#22C55E' },
           { label: 'Pending Invites', value: String(team.filter(m => m.status === 'Invited').length), color: '#F59E0B' },
         ].map((s, i) => (
@@ -360,7 +360,7 @@ export default function TeamManagement() {
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
         <p style={{ fontSize: '13px', color: '#FEFEFE' }}>{team.length} team members</p>
         <button onClick={() => { setEditingMember(null); setFormData({ name: '', email: '', role: 'Staff' }); setShowInviteForm(true); }}
-          style={{ padding: '9px 18px', background: '#FED800', border: 'none', borderRadius: '8px', color: '#000', fontSize: '13px', fontWeight: '700', cursor: 'pointer' }}>
+          style={{ padding: '9px 18px', background: '#E5B800', border: 'none', borderRadius: '8px', color: '#000', fontSize: '13px', fontWeight: '700', cursor: 'pointer' }}>
           + Invite Member
         </button>
       </div>

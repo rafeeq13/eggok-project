@@ -426,7 +426,7 @@ export default function Integrations() {
           value={value}
           onChange={e => onChange(e.target.value)}
           placeholder={placeholder || '••••••••••••••••'}
-          onFocus={e => e.target.style.borderColor = '#FED800'}
+          onFocus={e => e.target.style.borderColor = '#E5B800'}
           onBlur={e => e.target.style.borderColor = '#2A2A2A'}
         />
         <button
@@ -446,7 +446,7 @@ export default function Integrations() {
       onClick={() => testConnection(id)}
       disabled={testingId === id}
       style={{
-        padding: '10px 20px', background: testingId === id ? '#2A2A2A' : '#FED800',
+        padding: '10px 20px', background: testingId === id ? '#2A2A2A' : '#E5B800',
         border: 'none', borderRadius: '8px',
         color: testingId === id ? '#FEFEFE' : '#000',
         fontSize: '13px', fontWeight: '700', cursor: testingId === id ? 'not-allowed' : 'pointer',
@@ -489,7 +489,7 @@ export default function Integrations() {
           <button key={sec.id} onClick={() => setActiveSection(sec.id)} style={{
             width: '100%', display: 'flex', alignItems: 'center', gap: '8px',
             padding: '10px 12px', borderRadius: '8px', border: 'none', cursor: 'pointer',
-            background: activeSection === sec.id ? '#FED800' : 'transparent',
+            background: activeSection === sec.id ? '#E5B800' : 'transparent',
             color: activeSection === sec.id ? '#000000' : '#FEFEFE',
             fontSize: '12px', fontWeight: activeSection === sec.id ? '700' : '400',
             marginBottom: '2px', textAlign: 'left',
@@ -569,7 +569,7 @@ export default function Integrations() {
                   </div>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                     <span style={{ fontSize: '11px', color: statusColor[item.status] }}>{statusLabel[item.status]}</span>
-                    <button onClick={() => setActiveSection(item.id)} style={{ fontSize: '11px', color: '#FED800', background: 'transparent', border: 'none', cursor: 'pointer' }}>Configure →</button>
+                    <button onClick={() => setActiveSection(item.id)} style={{ fontSize: '11px', color: '#E5B800', background: 'transparent', border: 'none', cursor: 'pointer' }}>Configure →</button>
                   </div>
                 </div>
               ))}
@@ -591,8 +591,8 @@ export default function Integrations() {
                 </span>
               </div>
 
-              <div style={{ padding: '12px 14px', background: '#111111', borderRadius: '8px', marginBottom: '16px', border: '1px solid #FED80020' }}>
-                <p style={{ fontSize: '12px', color: '#FED800', fontWeight: '600', marginBottom: '4px' }}>Where to get these credentials</p>
+              <div style={{ padding: '12px 14px', background: '#111111', borderRadius: '8px', marginBottom: '16px', border: '1px solid #E5B80020' }}>
+                <p style={{ fontSize: '12px', color: '#E5B800', fontWeight: '600', marginBottom: '4px' }}>Where to get these credentials</p>
                 <p style={{ fontSize: '11px', color: '#FEFEFE', lineHeight: '1.6' }}>
                   1. Go to developer.squareup.com → My Applications<br />
                   2. Create or select your application<br />
@@ -608,8 +608,8 @@ export default function Integrations() {
                     {['sandbox', 'production'].map(env => (
                       <button key={env} onClick={() => setSquareEnvironment(env)} style={{
                         flex: 1, padding: '10px', borderRadius: '8px', cursor: 'pointer',
-                        background: squareEnvironment === env ? '#FED800' : '#111111',
-                        border: `1px solid ${squareEnvironment === env ? '#FED800' : '#2A2A2A'}`,
+                        background: squareEnvironment === env ? '#E5B800' : '#111111',
+                        border: `1px solid ${squareEnvironment === env ? '#E5B800' : '#2A2A2A'}`,
                         color: squareEnvironment === env ? '#000' : '#FEFEFE',
                         fontSize: '13px', fontWeight: '600',
                       }}>
@@ -622,7 +622,7 @@ export default function Integrations() {
                   <label style={labelStyle}>Application ID *</label>
                   <input style={inputStyle} value={squareAppId} onChange={e => setSquareAppId(e.target.value)}
                     placeholder="your_square_application_id"
-                    onFocus={e => e.target.style.borderColor = '#FED800'}
+                    onFocus={e => e.target.style.borderColor = '#E5B800'}
                     onBlur={e => e.target.style.borderColor = '#2A2A2A'}
                   />
                 </div>
@@ -634,7 +634,7 @@ export default function Integrations() {
                   <label style={labelStyle}>Location ID *</label>
                   <input style={inputStyle} value={squareLocationId} onChange={e => setSquareLocationId(e.target.value)}
                     placeholder="LxxxxxxxxxxxxxxxxX"
-                    onFocus={e => e.target.style.borderColor = '#FED800'}
+                    onFocus={e => e.target.style.borderColor = '#E5B800'}
                     onBlur={e => e.target.style.borderColor = '#2A2A2A'}
                   />
                   <p style={{ fontSize: '11px', color: '#FEFEFE', marginTop: '4px' }}>Found in Square Dashboard → Locations</p>
@@ -644,7 +644,7 @@ export default function Integrations() {
                 <div style={{ padding: '14px', background: '#111111', borderRadius: '8px', border: '1px solid #2A2A2A' }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
                     <div>
-                      <p style={{ fontSize: '13px', fontWeight: '600', color: '#FED800' }}>Square Terminal Device</p>
+                      <p style={{ fontSize: '13px', fontWeight: '600', color: '#E5B800' }}>Square Terminal Device</p>
                       <p style={{ fontSize: '11px', color: '#FEFEFE', marginTop: '2px' }}>Orders will be pushed to this terminal for POS display</p>
                     </div>
                     <button
@@ -677,8 +677,8 @@ export default function Integrations() {
                           onClick={() => setSquareTerminalDeviceId(d.deviceId)}
                           style={{
                             padding: '8px 12px', borderRadius: '6px', textAlign: 'left', cursor: 'pointer',
-                            background: squareTerminalDeviceId === d.deviceId ? '#FED80015' : '#0A0A0A',
-                            border: `1px solid ${squareTerminalDeviceId === d.deviceId ? '#FED800' : '#2A2A2A'}`,
+                            background: squareTerminalDeviceId === d.deviceId ? '#E5B80015' : '#0A0A0A',
+                            border: `1px solid ${squareTerminalDeviceId === d.deviceId ? '#E5B800' : '#2A2A2A'}`,
                             display: 'flex', justifyContent: 'space-between', alignItems: 'center',
                           }}
                         >
@@ -700,7 +700,7 @@ export default function Integrations() {
                     value={squareTerminalDeviceId}
                     onChange={e => setSquareTerminalDeviceId(e.target.value)}
                     placeholder="Device ID (select above or enter manually)"
-                    onFocus={e => e.target.style.borderColor = '#FED800'}
+                    onFocus={e => e.target.style.borderColor = '#E5B800'}
                     onBlur={e => e.target.style.borderColor = '#2A2A2A'}
                   />
                   <p style={{ fontSize: '11px', color: '#FEFEFE', marginTop: '4px' }}>
@@ -712,7 +712,7 @@ export default function Integrations() {
                   <label style={labelStyle}>Webhook Signing Key</label>
                   <PasswordInput value={squareWebhookSigningKey} onChange={setSquareWebhookSigningKey} placeholder="your_square_webhook_signing_key" />
                   <p style={{ fontSize: '11px', color: '#FEFEFE', marginTop: '4px' }}>
-                    Webhook URL: <span style={{ color: '#FED800' }}>https://eggsokpa.com/api/square/webhook</span>
+                    Webhook URL: <span style={{ color: '#E5B800' }}>https://eggsokpa.com/api/square/webhook</span>
                   </p>
                 </div>
 
@@ -736,8 +736,8 @@ export default function Integrations() {
                 </span>
               </div>
 
-              <div style={{ padding: '12px 14px', background: '#111111', borderRadius: '8px', marginBottom: '16px', border: '1px solid #FED80020' }}>
-                <p style={{ fontSize: '12px', color: '#FED800', fontWeight: '600', marginBottom: '4px' }}>Where to get these credentials</p>
+              <div style={{ padding: '12px 14px', background: '#111111', borderRadius: '8px', marginBottom: '16px', border: '1px solid #E5B80020' }}>
+                <p style={{ fontSize: '12px', color: '#E5B800', fontWeight: '600', marginBottom: '4px' }}>Where to get these credentials</p>
                 <p style={{ fontSize: '11px', color: '#FEFEFE', lineHeight: '1.6' }}>
                   1. Go to dashboard.stripe.com → Developers → API Keys<br />
                   2. Copy Publishable key and Secret key<br />
@@ -752,8 +752,8 @@ export default function Integrations() {
                     {['test', 'live'].map(env => (
                       <button key={env} onClick={() => setStripeEnvironment(env)} style={{
                         flex: 1, padding: '10px', borderRadius: '8px', cursor: 'pointer',
-                        background: stripeEnvironment === env ? '#FED800' : '#111111',
-                        border: `1px solid ${stripeEnvironment === env ? '#FED800' : '#2A2A2A'}`,
+                        background: stripeEnvironment === env ? '#E5B800' : '#111111',
+                        border: `1px solid ${stripeEnvironment === env ? '#E5B800' : '#2A2A2A'}`,
                         color: stripeEnvironment === env ? '#000' : '#FEFEFE',
                         fontSize: '13px', fontWeight: '600',
                       }}>
@@ -766,7 +766,7 @@ export default function Integrations() {
                   <label style={labelStyle}>Publishable Key *</label>
                   <input style={inputStyle} value={stripePublishableKey} onChange={e => setStripePublishableKey(e.target.value)}
                     placeholder={stripeEnvironment === 'test' ? 'your_test_publishable_key' : 'your_live_publishable_key'}
-                    onFocus={e => e.target.style.borderColor = '#FED800'}
+                    onFocus={e => e.target.style.borderColor = '#E5B800'}
                     onBlur={e => e.target.style.borderColor = '#2A2A2A'}
                   />
                 </div>
@@ -783,7 +783,7 @@ export default function Integrations() {
                   <label style={labelStyle}>Webhook Signing Secret</label>
                   <PasswordInput value={stripeWebhookSecret} onChange={setStripeWebhookSecret} placeholder="whsec_..." />
                   <p style={{ fontSize: '11px', color: '#FEFEFE', marginTop: '4px' }}>
-                    Webhook URL: <span style={{ color: '#FED800' }}>https://eggsokpa.com/api/stripe/webhook</span>
+                    Webhook URL: <span style={{ color: '#E5B800' }}>https://eggsokpa.com/api/stripe/webhook</span>
                   </p>
                 </div>
                 <ConnectButton id="stripe" />
@@ -806,8 +806,8 @@ export default function Integrations() {
                 </span>
               </div>
 
-              <div style={{ padding: '12px 14px', background: '#111111', borderRadius: '8px', marginBottom: '16px', border: '1px solid #FED80020' }}>
-                <p style={{ fontSize: '12px', color: '#FED800', fontWeight: '600', marginBottom: '4px' }}>Where to get these credentials</p>
+              <div style={{ padding: '12px 14px', background: '#111111', borderRadius: '8px', marginBottom: '16px', border: '1px solid #E5B80020' }}>
+                <p style={{ fontSize: '12px', color: '#E5B800', fontWeight: '600', marginBottom: '4px' }}>Where to get these credentials</p>
                 <p style={{ fontSize: '11px', color: '#FEFEFE', lineHeight: '1.6' }}>
                   1. Go to developer.doordash.com → Portal<br />
                   2. Create a new application under DoorDash Drive<br />
@@ -822,8 +822,8 @@ export default function Integrations() {
                     {['sandbox', 'production'].map(env => (
                       <button key={env} onClick={() => setDoordashEnvironment(env)} style={{
                         flex: 1, padding: '10px', borderRadius: '8px', cursor: 'pointer',
-                        background: doordashEnvironment === env ? '#FED800' : '#111111',
-                        border: `1px solid ${doordashEnvironment === env ? '#FED800' : '#2A2A2A'}`,
+                        background: doordashEnvironment === env ? '#E5B800' : '#111111',
+                        border: `1px solid ${doordashEnvironment === env ? '#E5B800' : '#2A2A2A'}`,
                         color: doordashEnvironment === env ? '#000' : '#FEFEFE',
                         fontSize: '13px', fontWeight: '600',
                       }}>
@@ -836,7 +836,7 @@ export default function Integrations() {
                   <label style={labelStyle}>Developer ID *</label>
                   <input style={inputStyle} value={doordashDeveloperId} onChange={e => setDoordashDeveloperId(e.target.value)}
                     placeholder="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
-                    onFocus={e => e.target.style.borderColor = '#FED800'}
+                    onFocus={e => e.target.style.borderColor = '#E5B800'}
                     onBlur={e => e.target.style.borderColor = '#2A2A2A'}
                   />
                 </div>
@@ -844,7 +844,7 @@ export default function Integrations() {
                   <label style={labelStyle}>Key ID *</label>
                   <input style={inputStyle} value={doordashKeyId} onChange={e => setDoordashKeyId(e.target.value)}
                     placeholder="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
-                    onFocus={e => e.target.style.borderColor = '#FED800'}
+                    onFocus={e => e.target.style.borderColor = '#E5B800'}
                     onBlur={e => e.target.style.borderColor = '#2A2A2A'}
                   />
                 </div>
@@ -872,8 +872,8 @@ export default function Integrations() {
                 </span>
               </div>
 
-              <div style={{ padding: '12px 14px', background: '#111111', borderRadius: '8px', marginBottom: '16px', border: '1px solid #FED80020' }}>
-                <p style={{ fontSize: '12px', color: '#FED800', fontWeight: '600', marginBottom: '4px' }}>Where to get these credentials</p>
+              <div style={{ padding: '12px 14px', background: '#111111', borderRadius: '8px', marginBottom: '16px', border: '1px solid #E5B80020' }}>
+                <p style={{ fontSize: '12px', color: '#E5B800', fontWeight: '600', marginBottom: '4px' }}>Where to get these credentials</p>
                 <p style={{ fontSize: '11px', color: '#FEFEFE', lineHeight: '1.6' }}>
                   1. Go to developer.uber.com → Dashboard<br />
                   2. Create a new app or select existing one<br />
@@ -889,8 +889,8 @@ export default function Integrations() {
                     {['sandbox', 'production'].map(env => (
                       <button key={env} onClick={() => setUberDirectEnvironment(env)} style={{
                         flex: 1, padding: '10px', borderRadius: '8px', cursor: 'pointer',
-                        background: uberDirectEnvironment === env ? '#FED800' : '#111111',
-                        border: `1px solid ${uberDirectEnvironment === env ? '#FED800' : '#2A2A2A'}`,
+                        background: uberDirectEnvironment === env ? '#E5B800' : '#111111',
+                        border: `1px solid ${uberDirectEnvironment === env ? '#E5B800' : '#2A2A2A'}`,
                         color: uberDirectEnvironment === env ? '#000' : '#FEFEFE',
                         fontSize: '13px', fontWeight: '600',
                       }}>
@@ -903,7 +903,7 @@ export default function Integrations() {
                   <label style={labelStyle}>Customer ID *</label>
                   <input style={inputStyle} value={uberDirectCustomerId} onChange={e => setUberDirectCustomerId(e.target.value)}
                     placeholder="your_uber_customer_id"
-                    onFocus={e => e.target.style.borderColor = '#FED800'}
+                    onFocus={e => e.target.style.borderColor = '#E5B800'}
                     onBlur={e => e.target.style.borderColor = '#2A2A2A'}
                   />
                 </div>
@@ -911,7 +911,7 @@ export default function Integrations() {
                   <label style={labelStyle}>Client ID *</label>
                   <input style={inputStyle} value={uberDirectClientId} onChange={e => setUberDirectClientId(e.target.value)}
                     placeholder="your_uber_client_id"
-                    onFocus={e => e.target.style.borderColor = '#FED800'}
+                    onFocus={e => e.target.style.borderColor = '#E5B800'}
                     onBlur={e => e.target.style.borderColor = '#2A2A2A'}
                   />
                 </div>
@@ -966,8 +966,8 @@ export default function Integrations() {
                     ].map(provider => (
                       <button key={provider.id} onClick={() => applyEmailPreset(provider.id)} style={{
                         flex: 1, padding: '10px', borderRadius: '8px', cursor: 'pointer',
-                        background: emailProvider === provider.id ? '#FED800' : '#111111',
-                        border: `1px solid ${emailProvider === provider.id ? '#FED800' : '#2A2A2A'}`,
+                        background: emailProvider === provider.id ? '#E5B800' : '#111111',
+                        border: `1px solid ${emailProvider === provider.id ? '#E5B800' : '#2A2A2A'}`,
                         color: emailProvider === provider.id ? '#000' : '#FEFEFE',
                         fontSize: '13px', fontWeight: '600',
                       }}>
@@ -980,7 +980,7 @@ export default function Integrations() {
                   <label style={labelStyle}>SMTP Host *</label>
                   <input style={inputStyle} value={emailHost} onChange={e => setEmailHost(e.target.value)}
                     placeholder={emailProvider === 'sendgrid' ? 'smtp.sendgrid.net' : 'smtp.your-provider.com'}
-                    onFocus={e => e.target.style.borderColor = '#FED800'}
+                    onFocus={e => e.target.style.borderColor = '#E5B800'}
                     onBlur={e => e.target.style.borderColor = '#2A2A2A'}
                   />
                 </div>
@@ -989,7 +989,7 @@ export default function Integrations() {
                     <label style={labelStyle}>SMTP Port *</label>
                     <input style={inputStyle} value={emailPort} onChange={e => setEmailPort(e.target.value.replace(/\D/g, ''))}
                       placeholder="587"
-                      onFocus={e => e.target.style.borderColor = '#FED800'}
+                      onFocus={e => e.target.style.borderColor = '#E5B800'}
                       onBlur={e => e.target.style.borderColor = '#2A2A2A'}
                     />
                   </div>
@@ -1003,7 +1003,7 @@ export default function Integrations() {
                       cursor: 'pointer',
                     }}>
                       <span>{emailSecure ? 'SSL / TLS' : 'STARTTLS / Standard SMTP'}</span>
-                      <span style={{ color: emailSecure ? '#FED800' : '#FEFEFE', fontWeight: '700' }}>{emailSecure ? 'ON' : 'OFF'}</span>
+                      <span style={{ color: emailSecure ? '#E5B800' : '#FEFEFE', fontWeight: '700' }}>{emailSecure ? 'ON' : 'OFF'}</span>
                     </button>
                   </div>
                 </div>
@@ -1012,7 +1012,7 @@ export default function Integrations() {
                     <label style={labelStyle}>SMTP Username *</label>
                     <input style={inputStyle} value={emailUser} onChange={e => setEmailUser(e.target.value)}
                       placeholder={emailProvider === 'sendgrid' ? 'apikey' : 'username'}
-                      onFocus={e => e.target.style.borderColor = '#FED800'}
+                      onFocus={e => e.target.style.borderColor = '#E5B800'}
                       onBlur={e => e.target.style.borderColor = '#2A2A2A'}
                     />
                   </div>
@@ -1029,14 +1029,14 @@ export default function Integrations() {
                   <div>
                     <label style={labelStyle}>From Name</label>
                     <input style={inputStyle} value={emailFromName} onChange={e => setEmailFromName(e.target.value)}
-                      onFocus={e => e.target.style.borderColor = '#FED800'}
+                      onFocus={e => e.target.style.borderColor = '#E5B800'}
                       onBlur={e => e.target.style.borderColor = '#2A2A2A'}
                     />
                   </div>
                   <div>
                     <label style={labelStyle}>From Email Address *</label>
                     <input type="email" style={inputStyle} value={emailFromAddress} onChange={e => setEmailFromAddress(e.target.value)}
-                      onFocus={e => e.target.style.borderColor = '#FED800'}
+                      onFocus={e => e.target.style.borderColor = '#E5B800'}
                       onBlur={e => e.target.style.borderColor = '#2A2A2A'}
                     />
                   </div>
@@ -1045,7 +1045,7 @@ export default function Integrations() {
                   <label style={labelStyle}>Owner / Inbox Email *</label>
                   <input type="email" style={inputStyle} value={emailOwnerAddress} onChange={e => setEmailOwnerAddress(e.target.value)}
                     placeholder="Where website messages and order alerts should go"
-                    onFocus={e => e.target.style.borderColor = '#FED800'}
+                    onFocus={e => e.target.style.borderColor = '#E5B800'}
                     onBlur={e => e.target.style.borderColor = '#2A2A2A'}
                   />
                 </div>
@@ -1053,7 +1053,7 @@ export default function Integrations() {
                   <label style={labelStyle}>Test Recipient</label>
                   <input type="email" style={inputStyle} value={emailTestRecipient} onChange={e => setEmailTestRecipient(e.target.value)}
                     placeholder="Optional - defaults to owner inbox"
-                    onFocus={e => e.target.style.borderColor = '#FED800'}
+                    onFocus={e => e.target.style.borderColor = '#E5B800'}
                     onBlur={e => e.target.style.borderColor = '#2A2A2A'}
                   />
                 </div>
@@ -1068,7 +1068,7 @@ export default function Integrations() {
                     disabled={emailSaving || emailLoading}
                     style={{
                       padding: '10px 20px',
-                      background: emailSaving || emailLoading ? '#2A2A2A' : '#FED800',
+                      background: emailSaving || emailLoading ? '#2A2A2A' : '#E5B800',
                       border: 'none',
                       borderRadius: '8px',
                       color: emailSaving || emailLoading ? '#FEFEFE' : '#000',
@@ -1121,7 +1121,7 @@ export default function Integrations() {
                 <p style={{ fontSize: '13px', fontWeight: '700', color: '#FEFEFE', marginBottom: '12px', paddingBottom: '8px', borderBottom: '1px solid #2A2A2A' }}>
                   Android — Firebase Cloud Messaging (FCM)
                 </p>
-                <div style={{ padding: '10px 14px', background: '#111111', borderRadius: '8px', marginBottom: '12px', border: '1px solid #FED80020' }}>
+                <div style={{ padding: '10px 14px', background: '#111111', borderRadius: '8px', marginBottom: '12px', border: '1px solid #E5B80020' }}>
                   <p style={{ fontSize: '11px', color: '#FEFEFE', lineHeight: '1.6' }}>
                     Go to console.firebase.google.com → Project Settings → Cloud Messaging → Copy Server Key
                   </p>
@@ -1136,7 +1136,7 @@ export default function Integrations() {
                 <p style={{ fontSize: '13px', fontWeight: '700', color: '#FEFEFE', marginBottom: '12px', paddingBottom: '8px', borderBottom: '1px solid #2A2A2A' }}>
                   iOS — Apple Push Notification Service (APNs)
                 </p>
-                <div style={{ padding: '10px 14px', background: '#111111', borderRadius: '8px', marginBottom: '12px', border: '1px solid #FED80020' }}>
+                <div style={{ padding: '10px 14px', background: '#111111', borderRadius: '8px', marginBottom: '12px', border: '1px solid #E5B80020' }}>
                   <p style={{ fontSize: '11px', color: '#FEFEFE', lineHeight: '1.6' }}>
                     Go to developer.apple.com → Certificates → Keys → Create a new key with APNs enabled → Copy Key ID and Team ID
                   </p>
@@ -1147,7 +1147,7 @@ export default function Integrations() {
                       <label style={labelStyle}>Key ID</label>
                       <input style={inputStyle} value={apnsKeyId} onChange={e => setApnsKeyId(e.target.value)}
                         placeholder="XXXXXXXXXX"
-                        onFocus={e => e.target.style.borderColor = '#FED800'}
+                        onFocus={e => e.target.style.borderColor = '#E5B800'}
                         onBlur={e => e.target.style.borderColor = '#2A2A2A'}
                       />
                     </div>
@@ -1155,7 +1155,7 @@ export default function Integrations() {
                       <label style={labelStyle}>Team ID</label>
                       <input style={inputStyle} value={apnsTeamId} onChange={e => setApnsTeamId(e.target.value)}
                         placeholder="XXXXXXXXXX"
-                        onFocus={e => e.target.style.borderColor = '#FED800'}
+                        onFocus={e => e.target.style.borderColor = '#E5B800'}
                         onBlur={e => e.target.style.borderColor = '#2A2A2A'}
                       />
                     </div>
@@ -1164,7 +1164,7 @@ export default function Integrations() {
                     <label style={labelStyle}>Bundle ID</label>
                     <input style={inputStyle} value={apnsBundleId} onChange={e => setApnsBundleId(e.target.value)}
                       placeholder="com.eggsok.app"
-                      onFocus={e => e.target.style.borderColor = '#FED800'}
+                      onFocus={e => e.target.style.borderColor = '#E5B800'}
                       onBlur={e => e.target.style.borderColor = '#2A2A2A'}
                     />
                   </div>
@@ -1189,8 +1189,8 @@ export default function Integrations() {
                 </span>
               </div>
 
-              <div style={{ padding: '12px 14px', background: '#111111', borderRadius: '8px', marginBottom: '16px', border: '1px solid #FED80020' }}>
-                <p style={{ fontSize: '12px', color: '#FED800', fontWeight: '600', marginBottom: '4px' }}>Where to get this key</p>
+              <div style={{ padding: '12px 14px', background: '#111111', borderRadius: '8px', marginBottom: '16px', border: '1px solid #E5B80020' }}>
+                <p style={{ fontSize: '12px', color: '#E5B800', fontWeight: '600', marginBottom: '4px' }}>Where to get this key</p>
                 <p style={{ fontSize: '11px', color: '#FEFEFE', lineHeight: '1.6' }}>
                   1. Go to console.cloud.google.com<br />
                   2. Create a new project or select existing<br />

@@ -178,7 +178,7 @@ export default function StoreSettings() {
   const toggleSwitch = (value: boolean, onChange: () => void) => (
     <div onClick={onChange} style={{
       width: '46px', height: '26px',
-      background: value ? '#FED800' : '#2A2A2A',
+      background: value ? '#E5B800' : '#2A2A2A',
       borderRadius: '13px', position: 'relative',
       cursor: 'pointer', flexShrink: 0,
       transition: 'background 0.2s',
@@ -233,7 +233,7 @@ export default function StoreSettings() {
             <label style={labelStyle}>Message shown to customers when closed</label>
             <textarea value={closedMessage} onChange={e => setClosedMessage(e.target.value)}
               style={{ ...inputStyle, height: '70px', resize: 'none' as const }}
-              onFocus={e => (e.target as HTMLTextAreaElement).style.borderColor = '#FED800'}
+              onFocus={e => (e.target as HTMLTextAreaElement).style.borderColor = '#E5B800'}
               onBlur={e => (e.target as HTMLTextAreaElement).style.borderColor = '#2A2A2A'} />
           </div>
         )}
@@ -273,7 +273,7 @@ export default function StoreSettings() {
             <div key={label}>
               <label style={labelStyle}>{label}</label>
               <input type="number" value={value} onChange={e => set(e.target.value)} style={inputStyle}
-                onFocus={e => (e.target as HTMLInputElement).style.borderColor = '#FED800'}
+                onFocus={e => (e.target as HTMLInputElement).style.borderColor = '#E5B800'}
                 onBlur={e => (e.target as HTMLInputElement).style.borderColor = '#2A2A2A'} />
               <p style={{ fontSize: '11px', color: '#FEFEFE', marginTop: '4px' }}>{hint}</p>
             </div>
@@ -292,13 +292,13 @@ export default function StoreSettings() {
           <div>
             <label style={labelStyle}>Phone Number</label>
             <input value={storePhone} onChange={e => setStorePhone(e.target.value)} style={inputStyle}
-              onFocus={e => (e.target as HTMLInputElement).style.borderColor = '#FED800'}
+              onFocus={e => (e.target as HTMLInputElement).style.borderColor = '#E5B800'}
               onBlur={e => (e.target as HTMLInputElement).style.borderColor = '#2A2A2A'} />
           </div>
           <div>
             <label style={labelStyle}>Email Address</label>
             <input value={storeEmail} onChange={e => setStoreEmail(e.target.value)} style={inputStyle}
-              onFocus={e => (e.target as HTMLInputElement).style.borderColor = '#FED800'}
+              onFocus={e => (e.target as HTMLInputElement).style.borderColor = '#E5B800'}
               onBlur={e => (e.target as HTMLInputElement).style.borderColor = '#2A2A2A'} />
           </div>
           <div>
@@ -323,7 +323,7 @@ export default function StoreSettings() {
         {hours.map((h, idx) => (
           <div key={h.day} style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '12px 16px', background: '#111111', borderRadius: '10px', marginBottom: '8px', border: h.open ? '1px solid #2A2A2A' : '1px solid #FC030120' }}>
             <p style={{ fontSize: '13px', fontWeight: '600', color: '#FEFEFE', width: '100px', flexShrink: 0 }}>{dayLabels[idx]}</p>
-            <div onClick={() => toggleDay(h.day)} style={{ width: '42px', height: '24px', background: h.open ? '#FED800' : '#2A2A2A', borderRadius: '12px', position: 'relative', cursor: 'pointer', flexShrink: 0, transition: 'background 0.2s' }}>
+            <div onClick={() => toggleDay(h.day)} style={{ width: '42px', height: '24px', background: h.open ? '#E5B800' : '#2A2A2A', borderRadius: '12px', position: 'relative', cursor: 'pointer', flexShrink: 0, transition: 'background 0.2s' }}>
               <div style={{ position: 'absolute', top: '3px', left: h.open ? '21px' : '3px', width: '18px', height: '18px', background: '#FEFEFE', borderRadius: '50%', transition: 'left 0.2s' }} />
             </div>
             {h.open ? (
@@ -349,7 +349,7 @@ export default function StoreSettings() {
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
             <p style={{ fontSize: '13px', fontWeight: '700', color: '#FEFEFE' }}>Special Hours & Holidays</p>
             <button onClick={() => setSpecialHours(prev => [...prev, { id: Date.now(), date: '', label: '', closed: false, from: '09:00', to: '17:00' }])}
-              style={{ padding: '6px 14px', background: '#FED800', border: 'none', borderRadius: '8px', color: '#000', fontSize: '12px', fontWeight: '700', cursor: 'pointer' }}>
+              style={{ padding: '6px 14px', background: '#E5B800', border: 'none', borderRadius: '8px', color: '#000', fontSize: '12px', fontWeight: '700', cursor: 'pointer' }}>
               + Add Special Day
             </button>
           </div>
@@ -359,7 +359,7 @@ export default function StoreSettings() {
               <p style={{ fontSize: '11px', color: '#FEFEFE', marginTop: '4px' }}>Add holidays, special events or temporary closures</p>
             </div>
           ) : specialHours.map(sh => (
-            <div key={sh.id} style={{ padding: '14px 16px', background: '#111111', borderRadius: '10px', marginBottom: '8px', border: `1px solid ${sh.closed ? '#FC030130' : '#FED80030'}` }}>
+            <div key={sh.id} style={{ padding: '14px 16px', background: '#111111', borderRadius: '10px', marginBottom: '8px', border: `1px solid ${sh.closed ? '#FC030130' : '#E5B80030'}` }}>
               <div style={{ display: 'flex', gap: '10px', alignItems: 'center', flexWrap: 'wrap' as const }}>
                 <div style={{ flex: 1, minWidth: '160px' }}>
                   <SingleDatePicker value={sh.date} onChange={date => setSpecialHours(prev => prev.map(s => s.id === sh.id ? { ...s, date } : s))} placeholder="Select date" />
@@ -367,7 +367,7 @@ export default function StoreSettings() {
                 <input placeholder="Label e.g. Christmas Day" value={sh.label}
                   onChange={e => setSpecialHours(prev => prev.map(s => s.id === sh.id ? { ...s, label: e.target.value } : s))}
                   style={{ ...inputStyle, flex: 2, minWidth: '160px' }}
-                  onFocus={e => (e.target as HTMLInputElement).style.borderColor = '#FED800'}
+                  onFocus={e => (e.target as HTMLInputElement).style.borderColor = '#E5B800'}
                   onBlur={e => (e.target as HTMLInputElement).style.borderColor = '#2A2A2A'} />
                 <div style={{ display: 'flex', alignItems: 'center', gap: '6px', flexShrink: 0 }}>
                   <span style={{ fontSize: '12px', color: '#FEFEFE' }}>Closed</span>
@@ -398,7 +398,7 @@ export default function StoreSettings() {
       </div>
 
       {/* Save Button */}
-      <button onClick={handleSave} disabled={saving} style={{ width: '100%', padding: '14px', background: saving ? '#888' : '#FED800', color: '#000000', borderRadius: '10px', fontSize: '14px', fontWeight: '700', border: 'none', cursor: saving ? 'not-allowed' : 'pointer', marginBottom: '32px' }}>
+      <button onClick={handleSave} disabled={saving} style={{ width: '100%', padding: '14px', background: saving ? '#888' : '#E5B800', color: '#000000', borderRadius: '10px', fontSize: '14px', fontWeight: '700', border: 'none', cursor: saving ? 'not-allowed' : 'pointer', marginBottom: '32px' }}>
         {saving ? 'Saving...' : 'Save All Settings'}
       </button>
     </div>

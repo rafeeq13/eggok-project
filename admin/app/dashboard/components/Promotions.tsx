@@ -229,7 +229,7 @@ export default function Promotions() {
                   style={inputStyle} placeholder="e.g. WELCOME10"
                   value={formData.code}
                   onChange={e => setFormData({ ...formData, code: e.target.value.toUpperCase() })}
-                  onFocus={e => e.target.style.borderColor = '#FED800'}
+                  onFocus={e => e.target.style.borderColor = '#E5B800'}
                   onBlur={e => e.target.style.borderColor = '#2A2A2A'}
                 />
               </div>
@@ -240,9 +240,9 @@ export default function Promotions() {
                   {(['percentage', 'fixed'] as const).map(t => (
                     <button key={t} onClick={() => setFormData({ ...formData, type: t })} style={{
                       padding: '10px', borderRadius: '8px', fontSize: '13px', fontWeight: '600', cursor: 'pointer',
-                      background: formData.type === t ? '#FED800' : '#111111',
+                      background: formData.type === t ? '#E5B800' : '#111111',
                       color: formData.type === t ? '#000000' : '#FEFEFE',
-                      border: `1px solid ${formData.type === t ? '#FED800' : '#2A2A2A'}`,
+                      border: `1px solid ${formData.type === t ? '#E5B800' : '#2A2A2A'}`,
                     }}>
                       {t === 'percentage' ? '% Percentage' : '$ Fixed Amount'}
                     </button>
@@ -260,7 +260,7 @@ export default function Promotions() {
                     placeholder={formData.type === 'percentage' ? '10' : '5.00'}
                     value={formData.value}
                     onChange={e => setFormData({ ...formData, value: e.target.value })}
-                    onFocus={e => e.target.style.borderColor = '#FED800'}
+                    onFocus={e => e.target.style.borderColor = '#E5B800'}
                     onBlur={e => e.target.style.borderColor = '#2A2A2A'}
                   />
                 </div>
@@ -270,7 +270,7 @@ export default function Promotions() {
                     type="number" style={inputStyle} placeholder="15.00"
                     value={formData.minOrder}
                     onChange={e => setFormData({ ...formData, minOrder: e.target.value })}
-                    onFocus={e => e.target.style.borderColor = '#FED800'}
+                    onFocus={e => e.target.style.borderColor = '#E5B800'}
                     onBlur={e => e.target.style.borderColor = '#2A2A2A'}
                   />
                 </div>
@@ -280,7 +280,7 @@ export default function Promotions() {
                     type="number" style={inputStyle} placeholder="100"
                     value={formData.usageLimit}
                     onChange={e => setFormData({ ...formData, usageLimit: e.target.value })}
-                    onFocus={e => e.target.style.borderColor = '#FED800'}
+                    onFocus={e => e.target.style.borderColor = '#E5B800'}
                     onBlur={e => e.target.style.borderColor = '#2A2A2A'}
                   />
                 </div>
@@ -298,7 +298,7 @@ export default function Promotions() {
                 <span style={{ fontSize: '13px', color: '#CACACA' }}>Active — customers can use this code</span>
                 <div onClick={() => setFormData({ ...formData, active: !formData.active })} style={{
                   width: '42px', height: '24px',
-                  background: formData.active ? '#FED800' : '#2A2A2A',
+                  background: formData.active ? '#E5B800' : '#2A2A2A',
                   borderRadius: '12px', position: 'relative', cursor: 'pointer',
                 }}>
                   <div style={{
@@ -317,7 +317,7 @@ export default function Promotions() {
                   color: '#FEFEFE', fontSize: '13px', cursor: 'pointer',
                 }}>Cancel</button>
                 <button onClick={handleSave} disabled={saving} style={{
-                  padding: '12px', background: saving ? '#2A2A2A' : '#FED800',
+                  padding: '12px', background: saving ? '#2A2A2A' : '#E5B800',
                   border: 'none', borderRadius: '8px',
                   color: saving ? '#FEFEFE' : '#000000', fontSize: '13px', fontWeight: '700', cursor: saving ? 'not-allowed' : 'pointer',
                 }}>{saving ? 'Saving...' : (editingPromo ? 'Save Changes' : 'Create Promo')}</button>
@@ -331,7 +331,7 @@ export default function Promotions() {
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
         <p style={{ color: '#FEFEFE', fontSize: '13px' }}>{promos.length} promo codes · {promos.filter(p => p.active).length} active</p>
         <button onClick={() => { setEditingPromo(null); setShowForm(true); }} style={{
-          padding: '10px 20px', background: '#FED800',
+          padding: '10px 20px', background: '#E5B800',
           color: '#000000', borderRadius: '8px',
           fontSize: '13px', fontWeight: '700', border: 'none', cursor: 'pointer',
         }}>+ Create Promo Code</button>
@@ -340,7 +340,7 @@ export default function Promotions() {
       {/* Stats Row */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '12px', marginBottom: '20px' }}>
         {[
-          { label: 'Total Codes', value: String(promos.length), color: '#FED800' },
+          { label: 'Total Codes', value: String(promos.length), color: '#E5B800' },
           { label: 'Active Codes', value: String(promos.filter(p => p.active).length), color: '#22C55E' },
           { label: 'Total Redemptions', value: String(promos.reduce((a, p) => a + p.usedCount, 0)), color: '#FECE86' },
         ].map((s, i) => (
@@ -365,7 +365,7 @@ export default function Promotions() {
               <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '6px' }}>
                 <span style={{
                   fontSize: '15px', fontWeight: '800',
-                  color: promo.active ? '#FED800' : '#FEFEFE',
+                  color: promo.active ? '#E5B800' : '#FEFEFE',
                   letterSpacing: '1px',
                 }}>{promo.code}</span>
                 <span style={{
@@ -408,7 +408,7 @@ export default function Promotions() {
             <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexShrink: 0 }}>
               <div onClick={() => toggleActive(promo.id)} style={{
                 width: '42px', height: '24px',
-                background: promo.active ? '#FED800' : '#2A2A2A',
+                background: promo.active ? '#E5B800' : '#2A2A2A',
                 borderRadius: '12px', position: 'relative', cursor: 'pointer',
               }}>
                 <div style={{

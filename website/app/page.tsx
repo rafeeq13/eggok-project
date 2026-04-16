@@ -266,24 +266,24 @@ export default function HomePage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(JSON_LD) }} />
 
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&display=swap');
 
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
         /* ── Accessibility ── */
         .skip-link {
           position: absolute; top: -100px; left: 16px; z-index: 9999;
-          background: #FED800; color: #000; padding: 12px 24px;
+          background: #E5B800; color: #000; padding: 12px 24px;
           border-radius: 0 0 8px 8px; font-weight: 700; font-size: 14px;
           text-decoration: none; transition: top 0.2s;
         }
         .skip-link:focus { top: 0; }
-        :focus-visible { outline: 2px solid #FED800; outline-offset: 3px; }
+        :focus-visible { outline: 2px solid #E5B800; outline-offset: 3px; }
         button:focus:not(:focus-visible), a:focus:not(:focus-visible) { outline: none; }
 
         /* ── Layout ── */
         .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
-        .bebas { font-family: 'Bebas Neue', sans-serif; letter-spacing: 1px; line-height: 0.93; }
+        .bebas { font-family: 'DM Sans', sans-serif; font-weight: 800; letter-spacing: 0.5px; line-height: 1.1; }
 
         /* ── Scroll Reveal ── */
         .reveal { opacity: 0; transform: translateY(32px); transition: opacity 0.7s cubic-bezier(0.16,1,0.3,1), transform 0.7s cubic-bezier(0.16,1,0.3,1); }
@@ -295,12 +295,12 @@ export default function HomePage() {
         /* ── Buttons ── */
         .btn-yellow {
           display: inline-flex; align-items: center; gap: 8px;
-          padding: 14px 28px; background: #FED800; color: #000;
+          padding: 14px 28px; background: #E5B800; color: #000;
           border-radius: 10px; font-size: 15px; font-weight: 700;
           text-decoration: none; border: 2px solid transparent; cursor: pointer;
           transition: all 0.3s ease; font-family: inherit;
         }
-        .btn-yellow:hover { background: transparent; color: #000; border-color: #FED800; transform: none; box-shadow: none; }
+        .btn-yellow:hover { background: #E5B800; color: #000; border-color: transparent; transform: none; box-shadow: none; }
         .btn-yellow:active { transform: translateY(0); }
 
         .btn-outline {
@@ -310,19 +310,20 @@ export default function HomePage() {
           text-decoration: none; border: 1.5px solid #1A1A1A;
           transition: border-color 0.15s, color 0.15s, background 0.15s; font-family: inherit; cursor: pointer;
         }
-        .btn-outline:hover { border-color: #FED800; color: #B8A000; }
+        .btn-outline:hover { background: #F0F0F0; border-color: #1A1A1A; color: #1A1A1A; }
         .btn-outline:active { background: #f4f4f410; }
 
         /* ── Section Label — consistent across all sections ── */
         .sec-label {
-          font-size: 11px; font-weight: 700; letter-spacing: 3.5px;
-          text-transform: uppercase; color: #FED800; margin-bottom: 10px; display: block;
+          font-size: 12px; font-weight: 700; letter-spacing: 3.5px;
+          text-transform: uppercase; color: #888888; margin-bottom: 10px; display: block;
         }
 
         /* ── Section Heading — consistent across all sections ── */
         .sec-heading {
-          font-family: 'Bebas Neue', sans-serif;
-          font-size: clamp(36px, 6vw, 62px);
+          font-family: 'DM Sans', sans-serif;
+          font-weight: 800;
+          font-size: 32px;
           letter-spacing: 1px;
           line-height: 0.95;
           color: #1A1A1A;
@@ -335,6 +336,18 @@ export default function HomePage() {
           background-image: url('/main-menu/Hero-Banner.webp');
           background-size: cover; background-position: center; background-repeat: no-repeat;
         }
+        .hero-title { text-shadow: 0 2px 20px rgba(0,0,0,0.6), 0 1px 6px rgba(0,0,0,0.5); }
+        .hero-subtitle { text-shadow: 0 1px 12px rgba(0,0,0,0.5), 0 1px 3px rgba(0,0,0,0.4); }
+        .hero-stat-value { text-shadow: 0 1px 10px rgba(0,0,0,0.5); }
+        .hero-stat-label { text-shadow: 0 1px 6px rgba(0,0,0,0.4); }
+        .hero-menu-btn {
+          display: inline-flex; align-items: center; gap: 8px;
+          padding: 14px 28px; background: transparent; color: #ffffff;
+          border-radius: 10px; font-size: 15px; font-weight: 700;
+          text-decoration: none; border: 2px solid #ffffff;
+          transition: all 0.3s ease; font-family: inherit; cursor: pointer;
+        }
+        .hero-menu-btn:hover { background: rgba(255,255,255,0.2); color: #ffffff; border-color: #ffffff; }
         .hero-cta { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
         .hero-stats { display: flex; gap: 40px; margin-top: 40px; justify-content: center; flex-wrap: wrap; }
 
@@ -352,7 +365,7 @@ export default function HomePage() {
           cursor: pointer; text-decoration: none; border: 1px solid #E5E5E5;
           min-width: calc(25% - 15px); max-width: calc(25% - 15px); flex-shrink: 0;
         }
-        .fav-card:hover { background: #F8F8F8; transform: translateY(-4px); box-shadow: 0 12px 40px rgba(0,0,0,0.06); border-color: #FED80030; }
+        .fav-card:hover { background: #F8F8F8; transform: translateY(-4px); box-shadow: 0 12px 40px rgba(0,0,0,0.06); border-color: #E5B80030; }
         .fav-img-wrap { height: 180px; width: 100%; overflow: hidden; position: relative; margin-bottom: 14px; flex-shrink: 0; }
         .fav-img-wrap img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.5s cubic-bezier(0.16,1,0.3,1); }
         .fav-card:hover .fav-img-wrap img { transform: scale(1.06); }
@@ -364,7 +377,7 @@ export default function HomePage() {
           display: flex; align-items: center; justify-content: center;
           transition: background 0.15s, border-color 0.15s;
         }
-        .fav-arrow:hover { background: #FFFFFF; border-color: #FED800; }
+        .fav-arrow:hover { background: #FFFFFF; border-color: #E5B800; }
         .fav-arrow-left { left: -22px; }
         .fav-arrow-right { right: -22px; }
 
@@ -388,24 +401,24 @@ export default function HomePage() {
         }
         .home-modal-close:hover { background: rgba(0,0,0,0.95); }
         .home-modal-body { padding: 24px; }
-        .home-modal-name { font-family: 'Bebas Neue', sans-serif; font-size: 28px; letter-spacing: 1px; color: #B8A000; margin-bottom: 8px; }
+        .home-modal-name { font-family: 'DM Sans', sans-serif; font-size: 28px; letter-spacing: 1px; color: #1A1A1A; margin-bottom: 8px; }
         .home-modal-desc { font-size: 14px; color: #666; line-height: 1.7; margin-bottom: 20px; }
         .home-modal-price-row { display: flex; gap: 10px; margin-bottom: 20px; }
         .home-modal-price-card {
           flex: 1; padding: 12px; border-radius: 10px; cursor: pointer; text-align: center;
           border: 1px solid #D0D0D0; background: #F8F9FA; transition: all 0.15s;
         }
-        .home-modal-price-card.active { border-color: #FED800; background: #FED80010; }
+        .home-modal-price-card.active { border-color: #E5B800; background: #E5B80010; }
         .home-modal-modifier-group { margin-bottom: 16px; }
         .home-modal-modifier-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
         .home-modal-modifier-name { font-size: 13px; font-weight: 700; color: #1A1A1A; text-transform: uppercase; letter-spacing: 0.5px; }
-        .home-modal-modifier-badge { font-size: 11px; padding: 2px 8px; border-radius: 20px; font-weight: 600; }
+        .home-modal-modifier-badge { font-size: 12px; padding: 2px 8px; border-radius: 20px; font-weight: 600; }
         .home-modal-modifier-opt {
           display: flex; justify-content: space-between; align-items: center;
           padding: 10px 12px; border-radius: 10px; cursor: pointer;
           border: 1px solid #E5E5E5; margin-bottom: 6px; transition: all 0.12s;
         }
-        .home-modal-modifier-opt.selected { border-color: #FED800; background: #FED80010; }
+        .home-modal-modifier-opt.selected { border-color: #E5B800; background: #E5B80010; }
         .home-modal-modifier-opt:hover { border-color: #D0D0D0; }
         .home-modal-add-row {
           display: flex; align-items: center; gap: 12px; margin-top: 20px;
@@ -423,12 +436,12 @@ export default function HomePage() {
         .home-modal-qty-btn:hover { background: #E5E5E5; }
         .home-modal-qty-val { width: 44px; text-align: center; font-size: 15px; font-weight: 700; color: #1A1A1A; background: #F5F5F5; }
         .home-modal-add-btn {
-          flex: 1; padding: 14px; border-radius: 10px; border: none;
+          flex: 1; padding: 14px; border-radius: 10px; border: 2px solid transparent;
           font-size: 15px; font-weight: 700; cursor: pointer;
-          transition: background 0.15s;
+          transition: all 0.3s ease;
         }
-        .home-modal-add-btn.enabled { background: #FED800; color: #000; }
-        .home-modal-add-btn.enabled:hover { background: #e8c400; }
+        .home-modal-add-btn.enabled { background: #E5B800; color: #000; }
+        .home-modal-add-btn.enabled:hover { background: #E5B800; color: #000; }
         .home-modal-add-btn.disabled { background: #F0F0F0; color: #AAAAAA; cursor: not-allowed; }
 
         /* ── Menu Tiles ── */
@@ -438,7 +451,7 @@ export default function HomePage() {
           text-decoration: none; display: flex; flex-direction: column;
           transition: border-color 0.2s, transform 0.25s, box-shadow 0.25s; background: #FFFFFF;
         }
-        .menu-tile:hover { border-color: #FED80060; transform: translateY(-4px); box-shadow: 0 10px 30px rgba(0,0,0,0.06); }
+        .menu-tile:hover { border-color: #E5B80060; transform: translateY(-4px); box-shadow: 0 10px 30px rgba(0,0,0,0.06); }
         .menu-tile-img { width: 100%; height: 220px; overflow: hidden; position: relative; flex-shrink: 0; }
         .menu-tile-img img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.5s cubic-bezier(0.16,1,0.3,1); }
         .menu-tile:hover .menu-tile-img img { transform: scale(1.06); }
@@ -455,8 +468,8 @@ export default function HomePage() {
         .about-img { height: 460px; border-radius: 20px; overflow: hidden; position: relative; }
         .about-img img { width: 100%; height: 100%; object-fit: cover; display: block; border-radius: 20px; }
         .about-content h2 {
-          font-family: 'Bebas Neue', sans-serif;
-          font-size: clamp(32px, 4vw, 52px);
+          font-family: 'DM Sans', sans-serif;
+          font-size: clamp(32px, 2vw, 52px);
           letter-spacing: 1px; line-height: 1;
           color: #1A1A1A; margin-bottom: 20px;
         }
@@ -486,20 +499,20 @@ export default function HomePage() {
           backdrop-filter: blur(16px);
         }
         .order-card-box h2 {
-          font-family: 'Bebas Neue', sans-serif;
-          font-size: clamp(28px, 3.5vw, 44px);
+          font-family: 'DM Sans', sans-serif;
+          font-size: clamp(28px, 3.5vw, 32px);
           letter-spacing: 1px; line-height: 1;
           color: #1A1A1A; margin-bottom: 14px;
         }
         .order-card-box p { color: #666666; font-size: 14px; line-height: 1.75; margin-bottom: 24px; }
         .order-btn {
           display: inline-flex; align-items: center; gap: 8px;
-          background: #FED800; color: #000;
+          background: #E5B800; color: #000;
           padding: 13px 26px; border-radius: 10px; font-weight: 700;
           font-size: 15px; text-decoration: none; font-family: inherit;
           transition: all 0.3s ease; border: 2px solid transparent;
         }
-        .order-btn:hover { background: transparent; color: #000; border-color: #FED800; transform: none; box-shadow: none; }
+        .order-btn:hover { background: #E5B800; color: #000; border-color: transparent; transform: none; box-shadow: none; }
 
         /* ── Delivery CTA Section (Section 12) ── */
         .delivery-hero {
@@ -519,17 +532,17 @@ export default function HomePage() {
           max-width: 700px; padding: 72px 24px;
         }
         .delivery-small-text {
-          font-size: 11px; font-weight: 700;
+          font-size: 12px; font-weight: 700;
           letter-spacing: 3.5px; text-transform: uppercase;
-          color: #FED800; margin-bottom: 14px; display: block;
+          color: #888888; margin-bottom: 14px; display: block;
         }
         .delivery-content h2 {
-          font-family: 'Bebas Neue', sans-serif;
-          font-size: clamp(36px, 6vw, 62px);
+          font-family: 'DM Sans', sans-serif;
+          font-size: 32px;
           letter-spacing: 1px; line-height: 0.95;
           color: #ffffff; margin-bottom: 16px;
         }
-        .delivery-content h2 span { color: #FED800; }
+        .delivery-content h2 span { color: #ffffff; }
         .delivery-content p {
           font-size: 15px; color: #ffffff;
           line-height: 1.75; margin-bottom: 36px;
@@ -557,7 +570,7 @@ export default function HomePage() {
         .review-card {
           background: #FFFFFF;
           border: 1px solid #E5E5E5;
-          border-left: 3px solid #FED800;
+          border-left: 3px solid #E5B800;
           border-radius: 18px; padding: 28px;
           transition: transform 0.25s, box-shadow 0.25s;
           min-width: calc(33.33% - 11px); max-width: calc(33.33% - 11px); flex-shrink: 0;
@@ -571,7 +584,7 @@ export default function HomePage() {
           display: flex; align-items: center; justify-content: center;
           transition: background 0.15s, border-color 0.15s;
         }
-        .review-arrow:hover { background: #FFFFFF; border-color: #FED800; }
+        .review-arrow:hover { background: #FFFFFF; border-color: #E5B800; }
         .review-arrow-left { left: -22px; }
         .review-arrow-right { right: -22px; }
         .star-filter-wrap {
@@ -584,8 +597,8 @@ export default function HomePage() {
           color: #888; font-size: 13px; font-weight: 600;
           cursor: pointer; transition: all 0.15s; font-family: inherit;
         }
-        .star-filter-btn:hover { border-color: #FED80060; color: #FED800; }
-        .star-filter-btn.active { border-color: #FED800; background: #FED80015; color: #FED800; }
+        .star-filter-btn:hover { border-color: #1A1A1A60; color: #1A1A1A; }
+        .star-filter-btn.active { border-color: #1A1A1A; background: #1A1A1A15; color: #1A1A1A; }
 
         /* ── Rewards ── */
         .rewards-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
@@ -606,7 +619,7 @@ export default function HomePage() {
           padding: 22px 0; gap: 16px; text-align: left;
           font-family: inherit; transition: color 0.15s;
         }
-        .faq-q:hover { color: #B8A000; }
+        .faq-q:hover { color: #555555; }
         .faq-answer-wrap {
           background: #F8F9FA; border-radius: 0 0 12px 12px; overflow: hidden;
           display: grid; grid-template-rows: 0fr;
@@ -621,12 +634,14 @@ export default function HomePage() {
 
         /* ── Footer ── */
         .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 48px; margin-bottom: 40px; }
-        .footer-bottom { border-top: 1px solid #2A2A2A; padding-top: 24px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
-        .footer-link { display: block; font-size: 14px; color: #ffffff; margin-bottom: 11px; text-decoration: none; transition: color 0.15s, padding-left 0.15s; }
-        .footer-link:hover { color: #FED800; padding-left: 4px; }
+        .footer-bottom { border-top: 1px solid #E5E5E5; padding-top: 24px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
+        .footer-link { display: block; font-size: 14px; color: #1A1A1A; margin-bottom: 11px; text-decoration: none; transition: color 0.15s, padding-left 0.15s; }
+        .footer-link:hover { color: #555555; padding-left: 4px; }
 
         /* ═══ RESPONSIVE ═══ */
         @media (max-width: 1024px) {
+          .hero-section { min-height: 60vh; padding-bottom: 48px; padding-top: 90px; }
+          
           .fav-card { min-width: calc(33.33% - 14px); max-width: calc(33.33% - 14px); }
           .review-card { min-width: calc(50% - 8px); max-width: calc(50% - 8px); }
           .rewards-grid { grid-template-columns: 1fr; gap: 40px; }
@@ -645,9 +660,13 @@ export default function HomePage() {
           .order-card-box { margin: 40px auto; max-width: 92%; }
         }
         @media (max-width: 768px) {
+          .hero-section { min-height: 55vh; padding: 80px 0 40px; }
+          
+          .hero-subtitle { font-size: 15px !important; margin: 16px 0 24px !important; }
+          .hero-stats { margin-top: 24px; gap: 20px; }
+          .hero-stat-value { font-size: clamp(22px, 5vw, 30px) !important; }
           .fav-card { min-width: calc(50% - 10px); max-width: calc(50% - 10px); }
           .review-card { min-width: 85%; max-width: 85%; }
-          .hero-stats { gap: 24px; flex-wrap: wrap; }
           .footer-grid { grid-template-columns: 1fr; gap: 28px; }
           .footer-brand { grid-column: unset; }
           .footer-bottom { flex-direction: column; text-align: center; }
@@ -656,10 +675,13 @@ export default function HomePage() {
           .order-card-box { margin: 24px; max-width: 100%; padding: 32px 28px; }
         }
         @media (max-width: 500px) {
-        .hero-order-btn{
-        padding:16px 14px !important;
-        white-space: nowrap !important;
-        }
+          .hero-section { min-height: 50vh; padding-bottom: 32px; padding-top: 72px; }
+          
+          .hero-subtitle { font-size: 14px !important; margin: 12px 0 20px !important; }
+          .hero-cta { gap: 10px; }
+          .hero-order-btn { padding: 14px 14px !important; white-space: nowrap !important; font-size: 14px !important; }
+          .hero-menu-btn { padding: 14px 14px !important; font-size: 14px !important; }
+          .hero-stats { margin-top: 18px; gap: 16px; }
           .photo-gallery { grid-template-columns: 1fr; }
           .gallery-item { height: 220px; }
         }
@@ -684,7 +706,7 @@ export default function HomePage() {
           1. HERO
       ══════════════════════════════════════════ */}
       <section id="hero" className="hero-section" aria-label="Welcome to Eggs Ok">
-        <div className="hero-overlay" style={{ position: 'absolute', inset: 0, background: 'rgba(0,0,0,0.55)', zIndex: 0 }} />
+        <div className="hero-overlay" style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.35) 40%, rgba(0,0,0,0.05) 100%)', zIndex: 0 }} />
 
         <div className="container hero-container" style={{ position: 'relative', zIndex: 1, width: '100%' }}>
           <div
@@ -710,9 +732,9 @@ export default function HomePage() {
               </span>
             </div>
 
-            <h1 id="hero-title" className="hero-title bebas" style={{ fontSize: 'clamp(52px, 7vw, 72px)', color: '#ffffff' }}>
-              <span className="hero-title-line1" style={{ display: 'block' }}>WELCOME TO EGGS OK</span>
-              <span className="hero-title-line2" style={{ display: 'block', color: '#FED800' }}>WEST PHILADELPHIA</span>
+            <h1 id="hero-title" className="hero-title bebas" style={{ fontSize: '40px', color: '#ffffff' }}>
+              <span className="hero-title-line1" style={{ display: 'block' }}>Welcome to Eggs Ok</span>
+              <span className="hero-title-line2" style={{ display: 'block', color: '#fcfcfcff' }}>West Philadelphia</span>
             </h1>
 
             <p id="hero-subtitle" className="hero-subtitle" style={{ fontSize: 'clamp(15px, 2vw, 18px)', color: '#ffffff', lineHeight: 1.7, maxWidth: '560px', margin: '28px auto 40px' }}>
@@ -724,19 +746,19 @@ export default function HomePage() {
               <Link href="/order" className="btn-yellow hero-order-btn" style={{ fontSize: '16px', padding: '16px 34px' }}>
                 <ShoppingCart size={18} /> Order Now
               </Link>
-              <a href="#menu" className="btn-outline hero-menu-btn" style={{ fontSize: '16px', padding: '16px 34px', color: '#ffffff', borderColor: '#ffffff' }}>
+              <a href="#menu" className="hero-menu-btn" style={{ fontSize: '16px', padding: '16px 34px' }}>
                 View Menu
               </a>
             </div>
 
-            <div id="hero-stats-bar" className="hero-stats">
+            {/* <div id="hero-stats-bar" className="hero-stats">
               {[{ v: '80+', l: 'Menu Items' }, { v: '15 min', l: 'Ready Time' }, { v: '5★', l: 'Rated' }].map((s, i) => (
                 <div key={i} className={`hero-stat hero-stat-${i + 1}`}>
-                  <p className="hero-stat-value bebas" style={{ fontSize: 'clamp(28px, 4vw, 38px)', color: '#FED800' }}>{s.v}</p>
-                  <p className="hero-stat-label" style={{ fontSize: '12px', color: '#999', marginTop: '4px' }}>{s.l}</p>
+                  <p className="hero-stat-value bebas" style={{ fontSize: 'clamp(28px, 4vw, 38px)', color: '#1A1A1A' }}>{s.v}</p>
+                  <p className="hero-stat-label" style={{ fontSize: '13px', color: 'rgba(255,255,255,0.7)', marginTop: '4px' }}>{s.l}</p>
                 </div>
               ))}
-            </div>
+            </div> */}
           </div>
         </div>
       </section>
@@ -749,7 +771,7 @@ export default function HomePage() {
           <div className={`featured-header reveal ${featuredReveal.visible ? 'visible' : ''}`} style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', marginBottom: '52px', flexWrap: 'wrap', gap: '20px' }}>
             <div className="featured-header-text">
               <span className="sec-label">Featured</span>
-              <h2 id="featured-heading" className="sec-heading">OUR <span className="text-accent" style={{ color: '#FED800' }}>FAVORITES</span></h2>
+              <h2 id="featured-heading" className="sec-heading">Our <span className="text-accent" style={{ color: '#1A1A1A' }}>Favorites</span></h2>
             </div>
             <Link href="/order" className="btn-outline featured-view-all-btn">View Full Menu <ArrowRight size={15} aria-hidden="true" /></Link>
           </div>
@@ -775,17 +797,17 @@ export default function HomePage() {
                           <svg width="40" height="40" viewBox="0 0 64 64" fill="none"><circle cx="32" cy="32" r="22" stroke="#D0D0D0" strokeWidth="1.5"/><path d="M20 32 Q32 20 44 32" stroke="#D0D0D0" strokeWidth="1.5" strokeLinecap="round"/><circle cx="32" cy="38" r="6" stroke="#D0D0D0" strokeWidth="1.5"/></svg>
                         </div>
                     }
-                    {item.tag && <div className="fav-tag-badge" style={{ position: 'absolute', top: '14px', left: '14px', background: 'rgba(255,255,255,0.9)', backdropFilter: 'blur(8px)', border: '1px solid #FED80040', borderRadius: '20px', padding: '4px 12px' }}>
-                      <span className="fav-tag-text" style={{ fontSize: '11px', fontWeight: '700', color: '#FED800', letterSpacing: '0.5px' }}>{item.tag}</span>
+                    {item.tag && <div className="fav-tag-badge" style={{ position: 'absolute', top: '14px', left: '14px', background: 'rgba(255,255,255,0.9)', backdropFilter: 'blur(8px)', border: '1px solid #E5B80040', borderRadius: '20px', padding: '4px 12px' }}>
+                      <span className="fav-tag-text" style={{ fontSize: '12px', fontWeight: '700', color: '#1A1A1A', letterSpacing: '0.5px' }}>{item.tag}</span>
                     </div>}
-                    <div className="fav-add-btn" style={{ position: 'absolute', bottom: '14px', right: '14px', width: '36px', height: '36px', borderRadius: '50%', background: '#FED800', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }} aria-hidden="true">
+                    <div className="fav-add-btn" style={{ position: 'absolute', bottom: '14px', right: '14px', width: '36px', height: '36px', borderRadius: '50%', background: '#E5B800', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }} aria-hidden="true">
                       <Plus size={15} color="#000" strokeWidth={2.8} />
                     </div>
                   </div>
                   <div className="fav-card-body" style={{ padding: '0 14px 4px', width: '100%' }}>
                     <p className="fav-card-name" style={{ fontSize: '14px', fontWeight: '700', color: '#1A1A1A', marginBottom: '4px', lineHeight: 1.3 }}>{item.name}</p>
-                    <p className="fav-card-desc" style={{ fontSize: '12px', color: '#888888', lineHeight: 1.4, marginBottom: '8px', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical' as any, overflow: 'hidden' }}>{item.desc}</p>
-                    <p className="fav-card-price" style={{ fontSize: '16px', fontWeight: '800', color: '#FED800' }}>{item.price}</p>
+                    <p className="fav-card-desc" style={{ fontSize: '13px', color: '#888888', lineHeight: 1.4, marginBottom: '8px', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical' as any, overflow: 'hidden' }}>{item.desc}</p>
+                    <p className="fav-card-price" style={{ fontSize: '16px', fontWeight: '800', color: '#1A1A1A' }}>{item.price}</p>
                   </div>
                 </div>
               ))}
@@ -809,7 +831,7 @@ export default function HomePage() {
             </div>
             <div className="about-content story-content">
               <span className="sec-label">Our Story</span>
-              <h2 id="story-heading" className="story-heading">Born in the Heart <span className="text-accent" style={{ color: '#FED800' }}>of West Philly</span></h2>
+              <h2 id="story-heading" className="story-heading">Born in the Heart <span className="text-accent" style={{ color: '#1A1A1A' }}>of West Philly</span></h2>
 
               <p className="story-body">
                 Eggs Ok started with a simple idea  great breakfast should be fast, fresh, and made with
@@ -833,7 +855,7 @@ export default function HomePage() {
           <div className="about-grid quality-grid">
             <div className="about-content quality-content">
               <span className="sec-label">Quality First</span>
-              <h2 id="quality-heading" className="quality-heading">Fresh Ingredients, <span className="text-accent" style={{ color: '#FED800' }}> Bold Flavors</span></h2>
+              <h2 id="quality-heading" className="quality-heading">Fresh Ingredients, <span className="text-accent" style={{ color: '#1A1A1A' }}> Bold Flavors</span></h2>
               <p className="quality-body">
                 We source quality ingredients and prep everything in-house daily. Whether you&apos;re
                 fueling up before work, grabbing lunch on the run, or treating yourself to a specialty
@@ -858,7 +880,7 @@ export default function HomePage() {
       <div id="order-ahead" className="order-ahead-hero container">
         <div className="order-ahead-overlay" />
         <div className="order-card-box">
-          <h2 id="order-ahead-heading" className="order-ahead-heading">Order Ahead, <span className="text-accent" style={{ color: '#FED800' }}> Enjoy Anytime</span></h2>
+          <h2 id="order-ahead-heading" className="order-ahead-heading">Order Ahead, <span className="text-accent" style={{ color: '#1A1A1A' }}> Enjoy Anytime</span></h2>
           <p className="order-ahead-body">
             Skip the line and order online in seconds. Pick it up hot and ready, or have it
             delivered straight to your door. It only takes a few taps.
@@ -875,7 +897,7 @@ export default function HomePage() {
           <div className={`menu-header reveal ${menuReveal.visible ? 'visible' : ''}`} style={{ textAlign: 'left', marginBottom: '52px' }}>
             <span className="sec-label">Explore</span>
             <h2 id="menu-heading" className="sec-heading">
-             A Taste Of  <span className="text-accent" style={{ color: '#FED800' }}> OUR MENU</span>
+             A Taste Of  <span className="text-accent" style={{ color: '#1A1A1A' }}> Our Menu</span>
             </h2>
             <p className="menu-subheading" style={{ color: '#1A1A1A', marginTop: '14px', fontSize: '15px' }}>
               Bright Flavors, warm atmosphere, and a menu that has something for everyone. <br /> From classic breakfast sandwiches to bold specialty drinks,  get a glimpse of what we offer <br /> before you order. 
@@ -899,7 +921,7 @@ export default function HomePage() {
                 </div>
                 <div className="menu-tile-body">
                   <p className="menu-tile-label" style={{ fontSize: '15px', fontWeight: '700', color: '#1A1A1A', marginBottom: '4px' }}>{tile.label}</p>
-                  <p className="menu-tile-count" style={{ fontSize: '12px', color: '#FED800', fontWeight: '600' }}>{tile.items}</p>
+                  <p className="menu-tile-count" style={{ fontSize: '12px', color: '#1A1A1A', fontWeight: '600' }}>{tile.items}</p>
                 </div>
               </Link>
             ))}
@@ -928,7 +950,7 @@ export default function HomePage() {
             </div>
             <div className="about-content catering-content">
               <span className="sec-label">Catering</span>
-              <h2 id="catering-heading" className="catering-heading">Let Us Cater Your <span className="text-accent" style={{ color: '#FED800' }}> Next Event</span></h2>
+              <h2 id="catering-heading" className="catering-heading">Let Us Cater Your <span className="text-accent" style={{ color: '#1A1A1A' }}> Next Event</span></h2>
               <p className="catering-body">
                 From corporate breakfasts to birthday brunches, Eggs Ok brings the same fresh,
                 made-to-order quality to your event. We handle setup, variety, and volume — you
@@ -950,10 +972,10 @@ export default function HomePage() {
           <div className={`reviews-header reveal ${reviewsReveal.visible ? 'visible' : ''}`} style={{ textAlign: 'center', marginBottom: '40px' }}>
             <span className="sec-label">Reviews</span>
             <h2 id="reviews-heading" className="sec-heading">
-              WHAT OUR GUESTS <span className="text-accent" style={{ color: '#FED800' }}>ARE SAYING</span>
+              What Our Guests <span className="text-accent" style={{ color: '#1A1A1A' }}>Are Saying</span>
             </h2>
             <div id="reviews-rating-bar" className="reviews-rating-bar" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '5px', marginTop: '14px' }}>
-              {[0,1,2,3,4].map(i => <Star key={i} size={19} color="#FED800" fill="#FED800" aria-hidden="true" />)}
+              {[0,1,2,3,4].map(i => <Star key={i} size={19} color="#E5B800" fill="#E5B800" aria-hidden="true" />)}
               <span className="reviews-rating-text" style={{ fontSize: '14px', color: '#888888', marginLeft: '8px' }}>
                 {allReviews.length > 0
                   ? `${(allReviews.reduce((a, r) => a + r.stars, 0) / allReviews.length).toFixed(1)} average from ${allReviews.length} reviews`
@@ -968,7 +990,7 @@ export default function HomePage() {
               </button>
               {[5, 4, 3, 2, 1].map(s => (
                 <button key={s} className={`star-filter-btn ${starFilter === s ? 'active' : ''}`} onClick={() => setStarFilter(starFilter === s ? null : s)}>
-                  {s} <Star size={12} color="#FED800" fill="#FED800" />
+                  {s} <Star size={12} color="#E5B800" fill="#E5B800" />
                 </button>
               ))}
             </div>
@@ -992,15 +1014,15 @@ export default function HomePage() {
                   role="listitem"
                 >
                   <div className="review-stars" style={{ display: 'flex', gap: '3px', marginBottom: '18px' }} aria-label={`${r.stars} out of 5 stars`}>
-                    {[0,1,2,3,4].map(s => <Star key={s} size={13} color={s < r.stars ? '#FED800' : '#D0D0D0'} fill={s < r.stars ? '#FED800' : 'none'} aria-hidden="true" />)}
+                    {[0,1,2,3,4].map(s => <Star key={s} size={13} color={s < r.stars ? '#E5B800' : '#D0D0D0'} fill={s < r.stars ? '#E5B800' : 'none'} aria-hidden="true" />)}
                   </div>
                   <blockquote className="review-quote" style={{ fontSize: '15px', color: '#1A1A1A', lineHeight: 1.75, marginBottom: '24px', fontStyle: 'italic' }}>
                     &ldquo;{r.text}&rdquo;
                   </blockquote>
                   <div className="review-footer" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                     <div className="review-author" style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                      <div className="review-avatar" style={{ width: '38px', height: '38px', borderRadius: '50%', background: '#FED80020', border: '1px solid #FED80050', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }} aria-hidden="true">
-                        <span className="review-avatar-initial" style={{ fontSize: '14px', fontWeight: '700', color: '#FED800' }}>{r.name[0]}</span>
+                      <div className="review-avatar" style={{ width: '38px', height: '38px', borderRadius: '50%', background: '#F0F0F0', border: '1px solid #E0E0E0', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }} aria-hidden="true">
+                        <span className="review-avatar-initial" style={{ fontSize: '14px', fontWeight: '700', color: '#1A1A1A' }}>{r.name[0]}</span>
                       </div>
                       <cite className="review-name" style={{ fontSize: '14px', fontWeight: '600', color: '#1A1A1A', fontStyle: 'normal' }}>{r.name}</cite>
                     </div>
@@ -1025,7 +1047,7 @@ export default function HomePage() {
             <div className={`rewards-left reveal ${rewardsReveal.visible ? 'visible' : ''}`}>
               <span className="sec-label">Loyalty Program</span>
               <h2 id="rewards-heading" className="sec-heading" style={{ marginBottom: '16px' }}>
-                EGGS OK <span className="text-accent" style={{ color: '#FED800' }}>REWARDS</span>
+                Eggs Ok <span className="text-accent" style={{ color: '#1A1A1A' }}>Rewards</span>
               </h2>
               <p className="rewards-body" style={{ fontSize: '15px', color: '#1A1A1A', lineHeight: 1.8, marginBottom: '36px', maxWidth: '440px' }}>
                 Every order earns you points. Redeem for free food, exclusive deals, and early access
@@ -1038,7 +1060,7 @@ export default function HomePage() {
 
             <div id="rewards-steps" className="rewards-steps" role="list" aria-label="How rewards work">
               {[
-                { step: '01', title: 'Sign Up Free',    desc: 'Create your account in under a minute. No fees, ever.',    color: '#FED800' },
+                { step: '01', title: 'Sign Up Free',    desc: 'Create your account in under a minute. No fees, ever.',    color: '#1A1A1A' },
                 { step: '02', title: 'Earn Points',     desc: '$1 spent = 10 points. Points stack up fast.',              color: '#FC0301' },
                 { step: '03', title: 'Redeem Rewards',  desc: 'Free items, discounts, and exclusive member perks.',       color: '#22C55E' },
               ].map((s, i) => (
@@ -1070,7 +1092,7 @@ export default function HomePage() {
           <div className={`faq-header reveal ${faqReveal.visible ? 'visible' : ''}`} style={{ textAlign: 'center', marginBottom: '60px' }}>
             <span className="sec-label">FAQ</span>
             <h2 id="faq-heading" className="sec-heading">
-              FREQUENTLY ASKED <span className="text-accent" style={{ color: '#FED800' }}>QUESTIONS</span>
+              Frequently Asked <span className="text-accent" style={{ color: '#1A1A1A' }}>Questions</span>
             </h2>
           </div>
 
@@ -1087,7 +1109,7 @@ export default function HomePage() {
                   <span className="faq-question-text">{faq.q}</span>
                   <ChevronDown
                     size={18} aria-hidden="true"
-                    color={openFaq === i ? '#FED800' : '#777777'}
+                    color={openFaq === i ? '#555555' : '#777777'}
                     style={{ flexShrink: 0, transform: openFaq === i ? 'rotate(180deg)' : 'rotate(0deg)', transition: 'transform 0.3s cubic-bezier(0.16,1,0.3,1)' }}
                   />
                 </button>
@@ -1115,7 +1137,7 @@ export default function HomePage() {
           <div className={`location-header reveal ${locationReveal.visible ? 'visible' : ''}`} style={{ textAlign: 'center', marginBottom: '56px' }}>
             <span className="sec-label">Find Us</span>
             <h2 id="location-heading" className="sec-heading">
-              OUR <span className="text-accent" style={{ color: '#FED800' }}>LOCATION</span>
+              Our <span className="text-accent" style={{ color: '#1A1A1A' }}>Location</span>
             </h2>
           </div>
 
@@ -1133,20 +1155,20 @@ export default function HomePage() {
                   <span className="location-status-text" style={{ fontSize: '12px', color: isOpen ? '#22C55E' : '#FC0301', fontWeight: '600' }}>{isOpen ? 'Open Now' : 'Closed'}</span>
                 </div>
 
-                <h3 id="location-name" className="location-name bebas" style={{ fontSize: 'clamp(28px, 4vw, 44px)', color: '#1A1A1A', marginBottom: '28px' }}>
-                  EGGS OK<br /><span className="location-name-accent" style={{ color: '#FED800' }}>WEST PHILADELPHIA</span>
+                <h3 id="location-name" className="location-name bebas" style={{ fontSize: 'clamp(28px, 4vw, 32px)', color: '#1A1A1A', marginBottom: '28px' }}>
+                  Eggs Ok<br /><span className="location-name-accent" style={{ color: '#1A1A1A' }}>West Philadelphia</span>
                 </h3>
 
                 <address id="location-address" className="location-address" style={{ fontStyle: 'normal', display: 'flex', flexDirection: 'column', gap: '16px' }}>
                   <div className="location-address-row" style={{ display: 'flex', gap: '14px', alignItems: 'flex-start' }}>
-                    <MapPin size={16} color="#FED800" style={{ flexShrink: 0, marginTop: '2px' }} aria-hidden="true" />
+                    <MapPin size={16} color="#E5B800" style={{ flexShrink: 0, marginTop: '2px' }} aria-hidden="true" />
                     <div className="location-address-text">
                       <p className="location-street" style={{ fontSize: '14px', color: '#1A1A1A', fontWeight: '600' }}>3517 Lancaster Ave</p>
                       <p className="location-city" style={{ fontSize: '13px', color: '#888888' }}>Philadelphia, PA 19104</p>
                     </div>
                   </div>
                   <div className="location-hours-row" style={{ display: 'flex', gap: '14px', alignItems: 'flex-start' }}>
-                    <Clock size={16} color="#FED800" style={{ flexShrink: 0, marginTop: '3px' }} aria-hidden="true" />
+                    <Clock size={16} color="#E5B800" style={{ flexShrink: 0, marginTop: '3px' }} aria-hidden="true" />
                     <div id="location-hours-list" className="location-hours-list" style={{ display: 'flex', flexDirection: 'column', gap: '5px' }}>
                       {HOURS.map((row, i) => (
                         <div key={i} className={`location-hours-row-item location-hours-${row.d.toLowerCase()}`} style={{ display: 'flex', gap: '14px' }}>
@@ -1157,7 +1179,7 @@ export default function HomePage() {
                     </div>
                   </div>
                   <div className="location-phone-row" style={{ display: 'flex', gap: '14px', alignItems: 'center' }}>
-                    <Smartphone size={16} color="#FED800" style={{ flexShrink: 0 }} aria-hidden="true" />
+                    <Smartphone size={16} color="#E5B800" style={{ flexShrink: 0 }} aria-hidden="true" />
                     <a href="tel:2159489902" className="location-phone" style={{ fontSize: '14px', color: '#1A1A1A', textDecoration: 'none', fontWeight: '600' }}>215-948-9902</a>
                   </div>
                 </address>
@@ -1181,9 +1203,9 @@ export default function HomePage() {
                 style={{ border: 0, minHeight: '460px', display: 'block' }}
                 allowFullScreen loading="lazy" referrerPolicy="no-referrer-when-downgrade"
               />
-              <div id="location-map-pin" className="location-map-pin" style={{ position: 'absolute', bottom: '20px', left: '20px', background: 'rgba(255,255,255,0.95)', backdropFilter: 'blur(12px)', borderRadius: '10px', padding: '10px 16px', border: '1px solid #FED80040', pointerEvents: 'none' }} aria-hidden="true">
-                <p className="location-map-pin-name bebas" style={{ fontSize: '14px', color: '#FED800', letterSpacing: '1px' }}>EGGS OK</p>
-                <p className="location-map-pin-address" style={{ fontSize: '11px', color: '#888888' }}>3517 Lancaster Ave</p>
+              <div id="location-map-pin" className="location-map-pin" style={{ position: 'absolute', bottom: '20px', left: '20px', background: 'rgba(255,255,255,0.95)', backdropFilter: 'blur(12px)', borderRadius: '10px', padding: '10px 16px', border: '1px solid #E5B80040', pointerEvents: 'none' }} aria-hidden="true">
+                <p className="location-map-pin-name bebas" style={{ fontSize: '14px', color: '#1A1A1A', letterSpacing: '1px' }}>Eggs Ok</p>
+                <p className="location-map-pin-address" style={{ fontSize: '12px', color: '#888888' }}>3517 Lancaster Ave</p>
               </div>
             </div>
           </div>
@@ -1198,8 +1220,8 @@ export default function HomePage() {
         <div className="delivery-content">
           <span className="delivery-small-text">Order Online</span>
           <h2 id="delivery-heading" className="delivery-heading">
-            GET IT DELIVERED <br />
-            <span className="delivery-heading-accent">STRAIGHT TO YOUR DOOR</span>
+            Get It Delivered <br />
+            <span className="delivery-heading-accent">Straight to Your Door</span>
           </h2>
           <p className="delivery-body">
             Craving something fresh? Order online and get it delivered piping hot via your
@@ -1215,7 +1237,7 @@ export default function HomePage() {
       {/* ══════════════════════════════════════════
           FOOTER
       ══════════════════════════════════════════ */}
-      <footer id="footer" className="site-footer" style={{ background: '#111111', padding: '68px 0 32px', borderTop: '1px solid #2A2A2A' }}>
+      <footer id="footer" className="site-footer" style={{ background: '#F8F9FA', padding: '68px 0 32px', borderTop: '1px solid #E5E5E5' }}>
         <div className="container footer-container">
           <div className="footer-grid">
             <div id="footer-brand" className="footer-brand">
@@ -1224,22 +1246,22 @@ export default function HomePage() {
                   <Image src="/logo.svg" alt="Eggs Ok" width={100} height={50} style={{ objectFit: 'contain' }} />
                 </div>
               </div>
-              <p className="footer-brand-tagline" style={{ fontSize: '14px', color: '#ffffff', lineHeight: 1.75, maxWidth: '280px', marginBottom: '22px' }}>
+              <p className="footer-brand-tagline" style={{ fontSize: '14px', color: '#1A1A1A', lineHeight: 1.75, maxWidth: '280px', marginBottom: '22px' }}>
                 Fresh breakfast and lunch in West Philadelphia. Made to order, every time.
               </p>
               <address id="footer-address" className="footer-address" style={{ fontStyle: 'normal' }}>
-                <p className="footer-address-line" style={{ fontSize: '13px', color: '#ffffff', display: 'flex', alignItems: 'center', gap: '7px', marginBottom: '8px' }}>
-                  <MapPin size={13} color="#FED800" aria-hidden="true" href='https://www.google.com/maps?q=3517+Lancaster+Ave,+Philadelphia+PA+19104'/> <a href='https://www.google.com/maps?q=3517+Lancaster+Ave,+Philadelphia+PA+19104' className="footer-address-link">3517 Lancaster Ave, Philadelphia PA 19104</a>
+                <p className="footer-address-line" style={{ fontSize: '13px', color: '#1A1A1A', display: 'flex', alignItems: 'center', gap: '7px', marginBottom: '8px' }}>
+                  <MapPin size={13} color="#E5B800" aria-hidden="true" href='https://www.google.com/maps?q=3517+Lancaster+Ave,+Philadelphia+PA+19104'/> <a href='https://www.google.com/maps?q=3517+Lancaster+Ave,+Philadelphia+PA+19104' className="footer-address-link">3517 Lancaster Ave, Philadelphia PA 19104</a>
                 </p>
-                <p className="footer-phone-line" style={{ fontSize: '13px', color: '#ffffff', display: 'flex', alignItems: 'center', gap: '7px' }}>
-                  <Smartphone size={13} color="#FED800" aria-hidden="true" />
-                  <a href="tel:2159489902" className="footer-phone-link" style={{ color: '#ffffff', textDecoration: 'none' }}>215-948-9902</a>
+                <p className="footer-phone-line" style={{ fontSize: '13px', color: '#1A1A1A', display: 'flex', alignItems: 'center', gap: '7px' }}>
+                  <Smartphone size={13} color="#E5B800" aria-hidden="true" />
+                  <a href="tel:2159489902" className="footer-phone-link" style={{ color: '#1A1A1A', textDecoration: 'none' }}>215-948-9902</a>
                 </p>
               </address>
             </div>
 
             <nav id="footer-nav" className="footer-nav" aria-label="Quick links">
-              <p className="footer-nav-heading" style={{ fontSize: '16px', fontWeight: '700', color: '#ffffff', letterSpacing: '2px', textTransform: 'uppercase', marginBottom: '20px' }}>Quick Links</p>
+              <p className="footer-nav-heading" style={{ fontSize: '16px', fontWeight: '700', color: '#1A1A1A', letterSpacing: '2px', textTransform: 'uppercase', marginBottom: '20px' }}>Quick Links</p>
               {[
                 { label: 'Home',         href: '/'           },
                 { label: 'Order Online', href: '/order'      },
@@ -1253,12 +1275,12 @@ export default function HomePage() {
             </nav>
 
             <div id="footer-hours" className="footer-hours">
-              <p className="footer-hours-heading" style={{ fontSize: '15px', fontWeight: '700', color: '#ffffff', letterSpacing: '2px', textTransform: 'uppercase', marginBottom: '20px' }}>Hours</p>
+              <p className="footer-hours-heading" style={{ fontSize: '15px', fontWeight: '700', color: '#1A1A1A', letterSpacing: '2px', textTransform: 'uppercase', marginBottom: '20px' }}>Hours</p>
               <div id="footer-hours-list" className="footer-hours-list" style={{ display: 'flex', flexDirection: 'column', gap: '5px' }}>
                 {HOURS.map((row, i) => (
                   <div key={i} className={`footer-hours-row footer-hours-${row.d.toLowerCase()}`} style={{ display: 'flex', gap: '14px' }}>
-                    <span className="footer-hours-day" style={{ fontSize: '13px', color: '#ffffff', fontWeight: '600', minWidth: '96px' }}>{row.d}</span>
-                    <span className="footer-hours-time" style={{ fontSize: '13px', color: '#BBBBBB' }}>{row.h}</span>
+                    <span className="footer-hours-day" style={{ fontSize: '13px', color: '#1A1A1A', fontWeight: '600', minWidth: '96px' }}>{row.d}</span>
+                    <span className="footer-hours-time" style={{ fontSize: '13px', color: '#666666' }}>{row.h}</span>
                   </div>
                 ))}
               </div>
@@ -1266,8 +1288,8 @@ export default function HomePage() {
           </div>
 
           <div id="footer-bottom" className="footer-bottom">
-            <p id="footer-copyright" className="footer-copyright" style={{ fontSize: '13px', color: '#ffffff' }}>&copy; {new Date().getFullYear()} Eggs Ok. All rights reserved.</p>
-            {/* <p id="footer-credit" className="footer-credit" style={{ fontSize: '13px', color: '#ffffff' }}>Built by <span className="footer-credit-brand" style={{ color: '#FED800' }}>RestoRise Business Solutions</span></p> */}
+            <p id="footer-copyright" className="footer-copyright" style={{ fontSize: '13px', color: '#888888' }}>&copy; {new Date().getFullYear()} Eggs Ok. All rights reserved.</p>
+            {/* <p id="footer-credit" className="footer-credit" style={{ fontSize: '13px', color: '#ffffff' }}>Built by <span className="footer-credit-brand" style={{ color: '#E5B800' }}>RestoRise Business Solutions</span></p> */}
           </div>
         </div>
       </footer>
@@ -1299,8 +1321,8 @@ export default function HomePage() {
                   <div className="home-modal-price-row">
                     {(['pickup', 'delivery'] as const).filter(type => type === 'pickup' ? isPickupEnabled : isDeliveryEnabled).map(type => (
                       <div key={type} className={`home-modal-price-card ${orderType === type ? 'active' : ''}`} onClick={() => setOrderType(type)}>
-                        <p style={{ fontSize: '11px', color: '#777777', fontWeight: '600', textTransform: 'uppercase', marginBottom: '4px' }}>{type}</p>
-                        <p style={{ fontSize: '18px', fontWeight: '800', color: orderType === type ? '#FED800' : '#1A1A1A' }}>
+                        <p style={{ fontSize: '12px', color: '#777777', fontWeight: '600', textTransform: 'uppercase', marginBottom: '4px' }}>{type}</p>
+                        <p style={{ fontSize: '18px', fontWeight: '800', color: '#1A1A1A' }}>
                           ${(Number(type === 'pickup' ? fullMenuItem.pickupPrice : fullMenuItem.deliveryPrice) || 0).toFixed(2)}
                         </p>
                       </div>
@@ -1321,12 +1343,12 @@ export default function HomePage() {
                         return (
                           <div key={opt.id} className={`home-modal-modifier-opt ${isSel ? 'selected' : ''}`} onClick={() => toggleModifier(group.id, opt.id, group.maxSelections)}>
                             <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                              <div style={{ width: '20px', height: '20px', borderRadius: group.maxSelections === 1 ? '50%' : '4px', border: isSel ? '2px solid #FED800' : '1px solid #D0D0D0', background: isSel ? '#FED800' : 'transparent', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                              <div style={{ width: '20px', height: '20px', borderRadius: group.maxSelections === 1 ? '50%' : '4px', border: isSel ? '2px solid #E5B800' : '1px solid #D0D0D0', background: isSel ? '#E5B800' : 'transparent', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                                 {isSel && <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#000" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>}
                               </div>
                               <span style={{ fontSize: '14px', color: '#1A1A1A' }}>{opt.name}</span>
                             </div>
-                            <span style={{ fontSize: '13px', color: Number(opt.price) > 0 ? '#FED800' : '#AAAAAA' }}>
+                            <span style={{ fontSize: '13px', color: Number(opt.price) > 0 ? '#1A1A1A' : '#AAAAAA' }}>
                               {Number(opt.price) > 0 ? `+$${Number(opt.price).toFixed(2)}` : 'Free'}
                             </span>
                           </div>

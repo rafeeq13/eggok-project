@@ -72,7 +72,7 @@ function OrderTrackingContent() {
     return (
       <div style={{ background: '#FFFFFF', minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '16px' }}>
         <p style={{ color: '#777777', fontSize: '16px' }}>{error || 'Order not found'}</p>
-        <Link href="/" style={{ color: '#FED800', fontSize: '14px', textDecoration: 'none' }}>Back to Home</Link>
+        <Link href="/" style={{ color: '#333333', fontSize: '14px', textDecoration: 'none' }}>Back to Home</Link>
       </div>
     );
   }
@@ -96,11 +96,11 @@ function OrderTrackingContent() {
 
         {/* Header */}
         <div style={{ textAlign: 'center', marginBottom: '36px' }}>
-          <div style={{ width: '64px', height: '64px', borderRadius: '50%', background: isCancelled ? '#FC030120' : '#FED80020', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 16px' }}>
+          <div style={{ width: '64px', height: '64px', borderRadius: '50%', background: isCancelled ? '#FC030120' : '#E5B80020', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 16px' }}>
             {isCancelled ? (
               <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#FC0301" strokeWidth="2" strokeLinecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
             ) : (
-              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#FED800" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#E5B800" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
             )}
           </div>
           <h1 style={{ fontSize: '28px', fontWeight: '800', marginBottom: '8px' }}>Order #{order.orderNumber}</h1>
@@ -120,14 +120,14 @@ function OrderTrackingContent() {
                   <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                     <div style={{
                       width: '28px', height: '28px', borderRadius: '50%',
-                      background: done ? '#FED800' : '#F0F0F0',
-                      border: active ? '2px solid #FED800' : done ? 'none' : '2px solid #D0D0D0',
+                      background: done ? '#E5B800' : '#F0F0F0',
+                      border: active ? '2px solid #E5B800' : done ? 'none' : '2px solid #D0D0D0',
                       display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
                     }}>
                       {done && <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#000" strokeWidth="3" strokeLinecap="round"><polyline points="20 6 9 17 4 12"/></svg>}
                     </div>
                     {i < steps.length - 1 && (
-                      <div style={{ width: '2px', height: '20px', background: done ? '#FED800' : '#D0D0D0', marginTop: '4px' }} />
+                      <div style={{ width: '2px', height: '20px', background: done ? '#E5B800' : '#D0D0D0', marginTop: '4px' }} />
                     )}
                   </div>
                   <div style={{ paddingTop: '3px' }}>
@@ -204,23 +204,23 @@ function OrderTrackingContent() {
             {(order.items || []).map((item: any, i: number) => (
               <div key={i} style={{ display: 'flex', justifyContent: 'space-between', padding: '8px 0', borderBottom: '1px solid #E5E5E5' }}>
                 <span style={{ fontSize: '13px', color: '#1A1A1A' }}>{item.quantity}x {item.name}</span>
-                <span style={{ fontSize: '13px', color: '#FED800' }}>${((item.price || 0) * (item.quantity || 1)).toFixed(2)}</span>
+                <span style={{ fontSize: '13px', color: '#1A1A1A' }}>${((item.price || 0) * (item.quantity || 1)).toFixed(2)}</span>
               </div>
             ))}
           </div>
 
           {/* Totals */}
-          <div style={{ marginTop: '14px', paddingTop: '10px', borderTop: '2px solid #FED800' }}>
+          <div style={{ marginTop: '14px', paddingTop: '10px', borderTop: '2px solid #E5B800' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
               <span style={{ fontSize: '16px', fontWeight: '700' }}>Total</span>
-              <span style={{ fontSize: '18px', fontWeight: '700', color: '#FED800' }}>${Number(order.total).toFixed(2)}</span>
+              <span style={{ fontSize: '18px', fontWeight: '700', color: '#1A1A1A' }}>${Number(order.total).toFixed(2)}</span>
             </div>
           </div>
         </div>
 
         {/* Actions */}
         <div style={{ display: 'flex', gap: '12px', justifyContent: 'center', flexWrap: 'wrap' }}>
-          <Link href="/order" style={{ padding: '14px 32px', background: '#FED800', borderRadius: '12px', fontSize: '15px', fontWeight: '700', color: '#000', textDecoration: 'none' }}>
+          <Link href="/order" style={{ padding: '14px 32px', background: '#E5B800', borderRadius: '12px', fontSize: '15px', fontWeight: '700', color: '#000', textDecoration: 'none' }}>
             Order Again
           </Link>
           <Link href="/" style={{ padding: '14px 32px', background: 'transparent', border: '1px solid #D0D0D0', borderRadius: '12px', fontSize: '15px', fontWeight: '600', color: '#777777', textDecoration: 'none' }}>

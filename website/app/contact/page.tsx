@@ -67,7 +67,7 @@ export default function ContactPage() {
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
         :root {
-          --y: #FED800;
+          --y: #E5B800;
           --r: #FC0301;
           --green: #22C55E;
           --bg0: #FFFFFF;
@@ -78,7 +78,7 @@ export default function ContactPage() {
           --t1: #1A1A1A;
           --t2: #333333;
           --t3: #888888;
-          --font-head: 'Bebas Neue', sans-serif;
+          --font-head: 'DM Sans', sans-serif;
           --font-body: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
         }
 
@@ -99,7 +99,7 @@ export default function ContactPage() {
           transition: all 0.3s ease;
           font-family: var(--font-body);
         }
-        .btn-yellow:hover { background: transparent; color: #000; border-color: #FED800; transform: none; box-shadow: none; }
+        .btn-yellow:hover { background: #E5B800; color: #000; border-color: transparent; transform: none; box-shadow: none; }
         .btn-yellow:active { transform: translateY(0); }
         .btn-outline {
           display: inline-flex; align-items: center; gap: 8px;
@@ -109,22 +109,23 @@ export default function ContactPage() {
           transition: border-color 0.15s, color 0.15s;
           font-family: var(--font-body); cursor: pointer;
         }
-        .btn-outline:hover { border-color: #FED800; color: #B8A000; }
+        .btn-outline:hover { background: #F0F0F0; border-color: #1A1A1A; color: #1A1A1A; }
 
         /* ── Section label ── */
         .sec-label {
-          font-size: 11px; font-weight: 700; letter-spacing: 3.5px;
-          text-transform: uppercase; color: var(--y);
+          font-size: 12px; font-weight: 700; letter-spacing: 3.5px;
+          text-transform: uppercase; color: #888888;
           margin-bottom: 10px; display: block;
         }
 
         /* ── Section heading ── */
         .sec-heading {
           font-family: var(--font-head);
-          font-size: clamp(36px, 6vw, 62px);
-          letter-spacing: 1px; line-height: 0.95; color: var(--t1);
+          font-size: 32px;
+          font-weight: 800;
+          letter-spacing: 0.5px; line-height: 0.95; color: var(--t1);
         }
-        .sec-heading .accent { color: var(--y); }
+        .sec-heading .accent { color: var(--t1); }
 
         /* ── Hero section ── */
         .contact-hero {
@@ -158,7 +159,7 @@ export default function ContactPage() {
           background: rgba(254,216,0,0.06); border: 1px solid rgba(254,216,0,0.15);
           display: flex; align-items: center; justify-content: center; flex-shrink: 0;
         }
-        .contact-card-label { font-size: 10px; color: var(--t3); text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 3px; font-weight: 600; }
+        .contact-card-label { font-size: 12px; color: var(--t3); text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 3px; font-weight: 600; }
         .contact-card-value { font-size: 14px; font-weight: 600; color: var(--t1); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
         .contact-card-chevron { margin-left: auto; flex-shrink: 0; color: var(--t3); transition: color 0.15s; }
         .contact-info-card:hover .contact-card-chevron { color: var(--y); }
@@ -198,11 +199,11 @@ export default function ContactPage() {
           border-radius: 10px; padding: 9px 16px; z-index: 1;
           max-width: calc(100% - 32px);
         }
-        .map-address-name { font-size: 12px; font-weight: 700; color: var(--t1); }
-        .map-address-sub  { font-size: 11px; color: var(--t3); }
+        .map-address-name { font-size: 13px; font-weight: 700; color: var(--t1); }
+        .map-address-sub  { font-size: 12px; color: var(--t3); }
         .map-open-link {
           display: flex; align-items: center; justify-content: center; gap: 8px;
-          padding: 14px; background: #F8F9FA; color: var(--y);
+          padding: 14px; background: #F8F9FA; color: var(--t1);
           font-size: 13px; font-weight: 700; border-top: 1px solid #EBEBEB;
           text-decoration: none; transition: background 0.15s; font-family: var(--font-body);
           letter-spacing: 0.5px;
@@ -247,12 +248,12 @@ export default function ContactPage() {
         .form-submit-btn {
           width: 100%; padding: 16px; background: var(--y);
           border-radius: 12px; font-size: 15px; font-weight: 800;
-          color: #000; cursor: pointer; border: none;
+          color: #000; cursor: pointer; border: 2px solid transparent;
           display: flex; align-items: center; justify-content: center; gap: 8px;
           font-family: var(--font-body);
-          transition: transform 0.15s, box-shadow 0.15s;
+          transition: all 0.3s ease;
         }
-        .form-submit-btn:hover { transform: translateY(-1px); box-shadow: 0 8px 24px rgba(254,216,0,0.15); }
+        .form-submit-btn:hover { background: #E5B800; color: #000; border-color: transparent; transform: none; box-shadow: none; }
         .form-phone-note {
           margin-top: 18px; padding: 14px 18px;
           background: #F5F5F5; border-radius: 10px;
@@ -260,7 +261,7 @@ export default function ContactPage() {
           flex-wrap: wrap;
         }
         .form-phone-note-text { font-size: 13px; color: var(--t2); }
-        .form-phone-note-link { color: var(--y); font-weight: 700; text-decoration: none; }
+        .form-phone-note-link { color: var(--t1); font-weight: 700; text-decoration: none; }
         .form-phone-note-link:hover { text-decoration: underline; }
 
         /* ── Success card ── */
@@ -278,14 +279,14 @@ export default function ContactPage() {
         .success-actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
 
         /* ── Footer ── */
-        .site-footer { background: #050505; padding: 68px 0 32px; border-top: 1px solid #141414; }
+        .site-footer { background: #F8F9FA; padding: 68px 0 32px; border-top: 1px solid #E5E5E5; }
         .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 48px; margin-bottom: 40px; }
-        .footer-bottom { border-top: 1px solid #1A1A1A; padding-top: 24px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
-        .footer-link { display: block; font-size: 14px; color: #ffffff; margin-bottom: 11px; text-decoration: none; transition: color 0.15s, padding-left 0.15s; }
-        .footer-link:hover { color: var(--y); padding-left: 4px; }
+        .footer-bottom { border-top: 1px solid #E5E5E5; padding-top: 24px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
+        .footer-link { display: block; font-size: 14px; color: #1A1A1A; margin-bottom: 11px; text-decoration: none; transition: color 0.15s, padding-left 0.15s; }
+        .footer-link:hover { color: #555555; padding-left: 4px; }
         .footer-hours-row { display: flex; gap: 14px; }
-        .footer-hours-day { font-size: 13px; color: #ffffff; font-weight: 600; min-width: 90px; }
-        .footer-hours-time { font-size: 13px; color: #BBBBBB; }
+        .footer-hours-day { font-size: 13px; color: #1A1A1A; font-weight: 600; min-width: 90px; }
+        .footer-hours-time { font-size: 13px; color: #666666; }
 
         /* ═══ RESPONSIVE ═══ */
 
@@ -356,8 +357,8 @@ export default function ContactPage() {
 
         <div className="container hero-container" style={{ position: 'relative' }}>
           <span id="hero-label" className="sec-label">Get In Touch</span>
-          <h1 id="hero-title" className="bebas" style={{ fontSize: 'clamp(40px, 9vw, 80px)', color: '#1A1A1A', lineHeight: '0.93', marginBottom: '22px' }}>
-            WE&apos;D LOVE TO <span style={{ color: '#FED800' }}>HEAR FROM YOU</span>
+          <h1 id="hero-title" className="bebas" style={{ fontSize: '40px', color: '#1A1A1A', lineHeight: '0.93', marginBottom: '22px' }}>
+            We&apos;d Love to <span style={{ color: '#1A1A1A' }}>Hear From You</span>
           </h1>
           <p id="hero-subtitle" style={{ fontSize: 'clamp(14px, 2vw, 18px)', color: '#1A1A1A', lineHeight: '1.8', maxWidth: '500px', margin: '0 auto' }}>
             Questions, feedback, catering inquiries, or just want to say hi — we are here for it.
@@ -379,7 +380,7 @@ export default function ContactPage() {
               <div id="contact-info-header" style={{ marginBottom: '28px' }}>
                 <span className="sec-label">Contact Info</span>
                 <h2 id="contact-info-heading" className="bebas" style={{ fontSize: 'clamp(26px, 4vw, 40px)', color: '#1A1A1A', lineHeight: '0.95' }}>
-                  REACH <span style={{ color: '#FED800' }}>US ANYTIME</span>
+                  Reach <span style={{ color: '#1A1A1A' }}>Us Anytime</span>
                 </h2>
               </div>
 
@@ -396,7 +397,7 @@ export default function ContactPage() {
                     aria-label={`${info.label}: ${info.value}`}
                   >
                     <div className="contact-card-icon" aria-hidden="true">
-                      <info.Icon size={20} color="#FED800" strokeWidth={2} />
+                      <info.Icon size={20} color="#E5B800" strokeWidth={2} />
                     </div>
                     <div className="contact-card-text" style={{ minWidth: 0, flex: 1 }}>
                       <p className="contact-card-label">{info.label}</p>
@@ -410,8 +411,8 @@ export default function ContactPage() {
               {/* Hours box */}
               <div id="hours-box" className="hours-box">
                 <div id="hours-box-header" className="hours-box-header">
-                  <Clock size={18} color="#FED800" strokeWidth={2} aria-hidden="true" />
-                  <p id="hours-box-title" className="hours-box-title">HOURS</p>
+                  <Clock size={18} color="#E5B800" strokeWidth={2} aria-hidden="true" />
+                  <p id="hours-box-title" className="hours-box-title">Hours</p>
                   <div id="hours-open-badge" className="hours-open-badge" role="status" aria-live="polite">
                     <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: isOpen ? '#22C55E' : '#FC0301', flexShrink: 0 }} aria-hidden="true" />
                     <span style={{ fontSize: '12px', color: isOpen ? '#22C55E' : '#FC0301', fontWeight: 600 }}>{isOpen ? 'Open Now' : 'Closed'}</span>
@@ -463,10 +464,10 @@ export default function ContactPage() {
                   <div id="success-icon" className="success-icon-wrap" aria-hidden="true">
                     <Check size={36} color="#22C55E" strokeWidth={2.5} />
                   </div>
-                  <h3 id="success-title" className="success-title">MESSAGE SENT!</h3>
+                  <h3 id="success-title" className="success-title">Message Sent!</h3>
                   <p id="success-msg" className="success-msg">
                     Thank you, {formData.name}! We will get back to you at{' '}
-                    <span style={{ color: '#FED800' }}>{formData.email}</span>{' '}
+                    <span style={{ color: '#1A1A1A', fontWeight: 700 }}>{formData.email}</span>{' '}
                     within 24 hours.
                   </p>
                   <div id="success-actions" className="success-actions">
@@ -487,7 +488,7 @@ export default function ContactPage() {
 
                   {/* Form header */}
                   <div id="form-header" className="form-header">
-                    <h2 id="form-title" className="form-title">SEND US A MESSAGE</h2>
+                    <h2 id="form-title" className="form-title">Send Us a Message</h2>
                     <p id="form-subtitle" className="form-subtitle">We typically respond within a few hours during business hours.</p>
                   </div>
 
@@ -569,7 +570,7 @@ export default function ContactPage() {
 
                   {/* Phone note */}
                   <div id="form-phone-note" className="form-phone-note">
-                    <Phone size={16} color="#FED800" strokeWidth={2} style={{ flexShrink: 0 }} aria-hidden="true" />
+                    <Phone size={16} color="#E5B800" strokeWidth={2} style={{ flexShrink: 0 }} aria-hidden="true" />
                     <p className="form-phone-note-text">
                       Prefer to call?{' '}
                       <a id="form-phone-link" href="tel:2159489902" className="form-phone-note-link">215-948-9902</a>
@@ -599,26 +600,26 @@ export default function ContactPage() {
                   <Image src="/logo.svg" alt="Eggs Ok" width={100} height={50} style={{ objectFit: 'contain' }} />
                 </div>
               </div>
-              <p id="footer-tagline" style={{ fontSize: '14px', color: '#ffffff', lineHeight: '1.75', maxWidth: '280px', marginBottom: '22px' }}>
+              <p id="footer-tagline" style={{ fontSize: '14px', color: '#1A1A1A', lineHeight: '1.75', maxWidth: '280px', marginBottom: '22px' }}>
                 Fresh breakfast and lunch in West Philadelphia. Made to order, every time.
               </p>
               <address id="footer-address" style={{ fontStyle: 'normal' }}>
-                <p id="footer-address-line" style={{ fontSize: '13px', color: '#ffffff', display: 'flex', alignItems: 'center', gap: '7px', marginBottom: '8px' }}>
-                  <MapPin size={13} color="#FED800" aria-hidden="true" />
-                  <a id="footer-address-link" href="https://www.google.com/maps?q=3517+Lancaster+Ave,+Philadelphia+PA+19104" style={{ color: '#ffffff', textDecoration: 'none' }}>
+                <p id="footer-address-line" style={{ fontSize: '13px', color: '#1A1A1A', display: 'flex', alignItems: 'center', gap: '7px', marginBottom: '8px' }}>
+                  <MapPin size={13} color="#E5B800" aria-hidden="true" />
+                  <a id="footer-address-link" href="https://www.google.com/maps?q=3517+Lancaster+Ave,+Philadelphia+PA+19104" style={{ color: '#1A1A1A', textDecoration: 'none' }}>
                     3517 Lancaster Ave, Philadelphia PA 19104
                   </a>
                 </p>
-                <p id="footer-phone-line" style={{ fontSize: '13px', color: '#ffffff', display: 'flex', alignItems: 'center', gap: '7px' }}>
-                  <Smartphone size={13} color="#FED800" aria-hidden="true" />
-                  <a id="footer-phone-link" href="tel:2159489902" style={{ color: '#ffffff', textDecoration: 'none' }}>215-948-9902</a>
+                <p id="footer-phone-line" style={{ fontSize: '13px', color: '#1A1A1A', display: 'flex', alignItems: 'center', gap: '7px' }}>
+                  <Smartphone size={13} color="#E5B800" aria-hidden="true" />
+                  <a id="footer-phone-link" href="tel:2159489902" style={{ color: '#1A1A1A', textDecoration: 'none' }}>215-948-9902</a>
                 </p>
               </address>
             </div>
 
             {/* Quick links */}
             <nav id="footer-nav" aria-label="Quick links">
-              <p id="footer-nav-heading" style={{ fontSize: '15px', fontWeight: '700', color: '#ffffff', letterSpacing: '2px', textTransform: 'uppercase', marginBottom: '20px' }}>Quick Links</p>
+              <p id="footer-nav-heading" style={{ fontSize: '15px', fontWeight: '700', color: '#1A1A1A', letterSpacing: '2px', textTransform: 'uppercase', marginBottom: '20px' }}>Quick Links</p>
               {[
                 { label: 'Home',         href: '/'          },
                 { label: 'Order Online', href: '/order'     },
@@ -633,7 +634,7 @@ export default function ContactPage() {
 
             {/* Hours */}
             <div id="footer-hours">
-              <p id="footer-hours-heading" style={{ fontSize: '15px', fontWeight: '700', color: '#ffffff', letterSpacing: '2px', textTransform: 'uppercase', marginBottom: '20px' }}>Hours</p>
+              <p id="footer-hours-heading" style={{ fontSize: '15px', fontWeight: '700', color: '#1A1A1A', letterSpacing: '2px', textTransform: 'uppercase', marginBottom: '20px' }}>Hours</p>
               <div id="footer-hours-list" style={{ display: 'flex', flexDirection: 'column', gap: '5px' }}>
                 {[
                   { day: 'Monday',    hours: '8:00 AM – 10:00 PM' },
@@ -655,11 +656,11 @@ export default function ContactPage() {
           </div>
 
           <div id="footer-bottom" className="footer-bottom">
-            <p id="footer-copyright" style={{ fontSize: '13px', color: '#ffffff' }}>
+            <p id="footer-copyright" style={{ fontSize: '13px', color: '#888888' }}>
               &copy; {new Date().getFullYear()} Eggs Ok. All rights reserved.
             </p>
-            <p id="footer-credit" style={{ fontSize: '13px', color: '#ffffff' }}>
-              {/* Built by <span id="footer-credit-brand" style={{ color: '#FED800' }}>RestoRise Business Solutions</span> */}
+            <p id="footer-credit" style={{ fontSize: '13px', color: '#888888' }}>
+              {/* Built by <span id="footer-credit-brand" style={{ color: '#E5B800' }}>RestoRise Business Solutions</span> */}
             </p>
           </div>
         </div>

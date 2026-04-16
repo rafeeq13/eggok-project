@@ -40,7 +40,7 @@ export default function TrackPage() {
       <div style={{ maxWidth: '500px', margin: '0 auto', padding: '120px 20px 60px', textAlign: 'center' }}>
 
         <div style={{ width: '64px', height: '64px', borderRadius: '50%', background: 'rgba(254,216,0,0.08)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 20px' }}>
-          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#FED800" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#E5B800" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
             <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
           </svg>
         </div>
@@ -57,14 +57,14 @@ export default function TrackPage() {
               padding: '14px 18px', background: '#F8F9FA', border: '1px solid #D0D0D0',
               borderRadius: '12px', color: '#1A1A1A', fontSize: '15px', textAlign: 'center', outline: 'none',
             }}
-            onFocus={e => e.target.style.borderColor = '#FED800'}
+            onFocus={e => e.target.style.borderColor = '#E5B800'}
             onBlur={e => e.target.style.borderColor = '#D0D0D0'}
           />
 
           {error && <p style={{ color: '#FC0301', fontSize: '13px', margin: 0 }}>{error}</p>}
 
           <button type="submit" disabled={searching || !query.trim()} style={{
-            padding: '14px', background: searching ? '#E5E5E5' : '#FED800', border: 'none',
+            padding: '14px', background: searching ? '#E5E5E5' : '#E5B800', border: 'none',
             borderRadius: '12px', color: searching ? '#777777' : '#000', fontSize: '15px', fontWeight: '700',
             cursor: searching ? 'not-allowed' : 'pointer',
           }}>

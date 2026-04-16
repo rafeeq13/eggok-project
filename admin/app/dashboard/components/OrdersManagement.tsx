@@ -255,7 +255,7 @@ export default function OrdersManagement() {
       {/* Refresh button */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
         <p style={{ fontSize: '13px', color: '#FEFEFE', margin: 0 }}>Auto-refreshes every 30 seconds</p>
-        <button onClick={() => { fetchOrders(); fetchStats(); }} style={{ padding: '7px 14px', background: '#1A1A1A', border: '1px solid #2A2A2A', borderRadius: '8px', color: '#FED800', fontSize: '12px', fontWeight: '600', cursor: 'pointer' }}>
+        <button onClick={() => { fetchOrders(); fetchStats(); }} style={{ padding: '7px 14px', background: '#1A1A1A', border: '1px solid #2A2A2A', borderRadius: '8px', color: '#E5B800', fontSize: '12px', fontWeight: '600', cursor: 'pointer' }}>
           ↻ Refresh Now
         </button>
       </div>
@@ -270,7 +270,7 @@ export default function OrdersManagement() {
                 <span style={{ fontSize: '11px', padding: '3px 10px', borderRadius: '20px', fontWeight: '600', background: `${statusColor[selectedOrder.status]}20`, color: statusColor[selectedOrder.status], border: `1px solid ${statusColor[selectedOrder.status]}40` }}>
                   {statusLabel[selectedOrder.status]}
                 </span>
-                <span style={{ fontSize: '11px', padding: '3px 10px', borderRadius: '20px', fontWeight: '600', background: selectedOrder.orderType === 'delivery' ? '#0A1628' : '#1A1A00', color: selectedOrder.orderType === 'delivery' ? '#60A5FA' : '#FED800', border: `1px solid ${selectedOrder.orderType === 'delivery' ? '#1E3A5F' : '#3A3A00'}` }}>
+                <span style={{ fontSize: '11px', padding: '3px 10px', borderRadius: '20px', fontWeight: '600', background: selectedOrder.orderType === 'delivery' ? '#0A1628' : '#1A1A00', color: selectedOrder.orderType === 'delivery' ? '#60A5FA' : '#E5B800', border: `1px solid ${selectedOrder.orderType === 'delivery' ? '#1E3A5F' : '#3A3A00'}` }}>
                   {selectedOrder.orderType === 'delivery' ? 'Delivery' : 'Pickup'}
                 </span>
               </div>
@@ -350,7 +350,7 @@ export default function OrdersManagement() {
                         <p style={{ fontSize: '11px', color: '#FEFEFE', marginTop: '3px' }}>{item.specialInstructions}</p>
                       )}
                     </div>
-                    <p style={{ fontSize: '13px', fontWeight: '600', color: '#FED800', margin: 0 }}>${safePrice((Number(item.price) || 0) * (Number(item.quantity) || 1))}</p>
+                    <p style={{ fontSize: '13px', fontWeight: '600', color: '#E5B800', margin: 0 }}>${safePrice((Number(item.price) || 0) * (Number(item.quantity) || 1))}</p>
                   </div>
                 ))}
               </div>
@@ -371,7 +371,7 @@ export default function OrdersManagement() {
                 ))}
                 <div style={{ display: 'flex', justifyContent: 'space-between', paddingTop: '10px', borderTop: '1px solid #2A2A2A', marginTop: '4px' }}>
                   <span style={{ fontSize: '14px', fontWeight: '700', color: '#FEFEFE' }}>Total</span>
-                  <span style={{ fontSize: '16px', fontWeight: '700', color: '#FED800' }}>${safePrice(selectedOrder.total)}</span>
+                  <span style={{ fontSize: '16px', fontWeight: '700', color: '#E5B800' }}>${safePrice(selectedOrder.total)}</span>
                 </div>
               </div>
 
@@ -503,7 +503,7 @@ export default function OrdersManagement() {
           { id: 'history', label: 'Order History', count: orders.filter(o => historyStatuses.includes(o.status)).length },
         ].map(tab => (
           <button key={tab.id} onClick={() => setActiveTab(tab.id as typeof activeTab)} style={{
-            flex: 1, padding: '10px', background: activeTab === tab.id ? '#FED800' : 'transparent',
+            flex: 1, padding: '10px', background: activeTab === tab.id ? '#E5B800' : 'transparent',
             color: activeTab === tab.id ? '#000' : '#FEFEFE',
             border: 'none', borderRadius: '8px', fontSize: '12px', fontWeight: '600', cursor: 'pointer',
             display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px',
@@ -557,7 +557,7 @@ export default function OrdersManagement() {
           ].map((s, i) => (
             <div key={i} style={{ background: '#111111', border: '1px solid #2A2A2A', borderRadius: '10px', padding: '12px 16px' }}>
               <p style={{ fontSize: '11px', color: '#FEFEFE', marginBottom: '4px' }}>{s.label}</p>
-              <p style={{ fontSize: '20px', fontWeight: '700', color: '#FED800', margin: 0 }}>{s.value}</p>
+              <p style={{ fontSize: '20px', fontWeight: '700', color: '#E5B800', margin: 0 }}>{s.value}</p>
             </div>
           ))}
         </div>
@@ -585,7 +585,7 @@ export default function OrdersManagement() {
           </button>
             <input placeholder="Search name, email, phone, order ID..." value={search} onChange={e => setSearch(e.target.value)}
             style={{ ...inputStyle, flex: 1, minWidth: '220px' }}
-            onFocus={e => (e.target as HTMLInputElement).style.borderColor = '#FED800'}
+            onFocus={e => (e.target as HTMLInputElement).style.borderColor = '#E5B800'}
             onBlur={e => (e.target as HTMLInputElement).style.borderColor = '#2A2A2A'} />
         </div>
       )}
@@ -622,7 +622,7 @@ export default function OrdersManagement() {
                 {displayOrders.map((order, i) => (
                   <tr key={order.id} style={{ borderBottom: i < displayOrders.length - 1 ? '1px solid #2A2A2A' : 'none' }}>
                     <td style={{ padding: '13px 14px' }}>
-                      <span style={{ fontSize: '13px', fontWeight: '700', color: '#FED800' }}>{order.orderNumber}</span>
+                      <span style={{ fontSize: '13px', fontWeight: '700', color: '#E5B800' }}>{order.orderNumber}</span>
                       {order.deliveryProvider && <span style={{ marginLeft: '6px', fontSize: '9px', padding: '2px 6px', borderRadius: '10px', background: '#A78BFA20', color: '#A78BFA', border: '1px solid #A78BFA40', fontWeight: '600', verticalAlign: 'middle' }}>UBER</span>}
                     </td>
                     <td style={{ padding: '13px 14px' }}>
@@ -630,7 +630,7 @@ export default function OrdersManagement() {
                       <p style={{ fontSize: '11px', color: '#FEFEFE', marginTop: '2px' }}>{order.customerPhone}</p>
                     </td>
                     <td style={{ padding: '13px 14px' }}>
-                      <span style={{ fontSize: '11px', padding: '3px 10px', borderRadius: '20px', fontWeight: '600', background: order.orderType === 'delivery' ? '#0A1628' : '#1A1A00', color: order.orderType === 'delivery' ? '#60A5FA' : '#FED800', border: `1px solid ${order.orderType === 'delivery' ? '#1E3A5F' : '#3A3A00'}` }}>
+                      <span style={{ fontSize: '11px', padding: '3px 10px', borderRadius: '20px', fontWeight: '600', background: order.orderType === 'delivery' ? '#0A1628' : '#1A1A00', color: order.orderType === 'delivery' ? '#60A5FA' : '#E5B800', border: `1px solid ${order.orderType === 'delivery' ? '#1E3A5F' : '#3A3A00'}` }}>
                         {order.orderType === 'delivery' ? 'Delivery' : 'Pickup'}
                       </span>
                     </td>

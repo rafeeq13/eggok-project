@@ -92,7 +92,7 @@ export default function Customers() {
             </div>
 
             <div style={{ display: 'flex', alignItems: 'center', gap: '14px', marginBottom: '24px' }}>
-              <div style={{ width: '56px', height: '56px', borderRadius: '50%', background: '#FED800', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '22px', fontWeight: '800', color: '#000' }}>
+              <div style={{ width: '56px', height: '56px', borderRadius: '50%', background: '#E5B800', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '22px', fontWeight: '800', color: '#000' }}>
                 {selectedCustomer.name.charAt(0)}
               </div>
               <div>
@@ -117,7 +117,7 @@ export default function Customers() {
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
               <div style={{ background: '#111111', borderRadius: '10px', padding: '14px', textAlign: 'center' }}>
                 <p style={{ fontSize: '11px', color: '#FEFEFE', marginBottom: '6px' }}>Total Orders</p>
-                <p style={{ fontSize: '24px', fontWeight: '700', color: '#FED800' }}>{selectedCustomer.totalOrders}</p>
+                <p style={{ fontSize: '24px', fontWeight: '700', color: '#E5B800' }}>{selectedCustomer.totalOrders}</p>
               </div>
               <div style={{ background: '#111111', borderRadius: '10px', padding: '14px', textAlign: 'center' }}>
                 <p style={{ fontSize: '11px', color: '#FEFEFE', marginBottom: '6px' }}>Total Spent</p>
@@ -131,7 +131,7 @@ export default function Customers() {
       {/* Stats Row */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '12px', marginBottom: '20px' }}>
         {[
-          { label: 'Total Customers', value: String(customers.length), color: '#FED800' },
+          { label: 'Total Customers', value: String(customers.length), color: '#E5B800' },
           { label: 'Total Orders', value: String(totalOrders), color: '#22C55E' },
           { label: 'Total Revenue', value: `$${totalRevenue.toFixed(2)}`, color: '#FECE86' },
         ].map((s, i) => (
@@ -149,7 +149,7 @@ export default function Customers() {
           value={search}
           onChange={e => setSearch(e.target.value)}
           style={{ flex: 1, padding: '11px 16px', background: '#1A1A1A', border: '1px solid #2A2A2A', borderRadius: '10px', color: '#FEFEFE', fontSize: '13px' }}
-          onFocus={e => e.target.style.borderColor = '#FED800'}
+          onFocus={e => e.target.style.borderColor = '#E5B800'}
           onBlur={e => e.target.style.borderColor = '#2A2A2A'}
         />
         <button onClick={() => {
@@ -186,7 +186,7 @@ export default function Customers() {
                   <tr key={c.id} style={{ borderBottom: i < filtered.length - 1 ? '1px solid #2A2A2A' : 'none' }}>
                     <td style={{ padding: '14px 16px' }}>
                       <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                        <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: '#FED800', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '13px', fontWeight: '700', color: '#000', flexShrink: 0 }}>
+                        <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: '#E5B800', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '13px', fontWeight: '700', color: '#000', flexShrink: 0 }}>
                           {c.name.charAt(0)}
                         </div>
                         <span style={{ fontSize: '13px', fontWeight: '600', color: '#FEFEFE' }}>{c.name}</span>
@@ -194,7 +194,7 @@ export default function Customers() {
                     </td>
                     <td style={{ padding: '14px 16px', fontSize: '12px', color: '#FEFEFE' }}>{c.email}</td>
                     <td style={{ padding: '14px 16px', fontSize: '12px', color: '#FEFEFE' }}>{c.phone}</td>
-                    <td style={{ padding: '14px 16px', fontSize: '13px', fontWeight: '600', color: '#FED800' }}>{c.totalOrders}</td>
+                    <td style={{ padding: '14px 16px', fontSize: '13px', fontWeight: '600', color: '#E5B800' }}>{c.totalOrders}</td>
                     <td style={{ padding: '14px 16px', fontSize: '13px', fontWeight: '600', color: '#22C55E' }}>${Number(c.totalSpent).toFixed(2)}</td>
                     <td style={{ padding: '14px 16px', fontSize: '12px', color: '#FEFEFE' }}>{c.lastOrder}</td>
                     <td style={{ padding: '14px 16px' }}>

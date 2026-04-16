@@ -121,7 +121,7 @@ export default function MenuManagement() {
   const inputStyle = { padding: '9px 12px', background: '#111111', border: '1px solid #2A2A2A', borderRadius: '8px', color: '#FEFEFE', fontSize: '13px', width: '100%' };
 
   const toggleSwitch = (value: boolean, onChange: () => void) => (
-    <div onClick={onChange} style={{ width: '42px', height: '24px', background: value ? '#FED800' : '#2A2A2A', borderRadius: '12px', position: 'relative', cursor: 'pointer', flexShrink: 0, transition: 'background 0.2s' }}>
+    <div onClick={onChange} style={{ width: '42px', height: '24px', background: value ? '#E5B800' : '#2A2A2A', borderRadius: '12px', position: 'relative', cursor: 'pointer', flexShrink: 0, transition: 'background 0.2s' }}>
       <div style={{ position: 'absolute', top: '3px', left: value ? '21px' : '3px', width: '18px', height: '18px', background: '#FEFEFE', borderRadius: '50%', transition: 'left 0.2s' }} />
     </div>
   );
@@ -348,11 +348,11 @@ export default function MenuManagement() {
             </div>
             <div style={{ marginBottom: '20px' }}>
               <p style={{ fontSize: '12px', color: '#FEFEFE', marginBottom: '6px' }}>Category Name *</p>
-              <input style={inputStyle} placeholder="e.g. Desserts, Sides" value={newCategoryName} onChange={e => setNewCategoryName(e.target.value)} onFocus={e => e.target.style.borderColor = '#FED800'} onBlur={e => e.target.style.borderColor = '#2A2A2A'} autoFocus />
+              <input style={inputStyle} placeholder="e.g. Desserts, Sides" value={newCategoryName} onChange={e => setNewCategoryName(e.target.value)} onFocus={e => e.target.style.borderColor = '#E5B800'} onBlur={e => e.target.style.borderColor = '#2A2A2A'} autoFocus />
             </div>
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
               <button onClick={() => { setShowCategoryForm(false); setEditingCategory(null); setNewCategoryName(''); }} style={{ padding: '12px', background: 'transparent', border: '1px solid #2A2A2A', borderRadius: '8px', color: '#FEFEFE', fontSize: '13px', cursor: 'pointer' }}>Cancel</button>
-              <button onClick={handleSaveCategory} style={{ padding: '12px', background: '#FED800', border: 'none', borderRadius: '8px', color: '#000', fontSize: '13px', fontWeight: '700', cursor: 'pointer' }}>{editingCategory ? 'Save Changes' : 'Add Category'}</button>
+              <button onClick={handleSaveCategory} style={{ padding: '12px', background: '#E5B800', border: 'none', borderRadius: '8px', color: '#000', fontSize: '13px', fontWeight: '700', cursor: 'pointer' }}>{editingCategory ? 'Save Changes' : 'Add Category'}</button>
             </div>
           </div>
         </div>
@@ -370,16 +370,16 @@ export default function MenuManagement() {
               <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
                 <div>
                   <p style={{ fontSize: '12px', color: '#FEFEFE', marginBottom: '6px' }}>Group Name *</p>
-                  <input style={inputStyle} placeholder="e.g. Choose Your Bread" value={modName} onChange={e => setModName(e.target.value)} onFocus={e => e.target.style.borderColor = '#FED800'} onBlur={e => e.target.style.borderColor = '#2A2A2A'} />
+                  <input style={inputStyle} placeholder="e.g. Choose Your Bread" value={modName} onChange={e => setModName(e.target.value)} onFocus={e => e.target.style.borderColor = '#E5B800'} onBlur={e => e.target.style.borderColor = '#2A2A2A'} />
                 </div>
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
                   <div>
                     <p style={{ fontSize: '12px', color: '#FEFEFE', marginBottom: '6px' }}>Min Selections</p>
-                    <input type="number" min="0" style={inputStyle} value={modMin} onChange={e => setModMin(Number(e.target.value))} onFocus={e => e.target.style.borderColor = '#FED800'} onBlur={e => e.target.style.borderColor = '#2A2A2A'} />
+                    <input type="number" min="0" style={inputStyle} value={modMin} onChange={e => setModMin(Number(e.target.value))} onFocus={e => e.target.style.borderColor = '#E5B800'} onBlur={e => e.target.style.borderColor = '#2A2A2A'} />
                   </div>
                   <div>
                     <p style={{ fontSize: '12px', color: '#FEFEFE', marginBottom: '6px' }}>Max Selections</p>
-                    <input type="number" min="1" style={inputStyle} value={modMax} onChange={e => setModMax(Number(e.target.value))} onFocus={e => e.target.style.borderColor = '#FED800'} onBlur={e => e.target.style.borderColor = '#2A2A2A'} />
+                    <input type="number" min="1" style={inputStyle} value={modMax} onChange={e => setModMax(Number(e.target.value))} onFocus={e => e.target.style.borderColor = '#E5B800'} onBlur={e => e.target.style.borderColor = '#2A2A2A'} />
                   </div>
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '12px 14px', background: '#111111', borderRadius: '8px', border: '1px solid #2A2A2A' }}>
@@ -392,13 +392,13 @@ export default function MenuManagement() {
                 <div>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
                     <p style={{ fontSize: '12px', fontWeight: '600', color: '#FEFEFE' }}>Options *</p>
-                    <button onClick={addOption} style={{ padding: '5px 12px', background: '#FED800', border: 'none', borderRadius: '6px', color: '#000', fontSize: '11px', fontWeight: '700', cursor: 'pointer' }}>+ Add Option</button>
+                    <button onClick={addOption} style={{ padding: '5px 12px', background: '#E5B800', border: 'none', borderRadius: '6px', color: '#000', fontSize: '11px', fontWeight: '700', cursor: 'pointer' }}>+ Add Option</button>
                   </div>
                   {modOptions.length === 0 && <p style={{ fontSize: '12px', color: '#FEFEFE', padding: '10px 0' }}>No options yet. Click Add Option.</p>}
                   {modOptions.map(opt => (
                     <div key={opt.id} style={{ display: 'grid', gridTemplateColumns: '1fr 90px 80px 30px', gap: '8px', alignItems: 'center', marginBottom: '8px' }}>
-                      <input style={inputStyle} placeholder="Option name" value={opt.name} onChange={e => updateOption(opt.id, 'name', e.target.value)} onFocus={e => e.target.style.borderColor = '#FED800'} onBlur={e => e.target.style.borderColor = '#2A2A2A'} />
-                      <input type="number" step="0.01" min="0" style={{ ...inputStyle, width: 'auto' }} placeholder="Price" value={opt.price} onChange={e => updateOption(opt.id, 'price', Number(e.target.value))} onFocus={e => e.target.style.borderColor = '#FED800'} onBlur={e => e.target.style.borderColor = '#2A2A2A'} />
+                      <input style={inputStyle} placeholder="Option name" value={opt.name} onChange={e => updateOption(opt.id, 'name', e.target.value)} onFocus={e => e.target.style.borderColor = '#E5B800'} onBlur={e => e.target.style.borderColor = '#2A2A2A'} />
+                      <input type="number" step="0.01" min="0" style={{ ...inputStyle, width: 'auto' }} placeholder="Price" value={opt.price} onChange={e => updateOption(opt.id, 'price', Number(e.target.value))} onFocus={e => e.target.style.borderColor = '#E5B800'} onBlur={e => e.target.style.borderColor = '#2A2A2A'} />
                       <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
                         {toggleSwitch(opt.isDefault, () => updateOption(opt.id, 'isDefault', !opt.isDefault))}
                         <span style={{ fontSize: '10px', color: '#FEFEFE' }}>Default</span>
@@ -411,7 +411,7 @@ export default function MenuManagement() {
             </div>
             <div style={{ padding: '16px 24px', borderTop: '1px solid #2A2A2A', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', flexShrink: 0 }}>
               <button onClick={() => setShowModifierForm(false)} style={{ padding: '11px', background: 'transparent', border: '1px solid #2A2A2A', borderRadius: '8px', color: '#FEFEFE', fontSize: '13px', cursor: 'pointer' }}>Cancel</button>
-              <button onClick={saveModifierGroup} style={{ padding: '11px', background: '#FED800', border: 'none', borderRadius: '8px', color: '#000', fontSize: '13px', fontWeight: '700', cursor: 'pointer' }}>{editingModifier ? 'Save Changes' : 'Create Group'}</button>
+              <button onClick={saveModifierGroup} style={{ padding: '11px', background: '#E5B800', border: 'none', borderRadius: '8px', color: '#000', fontSize: '13px', fontWeight: '700', cursor: 'pointer' }}>{editingModifier ? 'Save Changes' : 'Create Group'}</button>
             </div>
           </div>
         </div>
@@ -434,7 +434,7 @@ export default function MenuManagement() {
                 if (catItems.length === 0) return null;
                 return (
                   <div key={cat.id} style={{ marginBottom: '16px' }}>
-                    <p style={{ fontSize: '11px', fontWeight: '600', color: '#FED800', textTransform: 'uppercase', marginBottom: '8px' }}>{cat.name}</p>
+                    <p style={{ fontSize: '11px', fontWeight: '600', color: '#E5B800', textTransform: 'uppercase', marginBottom: '8px' }}>{cat.name}</p>
                     {catItems.map(item => {
                       const isLinked = linkingGroup.linkedItemIds.includes(item.id);
                       return (
@@ -454,7 +454,7 @@ export default function MenuManagement() {
               })}
             </div>
             <div style={{ padding: '16px 24px', borderTop: '1px solid #2A2A2A', flexShrink: 0 }}>
-              <button onClick={() => { setShowLinkModal(false); showSuccess('Links saved'); }} style={{ width: '100%', padding: '12px', background: '#FED800', border: 'none', borderRadius: '8px', color: '#000', fontSize: '13px', fontWeight: '700', cursor: 'pointer' }}>Done</button>
+              <button onClick={() => { setShowLinkModal(false); showSuccess('Links saved'); }} style={{ width: '100%', padding: '12px', background: '#E5B800', border: 'none', borderRadius: '8px', color: '#000', fontSize: '13px', fontWeight: '700', cursor: 'pointer' }}>Done</button>
             </div>
           </div>
         </div>
@@ -464,7 +464,7 @@ export default function MenuManagement() {
       <div style={{ display: 'flex', gap: '8px', alignItems: 'center', marginBottom: '20px' }}>
         <div style={{ display: 'flex', gap: '4px', background: '#111111', padding: '4px', borderRadius: '10px', border: '1px solid #2A2A2A', flex: 1 }}>
           {tabs.map(tab => (
-            <button key={tab.id} onClick={() => switchTab(tab.id)} style={{ flex: 1, padding: '10px 8px', background: activeTab === tab.id ? '#FED800' : 'transparent', color: activeTab === tab.id ? '#000000' : '#FEFEFE', border: 'none', borderRadius: '8px', fontSize: '12px', fontWeight: '600', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }}>
+            <button key={tab.id} onClick={() => switchTab(tab.id)} style={{ flex: 1, padding: '10px 8px', background: activeTab === tab.id ? '#E5B800' : 'transparent', color: activeTab === tab.id ? '#000000' : '#FEFEFE', border: 'none', borderRadius: '8px', fontSize: '12px', fontWeight: '600', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }}>
               {tab.label}
               <span style={{ fontSize: '10px', fontWeight: '700', background: activeTab === tab.id ? '#00000020' : '#2A2A2A', color: activeTab === tab.id ? '#000' : '#FEFEFE', padding: '1px 6px', borderRadius: '10px' }}>{tab.count}</span>
             </button>
@@ -477,7 +477,7 @@ export default function MenuManagement() {
         <div>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
             <p style={{ fontSize: '13px', color: '#FEFEFE' }}>{categories.filter(c => c.active).length} active · {categories.filter(c => !c.active).length} inactive</p>
-            <button onClick={() => { setEditingCategory(null); setNewCategoryName(''); setShowCategoryForm(true); }} style={{ padding: '9px 18px', background: '#FED800', border: 'none', borderRadius: '8px', color: '#000', fontSize: '13px', fontWeight: '700', cursor: 'pointer' }}>+ Add Category</button>
+            <button onClick={() => { setEditingCategory(null); setNewCategoryName(''); setShowCategoryForm(true); }} style={{ padding: '9px 18px', background: '#E5B800', border: 'none', borderRadius: '8px', color: '#000', fontSize: '13px', fontWeight: '700', cursor: 'pointer' }}>+ Add Category</button>
           </div>
           <div style={{ background: '#1A1A1A', border: '1px solid #2A2A2A', borderRadius: '12px', overflow: 'hidden' }}>
             <div style={{ overflowX: 'auto' }}>
@@ -527,7 +527,7 @@ export default function MenuManagement() {
                         </div>
                       </td>
                       <td style={{ padding: '14px 16px', fontSize: '14px', fontWeight: '600', color: cat.active ? '#FEFEFE' : '#FEFEFE' }}>{cat.name}</td>
-                      <td style={{ padding: '14px 16px', fontSize: '13px', color: '#FED800', fontWeight: '600' }}>{items.filter(i => i.categoryId === cat.id).length}</td>
+                      <td style={{ padding: '14px 16px', fontSize: '13px', color: '#E5B800', fontWeight: '600' }}>{items.filter(i => i.categoryId === cat.id).length}</td>
                       <td style={{ padding: '14px 16px' }}>
                         <span style={{ fontSize: '11px', padding: '3px 10px', borderRadius: '20px', fontWeight: '600', background: cat.active ? '#22C55E20' : '#FC030120', color: cat.active ? '#22C55E' : '#FC0301', border: `1px solid ${cat.active ? '#22C55E40' : '#FC030140'}` }}>{cat.active ? 'Active' : 'Inactive'}</span>
                       </td>
@@ -551,19 +551,19 @@ export default function MenuManagement() {
       {activeTab === 'items' && (
         <div>
           <div style={{ display: 'flex', gap: '10px', marginBottom: '16px', flexWrap: 'wrap' as const }}>
-            <input placeholder="Search items..." value={searchItems} onChange={e => setSearchItems(e.target.value)} style={{ ...inputStyle, flex: 1, minWidth: '200px' }} onFocus={e => e.target.style.borderColor = '#FED800'} onBlur={e => e.target.style.borderColor = '#2A2A2A'} />
+            <input placeholder="Search items..." value={searchItems} onChange={e => setSearchItems(e.target.value)} style={{ ...inputStyle, flex: 1, minWidth: '200px' }} onFocus={e => e.target.style.borderColor = '#E5B800'} onBlur={e => e.target.style.borderColor = '#2A2A2A'} />
             <select value={filterCategory} onChange={e => setFilterCategory(e.target.value === 'all' ? 'all' : Number(e.target.value))} style={{ ...inputStyle, minWidth: '180px', cursor: 'pointer' }}>
               <option value="all">All Categories</option>
               {categories.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
             </select>
             <div style={{ display: 'flex', background: '#111111', border: '1px solid #2A2A2A', borderRadius: '8px', overflow: 'hidden' }}>
               {(['table', 'grid'] as const).map(v => (
-                <button key={v} onClick={() => setViewMode(v)} style={{ padding: '8px 14px', background: viewMode === v ? '#FED800' : 'transparent', border: 'none', cursor: 'pointer', fontSize: '13px', color: viewMode === v ? '#000' : '#FEFEFE' }}>
+                <button key={v} onClick={() => setViewMode(v)} style={{ padding: '8px 14px', background: viewMode === v ? '#E5B800' : 'transparent', border: 'none', cursor: 'pointer', fontSize: '13px', color: viewMode === v ? '#000' : '#FEFEFE' }}>
                   {v === 'table' ? '☰ Table' : '⊞ Grid'}
                 </button>
               ))}
             </div>
-            <button onClick={() => { setEditingItem(null); setShowItemForm(true); }} style={{ padding: '9px 18px', background: '#FED800', border: 'none', borderRadius: '8px', color: '#000', fontSize: '13px', fontWeight: '700', cursor: 'pointer' }}>+ Add Item</button>
+            <button onClick={() => { setEditingItem(null); setShowItemForm(true); }} style={{ padding: '9px 18px', background: '#E5B800', border: 'none', borderRadius: '8px', color: '#000', fontSize: '13px', fontWeight: '700', cursor: 'pointer' }}>+ Add Item</button>
           </div>
           <p style={{ fontSize: '12px', color: '#FEFEFE', marginBottom: '12px' }}>Showing {filteredItems.length} of {items.length} items</p>
           {viewMode === 'table' && (
@@ -594,10 +594,10 @@ export default function MenuManagement() {
                           <p style={{ fontSize: '11px', color: '#FEFEFE', maxWidth: '180px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{item.description}</p>
                         </td>
                         <td style={{ padding: '12px 16px', fontSize: '12px', color: '#FEFEFE' }}>{categories.find(c => c.id === item.categoryId)?.name || '—'}</td>
-                        <td style={{ padding: '12px 16px' }}><p style={{ fontSize: '13px', fontWeight: '700', color: '#FED800' }}>${item.pickupPrice}</p><p style={{ fontSize: '10px', color: '#FEFEFE' }}>Pickup</p></td>
+                        <td style={{ padding: '12px 16px' }}><p style={{ fontSize: '13px', fontWeight: '700', color: '#E5B800' }}>${item.pickupPrice}</p><p style={{ fontSize: '10px', color: '#FEFEFE' }}>Pickup</p></td>
                         <td style={{ padding: '12px 16px' }}><p style={{ fontSize: '13px', fontWeight: '700', color: '#FECE86' }}>${item.deliveryPrice}</p><p style={{ fontSize: '10px', color: '#FEFEFE' }}>Delivery</p></td>
                         <td style={{ padding: '12px 16px' }}>
-                          <span style={{ fontSize: '11px', padding: '3px 10px', borderRadius: '20px', fontWeight: '600', background: item.linkedModifierIds.length > 0 ? '#FED80020' : '#2A2A2A', color: item.linkedModifierIds.length > 0 ? '#FED800' : '#FEFEFE', border: `1px solid ${item.linkedModifierIds.length > 0 ? '#FED80040' : '#3A3A3A'}` }}>
+                          <span style={{ fontSize: '11px', padding: '3px 10px', borderRadius: '20px', fontWeight: '600', background: item.linkedModifierIds.length > 0 ? '#E5B80020' : '#2A2A2A', color: item.linkedModifierIds.length > 0 ? '#E5B800' : '#FEFEFE', border: `1px solid ${item.linkedModifierIds.length > 0 ? '#E5B80040' : '#3A3A3A'}` }}>
                             {item.linkedModifierIds.length > 0 ? `${item.linkedModifierIds.length} groups` : 'None'}
                           </span>
                         </td>
@@ -620,7 +620,7 @@ export default function MenuManagement() {
                                 addHistory('DUPLICATED', 'Item', `${item.name} → ${created.name}`);
                                 showSuccess(`Duplicated "${item.name}"`);
                               } catch { showSuccess('Failed to duplicate'); }
-                            }} style={{ padding: '5px 10px', background: 'transparent', border: '1px solid #FED80030', borderRadius: '6px', color: '#FED800', fontSize: '11px', cursor: 'pointer' }}>Duplicate</button>
+                            }} style={{ padding: '5px 10px', background: 'transparent', border: '1px solid #E5B80030', borderRadius: '6px', color: '#E5B800', fontSize: '11px', cursor: 'pointer' }}>Duplicate</button>
                             <button onClick={() => toggleItemAvailable(item)} style={{ padding: '5px 10px', background: 'transparent', border: `1px solid ${item.available ? '#FC030130' : '#22C55E30'}`, borderRadius: '6px', color: item.available ? '#FC0301' : '#22C55E', fontSize: '11px', cursor: 'pointer' }}>{item.available ? 'Disable' : 'Enable'}</button>
                             <button onClick={() => handleDeleteItem(item)} style={{ padding: '5px 10px', background: 'transparent', border: '1px solid #FC030130', borderRadius: '6px', color: '#FC0301', fontSize: '11px', cursor: 'pointer' }}>Delete</button>
                           </div>
@@ -644,7 +644,7 @@ export default function MenuManagement() {
                     <p style={{ fontSize: '13px', fontWeight: '700', color: '#FEFEFE', marginBottom: '4px' }}>{item.name}</p>
                     <p style={{ fontSize: '11px', color: '#FEFEFE', marginBottom: '8px' }}>{categories.find(c => c.id === item.categoryId)?.name}</p>
                     <div style={{ display: 'flex', gap: '8px', marginBottom: '10px' }}>
-                      <div style={{ flex: 1, background: '#111111', borderRadius: '6px', padding: '6px 8px', textAlign: 'center' }}><p style={{ fontSize: '10px', color: '#FEFEFE' }}>Pickup</p><p style={{ fontSize: '14px', fontWeight: '700', color: '#FED800' }}>${item.pickupPrice}</p></div>
+                      <div style={{ flex: 1, background: '#111111', borderRadius: '6px', padding: '6px 8px', textAlign: 'center' }}><p style={{ fontSize: '10px', color: '#FEFEFE' }}>Pickup</p><p style={{ fontSize: '14px', fontWeight: '700', color: '#E5B800' }}>${item.pickupPrice}</p></div>
                       <div style={{ flex: 1, background: '#111111', borderRadius: '6px', padding: '6px 8px', textAlign: 'center' }}><p style={{ fontSize: '10px', color: '#FEFEFE' }}>Delivery</p><p style={{ fontSize: '14px', fontWeight: '700', color: '#FECE86' }}>${item.deliveryPrice}</p></div>
                     </div>
                     <div style={{ display: 'flex', gap: '6px' }}>
@@ -664,7 +664,7 @@ export default function MenuManagement() {
         <div>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
             <p style={{ fontSize: '13px', color: '#FEFEFE' }}>{modifierGroups.length} modifier groups</p>
-            <button onClick={openNewModifier} style={{ padding: '9px 18px', background: '#FED800', border: 'none', borderRadius: '8px', color: '#000', fontSize: '13px', fontWeight: '700', cursor: 'pointer' }}>+ Create Modifier Group</button>
+            <button onClick={openNewModifier} style={{ padding: '9px 18px', background: '#E5B800', border: 'none', borderRadius: '8px', color: '#000', fontSize: '13px', fontWeight: '700', cursor: 'pointer' }}>+ Create Modifier Group</button>
           </div>
           {modifierGroups.length === 0 ? (
             <div style={{ background: '#1A1A1A', border: '1px solid #2A2A2A', borderRadius: '12px', padding: '60px 20px', textAlign: 'center' }}>
@@ -676,20 +676,20 @@ export default function MenuManagement() {
                 <div>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '4px' }}>
                     <p style={{ fontSize: '15px', fontWeight: '700', color: '#FEFEFE' }}>{group.name}</p>
-                    <span style={{ fontSize: '10px', padding: '2px 8px', borderRadius: '20px', fontWeight: '600', background: group.required ? '#FED80020' : '#2A2A2A', color: group.required ? '#FED800' : '#FEFEFE', border: `1px solid ${group.required ? '#FED80040' : '#3A3A3A'}` }}>{group.required ? 'Required' : 'Optional'}</span>
+                    <span style={{ fontSize: '10px', padding: '2px 8px', borderRadius: '20px', fontWeight: '600', background: group.required ? '#E5B80020' : '#2A2A2A', color: group.required ? '#E5B800' : '#FEFEFE', border: `1px solid ${group.required ? '#E5B80040' : '#3A3A3A'}` }}>{group.required ? 'Required' : 'Optional'}</span>
                     <span style={{ fontSize: '10px', color: '#FEFEFE' }}>Select {group.minSelections}–{group.maxSelections}</span>
                   </div>
                   <p style={{ fontSize: '12px', color: '#FEFEFE' }}>{group.options.length} options · Linked to {group.linkedItemIds.length} items</p>
                 </div>
                 <div style={{ display: 'flex', gap: '8px', flexShrink: 0 }}>
-                  <button onClick={() => { setLinkingModifierId(group.id); setShowLinkModal(true); }} style={{ padding: '6px 12px', background: '#FED80015', border: '1px solid #FED80040', borderRadius: '6px', color: '#FED800', fontSize: '11px', cursor: 'pointer', fontWeight: '600' }}>Link to Items ({group.linkedItemIds.length})</button>
+                  <button onClick={() => { setLinkingModifierId(group.id); setShowLinkModal(true); }} style={{ padding: '6px 12px', background: '#E5B80015', border: '1px solid #E5B80040', borderRadius: '6px', color: '#E5B800', fontSize: '11px', cursor: 'pointer', fontWeight: '600' }}>Link to Items ({group.linkedItemIds.length})</button>
                   <button onClick={() => openEditModifier(group)} style={{ padding: '6px 12px', background: 'transparent', border: '1px solid #2A2A2A', borderRadius: '6px', color: '#FEFEFE', fontSize: '11px', cursor: 'pointer' }}>Edit</button>
                   <button onClick={() => deleteModifierGroup(group.id)} style={{ padding: '6px 12px', background: 'transparent', border: '1px solid #FC030130', borderRadius: '6px', color: '#FC0301', fontSize: '11px', cursor: 'pointer' }}>Delete</button>
                 </div>
               </div>
               <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' as const }}>
                 {group.options.map(opt => (
-                  <span key={opt.id} style={{ fontSize: '11px', padding: '4px 10px', background: opt.isDefault ? '#FED80020' : '#111111', border: `1px solid ${opt.isDefault ? '#FED80040' : '#2A2A2A'}`, borderRadius: '20px', color: opt.isDefault ? '#FED800' : '#FEFEFE' }}>
+                  <span key={opt.id} style={{ fontSize: '11px', padding: '4px 10px', background: opt.isDefault ? '#E5B80020' : '#111111', border: `1px solid ${opt.isDefault ? '#E5B80040' : '#2A2A2A'}`, borderRadius: '20px', color: opt.isDefault ? '#E5B800' : '#FEFEFE' }}>
                     {opt.name}{opt.price > 0 ? ` +$${opt.price.toFixed(2)}` : ' (free)'}{opt.isDefault ? ' ★' : ''}
                   </span>
                 ))}
@@ -717,7 +717,7 @@ export default function MenuManagement() {
             <p style={{ fontSize: '13px', color: '#FEFEFE' }}>{filteredHistory.length} entries</p>
             <div style={{ display: 'flex', gap: '6px' }}>
               {(['all', 'today', 'week', 'month'] as const).map(f => (
-                <button key={f} onClick={() => { setHistoryFilter(f); setHistoryPage(1); }} style={{ padding: '6px 12px', background: historyFilter === f ? '#FED800' : 'transparent', border: `1px solid ${historyFilter === f ? '#FED800' : '#2A2A2A'}`, borderRadius: '6px', color: historyFilter === f ? '#000' : '#FEFEFE', fontSize: '11px', cursor: 'pointer', fontWeight: historyFilter === f ? '700' : '400' }}>
+                <button key={f} onClick={() => { setHistoryFilter(f); setHistoryPage(1); }} style={{ padding: '6px 12px', background: historyFilter === f ? '#E5B800' : 'transparent', border: `1px solid ${historyFilter === f ? '#E5B800' : '#2A2A2A'}`, borderRadius: '6px', color: historyFilter === f ? '#000' : '#FEFEFE', fontSize: '11px', cursor: 'pointer', fontWeight: historyFilter === f ? '700' : '400' }}>
                   {f === 'all' ? 'All Time' : f === 'today' ? 'Today' : f === 'week' ? 'This Week' : 'This Month'}
                 </button>
               ))}

@@ -40,7 +40,7 @@ export default function Pagination({ page, totalPages, onPageChange }: Paginatio
             aria-current={page === pageNum ? 'page' : undefined}
             style={{
               padding: '6px 10px', borderRadius: '6px', border: 'none',
-              background: page === pageNum ? '#FED800' : '#1A1A1A',
+              background: page === pageNum ? '#E5B800' : '#1A1A1A',
               color: page === pageNum ? '#000' : '#FEFEFE',
               fontSize: '12px', fontWeight: page === pageNum ? '700' : '400',
               cursor: 'pointer', minWidth: '32px',

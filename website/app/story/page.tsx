@@ -13,7 +13,7 @@ export default function StoryPage() {
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
         :root {
-          --y: #FED800;
+          --y: #E5B800;
           --r: #FC0301;
           --bg0: #FFFFFF;
           --bg1: #F8F9FA;
@@ -22,7 +22,7 @@ export default function StoryPage() {
           --t1: #1A1A1A;
           --t2: #333333;
           --t3: #888888;
-          --font-head: 'Bebas Neue', sans-serif;
+          --font-head: 'DM Sans', sans-serif;
           --font-body: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
         }
 
@@ -43,7 +43,7 @@ export default function StoryPage() {
           transition: all 0.3s ease;
           font-family: var(--font-body);
         }
-        .btn-yellow:hover { background: transparent; color: #000; border-color: #FED800; transform: none; box-shadow: none; }
+        .btn-yellow:hover { background: #E5B800; color: #000; border-color: transparent; transform: none; box-shadow: none; }
         .btn-outline {
           display: inline-flex; align-items: center; gap: 8px;
           padding: 14px 28px; background: transparent; color: #1A1A1A;
@@ -52,29 +52,30 @@ export default function StoryPage() {
           transition: border-color 0.15s, color 0.15s;
           font-family: var(--font-body);
         }
-        .btn-outline:hover { border-color: #FED800; color: #B8A000; }
+        .btn-outline:hover { background: #F0F0F0; border-color: #1A1A1A; color: #1A1A1A; }
 
         /* ── Section label ── */
         .sec-label {
-          font-size: 11px; font-weight: 700; letter-spacing: 3.5px;
-          text-transform: uppercase; color: var(--y);
+          font-size: 12px; font-weight: 700; letter-spacing: 3.5px;
+          text-transform: uppercase; color: #888888;
           margin-bottom: 10px; display: block;
         }
 
         /* ── Section heading ── */
         .sec-heading {
           font-family: var(--font-head);
-          font-size: clamp(36px, 6vw, 62px);
-          letter-spacing: 1px; line-height: 0.95; color: var(--t1);
+          font-size: 32px;
+          font-weight: 800;
+          letter-spacing: 0.5px; line-height: 0.95; color: var(--t1);
         }
-        .sec-heading .accent { color: var(--y); }
+        .sec-heading .accent { color: var(--t1); }
 
         /* ── Story badge ── */
         .story-badge {
           display: inline-flex; align-items: center; gap: 6px;
           background: rgba(254,216,0,0.06); border: 1px solid rgba(254,216,0,0.15);
           border-radius: 100px; padding: 5px 14px;
-          font-size: 11px; color: var(--y); font-weight: 700;
+          font-size: 12px; color: #888888; font-weight: 700;
           letter-spacing: 2.5px; text-transform: uppercase;
           margin-bottom: 14px;
         }
@@ -110,7 +111,7 @@ export default function StoryPage() {
         .chapter-num {
           position: absolute; top: -44px; left: 0;
           font-size: 140px; font-family: var(--font-head);
-          color: rgba(254,216,0,0.04); line-height: 1;
+          color: rgba(0,0,0,0.03); line-height: 1;
           pointer-events: none; user-select: none;
         }
 
@@ -124,14 +125,14 @@ export default function StoryPage() {
         .img-float-badge-dark {
           position: absolute; bottom: -14px; right: -14px;
           background: var(--bg2); border: 1px solid rgba(254,216,0,0.15);
-          color: var(--y); font-family: var(--font-head);
+          color: var(--t1); font-family: var(--font-head);
           font-size: 13px; letter-spacing: 2px;
           padding: 7px 14px; border-radius: 8px; z-index: 2;
         }
         .img-float-badge-top {
           position: absolute; top: -14px; right: -14px;
           background: var(--bg2); border: 1px solid rgba(254,216,0,0.15);
-          color: var(--y); font-family: var(--font-head);
+          color: var(--t1); font-family: var(--font-head);
           font-size: 13px; letter-spacing: 2px;
           padding: 7px 14px; border-radius: 8px; z-index: 2;
         }
@@ -170,10 +171,10 @@ export default function StoryPage() {
         }
         .stat-pill:hover { border-color: rgba(254,216,0,0.15); }
         .stat-pill-value {
-          font-size: 24px; font-family: var(--font-head); color: var(--y); line-height: 1;
+          font-size: 24px; font-family: var(--font-head); color: var(--t1); line-height: 1;
         }
         .stat-pill-label {
-          font-size: 10px; color: var(--t3);
+          font-size: 12px; color: var(--t3);
           text-transform: uppercase; letter-spacing: 1.5px; margin-top: 4px;
         }
 
@@ -195,16 +196,16 @@ export default function StoryPage() {
           gap: 48px; margin-bottom: 40px;
         }
         .footer-bottom {
-          border-top: 1px solid #1A1A1A; padding-top: 24px;
+          border-top: 1px solid #E5E5E5; padding-top: 24px;
           display: flex; justify-content: space-between;
           align-items: center; flex-wrap: wrap; gap: 12px;
         }
         .footer-link {
-          display: block; font-size: 14px; color: #ffffff;
+          display: block; font-size: 14px; color: #1A1A1A;
           margin-bottom: 11px; text-decoration: none;
           transition: color 0.15s, padding-left 0.15s;
         }
-        .footer-link:hover { color: var(--y); padding-left: 4px; }
+        .footer-link:hover { color: #555555; padding-left: 4px; }
 
         /* ═══ RESPONSIVE ═══ */
         @media (max-width: 1024px) {
@@ -249,8 +250,8 @@ export default function StoryPage() {
 
         <div className="container hero-container" style={{ textAlign: 'center', position: 'relative' }}>
           <span id="hero-label" className="sec-label" style={{ justifyContent: 'center', display: 'block' }}>Our Story</span>
-          <h1 id="hero-title" className="bebas" style={{ fontSize: 'clamp(52px, 10vw, 80px)', color: '#1A1A1A', lineHeight: '0.93', marginBottom: '24px' }}>
-            MADE WITH <span style={{ color: 'var(--y)' }}>PURPOSE</span>
+          <h1 id="hero-title" className="bebas" style={{ fontSize: '40px', color: '#1A1A1A', lineHeight: '0.93', marginBottom: '24px' }}>
+            Made With <span style={{ color: 'var(--t1)' }}>Purpose</span>
           </h1>
           <p id="hero-subtitle" style={{ fontSize: 'clamp(15px, 2vw, 18px)', color: 'var(--t2)', lineHeight: '1.8', maxWidth: '540px', margin: '0 auto 40px' }}>
             Born from a simple belief — everyone deserves a great breakfast. Fresh ingredients, bold flavors, from West Philadelphia.
@@ -292,8 +293,8 @@ export default function StoryPage() {
             <div id="origin-text" style={{ position: 'relative' }}>
               <span className="chapter-num" aria-hidden="true">01</span>
               <div id="origin-story-badge" className="story-badge"><Flame size={10} aria-hidden="true" /> The Origin</div>
-              <h2 id="origin-heading" className="bebas" style={{ fontSize: 'clamp(32px, 5vw, 52px)', color: 'var(--t1)', lineHeight: '0.95', marginBottom: '22px' }}>
-                TWO FRIENDS,<br /><span style={{ color: 'var(--y)' }}>ONE BIG IDEA</span>
+              <h2 id="origin-heading" className="bebas" style={{ fontSize: 'clamp(32px, 5vw, 32px)', color: 'var(--t1)', lineHeight: '0.95', marginBottom: '22px' }}>
+                Two Friends <span style={{ color: 'var(--t1)' }}>One Big Idea</span>
               </h2>
               <p id="origin-body" className="story-body">
                 Berry — raised on bold Indonesian flavors — and Steven — a Philly guy who lived on corner-store egg sandwiches — asked a simple question: why couldn&apos;t breakfast be both?
@@ -335,8 +336,8 @@ export default function StoryPage() {
             <div id="food-text" style={{ position: 'relative' }}>
               <span className="chapter-num" aria-hidden="true">02</span>
               <div id="food-story-badge" className="story-badge"><Globe size={10} aria-hidden="true" /> The Food</div>
-              <h2 id="food-heading" className="bebas" style={{ fontSize: 'clamp(32px, 5vw, 52px)', color: 'var(--t1)', lineHeight: '0.95', marginBottom: '22px' }}>
-                TWO CULTURES,<br /><span style={{ color: 'var(--y)' }}>ONE PLATE</span>
+              <h2 id="food-heading" className="bebas" style={{ fontSize: 'clamp(32px, 32px, 32px)', color: 'var(--t1)', lineHeight: '0.95', marginBottom: '22px' }}>
+                Two Cultures, <span style={{ color: 'var(--t1)' }}>One Plate</span>
               </h2>
               <p id="food-body" className="story-body">
                 Classic Philly breakfast meets Indonesian technique — sambal heat, kecap manis sweetness, Padang spice. Nothing frozen. Our OK Sauce and Telur Padang Omelette are made fresh every single morning.
@@ -394,7 +395,7 @@ export default function StoryPage() {
                   style={{ objectFit: 'cover', borderRadius: '16px', display: 'block', width: '100%', height: 'auto', aspectRatio: '4/3' }}
                 />
                 <div id="community-location-badge" className="img-float-location">
-                  <MapPin size={13} color="#FED800" aria-hidden="true" />
+                  <MapPin size={13} color="#E5B800" aria-hidden="true" />
                   <span style={{ fontSize: '12px', color: 'var(--t2)', fontWeight: '500' }}>West Philadelphia, PA</span>
                 </div>
               </div>
@@ -404,8 +405,8 @@ export default function StoryPage() {
             <div id="community-text" style={{ position: 'relative' }}>
               <span className="chapter-num" aria-hidden="true">03</span>
               <div id="community-story-badge" className="story-badge"><Users size={10} aria-hidden="true" /> The Community</div>
-              <h2 id="community-heading" className="bebas" style={{ fontSize: 'clamp(32px, 5vw, 52px)', color: 'var(--t1)', lineHeight: '0.95', marginBottom: '22px' }}>
-                WEST PHILLY<br /><span style={{ color: 'var(--y)' }}>IS HOME</span>
+              <h2 id="community-heading" className="bebas" style={{ fontSize: 'clamp(32px, 32px, 32px)', color: 'var(--t1)', lineHeight: '0.95', marginBottom: '22px' }}>
+                West Philly <span style={{ color: 'var(--t1)' }}>Is Home</span>
               </h2>
               <p id="community-body" className="story-body">
                 3517 Lancaster Ave isn&apos;t just our address — it&apos;s our anchor. Every order supports our local team and the neighborhood we&apos;ve always called home.
@@ -430,7 +431,7 @@ export default function StoryPage() {
       {/* ══════════════════════════════════════════
           FOOTER
       ══════════════════════════════════════════ */}
-      <footer id="story-footer" className="site-footer" style={{ background: '#050505', padding: '68px 0 32px', borderTop: '1px solid #141414' }}>
+      <footer id="story-footer" className="site-footer" style={{ background: '#F8F9FA', padding: '68px 0 32px', borderTop: '1px solid #E5E5E5' }}>
         <div className="container footer-container">
           <div id="footer-grid" className="footer-grid">
 
@@ -441,26 +442,26 @@ export default function StoryPage() {
                   <Image src="/logo.svg" alt="Eggs Ok" width={100} height={50} style={{ objectFit: 'contain' }} />
                 </div>
               </div>
-              <p id="footer-tagline" style={{ fontSize: '14px', color: '#ffffff', lineHeight: '1.75', maxWidth: '280px', marginBottom: '22px' }}>
+              <p id="footer-tagline" style={{ fontSize: '14px', color: '#1A1A1A', lineHeight: '1.75', maxWidth: '280px', marginBottom: '22px' }}>
                 Fresh breakfast and lunch in West Philadelphia. Made to order, every time.
               </p>
               <address id="footer-address" style={{ fontStyle: 'normal' }}>
-                <p id="footer-address-line" style={{ fontSize: '13px', color: '#ffffff', display: 'flex', alignItems: 'center', gap: '7px', marginBottom: '8px' }}>
-                  <MapPin size={13} color="#FED800" aria-hidden="true" />
-                  <a href="https://www.google.com/maps?q=3517+Lancaster+Ave,+Philadelphia+PA+19104" id="footer-address-link" style={{ color: '#ffffff', textDecoration: 'none', transition: 'color 0.15s' }}>
+                <p id="footer-address-line" style={{ fontSize: '13px', color: '#1A1A1A', display: 'flex', alignItems: 'center', gap: '7px', marginBottom: '8px' }}>
+                  <MapPin size={13} color="#E5B800" aria-hidden="true" />
+                  <a href="https://www.google.com/maps?q=3517+Lancaster+Ave,+Philadelphia+PA+19104" id="footer-address-link" style={{ color: '#1A1A1A', textDecoration: 'none', transition: 'color 0.15s' }}>
                     3517 Lancaster Ave, Philadelphia PA 19104
                   </a>
                 </p>
-                <p id="footer-phone-line" style={{ fontSize: '13px', color: '#ffffff', display: 'flex', alignItems: 'center', gap: '7px' }}>
-                  <Smartphone size={13} color="#FED800" aria-hidden="true" />
-                  <a href="tel:2159489902" id="footer-phone-link" style={{ color: '#ffffff', textDecoration: 'none', transition: 'color 0.15s' }}>215-948-9902</a>
+                <p id="footer-phone-line" style={{ fontSize: '13px', color: '#1A1A1A', display: 'flex', alignItems: 'center', gap: '7px' }}>
+                  <Smartphone size={13} color="#E5B800" aria-hidden="true" />
+                  <a href="tel:2159489902" id="footer-phone-link" style={{ color: '#1A1A1A', textDecoration: 'none', transition: 'color 0.15s' }}>215-948-9902</a>
                 </p>
               </address>
             </div>
 
             {/* Quick links */}
             <nav id="footer-nav" aria-label="Quick links">
-              <p id="footer-nav-heading" style={{ fontSize: '15px', fontWeight: '700', color: '#ffffff', letterSpacing: '2px', textTransform: 'uppercase', marginBottom: '20px' }}>Quick Links</p>
+              <p id="footer-nav-heading" style={{ fontSize: '15px', fontWeight: '700', color: '#1A1A1A', letterSpacing: '2px', textTransform: 'uppercase', marginBottom: '20px' }}>Quick Links</p>
               {[
                 { label: 'Home',         href: '/'           },
                 { label: 'Order Online', href: '/order'      },
@@ -475,7 +476,7 @@ export default function StoryPage() {
 
             {/* Hours */}
             <div id="footer-hours">
-              <p id="footer-hours-heading" style={{ fontSize: '15px', fontWeight: '700', color: '#ffffff', letterSpacing: '2px', textTransform: 'uppercase', marginBottom: '20px' }}>Hours</p>
+              <p id="footer-hours-heading" style={{ fontSize: '15px', fontWeight: '700', color: '#1A1A1A', letterSpacing: '2px', textTransform: 'uppercase', marginBottom: '20px' }}>Hours</p>
               <div id="footer-hours-list" style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
                 {[
                   { day: 'Monday',  hours: '8:00 AM – 10:00 PM' },
@@ -487,8 +488,8 @@ export default function StoryPage() {
                   { day: 'Sunday',     hours: '9:00 AM – 9:00 PM'  },
                 ].map((h, i) => (
                   <div key={i} className={`footer-hours-row footer-hours-${h.day.toLowerCase()}`} style={{ display: 'flex', gap: '14px' }}>
-                    <span className="footer-hours-day" style={{ fontSize: '13px', color: '#ffffff', fontWeight: '600', minWidth: '96px' }}>{h.day}</span>
-                    <span className="footer-hours-time" style={{ fontSize: '13px', color: '#BBBBBB' }}>{h.hours}</span>
+                    <span className="footer-hours-day" style={{ fontSize: '13px', color: '#1A1A1A', fontWeight: '600', minWidth: '96px' }}>{h.day}</span>
+                    <span className="footer-hours-time" style={{ fontSize: '13px', color: '#666666' }}>{h.hours}</span>
                   </div>
                 ))}
               </div>
@@ -497,10 +498,10 @@ export default function StoryPage() {
           </div>
 
           <div id="footer-bottom" className="footer-bottom">
-            <p id="footer-copyright" style={{ fontSize: '13px', color: '#ffffff' }}>
+            <p id="footer-copyright" style={{ fontSize: '13px', color: '#888888' }}>
               &copy; {new Date().getFullYear()} Eggs Ok. All rights reserved.
             </p>
-            <p id="footer-credit" style={{ fontSize: '13px', color: '#ffffff' }}>
+            <p id="footer-credit" style={{ fontSize: '13px', color: '#888888' }}>
               {/* Built by <span id="footer-credit-brand" style={{ color: 'var(--y)' }}>RestoRise Business Solutions</span> */}
             </p>
           </div>

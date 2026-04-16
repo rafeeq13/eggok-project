@@ -127,7 +127,7 @@ export default function DateRangePicker({ from, to, onChange }: Props) {
             width: '32px', height: '32px',
             display: 'flex', alignItems: 'center', justifyContent: 'center',
             borderRadius: start || end ? '50%' : '0',
-            background: start || end ? '#FED800' : inRange ? '#FED80030' : 'transparent',
+            background: start || end ? '#E5B800' : inRange ? '#E5B80030' : 'transparent',
             color: start || end ? '#000' : '#FEFEFE',
             fontSize: '13px', fontWeight: start || end ? '700' : '400',
             cursor: 'pointer',
@@ -191,7 +191,7 @@ export default function DateRangePicker({ from, to, onChange }: Props) {
                 onClick={() => handlePreset(preset)}
                 style={{
                   width: '100%', padding: '9px 12px',
-                  background: activePreset === preset.label ? '#FED800' : 'transparent',
+                  background: activePreset === preset.label ? '#E5B800' : 'transparent',
                   color: activePreset === preset.label ? '#000' : '#FEFEFE',
                   border: 'none', borderRadius: '8px',
                   fontSize: '13px', fontWeight: activePreset === preset.label ? '700' : '400',
@@ -251,9 +251,9 @@ export default function DateRangePicker({ from, to, onChange }: Props) {
               {/* Footer */}
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '16px', paddingTop: '12px', borderTop: '1px solid #2A2A2A' }}>
                 <p style={{ fontSize: '12px', color: '#FEFEFE' }}>
-                  {customFrom && <span style={{ color: '#FED800' }}>Start: {customFrom}</span>}
+                  {customFrom && <span style={{ color: '#E5B800' }}>Start: {customFrom}</span>}
                   {customFrom && customTo && <span style={{ color: '#FEFEFE' }}> — </span>}
-                  {customTo && <span style={{ color: '#FED800' }}>End: {customTo}</span>}
+                  {customTo && <span style={{ color: '#E5B800' }}>End: {customTo}</span>}
                 </p>
                 <div style={{ display: 'flex', gap: '8px' }}>
                   <button onClick={() => { setOpen(false); setShowCustom(false); setActivePreset('This month'); }}
@@ -263,7 +263,7 @@ export default function DateRangePicker({ from, to, onChange }: Props) {
                   <button
                     onClick={() => { if (customFrom && customTo) { onChange(customFrom, customTo); setOpen(false); } }}
                     disabled={!customFrom || !customTo}
-                    style={{ padding: '7px 14px', background: customFrom && customTo ? '#FED800' : '#2A2A2A', border: 'none', borderRadius: '8px', color: customFrom && customTo ? '#000' : '#FEFEFE', fontSize: '12px', fontWeight: '700', cursor: customFrom && customTo ? 'pointer' : 'not-allowed' }}>
+                    style={{ padding: '7px 14px', background: customFrom && customTo ? '#E5B800' : '#2A2A2A', border: 'none', borderRadius: '8px', color: customFrom && customTo ? '#000' : '#FEFEFE', fontSize: '12px', fontWeight: '700', cursor: customFrom && customTo ? 'pointer' : 'not-allowed' }}>
                     Apply
                   </button>
                 </div>

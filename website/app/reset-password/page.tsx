@@ -62,15 +62,15 @@ function ResetPasswordForm() {
   const Nav = () => (
     <div style={{ position: 'fixed', top: 0, left: 0, right: 0, zIndex: 100, background: 'rgba(255,255,255,0.98)', backdropFilter: 'blur(20px)', borderBottom: '1px solid #E5E5E5', height: '64px', display: 'flex', alignItems: 'center', padding: '0 28px', justifyContent: 'space-between' }}>
       <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: '10px', textDecoration: 'none' }}>
-        <div style={{ width: '42px', height: '42px', borderRadius: '50%', background: '#FED800', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden' }}>
+        <div style={{ width: '42px', height: '42px', borderRadius: '50%', background: '#E5B800', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden' }}>
           <img src="/logo.svg" alt="Eggs Ok" style={{ width: '38px', height: '38px', objectFit: 'cover' }} onError={e => { (e.target as HTMLImageElement).style.display = 'none'; }} />
         </div>
         <div>
-          <div style={{ fontSize: '14px', fontWeight: 800, color: '#FED800', letterSpacing: '0.5px', lineHeight: '1' }}>EGGS OK</div>
+          <div style={{ fontSize: '14px', fontWeight: 800, color: '#1A1A1A', letterSpacing: '0.5px', lineHeight: '1' }}>Eggs Ok</div>
           <div style={{ fontSize: '10px', color: '#AAAAAA', letterSpacing: '1.5px', textTransform: 'uppercase', marginTop: '1px' }}>Philadelphia</div>
         </div>
       </Link>
-      <Link href="/order" style={{ padding: '8px 16px', background: '#FED800', borderRadius: '8px', color: '#000', fontSize: '13px', fontWeight: 700, textDecoration: 'none' }}>
+      <Link href="/order" style={{ padding: '8px 16px', background: '#E5B800', borderRadius: '8px', color: '#000', fontSize: '13px', fontWeight: 700, textDecoration: 'none' }}>
         Order Now
       </Link>
     </div>
@@ -84,11 +84,11 @@ function ResetPasswordForm() {
           <div style={{ width: '72px', height: '72px', borderRadius: '50%', background: '#2A0A0A', border: '2px solid #FC030140', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 24px' }}>
             <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#FC0301" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10" /><line x1="12" y1="8" x2="12" y2="12" /><line x1="12" y1="16" x2="12.01" y2="16" /></svg>
           </div>
-          <h1 style={{ fontSize: '28px', fontWeight: 900, color: '#1A1A1A', marginBottom: '12px' }}>INVALID LINK</h1>
+          <h1 style={{ fontSize: '28px', fontWeight: 900, color: '#1A1A1A', marginBottom: '12px' }}>Invalid Link</h1>
           <p style={{ fontSize: '14px', color: '#777777', marginBottom: '32px', lineHeight: '1.6' }}>
             This password reset link is invalid or missing. Please request a new one.
           </p>
-          <Link href="/account" style={{ display: 'block', padding: '15px', background: '#FED800', borderRadius: '12px', fontSize: '15px', fontWeight: 700, color: '#000', textDecoration: 'none', textAlign: 'center' }}>
+          <Link href="/account" style={{ display: 'block', padding: '15px', background: '#E5B800', borderRadius: '12px', fontSize: '15px', fontWeight: 700, color: '#000', textDecoration: 'none', textAlign: 'center' }}>
             Go to Sign In
           </Link>
         </div>
@@ -104,11 +104,11 @@ function ResetPasswordForm() {
           <div style={{ width: '72px', height: '72px', borderRadius: '50%', background: '#22C55E15', border: '2px solid #22C55E40', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 24px' }}>
             <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#22C55E" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12" /></svg>
           </div>
-          <h1 style={{ fontSize: '30px', fontWeight: 900, color: '#1A1A1A', marginBottom: '12px', letterSpacing: '-0.5px' }}>PASSWORD UPDATED</h1>
+          <h1 style={{ fontSize: '30px', fontWeight: 900, color: '#1A1A1A', marginBottom: '12px', letterSpacing: '-0.5px' }}>Password Updated</h1>
           <p style={{ fontSize: '14px', color: '#777777', marginBottom: '32px', lineHeight: '1.6' }}>
             Your password has been reset successfully. You can now sign in with your new password.
           </p>
-          <Link href="/account" style={{ display: 'block', padding: '15px', background: '#FED800', borderRadius: '12px', fontSize: '15px', fontWeight: 700, color: '#000', textDecoration: 'none', textAlign: 'center' }}>
+          <Link href="/account" style={{ display: 'block', padding: '15px', background: '#E5B800', borderRadius: '12px', fontSize: '15px', fontWeight: 700, color: '#000', textDecoration: 'none', textAlign: 'center' }}>
             Sign In
           </Link>
         </div>
@@ -122,9 +122,9 @@ function ResetPasswordForm() {
       <div style={{ maxWidth: '440px', margin: '0 auto', padding: '96px 24px 48px' }}>
         <div style={{ textAlign: 'center', marginBottom: '32px' }}>
           <div style={{ width: '64px', height: '64px', borderRadius: '16px', background: '#F8F9FA', border: '1px solid #E5E5E5', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 16px' }}>
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#FED800" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2" /><path d="M7 11V7a5 5 0 0110 0v4" /></svg>
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#E5B800" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2" /><path d="M7 11V7a5 5 0 0110 0v4" /></svg>
           </div>
-          <h1 style={{ fontSize: '30px', fontWeight: 900, color: '#1A1A1A', marginBottom: '8px', letterSpacing: '-0.5px' }}>SET NEW PASSWORD</h1>
+          <h1 style={{ fontSize: '30px', fontWeight: 900, color: '#1A1A1A', marginBottom: '8px', letterSpacing: '-0.5px' }}>Set New Password</h1>
           <p style={{ fontSize: '14px', color: '#777777' }}>Choose a strong password for your account.</p>
         </div>
 
@@ -138,7 +138,7 @@ function ResetPasswordForm() {
                 placeholder="Min 8 characters"
                 value={password}
                 onChange={e => setPassword(e.target.value)}
-                onFocus={e => (e.target as HTMLInputElement).style.borderColor = '#FED800'}
+                onFocus={e => (e.target as HTMLInputElement).style.borderColor = '#E5B800'}
                 onBlur={e => (e.target as HTMLInputElement).style.borderColor = '#D0D0D0'}
               />
               <button type="button" onClick={() => setShowPassword(!showPassword)}
@@ -167,7 +167,7 @@ function ResetPasswordForm() {
                 placeholder="Repeat your new password"
                 value={confirm}
                 onChange={e => setConfirm(e.target.value)}
-                onFocus={e => (e.target as HTMLInputElement).style.borderColor = '#FED800'}
+                onFocus={e => (e.target as HTMLInputElement).style.borderColor = '#E5B800'}
                 onBlur={e => (e.target as HTMLInputElement).style.borderColor = '#D0D0D0'}
               />
               <button type="button" onClick={() => setShowConfirmPassword(!showConfirmPassword)}
@@ -189,13 +189,13 @@ function ResetPasswordForm() {
             </div>
           )}
 
-          <button type="submit" disabled={loading} style={{ width: '100%', padding: '15px', background: loading ? '#E5E5E5' : '#FED800', borderRadius: '12px', fontSize: '16px', fontWeight: 700, color: loading ? '#AAAAAA' : '#000', cursor: loading ? 'not-allowed' : 'pointer', border: 'none', marginTop: '4px' }}>
+          <button type="submit" disabled={loading} style={{ width: '100%', padding: '15px', background: loading ? '#E5E5E5' : '#E5B800', borderRadius: '12px', fontSize: '16px', fontWeight: 700, color: loading ? '#AAAAAA' : '#000', cursor: loading ? 'not-allowed' : 'pointer', border: 'none', marginTop: '4px' }}>
             {loading ? 'Updating Password...' : 'Set New Password'}
           </button>
         </form>
 
         <p style={{ textAlign: 'center', marginTop: '20px', fontSize: '13px', color: '#777777' }}>
-          <Link href="/account" style={{ color: '#FED800', fontWeight: 600, textDecoration: 'none' }}>Back to Sign In</Link>
+          <Link href="/account" style={{ color: '#333333', fontWeight: 600, textDecoration: 'none' }}>Back to Sign In</Link>
         </p>
       </div>
     </div>

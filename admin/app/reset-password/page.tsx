@@ -57,7 +57,7 @@ function ResetContent() {
               <h2 style={{ fontSize: '20px', fontWeight: '700', color: '#fff', marginBottom: '8px' }}>Password Reset!</h2>
               <p style={{ color: '#888', fontSize: '14px', marginBottom: '24px' }}>You can now sign in with your new password.</p>
               <button onClick={() => router.push('/')} style={{
-                width: '100%', padding: '14px', background: '#FED800', border: 'none',
+                width: '100%', padding: '14px', background: '#E5B800', border: 'none',
                 borderRadius: '10px', color: '#000', fontSize: '15px', fontWeight: '700', cursor: 'pointer',
               }}>Sign In</button>
             </div>
@@ -73,7 +73,7 @@ function ResetContent() {
                   <label style={{ display: 'block', fontSize: '13px', color: '#888', marginBottom: '6px' }}>New Password *</label>
                   <div style={{ position: 'relative' }}>
                     <input type={showPassword ? 'text' : 'password'} value={password} onChange={e => setPassword(e.target.value)} placeholder="At least 8 characters" required style={{ ...inputStyle, paddingRight: '48px' }}
-                      onFocus={e => e.target.style.borderColor = '#FED800'} onBlur={e => e.target.style.borderColor = '#2A2A2A'} />
+                      onFocus={e => e.target.style.borderColor = '#E5B800'} onBlur={e => e.target.style.borderColor = '#2A2A2A'} />
                     <button type="button" onClick={() => setShowPassword(!showPassword)}
                       style={{ position: 'absolute', right: '14px', top: '50%', transform: 'translateY(-50%)', background: 'transparent', border: 'none', color: '#888', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '4px' }}>
                       {showPassword
@@ -87,7 +87,7 @@ function ResetContent() {
                   <label style={{ display: 'block', fontSize: '13px', color: '#888', marginBottom: '6px' }}>Confirm Password *</label>
                   <div style={{ position: 'relative' }}>
                     <input type={showConfirm ? 'text' : 'password'} value={confirm} onChange={e => setConfirm(e.target.value)} placeholder="Re-enter password" required style={{ ...inputStyle, paddingRight: '48px' }}
-                      onFocus={e => e.target.style.borderColor = '#FED800'} onBlur={e => e.target.style.borderColor = '#2A2A2A'} />
+                      onFocus={e => e.target.style.borderColor = '#E5B800'} onBlur={e => e.target.style.borderColor = '#2A2A2A'} />
                     <button type="button" onClick={() => setShowConfirm(!showConfirm)}
                       style={{ position: 'absolute', right: '14px', top: '50%', transform: 'translateY(-50%)', background: 'transparent', border: 'none', color: '#888', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '4px' }}>
                       {showConfirm
@@ -101,7 +101,7 @@ function ResetContent() {
                 {error && <p style={{ color: '#FC0301', fontSize: '13px', margin: 0 }}>{error}</p>}
 
                 <button type="submit" disabled={loading || !token} style={{
-                  width: '100%', padding: '14px', background: loading ? '#888' : '#FED800', border: 'none',
+                  width: '100%', padding: '14px', background: loading ? '#888' : '#E5B800', border: 'none',
                   borderRadius: '10px', color: '#000', fontSize: '15px', fontWeight: '700',
                   cursor: loading || !token ? 'not-allowed' : 'pointer',
                 }}>

@@ -875,7 +875,7 @@ export class OrdersService {
     const totalCount = orders.length;
 
     const orderTypeData = [
-      { name: 'Pickup', value: totalCount > 0 ? Math.round((pickupCount / totalCount) * 100) : 60, color: '#FED800' },
+      { name: 'Pickup', value: totalCount > 0 ? Math.round((pickupCount / totalCount) * 100) : 60, color: '#E5B800' },
       { name: 'Delivery', value: totalCount > 0 ? Math.round((deliveryCount / totalCount) * 100) : 40, color: '#60A5FA' },
     ];
 
@@ -906,7 +906,7 @@ export class OrdersService {
 
     const customerData = [
       { label: 'Total Customers', value: String(uniqueEmails), color: '#22C55E', detail: 'Unique customers in period' },
-      { label: 'New Customers', value: `${newCustomerPct}%`, color: '#FED800', detail: `${singleOrderCustomers} first-time customers` },
+      { label: 'New Customers', value: `${newCustomerPct}%`, color: '#E5B800', detail: `${singleOrderCustomers} first-time customers` },
       { label: 'Avg Orders / Cust', value: (totalCount / (uniqueEmails || 1)).toFixed(1), color: '#60A5FA', detail: 'Loyalty engagement' },
       { label: 'Retention Rate', value: `${retentionPct}%`, color: '#FECE86', detail: `${repeatCustomers} repeat customers` },
     ];

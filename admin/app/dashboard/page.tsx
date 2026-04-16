@@ -134,7 +134,7 @@ function DashboardContent() {
             <Image src="/logo.svg" alt="Eggs Ok"  width={40} height={40} style={{ objectFit: 'contain', width: '100%', height: '100%' }} />
           </div>
           {/* <div>
-            <div style={{ fontSize: '12px', fontWeight: '800', color: '#FED800', letterSpacing: '1px' }}>EGGS OK</div>
+            <div style={{ fontSize: '12px', fontWeight: '800', color: '#E5B800', letterSpacing: '1px' }}>EGGS OK</div>
             <div style={{ fontSize: '10px', color: '#FEFEFE', marginTop: '1px' }}>Admin Panel</div>
           </div> */}
         </div>
@@ -149,7 +149,7 @@ function DashboardContent() {
           <button key={item.id} onClick={() => handleTabChange(item.id)} aria-current={activeTab === item.id ? 'page' : undefined} style={{
             width: '100%', display: 'flex', alignItems: 'center', gap: '10px',
             padding: '10px 12px', borderRadius: '8px',
-            background: activeTab === item.id ? '#FED800' : 'transparent',
+            background: activeTab === item.id ? '#E5B800' : 'transparent',
             color: activeTab === item.id ? '#000000' : '#c8c8c8ff',
             fontSize: '12px', fontWeight: activeTab === item.id ? '700' : '400',
             marginBottom: '1px', textAlign: 'left', border: 'none', cursor: 'pointer',
@@ -224,7 +224,7 @@ function DashboardContent() {
   }, [activeTab]);
 
   const stats = [
-    { label: "Today's Orders", value: todayStats?.totalOrders || '0', sub: 'Total since midnight', color: '#FED800' },
+    { label: "Today's Orders", value: todayStats?.totalOrders || '0', sub: 'Total since midnight', color: '#E5B800' },
     { label: "Today's Revenue", value: `$${todayStats?.totalRevenue || '0'}`, sub: 'Gross sales today', color: '#22C55E' },
     { label: 'Pending Orders', value: todayStats?.pendingOrders || '0', sub: 'Awaiting preparation', color: '#F59E0B' },
     { label: 'Avg Order Value', value: `$${todayStats?.avgOrderValue || '0'}`, sub: 'Per transaction', color: '#FECE86' },
@@ -327,20 +327,20 @@ function DashboardContent() {
               <div style={{ background: '#1A1A1A', border: '1px solid #2A2A2A', borderRadius: '12px', overflow: 'hidden' }}>
                 <div style={{ padding: '14px 16px', borderBottom: '1px solid #2A2A2A', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                   <h3 style={{ fontSize: '13px', fontWeight: '600', color: '#FEFEFE' }}>Recent Orders</h3>
-                  <button onClick={() => setActiveTab('orders')} style={{ fontSize: '12px', color: '#FED800', background: 'transparent', border: 'none', cursor: 'pointer' }}>View All →</button>
+                  <button onClick={() => setActiveTab('orders')} style={{ fontSize: '12px', color: '#E5B800', background: 'transparent', border: 'none', cursor: 'pointer' }}>View All →</button>
                 </div>
                 {isMobile ? (
                   <div>
                     {recentOrders.map((order, i) => (
                       <div key={i} style={{ padding: '14px 16px', borderBottom: i < recentOrders.length - 1 ? '1px solid #2A2A2A' : 'none' }}>
                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '6px' }}>
-                          <span style={{ fontSize: '13px', fontWeight: '700', color: '#FED800' }}>#{order.orderNumber?.split('-').pop()}</span>
+                          <span style={{ fontSize: '13px', fontWeight: '700', color: '#E5B800' }}>#{order.orderNumber?.split('-').pop()}</span>
                           <span style={{ fontSize: '13px', fontWeight: '700', color: '#FEFEFE' }}>${order.total}</span>
                         </div>
                         <p style={{ fontSize: '12px', color: '#FEFEFE', marginBottom: '4px' }}>{order.customerName}</p>
                         <p style={{ fontSize: '11px', color: '#FEFEFE', marginBottom: '6px' }}>{Array.isArray(order.items) ? order.items.map((it: any) => it.name).join(', ') : 'No items'}</p>
                         <div style={{ display: 'flex', gap: '8px' }}>
-                          <span style={{ fontSize: '10px', padding: '2px 8px', borderRadius: '20px', fontWeight: '600', background: order.orderType === 'Delivery' ? '#0A1628' : '#1A1A00', color: order.orderType === 'Delivery' ? '#60A5FA' : '#FED800', border: `1px solid ${order.orderType === 'Delivery' ? '#1E3A5F' : '#3A3A00'}` }}>{order.orderType}</span>
+                          <span style={{ fontSize: '10px', padding: '2px 8px', borderRadius: '20px', fontWeight: '600', background: order.orderType === 'Delivery' ? '#0A1628' : '#1A1A00', color: order.orderType === 'Delivery' ? '#60A5FA' : '#E5B800', border: `1px solid ${order.orderType === 'Delivery' ? '#1E3A5F' : '#3A3A00'}` }}>{order.orderType}</span>
                           <span style={{ fontSize: '10px', padding: '2px 8px', borderRadius: '20px', fontWeight: '600', color: statusColor[order.status] || '#FEFEFE', background: `${statusColor[order.status] || '#FEFEFE'}18`, border: `1px solid ${statusColor[order.status] || '#FEFEFE'}40` }}>{order.status}</span>
                           <span style={{ fontSize: '10px', color: '#FEFEFE', marginLeft: 'auto' }}>
                             {hasMounted ? new Date(order.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : '--:--'}
@@ -362,11 +362,11 @@ function DashboardContent() {
                       <tbody>
                         {recentOrders.map((order, i) => (
                           <tr key={i} style={{ borderBottom: i < recentOrders.length - 1 ? '1px solid #2A2A2A' : 'none' }}>
-                            <td style={{ padding: '12px 16px', fontSize: '12px', fontWeight: '600', color: '#FED800' }}>#{order.orderNumber?.split('-').pop()}</td>
+                            <td style={{ padding: '12px 16px', fontSize: '12px', fontWeight: '600', color: '#E5B800' }}>#{order.orderNumber?.split('-').pop()}</td>
                             <td style={{ padding: '12px 16px', fontSize: '12px', color: '#FEFEFE' }}>{order.customerName}</td>
                             <td style={{ padding: '12px 16px', fontSize: '11px', color: '#FEFEFE' }}>{Array.isArray(order.items) ? order.items.map((it: any) => it.name).join(', ') : 'No items'}</td>
                             <td style={{ padding: '12px 16px' }}>
-                              <span style={{ fontSize: '10px', padding: '2px 8px', borderRadius: '20px', fontWeight: '600', background: order.orderType === 'Delivery' ? '#0A1628' : '#1A1A00', color: order.orderType === 'Delivery' ? '#60A5FA' : '#FED800', border: `1px solid ${order.orderType === 'Delivery' ? '#1E3A5F' : '#3A3A00'}` }}>{order.orderType}</span>
+                              <span style={{ fontSize: '10px', padding: '2px 8px', borderRadius: '20px', fontWeight: '600', background: order.orderType === 'Delivery' ? '#0A1628' : '#1A1A00', color: order.orderType === 'Delivery' ? '#60A5FA' : '#E5B800', border: `1px solid ${order.orderType === 'Delivery' ? '#1E3A5F' : '#3A3A00'}` }}>{order.orderType}</span>
                             </td>
                             <td style={{ padding: '12px 16px', fontSize: '12px', fontWeight: '600', color: '#FEFEFE' }}>${order.total}</td>
                             <td style={{ padding: '12px 16px' }}>

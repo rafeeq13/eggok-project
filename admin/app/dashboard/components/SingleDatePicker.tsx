@@ -114,10 +114,10 @@ export default function SingleDatePicker({ value, onChange, placeholder = 'Selec
                   style={{
                     display: 'flex', alignItems: 'center', justifyContent: 'center',
                     height: '34px', borderRadius: '8px',
-                    background: isSelected ? '#FED800' : isToday ? '#FED80020' : 'transparent',
-                    color: isSelected ? '#000' : isToday ? '#FED800' : '#FEFEFE',
+                    background: isSelected ? '#E5B800' : isToday ? '#E5B80020' : 'transparent',
+                    color: isSelected ? '#000' : isToday ? '#E5B800' : '#FEFEFE',
                     fontSize: '13px', fontWeight: isSelected ? '700' : '400',
-                    cursor: 'pointer', border: isToday && !isSelected ? '1px solid #FED80040' : '1px solid transparent',
+                    cursor: 'pointer', border: isToday && !isSelected ? '1px solid #E5B80040' : '1px solid transparent',
                   }}
                   onMouseEnter={e => { if (!isSelected) (e.currentTarget as HTMLDivElement).style.background = '#2A2A2A'; }}
                   onMouseLeave={e => { if (!isSelected) (e.currentTarget as HTMLDivElement).style.background = 'transparent'; }}

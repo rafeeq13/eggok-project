@@ -114,7 +114,7 @@ export default function ItemForm({ categories, modifierGroups, initialData, onSa
   };
 
   const toggleSwitch = (value: boolean, onChange: () => void) => (
-    <div onClick={onChange} style={{ width: '42px', height: '24px', background: value ? '#FED800' : '#2A2A2A', borderRadius: '12px', position: 'relative', cursor: 'pointer', flexShrink: 0, transition: 'background 0.2s' }}>
+    <div onClick={onChange} style={{ width: '42px', height: '24px', background: value ? '#E5B800' : '#2A2A2A', borderRadius: '12px', position: 'relative', cursor: 'pointer', flexShrink: 0, transition: 'background 0.2s' }}>
       <div style={{ position: 'absolute', top: '3px', left: value ? '21px' : '3px', width: '18px', height: '18px', background: '#FEFEFE', borderRadius: '50%', transition: 'left 0.2s' }} />
     </div>
   );
@@ -137,8 +137,8 @@ export default function ItemForm({ categories, modifierGroups, initialData, onSa
             <button key={tab} onClick={() => setActiveSection(tab)} style={{
               flex: 1, padding: '12px', background: 'transparent',
               border: 'none', cursor: 'pointer', fontSize: '13px', fontWeight: '600',
-              color: activeSection === tab ? '#FED800' : '#FEFEFE',
-              borderBottom: activeSection === tab ? '2px solid #FED800' : '2px solid transparent',
+              color: activeSection === tab ? '#E5B800' : '#FEFEFE',
+              borderBottom: activeSection === tab ? '2px solid #E5B800' : '2px solid transparent',
             }}>
               {tab === 'basic' ? 'Basic Info' : `Modifiers (${linkedModifierIds.length} linked)`}
             </button>
@@ -155,7 +155,7 @@ export default function ItemForm({ categories, modifierGroups, initialData, onSa
               <div>
                 <label style={labelStyle}>Item Photo</label>
                 <div style={{ border: '2px dashed #2A2A2A', borderRadius: '10px', padding: '16px', textAlign: 'center', cursor: 'pointer', background: '#111111', position: 'relative', transition: 'border-color 0.2s', height: '120px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
-                  onMouseEnter={e => (e.currentTarget as HTMLDivElement).style.borderColor = '#FED800'}
+                  onMouseEnter={e => (e.currentTarget as HTMLDivElement).style.borderColor = '#E5B800'}
                   onMouseLeave={e => (e.currentTarget as HTMLDivElement).style.borderColor = '#2A2A2A'}
                 >
                   {imagePreview ? (
@@ -177,7 +177,7 @@ export default function ItemForm({ categories, modifierGroups, initialData, onSa
                 <label style={labelStyle}>Item Name *</label>
                 <input style={inputStyle} placeholder="e.g. Signature Bacon Egg & Cheese"
                   value={name} onChange={e => setName(e.target.value)}
-                  onFocus={e => e.target.style.borderColor = '#FED800'}
+                  onFocus={e => e.target.style.borderColor = '#E5B800'}
                   onBlur={e => e.target.style.borderColor = '#2A2A2A'}
                 />
               </div>
@@ -188,7 +188,7 @@ export default function ItemForm({ categories, modifierGroups, initialData, onSa
                 <textarea style={{ ...inputStyle, height: '70px', resize: 'none' as const }}
                   placeholder="Describe the item..."
                   value={description} onChange={e => setDescription(e.target.value)}
-                  onFocus={e => e.target.style.borderColor = '#FED800'}
+                  onFocus={e => e.target.style.borderColor = '#E5B800'}
                   onBlur={e => e.target.style.borderColor = '#2A2A2A'}
                 />
               </div>
@@ -205,11 +205,11 @@ export default function ItemForm({ categories, modifierGroups, initialData, onSa
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
                   <div>
                     <label style={labelStyle}>Pickup Price (USD) *</label>
-                    <input type="number" step="0.01" style={{ ...inputStyle, borderColor: '#FED80040' }}
+                    <input type="number" step="0.01" style={{ ...inputStyle, borderColor: '#E5B80040' }}
                       placeholder="0.00" value={pickupPrice}
                       onChange={e => handlePickupPriceChange(e.target.value)}
-                      onFocus={e => e.target.style.borderColor = '#FED800'}
-                      onBlur={e => e.target.style.borderColor = '#FED80040'}
+                      onFocus={e => e.target.style.borderColor = '#E5B800'}
+                      onBlur={e => e.target.style.borderColor = '#E5B80040'}
                     />
                     <p style={{ fontSize: '10px', color: '#FEFEFE', marginTop: '4px' }}>Price for in-store pickup</p>
                   </div>
@@ -258,7 +258,7 @@ export default function ItemForm({ categories, modifierGroups, initialData, onSa
             <div>
               <div style={{ padding: '12px 14px', background: '#111111', borderRadius: '8px', marginBottom: '12px', border: '1px solid #2A2A2A' }}>
                 <p style={{ fontSize: '12px', color: '#FEFEFE', lineHeight: '1.6' }}>
-                  Select modifier groups from your <span style={{ color: '#FED800' }}>Global Modifier Library</span> to link to this item. Customers will see these options when ordering.
+                  Select modifier groups from your <span style={{ color: '#E5B800' }}>Global Modifier Library</span> to link to this item. Customers will see these options when ordering.
                 </p>
               </div>
 
@@ -268,14 +268,14 @@ export default function ItemForm({ categories, modifierGroups, initialData, onSa
                 value={modifierSearch}
                 onChange={e => setModifierSearch(e.target.value)}
                 style={{ ...inputStyle, marginBottom: '12px' }}
-                onFocus={e => e.target.style.borderColor = '#FED800'}
+                onFocus={e => e.target.style.borderColor = '#E5B800'}
                 onBlur={e => e.target.style.borderColor = '#2A2A2A'}
               />
 
               {/* Linked modifiers sequence */}
               {linkedModifierIds.length > 0 && (
                 <div style={{ marginBottom: '14px' }}>
-                  <p style={{ fontSize: '11px', fontWeight: '600', color: '#FED800', textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: '8px' }}>
+                  <p style={{ fontSize: '11px', fontWeight: '600', color: '#E5B800', textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: '8px' }}>
                     Linked — drag to reorder
                   </p>
                   {linkedModifierIds.map((mid, index) => {
@@ -362,7 +362,7 @@ export default function ItemForm({ categories, modifierGroups, initialData, onSa
                             {isLinked && <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#000" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>}
                           </div>
                           <p style={{ fontSize: '14px', fontWeight: '700', color: '#FEFEFE' }}>{group.name}</p>
-                          <span style={{ fontSize: '10px', padding: '2px 8px', borderRadius: '20px', fontWeight: '600', background: group.required ? '#FED80020' : '#2A2A2A', color: group.required ? '#FED800' : '#FEFEFE' }}>
+                          <span style={{ fontSize: '10px', padding: '2px 8px', borderRadius: '20px', fontWeight: '600', background: group.required ? '#E5B80020' : '#2A2A2A', color: group.required ? '#E5B800' : '#FEFEFE' }}>
                             {group.required ? 'Required' : 'Optional'}
                           </span>
                         </div>
@@ -391,7 +391,7 @@ export default function ItemForm({ categories, modifierGroups, initialData, onSa
         {/* Footer */}
         <div style={{ padding: '16px 24px', borderTop: '1px solid #2A2A2A', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', flexShrink: 0 }}>
           <button onClick={onCancel} style={{ padding: '12px', background: 'transparent', border: '1px solid #2A2A2A', borderRadius: '8px', color: '#FEFEFE', fontSize: '13px', cursor: 'pointer' }}>Cancel</button>
-          <button onClick={handleSave} style={{ padding: '12px', background: '#FED800', border: 'none', borderRadius: '8px', color: '#000000', fontSize: '13px', fontWeight: '700', cursor: 'pointer' }}>
+          <button onClick={handleSave} style={{ padding: '12px', background: '#E5B800', border: 'none', borderRadius: '8px', color: '#000000', fontSize: '13px', fontWeight: '700', cursor: 'pointer' }}>
             {isEditing ? 'Save Changes' : 'Add Item'}
           </button>
         </div>

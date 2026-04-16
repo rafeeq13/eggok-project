@@ -207,7 +207,7 @@ export default function BusinessProfile() {
         height: square ? '160px' : '120px',
         display: 'flex', alignItems: 'center', justifyContent: 'center',
       }}
-        onMouseEnter={e => (e.currentTarget as HTMLDivElement).style.borderColor = '#FED800'}
+        onMouseEnter={e => (e.currentTarget as HTMLDivElement).style.borderColor = '#E5B800'}
         onMouseLeave={e => (e.currentTarget as HTMLDivElement).style.borderColor = '#2A2A2A'}
       >
         {preview ? (
@@ -261,7 +261,7 @@ export default function BusinessProfile() {
           <button key={sec.id} onClick={() => setActiveSection(sec.id)} style={{
             width: '100%', display: 'flex', alignItems: 'center', gap: '8px',
             padding: '10px 12px', borderRadius: '8px', border: 'none', cursor: 'pointer',
-            background: activeSection === sec.id ? '#FED800' : 'transparent',
+            background: activeSection === sec.id ? '#E5B800' : 'transparent',
             color: activeSection === sec.id ? '#000000' : '#FEFEFE',
             fontSize: '12px', fontWeight: activeSection === sec.id ? '700' : '400',
             marginBottom: '2px', textAlign: 'left',
@@ -303,7 +303,7 @@ export default function BusinessProfile() {
                   <label style={labelStyle}>Restaurant Name</label>
                   <input style={inputStyle} value={restaurantName}
                     onChange={e => setRestaurantName(e.target.value)}
-                    onFocus={e => e.target.style.borderColor = '#FED800'}
+                    onFocus={e => e.target.style.borderColor = '#E5B800'}
                     onBlur={e => e.target.style.borderColor = '#2A2A2A'}
                   />
                 </div>
@@ -312,7 +312,7 @@ export default function BusinessProfile() {
                   <input style={inputStyle} value={tagline}
                     onChange={e => setTagline(e.target.value)}
                     placeholder="e.g. Fresh breakfast made with love"
-                    onFocus={e => e.target.style.borderColor = '#FED800'}
+                    onFocus={e => e.target.style.borderColor = '#E5B800'}
                     onBlur={e => e.target.style.borderColor = '#2A2A2A'}
                   />
                 </div>
@@ -321,7 +321,7 @@ export default function BusinessProfile() {
                   <textarea style={{ ...inputStyle, height: '90px', resize: 'none' as const }}
                     value={description}
                     onChange={e => setDescription(e.target.value)}
-                    onFocus={e => e.target.style.borderColor = '#FED800'}
+                    onFocus={e => e.target.style.borderColor = '#E5B800'}
                     onBlur={e => e.target.style.borderColor = '#2A2A2A'}
                   />
                   <p style={{ fontSize: '11px', color: '#888888', marginTop: '4px' }}>
@@ -333,7 +333,7 @@ export default function BusinessProfile() {
                     <label style={labelStyle}>Cuisine Type</label>
                     <input style={inputStyle} value={cuisine}
                       onChange={e => setCuisine(e.target.value)}
-                      onFocus={e => e.target.style.borderColor = '#FED800'}
+                      onFocus={e => e.target.style.borderColor = '#E5B800'}
                       onBlur={e => e.target.style.borderColor = '#2A2A2A'}
                     />
                   </div>
@@ -349,7 +349,7 @@ export default function BusinessProfile() {
                 </div>
               </div>
             </div>
-            <button onClick={() => handleSave('Brand identity')} style={{ width: '100%', padding: '13px', background: '#FED800', border: 'none', borderRadius: '10px', color: '#000', fontSize: '14px', fontWeight: '700', cursor: 'pointer' }}>
+            <button onClick={() => handleSave('Brand identity')} style={{ width: '100%', padding: '13px', background: '#E5B800', border: 'none', borderRadius: '10px', color: '#000', fontSize: '14px', fontWeight: '700', cursor: 'pointer' }}>
               Save Brand Identity
             </button>
           </div>
@@ -366,7 +366,7 @@ export default function BusinessProfile() {
                     <label style={labelStyle}>Main Phone Number</label>
                     <input style={inputStyle} value={phone}
                       onChange={e => setPhone(e.target.value)}
-                      onFocus={e => e.target.style.borderColor = '#FED800'}
+                      onFocus={e => e.target.style.borderColor = '#E5B800'}
                       onBlur={e => e.target.style.borderColor = '#2A2A2A'}
                     />
                     <p style={{ fontSize: '11px', color: '#888888', marginTop: '4px' }}>
@@ -377,7 +377,7 @@ export default function BusinessProfile() {
                     <label style={labelStyle}>Catering Phone</label>
                     <input style={inputStyle} value={cateringPhone}
                       onChange={e => setCateringPhone(e.target.value)}
-                      onFocus={e => e.target.style.borderColor = '#FED800'}
+                      onFocus={e => e.target.style.borderColor = '#E5B800'}
                       onBlur={e => e.target.style.borderColor = '#2A2A2A'}
                     />
                     <p style={{ fontSize: '11px', color: '#888888', marginTop: '4px' }}>
@@ -389,7 +389,7 @@ export default function BusinessProfile() {
                   <label style={labelStyle}>Public Email Address</label>
                   <input type="email" style={inputStyle} value={email}
                     onChange={e => setEmail(e.target.value)}
-                    onFocus={e => e.target.style.borderColor = '#FED800'}
+                    onFocus={e => e.target.style.borderColor = '#E5B800'}
                     onBlur={e => e.target.style.borderColor = '#2A2A2A'}
                   />
                   <p style={{ fontSize: '11px', color: '#888888', marginTop: '4px' }}>
@@ -401,13 +401,13 @@ export default function BusinessProfile() {
                   <input style={inputStyle} value={website}
                     onChange={e => setWebsite(e.target.value)}
                     placeholder="https://eggsokphilly.com"
-                    onFocus={e => e.target.style.borderColor = '#FED800'}
+                    onFocus={e => e.target.style.borderColor = '#E5B800'}
                     onBlur={e => e.target.style.borderColor = '#2A2A2A'}
                   />
                 </div>
               </div>
             </div>
-            <button onClick={() => handleSave('Contact info')} style={{ width: '100%', padding: '13px', background: '#FED800', border: 'none', borderRadius: '10px', color: '#000', fontSize: '14px', fontWeight: '700', cursor: 'pointer' }}>
+            <button onClick={() => handleSave('Contact info')} style={{ width: '100%', padding: '13px', background: '#E5B800', border: 'none', borderRadius: '10px', color: '#000', fontSize: '14px', fontWeight: '700', cursor: 'pointer' }}>
               Save Contact Info
             </button>
           </div>
@@ -423,7 +423,7 @@ export default function BusinessProfile() {
                   <label style={labelStyle}>Street Address</label>
                   <input style={inputStyle} value={address}
                     onChange={e => setAddress(e.target.value)}
-                    onFocus={e => e.target.style.borderColor = '#FED800'}
+                    onFocus={e => e.target.style.borderColor = '#E5B800'}
                     onBlur={e => e.target.style.borderColor = '#2A2A2A'}
                   />
                 </div>
@@ -432,7 +432,7 @@ export default function BusinessProfile() {
                     <label style={labelStyle}>City</label>
                     <input style={inputStyle} value={city}
                       onChange={e => setCity(e.target.value)}
-                      onFocus={e => e.target.style.borderColor = '#FED800'}
+                      onFocus={e => e.target.style.borderColor = '#E5B800'}
                       onBlur={e => e.target.style.borderColor = '#2A2A2A'}
                     />
                   </div>
@@ -440,7 +440,7 @@ export default function BusinessProfile() {
                     <label style={labelStyle}>State</label>
                     <input style={inputStyle} value={state}
                       onChange={e => setState(e.target.value)}
-                      onFocus={e => e.target.style.borderColor = '#FED800'}
+                      onFocus={e => e.target.style.borderColor = '#E5B800'}
                       onBlur={e => e.target.style.borderColor = '#2A2A2A'}
                     />
                   </div>
@@ -448,7 +448,7 @@ export default function BusinessProfile() {
                     <label style={labelStyle}>ZIP Code</label>
                     <input style={inputStyle} value={zip}
                       onChange={e => setZip(e.target.value)}
-                      onFocus={e => e.target.style.borderColor = '#FED800'}
+                      onFocus={e => e.target.style.borderColor = '#E5B800'}
                       onBlur={e => e.target.style.borderColor = '#2A2A2A'}
                     />
                   </div>
@@ -457,7 +457,7 @@ export default function BusinessProfile() {
                   <label style={labelStyle}>Country</label>
                   <input style={inputStyle} value={country}
                     onChange={e => setCountry(e.target.value)}
-                    onFocus={e => e.target.style.borderColor = '#FED800'}
+                    onFocus={e => e.target.style.borderColor = '#E5B800'}
                     onBlur={e => e.target.style.borderColor = '#2A2A2A'}
                   />
                 </div>
@@ -466,7 +466,7 @@ export default function BusinessProfile() {
                   <input style={inputStyle} value={googleMapsLink}
                     onChange={e => setGoogleMapsLink(e.target.value)}
                     placeholder="https://maps.google.com/..."
-                    onFocus={e => e.target.style.borderColor = '#FED800'}
+                    onFocus={e => e.target.style.borderColor = '#E5B800'}
                     onBlur={e => e.target.style.borderColor = '#2A2A2A'}
                   />
                   <p style={{ fontSize: '11px', color: '#888888', marginTop: '4px' }}>
@@ -477,19 +477,19 @@ export default function BusinessProfile() {
                   <label style={labelStyle}>Parking Information</label>
                   <input style={inputStyle} value={parkingInfo}
                     onChange={e => setParkingInfo(e.target.value)}
-                    onFocus={e => e.target.style.borderColor = '#FED800'}
+                    onFocus={e => e.target.style.borderColor = '#E5B800'}
                     onBlur={e => e.target.style.borderColor = '#2A2A2A'}
                   />
                 </div>
                 <div style={{ padding: '12px 14px', background: '#111111', borderRadius: '8px', border: '1px solid #2A2A2A' }}>
                   <p style={{ fontSize: '12px', fontWeight: '600', color: '#FEFEFE', marginBottom: '4px' }}>Full Address Preview</p>
-                  <p style={{ fontSize: '13px', color: '#FED800' }}>
+                  <p style={{ fontSize: '13px', color: '#E5B800' }}>
                     {address}, {city}, {state} {zip}, {country}
                   </p>
                 </div>
               </div>
             </div>
-            <button onClick={() => handleSave('Location')} style={{ width: '100%', padding: '13px', background: '#FED800', border: 'none', borderRadius: '10px', color: '#000', fontSize: '14px', fontWeight: '700', cursor: 'pointer' }}>
+            <button onClick={() => handleSave('Location')} style={{ width: '100%', padding: '13px', background: '#E5B800', border: 'none', borderRadius: '10px', color: '#000', fontSize: '14px', fontWeight: '700', cursor: 'pointer' }}>
               Save Location
             </button>
           </div>
@@ -510,7 +510,7 @@ export default function BusinessProfile() {
                   { label: 'TikTok', color: '#FEFEFE', value: tiktok, set: setTiktok, placeholder: '@eggsok', icon: <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 12a4 4 0 104 4V4a5 5 0 005 5" /></svg> },
                   { label: 'Twitter / X', color: '#FEFEFE', value: twitter, set: setTwitter, placeholder: '@eggsok', icon: <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 4l16 16M4 20L20 4" /></svg> },
                   { label: 'Yelp', color: '#FF1A1A', value: yelp, set: setYelp, placeholder: 'yelp.com/biz/eggs-ok', icon: <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6h-2zm0 8h2v2h-2z" /></svg> },
-                  { label: 'Google Business', color: '#FED800', value: googleBusiness, set: setGoogleBusiness, placeholder: 'Google Business profile link', icon: <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2a10 10 0 100 20A10 10 0 0012 2zm0 3a7 7 0 110 14A7 7 0 0112 5zm1 3h-2v5l4.25 2.52.75-1.23-3-1.79V8z" /></svg> },
+                  { label: 'Google Business', color: '#E5B800', value: googleBusiness, set: setGoogleBusiness, placeholder: 'Google Business profile link', icon: <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2a10 10 0 100 20A10 10 0 0012 2zm0 3a7 7 0 110 14A7 7 0 0112 5zm1 3h-2v5l4.25 2.52.75-1.23-3-1.79V8z" /></svg> },
                 ].map(item => (
                   <div key={item.label} style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
                     <div style={{
@@ -524,7 +524,7 @@ export default function BusinessProfile() {
                       <input style={inputStyle} value={item.value}
                         onChange={e => item.set(e.target.value)}
                         placeholder={item.placeholder}
-                        onFocus={e => e.target.style.borderColor = '#FED800'}
+                        onFocus={e => e.target.style.borderColor = '#E5B800'}
                         onBlur={e => e.target.style.borderColor = '#2A2A2A'}
                       />
                     </div>
@@ -544,7 +544,7 @@ export default function BusinessProfile() {
                 ))}
               </div>
             </div>
-            <button onClick={() => handleSave('Social media')} style={{ width: '100%', padding: '13px', background: '#FED800', border: 'none', borderRadius: '10px', color: '#000', fontSize: '14px', fontWeight: '700', cursor: 'pointer' }}>
+            <button onClick={() => handleSave('Social media')} style={{ width: '100%', padding: '13px', background: '#E5B800', border: 'none', borderRadius: '10px', color: '#000', fontSize: '14px', fontWeight: '700', cursor: 'pointer' }}>
               Save Social Media
             </button>
           </div>
@@ -555,8 +555,8 @@ export default function BusinessProfile() {
           <div>
             <div style={cardStyle}>
               <p style={sectionTitle}>SEO Settings</p>
-              <div style={{ padding: '12px 14px', background: '#111111', borderRadius: '8px', border: '1px solid #FED80030', marginBottom: '16px' }}>
-                <p style={{ fontSize: '12px', color: '#FED800', marginBottom: '4px', fontWeight: '600' }}>Why SEO matters</p>
+              <div style={{ padding: '12px 14px', background: '#111111', borderRadius: '8px', border: '1px solid #E5B80030', marginBottom: '16px' }}>
+                <p style={{ fontSize: '12px', color: '#E5B800', marginBottom: '4px', fontWeight: '600' }}>Why SEO matters</p>
                 <p style={{ fontSize: '11px', color: '#888888', lineHeight: '1.6' }}>
                   Good SEO settings help your restaurant appear higher in Google search results, bringing more organic (free) traffic to your ordering website. Set these once and Google will do the rest.
                 </p>
@@ -566,7 +566,7 @@ export default function BusinessProfile() {
                   <label style={labelStyle}>Page Title (shown in Google results)</label>
                   <input style={inputStyle} value={seoTitle}
                     onChange={e => setSeoTitle(e.target.value)}
-                    onFocus={e => e.target.style.borderColor = '#FED800'}
+                    onFocus={e => e.target.style.borderColor = '#E5B800'}
                     onBlur={e => e.target.style.borderColor = '#2A2A2A'}
                   />
                   <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '4px' }}>
@@ -581,7 +581,7 @@ export default function BusinessProfile() {
                   <textarea style={{ ...inputStyle, height: '80px', resize: 'none' as const }}
                     value={seoDescription}
                     onChange={e => setSeoDescription(e.target.value)}
-                    onFocus={e => e.target.style.borderColor = '#FED800'}
+                    onFocus={e => e.target.style.borderColor = '#E5B800'}
                     onBlur={e => e.target.style.borderColor = '#2A2A2A'}
                   />
                   <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '4px' }}>
@@ -596,7 +596,7 @@ export default function BusinessProfile() {
                   <textarea style={{ ...inputStyle, height: '70px', resize: 'none' as const }}
                     value={seoKeywords}
                     onChange={e => setSeoKeywords(e.target.value)}
-                    onFocus={e => e.target.style.borderColor = '#FED800'}
+                    onFocus={e => e.target.style.borderColor = '#E5B800'}
                     onBlur={e => e.target.style.borderColor = '#2A2A2A'}
                   />
                 </div>
@@ -610,7 +610,7 @@ export default function BusinessProfile() {
                 </div>
               </div>
             </div>
-            <button onClick={() => handleSave('SEO settings')} style={{ width: '100%', padding: '13px', background: '#FED800', border: 'none', borderRadius: '10px', color: '#000', fontSize: '14px', fontWeight: '700', cursor: 'pointer' }}>
+            <button onClick={() => handleSave('SEO settings')} style={{ width: '100%', padding: '13px', background: '#E5B800', border: 'none', borderRadius: '10px', color: '#000', fontSize: '14px', fontWeight: '700', cursor: 'pointer' }}>
               Save SEO Settings
             </button>
           </div>
@@ -631,7 +631,7 @@ export default function BusinessProfile() {
                     overflow: 'hidden', cursor: 'pointer', position: 'relative',
                     transition: 'border-color 0.2s',
                   }}
-                    onMouseEnter={e => (e.currentTarget as HTMLDivElement).style.borderColor = '#FED800'}
+                    onMouseEnter={e => (e.currentTarget as HTMLDivElement).style.borderColor = '#E5B800'}
                     onMouseLeave={e => (e.currentTarget as HTMLDivElement).style.borderColor = '#2A2A2A'}
                   >
                     {ownerPhotoPreview ? (
@@ -650,7 +650,7 @@ export default function BusinessProfile() {
                     <label style={labelStyle}>Full Name</label>
                     <input style={inputStyle} value={ownerName}
                       onChange={e => setOwnerName(e.target.value)}
-                      onFocus={e => e.target.style.borderColor = '#FED800'}
+                      onFocus={e => e.target.style.borderColor = '#E5B800'}
                       onBlur={e => e.target.style.borderColor = '#2A2A2A'}
                     />
                   </div>
@@ -658,7 +658,7 @@ export default function BusinessProfile() {
                     <label style={labelStyle}>Admin Email</label>
                     <input type="email" style={inputStyle} value={ownerEmail}
                       onChange={e => setOwnerEmail(e.target.value)}
-                      onFocus={e => e.target.style.borderColor = '#FED800'}
+                      onFocus={e => e.target.style.borderColor = '#E5B800'}
                       onBlur={e => e.target.style.borderColor = '#2A2A2A'}
                     />
                   </div>
@@ -670,7 +670,7 @@ export default function BusinessProfile() {
                   <input style={inputStyle} value={ownerPhone}
                     onChange={e => setOwnerPhone(e.target.value)}
                     placeholder="Private — not shown publicly"
-                    onFocus={e => e.target.style.borderColor = '#FED800'}
+                    onFocus={e => e.target.style.borderColor = '#E5B800'}
                     onBlur={e => e.target.style.borderColor = '#2A2A2A'}
                   />
                 </div>
@@ -680,7 +680,7 @@ export default function BusinessProfile() {
                     value={ownerBio}
                     onChange={e => setOwnerBio(e.target.value)}
                     placeholder="A short note from the owner..."
-                    onFocus={e => e.target.style.borderColor = '#FED800'}
+                    onFocus={e => e.target.style.borderColor = '#E5B800'}
                     onBlur={e => e.target.style.borderColor = '#2A2A2A'}
                   />
                 </div>
@@ -691,7 +691,7 @@ export default function BusinessProfile() {
                 </div>
               </div>
             </div>
-            <button onClick={() => handleSave('Owner profile')} style={{ width: '100%', padding: '13px', background: '#FED800', border: 'none', borderRadius: '10px', color: '#000', fontSize: '14px', fontWeight: '700', cursor: 'pointer' }}>
+            <button onClick={() => handleSave('Owner profile')} style={{ width: '100%', padding: '13px', background: '#E5B800', border: 'none', borderRadius: '10px', color: '#000', fontSize: '14px', fontWeight: '700', cursor: 'pointer' }}>
               Save Owner Profile
             </button>
           </div>

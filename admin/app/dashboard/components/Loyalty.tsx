@@ -36,7 +36,7 @@ type LoyaltyCustomer = {
 const tiers: RewardTier[] = [
   { id: 1, name: 'Bronze', minPoints: 0, color: '#CD7F32', perks: ['1 point per $1 spent', 'Birthday bonus points', 'Early access to new menu items'] },
   { id: 2, name: 'Silver', minPoints: 500, color: '#C0C0C0', perks: ['1.5 points per $1 spent', 'Birthday bonus points', 'Free delivery once a month', 'Priority support'] },
-  { id: 3, name: 'Gold', minPoints: 1500, color: '#FED800', perks: ['2 points per $1 spent', 'Double birthday bonus', 'Free delivery every week', 'Exclusive Gold menu items', 'Monthly surprise reward'] },
+  { id: 3, name: 'Gold', minPoints: 1500, color: '#E5B800', perks: ['2 points per $1 spent', 'Double birthday bonus', 'Free delivery every week', 'Exclusive Gold menu items', 'Monthly surprise reward'] },
 ];
 
 const initialRewards: Reward[] = [
@@ -60,7 +60,7 @@ const loyaltyCustomers: LoyaltyCustomer[] = [
 const tierColor: Record<string, string> = {
   Bronze: '#CD7F32',
   Silver: '#C0C0C0',
-  Gold: '#FED800',
+  Gold: '#E5B800',
 };
 
 export default function Loyalty() {
@@ -355,7 +355,7 @@ export default function Loyalty() {
   };
 
   const toggleSwitch = (value: boolean, onChange: () => void) => (
-    <div onClick={onChange} style={{ width: '46px', height: '26px', background: value ? '#FED800' : '#2A2A2A', borderRadius: '13px', position: 'relative', cursor: 'pointer', flexShrink: 0, transition: 'background 0.2s' }}>
+    <div onClick={onChange} style={{ width: '46px', height: '26px', background: value ? '#E5B800' : '#2A2A2A', borderRadius: '13px', position: 'relative', cursor: 'pointer', flexShrink: 0, transition: 'background 0.2s' }}>
       <div style={{ position: 'absolute', top: '3px', left: value ? '23px' : '3px', width: '20px', height: '20px', background: '#FEFEFE', borderRadius: '50%', transition: 'left 0.2s' }} />
     </div>
   );
@@ -388,7 +388,7 @@ export default function Loyalty() {
                   <label style={labelStyle}>Reward Name *</label>
                   <input style={inputStyle} placeholder="e.g. Free Delivery"
                     value={formData.name} onChange={e => setFormData({ ...formData, name: e.target.value })}
-                    onFocus={e => e.target.style.borderColor = '#FED800'}
+                    onFocus={e => e.target.style.borderColor = '#E5B800'}
                     onBlur={e => e.target.style.borderColor = '#2A2A2A'}
                   />
                 </div>
@@ -396,7 +396,7 @@ export default function Loyalty() {
                   <label style={labelStyle}>Description</label>
                   <input style={inputStyle} placeholder="e.g. Free delivery on your next order"
                     value={formData.description} onChange={e => setFormData({ ...formData, description: e.target.value })}
-                    onFocus={e => e.target.style.borderColor = '#FED800'}
+                    onFocus={e => e.target.style.borderColor = '#E5B800'}
                     onBlur={e => e.target.style.borderColor = '#2A2A2A'}
                   />
                 </div>
@@ -405,7 +405,7 @@ export default function Loyalty() {
                     <label style={labelStyle}>Points Required *</label>
                     <input type="number" style={inputStyle} placeholder="200"
                       value={formData.pointsCost} onChange={e => setFormData({ ...formData, pointsCost: e.target.value })}
-                      onFocus={e => e.target.style.borderColor = '#FED800'}
+                      onFocus={e => e.target.style.borderColor = '#E5B800'}
                       onBlur={e => e.target.style.borderColor = '#2A2A2A'}
                     />
                   </div>
@@ -423,7 +423,7 @@ export default function Loyalty() {
                   <input style={inputStyle}
                     placeholder={formData.type === 'discount' ? 'e.g. $5 or 10%' : formData.type === 'freeItem' ? 'e.g. Signature Sandwich' : 'Free Delivery'}
                     value={formData.value} onChange={e => setFormData({ ...formData, value: e.target.value })}
-                    onFocus={e => e.target.style.borderColor = '#FED800'}
+                    onFocus={e => e.target.style.borderColor = '#E5B800'}
                     onBlur={e => e.target.style.borderColor = '#2A2A2A'}
                   />
                 </div>
@@ -435,7 +435,7 @@ export default function Loyalty() {
             </div>
             <div style={{ padding: '16px 24px', borderTop: '1px solid #2A2A2A', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
               <button onClick={resetForm} style={{ padding: '11px', background: 'transparent', border: '1px solid #2A2A2A', borderRadius: '8px', color: '#FEFEFE', fontSize: '13px', cursor: 'pointer' }}>Cancel</button>
-              <button onClick={handleSaveReward} style={{ padding: '11px', background: '#FED800', border: 'none', borderRadius: '8px', color: '#000', fontSize: '13px', fontWeight: '700', cursor: 'pointer' }}>
+              <button onClick={handleSaveReward} style={{ padding: '11px', background: '#E5B800', border: 'none', borderRadius: '8px', color: '#000', fontSize: '13px', fontWeight: '700', cursor: 'pointer' }}>
                 {editingReward ? 'Save Reward' : 'Create Reward'}
               </button>
             </div>
@@ -466,7 +466,7 @@ export default function Loyalty() {
               {/* Stats */}
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '10px', marginBottom: '20px' }}>
                 {[
-                  { label: 'Points', value: selectedMember.points, color: '#FED800' },
+                  { label: 'Points', value: selectedMember.points, color: '#E5B800' },
                   { label: 'Total Earned', value: selectedMember.totalEarned || selectedMember.totalPointsEarned || 0, color: '#22C55E' },
                   { label: 'Redemptions', value: selectedMember.redemptions || 0, color: '#60A5FA' },
                   { label: 'Tier', value: selectedMember.tier, color: tierColor[selectedMember.tier] || '#888' },
@@ -484,11 +484,11 @@ export default function Loyalty() {
                 <div style={{ display: 'flex', gap: '8px' }}>
                   <input type="number" placeholder="e.g. 50 or -20" value={memberAdjustAmount} onChange={e => setMemberAdjustAmount(e.target.value)}
                     style={{ flex: 1, padding: '9px 12px', background: '#0A0A0A', border: '1px solid #2A2A2A', borderRadius: '8px', color: '#FEFEFE', fontSize: '13px', outline: 'none' }}
-                    onFocus={e => e.target.style.borderColor = '#FED800'}
+                    onFocus={e => e.target.style.borderColor = '#E5B800'}
                     onBlur={e => e.target.style.borderColor = '#2A2A2A'}
                   />
                   <button onClick={handleMemberAdjustPoints} disabled={memberSaving || !memberAdjustAmount}
-                    style={{ padding: '9px 18px', background: '#FED800', border: 'none', borderRadius: '8px', color: '#000', fontSize: '12px', fontWeight: '700', cursor: 'pointer', opacity: memberSaving ? 0.5 : 1 }}>
+                    style={{ padding: '9px 18px', background: '#E5B800', border: 'none', borderRadius: '8px', color: '#000', fontSize: '12px', fontWeight: '700', cursor: 'pointer', opacity: memberSaving ? 0.5 : 1 }}>
                     {memberSaving ? '...' : 'Apply'}
                   </button>
                 </div>
@@ -505,7 +505,7 @@ export default function Loyalty() {
                     <option value="Gold">Gold</option>
                   </select>
                   <button onClick={handleMemberChangeTier} disabled={memberSaving || memberNewTier === selectedMember.tier}
-                    style={{ padding: '9px 18px', background: memberNewTier === selectedMember.tier ? '#2A2A2A' : '#FED800', border: 'none', borderRadius: '8px', color: memberNewTier === selectedMember.tier ? '#555' : '#000', fontSize: '12px', fontWeight: '700', cursor: memberNewTier === selectedMember.tier ? 'not-allowed' : 'pointer' }}>
+                    style={{ padding: '9px 18px', background: memberNewTier === selectedMember.tier ? '#2A2A2A' : '#E5B800', border: 'none', borderRadius: '8px', color: memberNewTier === selectedMember.tier ? '#555' : '#000', fontSize: '12px', fontWeight: '700', cursor: memberNewTier === selectedMember.tier ? 'not-allowed' : 'pointer' }}>
                     Update
                   </button>
                 </div>
@@ -574,7 +574,7 @@ export default function Loyalty() {
           { id: 'settings', label: 'Settings' },
         ].map(tab => (
           <button key={tab.id} onClick={() => setActiveTab(tab.id as typeof activeTab)} style={{
-            flex: 1, padding: '10px', background: activeTab === tab.id ? '#FED800' : 'transparent',
+            flex: 1, padding: '10px', background: activeTab === tab.id ? '#E5B800' : 'transparent',
             color: activeTab === tab.id ? '#000' : '#FEFEFE',
             border: 'none', borderRadius: '8px', fontSize: '12px', fontWeight: '600', cursor: 'pointer',
           }}>{tab.label}</button>
@@ -600,7 +600,7 @@ export default function Loyalty() {
           {/* Stats */}
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '12px', marginBottom: '20px' }}>
             {[
-              { label: 'Total Members', value: String(loyaltyCustomers.length), color: '#FED800' },
+              { label: 'Total Members', value: String(loyaltyCustomers.length), color: '#E5B800' },
               { label: 'Points in Circulation', value: totalPoints.toLocaleString(), color: '#60A5FA' },
               { label: 'Total Redemptions', value: String(totalRedemptions), color: '#22C55E' },
               { label: 'Active Rewards', value: String(rewards.filter(r => r.active).length), color: '#FECE86' },
@@ -650,7 +650,7 @@ export default function Loyalty() {
             {[...rewards].sort((a, b) => b.redemptions - a.redemptions).slice(0, 4).map((reward, i) => (
               <div key={reward.id} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '10px 0', borderBottom: i < 3 ? '1px solid #2A2A2A' : 'none' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                  <div style={{ width: '26px', height: '26px', borderRadius: '50%', background: '#FED80020', border: '1px solid #FED80040', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '11px', fontWeight: '700', color: '#FED800' }}>{i + 1}</div>
+                  <div style={{ width: '26px', height: '26px', borderRadius: '50%', background: '#E5B80020', border: '1px solid #E5B80040', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '11px', fontWeight: '700', color: '#E5B800' }}>{i + 1}</div>
                   <div>
                     <p style={{ fontSize: '13px', fontWeight: '600', color: '#FEFEFE' }}>{reward.name}</p>
                     <p style={{ fontSize: '11px', color: '#FEFEFE' }}>{reward.pointsCost} points</p>
@@ -668,7 +668,7 @@ export default function Loyalty() {
         <div>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '14px' }}>
             <p style={{ fontSize: '13px', color: '#FEFEFE' }}>{rewards.filter(r => r.active).length} active · {rewards.length} total</p>
-            <button onClick={() => { setEditingReward(null); setShowRewardForm(true); }} style={{ padding: '9px 18px', background: '#FED800', border: 'none', borderRadius: '8px', color: '#000', fontSize: '13px', fontWeight: '700', cursor: 'pointer' }}>
+            <button onClick={() => { setEditingReward(null); setShowRewardForm(true); }} style={{ padding: '9px 18px', background: '#E5B800', border: 'none', borderRadius: '8px', color: '#000', fontSize: '13px', fontWeight: '700', cursor: 'pointer' }}>
               + Create Reward
             </button>
           </div>
@@ -701,7 +701,7 @@ export default function Loyalty() {
             {rewardFilterCount > 0 && (
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '10px', paddingTop: '10px', borderTop: '1px solid #2A2A2A' }}>
                 <span style={{ fontSize: '11px', color: '#888' }}>Showing {filteredRewards.length} of {rewards.length}</span>
-                <button onClick={clearRewardFilters} style={{ background: 'none', border: 'none', color: '#FED800', fontSize: '11px', fontWeight: '600', cursor: 'pointer' }}>Clear filters</button>
+                <button onClick={clearRewardFilters} style={{ background: 'none', border: 'none', color: '#E5B800', fontSize: '11px', fontWeight: '600', cursor: 'pointer' }}>Clear filters</button>
               </div>
             )}
           </div>
@@ -712,13 +712,13 @@ export default function Loyalty() {
                 <div style={{ flex: 1 }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '4px' }}>
                     <p style={{ fontSize: '14px', fontWeight: '700', color: reward.active ? '#FEFEFE' : '#FEFEFE' }}>{reward.name}</p>
-                    <span style={{ fontSize: '11px', padding: '2px 8px', borderRadius: '20px', fontWeight: '600', background: reward.type === 'freeItem' ? '#22C55E20' : reward.type === 'freeDelivery' ? '#60A5FA20' : '#FED80020', color: reward.type === 'freeItem' ? '#22C55E' : reward.type === 'freeDelivery' ? '#60A5FA' : '#FED800' }}>
+                    <span style={{ fontSize: '11px', padding: '2px 8px', borderRadius: '20px', fontWeight: '600', background: reward.type === 'freeItem' ? '#22C55E20' : reward.type === 'freeDelivery' ? '#60A5FA20' : '#E5B80020', color: reward.type === 'freeItem' ? '#22C55E' : reward.type === 'freeDelivery' ? '#60A5FA' : '#E5B800' }}>
                       {reward.type === 'freeItem' ? 'Free Item' : reward.type === 'freeDelivery' ? 'Free Delivery' : 'Discount'}
                     </span>
                   </div>
                   <p style={{ fontSize: '12px', color: '#FEFEFE', marginBottom: '6px' }}>{reward.description}</p>
                   <div style={{ display: 'flex', gap: '16px' }}>
-                    <span style={{ fontSize: '12px', color: '#FED800', fontWeight: '600' }}>{reward.pointsCost} pts</span>
+                    <span style={{ fontSize: '12px', color: '#E5B800', fontWeight: '600' }}>{reward.pointsCost} pts</span>
                     <span style={{ fontSize: '12px', color: '#FEFEFE' }}>{reward.redemptions} redeemed</span>
                   </div>
                 </div>
@@ -777,7 +777,7 @@ export default function Loyalty() {
             {memberFilterCount > 0 && (
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '10px', paddingTop: '10px', borderTop: '1px solid #2A2A2A' }}>
                 <span style={{ fontSize: '11px', color: '#888' }}>Showing {filteredMembers.length} of {loyaltyCustomers.length} members</span>
-                <button onClick={clearMemberFilters} style={{ background: 'none', border: 'none', color: '#FED800', fontSize: '11px', fontWeight: '600', cursor: 'pointer' }}>Clear filters</button>
+                <button onClick={clearMemberFilters} style={{ background: 'none', border: 'none', color: '#E5B800', fontSize: '11px', fontWeight: '600', cursor: 'pointer' }}>Clear filters</button>
               </div>
             )}
           </div>
@@ -796,7 +796,7 @@ export default function Loyalty() {
                 {filteredMembers.length === 0 ? (
                   <tr><td colSpan={6} style={{ padding: '32px', textAlign: 'center', color: '#888', fontSize: '13px' }}>
                     {loyaltyCustomers.length === 0 ? 'No members yet' : 'No members match your filters'}
-                    {memberFilterCount > 0 && <button onClick={clearMemberFilters} style={{ display: 'block', margin: '8px auto 0', background: 'none', border: 'none', color: '#FED800', fontSize: '12px', cursor: 'pointer' }}>Clear filters</button>}
+                    {memberFilterCount > 0 && <button onClick={clearMemberFilters} style={{ display: 'block', margin: '8px auto 0', background: 'none', border: 'none', color: '#E5B800', fontSize: '12px', cursor: 'pointer' }}>Clear filters</button>}
                   </td></tr>
                 ) : filteredMembers.map((c, i) => (
                   <tr key={c.id} style={{ borderBottom: i < filteredMembers.length - 1 ? '1px solid #2A2A2A' : 'none' }}>
@@ -816,13 +816,13 @@ export default function Loyalty() {
                         {c.tier}
                       </span>
                     </td>
-                    <td style={{ padding: '13px 16px', fontSize: '13px', fontWeight: '700', color: '#FED800' }}>{(c.points || 0).toLocaleString()}</td>
+                    <td style={{ padding: '13px 16px', fontSize: '13px', fontWeight: '700', color: '#E5B800' }}>{(c.points || 0).toLocaleString()}</td>
                     <td style={{ padding: '13px 16px', fontSize: '12px', color: '#FEFEFE' }}>{(c.totalEarned || 0).toLocaleString()}</td>
                     <td style={{ padding: '13px 16px', fontSize: '12px', color: '#22C55E', fontWeight: '600' }}>{c.redemptions || 0}</td>
                     <td style={{ padding: '13px 16px', fontSize: '11px', color: '#FEFEFE' }}>{c.lastActivity || '—'}</td>
                     <td style={{ padding: '13px 16px' }}>
                       <div style={{ display: 'flex', gap: '6px' }}>
-                        <button onClick={() => openMemberModal(c)} style={{ padding: '4px 10px', background: '#FED80015', border: '1px solid #FED80030', borderRadius: '6px', color: '#FED800', fontSize: '10px', cursor: 'pointer', fontWeight: '600' }}>Manage</button>
+                        <button onClick={() => openMemberModal(c)} style={{ padding: '4px 10px', background: '#E5B80015', border: '1px solid #E5B80030', borderRadius: '6px', color: '#E5B800', fontSize: '10px', cursor: 'pointer', fontWeight: '600' }}>Manage</button>
                       </div>
                     </td>
                   </tr>
@@ -851,7 +851,7 @@ export default function Loyalty() {
                   <label style={labelStyle}>{item.label}</label>
                   <input type="number" style={inputStyle} value={item.value}
                     onChange={e => item.set(e.target.value)}
-                    onFocus={e => e.target.style.borderColor = '#FED800'}
+                    onFocus={e => e.target.style.borderColor = '#E5B800'}
                     onBlur={e => e.target.style.borderColor = '#2A2A2A'}
                   />
                   <p style={{ fontSize: '11px', color: '#FEFEFE', marginTop: '4px' }}>{item.hint}</p>
@@ -890,7 +890,7 @@ export default function Loyalty() {
             } catch (err) {
               console.error('Failed to save loyalty settings:', err);
             }
-          }} style={{ width: '100%', padding: '13px', background: '#FED800', border: 'none', borderRadius: '10px', color: '#000', fontSize: '14px', fontWeight: '700', cursor: 'pointer', marginBottom: '32px' }}>
+          }} style={{ width: '100%', padding: '13px', background: '#E5B800', border: 'none', borderRadius: '10px', color: '#000', fontSize: '14px', fontWeight: '700', cursor: 'pointer', marginBottom: '32px' }}>
             Save Loyalty Settings
           </button>
         </div>

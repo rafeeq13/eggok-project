@@ -102,17 +102,17 @@ const css = `
   .co-modal-backdrop { position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 300; display: flex; align-items: center; justify-content: center; padding: 16px; }
   .co-modal-close { width: 32px; height: 32px; border-radius: 50%; background: #F0F0F0; border: 1px solid #D0D0D0; color: #888; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background 0.15s; flex-shrink: 0; }
   .co-modal-close:hover { background: #EEEEEE; color: #1A1A1A; }
-  .co-modal-title { font-family: 'Bebas Neue', sans-serif; font-size: 24px; letter-spacing: 1px; color: #1A1A1A; margin: 0; }
+  .co-modal-title { font-family: 'DM Sans', sans-serif; font-size: 24px; font-weight: 800; letter-spacing: 0.5px; color: #1A1A1A; margin: 0; }
 
   .co-delivery-box { background: #FFFFFF; border-radius: 20px; width: 100%; max-width: 460px; border: 1px solid #E5E5E5; box-shadow: 0 24px 64px rgba(0,0,0,0.1); max-height: 92vh; overflow-y: auto; }
   .co-delivery-inner { padding: 28px; }
   .co-delivery-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 22px; }
   .co-type-toggle { display: flex; background: #F0F0F0; border-radius: 999px; padding: 3px; margin-bottom: 20px; border: 1px solid #D0D0D0; }
   .co-type-btn { flex: 1; padding: 10px; border-radius: 999px; border: none; cursor: pointer; font-size: 13px; font-weight: 700; transition: all 0.2s; }
-  .co-type-btn.active { background: #FED800; color: #000; }
+  .co-type-btn.active { background: #E5B800; color: #000; }
   .co-type-btn.inactive { background: transparent; color: #AAAAAA; }
   .co-del-input-wrap { position: relative; }
-  .co-del-input { width: 100%; padding: 13px 40px 13px 42px; background: #F8F9FA; border: 1.5px solid #FED800; border-radius: 12px; color: #1A1A1A; font-size: 14px; outline: none; box-sizing: border-box; }
+  .co-del-input { width: 100%; padding: 13px 40px 13px 42px; background: #F8F9FA; border: 1.5px solid #1A1A1A; border-radius: 12px; color: #1A1A1A; font-size: 14px; outline: none; box-sizing: border-box; }
   .co-del-input::placeholder { color: #AAAAAA; }
   .co-del-clear { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); background: none; border: none; color: #AAAAAA; cursor: pointer; font-size: 13px; font-weight: 600; }
   .co-del-clear:hover { color: #1A1A1A; }
@@ -120,17 +120,17 @@ const css = `
   .co-del-sug-row { padding: 14px 16px; cursor: pointer; transition: background 0.12s; }
   .co-del-sug-row:hover { background: #EBEBEB; }
   .co-del-addr-row { display: flex; align-items: center; gap: 10px; padding: 12px 14px; background: #F8F9FA; border: 1.5px solid rgba(254,216,0,0.2); border-radius: 12px; }
-  .co-del-addr-change { background: none; border: none; color: #FED800; font-size: 12px; font-weight: 700; cursor: pointer; flex-shrink: 0; }
+  .co-del-addr-change { background: none; border: none; color: #1A1A1A; font-size: 12px; font-weight: 700; cursor: pointer; flex-shrink: 0; }
   .co-del-field-label { font-size: 12px; color: #777777; display: block; margin-bottom: 6px; font-weight: 600; }
   .co-del-field-input { width: 100%; padding: 12px; background: #F8F9FA; border: 1px solid #D0D0D0; border-radius: 10px; color: #1A1A1A; font-size: 13px; outline: none; box-sizing: border-box; transition: border-color 0.15s; }
-  .co-del-field-input:focus { border-color: #FED800; }
+  .co-del-field-input:focus { border-color: #E5B800; }
   .co-del-field-input::placeholder { color: #AAAAAA; }
   .co-del-field-textarea { width: 100%; padding: 12px; background: #F8F9FA; border: 1px solid #D0D0D0; border-radius: 10px; color: #1A1A1A; font-size: 13px; outline: none; height: 80px; resize: none; box-sizing: border-box; transition: border-color 0.15s; }
-  .co-del-field-textarea:focus { border-color: #FED800; }
+  .co-del-field-textarea:focus { border-color: #E5B800; }
   .co-del-field-textarea::placeholder { color: #AAAAAA; }
   .co-del-from { padding: 14px 16px; background: #F8F9FA; border-radius: 12px; border: 1px solid #E5E5E5; }
-  .co-btn-primary { width: 100%; padding: 14px; background: #FED800; border: none; border-radius: 12px; color: #000; font-size: 15px; font-weight: 800; cursor: pointer; transition: transform 0.15s, box-shadow 0.15s; }
-  .co-btn-primary:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(254,216,0,0.15); }
+  .co-btn-primary { width: 100%; padding: 14px; background: #E5B800; border: 2px solid transparent; border-radius: 12px; color: #000; font-size: 15px; font-weight: 800; cursor: pointer; transition: all 0.3s ease; }
+  .co-btn-primary:hover { background: #E5B800; color: #000; border-color: transparent; transform: none; box-shadow: none; }
   .co-btn-secondary { width: 100%; padding: 14px; background: transparent; border: 1.5px solid #D0D0D0; border-radius: 12px; color: #555555; font-size: 15px; font-weight: 600; cursor: pointer; transition: border-color 0.15s; }
   .co-btn-secondary:hover { border-color: #C0C0C0; color: #1A1A1A; }
 
@@ -139,19 +139,19 @@ const css = `
   .co-schedule-dates { padding: 16px 24px 0; flex-shrink: 0; }
   .co-schedule-dates-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 10px; }
   .co-schedule-date-btn { padding: 10px 14px; border-radius: 10px; border: 1px solid; cursor: pointer; text-align: left; transition: border-color 0.15s, background 0.15s; background: #F0F0F0; }
-  .co-schedule-date-btn.active { border-color: #FED800; background: rgba(254,216,0,0.1); }
+  .co-schedule-date-btn.active { border-color: #E5B800; background: rgba(254,216,0,0.1); }
   .co-schedule-date-btn.inactive { border-color: #D0D0D0; }
   .co-more-dates-btn { width: 100%; padding: 10px; background: transparent; border: 1px solid #D0D0D0; border-radius: 10px; color: #555555; font-size: 13px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; margin-bottom: 4px; transition: border-color 0.15s; }
   .co-more-dates-btn:hover { border-color: #C0C0C0; color: #1A1A1A; }
   .co-times-list { overflow-y: auto; flex: 1; padding: 0 24px 8px; }
   .co-time-row { display: flex; align-items: center; gap: 14px; padding: 14px 0; border-bottom: 1px solid #EBEBEB; cursor: pointer; }
   .co-radio { width: 20px; height: 20px; border-radius: 50%; border: 2px solid; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: border-color 0.15s; }
-  .co-radio.selected { border-color: #FED800; background: #FED800; }
+  .co-radio.selected { border-color: #E5B800; background: #E5B800; }
   .co-radio.unselected { border-color: #D0D0D0; background: transparent; }
   .co-radio-inner { width: 8px; height: 8px; border-radius: 50%; background: #000; }
   .co-schedule-footer { padding: 16px 24px; border-top: 1px solid #E5E5E5; flex-shrink: 0; }
-  .co-schedule-confirm { width: 100%; padding: 14px; background: #FED800; border: none; border-radius: 12px; color: #000; font-size: 15px; font-weight: 800; cursor: pointer; transition: transform 0.15s; }
-  .co-schedule-confirm:hover { transform: translateY(-1px); }
+  .co-schedule-confirm { width: 100%; padding: 14px; background: #E5B800; border: 2px solid transparent; border-radius: 12px; color: #000; font-size: 15px; font-weight: 800; cursor: pointer; transition: all 0.3s ease; }
+  .co-schedule-confirm:hover { background: #E5B800; color: #000; border-color: transparent; transform: none; }
 `;
 
 export default function CheckoutPage() {
@@ -169,7 +169,7 @@ export default function CheckoutPage() {
   }, []);
 
   return (
-    <Elements stripe={stripePromise} options={{ appearance: { theme: 'stripe', variables: { colorPrimary: '#FED800', colorBackground: '#F8F9FA', colorText: '#1A1A1A', borderRadius: '10px' } } }}>
+    <Elements stripe={stripePromise} options={{ appearance: { theme: 'stripe', variables: { colorPrimary: '#E5B800', colorBackground: '#F8F9FA', colorText: '#1A1A1A', borderRadius: '10px' } } }}>
       <CheckoutInner />
     </Elements>
   );
@@ -534,7 +534,7 @@ function CheckoutInner() {
         {/* Back */}
         <Link href="/order"
           style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', color: '#1A1A1A', fontSize: '14px', marginBottom: '28px', textDecoration: 'none', transition: 'color 0.2s' }}
-          onMouseEnter={e => (e.currentTarget as HTMLAnchorElement).style.color = '#FED800'}
+          onMouseEnter={e => (e.currentTarget as HTMLAnchorElement).style.color = '#000000'}
           onMouseLeave={e => (e.currentTarget as HTMLAnchorElement).style.color = '#1A1A1A'}>
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="15 18 9 12 15 6" /></svg>
           Menu
@@ -552,21 +552,21 @@ function CheckoutInner() {
               <p style={sectionTitle}>{orderType === 'pickup' ? 'Pickup details' : 'Delivery details'}</p>
 
               <div style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '13px 16px', background: '#F8F9FA', borderRadius: '10px', border: '1px solid #D0D0D0', marginBottom: '10px' }}>
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FED800" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#E5B800" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
                   <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" /><circle cx="12" cy="10" r="3" />
                 </svg>
                 <span style={{ fontSize: '14px', color: '#1A1A1A', flex: 1, wordBreak: 'break-word' }}>
                   {orderType === 'pickup' ? storeAddress : deliveryAddress || 'Please set a delivery address'}
                 </span>
-                <button onClick={() => setShowDeliveryModal(true)} style={{ fontSize: '12px', color: '#FED800', fontWeight: '700', background: 'none', border: 'none', cursor: 'pointer', flexShrink: 0 }}>Change</button>
+                <button onClick={() => setShowDeliveryModal(true)} style={{ fontSize: '12px', color: '#1A1A1A', fontWeight: '700', background: 'none', border: 'none', cursor: 'pointer', flexShrink: 0 }}>Change</button>
               </div>
 
               <div style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '13px 16px', background: '#F8F9FA', borderRadius: '10px', border: '1px solid #D0D0D0', marginBottom: orderType === 'delivery' ? '10px' : '0' }}>
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FED800" strokeWidth="2" strokeLinecap="round" style={{ flexShrink: 0 }}>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#E5B800" strokeWidth="2" strokeLinecap="round" style={{ flexShrink: 0 }}>
                   <circle cx="12" cy="12" r="10" /><polyline points="12 6 12 12 16 14" />
                 </svg>
                 <span style={{ fontSize: '14px', color: '#1A1A1A', flex: 1 }}>{getScheduleLabel()}</span>
-                <button onClick={() => setShowScheduleModal(true)} style={{ fontSize: '12px', color: '#FED800', fontWeight: '700', background: 'none', border: 'none', cursor: 'pointer', flexShrink: 0 }}>Change</button>
+                <button onClick={() => setShowScheduleModal(true)} style={{ fontSize: '12px', color: '#1A1A1A', fontWeight: '700', background: 'none', border: 'none', cursor: 'pointer', flexShrink: 0 }}>Change</button>
               </div>
 
               {orderType === 'delivery' && (
@@ -593,26 +593,26 @@ function CheckoutInner() {
                 {[10, 15, 20, 25].map(t => (
                   <button key={t} onClick={() => selectPresetTip(t)} style={{
                     padding: '12px 8px', borderRadius: '10px',
-                    background: isPreset(t) ? '#FED80015' : '#F8F9FA',
-                    border: `1.5px solid ${isPreset(t) ? '#FED800' : '#D0D0D0'}`,
-                    color: isPreset(t) ? '#FED800' : '#1A1A1A',
+                    background: isPreset(t) ? '#E5B80015' : '#F8F9FA',
+                    border: `1.5px solid ${isPreset(t) ? '#E5B800' : '#D0D0D0'}`,
+                    color: isPreset(t) ? '#E5B800' : '#1A1A1A',
                     cursor: 'pointer', transition: 'all 0.15s', textAlign: 'center',
                   }}>
                     <p style={{ fontSize: '15px', fontWeight: '800', margin: 0 ,color:'#1A1A1A',}}>${((subtotal * t) / 100).toFixed(2)}</p>
-                    <p style={{ fontSize: '11px', margin: '2px 0 0', opacity: 0.7,color:'#1A1A1A', }}>{t}%</p>
+                    <p style={{ fontSize: '12px', margin: '2px 0 0', opacity: 0.7,color:'#1A1A1A', }}>{t}%</p>
                   </button>
                 ))}
                 <button onClick={() => setShowCustomTipModal(true)} style={{
                   padding: '12px 8px', borderRadius: '10px',
-                  background: isCustomActive ? '#FED80015' : '#F8F9FA',
-                  border: `1.5px solid ${isCustomActive ? '#FED800' : '#D0D0D0'}`,
-                  color: isCustomActive ? '#FED800' : '#1A1A1A',
+                  background: isCustomActive ? '#E5B80015' : '#F8F9FA',
+                  border: `1.5px solid ${isCustomActive ? '#E5B800' : '#D0D0D0'}`,
+                  color: isCustomActive ? '#E5B800' : '#1A1A1A',
                   cursor: 'pointer', transition: 'all 0.15s', textAlign: 'center',
                 }}>
                   {isCustomActive && customTipAmount ? (
                     <>
                       <p style={{ fontSize: '15px', fontWeight: '800', margin: 0 }}>${parseFloat(customTipAmount).toFixed(2)}</p>
-                      <p style={{ fontSize: '11px', margin: '2px 0 0', opacity: 0.7 }}>Custom</p>
+                      <p style={{ fontSize: '12px', margin: '2px 0 0', opacity: 0.7 }}>Custom</p>
                     </>
                   ) : (
                     <p style={{ fontSize: '13px', fontWeight: '800', margin: 0 }}>Custom</p>
@@ -628,30 +628,30 @@ function CheckoutInner() {
                 <div>
                   <label style={labelStyle}>Mobile number *</label>
                   <input type="tel" style={inputStyle} placeholder="(215) 555-0100" value={phone} onChange={e => setPhone(e.target.value)}
-                    onFocus={e => (e.target as HTMLInputElement).style.borderColor = '#FED800'}
+                    onFocus={e => (e.target as HTMLInputElement).style.borderColor = '#E5B800'}
                     onBlur={e => (e.target as HTMLInputElement).style.borderColor = '#D0D0D0'} />
-                  {phone && !isPhoneValid && <p style={{ fontSize: '11px', color: '#FC0301', marginTop: '4px' }}>Please enter a valid phone number (at least 10 digits)</p>}
+                  {phone && !isPhoneValid && <p style={{ fontSize: '12px', color: '#FC0301', marginTop: '4px' }}>Please enter a valid phone number (at least 10 digits)</p>}
                 </div>
                 <div className="name-grid">
                   <div>
                     <label style={labelStyle}>First name *</label>
                     <input style={inputStyle} placeholder="John" value={firstName} onChange={e => setFirstName(e.target.value)}
-                      onFocus={e => (e.target as HTMLInputElement).style.borderColor = '#FED800'}
+                      onFocus={e => (e.target as HTMLInputElement).style.borderColor = '#E5B800'}
                       onBlur={e => (e.target as HTMLInputElement).style.borderColor = '#D0D0D0'} />
                   </div>
                   <div>
                     <label style={labelStyle}>Last name *</label>
                     <input style={inputStyle} placeholder="Smith" value={lastName} onChange={e => setLastName(e.target.value)}
-                      onFocus={e => (e.target as HTMLInputElement).style.borderColor = '#FED800'}
+                      onFocus={e => (e.target as HTMLInputElement).style.borderColor = '#E5B800'}
                       onBlur={e => (e.target as HTMLInputElement).style.borderColor = '#D0D0D0'} />
                   </div>
                 </div>
                 <div>
                   <label style={labelStyle}>Email address *</label>
                   <input type="email" style={inputStyle} placeholder="john@gmail.com" value={email} onChange={e => setEmail(e.target.value)}
-                    onFocus={e => (e.target as HTMLInputElement).style.borderColor = '#FED800'}
+                    onFocus={e => (e.target as HTMLInputElement).style.borderColor = '#E5B800'}
                     onBlur={e => (e.target as HTMLInputElement).style.borderColor = '#D0D0D0'} />
-                  {email && !isEmailValid && <p style={{ fontSize: '11px', color: '#FC0301', marginTop: '4px' }}>Please enter a valid email address</p>}
+                  {email && !isEmailValid && <p style={{ fontSize: '12px', color: '#FC0301', marginTop: '4px' }}>Please enter a valid email address</p>}
                 </div>
               </div>
               {!hasItems && !placing && <p style={{ fontSize: '12px', color: '#FC0301', marginTop: '8px' }}>Your cart is empty. Please add items before checking out.</p>}
@@ -675,7 +675,7 @@ function CheckoutInner() {
                       <CardNumberElement
                         options={{
                           style: {
-                            base: { fontSize: '15px', color: '#1A1A1A', '::placeholder': { color: '#AAAAAA' }, iconColor: '#FED800' },
+                            base: { fontSize: '15px', color: '#1A1A1A', '::placeholder': { color: '#AAAAAA' }, iconColor: '#E5B800' },
                             invalid: { color: '#FC0301', iconColor: '#FC0301' },
                           },
                         }}
@@ -724,7 +724,7 @@ function CheckoutInner() {
             {/* Place Order */}
             <button onClick={handlePlaceOrder} disabled={!canPlaceOrder || placing} style={{
               width: '100%', padding: '16px',
-              background: canPlaceOrder && !placing ? '#FED800' : '#E5E5E5',
+              background: canPlaceOrder && !placing ? '#E5B800' : '#E5E5E5',
               color: canPlaceOrder && !placing ? '#000' : '#AAAAAA',
               borderRadius: '12px', border: 'none',
               fontSize: '16px', fontWeight: '800',
@@ -738,7 +738,7 @@ function CheckoutInner() {
                 {orderError}
               </p>
             )}
-            <p style={{ fontSize: '11px', color: '#777777', textAlign: 'center', lineHeight: '1.6' }}>
+            <p style={{ fontSize: '12px', color: '#777777', textAlign: 'center', lineHeight: '1.6' }}>
               By placing your order, you agree to our Terms of Service and Privacy Policy.
             </p>
           </div>
@@ -785,10 +785,10 @@ function CheckoutInner() {
                     <input style={{ ...inputStyle, flex: 1 }} placeholder="Add coupon or gift card"
                       value={promoCode}
                       onChange={e => { setPromoCode(e.target.value.toUpperCase()); setPromoError(''); setPromoApplied(false); setPromoDiscount(0); setPromoLabel(''); }}
-                      onFocus={e => (e.target as HTMLInputElement).style.borderColor = '#FED800'}
+                      onFocus={e => (e.target as HTMLInputElement).style.borderColor = '#E5B800'}
                       onBlur={e => (e.target as HTMLInputElement).style.borderColor = '#D0D0D0'} />
                     <button onClick={applyPromo} disabled={promoLoading}
-                      style={{ padding: '12px 14px', background: promoLoading ? '#E5E5E5' : '#FED800', borderRadius: '10px', color: promoLoading ? '#AAAAAA' : '#000', fontSize: '13px', fontWeight: '700', cursor: promoLoading ? 'not-allowed' : 'pointer', border: 'none', flexShrink: 0 }}>
+                      style={{ padding: '12px 14px', background: promoLoading ? '#E5E5E5' : '#E5B800', borderRadius: '10px', color: promoLoading ? '#AAAAAA' : '#000', fontSize: '13px', fontWeight: '700', cursor: promoLoading ? 'not-allowed' : 'pointer', border: 'none', flexShrink: 0 }}>
                       {promoLoading ? '...' : 'Apply'}
                     </button>
                   </div>
@@ -799,7 +799,7 @@ function CheckoutInner() {
                 {/* Total */}
                 <div style={{ display: 'flex', justifyContent: 'space-between', paddingTop: '12px', borderTop: '1px solid #E5E5E5', marginBottom: '20px' }}>
                   <span style={{ fontSize: '16px', fontWeight: '800', color: '#1A1A1A' }}>Total</span>
-                  <span style={{ fontSize: '18px', fontWeight: '800', color: '#FED800' }}>${total.toFixed(2)}</span>
+                  <span style={{ fontSize: '18px', fontWeight: '800', color: '#1A1A1A' }}>${total.toFixed(2)}</span>
                 </div>
 
                 {/* Cart Items */}
@@ -827,8 +827,8 @@ function CheckoutInner() {
                                 if (!opt) return null;
                                 return (
                                   <div key={`${group.id}-${optId}`} style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '1px' }}>
-                                    <p style={{ fontSize: '11px', color: '#777777', margin: 0 }}>+ {opt.name}</p>
-                                    <p style={{ fontSize: '11px', color: '#777777', margin: 0 }}>${(opt.price * cartItem.quantity).toFixed(2)}</p>
+                                    <p style={{ fontSize: '12px', color: '#777777', margin: 0 }}>+ {opt.name}</p>
+                                    <p style={{ fontSize: '12px', color: '#777777', margin: 0 }}>${(opt.price * cartItem.quantity).toFixed(2)}</p>
                                   </div>
                                 );
                               });
@@ -836,7 +836,7 @@ function CheckoutInner() {
                           </div>
                         )}
 
-                        {cartItem.specialInstructions && <p style={{ fontSize: '11px', color: '#777777', margin: '2px 0 0' }}>{cartItem.specialInstructions}</p>}
+                        {cartItem.specialInstructions && <p style={{ fontSize: '12px', color: '#777777', margin: '2px 0 0' }}>{cartItem.specialInstructions}</p>}
                         <div style={{ display: 'flex', alignItems: 'center', gap: '0', marginTop: '6px', border: '1px solid #D0D0D0', borderRadius: '6px', overflow: 'hidden', width: 'fit-content' }}>
                           <button onClick={() => updateQuantity(cartItem.id, cartItem.quantity - 1)} style={{ width: '28px', height: '28px', background: '#F8F9FA', border: 'none', color: '#1A1A1A', fontSize: '14px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>−</button>
                           <span style={{ width: '30px', textAlign: 'center', fontSize: '12px', fontWeight: '700', color: '#1A1A1A', background: '#F8F9FA' }}>{cartItem.quantity}</span>
@@ -854,7 +854,7 @@ function CheckoutInner() {
             <div style={{ marginTop: '16px', display: 'none' }} className="mobile-place-order">
               <button onClick={handlePlaceOrder} disabled={!canPlaceOrder || placing} style={{
                 width: '100%', padding: '16px',
-                background: canPlaceOrder && !placing ? '#FED800' : '#E5E5E5',
+                background: canPlaceOrder && !placing ? '#E5B800' : '#E5E5E5',
                 color: canPlaceOrder && !placing ? '#000' : '#AAAAAA',
                 borderRadius: '12px', border: 'none',
                 fontSize: '16px', fontWeight: '800',
@@ -887,7 +887,7 @@ function CheckoutInner() {
               <div>
                 <label style={{ ...labelStyle, marginBottom: '8px' }}>Amount</label>
                 <div style={{ position: 'relative' }}>
-                  <span style={{ position: 'absolute', left: '14px', top: '50%', transform: 'translateY(-50%)', color: '#FED800', fontWeight: '700', fontSize: '14px' }}>$</span>
+                  <span style={{ position: 'absolute', left: '14px', top: '50%', transform: 'translateY(-50%)', color: '#1A1A1A', fontWeight: '700', fontSize: '14px' }}>$</span>
                   <input type="number" placeholder="0.00" value={customTipAmount}
                     onChange={e => {
                       setCustomTipAmount(e.target.value);
@@ -899,7 +899,7 @@ function CheckoutInner() {
                     }}
                     autoFocus
                     style={{ ...inputStyle, paddingLeft: '28px' }}
-                    onFocus={e => (e.target as HTMLInputElement).style.borderColor = '#FED800'}
+                    onFocus={e => (e.target as HTMLInputElement).style.borderColor = '#E5B800'}
                     onBlur={e => (e.target as HTMLInputElement).style.borderColor = '#D0D0D0'} />
                 </div>
               </div>
@@ -917,7 +917,7 @@ function CheckoutInner() {
                       }
                     }}
                     style={{ ...inputStyle, paddingRight: '28px' }}
-                    onFocus={e => (e.target as HTMLInputElement).style.borderColor = '#FED800'}
+                    onFocus={e => (e.target as HTMLInputElement).style.borderColor = '#E5B800'}
                     onBlur={e => (e.target as HTMLInputElement).style.borderColor = '#D0D0D0'} />
                   <span style={{ position: 'absolute', right: '14px', top: '50%', transform: 'translateY(-50%)', color: '#1A1A1A', fontSize: '14px' }}>%</span>
                 </div>
@@ -925,7 +925,7 @@ function CheckoutInner() {
             </div>
 
             <button onClick={applyCustomTip} disabled={!customTipAmount || parseFloat(customTipAmount) <= 0}
-              style={{ width: '100%', padding: '14px', background: customTipAmount && parseFloat(customTipAmount) > 0 ? '#FED800' : '#E5E5E5', border: 'none', borderRadius: '12px', color: customTipAmount && parseFloat(customTipAmount) > 0 ? '#000' : '#AAAAAA', fontSize: '15px', fontWeight: '800', cursor: customTipAmount && parseFloat(customTipAmount) > 0 ? 'pointer' : 'not-allowed' }}>
+              style={{ width: '100%', padding: '14px', background: customTipAmount && parseFloat(customTipAmount) > 0 ? '#E5B800' : '#E5E5E5', border: 'none', borderRadius: '12px', color: customTipAmount && parseFloat(customTipAmount) > 0 ? '#000' : '#AAAAAA', fontSize: '15px', fontWeight: '800', cursor: customTipAmount && parseFloat(customTipAmount) > 0 ? 'pointer' : 'not-allowed' }}>
               Done
             </button>
           </div>
@@ -938,7 +938,7 @@ function CheckoutInner() {
           <div className="co-delivery-box" onClick={e => e.stopPropagation()}>
             <div className="co-delivery-inner">
               <div className="co-delivery-header">
-                <h2 className="co-modal-title">ORDER DETAILS</h2>
+                <h2 className="co-modal-title">Order Details</h2>
                 <button className="co-modal-close" onClick={() => setShowDeliveryModal(false)}>
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
                 </button>
@@ -1020,7 +1020,7 @@ function CheckoutInner() {
         <div className="co-modal-backdrop" onClick={() => setShowScheduleModal(false)}>
           <div className="co-schedule-box" onClick={e => e.stopPropagation()}>
             <div className="co-schedule-header">
-              <h2 className="co-modal-title">ORDER TIME</h2>
+              <h2 className="co-modal-title">Order Time</h2>
               <button className="co-modal-close" onClick={() => setShowScheduleModal(false)}>
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
               </button>
@@ -1039,8 +1039,8 @@ function CheckoutInner() {
                     <div className="co-schedule-dates-grid">
                       {visibleDays.map(d => (
                         <button key={d.value} className={`co-schedule-date-btn ${selectedVal === d.value ? 'active' : 'inactive'}`} onClick={() => setScheduleDate(d.value)}>
-                          <p style={{ fontSize: '13px', fontWeight: '700', margin: 0, color: selectedVal === d.value ? '#FED800' : '#1A1A1A' }}>{d.label}</p>
-                          <p style={{ fontSize: '11px', color: '#AAAAAA', margin: '2px 0 0' }}>{d.sub}</p>
+                          <p style={{ fontSize: '13px', fontWeight: '700', margin: 0, color: selectedVal === d.value ? '#E5B800' : '#1A1A1A' }}>{d.label}</p>
+                          <p style={{ fontSize: '12px', color: '#AAAAAA', margin: '2px 0 0' }}>{d.sub}</p>
                         </button>
                       ))}
                     </div>

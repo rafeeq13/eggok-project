@@ -91,7 +91,7 @@ export default function Analytics() {
         <div style={{ display: 'flex', background: '#111111', border: '1px solid #2A2A2A', borderRadius: '8px', overflow: 'hidden' }}>
           {(['daily', 'weekly', 'monthly'] as Period[]).map(p => (
             <button key={p} onClick={() => setPeriod(p)} style={{
-              padding: '8px 16px', background: period === p ? '#FED800' : 'transparent',
+              padding: '8px 16px', background: period === p ? '#E5B800' : 'transparent',
               border: 'none', cursor: 'pointer', fontSize: '12px', fontWeight: '600',
               color: period === p ? '#000' : '#888888',
               textTransform: 'capitalize' as const,
@@ -106,7 +106,7 @@ export default function Analytics() {
           />
         </div>
         <button onClick={() => fetchStats()} style={{
-          padding: '8px 16px', background: '#FED800', border: 'none',
+          padding: '8px 16px', background: '#E5B800', border: 'none',
           borderRadius: '8px', color: '#000', fontSize: '12px', fontWeight: '700', cursor: 'pointer',
         }}>Apply Filter</button>
       </div>
@@ -114,7 +114,7 @@ export default function Analytics() {
       {/* KPI Cards */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '12px', marginBottom: '24px' }}>
         {[
-          { label: 'Total Revenue', value: `$${totalRevenue.toLocaleString()}`, sub: `$${avgDailyRevenue} avg per ${period === 'daily' ? 'day' : period === 'weekly' ? 'week' : 'month'}`, color: '#FED800' },
+          { label: 'Total Revenue', value: `$${totalRevenue.toLocaleString()}`, sub: `$${avgDailyRevenue} avg per ${period === 'daily' ? 'day' : period === 'weekly' ? 'week' : 'month'}`, color: '#E5B800' },
           { label: 'Total Orders', value: totalOrders.toLocaleString(), sub: `${(totalOrders / (chartData.length || 1)).toFixed(0)} avg per ${period === 'daily' ? 'day' : period === 'weekly' ? 'week' : 'month'}`, color: '#22C55E' },
           { label: 'Avg Order Value', value: `$${avgOrderValue}`, sub: 'Per transaction', color: '#60A5FA' },
           { label: 'Top Item', value: topItems[0]?.name || 'N/A', sub: topItems[0] ? `${topItems[0].orders} orders this period` : 'No data', color: '#FECE86' },
@@ -134,7 +134,7 @@ export default function Analytics() {
           <div style={{ display: 'flex', background: '#111111', border: '1px solid #2A2A2A', borderRadius: '8px', overflow: 'hidden' }}>
             {(['revenue', 'orders'] as const).map(c => (
               <button key={c} onClick={() => setActiveChart(c)} style={{
-                padding: '6px 14px', background: activeChart === c ? '#FED800' : 'transparent',
+                padding: '6px 14px', background: activeChart === c ? '#E5B800' : 'transparent',
                 border: 'none', cursor: 'pointer', fontSize: '12px',
                 color: activeChart === c ? '#000' : '#888888',
                 fontWeight: activeChart === c ? '700' : '400',
@@ -147,8 +147,8 @@ export default function Analytics() {
           <AreaChart data={chartData} margin={{ top: 5, right: 10, left: 0, bottom: 5 }}>
             <defs>
               <linearGradient id="colorRevenue" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor="#FED800" stopOpacity={0.3} />
-                <stop offset="95%" stopColor="#FED800" stopOpacity={0} />
+                <stop offset="5%" stopColor="#E5B800" stopOpacity={0.3} />
+                <stop offset="95%" stopColor="#E5B800" stopOpacity={0} />
               </linearGradient>
               <linearGradient id="colorOrders" x1="0" y1="0" x2="0" y2="1">
                 <stop offset="5%" stopColor="#22C55E" stopOpacity={0.3} />
@@ -160,7 +160,7 @@ export default function Analytics() {
             <YAxis tick={{ fill: '#888888', fontSize: 11 }} axisLine={false} tickLine={false} />
             <Tooltip content={<CustomTooltip />} />
             {activeChart === 'revenue' ? (
-              <Area type="monotone" dataKey="revenue" stroke="#FED800" strokeWidth={2} fill="url(#colorRevenue)" name="revenue" />
+              <Area type="monotone" dataKey="revenue" stroke="#E5B800" strokeWidth={2} fill="url(#colorRevenue)" name="revenue" />
             ) : (
               <Area type="monotone" dataKey="orders" stroke="#22C55E" strokeWidth={2} fill="url(#colorOrders)" name="orders" />
             )}
@@ -180,7 +180,7 @@ export default function Analytics() {
               <XAxis dataKey="hour" tick={{ fill: '#888888', fontSize: 10 }} axisLine={false} tickLine={false} />
               <YAxis tick={{ fill: '#888888', fontSize: 10 }} axisLine={false} tickLine={false} />
               <Tooltip content={<CustomTooltip />} />
-              <Bar dataKey="orders" fill="#FED800" radius={[4, 4, 0, 0]} name="orders" />
+              <Bar dataKey="orders" fill="#E5B800" radius={[4, 4, 0, 0]} name="orders" />
             </BarChart>
           </ResponsiveContainer>
         </div>
@@ -249,16 +249,16 @@ export default function Analytics() {
                 <td style={{ padding: '13px 16px' }}>
                   <div style={{
                     width: '26px', height: '26px', borderRadius: '50%',
-                    background: i < 3 ? '#FED80020' : '#2A2A2A',
-                    border: `1px solid ${i < 3 ? '#FED80040' : '#3A3A3A'}`,
+                    background: i < 3 ? '#E5B80020' : '#2A2A2A',
+                    border: `1px solid ${i < 3 ? '#E5B80040' : '#3A3A3A'}`,
                     display: 'flex', alignItems: 'center', justifyContent: 'center',
                     fontSize: '12px', fontWeight: '700',
-                    color: i < 3 ? '#FED800' : '#888888',
+                    color: i < 3 ? '#E5B800' : '#888888',
                   }}>{i + 1}</div>
                 </td>
                 <td style={{ padding: '13px 16px', fontSize: '13px', fontWeight: '600', color: '#FEFEFE' }}>{item.name}</td>
                 <td style={{ padding: '13px 16px', fontSize: '13px', color: '#FEFEFE' }}>{item.orders.toLocaleString()}</td>
-                <td style={{ padding: '13px 16px', fontSize: '13px', fontWeight: '600', color: '#FED800' }}>${item.revenue.toLocaleString()}</td>
+                <td style={{ padding: '13px 16px', fontSize: '13px', fontWeight: '600', color: '#E5B800' }}>${item.revenue.toLocaleString()}</td>
                 <td style={{ padding: '13px 16px' }}>
                   <span style={{
                     fontSize: '16px',

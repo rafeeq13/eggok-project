@@ -471,7 +471,7 @@ export default function AccountPage() {
             <div style={{  borderRadius: '16px', overflow: 'hidden', margin: '0 auto 16px', display: 'none', alignItems: 'center', justifyContent: 'center' }}>
               <img src="/logo.svg" alt="Eggs Ok" style={{ width: '135px', height: '80px', objectFit: 'contain' }} onError={e => { (e.target as HTMLImageElement).style.display = 'none'; }} />
             </div>
-            <h1 style={{ fontSize: '36px', fontWeight: '900', color: '#1A1A1A', marginBottom: '6px', letterSpacing: '-0.5px' }}>WELCOME BACK</h1>
+            <h1 style={{ fontSize: '36px', fontWeight: '900', color: '#1A1A1A', marginBottom: '6px', letterSpacing: '-0.5px' }}>Welcome Back</h1>
             <p style={{ fontSize: '14px', color: '#1A1A1A' }}>Sign in to your Eggs Ok account</p>
           </div>
 
@@ -480,7 +480,7 @@ export default function AccountPage() {
               <label style={labelStyle}>Email Address</label>
               <input type="email" style={inputStyle} placeholder="john@gmail.com"
                 value={loginEmail} onChange={e => setLoginEmail(e.target.value)}
-                onFocus={e => (e.target as HTMLInputElement).style.borderColor = '#FED800'}
+                onFocus={e => (e.target as HTMLInputElement).style.borderColor = '#E5B800'}
                 onBlur={e => (e.target as HTMLInputElement).style.borderColor = '#D0D0D0'} />
             </div>
             <div>
@@ -489,7 +489,7 @@ export default function AccountPage() {
                 <input type={showLoginPassword ? 'text' : 'password'} style={{ ...inputStyle, paddingRight: '48px' }}
                   placeholder="••••••••"
                   value={loginPassword} onChange={e => setLoginPassword(e.target.value)}
-                  onFocus={e => (e.target as HTMLInputElement).style.borderColor = '#FED800'}
+                  onFocus={e => (e.target as HTMLInputElement).style.borderColor = '#E5B800'}
                   onBlur={e => (e.target as HTMLInputElement).style.borderColor = '#D0D0D0'} />
                 <button type="button" onClick={() => setShowLoginPassword(!showLoginPassword)}
                   style={{ position: 'absolute', right: '14px', top: '50%', transform: 'translateY(-50%)', background: 'transparent', border: 'none', color: '#777777', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '4px' }}>
@@ -502,7 +502,7 @@ export default function AccountPage() {
             </div>
             <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
               <button type="button" onClick={() => { setForgotEmail(loginEmail); setForgotError(''); setView('forgot'); }}
-                style={{ background: 'transparent', border: 'none', color: '#FED800', fontSize: '13px', fontWeight: '600', cursor: 'pointer' }}>
+                style={{ background: 'transparent', border: 'none', color: '#333333', fontSize: '13px', fontWeight: '600', cursor: 'pointer' }}>
                 Forgot password?
               </button>
             </div>
@@ -511,7 +511,7 @@ export default function AccountPage() {
                 {loginError}
               </div>
             )}
-            <button type="submit" disabled={loading} style={{ width: '100%', padding: '15px', background: loading ? '#E0E0E0' : '#FED800', borderRadius: '12px', fontSize: '16px', fontWeight: '700', color: loading ? '#AAAAAA' : '#000', cursor: loading ? 'not-allowed' : 'pointer', border: 'none', marginTop: '4px' }}>
+            <button type="submit" disabled={loading} style={{ width: '100%', padding: '15px', background: loading ? '#E0E0E0' : '#E5B800', borderRadius: '12px', fontSize: '16px', fontWeight: '700', color: loading ? '#AAAAAA' : '#000', cursor: loading ? 'not-allowed' : 'pointer', border: 'none', marginTop: '4px' }}>
               {loading ? 'Signing In...' : 'Sign In'}
             </button>
           </form>
@@ -522,13 +522,13 @@ export default function AccountPage() {
             <div style={{ flex: 1, height: '1px', background: '#E5E5E5' }} />
           </div>
 
-          <button onClick={() => setView('register')} style={{ width: '100%', padding: '15px', background: 'transparent', border: '2px solid #FED800', borderRadius: '12px', fontSize: '15px', fontWeight: '700', color: '#FED800', cursor: 'pointer' }}>
+          <button onClick={() => setView('register')} style={{ width: '100%', padding: '15px', background: 'transparent', border: '2px solid #E5B800', borderRadius: '12px', fontSize: '15px', fontWeight: '700', color: '#1A1A1A', cursor: 'pointer' }}>
             Create New Account
           </button>
 
           <p style={{ textAlign: 'center', marginTop: '20px', fontSize: '13px', color: '#1A1A1A' }}>
             Continue as{' '}
-            <Link href="/order" style={{ color: '#FED800', fontWeight: '600' }}>Guest</Link>
+            <Link href="/order" style={{ color: '#333333', fontWeight: '600' }}>Guest</Link>
             {' '}— no account needed
           </p>
         </div>
@@ -548,9 +548,9 @@ export default function AccountPage() {
           </button>
           <div style={{ textAlign: 'center', marginBottom: '32px' }}>
             <div style={{ width: '64px', height: '64px', borderRadius: '16px', background: '#FFFFFF', border: '1px solid #E5E5E5', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 16px' }}>
-              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#FED800" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2" /><path d="M7 11V7a5 5 0 0110 0v4" /></svg>
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#E5B800" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2" /><path d="M7 11V7a5 5 0 0110 0v4" /></svg>
             </div>
-            <h1 style={{ fontSize: '30px', fontWeight: '900', color: '#1A1A1A', marginBottom: '8px', letterSpacing: '-0.5px' }}>FORGOT PASSWORD?</h1>
+            <h1 style={{ fontSize: '30px', fontWeight: '900', color: '#1A1A1A', marginBottom: '8px', letterSpacing: '-0.5px' }}>Forgot Password?</h1>
             <p style={{ fontSize: '14px', color: '#777777', lineHeight: '1.6' }}>Enter your email and we'll send you a link to reset your password.</p>
           </div>
           <form onSubmit={handleForgotPassword} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
@@ -558,7 +558,7 @@ export default function AccountPage() {
               <label style={labelStyle}>Email Address</label>
               <input type="email" style={inputStyle} placeholder="john@gmail.com"
                 value={forgotEmail} onChange={e => setForgotEmail(e.target.value)}
-                onFocus={e => (e.target as HTMLInputElement).style.borderColor = '#FED800'}
+                onFocus={e => (e.target as HTMLInputElement).style.borderColor = '#E5B800'}
                 onBlur={e => (e.target as HTMLInputElement).style.borderColor = '#D0D0D0'} />
             </div>
             {forgotError && (
@@ -566,7 +566,7 @@ export default function AccountPage() {
                 {forgotError}
               </div>
             )}
-            <button type="submit" disabled={loading} style={{ width: '100%', padding: '15px', background: loading ? '#E0E0E0' : '#FED800', borderRadius: '12px', fontSize: '16px', fontWeight: '700', color: loading ? '#AAAAAA' : '#000', cursor: loading ? 'not-allowed' : 'pointer', border: 'none' }}>
+            <button type="submit" disabled={loading} style={{ width: '100%', padding: '15px', background: loading ? '#E0E0E0' : '#E5B800', borderRadius: '12px', fontSize: '16px', fontWeight: '700', color: loading ? '#AAAAAA' : '#000', cursor: loading ? 'not-allowed' : 'pointer', border: 'none' }}>
               {loading ? 'Sending...' : 'Send Reset Link'}
             </button>
           </form>
@@ -585,14 +585,14 @@ export default function AccountPage() {
             <div style={{ width: '72px', height: '72px', borderRadius: '50%', background: '#22C55E15', border: '2px solid #22C55E40', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 24px' }}>
               <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#22C55E" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12" /></svg>
             </div>
-            <h1 style={{ fontSize: '30px', fontWeight: '900', color: '#1A1A1A', marginBottom: '12px', letterSpacing: '-0.5px' }}>CHECK YOUR EMAIL</h1>
+            <h1 style={{ fontSize: '30px', fontWeight: '900', color: '#1A1A1A', marginBottom: '12px', letterSpacing: '-0.5px' }}>Check Your Email</h1>
             <p style={{ fontSize: '14px', color: '#777777', lineHeight: '1.7', marginBottom: '8px' }}>
-              If an account exists for <span style={{ color: '#FED800' }}>{forgotEmail}</span>, we've sent a password reset link.
+              If an account exists for <span style={{ color: '#1A1A1A', fontWeight: '600' }}>{forgotEmail}</span>, we've sent a password reset link.
             </p>
             <p style={{ fontSize: '13px', color: '#AAAAAA', lineHeight: '1.6', marginBottom: '32px' }}>
               The link expires in 1 hour. Check your spam folder if you don't see it.
             </p>
-            <button onClick={() => setView('login')} style={{ width: '100%', padding: '15px', background: '#FED800', borderRadius: '12px', fontSize: '15px', fontWeight: '700', color: '#000', cursor: 'pointer', border: 'none' }}>
+            <button onClick={() => setView('login')} style={{ width: '100%', padding: '15px', background: '#E5B800', borderRadius: '12px', fontSize: '15px', fontWeight: '700', color: '#000', cursor: 'pointer', border: 'none' }}>
               Back to Sign In
             </button>
             <button onClick={() => { setForgotError(''); setView('forgot'); }} style={{ width: '100%', padding: '15px', background: 'transparent', borderRadius: '12px', fontSize: '14px', fontWeight: '600', color: '#777777', cursor: 'pointer', border: 'none', marginTop: '8px' }}>
@@ -616,19 +616,19 @@ export default function AccountPage() {
           </button>
 
           <div style={{ textAlign: 'center', marginBottom: '32px' }}>
-            <h1 style={{ fontSize: '36px', fontWeight: '900', color: '#1A1A1A', marginBottom: '6px', letterSpacing: '-0.5px' }}>CREATE ACCOUNT</h1>
+            <h1 style={{ fontSize: '36px', fontWeight: '900', color: '#1A1A1A', marginBottom: '6px', letterSpacing: '-0.5px' }}>Create Account</h1>
             <p style={{ fontSize: '14px', color: '#1A1A1A' }}>Join Eggs Ok for faster ordering and loyalty rewards</p>
           </div>
 
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '8px', marginBottom: '28px' }}>
             {[
-              { icon: <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#FED800" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" /><polyline points="14 2 14 8 20 8" /></svg>, text: 'Order History' },
-              { icon: <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#FED800" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 12 20 22 4 22 4 12" /><rect x="2" y="7" width="20" height="5" /><path d="M12 22V7M12 7H7.5a2.5 2.5 0 010-5C11 2 12 7 12 7zM12 7h4.5a2.5 2.5 0 000-5C13 2 12 7 12 7z" /></svg>, text: 'Loyalty Points' },
-              { icon: <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#FED800" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" /></svg>, text: 'Fast Checkout' },
+              { icon: <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#E5B800" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" /><polyline points="14 2 14 8 20 8" /></svg>, text: 'Order History' },
+              { icon: <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#E5B800" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 12 20 22 4 22 4 12" /><rect x="2" y="7" width="20" height="5" /><path d="M12 22V7M12 7H7.5a2.5 2.5 0 010-5C11 2 12 7 12 7zM12 7h4.5a2.5 2.5 0 000-5C13 2 12 7 12 7z" /></svg>, text: 'Loyalty Points' },
+              { icon: <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#E5B800" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" /></svg>, text: 'Fast Checkout' },
             ].map((b, i) => (
               <div key={i} style={{ padding: '14px 8px', background: '#FFFFFF', border: '1px solid #E5E5E5', borderRadius: '10px', textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '6px' }}>
                 {b.icon}
-                <p style={{ fontSize: '11px', color: '#1A1A1A', margin: 0 }}>{b.text}</p>
+                <p style={{ fontSize: '12px', color: '#1A1A1A', margin: 0 }}>{b.text}</p>
               </div>
             ))}
           </div>
@@ -638,26 +638,26 @@ export default function AccountPage() {
               <div>
                 <label style={labelStyle}>First Name *</label>
                 <input style={inputStyle} placeholder="John" value={regFirstName} onChange={e => setRegFirstName(e.target.value)}
-                  onFocus={e => (e.target as HTMLInputElement).style.borderColor = '#FED800'}
+                  onFocus={e => (e.target as HTMLInputElement).style.borderColor = '#E5B800'}
                   onBlur={e => (e.target as HTMLInputElement).style.borderColor = '#D0D0D0'} />
               </div>
               <div>
                 <label style={labelStyle}>Last Name *</label>
                 <input style={inputStyle} placeholder="Smith" value={regLastName} onChange={e => setRegLastName(e.target.value)}
-                  onFocus={e => (e.target as HTMLInputElement).style.borderColor = '#FED800'}
+                  onFocus={e => (e.target as HTMLInputElement).style.borderColor = '#E5B800'}
                   onBlur={e => (e.target as HTMLInputElement).style.borderColor = '#D0D0D0'} />
               </div>
             </div>
             <div>
               <label style={labelStyle}>Email Address *</label>
               <input type="email" style={inputStyle} placeholder="john@gmail.com" value={regEmail} onChange={e => setRegEmail(e.target.value)}
-                onFocus={e => (e.target as HTMLInputElement).style.borderColor = '#FED800'}
+                onFocus={e => (e.target as HTMLInputElement).style.borderColor = '#E5B800'}
                 onBlur={e => (e.target as HTMLInputElement).style.borderColor = '#D0D0D0'} />
             </div>
             <div>
               <label style={labelStyle}>Phone Number *</label>
               <input type="tel" style={inputStyle} placeholder="215-555-0100" value={regPhone} onChange={e => setRegPhone(e.target.value)}
-                onFocus={e => (e.target as HTMLInputElement).style.borderColor = '#FED800'}
+                onFocus={e => (e.target as HTMLInputElement).style.borderColor = '#E5B800'}
                 onBlur={e => (e.target as HTMLInputElement).style.borderColor = '#D0D0D0'} />
             </div>
             <div>
@@ -666,7 +666,7 @@ export default function AccountPage() {
                 <input type={showRegPassword ? 'text' : 'password'} style={{ ...inputStyle, paddingRight: '48px' }}
                   placeholder="Create a strong password"
                   value={regPassword} onChange={e => setRegPassword(e.target.value)}
-                  onFocus={e => (e.target as HTMLInputElement).style.borderColor = '#FED800'}
+                  onFocus={e => (e.target as HTMLInputElement).style.borderColor = '#E5B800'}
                   onBlur={e => (e.target as HTMLInputElement).style.borderColor = '#D0D0D0'} />
                 <button type="button" onClick={() => setShowRegPassword(!showRegPassword)}
                   style={{ position: 'absolute', right: '14px', top: '50%', transform: 'translateY(-50%)', background: 'transparent', border: 'none', color: '#777777', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '4px' }}>
@@ -689,7 +689,7 @@ export default function AccountPage() {
               <div style={{ position: 'relative' }}>
                 <input type={showRegConfirm ? 'text' : 'password'} style={{ ...inputStyle, paddingRight: '48px' }} placeholder="Repeat password"
                   value={regConfirm} onChange={e => setRegConfirm(e.target.value)}
-                  onFocus={e => (e.target as HTMLInputElement).style.borderColor = '#FED800'}
+                  onFocus={e => (e.target as HTMLInputElement).style.borderColor = '#E5B800'}
                   onBlur={e => (e.target as HTMLInputElement).style.borderColor = '#D0D0D0'} />
                 <button type="button" onClick={() => setShowRegConfirm(!showRegConfirm)}
                   style={{ position: 'absolute', right: '14px', top: '50%', transform: 'translateY(-50%)', background: 'transparent', border: 'none', color: '#777777', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '4px' }}>
@@ -705,11 +705,11 @@ export default function AccountPage() {
             </div>
 
             <div onClick={() => setAgreeTerms(!agreeTerms)} style={{ display: 'flex', alignItems: 'flex-start', gap: '10px', cursor: 'pointer', padding: '12px', background: '#FFFFFF', borderRadius: '10px', border: '1px solid #E5E5E5' }}>
-              <div style={{ width: '20px', height: '20px', borderRadius: '5px', border: `2px solid ${agreeTerms ? '#FED800' : '#D0D0D0'}`, background: agreeTerms ? '#FED800' : 'transparent', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, marginTop: '1px' }}>
+              <div style={{ width: '20px', height: '20px', borderRadius: '5px', border: `2px solid ${agreeTerms ? '#E5B800' : '#D0D0D0'}`, background: agreeTerms ? '#E5B800' : 'transparent', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, marginTop: '1px' }}>
                 {agreeTerms && <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#000" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12" /></svg>}
               </div>
               <p style={{ fontSize: '13px', color: '#1A1A1A', lineHeight: '1.5', margin: 0 }}>
-                I agree to the <span style={{ color: '#FED800' }}>Terms of Service</span> and <span style={{ color: '#FED800' }}>Privacy Policy</span>. I consent to receiving order updates via email.
+                I agree to the <span style={{ color: '#333333', fontWeight: '600' }}>Terms of Service</span> and <span style={{ color: '#333333', fontWeight: '600' }}>Privacy Policy</span>. I consent to receiving order updates via email.
               </p>
             </div>
 
@@ -719,14 +719,14 @@ export default function AccountPage() {
               </div>
             )}
 
-            <button type="submit" disabled={loading} style={{ width: '100%', padding: '15px', background: loading ? '#E0E0E0' : '#FED800', borderRadius: '12px', fontSize: '16px', fontWeight: '700', color: loading ? '#AAAAAA' : '#000', cursor: loading ? 'not-allowed' : 'pointer', border: 'none', marginTop: '4px' }}>
+            <button type="submit" disabled={loading} style={{ width: '100%', padding: '15px', background: loading ? '#E0E0E0' : '#E5B800', borderRadius: '12px', fontSize: '16px', fontWeight: '700', color: loading ? '#AAAAAA' : '#000', cursor: loading ? 'not-allowed' : 'pointer', border: 'none', marginTop: '4px' }}>
               {loading ? 'Creating Account...' : 'Create Account'}
             </button>
           </form>
 
           <p style={{ textAlign: 'center', marginTop: '16px', fontSize: '13px', color: '#1A1A1A' }}>
             Already have an account?{' '}
-            <button onClick={() => setView('login')} style={{ background: 'transparent', border: 'none', color: '#FED800', fontWeight: '600', fontSize: '13px', cursor: 'pointer' }}>Sign In</button>
+            <button onClick={() => setView('login')} style={{ background: 'transparent', border: 'none', color: '#333333', fontWeight: '600', fontSize: '13px', cursor: 'pointer' }}>Sign In</button>
           </p>
         </div>
       </div>
@@ -753,7 +753,7 @@ export default function AccountPage() {
 
         {/* Profile Header */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '20px', marginBottom: '32px', padding: '24px', background: '#FFFFFF', border: '1px solid #E5E5E5', borderRadius: '16px', boxShadow: '0 1px 3px rgba(0,0,0,0.08)' }}>
-          <div style={{ width: '64px', height: '64px', borderRadius: '50%', background: '#FED800', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '22px', fontWeight: '900', color: '#000', flexShrink: 0 }}>
+          <div style={{ width: '64px', height: '64px', borderRadius: '50%', background: '#E5B800', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '22px', fontWeight: '900', color: '#000', flexShrink: 0 }}>
             {savedFirstName.charAt(0)}{savedLastName.charAt(0)}
           </div>
           <div style={{ flex: 1 }}>
@@ -761,17 +761,17 @@ export default function AccountPage() {
             <p style={{ fontSize: '13px', color: '#777777', margin: 0 }}>{savedEmail} · Member since {formatJoinDate()}</p>
           </div>
           <div style={{ display: 'flex', gap: '10px' }}>
-            <div style={{ padding: '10px 16px', background: '#FED80015', border: '1px solid #FED80030', borderRadius: '10px', textAlign: 'center' }}>
-              <p style={{ fontSize: '20px', fontWeight: '800', color: '#FED800', margin: 0 }}>{userPoints}</p>
-              <p style={{ fontSize: '11px', color: '#777777', margin: '2px 0 0' }}>Points</p>
+            <div style={{ padding: '10px 16px', background: '#E5B80015', border: '1px solid #E5B80030', borderRadius: '10px', textAlign: 'center' }}>
+              <p style={{ fontSize: '20px', fontWeight: '800', color: '#1A1A1A', margin: 0 }}>{userPoints}</p>
+              <p style={{ fontSize: '12px', color: '#777777', margin: '2px 0 0' }}>Points</p>
             </div>
             <div style={{ padding: '10px 16px', background: '#FFFFFF', border: '1px solid #E5E5E5', borderRadius: '10px', textAlign: 'center' }}>
               <p style={{ fontSize: '20px', fontWeight: '800', color: '#1A1A1A', margin: 0 }}>{userTotalOrders}</p>
-              <p style={{ fontSize: '11px', color: '#777777', margin: '2px 0 0' }}>Orders</p>
+              <p style={{ fontSize: '12px', color: '#777777', margin: '2px 0 0' }}>Orders</p>
             </div>
             <div style={{ padding: '10px 16px', background: '#FFFFFF', border: '1px solid #E5E5E5', borderRadius: '10px', textAlign: 'center' }}>
               <p style={{ fontSize: '16px', fontWeight: '800', color: '#1A1A1A', margin: 0 }}>{userTier}</p>
-              <p style={{ fontSize: '11px', color: '#777777', margin: '2px 0 0' }}>Tier</p>
+              <p style={{ fontSize: '12px', color: '#777777', margin: '2px 0 0' }}>Tier</p>
             </div>
           </div>
         </div>
@@ -784,7 +784,7 @@ export default function AccountPage() {
             { id: 'addresses', label: 'Saved Addresses' },
             { id: 'loyalty', label: 'Loyalty & Rewards' },
           ].map(tab => (
-            <button key={tab.id} onClick={() => setActiveTab(tab.id)} style={{ flex: 1, padding: '10px', background: activeTab === tab.id ? '#FED800' : 'transparent', color: activeTab === tab.id ? '#000' : '#777777', border: 'none', borderRadius: '8px', fontSize: '13px', fontWeight: '600', cursor: 'pointer', transition: 'all 0.15s' }}>
+            <button key={tab.id} onClick={() => setActiveTab(tab.id)} style={{ flex: 1, padding: '10px', background: activeTab === tab.id ? '#E5B800' : 'transparent', color: activeTab === tab.id ? '#000' : '#777777', border: 'none', borderRadius: '8px', fontSize: '13px', fontWeight: '600', cursor: 'pointer', transition: 'all 0.15s' }}>
               {tab.label}
             </button>
           ))}
@@ -803,12 +803,12 @@ export default function AccountPage() {
                   value={orderSearch}
                   onChange={e => setOrderSearch(e.target.value)}
                   style={{ width: '100%', padding: '9px 12px 9px 34px', background: '#F8F9FA', border: '1px solid #D0D0D0', borderRadius: '8px', color: '#1A1A1A', fontSize: '13px', outline: 'none', fontFamily: 'inherit' }}
-                  onFocus={e => e.target.style.borderColor = '#FED800'}
+                  onFocus={e => e.target.style.borderColor = '#E5B800'}
                   onBlur={e => e.target.style.borderColor = '#D0D0D0'}
                 />
               </div>
               <p style={{ fontSize: '13px', color: '#777777', margin: 0 }}>{filteredOrders.length} of {orders.length} orders</p>
-              <Link href="/order" style={{ padding: '8px 16px', background: '#FED800', borderRadius: '8px', color: '#000', fontSize: '13px', fontWeight: '700', textDecoration: 'none' }}>Order Again</Link>
+              <Link href="/order" style={{ padding: '8px 16px', background: '#E5B800', borderRadius: '8px', color: '#000', fontSize: '13px', fontWeight: '700', textDecoration: 'none' }}>Order Again</Link>
             </div>
             {filteredOrders.length === 0 ? (
               <div style={{ padding: '40px 20px', background: '#FFFFFF', border: '1px dashed #D0D0D0', borderRadius: '12px', textAlign: 'center' }}>
@@ -821,8 +821,8 @@ export default function AccountPage() {
                   <div key={order.id} style={{ padding: '16px 20px', background: '#FFFFFF', border: '1px solid #E5E5E5', borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '16px', boxShadow: '0 1px 3px rgba(0,0,0,0.06)' }}>
                     <div style={{ flex: 1 }}>
                       <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '4px' }}>
-                        <p style={{ fontSize: '14px', fontWeight: '700', color: '#FED800', margin: 0 }}>{order.id}</p>
-                        <span style={{ fontSize: '11px', padding: '2px 8px', borderRadius: '20px', fontWeight: '600', background: `${statusColor[order.status]}20`, color: statusColor[order.status], border: `1px solid ${statusColor[order.status]}40` }}>{order.status}</span>
+                        <p style={{ fontSize: '14px', fontWeight: '700', color: '#1A1A1A', margin: 0 }}>{order.id}</p>
+                        <span style={{ fontSize: '12px', padding: '2px 8px', borderRadius: '20px', fontWeight: '600', background: `${statusColor[order.status]}20`, color: statusColor[order.status], border: `1px solid ${statusColor[order.status]}40` }}>{order.status}</span>
                       </div>
                       <p style={{ fontSize: '12px', color: '#777777', margin: '0 0 2px' }}>{order.date}</p>
                       <p style={{ fontSize: '13px', color: '#555555', margin: 0 }}>{order.items}</p>
@@ -833,7 +833,7 @@ export default function AccountPage() {
                         {!['Delivered', 'Picked Up', 'Cancelled'].includes(order.status) && (
                           <Link href={`/order-tracking?id=${order.dbId}`} style={{ padding: '6px 14px', background: 'transparent', border: '1px solid #A78BFA40', borderRadius: '8px', color: '#A78BFA', fontSize: '12px', textDecoration: 'none', fontWeight: '600' }}>Track</Link>
                         )}
-                        <button onClick={() => handleReorder(order)} style={{ padding: '6px 14px', background: 'transparent', border: '1px solid #D0D0D0', borderRadius: '8px', color: '#777777', fontSize: '12px', cursor: 'pointer', transition: 'all 0.15s' }} onMouseEnter={e => { e.currentTarget.style.borderColor = '#FED800'; e.currentTarget.style.color = '#B8A000'; }} onMouseLeave={e => { e.currentTarget.style.borderColor = '#D0D0D0'; e.currentTarget.style.color = '#777777'; }}>Reorder</button>
+                        <button onClick={() => handleReorder(order)} style={{ padding: '6px 14px', background: 'transparent', border: '1px solid #D0D0D0', borderRadius: '8px', color: '#777777', fontSize: '12px', cursor: 'pointer', transition: 'all 0.15s' }} onMouseEnter={e => { e.currentTarget.style.borderColor = '#E5B800'; e.currentTarget.style.color = '#333333'; }} onMouseLeave={e => { e.currentTarget.style.borderColor = '#D0D0D0'; e.currentTarget.style.color = '#777777'; }}>Reorder</button>
                       </div>
                     </div>
                   </div>
@@ -852,26 +852,26 @@ export default function AccountPage() {
                 <div>
                   <label style={labelStyle}>First Name</label>
                   <input style={inputStyle} value={savedFirstName} onChange={e => setSavedFirstName(e.target.value)}
-                    onFocus={e => (e.target as HTMLInputElement).style.borderColor = '#FED800'}
+                    onFocus={e => (e.target as HTMLInputElement).style.borderColor = '#E5B800'}
                     onBlur={e => (e.target as HTMLInputElement).style.borderColor = '#D0D0D0'} />
                 </div>
                 <div>
                   <label style={labelStyle}>Last Name</label>
                   <input style={inputStyle} value={savedLastName} onChange={e => setSavedLastName(e.target.value)}
-                    onFocus={e => (e.target as HTMLInputElement).style.borderColor = '#FED800'}
+                    onFocus={e => (e.target as HTMLInputElement).style.borderColor = '#E5B800'}
                     onBlur={e => (e.target as HTMLInputElement).style.borderColor = '#D0D0D0'} />
                 </div>
               </div>
               <div>
                 <label style={labelStyle}>Email Address</label>
                 <input type="email" style={inputStyle} value={savedEmail} onChange={e => setSavedEmail(e.target.value)}
-                  onFocus={e => (e.target as HTMLInputElement).style.borderColor = '#FED800'}
+                  onFocus={e => (e.target as HTMLInputElement).style.borderColor = '#E5B800'}
                   onBlur={e => (e.target as HTMLInputElement).style.borderColor = '#D0D0D0'} />
               </div>
               <div>
                 <label style={labelStyle}>Phone Number</label>
                 <input type="tel" style={inputStyle} value={savedPhone} onChange={e => setSavedPhone(e.target.value)}
-                  onFocus={e => (e.target as HTMLInputElement).style.borderColor = '#FED800'}
+                  onFocus={e => (e.target as HTMLInputElement).style.borderColor = '#E5B800'}
                   onBlur={e => (e.target as HTMLInputElement).style.borderColor = '#D0D0D0'} />
               </div>
               <div style={{ paddingTop: '8px', borderTop: '1px solid #E5E5E5' }}>
@@ -879,7 +879,7 @@ export default function AccountPage() {
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
                   <div style={{ position: 'relative' }}>
                     <input type={showCurrentPassword ? 'text' : 'password'} style={{ ...inputStyle, paddingRight: '48px' }} placeholder="Current password" value={currentPassword} onChange={e => setCurrentPassword(e.target.value)}
-                      onFocus={e => (e.target as HTMLInputElement).style.borderColor = '#FED800'}
+                      onFocus={e => (e.target as HTMLInputElement).style.borderColor = '#E5B800'}
                       onBlur={e => (e.target as HTMLInputElement).style.borderColor = '#D0D0D0'} />
                     <button type="button" onClick={() => setShowCurrentPassword(!showCurrentPassword)}
                       style={{ position: 'absolute', right: '14px', top: '50%', transform: 'translateY(-50%)', background: 'transparent', border: 'none', color: '#777777', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '4px' }}>
@@ -891,7 +891,7 @@ export default function AccountPage() {
                   </div>
                   <div style={{ position: 'relative' }}>
                     <input type={showNewPassword ? 'text' : 'password'} style={{ ...inputStyle, paddingRight: '48px' }} placeholder="New password" value={newPassword} onChange={e => setNewPassword(e.target.value)}
-                      onFocus={e => (e.target as HTMLInputElement).style.borderColor = '#FED800'}
+                      onFocus={e => (e.target as HTMLInputElement).style.borderColor = '#E5B800'}
                       onBlur={e => (e.target as HTMLInputElement).style.borderColor = '#D0D0D0'} />
                     <button type="button" onClick={() => setShowNewPassword(!showNewPassword)}
                       style={{ position: 'absolute', right: '14px', top: '50%', transform: 'translateY(-50%)', background: 'transparent', border: 'none', color: '#777777', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '4px' }}>
@@ -903,7 +903,7 @@ export default function AccountPage() {
                   </div>
                 </div>
               </div>
-              <button onClick={handleSaveProfile} disabled={loading} style={{ padding: '14px', background: loading ? '#E0E0E0' : '#FED800', borderRadius: '10px', color: loading ? '#AAAAAA' : '#000', fontSize: '15px', fontWeight: '700', cursor: loading ? 'not-allowed' : 'pointer', border: 'none' }}>
+              <button onClick={handleSaveProfile} disabled={loading} style={{ padding: '14px', background: loading ? '#E0E0E0' : '#E5B800', borderRadius: '10px', color: loading ? '#AAAAAA' : '#000', fontSize: '15px', fontWeight: '700', cursor: loading ? 'not-allowed' : 'pointer', border: 'none' }}>
                 {loading ? 'Saving...' : 'Save Changes'}
               </button>
             </div>
@@ -915,7 +915,7 @@ export default function AccountPage() {
           <div>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
               <p style={{ fontSize: '13px', color: '#777777', margin: 0 }}>{addresses.length} saved address{addresses.length !== 1 ? 'es' : ''}</p>
-              <button onClick={() => { setEditingAddress(null); setAddrForm({ label: '', address: '', apt: '', instructions: '' }); setShowAddressForm(true); setAddrFormKey(k => k + 1); }} style={{ padding: '8px 16px', background: '#FED800', borderRadius: '8px', color: '#000', fontSize: '13px', fontWeight: '700', cursor: 'pointer', border: 'none' }}>+ Add Address</button>
+              <button onClick={() => { setEditingAddress(null); setAddrForm({ label: '', address: '', apt: '', instructions: '' }); setShowAddressForm(true); setAddrFormKey(k => k + 1); }} style={{ padding: '8px 16px', background: '#E5B800', borderRadius: '8px', color: '#000', fontSize: '13px', fontWeight: '700', cursor: 'pointer', border: 'none' }}>+ Add Address</button>
             </div>
 
             {/* Address Form Modal */}
@@ -930,7 +930,7 @@ export default function AccountPage() {
                   <input ref={addrInputRef} placeholder="Street address *" defaultValue={addrForm.address} onChange={e => setAddrForm(prev => ({ ...prev, address: e.target.value }))} style={{ padding: '10px 14px', background: '#F8F9FA', border: '1px solid #D0D0D0', borderRadius: '8px', color: '#1A1A1A', fontSize: '13px' }} />
                   <input placeholder="Apt / Suite / Floor (optional)" value={addrForm.apt} onChange={e => setAddrForm({ ...addrForm, apt: e.target.value })} style={{ padding: '10px 14px', background: '#F8F9FA', border: '1px solid #D0D0D0', borderRadius: '8px', color: '#1A1A1A', fontSize: '13px' }} />
                   <input placeholder="Delivery instructions (optional)" value={addrForm.instructions} onChange={e => setAddrForm({ ...addrForm, instructions: e.target.value })} style={{ padding: '10px 14px', background: '#F8F9FA', border: '1px solid #D0D0D0', borderRadius: '8px', color: '#1A1A1A', fontSize: '13px' }} />
-                  <button onClick={handleSaveAddress} style={{ padding: '10px', background: '#FED800', border: 'none', borderRadius: '8px', color: '#000', fontSize: '13px', fontWeight: '700', cursor: 'pointer' }}>
+                  <button onClick={handleSaveAddress} style={{ padding: '10px', background: '#E5B800', border: 'none', borderRadius: '8px', color: '#000', fontSize: '13px', fontWeight: '700', cursor: 'pointer' }}>
                     {editingAddress ? 'Update Address' : 'Save Address'}
                   </button>
                 </div>
@@ -947,12 +947,12 @@ export default function AccountPage() {
             )}
             <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
               {addresses.map((addr: any) => (
-                <div key={addr.id} style={{ padding: '16px', background: '#FFFFFF', border: addr.isDefault ? '1px solid #FED80040' : '1px solid #D0D0D0', borderRadius: '12px', boxShadow: '0 1px 3px rgba(0,0,0,0.06)' }}>
+                <div key={addr.id} style={{ padding: '16px', background: '#FFFFFF', border: addr.isDefault ? '1px solid #E5B80040' : '1px solid #D0D0D0', borderRadius: '12px', boxShadow: '0 1px 3px rgba(0,0,0,0.06)' }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '8px' }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FED800" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" /><circle cx="12" cy="10" r="3" /></svg>
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#E5B800" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" /><circle cx="12" cy="10" r="3" /></svg>
                       <p style={{ fontSize: '14px', fontWeight: '700', color: '#1A1A1A', margin: 0 }}>{addr.label || 'Address'}</p>
-                      {addr.isDefault && <span style={{ fontSize: '10px', padding: '2px 8px', borderRadius: '20px', background: '#FED80020', color: '#FED800', border: '1px solid #FED80040', fontWeight: '600' }}>Default</span>}
+                      {addr.isDefault && <span style={{ fontSize: '12px', padding: '2px 8px', borderRadius: '20px', background: '#E5B80020', color: '#1A1A1A', border: '1px solid #E5B80040', fontWeight: '600' }}>Default</span>}
                     </div>
                     <div style={{ display: 'flex', gap: '6px' }}>
                       <button onClick={() => { setEditingAddress(addr); setAddrForm({ label: addr.label || '', address: addr.address, apt: addr.apt || '', instructions: addr.instructions || '' }); setShowAddressForm(true); setAddrFormKey(k => k + 1); }} style={{ background: 'none', border: 'none', color: '#777777', fontSize: '12px', cursor: 'pointer' }}>Edit</button>
@@ -960,9 +960,9 @@ export default function AccountPage() {
                     </div>
                   </div>
                   <p style={{ fontSize: '13px', color: '#555555', margin: '0 0 4px', paddingLeft: '24px' }}>{addr.address}</p>
-                  {addr.apt && <p style={{ fontSize: '12px', color: '#777777', margin: '0 0 4px', paddingLeft: '24px' }}>Apt: {addr.apt}</p>}
-                  {addr.instructions && <p style={{ fontSize: '12px', color: '#777777', margin: '0 0 4px', paddingLeft: '24px' }}>{addr.instructions}</p>}
-                  {!addr.isDefault && <button onClick={() => setDefaultAddress(addr.id)} style={{ marginTop: '6px', marginLeft: '24px', background: 'none', border: '1px solid #D0D0D0', borderRadius: '6px', padding: '4px 10px', color: '#777777', fontSize: '11px', cursor: 'pointer' }}>Set as default</button>}
+                  {addr.apt && <p style={{ fontSize: '13px', color: '#777777', margin: '0 0 4px', paddingLeft: '24px' }}>Apt: {addr.apt}</p>}
+                  {addr.instructions && <p style={{ fontSize: '13px', color: '#777777', margin: '0 0 4px', paddingLeft: '24px' }}>{addr.instructions}</p>}
+                  {!addr.isDefault && <button onClick={() => setDefaultAddress(addr.id)} style={{ marginTop: '6px', marginLeft: '24px', background: 'none', border: '1px solid #D0D0D0', borderRadius: '6px', padding: '4px 10px', color: '#777777', fontSize: '12px', cursor: 'pointer' }}>Set as default</button>}
                 </div>
               ))}
             </div>
@@ -973,7 +973,7 @@ export default function AccountPage() {
         {activeTab === 'loyalty' && (
           <div>
             {/* Points Card */}
-            <div style={{ background: 'linear-gradient(135deg, #FED800, #E5C200)', borderRadius: '16px', padding: '28px', marginBottom: '20px', position: 'relative', overflow: 'hidden' }}>
+            <div style={{ background: 'linear-gradient(135deg, #E5B800, #E5C200)', borderRadius: '16px', padding: '28px', marginBottom: '20px', position: 'relative', overflow: 'hidden' }}>
               <div style={{ position: 'absolute', top: '-40px', right: '-40px', width: '200px', height: '200px', borderRadius: '50%', background: 'rgba(0,0,0,0.08)' }} />
               <div style={{ position: 'absolute', bottom: '-60px', left: '-20px', width: '160px', height: '160px', borderRadius: '50%', background: 'rgba(0,0,0,0.05)' }} />
               <p style={{ fontSize: '12px', fontWeight: '700', color: '#00000080', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '8px' }}>Your Points Balance</p>
@@ -1003,13 +1003,13 @@ export default function AccountPage() {
                     <div key={i} style={{ padding: '14px 18px', background: '#22C55E10', border: '1px solid #22C55E30', borderRadius: '10px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '8px' }}>
                       <div>
                         <p style={{ fontSize: '13px', color: '#1A1A1A', fontWeight: '600', margin: 0 }}>{r.rewardName}</p>
-                        <p style={{ fontSize: '11px', color: '#777777', marginTop: '2px' }}>
+                        <p style={{ fontSize: '12px', color: '#777777', marginTop: '2px' }}>
                           {r.type === 'discount' ? `$${r.value} off` : r.type === 'freeDelivery' ? 'Free delivery' : r.value}
                         </p>
                       </div>
                       <div style={{ textAlign: 'right' }}>
                         <p style={{ fontSize: '16px', fontWeight: '900', color: '#22C55E', letterSpacing: '1.5px', fontFamily: 'monospace', margin: 0 }}>{r.code}</p>
-                        <p style={{ fontSize: '10px', color: '#777777', marginTop: '2px' }}>Use at checkout</p>
+                        <p style={{ fontSize: '12px', color: '#777777', marginTop: '2px' }}>Use at checkout</p>
                       </div>
                     </div>
                   ))}
@@ -1029,12 +1029,12 @@ export default function AccountPage() {
                   const canRedeem = userPoints >= reward.pointsCost;
                   const isRedeeming = redeemingId === reward.id;
                   return (
-                    <div key={reward.id} style={{ padding: '16px', background: '#FFFFFF', border: `1px solid ${canRedeem ? '#FED80040' : '#E5E5E5'}`, borderRadius: '12px', opacity: canRedeem ? 1 : 0.6, boxShadow: '0 1px 3px rgba(0,0,0,0.06)' }}>
+                    <div key={reward.id} style={{ padding: '16px', background: '#FFFFFF', border: `1px solid ${canRedeem ? '#E5B80040' : '#E5E5E5'}`, borderRadius: '12px', opacity: canRedeem ? 1 : 0.6, boxShadow: '0 1px 3px rgba(0,0,0,0.06)' }}>
                       <p style={{ fontSize: '14px', fontWeight: '700', color: '#1A1A1A', marginBottom: '2px' }}>{reward.name}</p>
-                      {reward.description && <p style={{ fontSize: '11px', color: '#777777', marginBottom: '6px' }}>{reward.description}</p>}
-                      <p style={{ fontSize: '12px', color: '#FED800', marginBottom: '10px' }}>{reward.pointsCost} points</p>
+                      {reward.description && <p style={{ fontSize: '13px', color: '#777777', marginBottom: '6px' }}>{reward.description}</p>}
+                      <p style={{ fontSize: '12px', color: '#333333', fontWeight: '600', marginBottom: '10px' }}>{reward.pointsCost} points</p>
                       <button onClick={() => canRedeem && handleRedeem(reward.id)} disabled={!canRedeem || isRedeeming} style={{
-                        width: '100%', padding: '8px', background: canRedeem ? '#FED800' : '#E5E5E5',
+                        width: '100%', padding: '8px', background: canRedeem ? '#E5B800' : '#E5E5E5',
                         border: 'none', borderRadius: '8px', color: canRedeem ? '#000' : '#777777',
                         fontSize: '12px', fontWeight: '700', cursor: canRedeem ? 'pointer' : 'not-allowed',
                         opacity: isRedeeming ? 0.6 : 1,
@@ -1059,7 +1059,7 @@ export default function AccountPage() {
                   <div key={i} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '14px 20px', borderBottom: i < pointsHistory.length - 1 ? '1px solid #E5E5E5' : 'none' }}>
                     <div>
                       <p style={{ fontSize: '13px', color: '#1A1A1A', margin: 0 }}>{h.description}</p>
-                      <p style={{ fontSize: '11px', color: '#777777', marginTop: '2px' }}>{h.date ? new Date(h.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) : ''}</p>
+                      <p style={{ fontSize: '12px', color: '#777777', marginTop: '2px' }}>{h.date ? new Date(h.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) : ''}</p>
                     </div>
                     <span style={{ fontSize: '16px', fontWeight: '800', color: h.type === 'redeemed' ? '#FC0301' : '#22C55E' }}>
                       {h.points > 0 ? '+' : ''}{h.points}
@@ -1075,7 +1075,7 @@ export default function AccountPage() {
         <button
           onClick={handleSignOut}
           style={{ marginTop: '24px', marginBottom: '48px', width: '100%', padding: '13px', background: 'transparent', border: '1px solid #D0D0D0', borderRadius: '12px', color: '#1A1A1A', fontSize: '14px', cursor: 'pointer', transition: 'all 0.2s' }}
-          onMouseEnter={e => { const b = e.currentTarget as HTMLButtonElement; b.style.borderColor = '#FED800'; b.style.color = '#B8A000'; }}
+          onMouseEnter={e => { const b = e.currentTarget as HTMLButtonElement; b.style.borderColor = '#E5B800'; b.style.color = '#333333'; }}
           onMouseLeave={e => { const b = e.currentTarget as HTMLButtonElement; b.style.borderColor = '#D0D0D0'; b.style.color = '#1A1A1A'; }}
         >
           Sign Out

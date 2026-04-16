@@ -61,7 +61,7 @@ export default function GiftCardsPage() {
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
         :root {
-          --y: #FED800;
+          --y: #E5B800;
           --r: #FC0301;
           --green: #22C55E;
           --bg0: #FFFFFF;
@@ -72,7 +72,7 @@ export default function GiftCardsPage() {
           --t1: #1A1A1A;
           --t2: #333333;
           --t3: #888888;
-          --font-head: 'Bebas Neue', sans-serif;
+          --font-head: 'DM Sans', sans-serif;
           --font-body: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
         }
 
@@ -93,7 +93,7 @@ export default function GiftCardsPage() {
           transition: all 0.3s ease;
           font-family: var(--font-body);
         }
-        .btn-yellow:hover { background: transparent; color: #000; border-color: #FED800; transform: none; box-shadow: none; }
+        .btn-yellow:hover { background: #E5B800; color: #000; border-color: transparent; transform: none; box-shadow: none; }
         .btn-yellow:active { transform: translateY(0); }
         .btn-outline {
           display: inline-flex; align-items: center; gap: 8px;
@@ -103,22 +103,23 @@ export default function GiftCardsPage() {
           transition: border-color 0.15s, color 0.15s;
           font-family: var(--font-body); cursor: pointer;
         }
-        .btn-outline:hover { border-color: #FED800; color: #B8A000; }
+        .btn-outline:hover { background: #F0F0F0; border-color: #1A1A1A; color: #1A1A1A; }
 
         /* ── Section label ── */
         .sec-label {
-          font-size: 11px; font-weight: 700; letter-spacing: 3.5px;
-          text-transform: uppercase; color: var(--y);
+          font-size: 12px; font-weight: 700; letter-spacing: 3.5px;
+          text-transform: uppercase; color: #888888;
           margin-bottom: 10px; display: block;
         }
 
         /* ── Section heading ── */
         .sec-heading {
           font-family: var(--font-head);
-          font-size: clamp(36px, 6vw, 62px);
-          letter-spacing: 1px; line-height: 0.95; color: var(--t1);
+          font-size: 32px;
+          font-weight: 800;
+          letter-spacing: 0.5px; line-height: 0.95; color: var(--t1);
         }
-        .sec-heading .accent { color: var(--y); }
+        .sec-heading .accent { color: var(--t1); }
 
         /* ── Main grid ── */
         .giftcard-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 52px; align-items: flex-start; }
@@ -134,11 +135,11 @@ export default function GiftCardsPage() {
         .perk-item:hover { border-color: rgba(254,216,0,0.15); transform: translateY(-2px); }
         .perk-icon { width: 44px; height: 44px; border-radius: 10px; background: rgba(254,216,0,0.06); border: 1px solid rgba(254,216,0,0.15); display: flex; align-items: center; justify-content: center; }
         .perk-title { font-size: 12px; font-weight: 700; color: var(--t1); }
-        .perk-desc  { font-size: 11px; color: var(--t3); line-height: 1.4; }
+        .perk-desc  { font-size: 12px; color: var(--t3); line-height: 1.4; }
 
         /* ── Gift card visual ── */
         .giftcard-visual {
-          background: linear-gradient(135deg, #FED800 0%, #E8C400 100%);
+          background: linear-gradient(135deg, #E5B800 0%, #E8C400 100%);
           border-radius: 20px; padding: 32px; margin-bottom: 20px;
           position: relative; overflow: hidden; aspect-ratio: 1.6;
           box-shadow: 0 24px 60px rgba(254,216,0,0.15), 0 8px 24px rgba(0,0,0,0.08);
@@ -150,10 +151,10 @@ export default function GiftCardsPage() {
         .card-chip { position: absolute; top: 20px; right: 24px; width: 42px; height: 32px; border-radius: 6px; background: rgba(0,0,0,0.12); border: 1px solid rgba(0,0,0,0.08); }
         .card-inner { position: relative; height: 100%; display: flex; flex-direction: column; justify-content: space-between; }
         .card-header { display: flex; align-items: center; gap: 8px; }
-        .card-eyebrow { font-size: 11px; font-weight: 700; color: rgba(0,0,0,0.5); letter-spacing: 2.5px; text-transform: uppercase; }
+        .card-eyebrow { font-size: 12px; font-weight: 700; color: rgba(0,0,0,0.5); letter-spacing: 2.5px; text-transform: uppercase; }
         .card-amount { font-family: var(--font-head); color: #000; line-height: 1; font-size: clamp(44px, 6vw, 60px); }
         .card-footer { display: flex; justify-content: space-between; align-items: flex-end; }
-        .card-address { font-size: 11px; color: rgba(0,0,0,0.45); }
+        .card-address { font-size: 12px; color: rgba(0,0,0,0.45); }
         .card-wordmark { font-family: var(--font-head); font-size: 26px; color: rgba(0,0,0,0.18); letter-spacing: 2px; }
 
         /* ── Amount selector ── */
@@ -208,17 +209,17 @@ export default function GiftCardsPage() {
           display: flex; justify-content: space-between; align-items: center;
         }
         .order-summary-label { font-size: 13px; color: var(--t2); }
-        .order-summary-value { font-family: var(--font-head); font-size: 26px; letter-spacing: 1px; color: var(--y); }
+        .order-summary-value { font-family: var(--font-head); font-size: 26px; letter-spacing: 1px; color: var(--t1); }
 
         /* ── Submit btn ── */
         .form-submit-btn {
           width: 100%; padding: 16px; border-radius: 12px; font-size: 15px;
-          font-weight: 800; cursor: pointer; border: none;
+          font-weight: 800; cursor: pointer; border: 2px solid transparent;
           display: flex; align-items: center; justify-content: center; gap: 8px;
-          font-family: var(--font-body); transition: transform 0.15s, box-shadow 0.15s;
+          font-family: var(--font-body); transition: all 0.3s ease;
         }
         .form-submit-btn.enabled { background: var(--y); color: #000; }
-        .form-submit-btn.enabled:hover { transform: translateY(-1px); box-shadow: 0 8px 24px rgba(254,216,0,0.15); }
+        .form-submit-btn.enabled:hover { background: #E5B800; color: #000; border-color: transparent; transform: none; box-shadow: none; }
         .form-submit-btn.disabled { background: var(--bg3); color: var(--t3); cursor: not-allowed; }
 
         /* ── Success card ── */
@@ -232,16 +233,16 @@ export default function GiftCardsPage() {
           display: flex; align-items: center; justify-content: center; margin: 0 auto 24px;
         }
         .success-title { font-family: var(--font-head); font-size: clamp(28px, 5vw, 38px); letter-spacing: 1px; color: var(--t1); margin-bottom: 14px; line-height: 1; }
-        .success-amount { color: var(--y); font-weight: 800; }
-        .success-email  { font-family: var(--font-head); font-size: 20px; letter-spacing: 1px; color: var(--y); margin: 6px 0 16px; }
+        .success-amount { color: var(--t1); font-weight: 800; }
+        .success-email  { font-family: var(--font-head); font-size: 20px; letter-spacing: 1px; color: var(--t1); margin: 6px 0 16px; }
         .success-note   { font-size: 12px; color: var(--t3); margin-bottom: 32px; }
         .success-actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
 
         /* ── Footer ── */
         .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 48px; margin-bottom: 40px; }
-        .footer-bottom { border-top: 1px solid #1A1A1A; padding-top: 24px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
-        .footer-link { display: block; font-size: 14px; color: #ffffff; margin-bottom: 11px; text-decoration: none; transition: color 0.15s, padding-left 0.15s; }
-        .footer-link:hover { color: var(--y); padding-left: 4px; }
+        .footer-bottom { border-top: 1px solid #E5E5E5; padding-top: 24px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
+        .footer-link { display: block; font-size: 14px; color: #1A1A1A; margin-bottom: 11px; text-decoration: none; transition: color 0.15s, padding-left 0.15s; }
+        .footer-link:hover { color: #555555; padding-left: 4px; }
 
         /* ═══ RESPONSIVE ═══ */
         @media (max-width: 1024px) {
@@ -283,8 +284,8 @@ export default function GiftCardsPage() {
 
         <div className="container hero-container" style={{ position: 'relative', textAlign: 'center' }}>
           <span id="hero-label" className="sec-label">Gift Cards</span>
-          <h1 id="hero-title" className="bebas" style={{ fontSize: 'clamp(52px, 9vw, 80px)', color: '#1A1A1A', lineHeight: '0.93', marginBottom: '22px' }}>
-            GIVE THE GIFT <span style={{ color: '#FED800' }}>OF BREAKFAST</span>
+          <h1 id="hero-title" className="bebas" style={{ fontSize: '40px', color: '#1A1A1A', lineHeight: '0.93', marginBottom: '22px' }}>
+            Give the Gift <span style={{ color: '#1A1A1A' }}>of Breakfast</span>
           </h1>
           <p id="hero-subtitle" style={{ fontSize: 'clamp(15px, 2vw, 18px)', color: '#1A1A1A', lineHeight: '1.8', maxWidth: '500px', margin: '0 auto 40px' }}>
             Share the love with an Eggs Ok gift card. Perfect for friends, family, and coworkers who deserve a great meal.
@@ -314,7 +315,7 @@ export default function GiftCardsPage() {
               <div id="giftcard-left-header" style={{ marginBottom: '28px' }}>
                 <span className="sec-label">Choose Amount</span>
                 <h2 id="amount-heading" className="bebas" style={{ fontSize: 'clamp(28px, 4vw, 42px)', color: '#1A1A1A', lineHeight: '0.95' }}>
-                  PICK YOUR <span style={{ color: '#FED800' }}>VALUE</span>
+                  Pick Your <span style={{ color: '#1A1A1A' }}>Value</span>
                 </h2>
               </div>
 
@@ -323,7 +324,7 @@ export default function GiftCardsPage() {
                 {perks.map((p, i) => (
                   <div key={i} id={`perk-${i}`} className="perk-item" role="listitem">
                     <div className="perk-icon" aria-hidden="true">
-                      <p.icon size={20} color="#FED800" strokeWidth={2} />
+                      <p.icon size={20} color="#E5B800" strokeWidth={2} />
                     </div>
                     <p className="perk-title">{p.title}</p>
                     <p className="perk-desc">{p.desc}</p>
@@ -348,14 +349,14 @@ export default function GiftCardsPage() {
                   </div>
                   <div id="card-footer" className="card-footer">
                     <p className="card-address">3517 Lancaster Ave · Philadelphia PA</p>
-                    <p className="card-wordmark">EGGS OK</p>
+                    <p className="card-wordmark">Eggs Ok</p>
                   </div>
                 </div>
               </div>
 
               {/* Amount selector */}
               <div id="amount-box" className="amount-box">
-                <p id="amount-box-title" className="amount-box-title">SELECT AMOUNT</p>
+                <p id="amount-box-title" className="amount-box-title">Select Amount</p>
 
                 <div id="amount-presets" className="amount-presets" role="group" aria-label="Preset gift card amounts">
                   {presetAmounts.map(a => (
@@ -393,7 +394,7 @@ export default function GiftCardsPage() {
                   <div id="success-icon" className="success-icon-wrap" aria-hidden="true">
                     <Check size={36} color="#22C55E" strokeWidth={2.5} />
                   </div>
-                  <h3 id="success-title" className="success-title">GIFT CARD SENT!</h3>
+                  <h3 id="success-title" className="success-title">Gift Card Sent!</h3>
                   <p id="success-msg-line1" style={{ fontSize: '14px', color: '#1A1A1A', marginBottom: '4px' }}>
                     A <span className="success-amount">${finalAmount}</span> gift card has been sent to
                   </p>
@@ -420,10 +421,10 @@ export default function GiftCardsPage() {
                   {/* Form header */}
                   <div id="form-header" className="form-header">
                     <div id="form-icon" className="form-icon" aria-hidden="true">
-                      <Send size={22} color="#FED800" strokeWidth={2} />
+                      <Send size={22} color="#E5B800" strokeWidth={2} />
                     </div>
                     <div id="form-header-text">
-                      <h2 id="form-title" className="form-title">GIFT CARD DETAILS</h2>
+                      <h2 id="form-title" className="form-title">Gift Card Details</h2>
                       <p id="form-subtitle" className="form-subtitle">Fill out who this is for</p>
                     </div>
                   </div>
@@ -516,7 +517,7 @@ export default function GiftCardsPage() {
       {/* ══════════════════════════════════════════
           FOOTER
       ══════════════════════════════════════════ */}
-      <footer id="giftcards-footer" className="site-footer" style={{ background: '#050505', padding: '68px 0 32px', borderTop: '1px solid #141414' }}>
+      <footer id="giftcards-footer" className="site-footer" style={{ background: '#F8F9FA', padding: '68px 0 32px', borderTop: '1px solid #E5E5E5' }}>
         <div className="container footer-container">
           <div id="footer-grid" className="footer-grid">
 
@@ -527,26 +528,26 @@ export default function GiftCardsPage() {
                   <Image src="/logo.svg" alt="Eggs Ok" width={100} height={50} style={{ objectFit: 'contain' }} />
                 </div>
               </div>
-              <p id="footer-tagline" style={{ fontSize: '14px', color: '#ffffff', lineHeight: '1.75', maxWidth: '280px', marginBottom: '22px' }}>
+              <p id="footer-tagline" style={{ fontSize: '14px', color: '#1A1A1A', lineHeight: '1.75', maxWidth: '280px', marginBottom: '22px' }}>
                 Fresh breakfast and lunch in West Philadelphia. Made to order, every time.
               </p>
               <address id="footer-address" style={{ fontStyle: 'normal' }}>
-                <p id="footer-address-line" style={{ fontSize: '13px', color: '#ffffff', display: 'flex', alignItems: 'center', gap: '7px', marginBottom: '8px' }}>
-                  <MapPin size={13} color="#FED800" aria-hidden="true" />
-                  <a id="footer-address-link" href="https://www.google.com/maps?q=3517+Lancaster+Ave,+Philadelphia+PA+19104" style={{ color: '#ffffff', textDecoration: 'none' }}>
+                <p id="footer-address-line" style={{ fontSize: '13px', color: '#1A1A1A', display: 'flex', alignItems: 'center', gap: '7px', marginBottom: '8px' }}>
+                  <MapPin size={13} color="#E5B800" aria-hidden="true" />
+                  <a id="footer-address-link" href="https://www.google.com/maps?q=3517+Lancaster+Ave,+Philadelphia+PA+19104" style={{ color: '#1A1A1A', textDecoration: 'none' }}>
                     3517 Lancaster Ave, Philadelphia PA 19104
                   </a>
                 </p>
-                <p id="footer-phone-line" style={{ fontSize: '13px', color: '#ffffff', display: 'flex', alignItems: 'center', gap: '7px' }}>
-                  <Smartphone size={13} color="#FED800" aria-hidden="true" />
-                  <a id="footer-phone-link" href="tel:2159489902" style={{ color: '#ffffff', textDecoration: 'none' }}>215-948-9902</a>
+                <p id="footer-phone-line" style={{ fontSize: '13px', color: '#1A1A1A', display: 'flex', alignItems: 'center', gap: '7px' }}>
+                  <Smartphone size={13} color="#E5B800" aria-hidden="true" />
+                  <a id="footer-phone-link" href="tel:2159489902" style={{ color: '#1A1A1A', textDecoration: 'none' }}>215-948-9902</a>
                 </p>
               </address>
             </div>
 
             {/* Quick links */}
             <nav id="footer-nav" aria-label="Quick links">
-              <p id="footer-nav-heading" style={{ fontSize: '15px', fontWeight: '700', color: '#ffffff', letterSpacing: '2px', textTransform: 'uppercase', marginBottom: '20px' }}>Quick Links</p>
+              <p id="footer-nav-heading" style={{ fontSize: '15px', fontWeight: '700', color: '#1A1A1A', letterSpacing: '2px', textTransform: 'uppercase', marginBottom: '20px' }}>Quick Links</p>
               {[
                 { label: 'Home',          href: '/'           },
                 { label: 'Order Online',  href: '/order'      },
@@ -561,7 +562,7 @@ export default function GiftCardsPage() {
 
             {/* Hours */}
             <div id="footer-hours">
-              <p id="footer-hours-heading" style={{ fontSize: '15px', fontWeight: '700', color: '#ffffff', letterSpacing: '2px', textTransform: 'uppercase', marginBottom: '20px' }}>Hours</p>
+              <p id="footer-hours-heading" style={{ fontSize: '15px', fontWeight: '700', color: '#1A1A1A', letterSpacing: '2px', textTransform: 'uppercase', marginBottom: '20px' }}>Hours</p>
               <div id="footer-hours-list" style={{ display: 'flex', flexDirection: 'column', gap: '5px' }}>
                 {[
                   { day: 'Monday',    hours: '8:00 AM – 10:00 PM' },
@@ -573,8 +574,8 @@ export default function GiftCardsPage() {
                   { day: 'Sunday',    hours: '9:00 AM – 9:00 PM'  },
                 ].map((h, i) => (
                   <div key={i} id={`footer-hours-row-${i}`} style={{ display: 'flex', gap: '14px' }}>
-                    <span style={{ fontSize: '13px', color: '#ffffff', fontWeight: '600', minWidth: '96px' }}>{h.day}</span>
-                    <span style={{ fontSize: '13px', color: '#BBBBBB' }}>{h.hours}</span>
+                    <span style={{ fontSize: '13px', color: '#1A1A1A', fontWeight: '600', minWidth: '96px' }}>{h.day}</span>
+                    <span style={{ fontSize: '13px', color: '#666666' }}>{h.hours}</span>
                   </div>
                 ))}
               </div>
@@ -583,11 +584,11 @@ export default function GiftCardsPage() {
           </div>
 
           <div id="footer-bottom" className="footer-bottom">
-            <p id="footer-copyright" style={{ fontSize: '13px', color: '#ffffff' }}>
+            <p id="footer-copyright" style={{ fontSize: '13px', color: '#888888' }}>
               &copy; {new Date().getFullYear()} Eggs Ok. All rights reserved.
             </p>
-            <p id="footer-credit" style={{ fontSize: '13px', color: '#ffffff' }}>
-              {/* Built by <span id="footer-credit-brand" style={{ color: '#FED800' }}>RestoRise Business Solutions</span> */}
+            <p id="footer-credit" style={{ fontSize: '13px', color: '#888888' }}>
+              {/* Built by <span id="footer-credit-brand" style={{ color: '#E5B800' }}>RestoRise Business Solutions</span> */}
             </p>
           </div>
         </div>

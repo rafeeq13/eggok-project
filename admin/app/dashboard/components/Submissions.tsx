@@ -17,7 +17,7 @@ import { API, adminFetch } from '../../../lib/api';
 
 const typeColor: Record<string, string> = { hiring: '#A78BFA', catering: '#F59E0B', contact: '#60A5FA' };
 const typeLabel: Record<string, string> = { hiring: 'Job Application', catering: 'Catering Inquiry', contact: 'Contact Message' };
-const statusColor: Record<string, string> = { new: '#FED800', reviewed: '#22C55E', archived: '#FEFEFE' };
+const statusColor: Record<string, string> = { new: '#E5B800', reviewed: '#22C55E', archived: '#FEFEFE' };
 
 export default function Submissions() {
   const [allSubmissions, setAllSubmissions] = useState<Submission[]>([]);
@@ -200,7 +200,7 @@ export default function Submissions() {
       {/* Counts */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '12px', marginBottom: '20px' }}>
         {[
-          { label: 'All New', count: counts.total, color: '#FED800', type: 'all' as const },
+          { label: 'All New', count: counts.total, color: '#E5B800', type: 'all' as const },
           { label: 'Applications', count: counts.hiring, color: typeColor.hiring, type: 'hiring' as const },
           { label: 'Catering', count: counts.catering, color: typeColor.catering, type: 'catering' as const },
           { label: 'Contact', count: counts.contact, color: typeColor.contact, type: 'contact' as const },
@@ -216,7 +216,7 @@ export default function Submissions() {
       <div style={{ display: 'flex', gap: '4px', background: '#111', padding: '4px', borderRadius: '10px', marginBottom: '14px', border: '1px solid #2A2A2A' }}>
         {(['all', 'hiring', 'catering', 'contact'] as const).map(tab => (
           <button key={tab} onClick={() => { setFilterType(tab); setSelected(null); setFilterPosition('all'); setFilterExperience('all'); setFilterHasResume('all'); setFilterGuestCount('all'); setFilterEventType('all'); setFilterSubject('all'); }} style={{
-            flex: 1, padding: '10px', background: filterType === tab ? '#FED800' : 'transparent',
+            flex: 1, padding: '10px', background: filterType === tab ? '#E5B800' : 'transparent',
             color: filterType === tab ? '#000' : '#888', border: 'none', borderRadius: '8px',
             fontSize: '12px', fontWeight: '600', cursor: 'pointer',
           }}>{tab === 'all' ? 'All Types' : typeLabel[tab]}</button>
@@ -232,7 +232,7 @@ export default function Submissions() {
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#555" strokeWidth="2" style={{ position: 'absolute', left: '10px', top: '50%', transform: 'translateY(-50%)' }}><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
             <input placeholder="Search name, email, message..." value={filterSearch} onChange={e => setFilterSearch(e.target.value)}
               style={{ ...selectStyle, paddingLeft: '30px', width: '100%' }}
-              onFocus={e => e.target.style.borderColor = '#FED800'} onBlur={e => e.target.style.borderColor = '#2A2A2A'}
+              onFocus={e => e.target.style.borderColor = '#E5B800'} onBlur={e => e.target.style.borderColor = '#2A2A2A'}
             />
           </div>
 
@@ -312,7 +312,7 @@ export default function Submissions() {
             <span style={{ fontSize: '11px', color: '#888' }}>
               {activeFilterCount} filter{activeFilterCount > 1 ? 's' : ''} active · Showing {filteredSubmissions.length} of {allSubmissions.length}
             </span>
-            <button onClick={clearAllFilters} style={{ background: 'none', border: 'none', color: '#FED800', fontSize: '11px', fontWeight: '600', cursor: 'pointer' }}>
+            <button onClick={clearAllFilters} style={{ background: 'none', border: 'none', color: '#E5B800', fontSize: '11px', fontWeight: '600', cursor: 'pointer' }}>
               Clear all filters
             </button>
           </div>
@@ -327,14 +327,14 @@ export default function Submissions() {
             <div style={{ ...cardStyle, textAlign: 'center', padding: '40px' }}>
               <p style={{ color: '#888', fontSize: '14px' }}>{allSubmissions.length === 0 ? 'No submissions yet' : 'No results match your filters'}</p>
               {allSubmissions.length > 0 && (
-                <button onClick={clearAllFilters} style={{ marginTop: '8px', background: 'none', border: 'none', color: '#FED800', fontSize: '13px', cursor: 'pointer' }}>Clear filters</button>
+                <button onClick={clearAllFilters} style={{ marginTop: '8px', background: 'none', border: 'none', color: '#E5B800', fontSize: '13px', cursor: 'pointer' }}>Clear filters</button>
               )}
             </div>
           )}
           {filteredSubmissions.map(sub => (
             <div key={sub.id} onClick={() => setSelected(sub)} style={{
               ...cardStyle, padding: '14px 16px', cursor: 'pointer',
-              border: selected?.id === sub.id ? '1px solid #FED800' : '1px solid #2A2A2A',
+              border: selected?.id === sub.id ? '1px solid #E5B800' : '1px solid #2A2A2A',
               transition: 'border-color 0.15s',
             }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '6px' }}>
@@ -416,8 +416,8 @@ export default function Submissions() {
               {/* Actions */}
               <div style={{ display: 'flex', gap: '8px' }}>
                 <a href={`mailto:${selected.email}`} style={{
-                  flex: 1, padding: '9px', textAlign: 'center', background: '#FED80015', border: '1px solid #FED80040',
-                  borderRadius: '8px', color: '#FED800', fontSize: '12px', fontWeight: '600', textDecoration: 'none',
+                  flex: 1, padding: '9px', textAlign: 'center', background: '#E5B80015', border: '1px solid #E5B80040',
+                  borderRadius: '8px', color: '#E5B800', fontSize: '12px', fontWeight: '600', textDecoration: 'none',
                 }}>Reply via Email</a>
                 <button onClick={() => { if (confirm('Delete this submission?')) deleteSubmission(selected.id); }} style={{
                   padding: '9px 14px', background: '#FC030115', border: '1px solid #FC030140',
