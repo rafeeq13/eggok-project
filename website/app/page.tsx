@@ -336,8 +336,8 @@ export default function HomePage() {
           background-image: url('/main-menu/Hero-Banner.webp');
           background-size: cover; background-position: center; background-repeat: no-repeat;
         }
-        .hero-title { text-shadow: 0 2px 20px rgba(0,0,0,0.6), 0 1px 6px rgba(0,0,0,0.5); }
-        .hero-subtitle { text-shadow: 0 1px 12px rgba(0,0,0,0.5), 0 1px 3px rgba(0,0,0,0.4); }
+        // .hero-title { text-shadow: 0 2px 20px rgba(0,0,0,0.6), 0 1px 6px rgba(0,0,0,0.5); }
+        // .hero-subtitle { text-shadow: 0 1px 12px rgba(0,0,0,0.5), 0 1px 3px rgba(0,0,0,0.4); }
         .hero-stat-value { text-shadow: 0 1px 10px rgba(0,0,0,0.5); }
         .hero-stat-label { text-shadow: 0 1px 6px rgba(0,0,0,0.4); }
         .hero-menu-btn {
