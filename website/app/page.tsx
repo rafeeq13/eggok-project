@@ -480,9 +480,9 @@ export default function HomePage() {
         .order-ahead-hero {
           position: relative; overflow: hidden;
           border-radius: 24px; margin: 60px auto;
-          max-width: 1200px; 
-          max-height: 600px;
-          min-height: 600px;
+          max-width: 100%; 
+          max-height: 100vh !important;
+          min-height: 100vh !important;
           background-image: url('/main-menu/Main-Page/order-ahead.webp');
           background-size: cover; background-position: center;
           display: flex; align-items: center; justify-content: flex-end;
