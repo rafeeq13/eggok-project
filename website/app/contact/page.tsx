@@ -397,7 +397,7 @@ export default function ContactPage() {
                     aria-label={`${info.label}: ${info.value}`}
                   >
                     <div className="contact-card-icon" aria-hidden="true">
-                      <info.Icon size={20} color="#E5B800" strokeWidth={2} />
+                      <info.Icon size={20} color="#000000ff" strokeWidth={2} />
                     </div>
                     <div className="contact-card-text" style={{ minWidth: 0, flex: 1 }}>
                       <p className="contact-card-label">{info.label}</p>
@@ -411,7 +411,7 @@ export default function ContactPage() {
               {/* Hours box */}
               <div id="hours-box" className="hours-box">
                 <div id="hours-box-header" className="hours-box-header">
-                  <Clock size={18} color="#E5B800" strokeWidth={2} aria-hidden="true" />
+                  <Clock size={18} color="#000000ff" strokeWidth={2} aria-hidden="true" />
                   <p id="hours-box-title" className="hours-box-title">Hours</p>
                   <div id="hours-open-badge" className="hours-open-badge" role="status" aria-live="polite">
                     <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: isOpen ? '#22C55E' : '#FC0301', flexShrink: 0 }} aria-hidden="true" />
@@ -570,7 +570,7 @@ export default function ContactPage() {
 
                   {/* Phone note */}
                   <div id="form-phone-note" className="form-phone-note">
-                    <Phone size={16} color="#E5B800" strokeWidth={2} style={{ flexShrink: 0 }} aria-hidden="true" />
+                    <Phone size={16} color="#000000ff" strokeWidth={2} style={{ flexShrink: 0 }} aria-hidden="true" />
                     <p className="form-phone-note-text">
                       Prefer to call?{' '}
                       <a id="form-phone-link" href="tel:2159489902" className="form-phone-note-link">215-948-9902</a>
@@ -605,13 +605,13 @@ export default function ContactPage() {
               </p>
               <address id="footer-address" style={{ fontStyle: 'normal' }}>
                 <p id="footer-address-line" style={{ fontSize: '14px', color: '#1A1A1A', display: 'flex', alignItems: 'center', gap: '7px', marginBottom: '8px' }}>
-                  <MapPin size={13} color="#E5B800" aria-hidden="true" />
+                  <MapPin size={13} color="#000000ff" aria-hidden="true" />
                   <a id="footer-address-link" href="https://www.google.com/maps?q=3517+Lancaster+Ave,+Philadelphia+PA+19104" style={{ color: '#1A1A1A', textDecoration: 'none' }}>
                     3517 Lancaster Ave, Philadelphia PA 19104
                   </a>
                 </p>
                 <p id="footer-phone-line" style={{ fontSize: '14px', color: '#1A1A1A', display: 'flex', alignItems: 'center', gap: '7px' }}>
-                  <Smartphone size={13} color="#E5B800" aria-hidden="true" />
+                  <Smartphone size={13} color="#000000ff" aria-hidden="true" />
                   <a id="footer-phone-link" href="tel:2159489902" style={{ color: '#1A1A1A', textDecoration: 'none' }}>215-948-9902</a>
                 </p>
               </address>

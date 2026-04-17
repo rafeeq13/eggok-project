@@ -926,7 +926,7 @@ function OrderContent() {
 
           {/* Cart */}
           <button id="nav-cart-btn" className="nav-cart-btn" onClick={() => setShowCart(true)} aria-label={`Cart, ${mounted ? cartCount : 0} items`}>
-            <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#000" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+            <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#E5B800" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
               <circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/>
               <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
             </svg>
@@ -1588,7 +1588,7 @@ function OrderContent() {
                         >
                           <div className="modifier-option-left">
                             <div className={`modifier-check ${group.maxSelections === 1 ? 'radio' : 'checkbox'} ${isSel ? 'selected' : 'unselected'}`}>
-                              {isSel && <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#000" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>}
+                              {isSel && <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#E5B800" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>}
                             </div>
                             <span className="modifier-option-name">{opt.name}</span>
                           </div>
@@ -1693,7 +1693,7 @@ function PopularCard({ item, orderType, onSelect }: { item: MenuItem; orderType:
           <div className="pop-card-popular-badge" aria-label="Popular item">★ HOT</div>
         )}
         <div className="pop-card-add-btn" aria-hidden="true">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#000" strokeWidth="2.8" strokeLinecap="round">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#E5B800" strokeWidth="2.8" strokeLinecap="round">
             <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
           </svg>
         </div>
@@ -1731,7 +1731,7 @@ function GridCard({ item, orderType, onSelect, borderRadius }: { item: MenuItem;
           }
         </div>
         <div className="grid-card-add-btn" aria-hidden="true">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#000" strokeWidth="2.8" strokeLinecap="round">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#E5B800" strokeWidth="2.8" strokeLinecap="round">
             <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
           </svg>
         </div>

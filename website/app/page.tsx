@@ -1346,7 +1346,7 @@ export default function HomePage() {
                           <div key={opt.id} className={`home-modal-modifier-opt ${isSel ? 'selected' : ''}`} onClick={() => toggleModifier(group.id, opt.id, group.maxSelections)}>
                             <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                               <div style={{ width: '20px', height: '20px', borderRadius: group.maxSelections === 1 ? '50%' : '4px', border: isSel ? '2px solid #E5B800' : '1px solid #D0D0D0', background: isSel ? '#E5B800' : 'transparent', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                                {isSel && <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#000" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>}
+                                {isSel && <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#E5B800" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>}
                               </div>
                               <span style={{ fontSize: '16px', color: '#1A1A1A' }}>{opt.name}</span>
                             </div>

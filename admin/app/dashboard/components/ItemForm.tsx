@@ -359,7 +359,7 @@ export default function ItemForm({ categories, modifierGroups, initialData, onSa
                       <div style={{ flex: 1 }}>
                         <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '6px' }}>
                           <div style={{ width: '20px', height: '20px', borderRadius: '4px', background: isLinked ? '#22C55E' : '#2A2A2A', border: `1px solid ${isLinked ? '#22C55E' : '#3A3A3A'}`, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                            {isLinked && <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#000" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>}
+                            {isLinked && <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#E5B800" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>}
                           </div>
                           <p style={{ fontSize: '14px', fontWeight: '700', color: '#FEFEFE' }}>{group.name}</p>
                           <span style={{ fontSize: '10px', padding: '2px 8px', borderRadius: '20px', fontWeight: '600', background: group.required ? '#E5B80020' : '#2A2A2A', color: group.required ? '#E5B800' : '#FEFEFE' }}>

@@ -441,7 +441,7 @@ export default function MenuManagement() {
                         <div key={item.id} onClick={() => toggleLinkItem(linkingGroup.id, item.id)} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '10px 14px', background: isLinked ? '#0A1A0A' : '#111111', border: `1px solid ${isLinked ? '#22C55E30' : '#2A2A2A'}`, borderRadius: '8px', marginBottom: '6px', cursor: 'pointer' }}>
                           <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                             <div style={{ width: '18px', height: '18px', borderRadius: '4px', background: isLinked ? '#22C55E' : '#2A2A2A', border: `1px solid ${isLinked ? '#22C55E' : '#3A3A3A'}`, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                              {isLinked && <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#000" strokeWidth="3"><polyline points="20 6 9 17 4 12"/></svg>}
+                              {isLinked && <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#E5B800" strokeWidth="3"><polyline points="20 6 9 17 4 12"/></svg>}
                             </div>
                             <p style={{ fontSize: '13px', color: '#FEFEFE' }}>{item.name}</p>
                           </div>

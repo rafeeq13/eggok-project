@@ -706,7 +706,7 @@ export default function AccountPage() {
 
             <div onClick={() => setAgreeTerms(!agreeTerms)} style={{ display: 'flex', alignItems: 'flex-start', gap: '10px', cursor: 'pointer', padding: '12px', background: '#FFFFFF', borderRadius: '10px', border: '1px solid #E5E5E5' }}>
               <div style={{ width: '20px', height: '20px', borderRadius: '5px', border: `2px solid ${agreeTerms ? '#E5B800' : '#D0D0D0'}`, background: agreeTerms ? '#E5B800' : 'transparent', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, marginTop: '1px' }}>
-                {agreeTerms && <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#000" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12" /></svg>}
+                {agreeTerms && <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#E5B800" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12" /></svg>}
               </div>
               <p style={{ fontSize: '14px', color: '#1A1A1A', lineHeight: '1.5', margin: 0 }}>
                 I agree to the <span style={{ color: '#333333', fontWeight: '600' }}>Terms of Service</span> and <span style={{ color: '#333333', fontWeight: '600' }}>Privacy Policy</span>. I consent to receiving order updates via email.

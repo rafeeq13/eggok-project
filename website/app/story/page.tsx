@@ -448,13 +448,13 @@ export default function StoryPage() {
               </p>
               <address id="footer-address" style={{ fontStyle: 'normal' }}>
                 <p id="footer-address-line" style={{ fontSize: '14px', color: '#1A1A1A', display: 'flex', alignItems: 'center', gap: '7px', marginBottom: '8px' }}>
-                  <MapPin size={13} color="#E5B800" aria-hidden="true" />
+                  <MapPin size={13} color="#000000ff" aria-hidden="true" />
                   <a href="https://www.google.com/maps?q=3517+Lancaster+Ave,+Philadelphia+PA+19104" id="footer-address-link" style={{ color: '#1A1A1A', textDecoration: 'none', transition: 'color 0.15s' }}>
                     3517 Lancaster Ave, Philadelphia PA 19104
                   </a>
                 </p>
                 <p id="footer-phone-line" style={{ fontSize: '14px', color: '#1A1A1A', display: 'flex', alignItems: 'center', gap: '7px' }}>
-                  <Smartphone size={13} color="#E5B800" aria-hidden="true" />
+                  <Smartphone size={13} color="#000000ff" aria-hidden="true" />
                   <a href="tel:2159489902" id="footer-phone-link" style={{ color: '#1A1A1A', textDecoration: 'none', transition: 'color 0.15s' }}>215-948-9902</a>
                 </p>
               </address>

@@ -535,7 +535,7 @@ export default function BusinessProfile() {
                         alignItems: 'center', justifyContent: 'center',
                         marginTop: '16px', flexShrink: 0,
                       }}>
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#000" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#E5B800" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
                           <polyline points="20 6 9 17 4 12" />
                         </svg>
                       </div>

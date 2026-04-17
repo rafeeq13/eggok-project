@@ -166,7 +166,7 @@ export default function ConfirmationPage() {
           transform: visible ? 'scale(1)' : 'scale(0)',
           transition: 'transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275)',
         }}>
-          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#000" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#E5B800" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
             <polyline points="20 6 9 17 4 12" />
           </svg>
         </div>
@@ -289,7 +289,7 @@ export default function ConfirmationPage() {
                   <div key={i} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px', flex: 1 }}>
                     <div style={{ width: '40px', height: '40px', borderRadius: '50%', background: step.done ? '#22C55E' : step.active ? '#E5B800' : '#F0F0F0', border: `2px solid ${step.done ? '#22C55E' : step.active ? '#E5B800' : '#D0D0D0'}`, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                       {step.done ? (
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#000" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12" /></svg>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#E5B800" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12" /></svg>
                       ) : step.active ? (
                         <div style={{ width: '10px', height: '10px', borderRadius: '50%', background: '#000' }} />
                       ) : (

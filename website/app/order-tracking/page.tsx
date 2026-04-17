@@ -124,7 +124,7 @@ function OrderTrackingContent() {
                       border: active ? '2px solid #E5B800' : done ? 'none' : '2px solid #D0D0D0',
                       display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
                     }}>
-                      {done && <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#000" strokeWidth="3" strokeLinecap="round"><polyline points="20 6 9 17 4 12"/></svg>}
+                      {done && <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#E5B800" strokeWidth="3" strokeLinecap="round"><polyline points="20 6 9 17 4 12"/></svg>}
                     </div>
                     {i < steps.length - 1 && (
                       <div style={{ width: '2px', height: '20px', background: done ? '#E5B800' : '#D0D0D0', marginTop: '4px' }} />
