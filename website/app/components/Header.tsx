@@ -105,19 +105,19 @@ const css = `
 
           {/* Desktop Nav */}
           <nav style={{ display: 'flex', alignItems: 'center', gap: '4px' }} className="hide-mobile nav-desktop-gap">
-            <Link href="/" className={`navLink${pathname === '/' ? ' active' : ''}`} style={{ padding: '8px 14px', color: '#333333', fontSize: '14px', fontWeight: '500', borderRadius: '8px', transition: 'all 0.2s' }}
+            <Link href="/" className={`navLink${pathname === '/' ? ' active' : ''}`} style={{ padding: '8px 12px', color: '#333333', fontSize: '16px', fontWeight: '500', borderRadius: '8px', transition: 'all 0.2s' }}
             >Home</Link>
 
-            <Link href="/story" className={`navLink${pathname === '/story' ? ' active' : ''}`} style={{ padding: '8px 14px', color: '#333333', fontSize: '14px', fontWeight: '500', borderRadius: '8px', transition: 'all 0.2s' }}
+            <Link href="/story" className={`navLink${pathname === '/story' ? ' active' : ''}`} style={{ padding: '8px 12px', color: '#333333', fontSize: '16px', fontWeight: '500', borderRadius: '8px', transition: 'all 0.2s' }}
             >Our Story</Link>
 
-            <Link href="/hiring" className={`navLink${pathname === '/hiring' ? ' active' : ''}`} style={{ padding: '8px 14px', color: '#333333', fontSize: '14px', fontWeight: '500', borderRadius: '8px', transition: 'all 0.2s' }}
+            <Link href="/hiring" className={`navLink${pathname === '/hiring' ? ' active' : ''}`} style={{ padding: '8px 12px', color: '#333333', fontSize: '16px', fontWeight: '500', borderRadius: '8px', transition: 'all 0.2s' }}
             >We're Hiring</Link>
 
-            <Link href="/order" className={`navLink${pathname === '/order' ? ' active' : ''}`} style={{ padding: '8px 14px', color: '#333333', fontSize: '14px', fontWeight: '500', borderRadius: '8px', transition: 'all 0.2s' }}
+            <Link href="/order" className={`navLink${pathname === '/order' ? ' active' : ''}`} style={{ padding: '8px 12px', color: '#333333', fontSize: '16px', fontWeight: '500', borderRadius: '8px', transition: 'all 0.2s' }}
             >Menu</Link>
 
-            <Link href="/catering" className={`navLink${pathname === '/catering' ? ' active' : ''}`} style={{ padding: '8px 14px', color: '#333333', fontSize: '14px', fontWeight: '500', borderRadius: '8px', transition: 'all 0.2s' }}
+            <Link href="/catering" className={`navLink${pathname === '/catering' ? ' active' : ''}`} style={{ padding: '8px 12px', color: '#333333', fontSize: '16px', fontWeight: '500', borderRadius: '8px', transition: 'all 0.2s' }}
             >Catering</Link>
 
             {/* More Dropdown — hover to open */}
@@ -127,7 +127,7 @@ const css = `
             >
               <button
               className={`navLink${['/contact', '/gift-cards', '/track'].includes(pathname) ? ' active' : ''}`}
-                style={{ padding: '8px 14px', color: '#333333', fontSize: '14px', fontWeight: '500', borderRadius: '8px', transition: 'all 0.2s', display: 'flex', alignItems: 'center', gap: '4px', background: 'transparent' }}
+                style={{ padding: '8px 12px', color: '#333333', fontSize: '16px', fontWeight: '500', borderRadius: '8px', transition: 'all 0.2s', display: 'flex', alignItems: 'center', gap: '4px', background: 'transparent' }}
               >
                 More
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -150,7 +150,7 @@ const css = `
                       {moreLinks.map(link => (
                         <Link key={link.href} className="navLink" href={link.href} onClick={() => setMoreOpen(false)} style={{
                           display: 'block', padding: '10px 14px',
-                          color: '#333333', fontSize: '14px', borderRadius: '8px',
+                          color: '#333333', fontSize: '16px', borderRadius: '8px',
                           transition: 'all 0.15s',
                         }}
                           onMouseEnter={e => { (e.currentTarget as HTMLAnchorElement).style.color = '#1A1A1A'; (e.currentTarget as HTMLAnchorElement).style.background = '#F5F5F5'; }}
@@ -169,7 +169,7 @@ const css = `
                 <button
                   onClick={() => setUserMenuOpen(!userMenuOpen)}
                   style={{
-                    padding: '9px 18px', color: '#333333', fontSize: '14px',
+                    padding: '8px 12px', color: '#333333', fontSize: '16px',
                     fontWeight: '600', borderRadius: '8px',
                     border: '1px solid #E5B80040', background: 'rgba(254, 216, 0, 0.08)',
                     transition: 'all 0.2s', display: 'inline-flex', alignItems: 'center', gap: '6px',
@@ -196,7 +196,7 @@ const css = `
                   }}>
                     <Link href="/account" onClick={() => setUserMenuOpen(false)} style={{
                       display: 'flex', alignItems: 'center', gap: '8px', padding: '10px 14px',
-                      color: '#333333', fontSize: '14px', borderRadius: '8px',
+                      color: '#333333', fontSize: '16px', borderRadius: '8px',
                       transition: 'all 0.15s', textDecoration: 'none',
                     }}
                       onMouseEnter={e => { e.currentTarget.style.color = '#000000'; e.currentTarget.style.background = '#F5F5F5'; }}
@@ -209,7 +209,7 @@ const css = `
                     </Link>
                     <button onClick={() => { logout(); setUserMenuOpen(false); }} style={{
                       display: 'flex', alignItems: 'center', gap: '8px', padding: '10px 14px',
-                      color: '#333333', fontSize: '14px', borderRadius: '8px',
+                      color: '#333333', fontSize: '16px', borderRadius: '8px',
                       transition: 'all 0.15s', background: 'transparent', border: 'none',
                       cursor: 'pointer', width: '100%', textAlign: 'left', fontFamily: 'inherit',
                     }}
@@ -226,7 +226,7 @@ const css = `
               </div>
             ) : (
               <Link href="/account" style={{
-                padding: '9px 18px', color: '#1A1A1A', fontSize: '14px',
+                padding: '8px 12px', color: '#1A1A1A', fontSize: '16px',
                 fontWeight: '600', borderRadius: '8px',
                 border: '1px solid #D0D0D0', background: 'transparent',
                 transition: 'all 0.2s', display: 'inline-flex', alignItems: 'center', gap: '6px',
@@ -242,7 +242,7 @@ const css = `
             )}
 
             {/* Order Now */}
-            <Link href="/order" className="btn-primary" style={{ padding: '10px 20px', fontSize: '14px', marginLeft: '4px' }}>
+            <Link href="/order" className="btn-primary" style={{ padding: '8px 12px', fontSize: '16px', marginLeft: '4px' }}>
               Order Now
             </Link>
 

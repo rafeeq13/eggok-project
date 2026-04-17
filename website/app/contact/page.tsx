@@ -78,8 +78,8 @@ export default function ContactPage() {
           --t1: #1A1A1A;
           --t2: #333333;
           --t3: #888888;
-          --font-head: 'DM Sans', sans-serif;
-          --font-body: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+          --font-head: 'Playfair Display', Georgia, serif;
+          --font-body: 'Geist', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
         }
 
         /* ── Accessibility ── */
@@ -94,7 +94,7 @@ export default function ContactPage() {
         .btn-yellow {
           display: inline-flex; align-items: center; gap: 8px;
           padding: 14px 28px; background: var(--y); color: #000;
-          border-radius: 10px; font-size: 15px; font-weight: 700;
+          border-radius: 10px; font-size: 16px; font-weight: 700;
           text-decoration: none; border: 2px solid transparent; cursor: pointer;
           transition: all 0.3s ease;
           font-family: var(--font-body);
@@ -104,7 +104,7 @@ export default function ContactPage() {
         .btn-outline {
           display: inline-flex; align-items: center; gap: 8px;
           padding: 14px 28px; background: transparent; color: #1A1A1A;
-          border-radius: 10px; font-size: 15px; font-weight: 700;
+          border-radius: 10px; font-size: 16px; font-weight: 700;
           text-decoration: none; border: 1.5px solid #1A1A1A;
           transition: border-color 0.15s, color 0.15s;
           font-family: var(--font-body); cursor: pointer;
@@ -121,8 +121,8 @@ export default function ContactPage() {
         /* ── Section heading ── */
         .sec-heading {
           font-family: var(--font-head);
-          font-size: 32px;
-          font-weight: 900;
+          font-size: 28px;
+          font-weight: 700;
           letter-spacing: -0.5px; line-height: 1.2; color: var(--t1);
         }
         .sec-heading .accent { color: var(--t1); }
@@ -160,7 +160,7 @@ export default function ContactPage() {
           display: flex; align-items: center; justify-content: center; flex-shrink: 0;
         }
         .contact-card-label { font-size: 12px; color: var(--t3); text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 3px; font-weight: 600; }
-        .contact-card-value { font-size: 14px; font-weight: 600; color: var(--t1); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .contact-card-value { font-size: 16px; font-weight: 600; color: var(--t1); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
         .contact-card-chevron { margin-left: auto; flex-shrink: 0; color: var(--t3); transition: color 0.15s; }
         .contact-info-card:hover .contact-card-chevron { color: var(--y); }
 
@@ -170,14 +170,14 @@ export default function ContactPage() {
           border-radius: 16px; padding: 26px; margin-bottom: 16px;
         }
         .hours-box-header { display: flex; align-items: center; gap: 10px; margin-bottom: 18px; }
-        .hours-box-title { font-family: var(--font-head); font-size: 18px; letter-spacing: -0.5px; color: var(--t1); }
+        .hours-box-title { font-family: var(--font-head); font-size: 20px; font-weight: 700; letter-spacing: -0.5px; color: var(--t1); }
         .hours-open-badge { margin-left: auto; display: flex; align-items: center; gap: 6px; }
         .hours-open-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green); flex-shrink: 0; }
         .hours-open-text { font-size: 12px; color: var(--green); font-weight: 600; }
         .hours-row { display: flex; justify-content: space-between; align-items: center; padding: 6px 0; gap: 8px; }
         .hours-row + .hours-row { border-top: 1px solid #EBEBEB; }
-        .hours-row-day { font-size: 13px; color: var(--t2); white-space: nowrap; }
-        .hours-row-time { font-size: 13px; font-weight: 600; color: var(--t1); text-align: right; white-space: nowrap; }
+        .hours-row-day { font-size: 16px; color: var(--t2); white-space: nowrap; }
+        .hours-row-time { font-size: 16px; font-weight: 600; color: var(--t1); text-align: right; white-space: nowrap; }
 
         /* ── Map box ── */
         .map-box {
@@ -199,12 +199,12 @@ export default function ContactPage() {
           border-radius: 10px; padding: 9px 16px; z-index: 1;
           max-width: calc(100% - 32px);
         }
-        .map-address-name { font-size: 13px; font-weight: 700; color: var(--t1); }
-        .map-address-sub  { font-size: 12px; color: var(--t3); }
+        .map-address-name { font-size: 14px; font-weight: 700; color: var(--t1); }
+        .map-address-sub  { font-size: 14px; color: var(--t3); }
         .map-open-link {
           display: flex; align-items: center; justify-content: center; gap: 8px;
           padding: 14px; background: #F8F9FA; color: var(--t1);
-          font-size: 13px; font-weight: 700; border-top: 1px solid #EBEBEB;
+          font-size: 16px; font-weight: 700; border-top: 1px solid #EBEBEB;
           text-decoration: none; transition: background 0.15s; font-family: var(--font-body);
           letter-spacing: 0.5px;
         }
@@ -216,14 +216,14 @@ export default function ContactPage() {
           border-radius: 18px; padding: 36px;
         }
         .form-header { margin-bottom: 28px; padding-bottom: 22px; border-bottom: 1px solid var(--border); }
-        .form-title { font-family: var(--font-head); font-size: 28px; letter-spacing: -0.5px; color: var(--t1); margin-bottom: 6px; line-height: 1; }
-        .form-subtitle { font-size: 14px; color: var(--t2); }
+        .form-title { font-family: var(--font-head); font-size: 24px; font-weight: 700; letter-spacing: -0.5px; color: var(--t1); margin-bottom: 6px; line-height: 1.2; }
+        .form-subtitle { font-size: 16px; color: var(--t2); }
         .form-row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
         .form-label { font-size: 12px; font-weight: 700; color: var(--t2); display: block; margin-bottom: 6px; letter-spacing: 0.5px; text-transform: uppercase; }
         .form-input {
           width: 100%; padding: 13px 16px;
           background: #F8F9FA; border: 1px solid #D0D0D0;
-          border-radius: 10px; color: #1A1A1A; font-size: 14px; outline: none;
+          border-radius: 10px; color: #1A1A1A; font-size: 16px; outline: none;
           transition: border-color 0.15s; font-family: var(--font-body);
         }
         .form-input:focus { border-color: var(--y); }
@@ -231,7 +231,7 @@ export default function ContactPage() {
         .form-select {
           width: 100%; padding: 13px 16px;
           background: #F8F9FA; border: 1px solid #D0D0D0;
-          border-radius: 10px; color: #1A1A1A; font-size: 14px; outline: none;
+          border-radius: 10px; color: #1A1A1A; font-size: 16px; outline: none;
           cursor: pointer; appearance: none;
           transition: border-color 0.15s; font-family: var(--font-body);
         }
@@ -239,7 +239,7 @@ export default function ContactPage() {
         .form-textarea {
           width: 100%; padding: 13px 16px;
           background: #F8F9FA; border: 1px solid #D0D0D0;
-          border-radius: 10px; color: #1A1A1A; font-size: 14px; outline: none;
+          border-radius: 10px; color: #1A1A1A; font-size: 16px; outline: none;
           resize: none; height: 140px;
           transition: border-color 0.15s; font-family: var(--font-body);
         }
@@ -247,7 +247,7 @@ export default function ContactPage() {
         .form-textarea::placeholder { color: var(--t3); }
         .form-submit-btn {
           width: 100%; padding: 16px; background: var(--y);
-          border-radius: 12px; font-size: 15px; font-weight: 900;
+          border-radius: 12px; font-size: 16px; font-weight: 700;
           color: #000; cursor: pointer; border: 2px solid transparent;
           display: flex; align-items: center; justify-content: center; gap: 8px;
           font-family: var(--font-body);
@@ -260,7 +260,7 @@ export default function ContactPage() {
           border: 1px solid #E0E0E0; display: flex; align-items: center; gap: 10px;
           flex-wrap: wrap;
         }
-        .form-phone-note-text { font-size: 13px; color: var(--t2); }
+        .form-phone-note-text { font-size: 16px; color: var(--t2); }
         .form-phone-note-link { color: var(--t1); font-weight: 700; text-decoration: none; }
         .form-phone-note-link:hover { text-decoration: underline; }
 
@@ -274,19 +274,19 @@ export default function ContactPage() {
           background: rgba(34,197,94,0.08); border: 2px solid var(--green);
           display: flex; align-items: center; justify-content: center; margin: 0 auto 24px;
         }
-        .success-title { font-family: var(--font-head); font-size: clamp(28px,5vw,38px); letter-spacing: -0.5px; color: var(--t1); margin-bottom: 14px; line-height: 1; }
-        .success-msg { font-size: 15px; color: var(--t2); line-height: 1.75; margin-bottom: 32px; }
+        .success-title { font-family: var(--font-head); font-size: 28px; font-weight: 700; letter-spacing: -0.5px; color: var(--t1); margin-bottom: 14px; line-height: 1.2; }
+        .success-msg { font-size: 16px; color: var(--t2); line-height: 1.75; margin-bottom: 32px; }
         .success-actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
 
         /* ── Footer ── */
         .site-footer { background: #F8F9FA; padding: 68px 0 32px; border-top: 1px solid #E5E5E5; }
         .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 48px; margin-bottom: 40px; }
         .footer-bottom { border-top: 1px solid #E5E5E5; padding-top: 24px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
-        .footer-link { display: block; font-size: 14px; color: #1A1A1A; margin-bottom: 11px; text-decoration: none; transition: color 0.15s, padding-left 0.15s; }
-        .footer-link:hover { color: #555555; padding-left: 4px; }
+        .footer-link { display: block; font-size: 16px; color: #1A1A1A; margin-bottom: 11px; text-decoration: none; transition: color 0.15s, padding-left 0.15s; padding: 8px 12px; }
+        .footer-link:hover { color: #555555; padding-left: 16px; }
         .footer-hours-row { display: flex; gap: 14px; }
-        .footer-hours-day { font-size: 13px; color: #1A1A1A; font-weight: 600; min-width: 90px; }
-        .footer-hours-time { font-size: 13px; color: #666666; }
+        .footer-hours-day { font-size: 14px; color: #1A1A1A; font-weight: 600; min-width: 90px; }
+        .footer-hours-time { font-size: 14px; color: #666666; }
 
         /* ═══ RESPONSIVE ═══ */
 
@@ -357,10 +357,10 @@ export default function ContactPage() {
 
         <div className="container hero-container" style={{ position: 'relative' }}>
           <span id="hero-label" className="sec-label">Get In Touch</span>
-          <h1 id="hero-title" className="bebas" style={{ fontSize: '40px', color: '#1A1A1A', lineHeight: '1.2', marginBottom: '22px' }}>
+          <h1 id="hero-title" className="bebas" style={{ fontSize: '28px', color: '#1A1A1A', lineHeight: '1.2', marginBottom: '22px' }}>
             We&apos;d Love to Hear From You
           </h1>
-          <p id="hero-subtitle" style={{ fontSize: 'clamp(14px, 2vw, 18px)', color: '#1A1A1A', lineHeight: '1.8', maxWidth: '500px', margin: '0 auto' }}>
+          <p id="hero-subtitle" style={{ fontSize: '16px', color: '#1A1A1A', lineHeight: '1.8', maxWidth: '500px', margin: '0 auto' }}>
             Questions, feedback, catering inquiries, or just want to say hi — we are here for it.
           </p>
         </div>
@@ -379,7 +379,7 @@ export default function ContactPage() {
               {/* Section header */}
               <div id="contact-info-header" style={{ marginBottom: '28px' }}>
                 <span className="sec-label">Contact Info</span>
-                <h2 id="contact-info-heading" className="bebas" style={{ fontSize: '32px', color: '#1A1A1A', lineHeight: '1.2' }}>
+                <h2 id="contact-info-heading" className="bebas" style={{ fontSize: '28px', fontWeight: 700, color: '#1A1A1A', lineHeight: '1.2' }}>
                   Reach <span style={{ color: '#1A1A1A' }}>Us Anytime</span>
                 </h2>
               </div>
@@ -600,17 +600,17 @@ export default function ContactPage() {
                   <Image src="/logo.svg" alt="Eggs Ok" width={100} height={50} style={{ objectFit: 'contain' }} />
                 </div>
               </div>
-              <p id="footer-tagline" style={{ fontSize: '14px', color: '#1A1A1A', lineHeight: '1.75', maxWidth: '280px', marginBottom: '22px' }}>
+              <p id="footer-tagline" style={{ fontSize: '16px', color: '#1A1A1A', lineHeight: '1.75', maxWidth: '280px', marginBottom: '22px' }}>
                 Fresh breakfast and lunch in West Philadelphia. Made to order, every time.
               </p>
               <address id="footer-address" style={{ fontStyle: 'normal' }}>
-                <p id="footer-address-line" style={{ fontSize: '13px', color: '#1A1A1A', display: 'flex', alignItems: 'center', gap: '7px', marginBottom: '8px' }}>
+                <p id="footer-address-line" style={{ fontSize: '14px', color: '#1A1A1A', display: 'flex', alignItems: 'center', gap: '7px', marginBottom: '8px' }}>
                   <MapPin size={13} color="#E5B800" aria-hidden="true" />
                   <a id="footer-address-link" href="https://www.google.com/maps?q=3517+Lancaster+Ave,+Philadelphia+PA+19104" style={{ color: '#1A1A1A', textDecoration: 'none' }}>
                     3517 Lancaster Ave, Philadelphia PA 19104
                   </a>
                 </p>
-                <p id="footer-phone-line" style={{ fontSize: '13px', color: '#1A1A1A', display: 'flex', alignItems: 'center', gap: '7px' }}>
+                <p id="footer-phone-line" style={{ fontSize: '14px', color: '#1A1A1A', display: 'flex', alignItems: 'center', gap: '7px' }}>
                   <Smartphone size={13} color="#E5B800" aria-hidden="true" />
                   <a id="footer-phone-link" href="tel:2159489902" style={{ color: '#1A1A1A', textDecoration: 'none' }}>215-948-9902</a>
                 </p>
@@ -619,7 +619,7 @@ export default function ContactPage() {
 
             {/* Quick links */}
             <nav id="footer-nav" aria-label="Quick links">
-              <p id="footer-nav-heading" style={{ fontSize: '15px', fontWeight: '700', color: '#1A1A1A', letterSpacing: '2px', textTransform: 'uppercase', marginBottom: '20px' }}>Quick Links</p>
+              <p id="footer-nav-heading" style={{ fontSize: '18px', fontFamily: "'Playfair Display', Georgia, serif", fontWeight: '700', color: '#1A1A1A', letterSpacing: '2px', textTransform: 'uppercase', marginBottom: '20px' }}>Quick Links</p>
               {[
                 { label: 'Home',         href: '/'          },
                 { label: 'Order Online', href: '/order'     },
@@ -634,7 +634,7 @@ export default function ContactPage() {
 
             {/* Hours */}
             <div id="footer-hours">
-              <p id="footer-hours-heading" style={{ fontSize: '15px', fontWeight: '700', color: '#1A1A1A', letterSpacing: '2px', textTransform: 'uppercase', marginBottom: '20px' }}>Hours</p>
+              <p id="footer-hours-heading" style={{ fontSize: '18px', fontFamily: "'Playfair Display', Georgia, serif", fontWeight: '700', color: '#1A1A1A', letterSpacing: '2px', textTransform: 'uppercase', marginBottom: '20px' }}>Hours</p>
               <div id="footer-hours-list" style={{ display: 'flex', flexDirection: 'column', gap: '5px' }}>
                 {[
                   { day: 'Monday',    hours: '8:00 AM – 10:00 PM' },

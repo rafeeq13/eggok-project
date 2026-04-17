@@ -72,7 +72,7 @@ function OrderTrackingContent() {
     return (
       <div style={{ background: '#FFFFFF', minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '16px' }}>
         <p style={{ color: '#777777', fontSize: '16px' }}>{error || 'Order not found'}</p>
-        <Link href="/" style={{ color: '#333333', fontSize: '14px', textDecoration: 'none' }}>Back to Home</Link>
+        <Link href="/" style={{ color: '#333333', fontSize: '16px', textDecoration: 'none' }}>Back to Home</Link>
       </div>
     );
   }
@@ -83,7 +83,7 @@ function OrderTrackingContent() {
   const isCancelled = order.status === 'cancelled';
 
   return (
-    <div style={{ background: '#FFFFFF', minHeight: '100vh', color: '#1A1A1A', fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif' }}>
+    <div style={{ background: '#FFFFFF', minHeight: '100vh', color: '#1A1A1A', fontFamily: "'Geist', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif", fontWeight: 500 }}>
 
       {/* Nav */}
       <div style={{ position: 'fixed', top: 0, left: 0, right: 0, zIndex: 100, background: 'rgba(255,255,255,0.98)', backdropFilter: 'blur(20px)', borderBottom: '1px solid #E5E5E5', height: '64px', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '0 28px' }}>
@@ -103,8 +103,8 @@ function OrderTrackingContent() {
               <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#E5B800" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
             )}
           </div>
-          <h1 style={{ fontSize: '28px', fontWeight: '900', marginBottom: '8px' }}>Order #{order.orderNumber}</h1>
-          <p style={{ fontSize: '14px', color: '#777777' }}>
+          <h1 style={{ fontSize: '24px', fontWeight: 700, fontFamily: "'Playfair Display', Georgia, serif", marginBottom: '8px' }}>Order #{order.orderNumber}</h1>
+          <p style={{ fontSize: '16px', color: '#777777' }}>
             {isCancelled ? 'This order was cancelled' : statusDesc[order.status] || 'Processing'}
           </p>
         </div>
@@ -131,7 +131,7 @@ function OrderTrackingContent() {
                     )}
                   </div>
                   <div style={{ paddingTop: '3px' }}>
-                    <p style={{ fontSize: '14px', fontWeight: active ? '700' : '500', color: done ? '#1A1A1A' : '#AAAAAA', margin: 0 }}>{statusLabel[step]}</p>
+                    <p style={{ fontSize: '16px', fontWeight: active ? '700' : '500', color: done ? '#1A1A1A' : '#AAAAAA', margin: 0 }}>{statusLabel[step]}</p>
                     {active && <p style={{ fontSize: '12px', color: '#777777', margin: '2px 0 0' }}>{statusDesc[step]}</p>}
                   </div>
                 </div>
@@ -150,33 +150,33 @@ function OrderTrackingContent() {
                 </svg>
               </div>
               <div>
-                <p style={{ fontSize: '14px', fontWeight: '700', color: '#1A1A1A', margin: 0 }}>Delivery In Progress</p>
+                <p style={{ fontSize: '16px', fontWeight: '700', color: '#1A1A1A', margin: 0 }}>Delivery In Progress</p>
                 <p style={{ fontSize: '12px', color: '#A78BFA', margin: 0 }}>via {order.deliveryProvider === 'uber_direct' ? 'Uber Direct' : order.deliveryProvider}</p>
               </div>
             </div>
             {order.deliveryDriverName && (
               <div style={{ display: 'flex', justifyContent: 'space-between', padding: '10px 0', borderTop: '1px solid #D0D0D0' }}>
-                <span style={{ fontSize: '13px', color: '#777777' }}>Driver</span>
-                <span style={{ fontSize: '13px', color: '#1A1A1A', fontWeight: '600' }}>{order.deliveryDriverName}</span>
+                <span style={{ fontSize: '14px', color: '#777777' }}>Driver</span>
+                <span style={{ fontSize: '14px', color: '#1A1A1A', fontWeight: '600' }}>{order.deliveryDriverName}</span>
               </div>
             )}
             {order.deliveryDriverPhone && (
               <div style={{ display: 'flex', justifyContent: 'space-between', padding: '10px 0', borderTop: '1px solid #D0D0D0' }}>
-                <span style={{ fontSize: '13px', color: '#777777' }}>Driver Phone</span>
-                <a href={`tel:${order.deliveryDriverPhone}`} style={{ fontSize: '13px', color: '#60A5FA', textDecoration: 'none', fontWeight: '600' }}>{order.deliveryDriverPhone}</a>
+                <span style={{ fontSize: '14px', color: '#777777' }}>Driver Phone</span>
+                <a href={`tel:${order.deliveryDriverPhone}`} style={{ fontSize: '14px', color: '#60A5FA', textDecoration: 'none', fontWeight: '600' }}>{order.deliveryDriverPhone}</a>
               </div>
             )}
             {order.deliveryEta && (
               <div style={{ display: 'flex', justifyContent: 'space-between', padding: '10px 0', borderTop: '1px solid #D0D0D0' }}>
-                <span style={{ fontSize: '13px', color: '#777777' }}>ETA</span>
-                <span style={{ fontSize: '13px', color: '#1A1A1A' }}>{new Date(order.deliveryEta).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })}</span>
+                <span style={{ fontSize: '14px', color: '#777777' }}>ETA</span>
+                <span style={{ fontSize: '14px', color: '#1A1A1A' }}>{new Date(order.deliveryEta).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })}</span>
               </div>
             )}
             {order.deliveryTrackingUrl && (
               <a href={order.deliveryTrackingUrl} target="_blank" rel="noopener noreferrer" style={{
-                display: 'block', textAlign: 'center', padding: '12px', marginTop: '12px',
+                display: 'block', textAlign: 'center', padding: '8px 12px', marginTop: '12px',
                 background: '#A78BFA', borderRadius: '10px', color: '#000',
-                fontSize: '14px', fontWeight: '700', textDecoration: 'none',
+                fontSize: '16px', fontWeight: '700', textDecoration: 'none',
               }}>
                 Track Your Delivery Live
               </a>
@@ -186,15 +186,15 @@ function OrderTrackingContent() {
 
         {/* Order Details */}
         <div style={{ background: '#FFFFFF', borderRadius: '16px', padding: '20px', marginBottom: '20px', border: '1px solid #E0E0E0' }}>
-          <p style={{ fontSize: '11px', color: '#777777', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '14px' }}>Order Details</p>
+          <p style={{ fontSize: '12px', color: '#777777', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '14px' }}>Order Details</p>
 
           <div style={{ display: 'flex', justifyContent: 'space-between', padding: '8px 0', borderBottom: '1px solid #E5E5E5' }}>
-            <span style={{ fontSize: '13px', color: '#777777' }}>Type</span>
-            <span style={{ fontSize: '13px', color: '#1A1A1A', textTransform: 'capitalize' }}>{order.orderType}</span>
+            <span style={{ fontSize: '14px', color: '#777777' }}>Type</span>
+            <span style={{ fontSize: '14px', color: '#1A1A1A', textTransform: 'capitalize' }}>{order.orderType}</span>
           </div>
           <div style={{ display: 'flex', justifyContent: 'space-between', padding: '8px 0', borderBottom: '1px solid #E5E5E5' }}>
-            <span style={{ fontSize: '13px', color: '#777777' }}>{isDelivery ? 'Deliver To' : 'Pickup At'}</span>
-            <span style={{ fontSize: '13px', color: '#1A1A1A', maxWidth: '60%', textAlign: 'right' }}>
+            <span style={{ fontSize: '14px', color: '#777777' }}>{isDelivery ? 'Deliver To' : 'Pickup At'}</span>
+            <span style={{ fontSize: '14px', color: '#1A1A1A', maxWidth: '60%', textAlign: 'right' }}>
               {isDelivery ? order.deliveryAddress : storeAddress}
             </span>
           </div>
@@ -203,8 +203,8 @@ function OrderTrackingContent() {
           <div style={{ marginTop: '14px' }}>
             {(order.items || []).map((item: any, i: number) => (
               <div key={i} style={{ display: 'flex', justifyContent: 'space-between', padding: '8px 0', borderBottom: '1px solid #E5E5E5' }}>
-                <span style={{ fontSize: '13px', color: '#1A1A1A' }}>{item.quantity}x {item.name}</span>
-                <span style={{ fontSize: '13px', color: '#1A1A1A' }}>${((item.price || 0) * (item.quantity || 1)).toFixed(2)}</span>
+                <span style={{ fontSize: '14px', color: '#1A1A1A' }}>{item.quantity}x {item.name}</span>
+                <span style={{ fontSize: '14px', color: '#1A1A1A' }}>${((item.price || 0) * (item.quantity || 1)).toFixed(2)}</span>
               </div>
             ))}
           </div>
@@ -212,18 +212,18 @@ function OrderTrackingContent() {
           {/* Totals */}
           <div style={{ marginTop: '14px', paddingTop: '10px', borderTop: '2px solid #E5B800' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-              <span style={{ fontSize: '16px', fontWeight: '700' }}>Total</span>
-              <span style={{ fontSize: '18px', fontWeight: '700', color: '#1A1A1A' }}>${Number(order.total).toFixed(2)}</span>
+              <span style={{ fontSize: '20px', fontWeight: 700, fontFamily: "'Playfair Display', Georgia, serif" }}>Total</span>
+              <span style={{ fontSize: '20px', fontWeight: 700, fontFamily: "'Playfair Display', Georgia, serif", color: '#1A1A1A' }}>${Number(order.total).toFixed(2)}</span>
             </div>
           </div>
         </div>
 
         {/* Actions */}
         <div style={{ display: 'flex', gap: '12px', justifyContent: 'center', flexWrap: 'wrap' }}>
-          <Link href="/order" style={{ padding: '14px 32px', background: '#E5B800', borderRadius: '12px', fontSize: '15px', fontWeight: '700', color: '#000', textDecoration: 'none' }}>
+          <Link href="/order" style={{ padding: '14px 32px', background: '#E5B800', borderRadius: '12px', fontSize: '16px', fontWeight: '700', color: '#000', textDecoration: 'none' }}>
             Order Again
           </Link>
-          <Link href="/" style={{ padding: '14px 32px', background: 'transparent', border: '1px solid #D0D0D0', borderRadius: '12px', fontSize: '15px', fontWeight: '600', color: '#777777', textDecoration: 'none' }}>
+          <Link href="/" style={{ padding: '14px 32px', background: 'transparent', border: '1px solid #D0D0D0', borderRadius: '12px', fontSize: '16px', fontWeight: '600', color: '#777777', textDecoration: 'none' }}>
             Back to Home
           </Link>
         </div>

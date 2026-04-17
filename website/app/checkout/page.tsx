@@ -102,19 +102,19 @@ const css = `
   .co-modal-backdrop { position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 300; display: flex; align-items: center; justify-content: center; padding: 16px; }
   .co-modal-close { width: 32px; height: 32px; border-radius: 50%; background: #F0F0F0; border: 1px solid #D0D0D0; color: #888; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background 0.15s; flex-shrink: 0; }
   .co-modal-close:hover { background: #EEEEEE; color: #1A1A1A; }
-  .co-modal-title { font-family: 'DM Sans', sans-serif; font-size: 24px; font-weight: 900; letter-spacing: -0.5px; color: #1A1A1A; margin: 0; }
+  .co-modal-title { font-family: 'Playfair Display', Georgia, serif; font-size: 20px; font-weight: 700; letter-spacing: -0.5px; color: #1A1A1A; margin: 0; }
 
   .co-delivery-box { background: #FFFFFF; border-radius: 20px; width: 100%; max-width: 460px; border: 1px solid #E5E5E5; box-shadow: 0 24px 64px rgba(0,0,0,0.1); max-height: 92vh; overflow-y: auto; }
   .co-delivery-inner { padding: 28px; }
   .co-delivery-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 22px; }
   .co-type-toggle { display: flex; background: #F0F0F0; border-radius: 999px; padding: 3px; margin-bottom: 20px; border: 1px solid #D0D0D0; }
-  .co-type-btn { flex: 1; padding: 10px; border-radius: 999px; border: none; cursor: pointer; font-size: 13px; font-weight: 700; transition: all 0.2s; }
+  .co-type-btn { flex: 1; padding: 10px; border-radius: 999px; border: none; cursor: pointer; font-size: 16px; font-weight: 700; transition: all 0.2s; }
   .co-type-btn.active { background: #E5B800; color: #000; }
   .co-type-btn.inactive { background: transparent; color: #AAAAAA; }
   .co-del-input-wrap { position: relative; }
-  .co-del-input { width: 100%; padding: 13px 40px 13px 42px; background: #F8F9FA; border: 1.5px solid #1A1A1A; border-radius: 12px; color: #1A1A1A; font-size: 14px; outline: none; box-sizing: border-box; }
+  .co-del-input { width: 100%; padding: 13px 40px 13px 42px; background: #F8F9FA; border: 1.5px solid #1A1A1A; border-radius: 12px; color: #1A1A1A; font-size: 16px; outline: none; box-sizing: border-box; }
   .co-del-input::placeholder { color: #AAAAAA; }
-  .co-del-clear { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); background: none; border: none; color: #AAAAAA; cursor: pointer; font-size: 13px; font-weight: 600; }
+  .co-del-clear { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); background: none; border: none; color: #AAAAAA; cursor: pointer; font-size: 14px; font-weight: 600; }
   .co-del-clear:hover { color: #1A1A1A; }
   .co-del-suggestion { margin-top: 8px; background: #F8F9FA; border: 1px solid #E5E5E5; border-radius: 12px; overflow: hidden; }
   .co-del-sug-row { padding: 14px 16px; cursor: pointer; transition: background 0.12s; }
@@ -122,16 +122,16 @@ const css = `
   .co-del-addr-row { display: flex; align-items: center; gap: 10px; padding: 12px 14px; background: #F8F9FA; border: 1.5px solid rgba(254,216,0,0.2); border-radius: 12px; }
   .co-del-addr-change { background: none; border: none; color: #1A1A1A; font-size: 12px; font-weight: 700; cursor: pointer; flex-shrink: 0; }
   .co-del-field-label { font-size: 12px; color: #777777; display: block; margin-bottom: 6px; font-weight: 600; }
-  .co-del-field-input { width: 100%; padding: 12px; background: #F8F9FA; border: 1px solid #D0D0D0; border-radius: 10px; color: #1A1A1A; font-size: 13px; outline: none; box-sizing: border-box; transition: border-color 0.15s; }
+  .co-del-field-input { width: 100%; padding: 12px; background: #F8F9FA; border: 1px solid #D0D0D0; border-radius: 10px; color: #1A1A1A; font-size: 16px; outline: none; box-sizing: border-box; transition: border-color 0.15s; }
   .co-del-field-input:focus { border-color: #E5B800; }
   .co-del-field-input::placeholder { color: #AAAAAA; }
-  .co-del-field-textarea { width: 100%; padding: 12px; background: #F8F9FA; border: 1px solid #D0D0D0; border-radius: 10px; color: #1A1A1A; font-size: 13px; outline: none; height: 80px; resize: none; box-sizing: border-box; transition: border-color 0.15s; }
+  .co-del-field-textarea { width: 100%; padding: 12px; background: #F8F9FA; border: 1px solid #D0D0D0; border-radius: 10px; color: #1A1A1A; font-size: 16px; outline: none; height: 80px; resize: none; box-sizing: border-box; transition: border-color 0.15s; }
   .co-del-field-textarea:focus { border-color: #E5B800; }
   .co-del-field-textarea::placeholder { color: #AAAAAA; }
   .co-del-from { padding: 14px 16px; background: #F8F9FA; border-radius: 12px; border: 1px solid #E5E5E5; }
-  .co-btn-primary { width: 100%; padding: 14px; background: #E5B800; border: 2px solid transparent; border-radius: 12px; color: #000; font-size: 15px; font-weight: 900; cursor: pointer; transition: all 0.3s ease; }
+  .co-btn-primary { width: 100%; padding: 14px; background: #E5B800; border: 2px solid transparent; border-radius: 12px; color: #000; font-size: 16px; font-weight: 900; cursor: pointer; transition: all 0.3s ease; font-family: 'Geist', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; }
   .co-btn-primary:hover { background: #E5B800; color: #000; border-color: transparent; transform: none; box-shadow: none; }
-  .co-btn-secondary { width: 100%; padding: 14px; background: transparent; border: 1.5px solid #D0D0D0; border-radius: 12px; color: #555555; font-size: 15px; font-weight: 600; cursor: pointer; transition: border-color 0.15s; }
+  .co-btn-secondary { width: 100%; padding: 14px; background: transparent; border: 1.5px solid #D0D0D0; border-radius: 12px; color: #555555; font-size: 16px; font-weight: 600; cursor: pointer; transition: border-color 0.15s; font-family: 'Geist', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; }
   .co-btn-secondary:hover { border-color: #C0C0C0; color: #1A1A1A; }
 
   .co-schedule-box { background: #FFFFFF; border-radius: 20px; width: 100%; max-width: 420px; border: 1px solid #E5E5E5; box-shadow: 0 24px 64px rgba(0,0,0,0.1); overflow: hidden; max-height: 90vh; display: flex; flex-direction: column; }
@@ -141,7 +141,7 @@ const css = `
   .co-schedule-date-btn { padding: 10px 14px; border-radius: 10px; border: 1px solid; cursor: pointer; text-align: left; transition: border-color 0.15s, background 0.15s; background: #F0F0F0; }
   .co-schedule-date-btn.active { border-color: #E5B800; background: rgba(254,216,0,0.1); }
   .co-schedule-date-btn.inactive { border-color: #D0D0D0; }
-  .co-more-dates-btn { width: 100%; padding: 10px; background: transparent; border: 1px solid #D0D0D0; border-radius: 10px; color: #555555; font-size: 13px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; margin-bottom: 4px; transition: border-color 0.15s; }
+  .co-more-dates-btn { width: 100%; padding: 10px; background: transparent; border: 1px solid #D0D0D0; border-radius: 10px; color: #555555; font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; margin-bottom: 4px; transition: border-color 0.15s; }
   .co-more-dates-btn:hover { border-color: #C0C0C0; color: #1A1A1A; }
   .co-times-list { overflow-y: auto; flex: 1; padding: 0 24px 8px; }
   .co-time-row { display: flex; align-items: center; gap: 14px; padding: 14px 0; border-bottom: 1px solid #EBEBEB; cursor: pointer; }
@@ -150,7 +150,7 @@ const css = `
   .co-radio.unselected { border-color: #D0D0D0; background: transparent; }
   .co-radio-inner { width: 8px; height: 8px; border-radius: 50%; background: #000; }
   .co-schedule-footer { padding: 16px 24px; border-top: 1px solid #E5E5E5; flex-shrink: 0; }
-  .co-schedule-confirm { width: 100%; padding: 14px; background: #E5B800; border: 2px solid transparent; border-radius: 12px; color: #000; font-size: 15px; font-weight: 900; cursor: pointer; transition: all 0.3s ease; }
+  .co-schedule-confirm { width: 100%; padding: 14px; background: #E5B800; border: 2px solid transparent; border-radius: 12px; color: #000; font-size: 16px; font-weight: 900; cursor: pointer; transition: all 0.3s ease; font-family: 'Geist', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; }
   .co-schedule-confirm:hover { background: #E5B800; color: #000; border-color: transparent; transform: none; }
 `;
 
@@ -331,13 +331,14 @@ function CheckoutInner() {
     width: '100%', padding: '12px 16px',
     background: '#F8F9FA', border: '1px solid #D0D0D0',
     borderRadius: '10px', color: '#1A1A1A',
-    fontSize: '14px', outline: 'none',
+    fontSize: '16px', outline: 'none',
     transition: 'border-color 0.2s',
     boxSizing: 'border-box',
+    fontFamily: "'Geist', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif",
   };
 
   const labelStyle: React.CSSProperties = {
-    fontSize: '13px', fontWeight: '600',
+    fontSize: '14px', fontWeight: '600',
     color: '#555555', display: 'block',
     marginBottom: '6px',
   };
@@ -348,8 +349,9 @@ function CheckoutInner() {
   };
 
   const sectionTitle: React.CSSProperties = {
-    fontSize: '16px', fontWeight: '900',
+    fontSize: '20px', fontWeight: '700',
     color: '#1A1A1A', marginBottom: '16px',
+    fontFamily: "'Playfair Display', Georgia, serif",
   };
 
   const applyPromo = async () => {
@@ -526,21 +528,21 @@ function CheckoutInner() {
   if (!mounted) return <div style={{ background: '#F5F5F5', minHeight: '100vh' }} />;
 
   return (
-    <div style={{ background: '#F5F5F5', minHeight: '100vh', color: '#1A1A1A', fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif' }}>
+    <div style={{ background: '#F5F5F5', minHeight: '100vh', color: '#1A1A1A', fontFamily: "'Geist', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif" }}>
       <style>{css}</style>
 
       <div className="checkout-wrap">
 
         {/* Back */}
         <Link href="/order"
-          style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', color: '#1A1A1A', fontSize: '14px', marginBottom: '28px', textDecoration: 'none', transition: 'color 0.2s' }}
+          style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', color: '#1A1A1A', fontSize: '16px', marginBottom: '28px', textDecoration: 'none', transition: 'color 0.2s' }}
           onMouseEnter={e => (e.currentTarget as HTMLAnchorElement).style.color = '#000000'}
           onMouseLeave={e => (e.currentTarget as HTMLAnchorElement).style.color = '#1A1A1A'}>
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="15 18 9 12 15 6" /></svg>
           Menu
         </Link>
 
-        <h1 style={{ fontSize: 'clamp(24px, 5vw, 48px)', fontWeight: '900', color: '#1A1A1A', marginBottom: '32px', letterSpacing: '-0.5px' }}>Checkout</h1>
+        <h1 style={{ fontSize: '28px', fontWeight: '700', color: '#1A1A1A', marginBottom: '32px', letterSpacing: '-0.5px', fontFamily: "'Playfair Display', Georgia, serif" }}>Checkout</h1>
 
         <div className="checkout-grid">
 
@@ -555,7 +557,7 @@ function CheckoutInner() {
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#E5B800" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
                   <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" /><circle cx="12" cy="10" r="3" />
                 </svg>
-                <span style={{ fontSize: '14px', color: '#1A1A1A', flex: 1, wordBreak: 'break-word' }}>
+                <span style={{ fontSize: '16px', color: '#1A1A1A', flex: 1, wordBreak: 'break-word' }}>
                   {orderType === 'pickup' ? storeAddress : deliveryAddress || 'Please set a delivery address'}
                 </span>
                 <button onClick={() => setShowDeliveryModal(true)} style={{ fontSize: '12px', color: '#1A1A1A', fontWeight: '700', background: 'none', border: 'none', cursor: 'pointer', flexShrink: 0 }}>Change</button>
@@ -565,7 +567,7 @@ function CheckoutInner() {
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#E5B800" strokeWidth="2" strokeLinecap="round" style={{ flexShrink: 0 }}>
                   <circle cx="12" cy="12" r="10" /><polyline points="12 6 12 12 16 14" />
                 </svg>
-                <span style={{ fontSize: '14px', color: '#1A1A1A', flex: 1 }}>{getScheduleLabel()}</span>
+                <span style={{ fontSize: '16px', color: '#1A1A1A', flex: 1 }}>{getScheduleLabel()}</span>
                 <button onClick={() => setShowScheduleModal(true)} style={{ fontSize: '12px', color: '#1A1A1A', fontWeight: '700', background: 'none', border: 'none', cursor: 'pointer', flexShrink: 0 }}>Change</button>
               </div>
 
@@ -598,7 +600,7 @@ function CheckoutInner() {
                     color: isPreset(t) ? '#E5B800' : '#1A1A1A',
                     cursor: 'pointer', transition: 'all 0.15s', textAlign: 'center',
                   }}>
-                    <p style={{ fontSize: '15px', fontWeight: '900', margin: 0 ,color:'#1A1A1A',}}>${((subtotal * t) / 100).toFixed(2)}</p>
+                    <p style={{ fontSize: '16px', fontWeight: '900', margin: 0 ,color:'#1A1A1A',}}>${((subtotal * t) / 100).toFixed(2)}</p>
                     <p style={{ fontSize: '12px', margin: '2px 0 0', opacity: 0.7,color:'#1A1A1A', }}>{t}%</p>
                   </button>
                 ))}
@@ -611,11 +613,11 @@ function CheckoutInner() {
                 }}>
                   {isCustomActive && customTipAmount ? (
                     <>
-                      <p style={{ fontSize: '15px', fontWeight: '900', margin: 0 }}>${parseFloat(customTipAmount).toFixed(2)}</p>
+                      <p style={{ fontSize: '16px', fontWeight: '900', margin: 0 }}>${parseFloat(customTipAmount).toFixed(2)}</p>
                       <p style={{ fontSize: '12px', margin: '2px 0 0', opacity: 0.7 }}>Custom</p>
                     </>
                   ) : (
-                    <p style={{ fontSize: '13px', fontWeight: '900', margin: 0 }}>Custom</p>
+                    <p style={{ fontSize: '14px', fontWeight: '900', margin: 0 }}>Custom</p>
                   )}
                 </button>
               </div>
@@ -665,17 +667,17 @@ function CheckoutInner() {
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#22C55E" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
                 </svg>
-                <span style={{ fontSize: '12px', color: '#22C55E' }}>Secured by Stripe 256-bit SSL encryption</span>
+                <span style={{ fontSize: '14px', color: '#22C55E' }}>Secured by Stripe 256-bit SSL encryption</span>
               </div>
               {stripe ? (
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
                   <div>
-                    <label style={{ fontSize: '12px', color: '#777777', display: 'block', marginBottom: '6px', fontWeight: '600' }}>Card Number</label>
+                    <label style={{ fontSize: '14px', color: '#777777', display: 'block', marginBottom: '6px', fontWeight: '600' }}>Card Number</label>
                     <div style={{ padding: '14px', background: '#F8F9FA', border: '1px solid #D0D0D0', borderRadius: '10px' }}>
                       <CardNumberElement
                         options={{
                           style: {
-                            base: { fontSize: '15px', color: '#1A1A1A', '::placeholder': { color: '#AAAAAA' }, iconColor: '#E5B800' },
+                            base: { fontSize: '16px', color: '#1A1A1A', '::placeholder': { color: '#AAAAAA' }, iconColor: '#E5B800' },
                             invalid: { color: '#FC0301', iconColor: '#FC0301' },
                           },
                         }}
@@ -685,12 +687,12 @@ function CheckoutInner() {
                   </div>
                   <div className="payment-grid">
                     <div>
-                      <label style={{ fontSize: '12px', color: '#777777', display: 'block', marginBottom: '6px', fontWeight: '600' }}>Expiry Date</label>
+                      <label style={{ fontSize: '14px', color: '#777777', display: 'block', marginBottom: '6px', fontWeight: '600' }}>Expiry Date</label>
                       <div style={{ padding: '14px', background: '#F8F9FA', border: '1px solid #D0D0D0', borderRadius: '10px' }}>
                         <CardExpiryElement
                           options={{
                             style: {
-                              base: { fontSize: '15px', color: '#1A1A1A', '::placeholder': { color: '#AAAAAA' } },
+                              base: { fontSize: '16px', color: '#1A1A1A', '::placeholder': { color: '#AAAAAA' } },
                               invalid: { color: '#FC0301' },
                             },
                           }}
@@ -699,12 +701,12 @@ function CheckoutInner() {
                       </div>
                     </div>
                     <div>
-                      <label style={{ fontSize: '12px', color: '#777777', display: 'block', marginBottom: '6px', fontWeight: '600' }}>CVV</label>
+                      <label style={{ fontSize: '14px', color: '#777777', display: 'block', marginBottom: '6px', fontWeight: '600' }}>CVV</label>
                       <div style={{ padding: '14px', background: '#F8F9FA', border: '1px solid #D0D0D0', borderRadius: '10px' }}>
                         <CardCvcElement
                           options={{
                             style: {
-                              base: { fontSize: '15px', color: '#1A1A1A', '::placeholder': { color: '#AAAAAA' } },
+                              base: { fontSize: '16px', color: '#1A1A1A', '::placeholder': { color: '#AAAAAA' } },
                               invalid: { color: '#FC0301' },
                             },
                           }}
@@ -716,7 +718,7 @@ function CheckoutInner() {
                 </div>
               ) : (
                 <div style={{ padding: '20px', background: '#F8F9FA', borderRadius: '10px', border: '1px dashed #D0D0D0', textAlign: 'center' }}>
-                  <p style={{ fontSize: '13px', color: '#777777', margin: 0 }}>Payment processing not configured. Add Stripe keys in Admin → Integrations.</p>
+                  <p style={{ fontSize: '14px', color: '#777777', margin: 0 }}>Payment processing not configured. Add Stripe keys in Admin → Integrations.</p>
                 </div>
               )}
             </div>
@@ -738,7 +740,7 @@ function CheckoutInner() {
                 {orderError}
               </p>
             )}
-            <p style={{ fontSize: '12px', color: '#777777', textAlign: 'center', lineHeight: '1.6' }}>
+            <p style={{ fontSize: '14px', color: '#777777', textAlign: 'center', lineHeight: '1.6' }}>
               By placing your order, you agree to our Terms of Service and Privacy Policy.
             </p>
           </div>
@@ -747,34 +749,34 @@ function CheckoutInner() {
           <div className="summary-sticky">
             <div style={{ background: '#FFFFFF', border: '1px solid #E5E5E5', borderRadius: '14px', overflow: 'hidden' }}>
               <div style={{ padding: '16px 20px', borderBottom: '1px solid #E5E5E5' }}>
-                <p style={{ fontSize: '16px', fontWeight: '900', color: '#1A1A1A', margin: 0 }}>Order summary</p>
+                <p style={{ fontSize: '20px', fontWeight: '700', color: '#1A1A1A', margin: 0, fontFamily: "'Playfair Display', Georgia, serif" }}>Order summary</p>
               </div>
               <div style={{ padding: '16px 20px' }}>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginBottom: '16px' }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                    <span style={{ fontSize: '14px', color: '#1A1A1A' }}>Subtotal</span>
-                    <span style={{ fontSize: '14px', color: '#1A1A1A' }}>${subtotal.toFixed(2)}</span>
+                    <span style={{ fontSize: '16px', color: '#1A1A1A' }}>Subtotal</span>
+                    <span style={{ fontSize: '16px', color: '#1A1A1A' }}>${subtotal.toFixed(2)}</span>
                   </div>
                   <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                    <span style={{ fontSize: '14px', color: '#1A1A1A' }}>Taxes & fees</span>
-                    <span style={{ fontSize: '14px', color: '#1A1A1A' }}>${taxes.toFixed(2)}</span>
+                    <span style={{ fontSize: '16px', color: '#1A1A1A' }}>Taxes & fees</span>
+                    <span style={{ fontSize: '16px', color: '#1A1A1A' }}>${taxes.toFixed(2)}</span>
                   </div>
                   {orderType === 'delivery' && (
                     <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                      <span style={{ fontSize: '14px', color: '#1A1A1A' }}>Delivery</span>
-                      <span style={{ fontSize: '14px', color: '#1A1A1A' }}>${deliveryFee.toFixed(2)}</span>
+                      <span style={{ fontSize: '16px', color: '#1A1A1A' }}>Delivery</span>
+                      <span style={{ fontSize: '16px', color: '#1A1A1A' }}>${deliveryFee.toFixed(2)}</span>
                     </div>
                   )}
                   {tipAmount > 0 && (
                     <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                      <span style={{ fontSize: '14px', color: '#1A1A1A' }}>Tip</span>
-                      <span style={{ fontSize: '14px', color: '#1A1A1A' }}>${tipAmount.toFixed(2)}</span>
+                      <span style={{ fontSize: '16px', color: '#1A1A1A' }}>Tip</span>
+                      <span style={{ fontSize: '16px', color: '#1A1A1A' }}>${tipAmount.toFixed(2)}</span>
                     </div>
                   )}
                   {promoApplied && discount > 0 && (
                     <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                      <span style={{ fontSize: '14px', color: '#22C55E' }}>Discount ({promoCode})</span>
-                      <span style={{ fontSize: '14px', color: '#22C55E' }}>-${discount.toFixed(2)}</span>
+                      <span style={{ fontSize: '16px', color: '#22C55E' }}>Discount ({promoCode})</span>
+                      <span style={{ fontSize: '16px', color: '#22C55E' }}>-${discount.toFixed(2)}</span>
                     </div>
                   )}
                 </div>
@@ -788,7 +790,7 @@ function CheckoutInner() {
                       onFocus={e => (e.target as HTMLInputElement).style.borderColor = '#E5B800'}
                       onBlur={e => (e.target as HTMLInputElement).style.borderColor = '#D0D0D0'} />
                     <button onClick={applyPromo} disabled={promoLoading}
-                      style={{ padding: '12px 14px', background: promoLoading ? '#E5E5E5' : '#E5B800', borderRadius: '10px', color: promoLoading ? '#AAAAAA' : '#000', fontSize: '13px', fontWeight: '700', cursor: promoLoading ? 'not-allowed' : 'pointer', border: 'none', flexShrink: 0 }}>
+                      style={{ padding: '12px 14px', background: promoLoading ? '#E5E5E5' : '#E5B800', borderRadius: '10px', color: promoLoading ? '#AAAAAA' : '#000', fontSize: '16px', fontWeight: '700', cursor: promoLoading ? 'not-allowed' : 'pointer', border: 'none', flexShrink: 0, fontFamily: "'Geist', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif" }}>
                       {promoLoading ? '...' : 'Apply'}
                     </button>
                   </div>
@@ -798,14 +800,14 @@ function CheckoutInner() {
 
                 {/* Total */}
                 <div style={{ display: 'flex', justifyContent: 'space-between', paddingTop: '12px', borderTop: '1px solid #E5E5E5', marginBottom: '20px' }}>
-                  <span style={{ fontSize: '16px', fontWeight: '900', color: '#1A1A1A' }}>Total</span>
-                  <span style={{ fontSize: '18px', fontWeight: '900', color: '#1A1A1A' }}>${total.toFixed(2)}</span>
+                  <span style={{ fontSize: '20px', fontWeight: '700', color: '#1A1A1A', fontFamily: "'Playfair Display', Georgia, serif" }}>Total</span>
+                  <span style={{ fontSize: '20px', fontWeight: '700', color: '#1A1A1A', fontFamily: "'Playfair Display', Georgia, serif" }}>${total.toFixed(2)}</span>
                 </div>
 
                 {/* Cart Items */}
                 <div style={{ borderTop: '1px solid #E5E5E5', paddingTop: '16px' }}>
                   {cart.length === 0 ? (
-                    <p style={{ fontSize: '13px', color: '#AAAAAA', textAlign: 'center', padding: '10px 0' }}>No items in cart</p>
+                    <p style={{ fontSize: '14px', color: '#AAAAAA', textAlign: 'center', padding: '10px 0' }}>No items in cart</p>
                   ) : cart.map((cartItem, i) => (
                     <div key={cartItem.id} style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: i < cart.length - 1 ? '14px' : '0', paddingBottom: i < cart.length - 1 ? '14px' : '0', borderBottom: i < cart.length - 1 ? '1px solid #E5E5E5' : 'none' }}>
                       <div style={{ width: '52px', height: '52px', borderRadius: '8px', background: '#F0F0F0', border: '1px solid #D0D0D0', overflow: 'hidden', flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
@@ -815,7 +817,7 @@ function CheckoutInner() {
                         }
                       </div>
                       <div style={{ flex: 1, minWidth: 0 }}>
-                        <p style={{ fontSize: '13px', fontWeight: '700', color: '#1A1A1A', margin: 0, lineHeight: '1.3' }}>{cartItem.item.name}</p>
+                        <p style={{ fontSize: '14px', fontWeight: '700', color: '#1A1A1A', margin: 0, lineHeight: '1.3' }}>{cartItem.item.name}</p>
 
                         {/* Selected Modifiers */}
                         {cartItem.item.modifiers && (
@@ -838,12 +840,12 @@ function CheckoutInner() {
 
                         {cartItem.specialInstructions && <p style={{ fontSize: '12px', color: '#777777', margin: '2px 0 0' }}>{cartItem.specialInstructions}</p>}
                         <div style={{ display: 'flex', alignItems: 'center', gap: '0', marginTop: '6px', border: '1px solid #D0D0D0', borderRadius: '6px', overflow: 'hidden', width: 'fit-content' }}>
-                          <button onClick={() => updateQuantity(cartItem.id, cartItem.quantity - 1)} style={{ width: '28px', height: '28px', background: '#F8F9FA', border: 'none', color: '#1A1A1A', fontSize: '14px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>−</button>
+                          <button onClick={() => updateQuantity(cartItem.id, cartItem.quantity - 1)} style={{ width: '28px', height: '28px', background: '#F8F9FA', border: 'none', color: '#1A1A1A', fontSize: '16px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>−</button>
                           <span style={{ width: '30px', textAlign: 'center', fontSize: '12px', fontWeight: '700', color: '#1A1A1A', background: '#F8F9FA' }}>{cartItem.quantity}</span>
-                          <button onClick={() => updateQuantity(cartItem.id, cartItem.quantity + 1)} style={{ width: '28px', height: '28px', background: '#F8F9FA', border: 'none', color: '#1A1A1A', fontSize: '14px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>+</button>
+                          <button onClick={() => updateQuantity(cartItem.id, cartItem.quantity + 1)} style={{ width: '28px', height: '28px', background: '#F8F9FA', border: 'none', color: '#1A1A1A', fontSize: '16px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>+</button>
                         </div>
                       </div>
-                      <p style={{ fontSize: '14px', fontWeight: '700', color: '#1A1A1A', flexShrink: 0 }}>${(getPrice(cartItem.item) * cartItem.quantity).toFixed(2)}</p>
+                      <p style={{ fontSize: '16px', fontWeight: '700', color: '#1A1A1A', flexShrink: 0 }}>${(getPrice(cartItem.item) * cartItem.quantity).toFixed(2)}</p>
                     </div>
                   ))}
                 </div>
@@ -874,7 +876,7 @@ function CheckoutInner() {
           <div style={{ background: '#FFFFFF', borderRadius: '20px', width: '100%', maxWidth: '400px', border: '1px solid #E5E5E5', padding: '24px' }}
             onClick={e => e.stopPropagation()}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
-              <h2 style={{ fontSize: '18px', fontWeight: '900', color: '#1A1A1A', margin: 0 }}>Custom tip</h2>
+              <h2 style={{ fontSize: '20px', fontWeight: '700', color: '#1A1A1A', margin: 0, fontFamily: "'Playfair Display', Georgia, serif" }}>Custom tip</h2>
               <button onClick={() => setShowCustomTipModal(false)}
                 style={{ width: '30px', height: '30px', borderRadius: '50%', background: '#F0F0F0', border: '1px solid #D0D0D0', color: '#1A1A1A', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
@@ -887,7 +889,7 @@ function CheckoutInner() {
               <div>
                 <label style={{ ...labelStyle, marginBottom: '8px' }}>Amount</label>
                 <div style={{ position: 'relative' }}>
-                  <span style={{ position: 'absolute', left: '14px', top: '50%', transform: 'translateY(-50%)', color: '#1A1A1A', fontWeight: '700', fontSize: '14px' }}>$</span>
+                  <span style={{ position: 'absolute', left: '14px', top: '50%', transform: 'translateY(-50%)', color: '#1A1A1A', fontWeight: '700', fontSize: '16px' }}>$</span>
                   <input type="number" placeholder="0.00" value={customTipAmount}
                     onChange={e => {
                       setCustomTipAmount(e.target.value);
@@ -903,7 +905,7 @@ function CheckoutInner() {
                     onBlur={e => (e.target as HTMLInputElement).style.borderColor = '#D0D0D0'} />
                 </div>
               </div>
-              <span style={{ color: '#AAAAAA', fontSize: '18px', marginTop: '20px' }}>=</span>
+              <span style={{ color: '#AAAAAA', fontSize: '20px', marginTop: '20px' }}>=</span>
               <div>
                 <label style={{ ...labelStyle, marginBottom: '8px' }}>Percent</label>
                 <div style={{ position: 'relative' }}>
@@ -919,13 +921,13 @@ function CheckoutInner() {
                     style={{ ...inputStyle, paddingRight: '28px' }}
                     onFocus={e => (e.target as HTMLInputElement).style.borderColor = '#E5B800'}
                     onBlur={e => (e.target as HTMLInputElement).style.borderColor = '#D0D0D0'} />
-                  <span style={{ position: 'absolute', right: '14px', top: '50%', transform: 'translateY(-50%)', color: '#1A1A1A', fontSize: '14px' }}>%</span>
+                  <span style={{ position: 'absolute', right: '14px', top: '50%', transform: 'translateY(-50%)', color: '#1A1A1A', fontSize: '16px' }}>%</span>
                 </div>
               </div>
             </div>
 
             <button onClick={applyCustomTip} disabled={!customTipAmount || parseFloat(customTipAmount) <= 0}
-              style={{ width: '100%', padding: '14px', background: customTipAmount && parseFloat(customTipAmount) > 0 ? '#E5B800' : '#E5E5E5', border: 'none', borderRadius: '12px', color: customTipAmount && parseFloat(customTipAmount) > 0 ? '#000' : '#AAAAAA', fontSize: '15px', fontWeight: '900', cursor: customTipAmount && parseFloat(customTipAmount) > 0 ? 'pointer' : 'not-allowed' }}>
+              style={{ width: '100%', padding: '14px', background: customTipAmount && parseFloat(customTipAmount) > 0 ? '#E5B800' : '#E5E5E5', border: 'none', borderRadius: '12px', color: customTipAmount && parseFloat(customTipAmount) > 0 ? '#000' : '#AAAAAA', fontSize: '16px', fontWeight: '900', cursor: customTipAmount && parseFloat(customTipAmount) > 0 ? 'pointer' : 'not-allowed', fontFamily: "'Geist', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif" }}>
               Done
             </button>
           </div>
@@ -964,14 +966,14 @@ function CheckoutInner() {
                   </div>
                   {deliveryAddrError && (
                     <div style={{ marginTop: '8px', padding: '10px 14px', background: '#FC030115', border: '1px solid #FC030140', borderRadius: '10px' }}>
-                      <p style={{ fontSize: '13px', color: '#FC0301', fontWeight: '500', margin: 0 }}>{deliveryAddrError}</p>
+                      <p style={{ fontSize: '14px', color: '#FC0301', fontWeight: '500', margin: 0 }}>{deliveryAddrError}</p>
                     </div>
                   )}
                   {!mapsLoaded && deliveryAddress.length > 2 && (
                     <div className="co-del-suggestion">
                       <div className="co-del-sug-row" onClick={() => setDeliveryStep(2)}>
-                        <p style={{ fontSize: '14px', fontWeight: '700', color: '#1A1A1A' }}>{deliveryAddress}</p>
-                        <p style={{ fontSize: '12px', color: '#AAAAAA', marginTop: '2px' }}>Philadelphia, PA</p>
+                        <p style={{ fontSize: '16px', fontWeight: '700', color: '#1A1A1A' }}>{deliveryAddress}</p>
+                        <p style={{ fontSize: '14px', color: '#AAAAAA', marginTop: '2px' }}>Philadelphia, PA</p>
                       </div>
                     </div>
                   )}
@@ -984,7 +986,7 @@ function CheckoutInner() {
                     <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#777777" strokeWidth="2">
                       <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
                     </svg>
-                    <span style={{ flex: 1, fontSize: '13px', color: '#1A1A1A', fontWeight: '500', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{deliveryAddress}</span>
+                    <span style={{ flex: 1, fontSize: '16px', color: '#1A1A1A', fontWeight: '500', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{deliveryAddress}</span>
                     <button className="co-del-addr-change" onClick={() => setDeliveryStep(1)}>Change</button>
                   </div>
                   <div>
@@ -998,13 +1000,13 @@ function CheckoutInner() {
                   <div className="co-del-from">
                     <p style={{ fontSize: '12px', fontWeight: '700', color: '#777777', marginBottom: '6px', textTransform: 'uppercase', letterSpacing: '1px' }}>Delivering from</p>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                      <p style={{ fontSize: '14px', fontWeight: '700', color: '#1A1A1A', margin: 0 }}>{storeName}</p>
+                      <p style={{ fontSize: '16px', fontWeight: '700', color: '#1A1A1A', margin: 0 }}>{storeName}</p>
                       <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
                         <div style={{ width: '6px', height: '6px', borderRadius: '50%', background: isOpen ? '#22C55E' : '#FC0301' }} />
                         <span style={{ fontSize: '12px', color: isOpen ? '#22C55E' : '#FC0301', fontWeight: '600' }}>{isOpen ? statusMessage : 'Closed Now'}</span>
                       </div>
                     </div>
-                    <p style={{ fontSize: '12px', color: '#AAAAAA', marginTop: '2px' }}>{storeAddress}</p>
+                    <p style={{ fontSize: '14px', color: '#AAAAAA', marginTop: '2px' }}>{storeAddress}</p>
                   </div>
                   <button className="co-btn-primary" onClick={() => { setScheduleType('asap'); setShowDeliveryModal(false); }}>Deliver ASAP</button>
                   <button className="co-btn-secondary" onClick={() => { setShowDeliveryModal(false); setShowScheduleModal(true); }}>Schedule delivery</button>
@@ -1039,7 +1041,7 @@ function CheckoutInner() {
                     <div className="co-schedule-dates-grid">
                       {visibleDays.map(d => (
                         <button key={d.value} className={`co-schedule-date-btn ${selectedVal === d.value ? 'active' : 'inactive'}`} onClick={() => setScheduleDate(d.value)}>
-                          <p style={{ fontSize: '13px', fontWeight: '700', margin: 0, color: selectedVal === d.value ? '#E5B800' : '#1A1A1A' }}>{d.label}</p>
+                          <p style={{ fontSize: '14px', fontWeight: '700', margin: 0, color: selectedVal === d.value ? '#E5B800' : '#1A1A1A' }}>{d.label}</p>
                           <p style={{ fontSize: '12px', color: '#AAAAAA', margin: '2px 0 0' }}>{d.sub}</p>
                         </button>
                       ))}
@@ -1060,7 +1062,7 @@ function CheckoutInner() {
                 <div className={`co-radio ${scheduleType === 'asap' ? 'selected' : 'unselected'}`}>
                   {scheduleType === 'asap' && <div className="co-radio-inner" />}
                 </div>
-                <span style={{ fontSize: '14px', color: '#1A1A1A' }}>ASAP</span>
+                <span style={{ fontSize: '16px', color: '#1A1A1A' }}>ASAP</span>
               </div>
               {Array.from({ length: 57 }, (_, i) => {
                 const totalMins = 7 * 60 + i * 15; const h = Math.floor(totalMins / 60); const m = totalMins % 60;
@@ -1072,7 +1074,7 @@ function CheckoutInner() {
                     <div className={`co-radio ${isSelected ? 'selected' : 'unselected'}`}>
                       {isSelected && <div className="co-radio-inner" />}
                     </div>
-                    <span style={{ fontSize: '14px', color: '#1A1A1A' }}>{label}</span>
+                    <span style={{ fontSize: '16px', color: '#1A1A1A' }}>{label}</span>
                   </div>
                 );
               })}

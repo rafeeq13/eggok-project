@@ -93,8 +93,8 @@ export default function HiringPage() {
           --t1: #1A1A1A;
           --t2: #333333;
           --t3: #888888;
-          --font-head: 'DM Sans', sans-serif;
-          --font-body: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+          --font-head: 'Playfair Display', Georgia, serif;
+          --font-body: 'Geist', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
         }
 
         /* ── Accessibility ── */
@@ -109,7 +109,7 @@ export default function HiringPage() {
         .btn-yellow {
           display: inline-flex; align-items: center; gap: 8px;
           padding: 14px 28px; background: var(--y); color: #000;
-          border-radius: 10px; font-size: 15px; font-weight: 700;
+          border-radius: 10px; font-size: 16px; font-weight: 700;
           text-decoration: none; border: 2px solid transparent; cursor: pointer;
           transition: all 0.3s ease;
           font-family: var(--font-body);
@@ -119,7 +119,7 @@ export default function HiringPage() {
         .btn-outline {
           display: inline-flex; align-items: center; gap: 8px;
           padding: 14px 28px; background: transparent; color: #1A1A1A;
-          border-radius: 10px; font-size: 15px; font-weight: 700;
+          border-radius: 10px; font-size: 16px; font-weight: 700;
           text-decoration: none; border: 1.5px solid #1A1A1A;
           transition: border-color 0.15s, color 0.15s;
           font-family: var(--font-body);
@@ -136,8 +136,8 @@ export default function HiringPage() {
         /* ── Section heading ── */
         .sec-heading {
           font-family: var(--font-head);
-          font-size: 32px;
-          font-weight: 900;
+          font-size: 28px;
+          font-weight: 700;
           letter-spacing: -0.5px; line-height: 1.2; color: var(--t1);
         }
         .sec-heading .accent { color: var(--t1); }
@@ -157,8 +157,8 @@ export default function HiringPage() {
           background: rgba(254,216,0,0.06); border: 1px solid rgba(254,216,0,0.15);
           display: flex; align-items: center; justify-content: center; flex-shrink: 0;
         }
-        .perk-title { font-size: 14px; font-weight: 700; color: var(--t1); margin-bottom: 4px; }
-        .perk-desc  { font-size: 13px; color: var(--t2); line-height: 1.55; }
+        .perk-title { font-family: var(--font-head); font-size: 18px; font-weight: 700; color: var(--t1); margin-bottom: 4px; }
+        .perk-desc  { font-size: 16px; color: var(--t2); line-height: 1.55; }
 
         /* ── Jobs + form grid ── */
         .jobs-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: flex-start; }
@@ -175,18 +175,18 @@ export default function HiringPage() {
           padding: 20px 22px; display: flex;
           justify-content: space-between; align-items: center; gap: 12px;
         }
-        .job-title { font-size: 15px; font-weight: 700; color: var(--t1); margin-bottom: 8px; line-height: 1.3; }
+        .job-title { font-family: var(--font-head); font-size: 20px; font-weight: 700; color: var(--t1); margin-bottom: 8px; line-height: 1.3; }
         .job-meta { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
         .job-type-badge {
           font-size: 12px; padding: 3px 10px; border-radius: 20px;
           background: rgba(254,216,0,0.06); color: var(--t1);
           border: 1px solid rgba(254,216,0,0.15); font-weight: 600;
         }
-        .job-pay { font-size: 13px; color: var(--green); font-weight: 700; }
+        .job-pay { font-size: 16px; color: var(--green); font-weight: 700; }
         .job-chevron { color: var(--t3); flex-shrink: 0; transition: color 0.15s; }
         .job-card.active .job-chevron { color: var(--t1); }
         .job-body { padding: 0 22px 22px; border-top: 1px solid #D0D0D0; }
-        .job-desc { font-size: 14px; color: var(--t2); line-height: 1.7; margin: 16px 0 14px; }
+        .job-desc { font-size: 16px; color: var(--t2); line-height: 1.7; margin: 16px 0 14px; }
         .job-reqs-label {
           font-size: 12px; font-weight: 700; color: var(--t3);
           text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 10px;
@@ -197,7 +197,7 @@ export default function HiringPage() {
           background: rgba(254,216,0,0.06); border: 1px solid rgba(254,216,0,0.3);
           display: flex; align-items: center; justify-content: center;
         }
-        .job-req-text { font-size: 13px; color: var(--t2); }
+        .job-req-text { font-size: 16px; color: var(--t2); }
 
         /* ── Apply form ── */
         .apply-form-wrap {
@@ -210,8 +210,8 @@ export default function HiringPage() {
           background: rgba(254,216,0,0.06); border: 1px solid rgba(254,216,0,0.15);
           display: flex; align-items: center; justify-content: center; flex-shrink: 0;
         }
-        .form-title { font-family: var(--font-head); font-size: 26px; letter-spacing: -0.5px; color: var(--t1); margin: 0 0 3px; line-height: 1; }
-        .form-subtitle { font-size: 13px; color: var(--t2); margin: 0; }
+        .form-title { font-family: var(--font-head); font-size: 24px; font-weight: 700; letter-spacing: -0.5px; color: var(--t1); margin: 0 0 3px; line-height: 1.2; }
+        .form-subtitle { font-size: 16px; color: var(--t2); margin: 0; }
         .form-fields { display: flex; flex-direction: column; gap: 14px; }
         .form-row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
         .form-label { font-size: 12px; font-weight: 700; color: var(--t2); display: block; margin-bottom: 6px; letter-spacing: 0.5px; text-transform: uppercase; }
@@ -219,7 +219,7 @@ export default function HiringPage() {
           width: 100%; padding: 12px 16px;
           background: #F8F9FA; border: 1px solid #D0D0D0;
           border-radius: 10px; color: #1A1A1A;
-          font-size: 14px; outline: none;
+          font-size: 16px; outline: none;
           transition: border-color 0.15s;
           font-family: var(--font-body);
         }
@@ -229,7 +229,7 @@ export default function HiringPage() {
           width: 100%; padding: 12px 16px;
           background: #F8F9FA; border: 1px solid #D0D0D0;
           border-radius: 10px; color: #1A1A1A;
-          font-size: 14px; outline: none; cursor: pointer;
+          font-size: 16px; outline: none; cursor: pointer;
           transition: border-color 0.15s;
           font-family: var(--font-body); appearance: none;
         }
@@ -238,7 +238,7 @@ export default function HiringPage() {
           width: 100%; padding: 12px 16px;
           background: #F8F9FA; border: 1px solid #D0D0D0;
           border-radius: 10px; color: #1A1A1A;
-          font-size: 14px; outline: none; resize: none; height: 90px;
+          font-size: 16px; outline: none; resize: none; height: 90px;
           transition: border-color 0.15s;
           font-family: var(--font-body);
         }
@@ -246,7 +246,7 @@ export default function HiringPage() {
         .form-textarea::placeholder { color: var(--t3); }
         .form-submit-btn {
           width: 100%; padding: 15px; background: var(--y);
-          border-radius: 12px; font-size: 15px; font-weight: 900;
+          border-radius: 12px; font-size: 16px; font-weight: 700;
           color: #000; cursor: pointer; border: 2px solid transparent;
           display: flex; align-items: center; justify-content: center; gap: 8px;
           font-family: var(--font-body);
@@ -264,14 +264,14 @@ export default function HiringPage() {
           background: rgba(34,197,94,0.08); border: 2px solid var(--green);
           display: flex; align-items: center; justify-content: center; margin: 0 auto 24px;
         }
-        .success-title { font-family: var(--font-head); font-size: 32px; letter-spacing: -0.5px; color: var(--t1); margin-bottom: 14px; line-height: 1; }
-        .success-msg { font-size: 14px; color: var(--t2); line-height: 1.75; margin-bottom: 28px; }
+        .success-title { font-family: var(--font-head); font-size: 28px; font-weight: 700; letter-spacing: -0.5px; color: var(--t1); margin-bottom: 14px; line-height: 1.2; }
+        .success-msg { font-size: 16px; color: var(--t2); line-height: 1.75; margin-bottom: 28px; }
 
         /* ── Footer ── */
         .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 48px; margin-bottom: 40px; }
         .footer-bottom { border-top: 1px solid #E5E5E5; padding-top: 24px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
-        .footer-link { display: block; font-size: 14px; color: #1A1A1A; margin-bottom: 11px; text-decoration: none; transition: color 0.15s, padding-left 0.15s; }
-        .footer-link:hover { color: #555555; padding-left: 4px; }
+        .footer-link { display: block; font-size: 16px; color: #1A1A1A; margin-bottom: 11px; text-decoration: none; transition: color 0.15s, padding-left 0.15s; padding: 8px 12px; }
+        .footer-link:hover { color: #555555; padding-left: 16px; }
 
         /* ═══ RESPONSIVE ═══ */
         @media (max-width: 1024px) {
@@ -311,10 +311,10 @@ export default function HiringPage() {
 
         <div className="container hero-container" style={{ position: 'relative', textAlign: 'center' }}>
           <span id="hero-label" className="sec-label" style={{ display: 'block' }}>Join Our Team</span>
-          <h1 id="hero-title" className="bebas" style={{ fontSize: '40px', color: '#1A1A1A', lineHeight: '1.2', marginBottom: '24px' }}>
+          <h1 id="hero-title" className="bebas" style={{ fontSize: '28px', color: '#1A1A1A', lineHeight: '1.2', marginBottom: '24px' }}>
             Work With The Best
           </h1>
-          <p id="hero-subtitle" style={{ fontSize: 'clamp(15px, 2vw, 18px)', color: '#1A1A1A', lineHeight: '1.8', maxWidth: '520px', margin: '0 auto 40px' }}>
+          <p id="hero-subtitle" style={{ fontSize: '16px', color: '#1A1A1A', lineHeight: '1.8', maxWidth: '520px', margin: '0 auto 40px' }}>
             We are always looking for passionate, hardworking people to join the Eggs Ok family. Great pay, flexible hours, and free food every shift.
           </p>
           <div id="hero-cta" style={{ display: 'flex', gap: '14px', justifyContent: 'center', flexWrap: 'wrap' }}>
@@ -554,13 +554,13 @@ export default function HiringPage() {
                         {resumeFile ? (
                           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}>
                             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#22C55E" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-                            <span style={{ fontSize: '13px', color: '#22C55E', fontWeight: '600' }}>{resumeFile.name}</span>
+                            <span style={{ fontSize: '14px', color: '#22C55E', fontWeight: '600' }}>{resumeFile.name}</span>
                             <button type="button" onClick={(e) => { e.stopPropagation(); setResumeFile(null); }} style={{ background: 'none', border: 'none', color: '#777777', cursor: 'pointer', fontSize: '16px', padding: '0 4px' }}>✕</button>
                           </div>
                         ) : (
                           <div>
                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#555" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ marginBottom: '8px' }}><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-                            <p style={{ fontSize: '13px', color: '#777777', margin: 0 }}>Click to upload PDF or Word document</p>
+                            <p style={{ fontSize: '14px', color: '#777777', margin: 0 }}>Click to upload PDF or Word document</p>
                           </div>
                         )}
                       </div>
@@ -600,17 +600,17 @@ export default function HiringPage() {
                   <Image src="/logo.svg" alt="Eggs Ok" width={100} height={50} style={{ objectFit: 'contain' }} />
                 </div>
               </div>
-              <p id="footer-tagline" style={{ fontSize: '14px', color: '#1A1A1A', lineHeight: '1.75', maxWidth: '280px', marginBottom: '22px' }}>
+              <p id="footer-tagline" style={{ fontSize: '16px', color: '#1A1A1A', lineHeight: '1.75', maxWidth: '280px', marginBottom: '22px' }}>
                 Fresh breakfast and lunch in West Philadelphia. Made to order, every time.
               </p>
               <address id="footer-address" style={{ fontStyle: 'normal' }}>
-                <p id="footer-address-line" style={{ fontSize: '13px', color: '#1A1A1A', display: 'flex', alignItems: 'center', gap: '7px', marginBottom: '8px' }}>
+                <p id="footer-address-line" style={{ fontSize: '14px', color: '#1A1A1A', display: 'flex', alignItems: 'center', gap: '7px', marginBottom: '8px' }}>
                   <MapPin size={13} color="#E5B800" aria-hidden="true" />
                   <a id="footer-address-link" href="https://www.google.com/maps?q=3517+Lancaster+Ave,+Philadelphia+PA+19104" style={{ color: '#1A1A1A', textDecoration: 'none' }}>
                     3517 Lancaster Ave, Philadelphia PA 19104
                   </a>
                 </p>
-                <p id="footer-phone-line" style={{ fontSize: '13px', color: '#1A1A1A', display: 'flex', alignItems: 'center', gap: '7px' }}>
+                <p id="footer-phone-line" style={{ fontSize: '14px', color: '#1A1A1A', display: 'flex', alignItems: 'center', gap: '7px' }}>
                   <Smartphone size={13} color="#E5B800" aria-hidden="true" />
                   <a id="footer-phone-link" href="tel:2159489902" style={{ color: '#1A1A1A', textDecoration: 'none' }}>215-948-9902</a>
                 </p>
@@ -619,7 +619,7 @@ export default function HiringPage() {
 
             {/* Quick links */}
             <nav id="footer-nav" aria-label="Quick links">
-              <p id="footer-nav-heading" style={{ fontSize: '15px', fontWeight: '700', color: '#1A1A1A', letterSpacing: '2px', textTransform: 'uppercase', marginBottom: '20px' }}>Quick Links</p>
+              <p id="footer-nav-heading" style={{ fontSize: '18px', fontFamily: "'Playfair Display', Georgia, serif", fontWeight: '700', color: '#1A1A1A', letterSpacing: '2px', textTransform: 'uppercase', marginBottom: '20px' }}>Quick Links</p>
               {[
                 { label: 'Home',          href: '/'        },
                 { label: 'Order Online',  href: '/order'   },
@@ -634,7 +634,7 @@ export default function HiringPage() {
 
             {/* Hours */}
             <div id="footer-hours">
-              <p id="footer-hours-heading" style={{ fontSize: '15px', fontWeight: '700', color: '#1A1A1A', letterSpacing: '2px', textTransform: 'uppercase', marginBottom: '20px' }}>Hours</p>
+              <p id="footer-hours-heading" style={{ fontSize: '18px', fontFamily: "'Playfair Display', Georgia, serif", fontWeight: '700', color: '#1A1A1A', letterSpacing: '2px', textTransform: 'uppercase', marginBottom: '20px' }}>Hours</p>
               <div id="footer-hours-list" style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
                 {[
                   { day: 'Monday', hours: '8:00 AM – 10:00 PM' },
@@ -646,8 +646,8 @@ export default function HiringPage() {
                   { day: 'Sunday',    hours: '9:00 AM – 9:00 PM'  },
                 ].map((h, i) => (
                   <div key={i} className={`footer-hours-row footer-hours-${h.day.toLowerCase()}`} style={{ display: 'flex', gap: '14px' }}>
-                    <span className="footer-hours-day" style={{ fontSize: '13px', color: '#1A1A1A', fontWeight: '600', minWidth: '96px' }}>{h.day}</span>
-                    <span className="footer-hours-time" style={{ fontSize: '13px', color: '#666666' }}>{h.hours}</span>
+                    <span className="footer-hours-day" style={{ fontSize: '14px', color: '#1A1A1A', fontWeight: '600', minWidth: '96px' }}>{h.day}</span>
+                    <span className="footer-hours-time" style={{ fontSize: '14px', color: '#666666' }}>{h.hours}</span>
                   </div>
                 ))}
               </div>

@@ -21,13 +21,13 @@ function ResetPasswordForm() {
     width: '100%', padding: '13px 16px',
     background: '#F8F9FA', border: '1px solid #D0D0D0',
     borderRadius: '10px', color: '#1A1A1A',
-    fontSize: '14px', outline: 'none',
+    fontSize: '16px', outline: 'none',
     transition: 'border-color 0.2s',
     boxSizing: 'border-box',
   };
 
   const labelStyle: React.CSSProperties = {
-    fontSize: '13px', fontWeight: 600,
+    fontSize: '14px', fontWeight: 600,
     color: '#555555', display: 'block',
     marginBottom: '6px',
   };
@@ -66,11 +66,11 @@ function ResetPasswordForm() {
           <img src="/logo.svg" alt="Eggs Ok" style={{ width: '38px', height: '38px', objectFit: 'cover' }} onError={e => { (e.target as HTMLImageElement).style.display = 'none'; }} />
         </div>
         <div>
-          <div style={{ fontSize: '14px', fontWeight: 900, color: '#1A1A1A', letterSpacing: '0.5px', lineHeight: '1' }}>Eggs Ok</div>
+          <div style={{ fontSize: '18px', fontWeight: 700, fontFamily: "'Playfair Display', Georgia, serif", color: '#1A1A1A', letterSpacing: '0.5px', lineHeight: '1' }}>Eggs Ok</div>
           <div style={{ fontSize: '10px', color: '#AAAAAA', letterSpacing: '1.5px', textTransform: 'uppercase', marginTop: '1px' }}>Philadelphia</div>
         </div>
       </Link>
-      <Link href="/order" style={{ padding: '8px 16px', background: '#E5B800', borderRadius: '8px', color: '#000', fontSize: '13px', fontWeight: 700, textDecoration: 'none' }}>
+      <Link href="/order" style={{ padding: '8px 12px', background: '#E5B800', borderRadius: '8px', color: '#000', fontSize: '16px', fontWeight: 700, textDecoration: 'none' }}>
         Order Now
       </Link>
     </div>
@@ -78,17 +78,17 @@ function ResetPasswordForm() {
 
   if (!token) {
     return (
-      <div style={{ background: '#FFFFFF', minHeight: '100vh', fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif' }}>
+      <div style={{ background: '#FFFFFF', minHeight: '100vh', fontFamily: "'Geist', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif", fontWeight: 500 }}>
         <Nav />
         <div style={{ maxWidth: '440px', margin: '0 auto', padding: '96px 24px 48px', textAlign: 'center' }}>
           <div style={{ width: '72px', height: '72px', borderRadius: '50%', background: '#2A0A0A', border: '2px solid #FC030140', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 24px' }}>
             <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#FC0301" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10" /><line x1="12" y1="8" x2="12" y2="12" /><line x1="12" y1="16" x2="12.01" y2="16" /></svg>
           </div>
-          <h1 style={{ fontSize: '28px', fontWeight: 900, color: '#1A1A1A', marginBottom: '12px' }}>Invalid Link</h1>
-          <p style={{ fontSize: '14px', color: '#777777', marginBottom: '32px', lineHeight: '1.6' }}>
+          <h1 style={{ fontSize: '28px', fontWeight: 700, fontFamily: "'Playfair Display', Georgia, serif", color: '#1A1A1A', marginBottom: '12px' }}>Invalid Link</h1>
+          <p style={{ fontSize: '16px', color: '#777777', marginBottom: '32px', lineHeight: '1.6' }}>
             This password reset link is invalid or missing. Please request a new one.
           </p>
-          <Link href="/account" style={{ display: 'block', padding: '15px', background: '#E5B800', borderRadius: '12px', fontSize: '15px', fontWeight: 700, color: '#000', textDecoration: 'none', textAlign: 'center' }}>
+          <Link href="/account" style={{ display: 'block', padding: '8px 12px', background: '#E5B800', borderRadius: '12px', fontSize: '16px', fontWeight: 700, color: '#000', textDecoration: 'none', textAlign: 'center' }}>
             Go to Sign In
           </Link>
         </div>
@@ -98,17 +98,17 @@ function ResetPasswordForm() {
 
   if (success) {
     return (
-      <div style={{ background: '#FFFFFF', minHeight: '100vh', fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif' }}>
+      <div style={{ background: '#FFFFFF', minHeight: '100vh', fontFamily: "'Geist', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif", fontWeight: 500 }}>
         <Nav />
         <div style={{ maxWidth: '440px', margin: '0 auto', padding: '96px 24px 48px', textAlign: 'center' }}>
           <div style={{ width: '72px', height: '72px', borderRadius: '50%', background: '#22C55E15', border: '2px solid #22C55E40', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 24px' }}>
             <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#22C55E" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12" /></svg>
           </div>
-          <h1 style={{ fontSize: '30px', fontWeight: 900, color: '#1A1A1A', marginBottom: '12px', letterSpacing: '-0.5px' }}>Password Updated</h1>
-          <p style={{ fontSize: '14px', color: '#777777', marginBottom: '32px', lineHeight: '1.6' }}>
+          <h1 style={{ fontSize: '28px', fontWeight: 700, fontFamily: "'Playfair Display', Georgia, serif", color: '#1A1A1A', marginBottom: '12px', letterSpacing: '-0.5px' }}>Password Updated</h1>
+          <p style={{ fontSize: '16px', color: '#777777', marginBottom: '32px', lineHeight: '1.6' }}>
             Your password has been reset successfully. You can now sign in with your new password.
           </p>
-          <Link href="/account" style={{ display: 'block', padding: '15px', background: '#E5B800', borderRadius: '12px', fontSize: '15px', fontWeight: 700, color: '#000', textDecoration: 'none', textAlign: 'center' }}>
+          <Link href="/account" style={{ display: 'block', padding: '8px 12px', background: '#E5B800', borderRadius: '12px', fontSize: '16px', fontWeight: 700, color: '#000', textDecoration: 'none', textAlign: 'center' }}>
             Sign In
           </Link>
         </div>
@@ -117,15 +117,15 @@ function ResetPasswordForm() {
   }
 
   return (
-    <div style={{ background: '#FFFFFF', minHeight: '100vh', fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif' }}>
+    <div style={{ background: '#FFFFFF', minHeight: '100vh', fontFamily: "'Geist', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif", fontWeight: 500 }}>
       <Nav />
       <div style={{ maxWidth: '440px', margin: '0 auto', padding: '96px 24px 48px' }}>
         <div style={{ textAlign: 'center', marginBottom: '32px' }}>
           <div style={{ width: '64px', height: '64px', borderRadius: '16px', background: '#F8F9FA', border: '1px solid #E5E5E5', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 16px' }}>
             <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#E5B800" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2" /><path d="M7 11V7a5 5 0 0110 0v4" /></svg>
           </div>
-          <h1 style={{ fontSize: '30px', fontWeight: 900, color: '#1A1A1A', marginBottom: '8px', letterSpacing: '-0.5px' }}>Set New Password</h1>
-          <p style={{ fontSize: '14px', color: '#777777' }}>Choose a strong password for your account.</p>
+          <h1 style={{ fontSize: '24px', fontWeight: 700, fontFamily: "'Playfair Display', Georgia, serif", color: '#1A1A1A', marginBottom: '8px', letterSpacing: '-0.5px' }}>Set New Password</h1>
+          <p style={{ fontSize: '16px', color: '#777777' }}>Choose a strong password for your account.</p>
         </div>
 
         <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
@@ -184,17 +184,17 @@ function ResetPasswordForm() {
           </div>
 
           {error && (
-            <div style={{ padding: '12px 16px', background: '#2A0A0A', border: '1px solid #FC030140', borderRadius: '10px', color: '#FC0301', fontSize: '13px' }}>
+            <div style={{ padding: '12px 16px', background: '#2A0A0A', border: '1px solid #FC030140', borderRadius: '10px', color: '#FC0301', fontSize: '14px' }}>
               {error}
             </div>
           )}
 
-          <button type="submit" disabled={loading} style={{ width: '100%', padding: '15px', background: loading ? '#E5E5E5' : '#E5B800', borderRadius: '12px', fontSize: '16px', fontWeight: 700, color: loading ? '#AAAAAA' : '#000', cursor: loading ? 'not-allowed' : 'pointer', border: 'none', marginTop: '4px' }}>
+          <button type="submit" disabled={loading} style={{ width: '100%', padding: '8px 12px', background: loading ? '#E5E5E5' : '#E5B800', borderRadius: '12px', fontSize: '16px', fontWeight: 700, color: loading ? '#AAAAAA' : '#000', cursor: loading ? 'not-allowed' : 'pointer', border: 'none', marginTop: '4px' }}>
             {loading ? 'Updating Password...' : 'Set New Password'}
           </button>
         </form>
 
-        <p style={{ textAlign: 'center', marginTop: '20px', fontSize: '13px', color: '#777777' }}>
+        <p style={{ textAlign: 'center', marginTop: '20px', fontSize: '14px', color: '#777777' }}>
           <Link href="/account" style={{ color: '#333333', fontWeight: 600, textDecoration: 'none' }}>Back to Sign In</Link>
         </p>
       </div>
@@ -206,7 +206,7 @@ export default function ResetPasswordPage() {
   return (
     <Suspense fallback={
       <div style={{ background: '#FFFFFF', minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-        <div style={{ color: '#777777', fontSize: '14px' }}>Loading...</div>
+        <div style={{ color: '#777777', fontSize: '16px' }}>Loading...</div>
       </div>
     }>
       <ResetPasswordForm />

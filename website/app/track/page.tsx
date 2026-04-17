@@ -35,7 +35,7 @@ export default function TrackPage() {
   };
 
   return (
-    <div style={{ background: '#FFFFFF', minHeight: '100vh', color: '#1A1A1A', fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif' }}>
+    <div style={{ background: '#FFFFFF', minHeight: '100vh', color: '#1A1A1A', fontFamily: "'Geist', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif", fontWeight: 500 }}>
       <Header />
       <div style={{ maxWidth: '500px', margin: '0 auto', padding: '120px 20px 60px', textAlign: 'center' }}>
 
@@ -45,8 +45,8 @@ export default function TrackPage() {
           </svg>
         </div>
 
-        <h1 style={{ fontSize: '28px', fontWeight: '900', marginBottom: '8px' }}>Track Your Order</h1>
-        <p style={{ color: '#777777', fontSize: '14px', marginBottom: '28px' }}>Enter your order number or email to see your order status</p>
+        <h1 style={{ fontSize: '28px', fontWeight: 700, fontFamily: "'Playfair Display', Georgia, serif", marginBottom: '8px' }}>Track Your Order</h1>
+        <p style={{ color: '#777777', fontSize: '16px', marginBottom: '28px' }}>Enter your order number or email to see your order status</p>
 
         <form onSubmit={handleTrack} style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
           <input
@@ -55,17 +55,17 @@ export default function TrackPage() {
             placeholder="Order number (EO-123456-789) or email"
             style={{
               padding: '14px 18px', background: '#F8F9FA', border: '1px solid #D0D0D0',
-              borderRadius: '12px', color: '#1A1A1A', fontSize: '15px', textAlign: 'center', outline: 'none',
+              borderRadius: '12px', color: '#1A1A1A', fontSize: '16px', textAlign: 'center', outline: 'none',
             }}
             onFocus={e => e.target.style.borderColor = '#E5B800'}
             onBlur={e => e.target.style.borderColor = '#D0D0D0'}
           />
 
-          {error && <p style={{ color: '#FC0301', fontSize: '13px', margin: 0 }}>{error}</p>}
+          {error && <p style={{ color: '#FC0301', fontSize: '14px', margin: 0 }}>{error}</p>}
 
           <button type="submit" disabled={searching || !query.trim()} style={{
-            padding: '14px', background: searching ? '#E5E5E5' : '#E5B800', border: 'none',
-            borderRadius: '12px', color: searching ? '#777777' : '#000', fontSize: '15px', fontWeight: '700',
+            padding: '8px 12px', background: searching ? '#E5E5E5' : '#E5B800', border: 'none',
+            borderRadius: '12px', color: searching ? '#777777' : '#000', fontSize: '16px', fontWeight: '700',
             cursor: searching ? 'not-allowed' : 'pointer',
           }}>
             {searching ? 'Searching...' : 'Track Order'}
