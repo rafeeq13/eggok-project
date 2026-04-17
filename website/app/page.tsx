@@ -710,7 +710,7 @@ export default function HomePage() {
           1. HERO
       ══════════════════════════════════════════ */}
       <section id="hero" className="hero-section" aria-label="Welcome to Eggs Ok">
-        <div className="hero-overlay" style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(0,0,0,0.75) 0%, rgba(155, 155, 155, 0.35) 40%, rgba(151, 151, 151, 0.05) 100%)', zIndex: 0 }} />
+        <div className="hero-overlay" style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(0,0,0,0.75) 0%, rgba(43, 43, 43, 0.35) 40%, rgba(151, 151, 151, 0.05) 100%)', zIndex: 0 }} />
 
         <div className="container hero-container" style={{ position: 'relative', zIndex: 1, width: '100%' }}>
           <div
