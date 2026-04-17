@@ -976,7 +976,7 @@ export class MailService {
         <span style="font-family:Arial,Helvetica,sans-serif;font-size:11px;font-weight:700;color:#000000;letter-spacing:2px;text-transform:uppercase;">Fresh Made To Order &middot; Philadelphia, PA</span>
       </td></tr>
       <tr><td style="background-color:#000000;padding:28px 40px;text-align:center;">
-        <img src="https://eggsokpa.com/webicons/logo.svg" width="120" height="50" alt="Eggs Ok" style="display:block;margin:0 auto 8px;border:0;">
+        <img src="https://eggsokpa.com/webicons/logo.webp" width="120" height="50" alt="Eggs Ok" style="display:block;margin:0 auto 8px;border:0;">
         <p style="margin:0;font-family:Arial,Helvetica,sans-serif;font-size:12px;color:#FEFEFE;letter-spacing:3px;text-transform:uppercase;">Breakfast &amp; Lunch</p>
       </td></tr>
     </table>
@@ -1032,7 +1032,7 @@ export class MailService {
   <tr><td style="padding:28px 40px 0;">
     <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:#000000;border-radius:12px;overflow:hidden;">
       <tr><td style="padding:24px 28px 16px;text-align:center;border-bottom:1px solid #1a1a1a;">
-        <img src="https://eggsokpa.com/webicons/logo.svg" width="100" height="42" alt="Eggs Ok" style="display:block;margin:0 auto 4px;border:0;">
+        <img src="https://eggsokpa.com/webicons/logo.webp" width="100" height="42" alt="Eggs Ok" style="display:block;margin:0 auto 4px;border:0;">
         <p style="margin:0;font-family:Arial,Helvetica,sans-serif;font-size:11px;color:#555555;letter-spacing:2px;text-transform:uppercase;">Breakfast &amp; Lunch &middot; Philadelphia</p>
       </td></tr>
       <tr><td style="padding:16px 28px;text-align:center;">

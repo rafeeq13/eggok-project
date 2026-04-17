@@ -469,7 +469,7 @@ export default function AccountPage() {
         <div style={{ maxWidth: '440px', margin: '0 auto', padding: '96px 24px 48px' }}>
           <div style={{ textAlign: 'center', marginBottom: '32px' }}>
             <div style={{  borderRadius: '16px', overflow: 'hidden', margin: '0 auto 16px', display: 'none', alignItems: 'center', justifyContent: 'center' }}>
-              <img src="/logo.svg" alt="Eggs Ok" style={{ width: '135px', height: '80px', objectFit: 'contain' }} onError={e => { (e.target as HTMLImageElement).style.display = 'none'; }} />
+              <img src="/logo.webp" alt="Eggs Ok" style={{ width: '135px', height: '80px', objectFit: 'contain' }} onError={e => { (e.target as HTMLImageElement).style.display = 'none'; }} />
             </div>
             <h1 style={{ fontSize: '28px', fontWeight: 700, fontFamily: "'Playfair Display', Georgia, serif", color: '#1A1A1A', marginBottom: '6px', letterSpacing: '-0.5px' }}>Welcome Back</h1>
             <p style={{ fontSize: '16px', color: '#1A1A1A' }}>Sign in to your Eggs Ok account</p>

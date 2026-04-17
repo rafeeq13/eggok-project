@@ -95,7 +95,7 @@ const css = `
           {/* Logo */}
           <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
             <div className="header-logo" style={{  borderRadius: '10px', overflow: 'hidden', background: 'transparent', flexShrink: 0 }}>
-              <Image src="/logo.svg" alt="EggsOK Eatery" width={135} height={60} style={{ objectFit: 'contain' }} />
+              <Image src="/logo.webp" alt="EggsOK Eatery" width={135} height={60} style={{ objectFit: 'contain' }} />
             </div>
             <div>
               {/* <p style={{ fontSize: '17px', fontWeight: '800', color: '#E5B800', letterSpacing: '1px', fontFamily: 'DM Sans, sans-serif' }}>EggsOK</p>
@@ -303,7 +303,7 @@ const css = `
           {/* Mobile Menu Header */}
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '16px 20px', borderBottom: '1px solid #F0F0F0' }}>
             <Link href="/" onClick={() => setMobileMenuOpen(false)} style={{ display: 'flex', alignItems: 'center' }}>
-              <Image src="/logo.svg" alt="EggsOK Eatery" width={100} height={44} style={{ objectFit: 'contain' }} />
+              <Image src="/logo.webp" alt="EggsOK Eatery" width={100} height={44} style={{ objectFit: 'contain' }} />
             </Link>
             <button onClick={() => setMobileMenuOpen(false)} style={{ width: '38px', height: '38px', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'transparent', color: '#333333', fontSize: '22px' }}>
               ✕

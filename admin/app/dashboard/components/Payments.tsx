@@ -194,7 +194,7 @@ export default function Payments() {
       </tr>
     `).join('');
 
-    const logoImg = `<img src="https://eggsokpa.com/logo.svg" alt="Eggs Ok" style="height:50px;object-fit:contain;" />`;
+    const logoImg = `<img src="https://eggsokpa.com/logo.webp" alt="Eggs Ok" style="height:50px;object-fit:contain;" />`;
 
     const html = `
       <!DOCTYPE html>

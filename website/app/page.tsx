@@ -71,7 +71,7 @@ const JSON_LD = {
   '@context': 'https://schema.org',
   '@type': 'Restaurant',
   name: 'Eggs Ok',
-  image: 'https://eggsokphilly.com/logo.svg',
+  image: 'https://eggsokphilly.com/logo.webp',
   url: 'https://eggsokphilly.com',
   telephone: '+1-215-948-9902',
   servesCuisine: ['Breakfast', 'Lunch', 'American'],
@@ -1245,7 +1245,7 @@ export default function HomePage() {
             <div id="footer-brand" className="footer-brand">
               <div className="footer-logo-wrap" style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '18px' }}>
                 <div className="footer-logo-img-wrap" style={{ borderRadius: '10px', overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                  <Image src="/logo.svg" alt="Eggs Ok" width={100} height={50} style={{ objectFit: 'contain' }} />
+                  <Image src="/logo.webp" alt="Eggs Ok" width={100} height={50} style={{ objectFit: 'contain' }} />
                 </div>
               </div>
               <p className="footer-brand-tagline" style={{ fontSize: '16px', color: '#1A1A1A', lineHeight: 1.75, maxWidth: '280px', marginBottom: '22px' }}>

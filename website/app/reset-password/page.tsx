@@ -63,7 +63,7 @@ function ResetPasswordForm() {
     <div style={{ position: 'fixed', top: 0, left: 0, right: 0, zIndex: 100, background: 'rgba(255,255,255,0.98)', backdropFilter: 'blur(20px)', borderBottom: '1px solid #E5E5E5', height: '64px', display: 'flex', alignItems: 'center', padding: '0 28px', justifyContent: 'space-between' }}>
       <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: '10px', textDecoration: 'none' }}>
         <div style={{ width: '42px', height: '42px', borderRadius: '50%', background: '#E5B800', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden' }}>
-          <img src="/logo.svg" alt="Eggs Ok" style={{ width: '38px', height: '38px', objectFit: 'cover' }} onError={e => { (e.target as HTMLImageElement).style.display = 'none'; }} />
+          <img src="/logo.webp" alt="Eggs Ok" style={{ width: '38px', height: '38px', objectFit: 'cover' }} onError={e => { (e.target as HTMLImageElement).style.display = 'none'; }} />
         </div>
         <div>
           <div style={{ fontSize: '18px', fontWeight: 700, fontFamily: "'Playfair Display', Georgia, serif", color: '#1A1A1A', letterSpacing: '0.5px', lineHeight: '1' }}>Eggs Ok</div>

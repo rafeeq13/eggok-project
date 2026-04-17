@@ -92,7 +92,7 @@ export default function LoginPage() {
             position: 'relative',
           }}>
             <Image
-              src="/logo.svg"
+              src="/logo.webp"
               alt="Eggs Ok Logo"
               fill
               style={{ objectFit: 'contain', objectPosition: 'center' }}

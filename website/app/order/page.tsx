@@ -892,7 +892,7 @@ function OrderContent() {
         {/* Logo */}
         <Link href="/" id="nav-logo" className="nav-logo-link" aria-label="Eggs Ok home">
           <div className="nav-logo-img-wrap">
-            <img src="/logo.svg" alt="Eggs Ok" className="nav-logo-img" onError={e => { (e.target as HTMLImageElement).style.display = 'none'; }} />
+            <img src="/logo.webp" alt="Eggs Ok" className="nav-logo-img" onError={e => { (e.target as HTMLImageElement).style.display = 'none'; }} />
           </div>
         </Link>
 
