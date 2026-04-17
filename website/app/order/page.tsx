@@ -55,7 +55,6 @@ const css = `
     padding: 0 20px; gap: 12px;
   }
   .nav-logo-link { display: flex; align-items: center; gap: 10px; text-decoration: none; flex-shrink: 0; }
-  .nav-logo-img-wrap { background: var(--y); display: flex; align-items: center; justify-content: center; overflow: hidden; flex-shrink: 0; border-radius: 8px; }
   .nav-logo-img { object-fit: cover; }
   .nav-spacer { flex: 1; }
   .nav-actions { display: flex; align-items: center; gap: 8px; }
@@ -892,7 +891,7 @@ function OrderContent() {
         {/* Logo */}
         <Link href="/" id="nav-logo" className="nav-logo-link" aria-label="Eggs Ok home">
           <div className="nav-logo-img-wrap">
-            <img src="/logo.webp" alt="Eggs Ok" className="nav-logo-img" onError={e => { (e.target as HTMLImageElement).style.display = 'none'; }} />
+            <img src="/logo.webp" alt="Eggs Ok" height={80} width={80} className="nav-logo-img" onError={e => { (e.target as HTMLImageElement).style.display = 'none'; }} />
           </div>
         </Link>
 
