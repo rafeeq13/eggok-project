@@ -1103,7 +1103,7 @@ function OrderContent() {
 
                 {/* Schedule */}
                 <button id="schedule-btn" className="schedule-btn" onClick={() => setShowScheduleModal(true)}>
-                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#E5B800" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#0000" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                     <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
                   </svg>
                   <span id="schedule-label" className="schedule-label">

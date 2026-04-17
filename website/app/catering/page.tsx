@@ -280,7 +280,7 @@ export default function CateringPage() {
         /* ── Footer ── */
         .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 48px; margin-bottom: 40px; }
         .footer-bottom { border-top: 1px solid #E5E5E5; padding-top: 24px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
-        .footer-link { display: block; font-size: 16px; color: #1A1A1A; margin-bottom: 11px; text-decoration: none; transition: color 0.15s, padding-left 0.15s; padding: 8px 12px; }
+        .footer-link { display: block; font-size: 16px; color: #1A1A1A;  text-decoration: none; transition: color 0.15s, padding-left 0.15s; padding: 4px 12px; }
         .footer-link:hover { color: #555555; padding-left: 16px; }
 
         /* ═══ RESPONSIVE ═══ */

@@ -638,7 +638,7 @@ export default function HomePage() {
         /* ── Footer ── */
         .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 48px; margin-bottom: 40px; }
         .footer-bottom { border-top: 1px solid #E5E5E5; padding-top: 24px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
-        .footer-link { display: block; font-size: 16px; color: #1A1A1A; margin-bottom: 11px; padding: 8px 12px; text-decoration: none; transition: color 0.15s, padding-left 0.15s; }
+        .footer-link { display: block; font-size: 16px; color: #1A1A1A;  padding: 4px 12px; text-decoration: none; transition: color 0.15s, padding-left 0.15s; }
         .footer-link:hover { color: #555555; padding-left: 4px; }
 
         /* ═══ RESPONSIVE ═══ */
@@ -1163,14 +1163,14 @@ export default function HomePage() {
 
                 <address id="location-address" className="location-address" style={{ fontStyle: 'normal', display: 'flex', flexDirection: 'column', gap: '16px' }}>
                   <div className="location-address-row" style={{ display: 'flex', gap: '14px', alignItems: 'flex-start' }}>
-                    <MapPin size={16} color="#E5B800" style={{ flexShrink: 0, marginTop: '2px' }} aria-hidden="true" />
+                    <MapPin size={16} color="#000000ff" style={{ flexShrink: 0, marginTop: '2px' }} aria-hidden="true" />
                     <div className="location-address-text">
                       <p className="location-street" style={{ fontSize: '16px', color: '#1A1A1A', fontWeight: '600' }}>3517 Lancaster Ave</p>
                       <p className="location-city" style={{ fontSize: '16px', color: '#888888' }}>Philadelphia, PA 19104</p>
                     </div>
                   </div>
                   <div className="location-hours-row" style={{ display: 'flex', gap: '14px', alignItems: 'flex-start' }}>
-                    <Clock size={16} color="#E5B800" style={{ flexShrink: 0, marginTop: '3px' }} aria-hidden="true" />
+                    <Clock size={16} color="#000000ff" style={{ flexShrink: 0, marginTop: '3px' }} aria-hidden="true" />
                     <div id="location-hours-list" className="location-hours-list" style={{ display: 'flex', flexDirection: 'column', gap: '5px' }}>
                       {HOURS.map((row, i) => (
                         <div key={i} className={`location-hours-row-item location-hours-${row.d.toLowerCase()}`} style={{ display: 'flex', gap: '14px' }}>
@@ -1181,7 +1181,7 @@ export default function HomePage() {
                     </div>
                   </div>
                   <div className="location-phone-row" style={{ display: 'flex', gap: '14px', alignItems: 'center' }}>
-                    <Smartphone size={16} color="#E5B800" style={{ flexShrink: 0 }} aria-hidden="true" />
+                    <Smartphone size={16} color="#000000ff" style={{ flexShrink: 0 }} aria-hidden="true" />
                     <a href="tel:2159489902" className="location-phone" style={{ fontSize: '16px', color: '#1A1A1A', textDecoration: 'none', fontWeight: '600' }}>215-948-9902</a>
                   </div>
                 </address>
@@ -1253,10 +1253,10 @@ export default function HomePage() {
               </p>
               <address id="footer-address" className="footer-address" style={{ fontStyle: 'normal' }}>
                 <p className="footer-address-line" style={{ fontSize: '16px', color: '#1A1A1A', display: 'flex', alignItems: 'center', gap: '7px', marginBottom: '8px' }}>
-                  <MapPin size={13} color="#E5B800" aria-hidden="true" href='https://www.google.com/maps?q=3517+Lancaster+Ave,+Philadelphia+PA+19104'/> <a href='https://www.google.com/maps?q=3517+Lancaster+Ave,+Philadelphia+PA+19104' className="footer-address-link">3517 Lancaster Ave, Philadelphia PA 19104</a>
+                  <MapPin size={13} color="#000000ff"  aria-hidden="true" href='https://www.google.com/maps?q=3517+Lancaster+Ave,+Philadelphia+PA+19104'/> <a href='https://www.google.com/maps?q=3517+Lancaster+Ave,+Philadelphia+PA+19104' className="footer-address-link">3517 Lancaster Ave, Philadelphia PA 19104</a>
                 </p>
                 <p className="footer-phone-line" style={{ fontSize: '16px', color: '#1A1A1A', display: 'flex', alignItems: 'center', gap: '7px' }}>
-                  <Smartphone size={13} color="#E5B800" aria-hidden="true" />
+                  <Smartphone size={13} color="#000000ff" aria-hidden="true" />
                   <a href="tel:2159489902" className="footer-phone-link" style={{ color: '#1A1A1A', textDecoration: 'none' }}>215-948-9902</a>
                 </p>
               </address>

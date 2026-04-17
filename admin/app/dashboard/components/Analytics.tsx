@@ -160,7 +160,7 @@ export default function Analytics() {
             <YAxis tick={{ fill: '#888888', fontSize: 11 }} axisLine={false} tickLine={false} />
             <Tooltip content={<CustomTooltip />} />
             {activeChart === 'revenue' ? (
-              <Area type="monotone" dataKey="revenue" stroke="#E5B800" strokeWidth={2} fill="url(#colorRevenue)" name="revenue" />
+              <Area type="monotone" dataKey="revenue" stroke="#0000" strokeWidth={2} fill="url(#colorRevenue)" name="revenue" />
             ) : (
               <Area type="monotone" dataKey="orders" stroke="#22C55E" strokeWidth={2} fill="url(#colorOrders)" name="orders" />
             )}

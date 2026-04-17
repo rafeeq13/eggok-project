@@ -202,9 +202,9 @@ export default function StoryPage() {
         }
         .footer-link {
           display: block; font-size: 16px; color: #1A1A1A;
-          margin-bottom: 11px; text-decoration: none;
+         text-decoration: none;
           transition: color 0.15s, padding-left 0.15s;
-          padding: 8px 12px;
+          padding: 4px 12px;
         }
         .footer-link:hover { color: #555555; padding-left: 16px; }
 

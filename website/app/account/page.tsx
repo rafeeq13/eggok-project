@@ -548,7 +548,7 @@ export default function AccountPage() {
           </button>
           <div style={{ textAlign: 'center', marginBottom: '32px' }}>
             <div style={{ width: '64px', height: '64px', borderRadius: '16px', background: '#FFFFFF', border: '1px solid #E5E5E5', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 16px' }}>
-              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#E5B800" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2" /><path d="M7 11V7a5 5 0 0110 0v4" /></svg>
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#0000" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2" /><path d="M7 11V7a5 5 0 0110 0v4" /></svg>
             </div>
             <h1 style={{ fontSize: '24px', fontWeight: 700, fontFamily: "'Playfair Display', Georgia, serif", color: '#1A1A1A', marginBottom: '8px', letterSpacing: '-0.5px' }}>Forgot Password?</h1>
             <p style={{ fontSize: '16px', color: '#777777', lineHeight: '1.6' }}>Enter your email and we'll send you a link to reset your password.</p>
@@ -622,9 +622,9 @@ export default function AccountPage() {
 
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '8px', marginBottom: '28px' }}>
             {[
-              { icon: <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#E5B800" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" /><polyline points="14 2 14 8 20 8" /></svg>, text: 'Order History' },
-              { icon: <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#E5B800" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 12 20 22 4 22 4 12" /><rect x="2" y="7" width="20" height="5" /><path d="M12 22V7M12 7H7.5a2.5 2.5 0 010-5C11 2 12 7 12 7zM12 7h4.5a2.5 2.5 0 000-5C13 2 12 7 12 7z" /></svg>, text: 'Loyalty Points' },
-              { icon: <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#E5B800" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" /></svg>, text: 'Fast Checkout' },
+              { icon: <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0000" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" /><polyline points="14 2 14 8 20 8" /></svg>, text: 'Order History' },
+              { icon: <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0000" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 12 20 22 4 22 4 12" /><rect x="2" y="7" width="20" height="5" /><path d="M12 22V7M12 7H7.5a2.5 2.5 0 010-5C11 2 12 7 12 7zM12 7h4.5a2.5 2.5 0 000-5C13 2 12 7 12 7z" /></svg>, text: 'Loyalty Points' },
+              { icon: <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0000" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" /></svg>, text: 'Fast Checkout' },
             ].map((b, i) => (
               <div key={i} style={{ padding: '14px 8px', background: '#FFFFFF', border: '1px solid #E5E5E5', borderRadius: '10px', textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '6px' }}>
                 {b.icon}
@@ -950,7 +950,7 @@ export default function AccountPage() {
                 <div key={addr.id} style={{ padding: '16px', background: '#FFFFFF', border: addr.isDefault ? '1px solid #E5B80040' : '1px solid #D0D0D0', borderRadius: '12px', boxShadow: '0 1px 3px rgba(0,0,0,0.06)' }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '8px' }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#E5B800" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" /><circle cx="12" cy="10" r="3" /></svg>
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0000" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" /><circle cx="12" cy="10" r="3" /></svg>
                       <p style={{ fontSize: '16px', fontWeight: '700', color: '#1A1A1A', margin: 0 }}>{addr.label || 'Address'}</p>
                       {addr.isDefault && <span style={{ fontSize: '12px', padding: '2px 8px', borderRadius: '20px', background: '#E5B80020', color: '#1A1A1A', border: '1px solid #E5B80040', fontWeight: '600' }}>Default</span>}
                     </div>

@@ -309,7 +309,7 @@ export default function ConfirmationPage() {
           {/* Pickup / Delivery */}
           <div style={{ background: '#E5B80010', border: '1px solid #E5B80030', borderRadius: '16px', padding: '20px', marginBottom: '20px', display: 'flex', gap: '16px', alignItems: 'center', textAlign: 'left' }}>
             <div style={{ width: '48px', height: '48px', borderRadius: '12px', background: '#E5B80020', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#E5B800" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0000" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" /><circle cx="12" cy="10" r="3" />
               </svg>
             </div>

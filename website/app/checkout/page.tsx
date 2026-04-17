@@ -554,7 +554,7 @@ function CheckoutInner() {
               <p style={sectionTitle}>{orderType === 'pickup' ? 'Pickup details' : 'Delivery details'}</p>
 
               <div style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '13px 16px', background: '#F8F9FA', borderRadius: '10px', border: '1px solid #D0D0D0', marginBottom: '10px' }}>
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#E5B800" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0000" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
                   <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" /><circle cx="12" cy="10" r="3" />
                 </svg>
                 <span style={{ fontSize: '16px', color: '#1A1A1A', flex: 1, wordBreak: 'break-word' }}>
@@ -564,7 +564,7 @@ function CheckoutInner() {
               </div>
 
               <div style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '13px 16px', background: '#F8F9FA', borderRadius: '10px', border: '1px solid #D0D0D0', marginBottom: orderType === 'delivery' ? '10px' : '0' }}>
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#E5B800" strokeWidth="2" strokeLinecap="round" style={{ flexShrink: 0 }}>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0000" strokeWidth="2" strokeLinecap="round" style={{ flexShrink: 0 }}>
                   <circle cx="12" cy="12" r="10" /><polyline points="12 6 12 12 16 14" />
                 </svg>
                 <span style={{ fontSize: '16px', color: '#1A1A1A', flex: 1 }}>{getScheduleLabel()}</span>
