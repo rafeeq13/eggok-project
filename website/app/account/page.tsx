@@ -762,15 +762,15 @@ export default function AccountPage() {
           </div>
           <div style={{ display: 'flex', gap: '10px' }}>
             <div style={{ padding: '10px 16px', background: '#E5B80015', border: '1px solid #E5B80030', borderRadius: '10px', textAlign: 'center' }}>
-              <p style={{ fontSize: '20px', fontWeight: '800', color: '#1A1A1A', margin: 0 }}>{userPoints}</p>
+              <p style={{ fontSize: '20px', fontWeight: '900', color: '#1A1A1A', margin: 0 }}>{userPoints}</p>
               <p style={{ fontSize: '12px', color: '#777777', margin: '2px 0 0' }}>Points</p>
             </div>
             <div style={{ padding: '10px 16px', background: '#FFFFFF', border: '1px solid #E5E5E5', borderRadius: '10px', textAlign: 'center' }}>
-              <p style={{ fontSize: '20px', fontWeight: '800', color: '#1A1A1A', margin: 0 }}>{userTotalOrders}</p>
+              <p style={{ fontSize: '20px', fontWeight: '900', color: '#1A1A1A', margin: 0 }}>{userTotalOrders}</p>
               <p style={{ fontSize: '12px', color: '#777777', margin: '2px 0 0' }}>Orders</p>
             </div>
             <div style={{ padding: '10px 16px', background: '#FFFFFF', border: '1px solid #E5E5E5', borderRadius: '10px', textAlign: 'center' }}>
-              <p style={{ fontSize: '16px', fontWeight: '800', color: '#1A1A1A', margin: 0 }}>{userTier}</p>
+              <p style={{ fontSize: '16px', fontWeight: '900', color: '#1A1A1A', margin: 0 }}>{userTier}</p>
               <p style={{ fontSize: '12px', color: '#777777', margin: '2px 0 0' }}>Tier</p>
             </div>
           </div>
@@ -846,7 +846,7 @@ export default function AccountPage() {
         {/* PROFILE */}
         {activeTab === 'profile' && (
           <div style={{ background: '#FFFFFF', border: '1px solid #E5E5E5', borderRadius: '14px', padding: '24px', boxShadow: '0 1px 3px rgba(0,0,0,0.08)' }}>
-            <p style={{ fontSize: '18px', fontWeight: '800', color: '#1A1A1A', marginBottom: '20px' }}>Personal Information</p>
+            <p style={{ fontSize: '18px', fontWeight: '900', color: '#1A1A1A', marginBottom: '20px' }}>Personal Information</p>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
                 <div>
@@ -1018,7 +1018,7 @@ export default function AccountPage() {
             )}
 
             {/* Rewards */}
-            <p style={{ fontSize: '18px', fontWeight: '800', color: '#1A1A1A', marginBottom: '14px' }}>Available Rewards</p>
+            <p style={{ fontSize: '18px', fontWeight: '900', color: '#1A1A1A', marginBottom: '14px' }}>Available Rewards</p>
             {rewards.filter((r: any) => r.active).length === 0 ? (
               <div style={{ padding: '24px', background: '#FFFFFF', border: '1px dashed #D0D0D0', borderRadius: '12px', textAlign: 'center', marginBottom: '24px' }}>
                 <p style={{ fontSize: '13px', color: '#777777', margin: 0 }}>No rewards available right now. Check back soon!</p>
@@ -1048,7 +1048,7 @@ export default function AccountPage() {
             )}
 
             {/* Points History */}
-            <p style={{ fontSize: '18px', fontWeight: '800', color: '#1A1A1A', marginBottom: '14px' }}>Points History</p>
+            <p style={{ fontSize: '18px', fontWeight: '900', color: '#1A1A1A', marginBottom: '14px' }}>Points History</p>
             <div style={{ background: '#FFFFFF', border: '1px solid #E5E5E5', borderRadius: '12px', overflow: 'hidden', boxShadow: '0 1px 3px rgba(0,0,0,0.06)' }}>
               {pointsHistory.length === 0 ? (
                 <div style={{ padding: '24px', textAlign: 'center' }}>
@@ -1061,7 +1061,7 @@ export default function AccountPage() {
                       <p style={{ fontSize: '13px', color: '#1A1A1A', margin: 0 }}>{h.description}</p>
                       <p style={{ fontSize: '12px', color: '#777777', marginTop: '2px' }}>{h.date ? new Date(h.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) : ''}</p>
                     </div>
-                    <span style={{ fontSize: '16px', fontWeight: '800', color: h.type === 'redeemed' ? '#FC0301' : '#22C55E' }}>
+                    <span style={{ fontSize: '16px', fontWeight: '900', color: h.type === 'redeemed' ? '#FC0301' : '#22C55E' }}>
                       {h.points > 0 ? '+' : ''}{h.points}
                     </span>
                   </div>

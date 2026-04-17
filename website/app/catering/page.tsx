@@ -106,7 +106,7 @@ export default function CateringPage() {
 
         /* ── Layout ── */
         .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
-        .bebas { font-family: var(--font-head); letter-spacing: 1px; }
+        .bebas { font-family: var(--font-head); letter-spacing: -0.5px; }
 
         /* ── Buttons ── */
         .btn-yellow {
@@ -140,8 +140,8 @@ export default function CateringPage() {
         .sec-heading {
           font-family: var(--font-head);
           font-size: 32px;
-          font-weight: 800;
-          letter-spacing: 0.5px; line-height: 0.95; color: var(--t1);
+          font-weight: 900;
+          letter-spacing: -0.5px; line-height: 1.2; color: var(--t1);
         }
         .sec-heading .accent { color: var(--t1); }
 
@@ -161,7 +161,7 @@ export default function CateringPage() {
           display: flex; align-items: center; justify-content: center;
           margin: 0 auto 18px;
         }
-        .why-title { font-family: var(--font-head); font-size: 20px; letter-spacing: 1px; color: var(--t1); margin-bottom: 8px; }
+        .why-title { font-family: var(--font-head); font-size: 20px; letter-spacing: -0.5px; color: var(--t1); margin-bottom: 8px; }
         .why-desc  { font-size: 13px; color: var(--t2); line-height: 1.6; }
 
         /* ── Packages grid ── */
@@ -173,8 +173,8 @@ export default function CateringPage() {
         .pkg-popular-bar { padding: 9px; text-align: center; font-family: var(--font-head); font-size: 13px; font-weight: 700; letter-spacing: 2px; color: #000; }
         .pkg-body { padding: 28px 26px; }
         .pkg-icon { width: 52px; height: 52px; border-radius: 14px; display: flex; align-items: center; justify-content: center; margin-bottom: 18px; }
-        .pkg-name { font-family: var(--font-head); font-size: clamp(22px, 3vw, 30px); letter-spacing: 1px; color: var(--t1); margin-bottom: 6px; line-height: 1; }
-        .pkg-price { font-family: var(--font-head); font-size: 22px; letter-spacing: 1px; margin-bottom: 4px; }
+        .pkg-name { font-family: var(--font-head); font-size: clamp(22px, 3vw, 30px); letter-spacing: -0.5px; color: var(--t1); margin-bottom: 6px; line-height: 1; }
+        .pkg-price { font-family: var(--font-head); font-size: 22px; letter-spacing: -0.5px; margin-bottom: 4px; }
         .pkg-min-guests { font-size: 13px; color: var(--t3); margin-bottom: 22px; font-weight: 500; }
         .pkg-items { display: flex; flex-direction: column; gap: 9px; margin-bottom: 26px; }
         .pkg-item { display: flex; align-items: center; gap: 10px; }
@@ -241,7 +241,7 @@ export default function CateringPage() {
         .form-textarea::placeholder { color: var(--t3); }
         .form-submit-btn {
           width: 100%; padding: 16px; background: var(--y);
-          border-radius: 12px; font-size: 16px; font-weight: 800;
+          border-radius: 12px; font-size: 16px; font-weight: 900;
           color: #000; cursor: pointer; border: 2px solid transparent;
           display: flex; align-items: center; justify-content: center; gap: 8px;
           font-family: var(--font-body);
@@ -259,7 +259,7 @@ export default function CateringPage() {
           background: rgba(34,197,94,0.08); border: 2px solid var(--green);
           display: flex; align-items: center; justify-content: center; margin: 0 auto 24px;
         }
-        .success-title { font-family: var(--font-head); font-size: clamp(28px, 5vw, 38px); letter-spacing: 1px; color: var(--t1); margin-bottom: 14px; line-height: 1; }
+        .success-title { font-family: var(--font-head); font-size: clamp(28px, 5vw, 38px); letter-spacing: -0.5px; color: var(--t1); margin-bottom: 14px; line-height: 1; }
         .success-msg { font-size: 15px; color: var(--t2); line-height: 1.75; margin-bottom: 32px; }
         .success-actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
 
@@ -271,7 +271,7 @@ export default function CateringPage() {
         .phone-cta-number {
           font-family: var(--font-head);
           font-size: clamp(36px, 6vw, 64px);
-          font-weight: 800;
+          font-weight: 900;
           color: var(--t1); letter-spacing: 3px; display: block;
           transition: color 0.15s;
         }
@@ -349,7 +349,7 @@ export default function CateringPage() {
           <div id="why-header" style={{ textAlign: 'center', marginBottom: '52px' }}>
             <span className="sec-label">Why Eggs Ok</span>
             <h2 id="why-heading" className="sec-heading">
-              The <span className="accent">Difference</span>
+              The Difference
             </h2>
           </div>
 
@@ -376,7 +376,7 @@ export default function CateringPage() {
           <div id="packages-header" style={{ marginBottom: '52px' }}>
             <span className="sec-label">Catering Packages</span>
             <h2 id="packages-heading" className="sec-heading">
-              Choose Your <span className="accent">Package</span>
+              Choose Your Package
             </h2>
           </div>
 
@@ -451,7 +451,7 @@ export default function CateringPage() {
             <div id="contact-header" style={{ marginBottom: '44px' }}>
               <span className="sec-label">Get A Quote</span>
               <h2 id="contact-heading" className="sec-heading">
-                Let&apos;s Plan Your <span className="accent">Event</span>
+                Let&apos;s Plan Your Event
               </h2>
               <p id="contact-subtitle" style={{ fontSize: '15px', color: '#1A1A1A', marginTop: '14px', lineHeight: '1.7' }}>
                 Fill out the form below and we will get back to you within 24 hours.

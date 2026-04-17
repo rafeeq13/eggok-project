@@ -102,7 +102,7 @@ const css = `
   .co-modal-backdrop { position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 300; display: flex; align-items: center; justify-content: center; padding: 16px; }
   .co-modal-close { width: 32px; height: 32px; border-radius: 50%; background: #F0F0F0; border: 1px solid #D0D0D0; color: #888; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background 0.15s; flex-shrink: 0; }
   .co-modal-close:hover { background: #EEEEEE; color: #1A1A1A; }
-  .co-modal-title { font-family: 'DM Sans', sans-serif; font-size: 24px; font-weight: 800; letter-spacing: 0.5px; color: #1A1A1A; margin: 0; }
+  .co-modal-title { font-family: 'DM Sans', sans-serif; font-size: 24px; font-weight: 900; letter-spacing: -0.5px; color: #1A1A1A; margin: 0; }
 
   .co-delivery-box { background: #FFFFFF; border-radius: 20px; width: 100%; max-width: 460px; border: 1px solid #E5E5E5; box-shadow: 0 24px 64px rgba(0,0,0,0.1); max-height: 92vh; overflow-y: auto; }
   .co-delivery-inner { padding: 28px; }
@@ -129,7 +129,7 @@ const css = `
   .co-del-field-textarea:focus { border-color: #E5B800; }
   .co-del-field-textarea::placeholder { color: #AAAAAA; }
   .co-del-from { padding: 14px 16px; background: #F8F9FA; border-radius: 12px; border: 1px solid #E5E5E5; }
-  .co-btn-primary { width: 100%; padding: 14px; background: #E5B800; border: 2px solid transparent; border-radius: 12px; color: #000; font-size: 15px; font-weight: 800; cursor: pointer; transition: all 0.3s ease; }
+  .co-btn-primary { width: 100%; padding: 14px; background: #E5B800; border: 2px solid transparent; border-radius: 12px; color: #000; font-size: 15px; font-weight: 900; cursor: pointer; transition: all 0.3s ease; }
   .co-btn-primary:hover { background: #E5B800; color: #000; border-color: transparent; transform: none; box-shadow: none; }
   .co-btn-secondary { width: 100%; padding: 14px; background: transparent; border: 1.5px solid #D0D0D0; border-radius: 12px; color: #555555; font-size: 15px; font-weight: 600; cursor: pointer; transition: border-color 0.15s; }
   .co-btn-secondary:hover { border-color: #C0C0C0; color: #1A1A1A; }
@@ -150,7 +150,7 @@ const css = `
   .co-radio.unselected { border-color: #D0D0D0; background: transparent; }
   .co-radio-inner { width: 8px; height: 8px; border-radius: 50%; background: #000; }
   .co-schedule-footer { padding: 16px 24px; border-top: 1px solid #E5E5E5; flex-shrink: 0; }
-  .co-schedule-confirm { width: 100%; padding: 14px; background: #E5B800; border: 2px solid transparent; border-radius: 12px; color: #000; font-size: 15px; font-weight: 800; cursor: pointer; transition: all 0.3s ease; }
+  .co-schedule-confirm { width: 100%; padding: 14px; background: #E5B800; border: 2px solid transparent; border-radius: 12px; color: #000; font-size: 15px; font-weight: 900; cursor: pointer; transition: all 0.3s ease; }
   .co-schedule-confirm:hover { background: #E5B800; color: #000; border-color: transparent; transform: none; }
 `;
 
@@ -348,7 +348,7 @@ function CheckoutInner() {
   };
 
   const sectionTitle: React.CSSProperties = {
-    fontSize: '16px', fontWeight: '800',
+    fontSize: '16px', fontWeight: '900',
     color: '#1A1A1A', marginBottom: '16px',
   };
 
@@ -598,7 +598,7 @@ function CheckoutInner() {
                     color: isPreset(t) ? '#E5B800' : '#1A1A1A',
                     cursor: 'pointer', transition: 'all 0.15s', textAlign: 'center',
                   }}>
-                    <p style={{ fontSize: '15px', fontWeight: '800', margin: 0 ,color:'#1A1A1A',}}>${((subtotal * t) / 100).toFixed(2)}</p>
+                    <p style={{ fontSize: '15px', fontWeight: '900', margin: 0 ,color:'#1A1A1A',}}>${((subtotal * t) / 100).toFixed(2)}</p>
                     <p style={{ fontSize: '12px', margin: '2px 0 0', opacity: 0.7,color:'#1A1A1A', }}>{t}%</p>
                   </button>
                 ))}
@@ -611,11 +611,11 @@ function CheckoutInner() {
                 }}>
                   {isCustomActive && customTipAmount ? (
                     <>
-                      <p style={{ fontSize: '15px', fontWeight: '800', margin: 0 }}>${parseFloat(customTipAmount).toFixed(2)}</p>
+                      <p style={{ fontSize: '15px', fontWeight: '900', margin: 0 }}>${parseFloat(customTipAmount).toFixed(2)}</p>
                       <p style={{ fontSize: '12px', margin: '2px 0 0', opacity: 0.7 }}>Custom</p>
                     </>
                   ) : (
-                    <p style={{ fontSize: '13px', fontWeight: '800', margin: 0 }}>Custom</p>
+                    <p style={{ fontSize: '13px', fontWeight: '900', margin: 0 }}>Custom</p>
                   )}
                 </button>
               </div>
@@ -727,7 +727,7 @@ function CheckoutInner() {
               background: canPlaceOrder && !placing ? '#E5B800' : '#E5E5E5',
               color: canPlaceOrder && !placing ? '#000' : '#AAAAAA',
               borderRadius: '12px', border: 'none',
-              fontSize: '16px', fontWeight: '800',
+              fontSize: '16px', fontWeight: '900',
               cursor: canPlaceOrder && !placing ? 'pointer' : 'not-allowed',
               transition: 'all 0.2s', marginBottom: '12px',
             }}>
@@ -747,7 +747,7 @@ function CheckoutInner() {
           <div className="summary-sticky">
             <div style={{ background: '#FFFFFF', border: '1px solid #E5E5E5', borderRadius: '14px', overflow: 'hidden' }}>
               <div style={{ padding: '16px 20px', borderBottom: '1px solid #E5E5E5' }}>
-                <p style={{ fontSize: '16px', fontWeight: '800', color: '#1A1A1A', margin: 0 }}>Order summary</p>
+                <p style={{ fontSize: '16px', fontWeight: '900', color: '#1A1A1A', margin: 0 }}>Order summary</p>
               </div>
               <div style={{ padding: '16px 20px' }}>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginBottom: '16px' }}>
@@ -798,8 +798,8 @@ function CheckoutInner() {
 
                 {/* Total */}
                 <div style={{ display: 'flex', justifyContent: 'space-between', paddingTop: '12px', borderTop: '1px solid #E5E5E5', marginBottom: '20px' }}>
-                  <span style={{ fontSize: '16px', fontWeight: '800', color: '#1A1A1A' }}>Total</span>
-                  <span style={{ fontSize: '18px', fontWeight: '800', color: '#1A1A1A' }}>${total.toFixed(2)}</span>
+                  <span style={{ fontSize: '16px', fontWeight: '900', color: '#1A1A1A' }}>Total</span>
+                  <span style={{ fontSize: '18px', fontWeight: '900', color: '#1A1A1A' }}>${total.toFixed(2)}</span>
                 </div>
 
                 {/* Cart Items */}
@@ -857,7 +857,7 @@ function CheckoutInner() {
                 background: canPlaceOrder && !placing ? '#E5B800' : '#E5E5E5',
                 color: canPlaceOrder && !placing ? '#000' : '#AAAAAA',
                 borderRadius: '12px', border: 'none',
-                fontSize: '16px', fontWeight: '800',
+                fontSize: '16px', fontWeight: '900',
                 cursor: canPlaceOrder && !placing ? 'pointer' : 'not-allowed',
               }}>
                 {placing ? 'Placing Order...' : `Place order Â· $${total.toFixed(2)}`}
@@ -874,7 +874,7 @@ function CheckoutInner() {
           <div style={{ background: '#FFFFFF', borderRadius: '20px', width: '100%', maxWidth: '400px', border: '1px solid #E5E5E5', padding: '24px' }}
             onClick={e => e.stopPropagation()}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
-              <h2 style={{ fontSize: '18px', fontWeight: '800', color: '#1A1A1A', margin: 0 }}>Custom tip</h2>
+              <h2 style={{ fontSize: '18px', fontWeight: '900', color: '#1A1A1A', margin: 0 }}>Custom tip</h2>
               <button onClick={() => setShowCustomTipModal(false)}
                 style={{ width: '30px', height: '30px', borderRadius: '50%', background: '#F0F0F0', border: '1px solid #D0D0D0', color: '#1A1A1A', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
@@ -925,7 +925,7 @@ function CheckoutInner() {
             </div>
 
             <button onClick={applyCustomTip} disabled={!customTipAmount || parseFloat(customTipAmount) <= 0}
-              style={{ width: '100%', padding: '14px', background: customTipAmount && parseFloat(customTipAmount) > 0 ? '#E5B800' : '#E5E5E5', border: 'none', borderRadius: '12px', color: customTipAmount && parseFloat(customTipAmount) > 0 ? '#000' : '#AAAAAA', fontSize: '15px', fontWeight: '800', cursor: customTipAmount && parseFloat(customTipAmount) > 0 ? 'pointer' : 'not-allowed' }}>
+              style={{ width: '100%', padding: '14px', background: customTipAmount && parseFloat(customTipAmount) > 0 ? '#E5B800' : '#E5E5E5', border: 'none', borderRadius: '12px', color: customTipAmount && parseFloat(customTipAmount) > 0 ? '#000' : '#AAAAAA', fontSize: '15px', fontWeight: '900', cursor: customTipAmount && parseFloat(customTipAmount) > 0 ? 'pointer' : 'not-allowed' }}>
               Done
             </button>
           </div>

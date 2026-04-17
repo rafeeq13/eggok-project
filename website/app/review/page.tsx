@@ -53,13 +53,13 @@ function ReviewContent() {
             <div style={{ width: '64px', height: '64px', borderRadius: '50%', background: '#22C55E20', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 20px' }}>
               <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#22C55E" strokeWidth="2.5"><polyline points="20 6 9 17 4 12"/></svg>
             </div>
-            <h1 style={{ fontSize: '28px', fontWeight: '800', marginBottom: '8px' }}>Thank You!</h1>
+            <h1 style={{ fontSize: '28px', fontWeight: '900', marginBottom: '8px' }}>Thank You!</h1>
             <p style={{ color: '#777777', fontSize: '14px', marginBottom: '24px' }}>Your review has been submitted. We appreciate your feedback!</p>
             <Link href="/order" style={{ padding: '12px 28px', background: '#E5B800', borderRadius: '10px', color: '#000', fontWeight: '700', fontSize: '14px', textDecoration: 'none' }}>Order Again</Link>
           </div>
         ) : (
           <>
-            <h1 style={{ fontSize: '28px', fontWeight: '800', marginBottom: '8px' }}>Leave a Review</h1>
+            <h1 style={{ fontSize: '28px', fontWeight: '900', marginBottom: '8px' }}>Leave a Review</h1>
             <p style={{ color: '#777777', fontSize: '14px', marginBottom: '28px' }}>We'd love to hear about your experience at Eggs Ok</p>
 
             <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>

@@ -66,7 +66,7 @@ function ResetPasswordForm() {
           <img src="/logo.svg" alt="Eggs Ok" style={{ width: '38px', height: '38px', objectFit: 'cover' }} onError={e => { (e.target as HTMLImageElement).style.display = 'none'; }} />
         </div>
         <div>
-          <div style={{ fontSize: '14px', fontWeight: 800, color: '#1A1A1A', letterSpacing: '0.5px', lineHeight: '1' }}>Eggs Ok</div>
+          <div style={{ fontSize: '14px', fontWeight: 900, color: '#1A1A1A', letterSpacing: '0.5px', lineHeight: '1' }}>Eggs Ok</div>
           <div style={{ fontSize: '10px', color: '#AAAAAA', letterSpacing: '1.5px', textTransform: 'uppercase', marginTop: '1px' }}>Philadelphia</div>
         </div>
       </Link>

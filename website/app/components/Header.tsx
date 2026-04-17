@@ -299,33 +299,57 @@ const css = `
 
       {/* Mobile Menu */}
       {mobileMenuOpen && (
-        <div style={{ position: 'fixed', inset: 0, zIndex: 99, background: 'rgba(255,255,255,0.98)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '16px' }}>
-          <button onClick={() => setMobileMenuOpen(false)} style={{ position: 'absolute', top: '20px', right: '24px', color: '#777777', fontSize: '24px', background: 'transparent' }}>✕</button>
-          <div style={{ width: '70px', height: '70px', borderRadius: '16px', overflow: 'hidden', marginBottom: '8px' }}>
-            {/* <Image src="/logo.svg" alt="EggsOK Eatery" width={70} height={70} style={{ objectFit: 'contain' }} /> */}
-          </div>
-          {[
-            { label: 'Home', href: '/' },
-            { label: 'Menu', href: '/order' },
-            { label: 'Catering', href: '/catering' },
-            { label: 'Our Story', href: '/story' },
-            { label: 'Contact', href: '/contact' },
-            { label: 'Gift Cards', href: '/gift-cards' },
-            { label: 'Track My Order', href: '/track' },
-            { label: "We're Hiring", href: '/hiring' },
-          ].map(item => (
-            <Link key={item.href} href={item.href} onClick={() => setMobileMenuOpen(false)} style={{ fontSize: '32px', fontWeight: '800', color: '#1A1A1A', fontFamily: 'DM Sans, sans-serif', letterSpacing: '2px' }}>
-              {item.label}
+        <div style={{ position: 'fixed', inset: 0, zIndex: 101, background: '#FFFFFF', display: 'flex', flexDirection: 'column' }}>
+          {/* Mobile Menu Header */}
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '16px 20px', borderBottom: '1px solid #F0F0F0' }}>
+            <Link href="/" onClick={() => setMobileMenuOpen(false)} style={{ display: 'flex', alignItems: 'center' }}>
+              <Image src="/logo.svg" alt="EggsOK Eatery" width={100} height={44} style={{ objectFit: 'contain' }} />
             </Link>
-          ))}
-          <Link href="/order" onClick={() => setMobileMenuOpen(false)} style={{ marginTop: '8px', padding: '14px 40px', background: '#E5B800', borderRadius: '12px', fontSize: '18px', fontWeight: '700', color: '#000', fontFamily: 'DM Sans, sans-serif', letterSpacing: '2px' }}>
-            Order Now
-          </Link>
-          {mounted && user && (
-            <button onClick={() => { logout(); setMobileMenuOpen(false); }} style={{ marginTop: '8px', padding: '12px 40px', background: 'transparent', border: '1px solid #FC030140', borderRadius: '12px', fontSize: '16px', fontWeight: '700', color: '#FC0301', fontFamily: 'DM Sans, sans-serif', letterSpacing: '2px', cursor: 'pointer' }}>
-              Sign Out
+            <button onClick={() => setMobileMenuOpen(false)} style={{ width: '38px', height: '38px', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'transparent', color: '#333333', fontSize: '22px' }}>
+              ✕
             </button>
-          )}
+          </div>
+
+          {/* Mobile Menu Links */}
+          <div style={{ flex: 1, overflowY: 'auto', padding: '8px 0' }}>
+            {!user && (
+              <Link href="/account" onClick={() => setMobileMenuOpen(false)} style={{ display: 'block', padding: '16px 24px', fontSize: '16px', fontWeight: '500', color: '#333333', textDecoration: 'none', borderBottom: '1px solid #F5F5F5' }}>
+                Sign in
+              </Link>
+            )}
+            {user && (
+              <Link href="/account" onClick={() => setMobileMenuOpen(false)} style={{ display: 'block', padding: '16px 24px', fontSize: '16px', fontWeight: '500', color: '#333333', textDecoration: 'none', borderBottom: '1px solid #F5F5F5' }}>
+                My Account
+              </Link>
+            )}
+            {[
+              { label: 'Menu', href: '/order' },
+              { label: 'Catering', href: '/catering' },
+              { label: 'Our Story', href: '/story' },
+              { label: "We're Hiring", href: '/hiring' },
+              { label: 'Gift Cards', href: '/gift-cards' },
+              { label: 'Contact Us', href: '/contact' },
+            ].map(item => (
+              <Link
+                key={item.href}
+                href={item.href}
+                onClick={() => setMobileMenuOpen(false)}
+                style={{
+                  display: 'block', padding: '16px 24px',
+                  fontSize: '16px', fontWeight: '500', color: '#333333',
+                  textDecoration: 'none', borderBottom: '1px solid #F5F5F5',
+                  background: pathname === item.href ? '#F5F5F5' : 'transparent',
+                }}
+              >
+                {item.label}
+              </Link>
+            ))}
+            {mounted && user && (
+              <button onClick={() => { logout(); setMobileMenuOpen(false); }} style={{ display: 'block', width: '100%', padding: '16px 24px', fontSize: '16px', fontWeight: '500', color: '#FC0301', textAlign: 'left', background: 'transparent', border: 'none', borderBottom: '1px solid #F5F5F5', cursor: 'pointer', fontFamily: 'inherit' }}>
+                Sign Out
+              </button>
+            )}
+          </div>
         </div>
       )}
 

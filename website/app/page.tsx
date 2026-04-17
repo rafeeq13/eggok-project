@@ -283,7 +283,7 @@ export default function HomePage() {
 
         /* ── Layout ── */
         .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
-        .bebas { font-family: 'DM Sans', sans-serif; font-weight: 800; letter-spacing: 0.5px; line-height: 1.1; }
+        .bebas { font-family: 'DM Sans', sans-serif; font-weight: 900; letter-spacing: -0.5px; line-height: 1.2; }
 
         /* ── Scroll Reveal ── */
         .reveal { opacity: 0; transform: translateY(32px); transition: opacity 0.7s cubic-bezier(0.16,1,0.3,1), transform 0.7s cubic-bezier(0.16,1,0.3,1); }
@@ -322,10 +322,10 @@ export default function HomePage() {
         /* ── Section Heading — consistent across all sections ── */
         .sec-heading {
           font-family: 'DM Sans', sans-serif;
-          font-weight: 800;
+          font-weight: 900;
           font-size: 32px;
-          letter-spacing: 1px;
-          line-height: 0.95;
+          letter-spacing: -0.5px;
+          line-height: 1.2;
           color: #1A1A1A;
         }
 
@@ -401,7 +401,7 @@ export default function HomePage() {
         }
         .home-modal-close:hover { background: rgba(0,0,0,0.95); }
         .home-modal-body { padding: 24px; }
-        .home-modal-name { font-family: 'DM Sans', sans-serif; font-size: 28px; letter-spacing: 1px; color: #1A1A1A; margin-bottom: 8px; }
+        .home-modal-name { font-family: 'DM Sans', sans-serif; font-size: 28px; letter-spacing: -0.5px; color: #1A1A1A; margin-bottom: 8px; }
         .home-modal-desc { font-size: 14px; color: #666; line-height: 1.7; margin-bottom: 20px; }
         .home-modal-price-row { display: flex; gap: 10px; margin-bottom: 20px; }
         .home-modal-price-card {
@@ -469,8 +469,8 @@ export default function HomePage() {
         .about-img img { width: 100%; height: 100%; object-fit: cover; display: block; border-radius: 20px; }
         .about-content h2 {
           font-family: 'DM Sans', sans-serif;
-          font-size: clamp(32px, 2vw, 52px);
-          letter-spacing: 1px; line-height: 1;
+          font-size: 32px;
+          letter-spacing: -0.5px; line-height: 1.2;
           color: #1A1A1A; margin-bottom: 20px;
         }
         .about-content p { color: #1A1A1A; line-height: 1.75; font-size: 15px; max-width: 520px; }
@@ -500,8 +500,8 @@ export default function HomePage() {
         }
         .order-card-box h2 {
           font-family: 'DM Sans', sans-serif;
-          font-size: clamp(28px, 3.5vw, 32px);
-          letter-spacing: 1px; line-height: 1;
+          font-size: 32px;
+          letter-spacing: -0.5px; line-height: 1.2;
           color: #1A1A1A; margin-bottom: 14px;
         }
         .order-card-box p { color: #666666; font-size: 14px; line-height: 1.75; margin-bottom: 24px; }
@@ -539,7 +539,7 @@ export default function HomePage() {
         .delivery-content h2 {
           font-family: 'DM Sans', sans-serif;
           font-size: 32px;
-          letter-spacing: 1px; line-height: 0.95;
+          letter-spacing: -0.5px; line-height: 1.2;
           color: #ffffff; margin-bottom: 16px;
         }
         .delivery-content h2 span { color: #ffffff; }
@@ -771,7 +771,7 @@ export default function HomePage() {
           <div className={`featured-header reveal ${featuredReveal.visible ? 'visible' : ''}`} style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', marginBottom: '52px', flexWrap: 'wrap', gap: '20px' }}>
             <div className="featured-header-text">
               <span className="sec-label">Featured</span>
-              <h2 id="featured-heading" className="sec-heading">Our <span className="text-accent" style={{ color: '#1A1A1A' }}>Favorites</span></h2>
+              <h2 id="featured-heading" className="sec-heading">Our Favorites</h2>
             </div>
             <Link href="/order" className="btn-outline featured-view-all-btn">View Full Menu <ArrowRight size={15} aria-hidden="true" /></Link>
           </div>
@@ -807,7 +807,7 @@ export default function HomePage() {
                   <div className="fav-card-body" style={{ padding: '0 14px 4px', width: '100%' }}>
                     <p className="fav-card-name" style={{ fontSize: '14px', fontWeight: '700', color: '#1A1A1A', marginBottom: '4px', lineHeight: 1.3 }}>{item.name}</p>
                     <p className="fav-card-desc" style={{ fontSize: '13px', color: '#888888', lineHeight: 1.4, marginBottom: '8px', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical' as any, overflow: 'hidden' }}>{item.desc}</p>
-                    <p className="fav-card-price" style={{ fontSize: '16px', fontWeight: '800', color: '#1A1A1A' }}>{item.price}</p>
+                    <p className="fav-card-price" style={{ fontSize: '16px', fontWeight: '900', color: '#1A1A1A' }}>{item.price}</p>
                   </div>
                 </div>
               ))}
@@ -831,7 +831,7 @@ export default function HomePage() {
             </div>
             <div className="about-content story-content">
               <span className="sec-label">Our Story</span>
-              <h2 id="story-heading" className="story-heading">Born in the Heart <span className="text-accent" style={{ color: '#1A1A1A' }}>of West Philly</span></h2>
+              <h2 id="story-heading" className="story-heading">Born in the Heart of West Philly</h2>
 
               <p className="story-body">
                 Eggs Ok started with a simple idea  great breakfast should be fast, fresh, and made with
@@ -855,7 +855,7 @@ export default function HomePage() {
           <div className="about-grid quality-grid">
             <div className="about-content quality-content">
               <span className="sec-label">Quality First</span>
-              <h2 id="quality-heading" className="quality-heading">Fresh Ingredients, <span className="text-accent" style={{ color: '#1A1A1A' }}> Bold Flavors</span></h2>
+              <h2 id="quality-heading" className="quality-heading">Fresh Ingredients, Bold Flavors</h2>
               <p className="quality-body">
                 We source quality ingredients and prep everything in-house daily. Whether you&apos;re
                 fueling up before work, grabbing lunch on the run, or treating yourself to a specialty
@@ -880,7 +880,7 @@ export default function HomePage() {
       <div id="order-ahead" className="order-ahead-hero container">
         <div className="order-ahead-overlay" />
         <div className="order-card-box">
-          <h2 id="order-ahead-heading" className="order-ahead-heading">Order Ahead, <span className="text-accent" style={{ color: '#1A1A1A' }}> Enjoy Anytime</span></h2>
+          <h2 id="order-ahead-heading" className="order-ahead-heading">Order Ahead, Enjoy Anytime</h2>
           <p className="order-ahead-body">
             Skip the line and order online in seconds. Pick it up hot and ready, or have it
             delivered straight to your door. It only takes a few taps.
@@ -897,7 +897,7 @@ export default function HomePage() {
           <div className={`menu-header reveal ${menuReveal.visible ? 'visible' : ''}`} style={{ textAlign: 'left', marginBottom: '52px' }}>
             <span className="sec-label">Explore</span>
             <h2 id="menu-heading" className="sec-heading">
-             A Taste Of  <span className="text-accent" style={{ color: '#1A1A1A' }}> Our Menu</span>
+             A Taste of Our Menu
             </h2>
             <p className="menu-subheading" style={{ color: '#1A1A1A', marginTop: '14px', fontSize: '15px' }}>
               Bright Flavors, warm atmosphere, and a menu that has something for everyone. <br /> From classic breakfast sandwiches to bold specialty drinks,  get a glimpse of what we offer <br /> before you order. 
@@ -950,7 +950,7 @@ export default function HomePage() {
             </div>
             <div className="about-content catering-content">
               <span className="sec-label">Catering</span>
-              <h2 id="catering-heading" className="catering-heading">Let Us Cater Your <span className="text-accent" style={{ color: '#1A1A1A' }}> Next Event</span></h2>
+              <h2 id="catering-heading" className="catering-heading">Let Us Cater Your Next Event</h2>
               <p className="catering-body">
                 From corporate breakfasts to birthday brunches, Eggs Ok brings the same fresh,
                 made-to-order quality to your event. We handle setup, variety, and volume — you
@@ -972,7 +972,7 @@ export default function HomePage() {
           <div className={`reviews-header reveal ${reviewsReveal.visible ? 'visible' : ''}`} style={{ textAlign: 'center', marginBottom: '40px' }}>
             <span className="sec-label">Reviews</span>
             <h2 id="reviews-heading" className="sec-heading">
-              What Our Guests <span className="text-accent" style={{ color: '#1A1A1A' }}>Are Saying</span>
+              What Our Guests Are Saying
             </h2>
             <div id="reviews-rating-bar" className="reviews-rating-bar" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '5px', marginTop: '14px' }}>
               {[0,1,2,3,4].map(i => <Star key={i} size={19} color="#E5B800" fill="#E5B800" aria-hidden="true" />)}
@@ -1047,7 +1047,7 @@ export default function HomePage() {
             <div className={`rewards-left reveal ${rewardsReveal.visible ? 'visible' : ''}`}>
               <span className="sec-label">Loyalty Program</span>
               <h2 id="rewards-heading" className="sec-heading" style={{ marginBottom: '16px' }}>
-                Eggs Ok <span className="text-accent" style={{ color: '#1A1A1A' }}>Rewards</span>
+                Eggs Ok Rewards
               </h2>
               <p className="rewards-body" style={{ fontSize: '15px', color: '#1A1A1A', lineHeight: 1.8, marginBottom: '36px', maxWidth: '440px' }}>
                 Every order earns you points. Redeem for free food, exclusive deals, and early access
@@ -1075,7 +1075,7 @@ export default function HomePage() {
                   <div className="reward-step-icon" style={{ width: '38px', height: '38px', borderRadius: '10px', background: `${s.color}20`, border: `1px solid ${s.color}40`, display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '16px' }}>
                     <p className="reward-step-number bebas" style={{ fontSize: '16px', color: s.color }}>{s.step}</p>
                   </div>
-                  <p className="reward-step-title" style={{ fontSize: '14px', fontWeight: '800', color: '#1A1A1A', marginBottom: '8px' }}>{s.title}</p>
+                  <p className="reward-step-title" style={{ fontSize: '14px', fontWeight: '900', color: '#1A1A1A', marginBottom: '8px' }}>{s.title}</p>
                   <p className="reward-step-desc" style={{ fontSize: '13px', color: '#666666', lineHeight: 1.65 }}>{s.desc}</p>
                 </div>
               ))}
@@ -1092,7 +1092,7 @@ export default function HomePage() {
           <div className={`faq-header reveal ${faqReveal.visible ? 'visible' : ''}`} style={{ textAlign: 'center', marginBottom: '60px' }}>
             <span className="sec-label">FAQ</span>
             <h2 id="faq-heading" className="sec-heading">
-              Frequently Asked <span className="text-accent" style={{ color: '#1A1A1A' }}>Questions</span>
+              Frequently Asked Questions
             </h2>
           </div>
 
@@ -1137,7 +1137,7 @@ export default function HomePage() {
           <div className={`location-header reveal ${locationReveal.visible ? 'visible' : ''}`} style={{ textAlign: 'center', marginBottom: '56px' }}>
             <span className="sec-label">Find Us</span>
             <h2 id="location-heading" className="sec-heading">
-              Our <span className="text-accent" style={{ color: '#1A1A1A' }}>Location</span>
+              Our Location
             </h2>
           </div>
 
@@ -1156,7 +1156,7 @@ export default function HomePage() {
                 </div>
 
                 <h3 id="location-name" className="location-name bebas" style={{ fontSize: 'clamp(28px, 4vw, 32px)', color: '#1A1A1A', marginBottom: '28px' }}>
-                  Eggs Ok<br /><span className="location-name-accent" style={{ color: '#1A1A1A' }}>West Philadelphia</span>
+                  Eggs Ok<br />West Philadelphia
                 </h3>
 
                 <address id="location-address" className="location-address" style={{ fontStyle: 'normal', display: 'flex', flexDirection: 'column', gap: '16px' }}>
@@ -1204,7 +1204,7 @@ export default function HomePage() {
                 allowFullScreen loading="lazy" referrerPolicy="no-referrer-when-downgrade"
               />
               <div id="location-map-pin" className="location-map-pin" style={{ position: 'absolute', bottom: '20px', left: '20px', background: 'rgba(255,255,255,0.95)', backdropFilter: 'blur(12px)', borderRadius: '10px', padding: '10px 16px', border: '1px solid #E5B80040', pointerEvents: 'none' }} aria-hidden="true">
-                <p className="location-map-pin-name bebas" style={{ fontSize: '14px', color: '#1A1A1A', letterSpacing: '1px' }}>Eggs Ok</p>
+                <p className="location-map-pin-name bebas" style={{ fontSize: '14px', color: '#1A1A1A', letterSpacing: '-0.5px' }}>Eggs Ok</p>
                 <p className="location-map-pin-address" style={{ fontSize: '12px', color: '#888888' }}>3517 Lancaster Ave</p>
               </div>
             </div>
@@ -1221,7 +1221,7 @@ export default function HomePage() {
           <span className="delivery-small-text">Order Online</span>
           <h2 id="delivery-heading" className="delivery-heading">
             Get It Delivered <br />
-            <span className="delivery-heading-accent">Straight to Your Door</span>
+            Straight to Your Door
           </h2>
           <p className="delivery-body">
             Craving something fresh? Order online and get it delivered piping hot via your
@@ -1322,7 +1322,7 @@ export default function HomePage() {
                     {(['pickup', 'delivery'] as const).filter(type => type === 'pickup' ? isPickupEnabled : isDeliveryEnabled).map(type => (
                       <div key={type} className={`home-modal-price-card ${orderType === type ? 'active' : ''}`} onClick={() => setOrderType(type)}>
                         <p style={{ fontSize: '12px', color: '#777777', fontWeight: '600', textTransform: 'uppercase', marginBottom: '4px' }}>{type}</p>
-                        <p style={{ fontSize: '18px', fontWeight: '800', color: '#1A1A1A' }}>
+                        <p style={{ fontSize: '18px', fontWeight: '900', color: '#1A1A1A' }}>
                           ${(Number(type === 'pickup' ? fullMenuItem.pickupPrice : fullMenuItem.deliveryPrice) || 0).toFixed(2)}
                         </p>
                       </div>

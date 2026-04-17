@@ -45,7 +45,7 @@ export default function TrackPage() {
           </svg>
         </div>
 
-        <h1 style={{ fontSize: '28px', fontWeight: '800', marginBottom: '8px' }}>Track Your Order</h1>
+        <h1 style={{ fontSize: '28px', fontWeight: '900', marginBottom: '8px' }}>Track Your Order</h1>
         <p style={{ color: '#777777', fontSize: '14px', marginBottom: '28px' }}>Enter your order number or email to see your order status</p>
 
         <form onSubmit={handleTrack} style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>

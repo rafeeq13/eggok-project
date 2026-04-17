@@ -82,7 +82,7 @@ export default function GiftCardsPage() {
 
         /* ── Layout ── */
         .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
-        .bebas { font-family: var(--font-head); letter-spacing: 1px; }
+        .bebas { font-family: var(--font-head); letter-spacing: -0.5px; }
 
         /* ── Buttons ── */
         .btn-yellow {
@@ -116,8 +116,8 @@ export default function GiftCardsPage() {
         .sec-heading {
           font-family: var(--font-head);
           font-size: 32px;
-          font-weight: 800;
-          letter-spacing: 0.5px; line-height: 0.95; color: var(--t1);
+          font-weight: 900;
+          letter-spacing: -0.5px; line-height: 1.2; color: var(--t1);
         }
         .sec-heading .accent { color: var(--t1); }
 
@@ -159,7 +159,7 @@ export default function GiftCardsPage() {
 
         /* ── Amount selector ── */
         .amount-box { background: var(--bg2); border: 1px solid var(--border); border-radius: 16px; padding: 24px; }
-        .amount-box-title { font-family: var(--font-head); font-size: 18px; letter-spacing: 1px; color: var(--t1); margin-bottom: 16px; }
+        .amount-box-title { font-family: var(--font-head); font-size: 18px; letter-spacing: -0.5px; color: var(--t1); margin-bottom: 16px; }
         .amount-presets { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 16px; }
         .amount-preset-btn {
           padding: 13px 8px; border-radius: 10px; font-size: 16px; font-weight: 700;
@@ -182,7 +182,7 @@ export default function GiftCardsPage() {
         .form-wrap { background: #FFFFFF; border: 1px solid #E0E0E0; border-radius: 18px; padding: 32px; }
         .form-header { display: flex; align-items: center; gap: 14px; margin-bottom: 26px; padding-bottom: 22px; border-bottom: 1px solid var(--border); }
         .form-icon { width: 48px; height: 48px; border-radius: 12px; background: rgba(254,216,0,0.06); border: 1px solid rgba(254,216,0,0.15); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-        .form-title    { font-family: var(--font-head); font-size: 24px; letter-spacing: 1px; color: var(--t1); margin: 0 0 3px; line-height: 1; }
+        .form-title    { font-family: var(--font-head); font-size: 24px; letter-spacing: -0.5px; color: var(--t1); margin: 0 0 3px; line-height: 1; }
         .form-subtitle { font-size: 13px; color: var(--t2); margin: 0; }
         .form-fields   { display: flex; flex-direction: column; gap: 14px; }
         .form-label    { font-size: 12px; font-weight: 700; color: var(--t2); display: block; margin-bottom: 6px; letter-spacing: 0.5px; text-transform: uppercase; }
@@ -209,12 +209,12 @@ export default function GiftCardsPage() {
           display: flex; justify-content: space-between; align-items: center;
         }
         .order-summary-label { font-size: 13px; color: var(--t2); }
-        .order-summary-value { font-family: var(--font-head); font-size: 26px; letter-spacing: 1px; color: var(--t1); }
+        .order-summary-value { font-family: var(--font-head); font-size: 26px; letter-spacing: -0.5px; color: var(--t1); }
 
         /* ── Submit btn ── */
         .form-submit-btn {
           width: 100%; padding: 16px; border-radius: 12px; font-size: 15px;
-          font-weight: 800; cursor: pointer; border: 2px solid transparent;
+          font-weight: 900; cursor: pointer; border: 2px solid transparent;
           display: flex; align-items: center; justify-content: center; gap: 8px;
           font-family: var(--font-body); transition: all 0.3s ease;
         }
@@ -232,9 +232,9 @@ export default function GiftCardsPage() {
           background: rgba(34,197,94,0.08); border: 2px solid var(--green);
           display: flex; align-items: center; justify-content: center; margin: 0 auto 24px;
         }
-        .success-title { font-family: var(--font-head); font-size: clamp(28px, 5vw, 38px); letter-spacing: 1px; color: var(--t1); margin-bottom: 14px; line-height: 1; }
-        .success-amount { color: var(--t1); font-weight: 800; }
-        .success-email  { font-family: var(--font-head); font-size: 20px; letter-spacing: 1px; color: var(--t1); margin: 6px 0 16px; }
+        .success-title { font-family: var(--font-head); font-size: clamp(28px, 5vw, 38px); letter-spacing: -0.5px; color: var(--t1); margin-bottom: 14px; line-height: 1; }
+        .success-amount { color: var(--t1); font-weight: 900; }
+        .success-email  { font-family: var(--font-head); font-size: 20px; letter-spacing: -0.5px; color: var(--t1); margin: 6px 0 16px; }
         .success-note   { font-size: 12px; color: var(--t3); margin-bottom: 32px; }
         .success-actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
 

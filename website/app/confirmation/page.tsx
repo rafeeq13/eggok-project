@@ -272,8 +272,8 @@ export default function ConfirmationPage() {
                 </div>
               )}
               <div style={{ display: 'flex', justifyContent: 'space-between', paddingTop: '10px', borderTop: '1px solid #E5E5E5', marginTop: '4px' }}>
-                <span style={{ fontSize: '16px', fontWeight: '800', color: '#1A1A1A' }}>Total Paid</span>
-                <span style={{ fontSize: '18px', fontWeight: '800', color: '#1A1A1A' }}>${displayTotal.toFixed(2)}</span>
+                <span style={{ fontSize: '16px', fontWeight: '900', color: '#1A1A1A' }}>Total Paid</span>
+                <span style={{ fontSize: '18px', fontWeight: '900', color: '#1A1A1A' }}>${displayTotal.toFixed(2)}</span>
               </div>
             </div>
           </div>

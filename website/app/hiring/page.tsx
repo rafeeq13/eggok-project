@@ -103,7 +103,7 @@ export default function HiringPage() {
 
         /* ── Layout ── */
         .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
-        .bebas { font-family: var(--font-head); letter-spacing: 1px; }
+        .bebas { font-family: var(--font-head); letter-spacing: -0.5px; }
 
         /* ── Buttons ── */
         .btn-yellow {
@@ -137,8 +137,8 @@ export default function HiringPage() {
         .sec-heading {
           font-family: var(--font-head);
           font-size: 32px;
-          font-weight: 800;
-          letter-spacing: 0.5px; line-height: 0.95; color: var(--t1);
+          font-weight: 900;
+          letter-spacing: -0.5px; line-height: 1.2; color: var(--t1);
         }
         .sec-heading .accent { color: var(--t1); }
 
@@ -210,7 +210,7 @@ export default function HiringPage() {
           background: rgba(254,216,0,0.06); border: 1px solid rgba(254,216,0,0.15);
           display: flex; align-items: center; justify-content: center; flex-shrink: 0;
         }
-        .form-title { font-family: var(--font-head); font-size: 26px; letter-spacing: 1px; color: var(--t1); margin: 0 0 3px; line-height: 1; }
+        .form-title { font-family: var(--font-head); font-size: 26px; letter-spacing: -0.5px; color: var(--t1); margin: 0 0 3px; line-height: 1; }
         .form-subtitle { font-size: 13px; color: var(--t2); margin: 0; }
         .form-fields { display: flex; flex-direction: column; gap: 14px; }
         .form-row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
@@ -246,7 +246,7 @@ export default function HiringPage() {
         .form-textarea::placeholder { color: var(--t3); }
         .form-submit-btn {
           width: 100%; padding: 15px; background: var(--y);
-          border-radius: 12px; font-size: 15px; font-weight: 800;
+          border-radius: 12px; font-size: 15px; font-weight: 900;
           color: #000; cursor: pointer; border: 2px solid transparent;
           display: flex; align-items: center; justify-content: center; gap: 8px;
           font-family: var(--font-body);
@@ -264,7 +264,7 @@ export default function HiringPage() {
           background: rgba(34,197,94,0.08); border: 2px solid var(--green);
           display: flex; align-items: center; justify-content: center; margin: 0 auto 24px;
         }
-        .success-title { font-family: var(--font-head); font-size: 32px; letter-spacing: 1px; color: var(--t1); margin-bottom: 14px; line-height: 1; }
+        .success-title { font-family: var(--font-head); font-size: 32px; letter-spacing: -0.5px; color: var(--t1); margin-bottom: 14px; line-height: 1; }
         .success-msg { font-size: 14px; color: var(--t2); line-height: 1.75; margin-bottom: 28px; }
 
         /* ── Footer ── */
@@ -337,7 +337,7 @@ export default function HiringPage() {
           <div id="perks-header" style={{ textAlign: 'center', marginBottom: '52px' }}>
             <span className="sec-label">Benefits</span>
             <h2 id="perks-heading" className="sec-heading">
-              Why Work <span className="accent">With Us?</span>
+              Why Work With Us?
             </h2>
           </div>
 
@@ -369,7 +369,7 @@ export default function HiringPage() {
               <div id="jobs-header" style={{ marginBottom: '28px' }}>
                 <span className="sec-label">Careers</span>
                 <h2 id="jobs-heading" className="sec-heading">
-                  Open <span className="accent">Positions</span>
+                  Open Positions
                 </h2>
               </div>
 

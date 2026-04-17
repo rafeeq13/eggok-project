@@ -32,7 +32,7 @@ export default function StoryPage() {
 
         /* ── Layout ── */
         .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
-        .bebas { font-family: var(--font-head); letter-spacing: 1px; }
+        .bebas { font-family: var(--font-head); letter-spacing: -0.5px; }
 
         /* ── Buttons ── */
         .btn-yellow {
@@ -65,8 +65,8 @@ export default function StoryPage() {
         .sec-heading {
           font-family: var(--font-head);
           font-size: 32px;
-          font-weight: 800;
-          letter-spacing: 0.5px; line-height: 0.95; color: var(--t1);
+          font-weight: 900;
+          letter-spacing: -0.5px; line-height: 1.2; color: var(--t1);
         }
         .sec-heading .accent { color: var(--t1); }
 

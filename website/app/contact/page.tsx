@@ -88,7 +88,7 @@ export default function ContactPage() {
 
         /* ── Layout ── */
         .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
-        .bebas { font-family: var(--font-head); letter-spacing: 1px; }
+        .bebas { font-family: var(--font-head); letter-spacing: -0.5px; }
 
         /* ── Buttons ── */
         .btn-yellow {
@@ -122,8 +122,8 @@ export default function ContactPage() {
         .sec-heading {
           font-family: var(--font-head);
           font-size: 32px;
-          font-weight: 800;
-          letter-spacing: 0.5px; line-height: 0.95; color: var(--t1);
+          font-weight: 900;
+          letter-spacing: -0.5px; line-height: 1.2; color: var(--t1);
         }
         .sec-heading .accent { color: var(--t1); }
 
@@ -170,7 +170,7 @@ export default function ContactPage() {
           border-radius: 16px; padding: 26px; margin-bottom: 16px;
         }
         .hours-box-header { display: flex; align-items: center; gap: 10px; margin-bottom: 18px; }
-        .hours-box-title { font-family: var(--font-head); font-size: 18px; letter-spacing: 1px; color: var(--t1); }
+        .hours-box-title { font-family: var(--font-head); font-size: 18px; letter-spacing: -0.5px; color: var(--t1); }
         .hours-open-badge { margin-left: auto; display: flex; align-items: center; gap: 6px; }
         .hours-open-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green); flex-shrink: 0; }
         .hours-open-text { font-size: 12px; color: var(--green); font-weight: 600; }
@@ -216,7 +216,7 @@ export default function ContactPage() {
           border-radius: 18px; padding: 36px;
         }
         .form-header { margin-bottom: 28px; padding-bottom: 22px; border-bottom: 1px solid var(--border); }
-        .form-title { font-family: var(--font-head); font-size: 28px; letter-spacing: 1px; color: var(--t1); margin-bottom: 6px; line-height: 1; }
+        .form-title { font-family: var(--font-head); font-size: 28px; letter-spacing: -0.5px; color: var(--t1); margin-bottom: 6px; line-height: 1; }
         .form-subtitle { font-size: 14px; color: var(--t2); }
         .form-row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
         .form-label { font-size: 12px; font-weight: 700; color: var(--t2); display: block; margin-bottom: 6px; letter-spacing: 0.5px; text-transform: uppercase; }
@@ -247,7 +247,7 @@ export default function ContactPage() {
         .form-textarea::placeholder { color: var(--t3); }
         .form-submit-btn {
           width: 100%; padding: 16px; background: var(--y);
-          border-radius: 12px; font-size: 15px; font-weight: 800;
+          border-radius: 12px; font-size: 15px; font-weight: 900;
           color: #000; cursor: pointer; border: 2px solid transparent;
           display: flex; align-items: center; justify-content: center; gap: 8px;
           font-family: var(--font-body);
@@ -274,7 +274,7 @@ export default function ContactPage() {
           background: rgba(34,197,94,0.08); border: 2px solid var(--green);
           display: flex; align-items: center; justify-content: center; margin: 0 auto 24px;
         }
-        .success-title { font-family: var(--font-head); font-size: clamp(28px,5vw,38px); letter-spacing: 1px; color: var(--t1); margin-bottom: 14px; line-height: 1; }
+        .success-title { font-family: var(--font-head); font-size: clamp(28px,5vw,38px); letter-spacing: -0.5px; color: var(--t1); margin-bottom: 14px; line-height: 1; }
         .success-msg { font-size: 15px; color: var(--t2); line-height: 1.75; margin-bottom: 32px; }
         .success-actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
 

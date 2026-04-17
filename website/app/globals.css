@@ -35,9 +35,13 @@ body {
 
 h1, h2, h3, h4 {
   font-family: 'DM Sans', sans-serif;
-  font-weight: 800;
-  letter-spacing: 0.5px;
-  line-height: 1.1;
+  font-weight: 900;
+  letter-spacing: -0.5px;
+  line-height: 1.2;
+}
+
+p, span, li, blockquote, cite, address, td, th, label, a {
+  font-weight: 500;
 }
 
 input, textarea, select, button {
