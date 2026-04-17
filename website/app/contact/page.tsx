@@ -282,7 +282,7 @@ export default function ContactPage() {
         .site-footer { background: #F8F9FA; padding: 68px 0 32px; border-top: 1px solid #E5E5E5; }
         .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 48px; margin-bottom: 40px; }
         .footer-bottom { border-top: 1px solid #E5E5E5; padding-top: 24px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
-        .footer-link { display: block; font-size: 16px; color: #1A1A1A; text-decoration: none; transition: color 0.15s, padding-left 0.15s; padding: 4px 12px; }
+        .footer-link { display: block; font-size: 16px; color: #1A1A1A; text-decoration: none; transition: color 0.15s, padding-left 0.15s; padding: 0px 12px; }
         .footer-link:hover { color: #555555; padding-left: 16px; }
         .footer-hours-row { display: flex; gap: 14px; }
         .footer-hours-day { font-size: 14px; color: #1A1A1A; font-weight: 600; min-width: 90px; }
@@ -597,7 +597,7 @@ export default function ContactPage() {
             <div id="footer-brand" className="footer-brand">
               <div id="footer-logo-wrap" style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '18px' }}>
                 <div id="footer-logo-img-wrap" style={{ borderRadius: '10px', overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                  <Image src="/logo.webp" alt="Eggs Ok" width={100} height={50} style={{ objectFit: 'contain' }} />
+                  <Image src="/logo.webp" alt="Eggs Ok" width={100} height={70} style={{ objectFit: 'contain' }} />
                 </div>
               </div>
               <p id="footer-tagline" style={{ fontSize: '16px', color: '#1A1A1A', lineHeight: '1.75', maxWidth: '280px', marginBottom: '22px' }}>

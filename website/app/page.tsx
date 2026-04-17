@@ -336,8 +336,8 @@ export default function HomePage() {
           background-image: url('/main-menu/Hero-Banner.webp');
           background-size: cover; background-position: center; background-repeat: no-repeat;
         }
-        // .hero-title { text-shadow: 0 2px 20px rgba(0,0,0,0.6), 0 1px 6px rgba(0,0,0,0.5); }
-        // .hero-subtitle { text-shadow: 0 1px 12px rgba(0,0,0,0.5), 0 1px 3px rgba(0,0,0,0.4); }
+        .hero-title { text-shadow: 0 2px 20px rgba(0,0,0,0.6), 0 1px 6px rgba(0,0,0,0.5); }
+        .hero-subtitle { text-shadow: 0 1px 12px rgba(0, 0, 0, 0.5), 0 1px 3px rgba(0, 0, 0, 0.4); }
         .hero-stat-value { text-shadow: 0 1px 10px rgba(0,0,0,0.5); }
         .hero-stat-label { text-shadow: 0 1px 6px rgba(0,0,0,0.4); }
         .hero-menu-btn {
@@ -709,7 +709,7 @@ export default function HomePage() {
           1. HERO
       ══════════════════════════════════════════ */}
       <section id="hero" className="hero-section" aria-label="Welcome to Eggs Ok">
-        <div className="hero-overlay" style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.35) 40%, rgba(0,0,0,0.05) 100%)', zIndex: 0 }} />
+        <div className="hero-overlay" style={{ position: 'absolute', inset: 0,  zIndex: 0 }} />
 
         <div className="container hero-container" style={{ position: 'relative', zIndex: 1, width: '100%' }}>
           <div
@@ -1245,7 +1245,7 @@ export default function HomePage() {
             <div id="footer-brand" className="footer-brand">
               <div className="footer-logo-wrap" style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '18px' }}>
                 <div className="footer-logo-img-wrap" style={{ borderRadius: '10px', overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                  <Image src="/logo.webp" alt="Eggs Ok" width={100} height={50} style={{ objectFit: 'contain' }} />
+                  <Image src="/logo.webp" alt="Eggs Ok" width={100} height={70} style={{ objectFit: 'contain' }} />
                 </div>
               </div>
               <p className="footer-brand-tagline" style={{ fontSize: '16px', color: '#1A1A1A', lineHeight: 1.75, maxWidth: '280px', marginBottom: '22px' }}>
