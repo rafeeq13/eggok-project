@@ -284,8 +284,8 @@ export default function GiftCardsPage() {
 
         <div className="container hero-container" style={{ position: 'relative', textAlign: 'center' }}>
           <span id="hero-label" className="sec-label">Gift Cards</span>
-          <h1 id="hero-title" className="bebas" style={{ fontSize: '40px', color: '#1A1A1A', lineHeight: '0.93', marginBottom: '22px' }}>
-            Give the Gift <span style={{ color: '#1A1A1A' }}>of Breakfast</span>
+          <h1 id="hero-title" className="bebas" style={{ fontSize: '40px', color: '#1A1A1A', lineHeight: '1.2', marginBottom: '22px' }}>
+            Give the Gift of Breakfast
           </h1>
           <p id="hero-subtitle" style={{ fontSize: 'clamp(15px, 2vw, 18px)', color: '#1A1A1A', lineHeight: '1.8', maxWidth: '500px', margin: '0 auto 40px' }}>
             Share the love with an Eggs Ok gift card. Perfect for friends, family, and coworkers who deserve a great meal.
@@ -314,8 +314,8 @@ export default function GiftCardsPage() {
               {/* Section header */}
               <div id="giftcard-left-header" style={{ marginBottom: '28px' }}>
                 <span className="sec-label">Choose Amount</span>
-                <h2 id="amount-heading" className="bebas" style={{ fontSize: 'clamp(28px, 4vw, 42px)', color: '#1A1A1A', lineHeight: '0.95' }}>
-                  Pick Your <span style={{ color: '#1A1A1A' }}>Value</span>
+                <h2 id="amount-heading" className="bebas" style={{ fontSize: '32px', color: '#1A1A1A', lineHeight: '1.2' }}>
+                  Pick Your Value
                 </h2>
               </div>
 

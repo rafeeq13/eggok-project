@@ -733,8 +733,7 @@ export default function HomePage() {
             </div>
 
             <h1 id="hero-title" className="hero-title bebas" style={{ fontSize: '40px', color: '#ffffff' }}>
-              <span className="hero-title-line1" style={{ display: 'block' }}>Welcome to Eggs Ok</span>
-              <span className="hero-title-line2" style={{ display: 'block', color: '#fcfcfcff' }}>West Philadelphia</span>
+              Welcome to Eggs Ok West Philadelphia
             </h1>
 
             <p id="hero-subtitle" className="hero-subtitle" style={{ fontSize: 'clamp(15px, 2vw, 18px)', color: '#ffffff', lineHeight: 1.7, maxWidth: '560px', margin: '28px auto 40px' }}>

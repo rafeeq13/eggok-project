@@ -250,8 +250,8 @@ export default function StoryPage() {
 
         <div className="container hero-container" style={{ textAlign: 'center', position: 'relative' }}>
           <span id="hero-label" className="sec-label" style={{ justifyContent: 'center', display: 'block' }}>Our Story</span>
-          <h1 id="hero-title" className="bebas" style={{ fontSize: '40px', color: '#1A1A1A', lineHeight: '0.93', marginBottom: '24px' }}>
-            Made With <span style={{ color: 'var(--t1)' }}>Purpose</span>
+          <h1 id="hero-title" className="bebas" style={{ fontSize: '40px', color: '#1A1A1A', lineHeight: '1.2', marginBottom: '24px' }}>
+            Made With Purpose
           </h1>
           <p id="hero-subtitle" style={{ fontSize: 'clamp(15px, 2vw, 18px)', color: 'var(--t2)', lineHeight: '1.8', maxWidth: '540px', margin: '0 auto 40px' }}>
             Born from a simple belief — everyone deserves a great breakfast. Fresh ingredients, bold flavors, from West Philadelphia.
@@ -293,8 +293,8 @@ export default function StoryPage() {
             <div id="origin-text" style={{ position: 'relative' }}>
               <span className="chapter-num" aria-hidden="true">01</span>
               <div id="origin-story-badge" className="story-badge"><Flame size={10} aria-hidden="true" /> The Origin</div>
-              <h2 id="origin-heading" className="bebas" style={{ fontSize: 'clamp(32px, 5vw, 32px)', color: 'var(--t1)', lineHeight: '0.95', marginBottom: '22px' }}>
-                Two Friends <span style={{ color: 'var(--t1)' }}>One Big Idea</span>
+              <h2 id="origin-heading" className="bebas" style={{ fontSize: '32px', color: 'var(--t1)', lineHeight: '1.2', marginBottom: '22px' }}>
+                Two Friends One Big Idea
               </h2>
               <p id="origin-body" className="story-body">
                 Berry — raised on bold Indonesian flavors — and Steven — a Philly guy who lived on corner-store egg sandwiches — asked a simple question: why couldn&apos;t breakfast be both?
@@ -336,8 +336,8 @@ export default function StoryPage() {
             <div id="food-text" style={{ position: 'relative' }}>
               <span className="chapter-num" aria-hidden="true">02</span>
               <div id="food-story-badge" className="story-badge"><Globe size={10} aria-hidden="true" /> The Food</div>
-              <h2 id="food-heading" className="bebas" style={{ fontSize: 'clamp(32px, 32px, 32px)', color: 'var(--t1)', lineHeight: '0.95', marginBottom: '22px' }}>
-                Two Cultures, <span style={{ color: 'var(--t1)' }}>One Plate</span>
+              <h2 id="food-heading" className="bebas" style={{ fontSize: '32px', color: 'var(--t1)', lineHeight: '1.2', marginBottom: '22px' }}>
+                Two Cultures, One Plate
               </h2>
               <p id="food-body" className="story-body">
                 Classic Philly breakfast meets Indonesian technique — sambal heat, kecap manis sweetness, Padang spice. Nothing frozen. Our OK Sauce and Telur Padang Omelette are made fresh every single morning.
@@ -405,8 +405,8 @@ export default function StoryPage() {
             <div id="community-text" style={{ position: 'relative' }}>
               <span className="chapter-num" aria-hidden="true">03</span>
               <div id="community-story-badge" className="story-badge"><Users size={10} aria-hidden="true" /> The Community</div>
-              <h2 id="community-heading" className="bebas" style={{ fontSize: 'clamp(32px, 32px, 32px)', color: 'var(--t1)', lineHeight: '0.95', marginBottom: '22px' }}>
-                West Philly <span style={{ color: 'var(--t1)' }}>Is Home</span>
+              <h2 id="community-heading" className="bebas" style={{ fontSize: '32px', color: 'var(--t1)', lineHeight: '1.2', marginBottom: '22px' }}>
+                West Philly Is Home
               </h2>
               <p id="community-body" className="story-body">
                 3517 Lancaster Ave isn&apos;t just our address — it&apos;s our anchor. Every order supports our local team and the neighborhood we&apos;ve always called home.

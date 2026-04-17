@@ -357,8 +357,8 @@ export default function ContactPage() {
 
         <div className="container hero-container" style={{ position: 'relative' }}>
           <span id="hero-label" className="sec-label">Get In Touch</span>
-          <h1 id="hero-title" className="bebas" style={{ fontSize: '40px', color: '#1A1A1A', lineHeight: '0.93', marginBottom: '22px' }}>
-            We&apos;d Love to <span style={{ color: '#1A1A1A' }}>Hear From You</span>
+          <h1 id="hero-title" className="bebas" style={{ fontSize: '40px', color: '#1A1A1A', lineHeight: '1.2', marginBottom: '22px' }}>
+            We&apos;d Love to Hear From You
           </h1>
           <p id="hero-subtitle" style={{ fontSize: 'clamp(14px, 2vw, 18px)', color: '#1A1A1A', lineHeight: '1.8', maxWidth: '500px', margin: '0 auto' }}>
             Questions, feedback, catering inquiries, or just want to say hi — we are here for it.
@@ -379,7 +379,7 @@ export default function ContactPage() {
               {/* Section header */}
               <div id="contact-info-header" style={{ marginBottom: '28px' }}>
                 <span className="sec-label">Contact Info</span>
-                <h2 id="contact-info-heading" className="bebas" style={{ fontSize: 'clamp(26px, 4vw, 40px)', color: '#1A1A1A', lineHeight: '0.95' }}>
+                <h2 id="contact-info-heading" className="bebas" style={{ fontSize: '32px', color: '#1A1A1A', lineHeight: '1.2' }}>
                   Reach <span style={{ color: '#1A1A1A' }}>Us Anytime</span>
                 </h2>
               </div>

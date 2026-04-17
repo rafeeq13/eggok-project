@@ -323,8 +323,8 @@ export default function CateringPage() {
 
         <div className="container hero-container" style={{ position: 'relative', textAlign: 'center' }}>
           <span id="hero-label" className="sec-label">Catering Services</span>
-          <h1 id="hero-title" className="bebas" style={{ fontSize: '40px', color: '#1A1A1A', lineHeight: '0.93', marginBottom: '24px' }}>
-            Feed Your <span style={{ color: '#1A1A1A' }}>Whole Crew</span>
+          <h1 id="hero-title" className="bebas" style={{ fontSize: '40px', color: '#1A1A1A', lineHeight: '1.2', marginBottom: '24px' }}>
+            Feed Your Whole Crew
           </h1>
           <p id="hero-subtitle" style={{ fontSize: 'clamp(15px, 2vw, 18px)', color: '#1A1A1A', lineHeight: '1.8', maxWidth: '520px', margin: '0 auto 40px' }}>
             From office breakfasts to special events  Eggs Ok caters for groups of all sizes. Fresh, made-to-order food delivered to your door.
