@@ -680,7 +680,7 @@ export default function HomePage() {
         @media (max-width: 500px) {
           .hero-section { min-height: 50vh; padding-bottom: 32px; padding-top: 72px; }
           
-          .hero-subtitle { font-size: 14px !important; margin: 12px 0 20px !important; }
+          .hero-subtitle { font-size: 16.94px !important; margin: 12px 0 20px !important; }
           .hero-cta { gap: 10px; }
           .hero-order-btn { padding: 14px 14px !important; white-space: nowrap !important; font-size: 14px !important; }
           .hero-menu-btn { padding: 14px 14px !important; font-size: 14px !important; }
@@ -735,14 +735,14 @@ export default function HomePage() {
               </span>
             </div>
 
-            <h1 id="hero-title" className="hero-title bebas" style={{ fontSize: '28px', color: '#ffffff' }}>
+            <h1 id="hero-title" className="hero-title bebas" style={{ fontSize: '50.2px', color: '#ffffff' }}>
               Welcome to Eggs Ok West Philadelphia
             </h1>
 
-            <p id="hero-subtitle" className="hero-subtitle" style={{ fontSize: '16px', color: '#ffffff', lineHeight: 1.7, maxWidth: '560px', margin: '28px auto 40px' }}>
+            <h1 id="hero-subtitle" className="hero-subtitle" style={{ fontSize: '16.94px', color: '#ffffff', lineHeight: 1.7, maxWidth: '560px', margin: '28px auto 40px' }}>
               Fresh made-to-order sandwiches, burritos, omelettes, and specialty drinks.
               Pickup or delivery from the heart of West Philly.
-            </p>
+            </h1>
 
             <div id="hero-cta-buttons" className="hero-cta">
               <Link href="/order" className="btn-yellow hero-order-btn" style={{ fontSize: '16px', padding: '16px 34px' }}>
