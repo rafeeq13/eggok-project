@@ -336,8 +336,8 @@ export default function HomePage() {
           background-image: url('/main-menu/Hero-Banner.webp');
           background-size: cover; background-position: center; background-repeat: no-repeat;
         }
-        .hero-title { text-shadow: 0 2px 20px rgba(0,0,0,0.6), 0 1px 6px rgba(0,0,0,0.5); }
-        .hero-subtitle { text-shadow: 0 1px 12px rgba(0, 0, 0, 0.5), 0 1px 3px rgba(0, 0, 0, 0.4); }
+        // .hero-title { text-shadow: 0 2px 20px rgba(0,0,0,0.6), 0 1px 6px rgba(0,0,0,0.5); }
+        // .hero-subtitle { text-shadow: 0 1px 12px rgba(0,0,0,0.5), 0 1px 3px rgba(0,0,0,0.4); }
         .hero-stat-value { text-shadow: 0 1px 10px rgba(0,0,0,0.5); }
         .hero-stat-label { text-shadow: 0 1px 6px rgba(0,0,0,0.4); }
         .hero-menu-btn {
@@ -662,10 +662,11 @@ export default function HomePage() {
           .order-ahead-overlay { background: rgba(0,0,0,0.55); }
           .order-card-box { margin: 40px auto; max-width: 92%; }
         }
+        .hero-subtitle { font-size: 28px !important; }
         @media (max-width: 768px) {
           .hero-section { min-height: 55vh; padding: 80px 0 40px; }
           
-          .hero-subtitle { font-size: 15px !important; margin: 16px 0 24px !important; }
+          .hero-subtitle { font-size: 16.94px !important; margin: 16px 0 24px !important; }
           .hero-stats { margin-top: 24px; gap: 20px; }
           .hero-stat-value { font-size: clamp(22px, 5vw, 30px) !important; }
           .fav-card { min-width: calc(50% - 10px); max-width: calc(50% - 10px); }
@@ -709,7 +710,7 @@ export default function HomePage() {
           1. HERO
       ══════════════════════════════════════════ */}
       <section id="hero" className="hero-section" aria-label="Welcome to Eggs Ok">
-        <div className="hero-overlay" style={{ position: 'absolute', inset: 0,  zIndex: 0 }} />
+        <div className="hero-overlay" style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(0,0,0,0.75) 0%, rgba(155, 155, 155, 0.35) 40%, rgba(151, 151, 151, 0.05) 100%)', zIndex: 0 }} />
 
         <div className="container hero-container" style={{ position: 'relative', zIndex: 1, width: '100%' }}>
           <div
@@ -739,10 +740,10 @@ export default function HomePage() {
               Welcome to Eggs Ok West Philadelphia
             </h1>
 
-            <h1 id="hero-subtitle" className="hero-subtitle" style={{ fontSize: '16.94px', color: '#ffffff', lineHeight: 1.7, maxWidth: '560px', margin: '28px auto 40px' }}>
+            <div id="hero-subtitle" className="hero-subtitle" style={{ color: '#ffffff',   margin: '28px auto 40px' }}>
               Fresh made-to-order sandwiches, burritos, omelettes, and specialty drinks.
               Pickup or delivery from the heart of West Philly.
-            </h1>
+            </div>
 
             <div id="hero-cta-buttons" className="hero-cta">
               <Link href="/order" className="btn-yellow hero-order-btn" style={{ fontSize: '16px', padding: '16px 34px' }}>
