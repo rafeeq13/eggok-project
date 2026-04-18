@@ -96,13 +96,13 @@ const css = `
 
   /* ── Sign in ── */
   .nav-signin {
-    padding: 8px 12px; background: transparent;
+    padding: 5px 12px; background: transparent;
     border: 1px solid var(--border); border-radius: 8px;
     color: var(--t2); font-size: 16px; font-weight: 600;
     text-decoration: none; display: flex; align-items: center; gap: 6px;
     transition: border-color 0.15s, color 0.15s;
   }
-  .nav-signin:hover { border-color: var(--y); color: var(--t1); }
+  .nav-signin:hover { border-color: #000; color: var(--t1); }
 
   /* ── Cart button ── */
   .nav-cart-btn {
@@ -143,7 +143,8 @@ const css = `
     outline: none; font-family: var(--font-body);
     transition: border-color 0.15s;
   }
-  .sidebar-search-input:focus { border-color: var(--y); }
+  // .sidebar-search-input:focus { border-color: #000; }
+    .sidebar-search-input:hover { border-color: #000; background: #ffffff; }
   .sidebar-search-input::placeholder { color: var(--t4); }
 
   .sidebar-menu-wrap { padding: 16px 0; }
@@ -161,8 +162,8 @@ const css = `
   }
   .sidebar-cat-btn:hover { background: var(--bg4); color: var(--t1); border-left-color: #D0D0D0; }
   .sidebar-cat-btn.active {
-    background: rgba(254,216,0,0.07); color: var(--t1);
-    font-weight: 700; border-left-color: var(--y);
+    background: #D0D0D0; color: var(--t1);
+    font-weight: 500; ;
   }
   .sidebar-cat-dot { width: 5px; height: 5px; border-radius: 50%; background: currentColor; flex-shrink: 0; opacity: 0.5; }
   .sidebar-cat-btn.active .sidebar-cat-dot { opacity: 1; }

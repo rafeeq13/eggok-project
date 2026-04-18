@@ -226,7 +226,7 @@ const css = `
               </div>
             ) : (
               <Link href="/account" style={{
-                padding: '8px 12px', color: '#1A1A1A', fontSize: '16px',
+                padding: '5px 12px', color: '#1A1A1A', fontSize: '16px',
                 fontWeight: '600', borderRadius: '8px',
                 border: '1px solid #D0D0D0', background: 'transparent',
                 transition: 'all 0.2s', display: 'inline-flex', alignItems: 'center', gap: '6px',
@@ -242,7 +242,7 @@ const css = `
             )}
 
             {/* Order Now */}
-            <Link href="/order" className="btn-primary" style={{ padding: '8px 12px', fontSize: '16px', marginLeft: '4px' }}>
+            <Link href="/order" className="btn-primary" style={{ padding: '5px 12px', fontSize: '16px', marginLeft: '4px' }}>
               Order Now
             </Link>
 
