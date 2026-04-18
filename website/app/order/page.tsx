@@ -545,7 +545,7 @@ const css = `
   .item-modal-close { position: absolute; top: 12px; right: 12px; width: 44px; height: 44px; border-radius: 50%; background: rgba(255, 255, 255, 0.75); border: 1px solid rgba(0, 0, 0, 0.1); color: var(--t1); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background 0.15s; }
   .item-modal-close:hover { background: rgba(255, 255, 255, 0.9); }
   .item-modal-body { padding: 28px; }
-  .item-modal-name { font-family: var(--font-head); font-size: 22px; font-weight: 500; letter-spacing: 0.9px; line-height: 1; color: #0D0D0D; margin-bottom: 10px; }
+  .item-modal-name { font-family: var(--font-body); font-size: 22px; font-weight: 500; letter-spacing: 0.9px; line-height: 1; color: #0D0D0D; margin-bottom: 10px; }
   .item-modal-desc { font-size: 16px; color: #333333; line-height: 1.7; margin-bottom: 20px; }
   .item-price-row { display: flex; gap: 10px; margin-bottom: 28px; }
   .item-price-card { flex: 1; padding: 4px; border-radius: 12px; text-align: center; cursor: pointer; transition: border-color 0.15s, background 0.15s; border: 2px solid; }
