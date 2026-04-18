@@ -557,7 +557,7 @@ const css = `
   .item-price-val.inactive { color: var(--t1); }
   .modifier-group { margin-bottom: 28px; }
   .modifier-group-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 8px; }
-  .modifier-group-name { font-family: var(--font-head); font-size: 20px; font-weight: 700; letter-spacing: -0.5px; color: var(--t1); }
+  .modifier-group-name { font-family: var(--font-body); font-size: 20px; font-weight: 700; letter-spacing: -0.5px; color: var(--t1); }
   .modifier-badge { font-size: 11px; padding: 3px 10px; border-radius: 20px; font-weight: 600; border: 1px solid; }
   .modifier-badge.required { background: #ffffff; color: var(--t1); border-color: #C0C0C0; }
   .modifier-badge.optional { background: var(--bg4); color: var(--t4); border-color: #E0E0E0; }
