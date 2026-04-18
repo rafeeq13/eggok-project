@@ -753,24 +753,24 @@ export default function AccountPage() {
 
         {/* Profile Header */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '20px', marginBottom: '32px', padding: '24px', background: '#FFFFFF', border: '1px solid #E5E5E5', borderRadius: '16px', boxShadow: '0 1px 3px rgba(0,0,0,0.08)' }}>
-          <div style={{ width: '64px', height: '64px', borderRadius: '50%', background: '#E5B800', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '22px', fontWeight: '900', color: '#000', flexShrink: 0 }}>
+          <div style={{fontFamily:"'Geist', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif", width: '64px', height: '64px', borderRadius: '50%', background: '#ffffff', border: '1px solid #E5E5E5', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '20px', fontWeight: '700', color: '#000', flexShrink: 0 }}>
             {savedFirstName.charAt(0)}{savedLastName.charAt(0)}
           </div>
           <div style={{ flex: 1 }}>
-            <h1 style={{ fontSize: '24px', fontWeight: 700, fontFamily: "'Playfair Display', Georgia, serif", color: '#1A1A1A', marginBottom: '4px', letterSpacing: '-0.3px' }}>{savedFirstName.toUpperCase()} {savedLastName.toUpperCase()}</h1>
+            <h1 style={{ fontFamily:"'Geist', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif", fontSize: '20px', fontWeight: 700,  color: '#1A1A1A', marginBottom: '4px', letterSpacing: '0.9px' }}>{savedFirstName} {savedLastName}</h1>
             <p style={{ fontSize: '14px', color: '#777777', margin: 0 }}>{savedEmail} · Member since {formatJoinDate()}</p>
           </div>
           <div style={{ display: 'flex', gap: '10px' }}>
-            <div style={{ padding: '10px 16px', background: '#E5B80015', border: '1px solid #E5B80030', borderRadius: '10px', textAlign: 'center' }}>
-              <p style={{ fontSize: '20px', fontWeight: 700, fontFamily: "'Playfair Display', Georgia, serif", color: '#1A1A1A', margin: 0 }}>{userPoints}</p>
+            <div style={{ padding: '10px 16px', background: '#FFFFFF', border: '1px solid #E5E5E5', borderRadius: '10px', textAlign: 'center' }}>
+              <p style={{ fontFamily:"'Geist', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" ,fontSize: '20px', fontWeight: 700, color: '#1A1A1A', margin: 0 }}>{userPoints}</p>
               <p style={{ fontSize: '12px', color: '#777777', margin: '2px 0 0' }}>Points</p>
             </div>
             <div style={{ padding: '10px 16px', background: '#FFFFFF', border: '1px solid #E5E5E5', borderRadius: '10px', textAlign: 'center' }}>
-              <p style={{ fontSize: '20px', fontWeight: 700, fontFamily: "'Playfair Display', Georgia, serif", color: '#1A1A1A', margin: 0 }}>{userTotalOrders}</p>
+              <p style={{ fontFamily:"'Geist', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif", fontSize: '20px', fontWeight: 700, color: '#1A1A1A', margin: 0 }}>{userTotalOrders}</p>
               <p style={{ fontSize: '12px', color: '#777777', margin: '2px 0 0' }}>Orders</p>
             </div>
             <div style={{ padding: '10px 16px', background: '#FFFFFF', border: '1px solid #E5E5E5', borderRadius: '10px', textAlign: 'center' }}>
-              <p style={{ fontSize: '20px', fontWeight: 700, fontFamily: "'Playfair Display', Georgia, serif", color: '#1A1A1A', margin: 0 }}>{userTier}</p>
+              <p style={{ fontFamily:"'Geist', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif", fontSize: '20px', fontWeight: 700, color: '#1A1A1A', margin: 0 }}>{userTier}</p>
               <p style={{ fontSize: '12px', color: '#777777', margin: '2px 0 0' }}>Tier</p>
             </div>
           </div>
@@ -833,7 +833,7 @@ export default function AccountPage() {
                         {!['Delivered', 'Picked Up', 'Cancelled'].includes(order.status) && (
                           <Link href={`/order-tracking?id=${order.dbId}`} style={{ padding: '6px 14px', background: 'transparent', border: '1px solid #A78BFA40', borderRadius: '8px', color: '#A78BFA', fontSize: '12px', textDecoration: 'none', fontWeight: '600' }}>Track</Link>
                         )}
-                        <button onClick={() => handleReorder(order)} style={{ padding: '6px 14px', background: 'transparent', border: '1px solid #D0D0D0', borderRadius: '8px', color: '#777777', fontSize: '12px', cursor: 'pointer', transition: 'all 0.15s' }} onMouseEnter={e => { e.currentTarget.style.borderColor = '#E5B800'; e.currentTarget.style.color = '#333333'; }} onMouseLeave={e => { e.currentTarget.style.borderColor = '#D0D0D0'; e.currentTarget.style.color = '#777777'; }}>Reorder</button>
+                        <button onClick={() => handleReorder(order)} style={{ padding: '6px 14px', background: 'transparent', border: '1px solid #D0D0D0', borderRadius: '8px', color: '#777777', fontSize: '12px', cursor: 'pointer', transition: 'all 0.15s' }} onMouseEnter={e => { e.currentTarget.style.borderColor = '#000'; e.currentTarget.style.color = '#333333'; }} onMouseLeave={e => { e.currentTarget.style.borderColor = '#D0D0D0'; e.currentTarget.style.color = '#777777'; }}>Reorder</button>
                       </div>
                     </div>
                   </div>
