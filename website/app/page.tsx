@@ -334,7 +334,7 @@ export default function HomePage() {
 
         /* ── Hero ── */
         .hero-section {
-          min-height: 80vh; display: flex; align-items: flex-end; justify-content: flex-start;
+          min-height: 90vh; display: flex; align-items: flex-end; justify-content: flex-start;
           text-align: left; position: relative; overflow: hidden;
           padding-bottom: 40px;
           background-image: url('/main-menu/Hero-Banner.webp');
