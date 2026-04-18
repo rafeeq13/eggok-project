@@ -216,7 +216,7 @@ export default function CateringPage() {
           font-size: 16px; outline: none;
           transition: border-color 0.15s; font-family: var(--font-body);
         }
-        .form-input:focus { border-color: var(--y); }
+        .form-input:focus { border-color: #0C0C0C; }
         .form-input::placeholder { color: var(--t3); }
         .form-select {
           width: 100%; padding: 13px 16px; padding-right: 40px;
@@ -229,7 +229,7 @@ export default function CateringPage() {
           background-repeat: no-repeat;
           background-position: right 14px center;
         }
-        .form-select:focus { border-color: var(--y); }
+        .form-select:focus { border-color: #0C0C0C; }
         .form-textarea {
           width: 100%; padding: 13px 16px;
           background: #F8F9FA; border: 1px solid #D0D0D0;
@@ -237,10 +237,10 @@ export default function CateringPage() {
           font-size: 16px; outline: none; resize: none; height: 110px;
           transition: border-color 0.15s; font-family: var(--font-body);
         }
-        .form-textarea:focus { border-color: var(--y); }
+        .form-textarea:focus { border-color: #0C0C0C; }
         .form-textarea::placeholder { color: var(--t3); }
         .form-submit-btn {
-          width: 100%; padding: 16px; background: var(--y);
+          width: 100%; padding: 8px; background: var(--y);
           border-radius: 12px; font-size: 16px; font-weight: 500;
           color: #000; cursor: pointer; border: 2px solid transparent;
           display: flex; align-items: center; justify-content: center; gap: 8px;

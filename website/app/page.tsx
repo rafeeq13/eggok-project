@@ -292,9 +292,13 @@ export default function HomePage() {
         .reveal-d3 { transition-delay: 0.3s; }
 
         /* ── Buttons ── */
+        .order-ahead-body{
+          margin:20px 0px  20px;
+        }
         .btn-yellow {
+          // margin-top: 12px;
           display: inline-flex; align-items: center; gap: 8px;
-          padding: 14px 28px; background: #E3BF22; color: #000;
+          padding: 8px 28px; background: #E3BF22; color: #000;
           border-radius: 10px; font-size: 16px; font-weight: 500;
           text-decoration: none; border: 2px solid transparent; cursor: pointer;
           transition: all 0.3s ease; font-family: inherit;
@@ -304,12 +308,12 @@ export default function HomePage() {
 
         .btn-outline {
           display: inline-flex; align-items: center; gap: 8px;
-          padding: 14px 28px; background: transparent; color: #4D4D4D;
-          border-radius: 10px; font-size: 16px; font-weight: 700;
+          padding: 8px 22px; background: transparent; color: #1A1A1A;
+          border-radius: 10px; font-size: 16px; font-weight: 500;
           text-decoration: none; border: 1.5px solid #4D4D4D;
           transition: border-color 0.15s, color 0.15s, background 0.15s; font-family: inherit; cursor: pointer;
         }
-        .btn-outline:hover { background: #F0F0F0; border-color: #4D4D4D; color: #4D4D4D; }
+        .btn-outline:hover { background: #F0F0F0; border-color: #4D4D4D; color: #1A1A1A; }
         .btn-outline:active { background: #f4f4f410; }
 
         /* ── Section Label — consistent across all sections ── */
@@ -382,7 +386,7 @@ export default function HomePage() {
           cursor: pointer; text-decoration: none; border: 1px solid #E5E5E5;
           min-width: calc(25% - 15px); max-width: calc(25% - 15px); flex-shrink: 0;
         }
-        .fav-card:hover { background: #F8F8F8; transform: translateY(-4px); box-shadow: 0 12px 40px rgba(0,0,0,0.06); border-color: #E3BF2230; }
+        .fav-card:hover { background: #F8F8F8; transform: translateY(-4px);  }
         .fav-img-wrap { height: 180px; width: 100%; overflow: hidden; position: relative; margin-bottom: 14px; flex-shrink: 0; }
         .fav-img-wrap img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.5s cubic-bezier(0.16,1,0.3,1); }
         .fav-card:hover .fav-img-wrap img { transform: scale(1.06); }
@@ -395,8 +399,8 @@ export default function HomePage() {
           transition: background 0.15s, border-color 0.15s;
         }
         .fav-arrow:hover { background: #FFFFFF; border-color: #C0C0C0; }
-        .fav-arrow-left { left: -22px; }
-        .fav-arrow-right { right: -22px; }
+        .fav-arrow-left { left: -50px; }
+        .fav-arrow-right { right: -50px; }
 
         /* ── Add-to-cart Modal (Home Page) ── */
         .home-modal-backdrop {
@@ -418,10 +422,11 @@ export default function HomePage() {
         }
         .home-modal-close:hover { background: rgba(0,0,0,0.95); }
         .home-modal-body { padding: 24px; }
-        .home-modal-name { font-family: 'Playfair Display', Georgia, serif; font-weight: 700; font-size: 28px; letter-spacing: -0.5px; color: #4D4D4D; margin-bottom: 8px; }
+        .home-modal-name { font-family: 'var(--font-head)'; font-weight: 500; font-size: 28px; letter-spacing: 0.5px; color: #0D0D0D;  }
         .home-modal-desc { font-size: 16px; color: #666; line-height: 1.7; margin-bottom: 20px; }
         .home-modal-price-row { display: flex; gap: 10px; margin-bottom: 20px; }
         .home-modal-price-card {
+        display:none;
           flex: 1; padding: 12px; border-radius: 10px; cursor: pointer; text-align: center;
           border: 1px solid #D0D0D0; background: #F8F9FA; transition: all 0.15s;
         }
@@ -446,15 +451,15 @@ export default function HomePage() {
           border-radius: 10px; overflow: hidden;
         }
         .home-modal-qty-btn {
-          width: 40px; height: 40px; background: #F5F5F5; border: none;
+          width: 40px; height: 40px; background: #fffff; border: none;
           color: #4D4D4D; font-size: 18px; cursor: pointer; display: flex;
           align-items: center; justify-content: center;
         }
         .home-modal-qty-btn:hover { background: #E5E5E5; }
         .home-modal-qty-val { width: 44px; text-align: center; font-size: 15px; font-weight: 700; color: #4D4D4D; background: #F5F5F5; }
         .home-modal-add-btn {
-          flex: 1; padding: 14px; border-radius: 10px; border: 2px solid transparent;
-          font-size: 16px; font-weight: 700; cursor: pointer;
+          flex: 1; padding: 8px; border-radius: 10px; border: 2px solid transparent;
+          font-size: 16px; font-weight: 500; cursor: pointer;
           transition: all 0.3s ease;
         }
         .home-modal-add-btn.enabled { background: #E3BF22; color: #000; }
@@ -462,14 +467,14 @@ export default function HomePage() {
         .home-modal-add-btn.disabled { background: #F0F0F0; color: #AAAAAA; cursor: not-allowed; }
 
         /* ── Menu Tiles ── */
-        .menu-tiles { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; margin-bottom: 44px; }
+        .menu-tiles { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; margin-bottom: 0px; }
         .menu-tile {
           border: 1px solid #E5E5E5; border-radius: 16px; overflow: hidden;
           text-decoration: none; display: flex; flex-direction: column;
           transition: border-color 0.2s, transform 0.25s, box-shadow 0.25s; background: #FFFFFF;
         }
-        .menu-tile:hover { border-color: #E3BF2260; transform: translateY(-4px); box-shadow: 0 10px 30px rgba(0,0,0,0.06); }
-        .menu-tile-img { width: 100%; height: 220px; overflow: hidden; position: relative; flex-shrink: 0; }
+        .menu-tile:hover { transform: translateY(-4px); }
+        .menu-tile-img { width: 100%; height: 300px; overflow: hidden; position: relative; flex-shrink: 0; }
         .menu-tile-img img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.5s cubic-bezier(0.16,1,0.3,1); }
         .menu-tile:hover .menu-tile-img img { transform: scale(1.06); }
         .menu-tile-body { padding: 18px 20px 22px; display:none !important; }
@@ -496,7 +501,7 @@ export default function HomePage() {
         /* ── Order Ahead CTA (Section 5) ── */
         .order-ahead-hero {
           position: relative; overflow: hidden;
-          border-radius: 24px; margin: 60px auto;
+          border-radius: 24px; margin:0px auto;
           max-width: 100%; 
           max-height: 100vh !important;
           min-height: 100vh !important;
@@ -511,7 +516,7 @@ export default function HomePage() {
         .order-card-box {
           position: relative; z-index: 1;
           background: rgba(255,255,255,0.95); padding: 44px 48px;
-          border-radius: 20px; max-width: 440px;
+          border-radius: 20px; max-width: 60%;
           // margin: 40px auto 40px 48px;
           border: 1px solid #E0E0E0;
           backdrop-filter: blur(16px);
@@ -519,7 +524,7 @@ export default function HomePage() {
          .order-card-box-rewards{
          position: relative; z-index: 1;
           background: rgba(255,255,255,0.95); padding: 44px 48px;
-          border-radius: 20px; max-width: 440px;
+          border-radius: 20px; max-width: 60%;
           margin: 40px auto 40px 48px;
           border: 1px solid #E0E0E0;
           backdrop-filter: blur(16px);}
@@ -535,7 +540,7 @@ export default function HomePage() {
         .order-btn {
           display: inline-flex; align-items: center; gap: 8px;
           background: #E3BF22; color: #000;
-          padding: 13px 26px; border-radius: 10px; font-weight: 500;
+          padding:8px 26px; border-radius: 10px; font-weight: 500;
           font-size: 16px; text-decoration: none; font-family: inherit;
           transition: all 0.3s ease; border: 2px solid transparent;
         }
@@ -548,6 +553,7 @@ export default function HomePage() {
           background-size: cover; background-position: center;
           min-height:100vh !important;
           display: flex; align-items: center; justify-content: center;
+          border-radius: 24px;;
         }
         .delivery-overlay {
           position: absolute; inset: 0;
@@ -613,8 +619,8 @@ export default function HomePage() {
           transition: background 0.15s, border-color 0.15s;
         }
         .review-arrow:hover { background: #FFFFFF; border-color: #C0C0C0; }
-        .review-arrow-left { left: -22px; }
-        .review-arrow-right { right: -22px; }
+        .review-arrow-left { left: -50px; }
+        .review-arrow-right { right: -50px; }
         .star-filter-wrap {
           display: flex; justify-content: center; gap: 8px; margin-top: 20px; flex-wrap: wrap;
         }
@@ -790,14 +796,14 @@ export default function HomePage() {
       {/* ══════════════════════════════════════════
           2. FEATURED FAVORITES
       ══════════════════════════════════════════ */}
-      <section id="featured" className="section-featured" style={{ background: '#F8F9FA', padding: '80px 0' }} aria-labelledby="featured-heading">
+      <section id="featured" className="section-featured" style={{ background: '#F8F9FA', padding: '48px 32px' }} aria-labelledby="featured-heading">
         <div className="container featured-container" ref={featuredReveal.ref}>
-          <div className={`featured-header reveal ${featuredReveal.visible ? 'visible' : ''}`} style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', marginBottom: '52px', flexWrap: 'wrap', gap: '20px' }}>
+          <div className={`featured-header reveal ${featuredReveal.visible ? 'visible' : ''}`} style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', marginBottom: '15px', flexWrap: 'wrap', gap: '20px' }}>
             <div className="featured-header-text">
               {/* <span className="sec-label">Featured</span> */}
               <h2 id="featured-heading" className="sec-heading">Featured</h2>
             </div>
-            <Link href="/order" className="btn-outline featured-view-all-btn">View Full Menu <ArrowRight size={15} aria-hidden="true" /></Link>
+            <Link href="/order" className="btn-outline featured-view-all-btn">View Menu <ArrowRight size={15} aria-hidden="true" /></Link>
           </div>
 
           <div className="fav-carousel-wrap">
@@ -846,7 +852,7 @@ export default function HomePage() {
       {/* ══════════════════════════════════════════
           3. OUR STORY
       ══════════════════════════════════════════ */}
-      <section id="our-story" className="section-story" style={{ background: '#FFFFFF', padding: '80px 0' }}>
+      <section id="our-story" className="section-story" style={{ background: '#FFFFFF', padding: '48px 32px' }}>
         <div className="container story-container">
           <div className="about-grid story-grid">
             <div className="about-img story-img">
@@ -874,7 +880,7 @@ export default function HomePage() {
       {/* ══════════════════════════════════════════
           4. FRESH INGREDIENTS
       ══════════════════════════════════════════ */}
-      <section id="quality" className="section-quality" style={{ background: '#F8F9FA', padding: '80px 0' }}>
+      <section id="quality" className="section-quality" style={{ background: '#F8F9FA', padding: '48px 32px' }}>
         <div className="container quality-container">
           <div className="about-grid quality-grid">
             <div className="about-content quality-content">
@@ -901,24 +907,27 @@ export default function HomePage() {
       {/* ══════════════════════════════════════════
           5. ORDER AHEAD CTA
       ══════════════════════════════════════════ */}
-      <div id="order-ahead" className="order-ahead-hero container">
-        <div className="order-ahead-overlay" />
-        <div className="order-card-box">
-          <h2 id="order-ahead-heading" className="order-ahead-heading">Order Ahead, Enjoy Anytime</h2>
-          <p className="order-ahead-body">
-            Skip the line and order online in seconds. Pick it up hot and ready, or have it
-            delivered straight to your door. It only takes a few taps.
-          </p>
-          <Link href="/order" className="order-btn order-ahead-cta">Order Now <ArrowRight size={15} /></Link>
-        </div>
-      </div>
+      <section style={{ padding: '48px 10px' }}>
+          <div id="order-ahead" className="order-ahead-hero container">
+            <div className="order-ahead-overlay" />
+            <div className="order-card-box">
+              <h2 id="order-ahead-heading" className="order-ahead-heading">Order Ahead, Enjoy Anytime</h2>
+              <p className="order-ahead-body">
+                Skip the line and order online in seconds. Pick it up hot and ready, or have it
+                delivered straight to your door. It only takes a few taps.
+              </p>
+              <Link href="/order" className="order-btn order-ahead-cta">Order Now <ArrowRight size={15} /></Link>
+            </div>
+          </div>
+      </section>
+        
 
       {/* ══════════════════════════════════════════
           6. OUR MENU GALLERY
       ══════════════════════════════════════════ */}
-      <section id="menu" className="section-menu" style={{ background: '#F8F9FA', padding: '80px 0' }} aria-labelledby="menu-heading">
+      <section id="menu" className="section-menu" style={{ background: '#F8F9FA', padding: '48px 32px' }} aria-labelledby="menu-heading">
         <div className="container menu-container" ref={menuReveal.ref}>
-          <div className={`menu-header reveal ${menuReveal.visible ? 'visible' : ''}`} style={{ textAlign: 'left', marginBottom: '52px' }}>
+          <div className={`menu-header reveal ${menuReveal.visible ? 'visible' : ''}`} style={{ textAlign: 'left', marginBottom: '20px' }}>
         
             <h2 id="menu-heading" className="sec-heading">
              A Taste of Our Menu
@@ -940,7 +949,7 @@ export default function HomePage() {
                 aria-label={`${tile.label} — ${tile.items}`}
               >
                 <div className="menu-tile-img">
-                  <Image src={tile.img} alt={tile.label} width={400} height={220}
+                  <Image src={tile.img} alt={tile.label} width={400} height={300}
                     style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
                 </div>
                 <div className="menu-tile-body">
@@ -965,7 +974,7 @@ export default function HomePage() {
       {/* ══════════════════════════════════════════
           7. CATERING
       ══════════════════════════════════════════ */}
-      <section id="catering" className="section-catering" style={{ background: '#FFFFFF', padding: '80px 0' }} aria-labelledby="catering-heading">
+      <section id="catering" className="section-catering" style={{ background: '#FFFFFF', padding: '48px 32px' }} aria-labelledby="catering-heading">
         <div className="container catering-container">
           <div className="about-grid catering-grid">
             <div className="about-img catering-img">
@@ -991,7 +1000,7 @@ export default function HomePage() {
       {/* ══════════════════════════════════════════
           8. REVIEWS
       ══════════════════════════════════════════ */}
-      <section id="reviews" className="section-reviews" style={{ background: '#F8F9FA', padding: '80px 0' }} aria-labelledby="reviews-heading">
+      <section id="reviews" className="section-reviews" style={{ background: '#F8F9FA', padding: '48px 32px' }} aria-labelledby="reviews-heading">
         <div className="container reviews-container" ref={reviewsReveal.ref}>
           <div className={`reviews-header reveal ${reviewsReveal.visible ? 'visible' : ''}`} style={{ textAlign: 'center', marginBottom: '40px' }}>
             
@@ -1065,7 +1074,7 @@ export default function HomePage() {
       {/* ══════════════════════════════════════════
           9. REWARDS
       ══════════════════════════════════════════ */}
-      <section id="rewards" className="section-rewards" style={{ background: '#FFFFFF', padding: '80px 0' }} aria-labelledby="rewards-heading">
+      <section id="rewards" className="section-rewards" style={{ background: '#FFFFFF', padding: '48px 15px' }} aria-labelledby="rewards-heading">
       
       <div id="order-ahead" className="order-ahead-hero container">
         <div className="order-ahead-overlay" />
@@ -1087,7 +1096,7 @@ export default function HomePage() {
       {/* ══════════════════════════════════════════
           10. FAQ
       ══════════════════════════════════════════ */}
-      <section id="faq" className="section-faq" style={{ background: '#F8F9FA', padding: '80px 0' }} aria-labelledby="faq-heading">
+      <section id="faq" className="section-faq" style={{ background: '#F8F9FA', padding: '48px 32px' }} aria-labelledby="faq-heading">
         <div className="container faq-container" ref={faqReveal.ref}>
           <div className={`faq-header reveal ${faqReveal.visible ? 'visible' : ''}`} style={{ textAlign: 'center', marginBottom: '60px' }}>
        
@@ -1132,7 +1141,7 @@ export default function HomePage() {
       {/* ══════════════════════════════════════════
           11. OUR LOCATION
       ══════════════════════════════════════════ */}
-      <section id="location" className="section-location" style={{ background: '#FFFFFF', padding: '80px 0' }} aria-labelledby="location-heading">
+      <section id="location" className="section-location" style={{ background: '#FFFFFF', padding: '48px 32px' }} aria-labelledby="location-heading">
         <div className="container location-container" ref={locationReveal.ref}>
           <div className={`location-header reveal ${locationReveal.visible ? 'visible' : ''}`} style={{ textAlign: 'center', marginBottom: '56px' }}>
             
@@ -1186,10 +1195,10 @@ export default function HomePage() {
               </div>
 
               <div id="location-cta-buttons" className="location-cta-buttons" style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
-                <a href="https://maps.google.com/?q=3517+Lancaster+Ave+Philadelphia+PA+19104" target="_blank" rel="noopener noreferrer" className="btn-yellow location-directions-btn" style={{ fontSize: '16px', padding: '12px 22px' }}>
+                <a href="https://maps.google.com/?q=3517+Lancaster+Ave+Philadelphia+PA+19104" target="_blank" rel="noopener noreferrer" className="btn-yellow location-directions-btn" style={{ fontSize: '16px', padding: '8px 22px' }}>
                   <MapPin size={14} aria-hidden="true" /> Get Directions
                 </a>
-                <Link href="/order" className="btn-outline location-order-btn" style={{ fontSize: '16px', padding: '12px 22px' }}>Order Now</Link>
+                <Link href="/order" className="btn-outline location-order-btn" style={{ fontSize: '16px', padding: '8px 22px' }}>Order Now</Link>
               </div>
             </div>
 
@@ -1215,10 +1224,10 @@ export default function HomePage() {
       {/* ══════════════════════════════════════════
           12. DELIVERY CTA
       ══════════════════════════════════════════ */}
-      <section id="delivery" className="delivery-hero section-delivery" aria-labelledby="delivery-heading">
-        <div className="delivery-overlay" />
-        <div className="delivery-content">
-        
+      <section id="delivery" className=" section-delivery" aria-labelledby="delivery-heading" style={{  padding: '48px 15px' }}>
+      
+        <div className="delivery-hero">
+          <div className='delivery-content '>
           <h2 id="delivery-heading" className="delivery-heading">
             Get It Delivered 
             Straight to Your Door
@@ -1231,13 +1240,14 @@ export default function HomePage() {
             <img id="ubereats-btn" className="delivery-app-btn delivery-app-ubereats" src="/main-menu/Ubereats-ordering-1.webp" alt="Order on Uber Eats" />
             <img id="doordash-btn" className="delivery-app-btn delivery-app-doordash" src="/main-menu/Doordash-Ordering-1.webp" alt="Order on DoorDash" />
           </div>
+          </div>
         </div>
       </section>
 
       {/* ══════════════════════════════════════════
           FOOTER
       ══════════════════════════════════════════ */}
-      <footer id="footer" className="site-footer" style={{ background: '#F8F9FA', padding: '68px 0 32px', borderTop: '1px solid #E5E5E5' }}>
+      <footer id="footer" className="site-footer" style={{ background: '#F8F9FA', padding: '48px 0 20px', borderTop: '1px solid #E5E5E5' }}>
         <div className="container footer-container">
           <div className="footer-grid">
             <div id="footer-brand" className="footer-brand">
@@ -1321,7 +1331,7 @@ export default function HomePage() {
                   <div className="home-modal-price-row">
                     {(['pickup', 'delivery'] as const).filter(type => type === 'pickup' ? isPickupEnabled : isDeliveryEnabled).map(type => (
                       <div key={type} className={`home-modal-price-card ${orderType === type ? 'active' : ''}`} onClick={() => setOrderType(type)}>
-                        <p style={{ fontSize: '12px', color: '#777777', fontWeight: '600', textTransform: 'uppercase', marginBottom: '4px' }}>{type}</p>
+                        <p style={{ fontSize: '12px', color: '#777777', fontWeight: '500', textTransform: 'uppercase', marginBottom: '4px' }}>{type}</p>
                         <p style={{ fontSize: '18px', fontWeight: '900', color: '#4D4D4D' }}>
                           ${(Number(type === 'pickup' ? fullMenuItem.pickupPrice : fullMenuItem.deliveryPrice) || 0).toFixed(2)}
                         </p>

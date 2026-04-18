@@ -37,7 +37,7 @@ export default function StoryPage() {
         /* ── Buttons ── */
         .btn-yellow {
           display: inline-flex; align-items: center; gap: 8px;
-          padding: 14px 28px; background: var(--y); color: #000;
+          padding: 8px 28px; background: var(--y); color: #000;
           border-radius: 10px; font-size: 16px; font-weight: 500;
           text-decoration: none; border: 2px solid transparent; cursor: pointer;
           transition: all 0.3s ease;
@@ -46,7 +46,7 @@ export default function StoryPage() {
         .btn-yellow:hover { background: #E5B800; color: #000; border-color: transparent; transform: none; box-shadow: none; }
         .btn-outline {
           display: inline-flex; align-items: center; gap: 8px;
-          padding: 14px 28px; background: transparent; color: #1A1A1A;
+          padding: 8px 28px; background: transparent; color: #1A1A1A;
           border-radius: 10px; font-size: 16px; font-weight: 700;
           text-decoration: none; border: 1.5px solid #1A1A1A;
           transition: border-color 0.15s, color 0.15s;
@@ -254,7 +254,7 @@ export default function StoryPage() {
             Made With Purpose
           </h1>
           <p id="hero-subtitle" style={{ fontSize: '16px', fontWeight: 500, color: '#4D4D4D', lineHeight: '1.8', maxWidth: '540px', margin: '0 auto 40px' }}>
-            Born from a simple belief — everyone deserves a great breakfast. Fresh ingredients, bold flavors, from West Philadelphia.
+            Born from a simple belief , everyone deserves a great breakfast. Fresh ingredients, bold flavors, from West Philadelphia.
           </p>
          
         </div>
@@ -289,7 +289,7 @@ export default function StoryPage() {
                 Two Friends One Big Idea
               </h2>
               <p id="origin-body" className="story-body">
-                Berry — raised on bold Indonesian flavors — and Steven — a Philly guy who lived on corner-store egg sandwiches — asked a simple question: why couldn&apos;t breakfast be both?
+                Berry  raised on bold Indonesian flavors  and Steven  a Philly guy who lived on corner-store egg sandwiches  asked a simple question: why couldn&apos;t breakfast be both?
               </p>
             
               <div id="origin-cta" className="cta-group">
@@ -321,7 +321,7 @@ export default function StoryPage() {
                 Two Cultures, One Plate
               </h2>
               <p id="food-body" className="story-body">
-                Classic Philly breakfast meets Indonesian technique — sambal heat, kecap manis sweetness, Padang spice. Nothing frozen. Our OK Sauce and Telur Padang Omelette are made fresh every single morning.
+                Classic Philly breakfast meets Indonesian technique  sambal heat, kecap manis sweetness, Padang spice. Nothing frozen. Our OK Sauce and Telur Padang Omelette are made fresh every single morning.
               </p>
              
               <div id="food-cta" className="cta-group">

@@ -108,7 +108,7 @@ export default function HiringPage() {
         /* ── Buttons ── */
         .btn-yellow {
           display: inline-flex; align-items: center; gap: 8px;
-          padding: 14px 28px; background: var(--y); color: #000;
+          padding: 8px 28px; background: var(--y); color: #000;
           border-radius: 10px; font-size: 16px; font-weight: 500;
           text-decoration: none; border: 2px solid transparent; cursor: pointer;
           transition: all 0.3s ease;
@@ -118,7 +118,7 @@ export default function HiringPage() {
         .btn-yellow:active { transform: translateY(0); }
         .btn-outline {
           display: inline-flex; align-items: center; gap: 8px;
-          padding: 14px 28px; background: transparent; color: #1A1A1A;
+          padding: 8px 28px; background: transparent; color: #1A1A1A;
           border-radius: 10px; font-size: 16px; font-weight: 500;
           text-decoration: none; border: 1.5px solid #1A1A1A;
           transition: border-color 0.15s, color 0.15s;
@@ -207,7 +207,7 @@ export default function HiringPage() {
         .form-header { display: flex; align-items: center; gap: 14px; margin-bottom: 24px; padding-bottom: 20px; border-bottom: 1px solid var(--border); }
         .form-icon {
           width: 48px; height: 48px; border-radius: 12px;
-          background: rgba(254,216,0,0.06); border: 1px solid rgba(254,216,0,0.15);
+          background:#fffff ; border: 1px solid #D0D0D0;
           display: flex; align-items: center; justify-content: center; flex-shrink: 0;
         }
         .form-title { font-family: var(--font-head); font-size: 24px; font-weight: 700; letter-spacing: -0.5px; color: var(--t1); margin: 0 0 3px; line-height: 1.2; }
@@ -223,7 +223,7 @@ export default function HiringPage() {
           transition: border-color 0.15s;
           font-family: var(--font-body);
         }
-        .form-input:focus { border-color: var(--y); }
+        .form-input:focus { border-color: #0C0C0C; }
         .form-input::placeholder { color: var(--t3); }
         .form-select {
           width: 100%; padding: 12px 16px;
@@ -233,7 +233,7 @@ export default function HiringPage() {
           transition: border-color 0.15s;
           font-family: var(--font-body); appearance: none;
         }
-        .form-select:focus { border-color: var(--y); }
+        .form-select:focus { border-color: #0C0C0C; }
         .form-textarea {
           width: 100%; padding: 12px 16px;
           background: #F8F9FA; border: 1px solid #D0D0D0;
@@ -242,10 +242,10 @@ export default function HiringPage() {
           transition: border-color 0.15s;
           font-family: var(--font-body);
         }
-        .form-textarea:focus { border-color: var(--y); }
+        .form-textarea:focus { border-color: #0C0C0C; }
         .form-textarea::placeholder { color: var(--t3); }
         .form-submit-btn {
-          width: 100%; padding: 15px; background: var(--y);
+          width: 100%; padding: 8px; background: var(--y);
           border-radius: 12px; font-size: 16px; font-weight: 500;
           color: #000; cursor: pointer; border: 2px solid transparent;
           display: flex; align-items: center; justify-content: center; gap: 8px;
@@ -318,10 +318,10 @@ export default function HiringPage() {
             We are always looking for passionate, hardworking people to join the Eggs Ok family. Great pay, flexible hours, and free food every shift.
           </p>
           <div id="hero-cta" style={{ display: 'flex', gap: '14px', justifyContent: 'center', flexWrap: 'wrap' }}>
-            <a href="#positions" id="hero-view-positions-btn" className="btn-yellow" style={{ fontSize: '16px', padding: '16px 34px' }}>
+            <a href="#positions" id="hero-view-positions-btn" className="btn-yellow" style={{ fontSize: '16px', padding: '8px 34px' }}>
               View Open Positions <ArrowRight size={16} aria-hidden="true" />
             </a>
-            <a href="#apply" id="hero-apply-btn" className="btn-outline" style={{ fontSize: '16px', padding: '16px 34px' }}>
+            <a href="#apply" id="hero-apply-btn" className="btn-outline" style={{ fontSize: '16px', padding: '8px 34px' }}>
               Apply Now
             </a>
           </div>
@@ -350,49 +350,8 @@ export default function HiringPage() {
               </div>
 
               <div id="jobs-list" style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-                {jobs.map(job => (
-                  <div
-                    key={job.id}
-                    id={`job-card-${job.id}`}
-                    className={`job-card${activeJob === job.id ? ' active' : ''}`}
-                    onClick={() => setActiveJob(activeJob === job.id ? null : job.id)}
-                    role="button"
-                    aria-expanded={activeJob === job.id}
-                  >
-                    <div className="job-card-header">
-                      <div className="job-info">
-                        <p className="job-title">{job.title}</p>
-                        <div className="job-meta">
-                          <span className="job-type-badge">{job.type}</span>
-                          <span className="job-pay">{job.pay}</span>
-                        </div>
-                      </div>
-                      <div className="job-chevron" aria-hidden="true">
-                        {activeJob === job.id
-                          ? <ChevronUp size={16} />
-                          : <ChevronDown size={16} />
-                        }
-                      </div>
-                    </div>
-
-                    {activeJob === job.id && (
-                      <div id={`job-body-${job.id}`} className="job-body">
-                        <p className="job-desc">{job.desc}</p>
-                        <p className="job-reqs-label">Requirements</p>
-                        <div id={`job-reqs-${job.id}`} className="job-reqs">
-                          {job.requirements.map((req, j) => (
-                            <div key={j} id={`job-req-${job.id}-${j}`} className="job-req-item">
-                              <div className="job-req-check" aria-hidden="true">
-                                <Check size={9} color="#E5B800" strokeWidth={3} />
-                              </div>
-                              <span className="job-req-text">{req}</span>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                ))}
+               {/* //write two lines of code to make the job list display the jobs from the jobs array. Each job should be a card that shows the title, type, pay, and description. When you click on a job card, it should expand to show the requirements and collapse any other open card. Use the activeJob state to track which card is open. */}
+               <p>We are always hiring A players who work hard, love helping others, and do great work. Fill out the 2 minute form below with your resume and a few sentences about you.</p>
               </div>
             </div>
 
@@ -420,7 +379,7 @@ export default function HiringPage() {
                   {/* Form header */}
                   <div id="form-header" className="form-header">
                     <div id="form-icon" className="form-icon" aria-hidden="true">
-                      <SendHorizontal size={22} color="#E5B800" strokeWidth={2} />
+                      <SendHorizontal size={22} color="#000" strokeWidth={2} />
                     </div>
                     <div id="form-header-text">
                       <h2 id="form-title" className="form-title">Apply Now</h2>

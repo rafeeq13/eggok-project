@@ -107,10 +107,10 @@ const css = `
   .co-delivery-box { background: #FFFFFF; border-radius: 20px; width: 100%; max-width: 460px; border: 1px solid #E5E5E5; box-shadow: 0 24px 64px rgba(0,0,0,0.1); max-height: 92vh; overflow-y: auto; }
   .co-delivery-inner { padding: 28px; }
   .co-delivery-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 22px; }
-  .co-type-toggle { display: flex; background: #F0F0F0; border-radius: 999px; padding: 3px; margin-bottom: 20px; border: 1px solid #D0D0D0; }
-  .co-type-btn { flex: 1; padding: 10px; border-radius: 999px; border: none; cursor: pointer; font-size: 16px; font-weight: 700; transition: all 0.2s; }
-  .co-type-btn.active { background: #E5B800; color: #000; }
-  .co-type-btn.inactive { background: transparent; color: #AAAAAA; }
+  .co-type-toggle { display: flex; background: #F0F0F0; border-radius: 999px; padding: 1px; margin-bottom: 20px; border: 1px solid #D0D0D0; }
+  .co-type-btn { flex: 1; padding: 10px; border-radius: 999px; border: none; cursor: pointer; font-size: 16px; font-weight: 500; transition: all 0.2s; }
+  .co-type-btn.active { background: #ffffff; color: #0D0D0D; }
+  .co-type-btn.inactive { background: transparent; color: #0D0D0D; }
   .co-del-input-wrap { position: relative; }
   .co-del-input { width: 100%; padding: 13px 40px 13px 42px; background: #F8F9FA; border: 1.5px solid #1A1A1A; border-radius: 12px; color: #1A1A1A; font-size: 16px; outline: none; box-sizing: border-box; }
   .co-del-input::placeholder { color: #AAAAAA; }
@@ -119,19 +119,19 @@ const css = `
   .co-del-suggestion { margin-top: 8px; background: #F8F9FA; border: 1px solid #E5E5E5; border-radius: 12px; overflow: hidden; }
   .co-del-sug-row { padding: 14px 16px; cursor: pointer; transition: background 0.12s; }
   .co-del-sug-row:hover { background: #EBEBEB; }
-  .co-del-addr-row { display: flex; align-items: center; gap: 10px; padding: 12px 14px; background: #F8F9FA; border: 1.5px solid rgba(254,216,0,0.2); border-radius: 12px; }
+  .co-del-addr-row { display: flex; align-items: center; gap: 10px; padding: 12px 14px; background: #F8F9FA; border: 1.5px solid #AAAAAA; border-radius: 12px; }
   .co-del-addr-change { background: none; border: none; color: #1A1A1A; font-size: 12px; font-weight: 700; cursor: pointer; flex-shrink: 0; }
   .co-del-field-label { font-size: 12px; color: #777777; display: block; margin-bottom: 6px; font-weight: 600; }
   .co-del-field-input { width: 100%; padding: 12px; background: #F8F9FA; border: 1px solid #D0D0D0; border-radius: 10px; color: #1A1A1A; font-size: 16px; outline: none; box-sizing: border-box; transition: border-color 0.15s; }
-  .co-del-field-input:focus { border-color: #E5B800; }
+  .co-del-field-input:focus { border-color: #AAAAAA; }
   .co-del-field-input::placeholder { color: #AAAAAA; }
   .co-del-field-textarea { width: 100%; padding: 12px; background: #F8F9FA; border: 1px solid #D0D0D0; border-radius: 10px; color: #1A1A1A; font-size: 16px; outline: none; height: 80px; resize: none; box-sizing: border-box; transition: border-color 0.15s; }
-  .co-del-field-textarea:focus { border-color: #E5B800; }
+  .co-del-field-textarea:focus { border-color: #AAAAAA; }
   .co-del-field-textarea::placeholder { color: #AAAAAA; }
   .co-del-from { padding: 14px 16px; background: #F8F9FA; border-radius: 12px; border: 1px solid #E5E5E5; }
-  .co-btn-primary { width: 100%; padding: 14px; background: #E5B800; border: 2px solid transparent; border-radius: 12px; color: #000; font-size: 16px; font-weight: 900; cursor: pointer; transition: all 0.3s ease; font-family: 'Geist', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
+  .co-btn-primary { width: 100%; padding: 8px; background: #E5B800; border: 2px solid transparent; border-radius: 12px; color: #000; font-size: 16px; font-weight: 500; cursor: pointer; transition: all 0.3s ease; font-family: 'Geist', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
   .co-btn-primary:hover { background: #E5B800; color: #000; border-color: transparent; transform: none; box-shadow: none; }
-  .co-btn-secondary { width: 100%; padding: 14px; background: transparent; border: 1.5px solid #D0D0D0; border-radius: 12px; color: #555555; font-size: 16px; font-weight: 600; cursor: pointer; transition: border-color 0.15s; font-family: 'Geist', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
+  .co-btn-secondary { width: 100%; padding: 8px; background: transparent; border: 1.5px solid #D0D0D0; border-radius: 12px; color: #555555; font-size: 16px; font-weight: 600; cursor: pointer; transition: border-color 0.15s; font-family: 'Geist', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
   .co-btn-secondary:hover { border-color: #C0C0C0; color: #1A1A1A; }
 
   .co-schedule-box { background: #FFFFFF; border-radius: 20px; width: 100%; max-width: 420px; border: 1px solid #E5E5E5; box-shadow: 0 24px 64px rgba(0,0,0,0.1); overflow: hidden; max-height: 90vh; display: flex; flex-direction: column; }
@@ -139,18 +139,30 @@ const css = `
   .co-schedule-dates { padding: 16px 24px 0; flex-shrink: 0; }
   .co-schedule-dates-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 10px; }
   .co-schedule-date-btn { padding: 10px 14px; border-radius: 10px; border: 1px solid; cursor: pointer; text-align: left; transition: border-color 0.15s, background 0.15s; background: #F0F0F0; }
-  .co-schedule-date-btn.active { border-color: #E5B800; background: rgba(254,216,0,0.1); }
+  
+  .co-schedule-date-btn.active { border-color: #000; background: #000; }
+  .co-schedule-date-btn {
+    display: flex;
+    justify-content: space-between; /* pushes both <p> to edges */
+    align-items: center;
+    width: 100%; /* important so space can expand */
+}
+
+.co-schedule-date-btn p {
+    margin: 0;
+}
+  .co-schedule-date-btn.active p { color: #fff !important; display:inline-flex; justify-content: space-between;  gap: 10px;  align-items: center; }
   .co-schedule-date-btn.inactive { border-color: #D0D0D0; }
   .co-more-dates-btn { width: 100%; padding: 10px; background: transparent; border: 1px solid #D0D0D0; border-radius: 10px; color: #555555; font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; margin-bottom: 4px; transition: border-color 0.15s; }
   .co-more-dates-btn:hover { border-color: #C0C0C0; color: #1A1A1A; }
   .co-times-list { overflow-y: auto; flex: 1; padding: 0 24px 8px; }
   .co-time-row { display: flex; align-items: center; gap: 14px; padding: 14px 0; border-bottom: 1px solid #EBEBEB; cursor: pointer; }
   .co-radio { width: 20px; height: 20px; border-radius: 50%; border: 2px solid; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: border-color 0.15s; }
-  .co-radio.selected { border-color: #E5B800; background: #E5B800; }
+  .co-radio.selected { border-color: #000; background: #000; }
   .co-radio.unselected { border-color: #D0D0D0; background: transparent; }
-  .co-radio-inner { width: 8px; height: 8px; border-radius: 50%; background: #000; }
+  .co-radio-inner { width: 8px; height: 8px; border-radius: 50%; background: #ffffff; }
   .co-schedule-footer { padding: 16px 24px; border-top: 1px solid #E5E5E5; flex-shrink: 0; }
-  .co-schedule-confirm { width: 100%; padding: 14px; background: #E5B800; border: 2px solid transparent; border-radius: 12px; color: #000; font-size: 16px; font-weight: 900; cursor: pointer; transition: all 0.3s ease; font-family: 'Geist', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
+  .co-schedule-confirm { width: 100%; padding: 8px; background: #E5B800; border: 2px solid transparent; border-radius: 12px; color: #000; font-size: 16px; font-weight: 500; cursor: pointer; transition: all 0.3s ease; font-family: 'Geist', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
   .co-schedule-confirm:hover { background: #E5B800; color: #000; border-color: transparent; transform: none; }
 `;
 
@@ -801,7 +813,7 @@ function CheckoutInner() {
                 {/* Total */}
                 <div style={{ display: 'flex', justifyContent: 'space-between', paddingTop: '12px', borderTop: '1px solid #E5E5E5', marginBottom: '20px' }}>
                   <span style={{ fontSize: '20px', fontWeight: '700', color: '#1A1A1A', fontFamily: "'Playfair Display', Georgia, serif" }}>Total</span>
-                  <span style={{ fontSize: '20px', fontWeight: '700', color: '#1A1A1A', fontFamily: "'Playfair Display', Georgia, serif" }}>${total.toFixed(2)}</span>
+                  <span style={{ fontSize: '20px', fontWeight: '500', color: '#1A1A1A', fontFamily: "'var(--font-family)'"}}>${total.toFixed(2)}</span>
                 </div>
 
                 {/* Cart Items */}
@@ -1041,8 +1053,8 @@ function CheckoutInner() {
                     <div className="co-schedule-dates-grid">
                       {visibleDays.map(d => (
                         <button key={d.value} className={`co-schedule-date-btn ${selectedVal === d.value ? 'active' : 'inactive'}`} onClick={() => setScheduleDate(d.value)}>
-                          <p style={{ fontSize: '14px', fontWeight: '700', margin: 0, color: selectedVal === d.value ? '#E5B800' : '#1A1A1A' }}>{d.label}</p>
-                          <p style={{ fontSize: '12px', color: '#AAAAAA', margin: '2px 0 0' }}>{d.sub}</p>
+                          <p style={{ fontSize: '16px', fontWeight: '500', margin: 0, color: selectedVal === d.value ? '#ffffff' : '#1A1A1A' }}>{d.label}</p>
+                          <p style={{ fontSize: '16px', color: '#575656ff', marginLeft: '20px' }}>{d.sub}</p>
                         </button>
                       ))}
                     </div>

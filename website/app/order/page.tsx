@@ -202,7 +202,7 @@ const css = `
   /* ── Order type toggle ── */
   .order-type-toggle {
     display: flex; background: var(--bg4); border-radius: 12px;
-    padding: 3px; border: 1px solid var(--border); flex-shrink: 0;
+    padding: 1px; border: 1px solid var(--border); flex-shrink: 0;
   }
   .order-type-btn {
     padding: 8px 20px; border-radius: 10px; border: none;
@@ -384,7 +384,7 @@ const css = `
   .cart-close-btn { width: 32px; height: 32px; border-radius: 8px; background: var(--bg4); border: 1px solid var(--border); color: var(--t3); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background 0.15s; }
   .cart-close-btn:hover { background: #EEEEEE; color: var(--t1); }
   .cart-type-wrap { padding: 14px 20px; border-bottom: 1px solid #E5E5E5; }
-  .cart-type-toggle { display: flex; background: var(--bg4); border-radius: 12px; padding: 3px; border: 1px solid var(--border); }
+  .cart-type-toggle { display: flex; background: var(--bg4); border-radius: 12px; padding:2px; border: 1px solid var(--border); }
   .cart-type-btn { flex: 1; padding: 9px; border-radius: 10px; border: none; cursor: pointer; font-size: 16px; font-weight: 500; transition: all 0.2s; font-family: var(--font-body); }
   .cart-type-btn.active { background: #ffffff; color: #4D4D4D; }
   .cart-type-btn.inactive { background: transparent; color: #4D4D4D; }
@@ -406,7 +406,7 @@ const css = `
   .cart-qty-dec { background: var(--bg3); color: var(--t1); }
   .cart-qty-dec:hover { background: #E0E0E0; }
   .cart-qty-inc { background: #E0E0E0; color: #000; }
-  .cart-qty-inc:hover { background: #B8A000; }
+  .cart-qty-inc:hover { background: #ffffff; }
   .cart-qty-val { font-size: 16px; font-weight: 500; color: #4D4D4D; min-width: 18px; text-align: center; }
   .cart-remove-btn { font-size: 12px; color: #555555; background: none; border: none; cursor: pointer; text-decoration: underline; transition: color 0.15s; font-family: var(--font-body); }
   .cart-remove-btn:hover { color: var(--r); }
@@ -440,13 +440,13 @@ const css = `
   }
   .delivery-modal-inner { padding: 28px; }
   .delivery-modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 22px; }
-  .delivery-type-toggle { display: flex; background: var(--bg4); border-radius: 999px; padding: 3px; margin-bottom: 20px; border: 1px solid var(--border); }
+  .delivery-type-toggle { display: flex; background: var(--bg4); border-radius: 999px; padding: 1px; margin-bottom: 20px; border: 1px solid var(--border); }
   .delivery-type-btn { flex: 1; padding: 10px; border-radius: 999px; border: none; cursor: pointer; font-size: 16px; font-weight: 500; transition: all 0.2s; font-family: var(--font-body); }
   .delivery-type-btn.active { background: #ffffff; color: #000; }
   .delivery-type-btn.inactive { background: transparent; color: var(--t4); }
   .delivery-input {
     width: 100%; padding: 13px 40px 13px 42px;
-    background: var(--bg1); border: 1.5px solid var(--y);
+    background: var(--bg1); border: 1.5px solid #C0C0C0;
     border-radius: 12px; color: var(--t1); font-size: 16px;
     outline: none; box-sizing: border-box; font-family: var(--font-body);
   }
@@ -468,7 +468,7 @@ const css = `
     border-radius: 10px; color: var(--t1); font-size: 16px; outline: none;
     box-sizing: border-box; font-family: var(--font-body); transition: border-color 0.15s;
   }
-  .delivery-field-input:focus { border-color: var(--y); }
+  .delivery-field-input:focus { border-color: #C0C0C0; }
   .delivery-field-input::placeholder { color: var(--t4); }
   .delivery-field-textarea {
     width: 100%; padding: 12px; background: var(--bg1); border: 1px solid var(--border);
@@ -476,14 +476,14 @@ const css = `
     height: 80px; resize: none; font-family: var(--font-body);
     box-sizing: border-box; transition: border-color 0.15s;
   }
-  .delivery-field-textarea:focus { border-color: var(--y); }
+  .delivery-field-textarea:focus { border-color: #C0C0C0; }
   .delivery-field-textarea::placeholder { color: var(--t4); }
-  .delivery-addr-row { display: flex; align-items: center; gap: 10px; padding: 12px 14px; background: var(--bg1); border: 1.5px solid rgba(254,216,0,0.2); border-radius: 12px; }
+  .delivery-addr-row { display: flex; align-items: center; gap: 10px; padding: 12px 14px; background: var(--bg1); border: 1.5px solid #C0C0C0; border-radius: 12px; }
   .delivery-addr-change { background: none; border: none; color: var(--t1); font-size: 12px; font-weight: 700; cursor: pointer; flex-shrink: 0; font-family: var(--font-body); }
   .delivery-from-box { padding: 14px 16px; background: var(--bg1); border-radius: 12px; border: 1px solid #E5E5E5; }
   .delivery-from-label { font-size: 12px; font-weight: 700; color: var(--t3); margin-bottom: 6px; text-transform: uppercase; letter-spacing: -0.5px; }
   .delivery-from-name-row { display: flex; align-items: center; gap: 8px; }
-  .delivery-btn-primary { width: 100%; padding: 14px; background: var(--y); border: 2px solid transparent; border-radius: 12px; color: #000; font-size: 16px; font-weight: 900; cursor: pointer; font-family: var(--font-body); transition: all 0.3s ease; }
+  .delivery-btn-primary { width: 100%; padding: 8px; background: var(--y); border: 2px solid transparent; border-radius: 12px; color: #000; font-size: 16px; font-weight: 500; cursor: pointer; font-family: var(--font-body); transition: all 0.3s ease; }
   .delivery-btn-primary:hover { background: #E5B800; color: #000; border-color: transparent; transform: none; box-shadow: none; }
   .delivery-btn-secondary { width: 100%; padding: 14px; background: transparent; border: 1.5px solid var(--border); border-radius: 12px; color: var(--t2); font-size: 16px; font-weight: 600; cursor: pointer; font-family: var(--font-body); transition: border-color 0.15s; }
   .delivery-btn-secondary:hover { border-color: #C0C0C0; color: var(--t1); }
@@ -498,7 +498,19 @@ const css = `
   .schedule-dates-wrap { padding: 16px 24px 0; flex-shrink: 0; }
   .schedule-dates-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 10px; }
   .schedule-date-btn { padding: 10px 14px; border-radius: 10px; border: 1px solid; cursor: pointer; text-align: left; transition: border-color 0.15s, background 0.15s; background: var(--bg4); }
-  .schedule-date-btn.active { border-color: var(--y); background: rgba(254,216,0,0.08); }
+  .schedule-date-btn.active { border-color: #000; background: #000; }
+   .schedule-date-btn.active p { color: #fff; }
+     .schedule-date-btn  {
+    display: flex;
+    justify-content: space-between; /* pushes both <p> to edges */
+    align-items: center;
+    width: 100%; /* important so space can expand */
+}
+
+.co-schedule-date-btn p {
+    margin: 0;
+}
+    .schedule-date-btn.active p { color: #fff; }
   .schedule-date-btn.inactive { border-color: var(--border); }
   .schedule-date-label { font-size: 14px; font-weight: 700; margin: 0; }
   .schedule-date-label.active { color: var(--t1); }
@@ -510,12 +522,12 @@ const css = `
   .schedule-times-list { overflow-y: auto; flex: 1; padding: 0 24px 8px; }
   .schedule-time-row { display: flex; align-items: center; gap: 14px; padding: 14px 0; border-bottom: 1px solid #E5E5E5; cursor: pointer; }
   .schedule-radio { width: 20px; height: 20px; border-radius: 50%; border: 2px solid; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: border-color 0.15s; }
-  .schedule-radio.selected { border-color: var(--y); background: var(--y); }
+  .schedule-radio.selected { border-color: #000; background:#000; }
   .schedule-radio.unselected { border-color: #D0D0D0; background: transparent; }
-  .schedule-radio-inner { width: 8px; height: 8px; border-radius: 50%; background: #000; }
+  .schedule-radio-inner { width: 8px; height: 8px; border-radius: 50%; background: #ffffff; }
   .schedule-time-label { font-size: 16px; color: var(--t1); }
   .schedule-modal-footer { padding: 16px 24px; border-top: 1px solid #E5E5E5; flex-shrink: 0; }
-  .schedule-confirm-btn { width: 100%; padding: 14px; background: var(--y); border: 2px solid transparent; border-radius: 12px; color: #000; font-size: 16px; font-weight: 900; cursor: pointer; font-family: var(--font-body); transition: all 0.3s ease; }
+  .schedule-confirm-btn { width: 100%; padding: 8px; background: var(--y); border: 2px solid transparent; border-radius: 12px; color: #000; font-size: 16px; font-weight: 500; cursor: pointer; font-family: var(--font-body); transition: all 0.3s ease; }
   .schedule-confirm-btn:hover { background: #E5B800; color: #000; border-color: transparent; transform: none; }
 
   /* ══ ITEM MODAL ══ */
@@ -532,8 +544,8 @@ const css = `
   .item-modal-close { position: absolute; top: 12px; right: 12px; width: 44px; height: 44px; border-radius: 50%; background: rgba(255, 255, 255, 0.75); border: 1px solid rgba(0, 0, 0, 0.1); color: var(--t1); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background 0.15s; }
   .item-modal-close:hover { background: rgba(255, 255, 255, 0.9); }
   .item-modal-body { padding: 28px; }
-  .item-modal-name { font-family: var(--font-head); font-size: 16px; font-weight: 500; letter-spacing: -0.5px; line-height: 1; color: var(--t1); margin-bottom: 10px; }
-  .item-modal-desc { font-size: 16px; color: #333333; line-height: 1.7; margin-bottom: 24px; }
+  .item-modal-name { font-family: var(--font-head); font-size: 22px; font-weight: 500; letter-spacing: 0.9px; line-height: 1; color: #0D0D0D; margin-bottom: 10px; }
+  .item-modal-desc { font-size: 16px; color: #333333; line-height: 1.7; margin-bottom: 20px; }
   .item-price-row { display: flex; gap: 10px; margin-bottom: 28px; }
   .item-price-card { flex: 1; padding: 4px; border-radius: 12px; text-align: center; cursor: pointer; transition: border-color 0.15s, background 0.15s; border: 2px solid; }
   .item-price-card.active { background: #ffffff; border-color: #C0C0C0; }
@@ -1540,7 +1552,7 @@ function OrderContent() {
               <p id="item-modal-desc" className="item-modal-desc">{selectedItem.description}</p>
 
               {/* Price cards */}
-              <div id="item-price-row" className="item-price-row">
+              <div id="item-price-row" className="item-price-row" style={{display:'none'}}>
                 {(['pickup', 'delivery'] as const).filter(type => type === 'pickup' ? isPickupEnabled : isDeliveryEnabled).map(type => (
                   <div
                     key={type}

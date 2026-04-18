@@ -87,7 +87,7 @@ export default function GiftCardsPage() {
         /* ── Buttons ── */
         .btn-yellow {
           display: inline-flex; align-items: center; gap: 8px;
-          padding: 14px 28px; background: var(--y); color: #000;
+          padding: 8px 28px; background: var(--y); color: #000;
           border-radius: 10px; font-size: 16px; font-weight: 500;
           text-decoration: none; border: 2px solid transparent; cursor: pointer;
           transition: all 0.3s ease;
@@ -97,7 +97,7 @@ export default function GiftCardsPage() {
         .btn-yellow:active { transform: translateY(0); }
         .btn-outline {
           display: inline-flex; align-items: center; gap: 8px;
-          padding: 14px 28px; background: transparent; color: #1A1A1A;
+          padding: 8px 28px; background: transparent; color: #1A1A1A;
           border-radius: 10px; font-size: 16px; font-weight: 500;
           text-decoration: none; border: 1.5px solid #1A1A1A;
           transition: border-color 0.15s, color 0.15s;
@@ -132,8 +132,8 @@ export default function GiftCardsPage() {
           border-radius: 14px; text-align: center;
           transition: border-color 0.2s, transform 0.2s;
         }
-        .perk-item:hover { border-color: rgba(254,216,0,0.15); transform: translateY(-2px); }
-        .perk-icon { width: 44px; height: 44px; border-radius: 10px; background: rgba(254,216,0,0.06); border: 1px solid rgba(254,216,0,0.15); display: flex; align-items: center; justify-content: center; }
+        .perk-item:hover {  transform: translateY(-2px); }
+        .perk-icon { width: 44px; height: 44px; border-radius: 10px; background: #ffffff; border: 1px solid #D0D0D0; display: flex; align-items: center; justify-content: center; }
         .perk-title { font-size: 14px; font-weight: 700; color: var(--t1); }
         .perk-desc  { font-size: 14px; color: var(--t3); line-height: 1.4; }
 
@@ -181,7 +181,7 @@ export default function GiftCardsPage() {
         /* ── Form wrap ── */
         .form-wrap { background: #FFFFFF; border: 1px solid #E0E0E0; border-radius: 18px; padding: 32px; }
         .form-header { display: flex; align-items: center; gap: 14px; margin-bottom: 26px; padding-bottom: 22px; border-bottom: 1px solid var(--border); }
-        .form-icon { width: 48px; height: 48px; border-radius: 12px; background: rgba(254,216,0,0.06); border: 1px solid rgba(254,216,0,0.15); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+        .form-icon { width: 48px; height: 48px; border-radius: 12px; background: #fffff; border: 1px solid #D0D0D0; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
         .form-title    { font-family: var(--font-head); font-size: 24px; font-weight: 700; letter-spacing: -0.5px; color: var(--t1); margin: 0 0 3px; line-height: 1.2; }
         .form-subtitle { font-size: 16px; color: var(--t2); margin: 0; }
         .form-fields   { display: flex; flex-direction: column; gap: 14px; }
@@ -191,7 +191,7 @@ export default function GiftCardsPage() {
           border-radius: 10px; color: #1A1A1A; font-size: 16px; outline: none;
           transition: border-color 0.15s; font-family: var(--font-body);
         }
-        .form-input:focus { border-color: var(--y); }
+        .form-input:focus { border-color: #4D4D4D; }
         .form-input::placeholder { color: var(--t3); }
         .form-textarea {
           width: 100%; padding: 13px 16px; background: #F8F9FA; border: 1px solid #D0D0D0;
@@ -199,12 +199,12 @@ export default function GiftCardsPage() {
           resize: none; height: 90px;
           transition: border-color 0.15s; font-family: var(--font-body);
         }
-        .form-textarea:focus { border-color: var(--y); }
+        .form-textarea:focus { border-color: #4D4D4D; }
         .form-textarea::placeholder { color: var(--t3); }
 
         /* ── Order summary row ── */
         .order-summary {
-          padding: 16px 18px; background: #F8F9FA;
+          padding: 8px 18px; background: #F8F9FA;
           border-radius: 12px; border: 1px solid rgba(254,216,0,0.12);
           display: flex; justify-content: space-between; align-items: center;
         }
@@ -213,7 +213,7 @@ export default function GiftCardsPage() {
 
         /* ── Submit btn ── */
         .form-submit-btn {
-          width: 100%; padding: 16px; border-radius: 12px; font-size: 16px;
+          width: 100%; padding: 8px; border-radius: 12px; font-size: 16px;
           font-weight: 500; cursor: pointer; border: 2px solid transparent;
           display: flex; align-items: center; justify-content: center; gap: 8px;
           font-family: var(--font-body); transition: all 0.3s ease;
@@ -291,10 +291,10 @@ export default function GiftCardsPage() {
             Share the love with an Eggs Ok gift card. Perfect for friends, family, and coworkers who deserve a great meal.
           </p>
           <div id="hero-cta" style={{ display: 'flex', gap: '14px', justifyContent: 'center', flexWrap: 'wrap' }}>
-            <a id="hero-buy-btn" href="#buy" className="btn-yellow" style={{ fontSize: '16px', padding: '16px 34px' }}>
+            <a id="hero-buy-btn" href="#buy" className="btn-yellow" style={{ fontSize: '16px', padding: '8px 34px' }}>
               Buy a Gift Card <ArrowRight size={16} aria-hidden="true" />
             </a>
-            <a id="hero-redeem-btn" href="#buy" className="btn-outline" style={{ fontSize: '16px', padding: '16px 34px' }}>
+            <a id="hero-redeem-btn" href="#buy" className="btn-outline" style={{ fontSize: '16px', padding: '8px 34px' }}>
               Redeem a Card
             </a>
           </div>
@@ -324,7 +324,7 @@ export default function GiftCardsPage() {
                 {perks.map((p, i) => (
                   <div key={i} id={`perk-${i}`} className="perk-item" role="listitem">
                     <div className="perk-icon" aria-hidden="true">
-                      <p.icon size={20} color="#E5B800" strokeWidth={2} />
+                      <p.icon size={20} color="#000" strokeWidth={2} />
                     </div>
                     <p className="perk-title">{p.title}</p>
                     <p className="perk-desc">{p.desc}</p>
@@ -421,7 +421,7 @@ export default function GiftCardsPage() {
                   {/* Form header */}
                   <div id="form-header" className="form-header">
                     <div id="form-icon" className="form-icon" aria-hidden="true">
-                      <Send size={22} color="#E5B800" strokeWidth={2} />
+                      <Send size={22} color="#000" strokeWidth={2} />
                     </div>
                     <div id="form-header-text">
                       <h2 id="form-title" className="form-title">Gift Card Details</h2>

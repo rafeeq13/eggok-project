@@ -156,7 +156,7 @@ export default function ContactPage() {
         .contact-info-card:hover { border-color: rgba(254,216,0,0.15); background: #F8F8F8; }
         .contact-card-icon {
           width: 46px; height: 46px; border-radius: 12px;
-          background: rgba(254,216,0,0.06); border: 1px solid rgba(254,216,0,0.15);
+          background: #ffffff; border: 1px solid #D0D0D0;
           display: flex; align-items: center; justify-content: center; flex-shrink: 0;
         }
         .contact-card-label { font-size: 12px; color: var(--t3); text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 3px; font-weight: 600; }
@@ -226,7 +226,7 @@ export default function ContactPage() {
           border-radius: 10px; color: #1A1A1A; font-size: 16px; outline: none;
           transition: border-color 0.15s; font-family: var(--font-body);
         }
-        .form-input:focus { border-color: var(--y); }
+        .form-input:focus { border-color:#0C0C0C; }
         .form-input::placeholder { color: var(--t3); }
         .form-select {
           width: 100%; padding: 13px 16px;
@@ -235,7 +235,7 @@ export default function ContactPage() {
           cursor: pointer; appearance: none;
           transition: border-color 0.15s; font-family: var(--font-body);
         }
-        .form-select:focus { border-color: var(--y); }
+        .form-select:focus { border-color:#0C0C0C; }
         .form-textarea {
           width: 100%; padding: 13px 16px;
           background: #F8F9FA; border: 1px solid #D0D0D0;
@@ -243,10 +243,10 @@ export default function ContactPage() {
           resize: none; height: 140px;
           transition: border-color 0.15s; font-family: var(--font-body);
         }
-        .form-textarea:focus { border-color: var(--y); }
+        .form-textarea:focus { border-color: #0C0C0C; }
         .form-textarea::placeholder { color: var(--t3); }
         .form-submit-btn {
-          width: 100%; padding: 16px; background: var(--y);
+          width: 100%; padding: 8px; background: var(--y);
           border-radius: 12px; font-size: 16px; font-weight: 500;
           color: #000; cursor: pointer; border: 2px solid transparent;
           display: flex; align-items: center; justify-content: center; gap: 8px;

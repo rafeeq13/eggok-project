@@ -57,7 +57,7 @@ export default function TrackPage() {
               padding: '14px 18px', background: '#F8F9FA', border: '1px solid #D0D0D0',
               borderRadius: '12px', color: '#1A1A1A', fontSize: '16px', textAlign: 'center', outline: 'none',
             }}
-            onFocus={e => e.target.style.borderColor = '#E5B800'}
+            onFocus={e => e.target.style.borderColor = '#4D4D4D'}
             onBlur={e => e.target.style.borderColor = '#D0D0D0'}
           />
 
