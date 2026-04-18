@@ -480,7 +480,7 @@ export default function AccountPage() {
               <label style={labelStyle}>Email Address</label>
               <input type="email" style={inputStyle} placeholder="john@gmail.com"
                 value={loginEmail} onChange={e => setLoginEmail(e.target.value)}
-                onFocus={e => (e.target as HTMLInputElement).style.borderColor = '#E5B800'}
+                onFocus={e => (e.target as HTMLInputElement).style.borderColor = '#D0D0D0'}
                 onBlur={e => (e.target as HTMLInputElement).style.borderColor = '#D0D0D0'} />
             </div>
             <div>
@@ -489,7 +489,7 @@ export default function AccountPage() {
                 <input type={showLoginPassword ? 'text' : 'password'} style={{ ...inputStyle, paddingRight: '48px' }}
                   placeholder="••••••••"
                   value={loginPassword} onChange={e => setLoginPassword(e.target.value)}
-                  onFocus={e => (e.target as HTMLInputElement).style.borderColor = '#E5B800'}
+                  onFocus={e => (e.target as HTMLInputElement).style.borderColor = '#D0D0D0'}
                   onBlur={e => (e.target as HTMLInputElement).style.borderColor = '#D0D0D0'} />
                 <button type="button" onClick={() => setShowLoginPassword(!showLoginPassword)}
                   style={{ position: 'absolute', right: '14px', top: '50%', transform: 'translateY(-50%)', background: 'transparent', border: 'none', color: '#777777', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '4px' }}>
@@ -511,7 +511,7 @@ export default function AccountPage() {
                 {loginError}
               </div>
             )}
-            <button type="submit" disabled={loading} style={{ width: '100%', padding: '8px 12px', background: loading ? '#E0E0E0' : '#E5B800', borderRadius: '12px', fontSize: '16px', fontWeight: '700', color: loading ? '#AAAAAA' : '#000', cursor: loading ? 'not-allowed' : 'pointer', border: 'none', marginTop: '4px' }}>
+            <button type="submit" disabled={loading} style={{ width: '100%', padding: '8px 12px', background: loading ? '#E0E0E0' : '#E5B800', borderRadius: '12px', fontSize: '16px', fontWeight: '500', color: loading ? '#AAAAAA' : '#000', cursor: loading ? 'not-allowed' : 'pointer', border: 'none', marginTop: '4px' }}>
               {loading ? 'Signing In...' : 'Sign In'}
             </button>
           </form>
@@ -522,11 +522,11 @@ export default function AccountPage() {
             <div style={{ flex: 1, height: '1px', background: '#E5E5E5' }} />
           </div>
 
-          <button onClick={() => setView('register')} style={{ width: '100%', padding: '8px 12px', background: 'transparent', border: '2px solid #E5B800', borderRadius: '12px', fontSize: '16px', fontWeight: '700', color: '#1A1A1A', cursor: 'pointer' }}>
+          <button onClick={() => setView('register')} style={{ width: '100%', padding: '8px 12px', background: 'transparent', border: '2px solid #D0D0D0', borderRadius: '12px', fontSize: '16px', fontWeight: '500', color: '#1A1A1A', cursor: 'pointer' }}>
             Create New Account
           </button>
 
-          <p style={{ textAlign: 'center', marginTop: '20px', fontSize: '14px', color: '#1A1A1A' }}>
+          <p style={{ textAlign: 'center', marginTop: '20px', fontSize: '16px', color: '#1A1A1A' }}>
             Continue as{' '}
             <Link href="/order" style={{ color: '#333333', fontWeight: '600' }}>Guest</Link>
             {' '}— no account needed
@@ -622,9 +622,9 @@ export default function AccountPage() {
 
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '8px', marginBottom: '28px' }}>
             {[
-              { icon: <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0000" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" /><polyline points="14 2 14 8 20 8" /></svg>, text: 'Order History' },
-              { icon: <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0000" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 12 20 22 4 22 4 12" /><rect x="2" y="7" width="20" height="5" /><path d="M12 22V7M12 7H7.5a2.5 2.5 0 010-5C11 2 12 7 12 7zM12 7h4.5a2.5 2.5 0 000-5C13 2 12 7 12 7z" /></svg>, text: 'Loyalty Points' },
-              { icon: <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0000" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" /></svg>, text: 'Fast Checkout' },
+              { icon: <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#000" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" /><polyline points="14 2 14 8 20 8" /></svg>, text: 'Order History' },
+              { icon: <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#000" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 12 20 22 4 22 4 12" /><rect x="2" y="7" width="20" height="5" /><path d="M12 22V7M12 7H7.5a2.5 2.5 0 010-5C11 2 12 7 12 7zM12 7h4.5a2.5 2.5 0 000-5C13 2 12 7 12 7z" /></svg>, text: 'Loyalty Points' },
+              { icon: <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#000" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" /></svg>, text: 'Fast Checkout' },
             ].map((b, i) => (
               <div key={i} style={{ padding: '14px 8px', background: '#FFFFFF', border: '1px solid #E5E5E5', borderRadius: '10px', textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '6px' }}>
                 {b.icon}
@@ -638,26 +638,26 @@ export default function AccountPage() {
               <div>
                 <label style={labelStyle}>First Name *</label>
                 <input style={inputStyle} placeholder="John" value={regFirstName} onChange={e => setRegFirstName(e.target.value)}
-                  onFocus={e => (e.target as HTMLInputElement).style.borderColor = '#E5B800'}
+                  onFocus={e => (e.target as HTMLInputElement).style.borderColor = '#D0D0D0'}
                   onBlur={e => (e.target as HTMLInputElement).style.borderColor = '#D0D0D0'} />
               </div>
               <div>
                 <label style={labelStyle}>Last Name *</label>
                 <input style={inputStyle} placeholder="Smith" value={regLastName} onChange={e => setRegLastName(e.target.value)}
-                  onFocus={e => (e.target as HTMLInputElement).style.borderColor = '#E5B800'}
+                  onFocus={e => (e.target as HTMLInputElement).style.borderColor = '#D0D0D0'}
                   onBlur={e => (e.target as HTMLInputElement).style.borderColor = '#D0D0D0'} />
               </div>
             </div>
             <div>
               <label style={labelStyle}>Email Address *</label>
               <input type="email" style={inputStyle} placeholder="john@gmail.com" value={regEmail} onChange={e => setRegEmail(e.target.value)}
-                onFocus={e => (e.target as HTMLInputElement).style.borderColor = '#E5B800'}
+                onFocus={e => (e.target as HTMLInputElement).style.borderColor = '#D0D0D0'}
                 onBlur={e => (e.target as HTMLInputElement).style.borderColor = '#D0D0D0'} />
             </div>
             <div>
               <label style={labelStyle}>Phone Number *</label>
               <input type="tel" style={inputStyle} placeholder="215-555-0100" value={regPhone} onChange={e => setRegPhone(e.target.value)}
-                onFocus={e => (e.target as HTMLInputElement).style.borderColor = '#E5B800'}
+                onFocus={e => (e.target as HTMLInputElement).style.borderColor = '#D0D0D0'}
                 onBlur={e => (e.target as HTMLInputElement).style.borderColor = '#D0D0D0'} />
             </div>
             <div>
@@ -666,7 +666,7 @@ export default function AccountPage() {
                 <input type={showRegPassword ? 'text' : 'password'} style={{ ...inputStyle, paddingRight: '48px' }}
                   placeholder="Create a strong password"
                   value={regPassword} onChange={e => setRegPassword(e.target.value)}
-                  onFocus={e => (e.target as HTMLInputElement).style.borderColor = '#E5B800'}
+                  onFocus={e => (e.target as HTMLInputElement).style.borderColor = '#D0D0D0'}
                   onBlur={e => (e.target as HTMLInputElement).style.borderColor = '#D0D0D0'} />
                 <button type="button" onClick={() => setShowRegPassword(!showRegPassword)}
                   style={{ position: 'absolute', right: '14px', top: '50%', transform: 'translateY(-50%)', background: 'transparent', border: 'none', color: '#777777', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '4px' }}>
@@ -689,7 +689,7 @@ export default function AccountPage() {
               <div style={{ position: 'relative' }}>
                 <input type={showRegConfirm ? 'text' : 'password'} style={{ ...inputStyle, paddingRight: '48px' }} placeholder="Repeat password"
                   value={regConfirm} onChange={e => setRegConfirm(e.target.value)}
-                  onFocus={e => (e.target as HTMLInputElement).style.borderColor = '#E5B800'}
+                  onFocus={e => (e.target as HTMLInputElement).style.borderColor = '#D0D0D0'}
                   onBlur={e => (e.target as HTMLInputElement).style.borderColor = '#D0D0D0'} />
                 <button type="button" onClick={() => setShowRegConfirm(!showRegConfirm)}
                   style={{ position: 'absolute', right: '14px', top: '50%', transform: 'translateY(-50%)', background: 'transparent', border: 'none', color: '#777777', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '4px' }}>
@@ -705,7 +705,7 @@ export default function AccountPage() {
             </div>
 
             <div onClick={() => setAgreeTerms(!agreeTerms)} style={{ display: 'flex', alignItems: 'flex-start', gap: '10px', cursor: 'pointer', padding: '12px', background: '#FFFFFF', borderRadius: '10px', border: '1px solid #E5E5E5' }}>
-              <div style={{ width: '20px', height: '20px', borderRadius: '5px', border: `2px solid ${agreeTerms ? '#E5B800' : '#D0D0D0'}`, background: agreeTerms ? '#E5B800' : 'transparent', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, marginTop: '1px' }}>
+              <div style={{ width: '20px', height: '20px', borderRadius: '5px', border: `2px solid ${agreeTerms ? '#000' : '#D0D0D0'}`, background: agreeTerms ? '#000' : 'transparent', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, marginTop: '1px' }}>
                 {agreeTerms && <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#E5B800" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12" /></svg>}
               </div>
               <p style={{ fontSize: '14px', color: '#1A1A1A', lineHeight: '1.5', margin: 0 }}>
@@ -726,7 +726,7 @@ export default function AccountPage() {
 
           <p style={{ textAlign: 'center', marginTop: '16px', fontSize: '14px', color: '#1A1A1A' }}>
             Already have an account?{' '}
-            <button onClick={() => setView('login')} style={{ background: 'transparent', border: 'none', color: '#333333', fontWeight: '600', fontSize: '14px', cursor: 'pointer' }}>Sign In</button>
+            <button onClick={() => setView('login')} style={{ background: 'transparent', border: 'none', color: '#333333', fontWeight: '500', fontSize: '16px', cursor: 'pointer' }}>Sign In</button>
           </p>
         </div>
       </div>
