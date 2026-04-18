@@ -322,7 +322,7 @@ export default function HomePage() {
         .sec-heading {
           font-family: 'Playfair Display', Georgia, serif;
           font-weight: 700;
-          font-size: 22px;
+          font-size: 28px;
           letter-spacing: -0.5px;
           line-height: 1.2;
           color: #1A1A1A;
@@ -377,7 +377,7 @@ export default function HomePage() {
         .fav-grid::-webkit-scrollbar { display: none; }
         .fav-card {
           background: #FFFFFF; display: flex; flex-direction: column; align-items: center;
-          text-align: center; border-radius: 16px; padding: 0 0 16px; overflow: hidden;
+          text-align: center; border-radius: 16px; padding: 0 0 0px; overflow: hidden;
           transition: background 0.18s, transform 0.25s, box-shadow 0.25s;
           cursor: pointer; text-decoration: none; border: 1px solid #E5E5E5;
           min-width: calc(25% - 15px); max-width: calc(25% - 15px); flex-shrink: 0;
@@ -390,11 +390,11 @@ export default function HomePage() {
           position: absolute; top: 50%; transform: translateY(-50%); z-index: 10;
           width: 44px; height: 44px; border-radius: 50%;
           background: rgba(255,255,255,0.95); border: 1px solid #E5E5E5;
-          color: #B8A000; cursor: pointer;
+          color: #1A1A1A; cursor: pointer;
           display: flex; align-items: center; justify-content: center;
           transition: background 0.15s, border-color 0.15s;
         }
-        .fav-arrow:hover { background: #FFFFFF; border-color: #E3BF22; }
+        .fav-arrow:hover { background: #FFFFFF; border-color: #C0C0C0; }
         .fav-arrow-left { left: -22px; }
         .fav-arrow-right { right: -22px; }
 
@@ -831,7 +831,7 @@ export default function HomePage() {
                   <div className="fav-card-body" style={{ padding: '0 14px 4px', width: '100%' }}>
                     <p className="fav-card-name" style={{ fontSize: '14px', fontWeight: '500', color: '#4D4D4D', marginBottom: '4px', lineHeight: 1.3 }}>{item.name}</p>
                     {/* <p className="fav-card-desc" style={{ fontSize: '14px', color: '#888888', lineHeight: 1.4, marginBottom: '8px', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical' as any, overflow: 'hidden' }}>{item.desc}</p> */}
-                    <p className="fav-card-price" style={{ fontSize: '16px', fontWeight: '900', color: '#4D4D4D' }}>{item.price}</p>
+                    {/* <p className="fav-card-price" style={{ fontSize: '16px', fontWeight: '900', color: '#4D4D4D' }}>{item.price}</p> */}
                   </div>
                 </div>
               ))}
