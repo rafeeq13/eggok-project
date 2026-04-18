@@ -314,7 +314,7 @@ export default function HiringPage() {
           <h1 id="hero-title" className="bebas" style={{ fontSize: '28px', color: '#1A1A1A', lineHeight: '1.2', marginBottom: '24px' }}>
             Work With The Best
           </h1>
-          <p id="hero-subtitle" style={{ fontSize: '16px', color: '#1A1A1A', lineHeight: '1.8', maxWidth: '520px', margin: '0 auto 40px' }}>
+          <p id="hero-subtitle" style={{ fontSize: '16.94px', color: '#1A1A1A', lineHeight: '1.8', maxWidth: '520px', margin: '0 auto 40px', fontWeight: 500 }}>
             We are always looking for passionate, hardworking people to join the Eggs Ok family. Great pay, flexible hours, and free food every shift.
           </p>
           <div id="hero-cta" style={{ display: 'flex', gap: '14px', justifyContent: 'center', flexWrap: 'wrap' }}>
@@ -331,31 +331,7 @@ export default function HiringPage() {
       {/* ══════════════════════════════════════════
           PERKS
       ══════════════════════════════════════════ */}
-      <section id="perks" style={{ padding: '88px 0', background: '#F8F9FA' }}>
-        <div className="container perks-container">
-
-          <div id="perks-header" style={{ textAlign: 'center', marginBottom: '52px' }}>
-            <span className="sec-label">Benefits</span>
-            <h2 id="perks-heading" className="sec-heading">
-              Why Work With Us?
-            </h2>
-          </div>
-
-          <div id="perks-grid" className="perks-grid" role="list" aria-label="Employee benefits">
-            {perks.map((perk, i) => (
-              <div key={i} id={`perk-card-${i}`} className="perk-card" role="listitem">
-                <div className="perk-icon" aria-hidden="true">
-                  <perk.icon size={22} color="#E5B800" strokeWidth={2} />
-                </div>
-                <div className="perk-body">
-                  <p className="perk-title">{perk.title}</p>
-                  <p className="perk-desc">{perk.desc}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+    
 
       {/* ══════════════════════════════════════════
           JOBS + FORM

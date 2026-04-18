@@ -316,7 +316,7 @@ export default function CateringPage() {
       {/* ══════════════════════════════════════════
           HERO
       ══════════════════════════════════════════ */}
-      <section id="catering-hero" style={{ padding: '110px 0 80px', background: '#FFFFFF', position: 'relative', overflow: 'hidden', borderBottom: '1px solid #EBEBEB' }}>
+      {/* <section id="catering-hero" style={{ padding: '110px 0 80px', background: '#FFFFFF', position: 'relative', overflow: 'hidden', borderBottom: '1px solid #EBEBEB' }}>
 
         <div className="hero-glow" style={{ position: 'absolute', top: '-100px', right: '-100px', width: '560px', height: '560px', borderRadius: '50%', background: 'radial-gradient(circle, rgba(254,216,0,0.04) 0%, transparent 70%)', pointerEvents: 'none' }} aria-hidden="true" />
         <div className="hero-glow-bottom" style={{ position: 'absolute', bottom: '-80px', left: '-80px', width: '400px', height: '400px', borderRadius: '50%', background: 'radial-gradient(circle, rgba(252,3,1,0.03) 0%, transparent 70%)', pointerEvents: 'none' }} aria-hidden="true" />
@@ -338,12 +338,12 @@ export default function CateringPage() {
             </a>
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* ══════════════════════════════════════════
           WHY CHOOSE US
       ══════════════════════════════════════════ */}
-      <section id="why-us" style={{ padding: '88px 0', background: '#F8F9FA' }}>
+      {/* <section id="why-us" style={{ padding: '88px 0', background: '#F8F9FA' }}>
         <div className="container why-container">
 
           <div id="why-header" style={{ textAlign: 'center', marginBottom: '52px' }}>
@@ -365,12 +365,12 @@ export default function CateringPage() {
             ))}
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* ══════════════════════════════════════════
           PACKAGES
       ══════════════════════════════════════════ */}
-      <section id="packages" style={{ padding: '88px 0', background: '#FFFFFF' }}>
+      {/* <section id="packages" style={{ padding: '88px 0', background: '#FFFFFF' }}>
         <div className="container packages-container">
 
           <div id="packages-header" style={{ marginBottom: '52px' }}>
@@ -425,10 +425,10 @@ export default function CateringPage() {
                 </div>
               </div>
             ))}
-          </div>
+          </div> */}
 
           {/* Tip banner */}
-          <div id="tip-banner" className="tip-banner">
+          {/* <div id="tip-banner" className="tip-banner">
             <div id="tip-icon" className="tip-icon" aria-hidden="true">
               <Lightbulb size={20} color="#E5B800" strokeWidth={2} />
             </div>
@@ -439,7 +439,7 @@ export default function CateringPage() {
             </p>
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* ══════════════════════════════════════════
           CONTACT FORM
@@ -578,7 +578,7 @@ export default function CateringPage() {
       {/* ══════════════════════════════════════════
           PHONE CTA
       ══════════════════════════════════════════ */}
-      <section id="phone-cta" className="phone-cta-section">
+      {/* <section id="phone-cta" className="phone-cta-section">
         <div className="container">
           <div id="phone-cta-icon" style={{ width: '56px', height: '56px', borderRadius: '14px', background: 'rgba(254,216,0,0.06)', border: '1px solid rgba(254,216,0,0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 18px' }}>
             <Phone size={24} color="#E5B800" strokeWidth={2} aria-hidden="true" />
@@ -587,7 +587,7 @@ export default function CateringPage() {
           <a id="phone-cta-number" href="tel:2673707993" className="phone-cta-number">267-370-7993</a>
           <p id="phone-cta-hours" style={{ fontSize: '14px', color: '#1A1A1A', marginTop: '12px' }}>Mon–Fri 8AM–6PM · Sat 9AM–4PM</p>
         </div>
-      </section>
+      </section> */}
 
       {/* ══════════════════════════════════════════
           FOOTER

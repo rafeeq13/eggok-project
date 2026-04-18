@@ -89,13 +89,13 @@ export default function StoryPage() {
 
         /* ── Image frame ── */
         .story-img-frame { position: relative; width: 100%; max-width: 480px; }
-        .story-img-frame::after {
-          content: ''; position: absolute;
-          bottom: -16px; right: -16px;
-          width: 64px; height: 64px;
-          border-right: 2px solid var(--y); border-bottom: 2px solid var(--y);
-          pointer-events: none;
-        }
+        // .story-img-frame::after {
+        //   content: ''; position: absolute;
+        //   bottom: -16px; right: -16px;
+        //   width: 64px; height: 64px;
+        //   border-right: 2px solid var(--y); border-bottom: 2px solid var(--y);
+        //   pointer-events: none;
+        // }
         .story-img-frame-alt::after {
           right: auto; left: -16px;
           border-right: none; border-left: 2px solid var(--y);
@@ -254,17 +254,10 @@ export default function StoryPage() {
           <h1 id="hero-title" className="bebas" style={{ fontSize: '28px', color: '#1A1A1A', lineHeight: '1.2', marginBottom: '24px' }}>
             Made With Purpose
           </h1>
-          <p id="hero-subtitle" style={{ fontSize: '16px', color: 'var(--t2)', lineHeight: '1.8', maxWidth: '540px', margin: '0 auto 40px' }}>
+          <p id="hero-subtitle" style={{ fontSize: '16px', fontWeight: 500, color: 'var(--t2)', lineHeight: '1.8', maxWidth: '540px', margin: '0 auto 40px' }}>
             Born from a simple belief — everyone deserves a great breakfast. Fresh ingredients, bold flavors, from West Philadelphia.
           </p>
-          <div id="hero-stats" style={{ display: 'flex', justifyContent: 'center', gap: '12px', flexWrap: 'wrap' }}>
-            {[{ n: '2020', l: 'Founded' }, { n: '80+', l: 'Menu Items' }, { n: '100%', l: 'Made Fresh' }, { n: '5★', l: 'Rated' }].map(s => (
-              <div key={s.l} className="stat-pill">
-                <span className="stat-pill-value">{s.n}</span>
-                <span className="stat-pill-label">{s.l}</span>
-              </div>
-            ))}
-          </div>
+         
         </div>
       </section>
 
@@ -286,31 +279,20 @@ export default function StoryPage() {
                   width={480} height={360}
                   style={{ objectFit: 'cover', borderRadius: '16px', display: 'block', width: '100%', height: 'auto', aspectRatio: '4/3' }}
                 />
-                <div id="origin-badge" className="img-float-badge">EST. 2020</div>
+               
               </div>
             </div>
 
             {/* Text side */}
             <div id="origin-text" style={{ position: 'relative' }}>
               <span className="chapter-num" aria-hidden="true">01</span>
-              <div id="origin-story-badge" className="story-badge"><Flame size={10} aria-hidden="true" /> The Origin</div>
               <h2 id="origin-heading" className="bebas" style={{ fontSize: '28px', fontWeight: 700, color: 'var(--t1)', lineHeight: '1.2', marginBottom: '22px' }}>
                 Two Friends One Big Idea
               </h2>
               <p id="origin-body" className="story-body">
                 Berry — raised on bold Indonesian flavors — and Steven — a Philly guy who lived on corner-store egg sandwiches — asked a simple question: why couldn&apos;t breakfast be both?
               </p>
-              <blockquote id="origin-quote" className="pull-quote">
-                <p>&ldquo;We didn&apos;t want to choose between the food we loved. So we built a place that had all of it.&rdquo;</p>
-              </blockquote>
-              <div id="origin-stats" className="stat-pills">
-                {[{ n: '2020', l: 'Founded' }, { n: '3+', l: 'Years Serving' }, { n: '100%', l: 'Made Fresh' }].map(s => (
-                  <div key={s.l} className="stat-pill">
-                    <span className="stat-pill-value">{s.n}</span>
-                    <span className="stat-pill-label">{s.l}</span>
-                  </div>
-                ))}
-              </div>
+            
               <div id="origin-cta" className="cta-group">
                 <Link href="/order" className="btn-yellow">
                   Taste the Story <ArrowRight size={15} aria-hidden="true" />
@@ -336,21 +318,13 @@ export default function StoryPage() {
             {/* Text side */}
             <div id="food-text" style={{ position: 'relative' }}>
               <span className="chapter-num" aria-hidden="true">02</span>
-              <div id="food-story-badge" className="story-badge"><Globe size={10} aria-hidden="true" /> The Food</div>
               <h2 id="food-heading" className="bebas" style={{ fontSize: '28px', fontWeight: 700, color: 'var(--t1)', lineHeight: '1.2', marginBottom: '22px' }}>
                 Two Cultures, One Plate
               </h2>
               <p id="food-body" className="story-body">
                 Classic Philly breakfast meets Indonesian technique — sambal heat, kecap manis sweetness, Padang spice. Nothing frozen. Our OK Sauce and Telur Padang Omelette are made fresh every single morning.
               </p>
-              <ul id="food-features" className="feature-list" aria-label="Food highlights">
-                {['Housemade OK Sauce', 'No freezers. Ever.', 'Indonesian-spiced dishes', 'Locally sourced', 'Gluten-free options', 'Breakfast all day'].map(item => (
-                  <li key={item} className="feature-item">
-                    <div className="feature-dot" aria-hidden="true" />
-                    <span className="feature-text">{item}</span>
-                  </li>
-                ))}
-              </ul>
+             
               <div id="food-cta" className="cta-group">
                 <Link href="/order" className="btn-yellow">
                   Explore the Menu <ArrowRight size={15} aria-hidden="true" />
@@ -395,26 +369,20 @@ export default function StoryPage() {
                   width={480} height={360}
                   style={{ objectFit: 'cover', borderRadius: '16px', display: 'block', width: '100%', height: 'auto', aspectRatio: '4/3' }}
                 />
-                <div id="community-location-badge" className="img-float-location">
-                  <MapPin size={13} color="#E5B800" aria-hidden="true" />
-                  <span style={{ fontSize: '14px', color: 'var(--t2)', fontWeight: '500' }}>West Philadelphia, PA</span>
-                </div>
+               
               </div>
             </div>
 
             {/* Text side */}
             <div id="community-text" style={{ position: 'relative' }}>
               <span className="chapter-num" aria-hidden="true">03</span>
-              <div id="community-story-badge" className="story-badge"><Users size={10} aria-hidden="true" /> The Community</div>
               <h2 id="community-heading" className="bebas" style={{ fontSize: '28px', fontWeight: 700, color: 'var(--t1)', lineHeight: '1.2', marginBottom: '22px' }}>
                 West Philly Is Home
               </h2>
               <p id="community-body" className="story-body">
                 3517 Lancaster Ave isn&apos;t just our address — it&apos;s our anchor. Every order supports our local team and the neighborhood we&apos;ve always called home.
               </p>
-              <blockquote id="community-quote" className="pull-quote">
-                <p>&ldquo;When the neighborhood eats well, the neighborhood does well. That&apos;s always been the point.&rdquo;</p>
-              </blockquote>
+          
               <div id="community-cta" className="cta-group">
                 <Link href="/order" className="btn-yellow">
                   Order Now <ArrowRight size={15} aria-hidden="true" />

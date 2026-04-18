@@ -273,12 +273,12 @@ export default function HomePage() {
         /* ── Accessibility ── */
         .skip-link {
           position: absolute; top: -100px; left: 16px; z-index: 9999;
-          background: #E5B800; color: #000; padding: 12px 24px;
+          background: #E3BF22; color: #000; padding: 12px 24px;
           border-radius: 0 0 8px 8px; font-weight: 700; font-size: 14px;
           text-decoration: none; transition: top 0.2s;
         }
         .skip-link:focus { top: 0; }
-        :focus-visible { outline: 2px solid #E5B800; outline-offset: 3px; }
+        :focus-visible { outline: 2px solid #E3BF22; outline-offset: 3px; }
         button:focus:not(:focus-visible), a:focus:not(:focus-visible) { outline: none; }
 
         /* ── Layout ── */
@@ -295,12 +295,12 @@ export default function HomePage() {
         /* ── Buttons ── */
         .btn-yellow {
           display: inline-flex; align-items: center; gap: 8px;
-          padding: 14px 28px; background: #E5B800; color: #000;
-          border-radius: 10px; font-size: 16px; font-weight: 700;
+          padding: 14px 28px; background: #E3BF22; color: #000;
+          border-radius: 10px; font-size: 16px; font-weight: 500;
           text-decoration: none; border: 2px solid transparent; cursor: pointer;
           transition: all 0.3s ease; font-family: inherit;
         }
-        .btn-yellow:hover { background: #E5B800; color: #000; border-color: transparent; transform: none; box-shadow: none; }
+        .btn-yellow:hover { background: #E3BF22; color: #000; border-color: transparent; transform: none; box-shadow: none; }
         .btn-yellow:active { transform: translateY(0); }
 
         .btn-outline {
@@ -365,7 +365,7 @@ export default function HomePage() {
           cursor: pointer; text-decoration: none; border: 1px solid #E5E5E5;
           min-width: calc(25% - 15px); max-width: calc(25% - 15px); flex-shrink: 0;
         }
-        .fav-card:hover { background: #F8F8F8; transform: translateY(-4px); box-shadow: 0 12px 40px rgba(0,0,0,0.06); border-color: #E5B80030; }
+        .fav-card:hover { background: #F8F8F8; transform: translateY(-4px); box-shadow: 0 12px 40px rgba(0,0,0,0.06); border-color: #E3BF2230; }
         .fav-img-wrap { height: 180px; width: 100%; overflow: hidden; position: relative; margin-bottom: 14px; flex-shrink: 0; }
         .fav-img-wrap img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.5s cubic-bezier(0.16,1,0.3,1); }
         .fav-card:hover .fav-img-wrap img { transform: scale(1.06); }
@@ -377,7 +377,7 @@ export default function HomePage() {
           display: flex; align-items: center; justify-content: center;
           transition: background 0.15s, border-color 0.15s;
         }
-        .fav-arrow:hover { background: #FFFFFF; border-color: #E5B800; }
+        .fav-arrow:hover { background: #FFFFFF; border-color: #E3BF22; }
         .fav-arrow-left { left: -22px; }
         .fav-arrow-right { right: -22px; }
 
@@ -408,7 +408,7 @@ export default function HomePage() {
           flex: 1; padding: 12px; border-radius: 10px; cursor: pointer; text-align: center;
           border: 1px solid #D0D0D0; background: #F8F9FA; transition: all 0.15s;
         }
-        .home-modal-price-card.active { border-color: #E5B800; background: #E5B80010; }
+        .home-modal-price-card.active { border-color: #E3BF22; background: #E3BF2210; }
         .home-modal-modifier-group { margin-bottom: 16px; }
         .home-modal-modifier-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
         .home-modal-modifier-name { font-size: 13px; font-weight: 700; color: #1A1A1A; text-transform: uppercase; letter-spacing: 0.5px; }
@@ -418,7 +418,7 @@ export default function HomePage() {
           padding: 10px 12px; border-radius: 10px; cursor: pointer;
           border: 1px solid #E5E5E5; margin-bottom: 6px; transition: all 0.12s;
         }
-        .home-modal-modifier-opt.selected { border-color: #E5B800; background: #E5B80010; }
+        .home-modal-modifier-opt.selected { border-color: #E3BF22; background: #E3BF2210; }
         .home-modal-modifier-opt:hover { border-color: #D0D0D0; }
         .home-modal-add-row {
           display: flex; align-items: center; gap: 12px; margin-top: 20px;
@@ -440,8 +440,8 @@ export default function HomePage() {
           font-size: 16px; font-weight: 700; cursor: pointer;
           transition: all 0.3s ease;
         }
-        .home-modal-add-btn.enabled { background: #E5B800; color: #000; }
-        .home-modal-add-btn.enabled:hover { background: #E5B800; color: #000; }
+        .home-modal-add-btn.enabled { background: #E3BF22; color: #000; }
+        .home-modal-add-btn.enabled:hover { background: #E3BF22; color: #000; }
         .home-modal-add-btn.disabled { background: #F0F0F0; color: #AAAAAA; cursor: not-allowed; }
 
         /* ── Menu Tiles ── */
@@ -451,7 +451,7 @@ export default function HomePage() {
           text-decoration: none; display: flex; flex-direction: column;
           transition: border-color 0.2s, transform 0.25s, box-shadow 0.25s; background: #FFFFFF;
         }
-        .menu-tile:hover { border-color: #E5B80060; transform: translateY(-4px); box-shadow: 0 10px 30px rgba(0,0,0,0.06); }
+        .menu-tile:hover { border-color: #E3BF2260; transform: translateY(-4px); box-shadow: 0 10px 30px rgba(0,0,0,0.06); }
         .menu-tile-img { width: 100%; height: 220px; overflow: hidden; position: relative; flex-shrink: 0; }
         .menu-tile-img img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.5s cubic-bezier(0.16,1,0.3,1); }
         .menu-tile:hover .menu-tile-img img { transform: scale(1.06); }
@@ -509,12 +509,12 @@ export default function HomePage() {
         .order-card-box p { color: #666666; font-size: 16px; line-height: 1.75; margin-bottom: 24px; }
         .order-btn {
           display: inline-flex; align-items: center; gap: 8px;
-          background: #E5B800; color: #000;
+          background: #E3BF22; color: #000;
           padding: 13px 26px; border-radius: 10px; font-weight: 700;
           font-size: 16px; text-decoration: none; font-family: inherit;
           transition: all 0.3s ease; border: 2px solid transparent;
         }
-        .order-btn:hover { background: #E5B800; color: #000; border-color: transparent; transform: none; box-shadow: none; }
+        .order-btn:hover { background: #E3BF22; color: #000; border-color: transparent; transform: none; box-shadow: none; }
 
         /* ── Delivery CTA Section (Section 12) ── */
         .delivery-hero {
@@ -573,7 +573,7 @@ export default function HomePage() {
         .review-card {
           background: #FFFFFF;
           border: 1px solid #E5E5E5;
-          border-left: 3px solid #E5B800;
+          border-left: 3px solid #E3BF22;
           border-radius: 18px; padding: 28px;
           transition: transform 0.25s, box-shadow 0.25s;
           min-width: calc(33.33% - 11px); max-width: calc(33.33% - 11px); flex-shrink: 0;
@@ -587,7 +587,7 @@ export default function HomePage() {
           display: flex; align-items: center; justify-content: center;
           transition: background 0.15s, border-color 0.15s;
         }
-        .review-arrow:hover { background: #FFFFFF; border-color: #E5B800; }
+        .review-arrow:hover { background: #FFFFFF; border-color: #E3BF22; }
         .review-arrow-left { left: -22px; }
         .review-arrow-right { right: -22px; }
         .star-filter-wrap {
@@ -638,8 +638,8 @@ export default function HomePage() {
         /* ── Footer ── */
         .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 48px; margin-bottom: 40px; }
         .footer-bottom { border-top: 1px solid #E5E5E5; padding-top: 24px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
-        .footer-link { display: block; font-size: 16px; color: #1A1A1A;  padding: 4px 12px; text-decoration: none; transition: color 0.15s, padding-left 0.15s; }
-        .footer-link:hover { color: #555555; padding-left: 4px; }
+        .footer-link { display: block; font-size: 16px; color: #1A1A1A;  padding: 4px 0px; text-decoration: none; transition: color 0.15s, padding-left 0.15s; }
+        .footer-link:hover { color: #1A1A1A; text-decoration: underline; }
 
         /* ═══ RESPONSIVE ═══ */
         @media (max-width: 1024px) {
@@ -800,15 +800,15 @@ export default function HomePage() {
                           <svg width="40" height="40" viewBox="0 0 64 64" fill="none"><circle cx="32" cy="32" r="22" stroke="#D0D0D0" strokeWidth="1.5"/><path d="M20 32 Q32 20 44 32" stroke="#D0D0D0" strokeWidth="1.5" strokeLinecap="round"/><circle cx="32" cy="38" r="6" stroke="#D0D0D0" strokeWidth="1.5"/></svg>
                         </div>
                     }
-                    {item.tag && <div className="fav-tag-badge" style={{ position: 'absolute', top: '14px', left: '14px', background: 'rgba(255,255,255,0.9)', backdropFilter: 'blur(8px)', border: '1px solid #E5B80040', borderRadius: '20px', padding: '4px 12px' }}>
+                    {item.tag && <div className="fav-tag-badge" style={{ position: 'absolute', top: '14px', left: '14px', background: 'rgba(255,255,255,0.9)', backdropFilter: 'blur(8px)', border: '1px solid #E3BF2240', borderRadius: '20px', padding: '4px 12px' }}>
                       <span className="fav-tag-text" style={{ fontSize: '12px', fontWeight: '700', color: '#1A1A1A', letterSpacing: '0.5px' }}>{item.tag}</span>
                     </div>}
-                    <div className="fav-add-btn" style={{ position: 'absolute', bottom: '14px', right: '14px', width: '36px', height: '36px', borderRadius: '50%', background: '#E5B800', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }} aria-hidden="true">
+                    <div className="fav-add-btn" style={{ position: 'absolute', bottom: '14px', right: '14px', width: '36px', height: '36px', borderRadius: '50%', background: '#E3BF22', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }} aria-hidden="true">
                       <Plus size={15} color="#000" strokeWidth={2.8} />
                     </div>
                   </div>
                   <div className="fav-card-body" style={{ padding: '0 14px 4px', width: '100%' }}>
-                    <p className="fav-card-name" style={{ fontSize: '14px', fontWeight: '700', color: '#1A1A1A', marginBottom: '4px', lineHeight: 1.3 }}>{item.name}</p>
+                    <p className="fav-card-name" style={{ fontSize: '14px', fontWeight: '500', color: '#1A1A1A', marginBottom: '4px', lineHeight: 1.3 }}>{item.name}</p>
                     {/* <p className="fav-card-desc" style={{ fontSize: '14px', color: '#888888', lineHeight: 1.4, marginBottom: '8px', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical' as any, overflow: 'hidden' }}>{item.desc}</p> */}
                     <p className="fav-card-price" style={{ fontSize: '16px', fontWeight: '900', color: '#1A1A1A' }}>{item.price}</p>
                   </div>
@@ -978,7 +978,7 @@ export default function HomePage() {
               What Our Guests Are Saying
             </h2>
             <div id="reviews-rating-bar" className="reviews-rating-bar" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '5px', marginTop: '14px' }}>
-              {[0,1,2,3,4].map(i => <Star key={i} size={19} color="#E5B800" fill="#E5B800" aria-hidden="true" />)}
+              {[0,1,2,3,4].map(i => <Star key={i} size={19} color="#E3BF22" fill="#E3BF22" aria-hidden="true" />)}
               <span className="reviews-rating-text" style={{ fontSize: '16px', color: '#888888', marginLeft: '8px' }}>
                 {allReviews.length > 0
                   ? `${(allReviews.reduce((a, r) => a + r.stars, 0) / allReviews.length).toFixed(1)} average from ${allReviews.length} reviews`
@@ -993,7 +993,7 @@ export default function HomePage() {
               </button>
               {[5, 4, 3, 2, 1].map(s => (
                 <button key={s} className={`star-filter-btn ${starFilter === s ? 'active' : ''}`} onClick={() => setStarFilter(starFilter === s ? null : s)}>
-                  {s} <Star size={12} color="#E5B800" fill="#E5B800" />
+                  {s} <Star size={12} color="#E3BF22" fill="#E3BF22" />
                 </button>
               ))}
             </div>
@@ -1017,7 +1017,7 @@ export default function HomePage() {
                   role="listitem"
                 >
                   <div className="review-stars" style={{ display: 'flex', gap: '3px', marginBottom: '18px' }} aria-label={`${r.stars} out of 5 stars`}>
-                    {[0,1,2,3,4].map(s => <Star key={s} size={13} color={s < r.stars ? '#E5B800' : '#D0D0D0'} fill={s < r.stars ? '#E5B800' : 'none'} aria-hidden="true" />)}
+                    {[0,1,2,3,4].map(s => <Star key={s} size={13} color={s < r.stars ? '#E3BF22' : '#D0D0D0'} fill={s < r.stars ? '#E3BF22' : 'none'} aria-hidden="true" />)}
                   </div>
                   <blockquote className="review-quote" style={{ fontSize: '16px', color: '#1A1A1A', lineHeight: 1.75, marginBottom: '24px', fontStyle: 'italic' }}>
                     &ldquo;{r.text}&rdquo;
@@ -1045,46 +1045,22 @@ export default function HomePage() {
           9. REWARDS
       ══════════════════════════════════════════ */}
       <section id="rewards" className="section-rewards" style={{ background: '#FFFFFF', padding: '80px 0' }} aria-labelledby="rewards-heading">
-        <div className="container rewards-container" ref={rewardsReveal.ref}>
-          <div className="rewards-grid">
-            <div className={`rewards-left reveal ${rewardsReveal.visible ? 'visible' : ''}`}>
-              <span className="sec-label">Loyalty Program</span>
-              <h2 id="rewards-heading" className="sec-heading" style={{ marginBottom: '16px' }}>
-                Eggs Ok Rewards
-              </h2>
-              <p className="rewards-body" style={{ fontSize: '16px', color: '#1A1A1A', lineHeight: 1.8, marginBottom: '36px', maxWidth: '440px' }}>
-                Every order earns you points. Redeem for free food, exclusive deals, and early access
+      
+      <div id="order-ahead" className="order-ahead-hero container">
+        <div className="order-ahead-overlay" />
+        <div className="order-card-box">
+          <h2 id="order-ahead-heading" className="order-ahead-heading">Eggs Ok Rewards</h2>
+          <p className="order-ahead-body">
+             Every order earns you points. Redeem for free food, exclusive deals, and early access
                 to new menu items. The more you eat, the more you earn.
-              </p>
-              <Link href="/account" className="btn-yellow rewards-join-btn">
+          </p>
+         <Link href="/account" className="btn-yellow rewards-join-btn">
                 <Gift size={16} aria-hidden="true" /> Join Rewards — It&apos;s Free
               </Link>
-            </div>
-
-            <div id="rewards-steps" className="rewards-steps" role="list" aria-label="How rewards work">
-              {[
-                { step: '01', title: 'Sign Up Free',    desc: 'Create your account in under a minute. No fees, ever.',    color: '#1A1A1A' },
-                { step: '02', title: 'Earn Points',     desc: '$1 spent = 10 points. Points stack up fast.',              color: '#FC0301' },
-                { step: '03', title: 'Redeem Rewards',  desc: 'Free items, discounts, and exclusive member perks.',       color: '#22C55E' },
-              ].map((s, i) => (
-                <div
-                  key={i}
-                  id={`reward-step-${i + 1}`}
-                  className={`reward-step reveal ${rewardsReveal.visible ? 'visible' : ''}`}
-                  style={{ transitionDelay: `${0.12 * i + 0.1}s`, borderColor: `${s.color}20` }}
-                  role="listitem"
-                >
-                  <p className="reward-step-bg-number bebas" style={{ position: 'absolute', top: '-10px', right: '10px', fontSize: '64px', color: `${s.color}10`, lineHeight: 1 }} aria-hidden="true">{s.step}</p>
-                  <div className="reward-step-icon" style={{ width: '38px', height: '38px', borderRadius: '10px', background: `${s.color}20`, border: `1px solid ${s.color}40`, display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '16px' }}>
-                    <p className="reward-step-number bebas" style={{ fontSize: '16px', color: s.color }}>{s.step}</p>
-                  </div>
-                  <p className="reward-step-title" style={{ fontSize: '16px', fontWeight: '900', color: '#1A1A1A', marginBottom: '8px' }}>{s.title}</p>
-                  <p className="reward-step-desc" style={{ fontSize: '16px', color: '#666666', lineHeight: 1.65 }}>{s.desc}</p>
-                </div>
-              ))}
-            </div>
-          </div>
         </div>
+      </div>
+           
+          
       </section>
 
       {/* ══════════════════════════════════════════
@@ -1206,7 +1182,7 @@ export default function HomePage() {
                 style={{ border: 0, minHeight: '460px', display: 'block' }}
                 allowFullScreen loading="lazy" referrerPolicy="no-referrer-when-downgrade"
               />
-              <div id="location-map-pin" className="location-map-pin" style={{ position: 'absolute', bottom: '20px', left: '20px', background: 'rgba(255,255,255,0.95)', backdropFilter: 'blur(12px)', borderRadius: '10px', padding: '10px 16px', border: '1px solid #E5B80040', pointerEvents: 'none' }} aria-hidden="true">
+              <div id="location-map-pin" className="location-map-pin" style={{ position: 'absolute', bottom: '20px', left: '20px', background: 'rgba(255,255,255,0.95)', backdropFilter: 'blur(12px)', borderRadius: '10px', padding: '10px 16px', border: '1px solid #E3BF2240', pointerEvents: 'none' }} aria-hidden="true">
                 <p className="location-map-pin-name bebas" style={{ fontSize: '14px', color: '#1A1A1A', letterSpacing: '-0.5px' }}>Eggs Ok</p>
                 <p className="location-map-pin-address" style={{ fontSize: '12px', color: '#888888' }}>3517 Lancaster Ave</p>
               </div>
@@ -1292,7 +1268,7 @@ export default function HomePage() {
 
           <div id="footer-bottom" className="footer-bottom">
             <p id="footer-copyright" className="footer-copyright" style={{ fontSize: '16px', color: '#888888' }}>&copy; {new Date().getFullYear()} Eggs Ok. All rights reserved.</p>
-            {/* <p id="footer-credit" className="footer-credit" style={{ fontSize: '13px', color: '#ffffff' }}>Built by <span className="footer-credit-brand" style={{ color: '#E5B800' }}>RestoRise Business Solutions</span></p> */}
+            {/* <p id="footer-credit" className="footer-credit" style={{ fontSize: '13px', color: '#ffffff' }}>Built by <span className="footer-credit-brand" style={{ color: '#E3BF22' }}>RestoRise Business Solutions</span></p> */}
           </div>
         </div>
       </footer>
@@ -1346,8 +1322,8 @@ export default function HomePage() {
                         return (
                           <div key={opt.id} className={`home-modal-modifier-opt ${isSel ? 'selected' : ''}`} onClick={() => toggleModifier(group.id, opt.id, group.maxSelections)}>
                             <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                              <div style={{ width: '20px', height: '20px', borderRadius: group.maxSelections === 1 ? '50%' : '4px', border: isSel ? '2px solid #E5B800' : '1px solid #D0D0D0', background: isSel ? '#E5B800' : 'transparent', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                                {isSel && <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#E5B800" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>}
+                              <div style={{ width: '20px', height: '20px', borderRadius: group.maxSelections === 1 ? '50%' : '4px', border: isSel ? '2px solid #E3BF22' : '1px solid #D0D0D0', background: isSel ? '#E3BF22' : 'transparent', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                                {isSel && <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#E3BF22" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>}
                               </div>
                               <span style={{ fontSize: '16px', color: '#1A1A1A' }}>{opt.name}</span>
                             </div>
