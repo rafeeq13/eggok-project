@@ -11,7 +11,6 @@ import {
   ChevronDown,
   Gift,
   ArrowRight,
-  ShoppingCart,
   ChevronLeft,
   ChevronRight,
   X,
@@ -305,12 +304,12 @@ export default function HomePage() {
 
         .btn-outline {
           display: inline-flex; align-items: center; gap: 8px;
-          padding: 14px 28px; background: transparent; color: #1A1A1A;
+          padding: 14px 28px; background: transparent; color: #4D4D4D;
           border-radius: 10px; font-size: 16px; font-weight: 700;
-          text-decoration: none; border: 1.5px solid #1A1A1A;
+          text-decoration: none; border: 1.5px solid #4D4D4D;
           transition: border-color 0.15s, color 0.15s, background 0.15s; font-family: inherit; cursor: pointer;
         }
-        .btn-outline:hover { background: #F0F0F0; border-color: #1A1A1A; color: #1A1A1A; }
+        .btn-outline:hover { background: #F0F0F0; border-color: #4D4D4D; color: #4D4D4D; }
         .btn-outline:active { background: #f4f4f410; }
 
         /* ── Section Label — consistent across all sections ── */
@@ -323,7 +322,7 @@ export default function HomePage() {
         .sec-heading {
           font-family: 'Playfair Display', Georgia, serif;
           font-weight: 700;
-          font-size: 28px;
+          font-size: 22px;
           letter-spacing: -0.5px;
           line-height: 1.2;
           color: #1A1A1A;
@@ -331,24 +330,41 @@ export default function HomePage() {
 
         /* ── Hero ── */
         .hero-section {
-          min-height: 100vh; display: flex; align-items: center; justify-content: center;
-          text-align: center; position: relative; overflow: hidden;
+          min-height: 100vh; display: flex; align-items: flex-end; justify-content: flex-start;
+          text-align: left; position: relative; overflow: hidden;
+          padding-bottom: 40px;
           background-image: url('/main-menu/Hero-Banner.webp');
           background-size: cover; background-position: center; background-repeat: no-repeat;
         }
-        // .hero-title { text-shadow: 0 2px 20px rgba(0,0,0,0.6), 0 1px 6px rgba(0,0,0,0.5); }
-        // .hero-subtitle { text-shadow: 0 1px 12px rgba(0,0,0,0.5), 0 1px 3px rgba(0,0,0,0.4); }
+        .hero-tagline {
+          font-size: 28px; font-weight: 700; color: #ffffff;
+          letter-spacing: -0.3px; line-height: 1.2;
+          font-family: var(--font-body);
+          text-shadow: 0 2px 16px rgba(0,0,0,0.55);
+          margin-bottom: 18px;
+        }
+        .hero-title {
+          font-family: var(--font-heading);
+          font-size: 52px; font-weight: 700; line-height: 1.05;
+          color: #ffffff; letter-spacing: -1px;
+          // text-shadow: 0 2px 24px rgba(0,0,0,0.55), 0 1px 4px rgba(0,0,0,0.4);
+          margin-bottom: 36px;
+        }
+        .hero-pickup-btn, .hero-menu-btn {
+          display: inline-flex; align-items: center; gap: 8px;
+          padding: 7px 28px; background: #E3BF22; color: #0D0D0D;
+          border: 2px solid #E3BF22;
+          border-radius: 10px; font-size: 17px; font-weight: 700;
+          transition: all 0.25s ease; font-family: var(--font-body); cursor: pointer;
+          text-decoration: none;
+          box-shadow: 0 4px 16px rgba(0,0,0,0.18);
+        }
+        .hero-pickup-btn:hover, .hero-menu-btn:hover {
+          background: #C9A81D; border-color: #C9A81D; transform: translateY(-1px);
+        }
         .hero-stat-value { text-shadow: 0 1px 10px rgba(0,0,0,0.5); }
         .hero-stat-label { text-shadow: 0 1px 6px rgba(0,0,0,0.4); }
-        .hero-menu-btn {
-          display: inline-flex; align-items: center; gap: 8px;
-          padding: 14px 28px; background: transparent; color: #ffffff;
-          border-radius: 10px; font-size: 16px; font-weight: 700;
-          text-decoration: none; border: 2px solid #ffffff;
-          transition: all 0.3s ease; font-family: inherit; cursor: pointer;
-        }
-        .hero-menu-btn:hover { background: rgba(255,255,255,0.2); color: #ffffff; border-color: #ffffff; }
-        .hero-cta { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+        .hero-cta { display: flex; gap: 14px; justify-content: flex-start; flex-wrap: wrap; }
         .hero-stats { display: flex; gap: 40px; margin-top: 40px; justify-content: center; flex-wrap: wrap; }
 
         /* ── Favorites Carousel ── */
@@ -401,7 +417,7 @@ export default function HomePage() {
         }
         .home-modal-close:hover { background: rgba(0,0,0,0.95); }
         .home-modal-body { padding: 24px; }
-        .home-modal-name { font-family: 'Playfair Display', Georgia, serif; font-weight: 700; font-size: 28px; letter-spacing: -0.5px; color: #1A1A1A; margin-bottom: 8px; }
+        .home-modal-name { font-family: 'Playfair Display', Georgia, serif; font-weight: 700; font-size: 28px; letter-spacing: -0.5px; color: #4D4D4D; margin-bottom: 8px; }
         .home-modal-desc { font-size: 16px; color: #666; line-height: 1.7; margin-bottom: 20px; }
         .home-modal-price-row { display: flex; gap: 10px; margin-bottom: 20px; }
         .home-modal-price-card {
@@ -411,7 +427,7 @@ export default function HomePage() {
         .home-modal-price-card.active { border-color: #E3BF22; background: #E3BF2210; }
         .home-modal-modifier-group { margin-bottom: 16px; }
         .home-modal-modifier-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
-        .home-modal-modifier-name { font-size: 13px; font-weight: 700; color: #1A1A1A; text-transform: uppercase; letter-spacing: 0.5px; }
+        .home-modal-modifier-name { font-size: 13px; font-weight: 700; color: #4D4D4D; text-transform: uppercase; letter-spacing: 0.5px; }
         .home-modal-modifier-badge { font-size: 12px; padding: 2px 8px; border-radius: 20px; font-weight: 600; }
         .home-modal-modifier-opt {
           display: flex; justify-content: space-between; align-items: center;
@@ -430,11 +446,11 @@ export default function HomePage() {
         }
         .home-modal-qty-btn {
           width: 40px; height: 40px; background: #F5F5F5; border: none;
-          color: #1A1A1A; font-size: 18px; cursor: pointer; display: flex;
+          color: #4D4D4D; font-size: 18px; cursor: pointer; display: flex;
           align-items: center; justify-content: center;
         }
         .home-modal-qty-btn:hover { background: #E5E5E5; }
-        .home-modal-qty-val { width: 44px; text-align: center; font-size: 15px; font-weight: 700; color: #1A1A1A; background: #F5F5F5; }
+        .home-modal-qty-val { width: 44px; text-align: center; font-size: 15px; font-weight: 700; color: #4D4D4D; background: #F5F5F5; }
         .home-modal-add-btn {
           flex: 1; padding: 14px; border-radius: 10px; border: 2px solid transparent;
           font-size: 16px; font-weight: 700; cursor: pointer;
@@ -474,7 +490,7 @@ export default function HomePage() {
           letter-spacing: -0.5px; line-height: 1.2;
           color: #1A1A1A; margin-bottom: 20px;
         }
-        .about-content p { color: #1A1A1A; line-height: 1.75; font-size: 16px; max-width: 520px; }
+        .about-content p { color: #4D4D4D; line-height: 1.75; font-size: 16px; max-width: 520px; }
 
         /* ── Order Ahead CTA (Section 5) ── */
         .order-ahead-hero {
@@ -495,7 +511,7 @@ export default function HomePage() {
           position: relative; z-index: 1;
           background: rgba(255,255,255,0.95); padding: 44px 48px;
           border-radius: 20px; max-width: 440px;
-          margin: 40px 48px 40px auto;
+          margin: 40px auto 40px 48px;
           border: 1px solid #E0E0E0;
           backdrop-filter: blur(16px);
         }
@@ -510,7 +526,7 @@ export default function HomePage() {
         .order-btn {
           display: inline-flex; align-items: center; gap: 8px;
           background: #E3BF22; color: #000;
-          padding: 13px 26px; border-radius: 10px; font-weight: 700;
+          padding: 13px 26px; border-radius: 10px; font-weight: 500;
           font-size: 16px; text-decoration: none; font-family: inherit;
           transition: all 0.3s ease; border: 2px solid transparent;
         }
@@ -521,17 +537,17 @@ export default function HomePage() {
           position: relative; overflow: hidden;
           background-image: url('/main-menu/Main-Page/catering-home.webp');
           background-size: cover; background-position: center;
-          min-height: 420px;
+          min-height:100vh !important;
           display: flex; align-items: center; justify-content: center;
         }
         .delivery-overlay {
           position: absolute; inset: 0;
-          background: rgba(0,0,0,0.55);
+          background: rgba(0,0,0,0.10);
         }
         .delivery-content {
           position: relative; z-index: 1;
           text-align: center; color: #fff;
-          max-width: 700px; padding: 72px 24px;
+          max-width: 100%; padding: 72px 24px;
         }
         .delivery-small-text {
           font-size: 12px; font-weight: 700;
@@ -549,7 +565,7 @@ export default function HomePage() {
         .delivery-content p {
           font-size: 16px; color: #ffffff;
           line-height: 1.75; margin-bottom: 36px;
-          max-width: 480px; margin-left: auto; margin-right: auto;
+           margin-left: auto; margin-right: auto;
         }
         .delivery-buttons {
           display: flex; justify-content: center; align-items: center;
@@ -600,8 +616,8 @@ export default function HomePage() {
           color: #888; font-size: 13px; font-weight: 600;
           cursor: pointer; transition: all 0.15s; font-family: inherit;
         }
-        .star-filter-btn:hover { border-color: #1A1A1A60; color: #1A1A1A; }
-        .star-filter-btn.active { border-color: #1A1A1A; background: #1A1A1A15; color: #1A1A1A; }
+        .star-filter-btn:hover { border-color: #4D4D4D60; color: #4D4D4D; }
+        .star-filter-btn.active { border-color: #4D4D4D; background: #4D4D4D15; color: #4D4D4D; }
 
         /* ── Rewards ── */
         .rewards-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
@@ -616,7 +632,7 @@ export default function HomePage() {
         /* ── FAQ ── */
         .faq-item { border-bottom: 1px solid #E5E5E5; }
         .faq-q {
-          width: 100%; background: none; border: none; color: #1A1A1A;
+          width: 100%; background: none; border: none; color: #4D4D4D;
           font-size: 16px; font-weight: 600; cursor: pointer;
           display: flex; justify-content: space-between; align-items: center;
           padding: 22px 0; gap: 16px; text-align: left;
@@ -638,8 +654,8 @@ export default function HomePage() {
         /* ── Footer ── */
         .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 48px; margin-bottom: 40px; }
         .footer-bottom { border-top: 1px solid #E5E5E5; padding-top: 24px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
-        .footer-link { display: block; font-size: 16px; color: #1A1A1A;  padding: 4px 0px; text-decoration: none; transition: color 0.15s, padding-left 0.15s; }
-        .footer-link:hover { color: #1A1A1A; text-decoration: underline; }
+        .footer-link { display: block; font-size: 16px; color: #4D4D4D;  padding: 4px 0px; text-decoration: none; transition: color 0.15s, padding-left 0.15s; }
+        .footer-link:hover { color: #4D4D4D; text-decoration: underline; }
 
         /* ═══ RESPONSIVE ═══ */
         @media (max-width: 1024px) {
@@ -652,7 +668,7 @@ export default function HomePage() {
           .menu-tiles { grid-template-columns: repeat(2,1fr); }
           .footer-grid { grid-template-columns: 1fr 1fr; gap: 32px; }
           .footer-brand { grid-column: 1 / -1; }
-          .order-card-box { margin: 40px 32px 40px auto; }
+          .order-card-box { margin: 40px auto 40px 32px; }
         }
         @media (max-width: 900px) {
           .photo-gallery { grid-template-columns: repeat(2,1fr); }
@@ -662,11 +678,15 @@ export default function HomePage() {
           .order-ahead-overlay { background: rgba(0,0,0,0.55); }
           .order-card-box { margin: 40px auto; max-width: 92%; }
         }
-        .hero-subtitle { font-size: 28px !important; }
+        @media (max-width: 1024px) {
+          .hero-title { font-size: 52px; }
+          .hero-tagline { font-size: 22px; }
+        }
         @media (max-width: 768px) {
-          .hero-section { min-height: 55vh; padding: 80px 0 40px; }
-          
-          .hero-subtitle { font-size: 16.94px !important; margin: 16px 0 24px !important; }
+          .hero-section { min-height: 70vh; padding: 80px 0 56px; }
+          .hero-title { font-size: 40px; margin-bottom: 24px; }
+          .hero-tagline { font-size: 18px; margin-bottom: 14px; }
+          .hero-pickup-btn, .hero-menu-btn { padding: 7px 12px 22px; font-size: 15px; }
           .hero-stats { margin-top: 24px; gap: 20px; }
           .hero-stat-value { font-size: clamp(22px, 5vw, 30px) !important; }
           .fav-card { min-width: calc(50% - 10px); max-width: calc(50% - 10px); }
@@ -674,18 +694,15 @@ export default function HomePage() {
           .footer-grid { grid-template-columns: 1fr; gap: 28px; }
           .footer-brand { grid-column: unset; }
           .footer-bottom { flex-direction: column; text-align: center; }
-          .hero-cta .btn-yellow, .hero-cta .btn-outline { flex: 1; justify-content: center; }
           .rewards-steps { grid-template-columns: 1fr; }
           .order-card-box { margin: 24px; max-width: 100%; padding: 32px 28px; }
         }
         @media (max-width: 500px) {
-          .hero-section { min-height: 50vh; padding-bottom: 32px; padding-top: 72px; }
-          
-          .hero-subtitle { font-size: 16.94px !important; margin: 12px 0 20px !important; }
+          .hero-section { min-height: 62vh; padding-bottom: 40px; padding-top: 72px; }
+          .hero-title { font-size: 32px; margin-bottom: 20px; }
+          .hero-tagline { font-size: 15px; margin-bottom: 12px; }
           .hero-cta { gap: 10px; }
-          .hero-order-btn { padding: 14px 14px !important; white-space: nowrap !important; font-size: 14px !important; }
-          .hero-menu-btn { padding: 14px 14px !important; font-size: 14px !important; }
-          .hero-stats { margin-top: 18px; gap: 16px; }
+          .hero-pickup-btn, .hero-menu-btn { padding: 7px 18px; font-size: 14px; }
           .photo-gallery { grid-template-columns: 1fr; }
           .gallery-item { height: 220px; }
         }
@@ -710,17 +727,17 @@ export default function HomePage() {
           1. HERO
       ══════════════════════════════════════════ */}
       <section id="hero" className="hero-section" aria-label="Welcome to Eggs Ok">
-        <div className="hero-overlay" style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(0,0,0,0.75) 0%, rgba(43, 43, 43, 0.35) 40%, rgba(151, 151, 151, 0.05) 100%)', zIndex: 0 }} />
+        <div className="hero-overlay" style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(0,0,0,0.75) 0%, rgba(43, 43, 43, 0.35) 20%, rgba(151, 151, 151, 0.05) 100%)', zIndex: 0 }} />
 
         <div className="container hero-container" style={{ position: 'relative', zIndex: 1, width: '100%' }}>
           <div
             id="hero-content"
             className={`hero-inner reveal ${heroReveal.visible ? 'visible' : ''}`}
             ref={heroReveal.ref}
-            style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', maxWidth: '900px', margin: '0 auto' }}
+            style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}
           >
             {/* Store status badge */}
-            <div
+            {/* <div
               id="hero-store-status"
               className="hero-status-badge"
               style={{
@@ -729,35 +746,34 @@ export default function HomePage() {
                 border: `2px solid ${isOpen ? '#22C55E30' : '#FC0301'}`,
                 borderRadius: '20px', padding: '6px 16px', marginBottom: '28px',
               }}
-            >
-              <span className="hero-status-dot" style={{ width: '7px', height: '7px', borderRadius: '50%', background: isOpen ? '#22C55E' : '#FC0301' }} />
+            > */}
+              {/* <span className="hero-status-dot" style={{ width: '7px', height: '7px', borderRadius: '50%', background: isOpen ? '#22C55E' : '#FC0301' }} />
               <span className="hero-status-text" style={{ fontSize: '16px', color: isOpen ? '#22C55E' : '#FC0301', fontWeight: '600' }}>
                 {isOpen ? statusMessage : 'Closed'}
               </span>
-            </div>
+            </div> */}
 
-            <h1 id="hero-title" className="hero-title bebas" style={{ fontSize: '50.2px', color: '#ffffff' }}>
-              Welcome to Eggs Ok West Philadelphia
+            <p id="hero-tagline" className="hero-tagline">
+              Best Breakfast in University City, Philadelphia, PA
+            </p>
+
+            <h1 id="hero-title" className="hero-title">
+             Welcome to Eggs Ok West Philadelphia
             </h1>
 
-            <div id="hero-subtitle" className="hero-subtitle" style={{ color: '#ffffff',   margin: '28px auto 40px' }}>
-              Fresh made-to-order sandwiches, burritos, omelettes, and specialty drinks.
-              Pickup or delivery from the heart of West Philly.
-            </div>
-
             <div id="hero-cta-buttons" className="hero-cta">
-              <Link href="/order" className="btn-yellow hero-order-btn" style={{ fontSize: '16px', padding: '16px 34px' }}>
-                <ShoppingCart size={18} /> Order Now
+              <Link href="/order?type=pickup" className="hero-pickup-btn">
+                Order pickup
               </Link>
-              <a href="#menu" className="hero-menu-btn" style={{ fontSize: '16px', padding: '16px 34px' }}>
-                View Menu
-              </a>
+              <Link href="/order?type=delivery" className="hero-menu-btn">
+                Order delivery
+              </Link>
             </div>
 
             {/* <div id="hero-stats-bar" className="hero-stats">
               {[{ v: '80+', l: 'Menu Items' }, { v: '15 min', l: 'Ready Time' }, { v: '5★', l: 'Rated' }].map((s, i) => (
                 <div key={i} className={`hero-stat hero-stat-${i + 1}`}>
-                  <p className="hero-stat-value bebas" style={{ fontSize: '24px', color: '#1A1A1A' }}>{s.v}</p>
+                  <p className="hero-stat-value bebas" style={{ fontSize: '24px', color: '#4D4D4D' }}>{s.v}</p>
                   <p className="hero-stat-label" style={{ fontSize: '13px', color: 'rgba(255,255,255,0.7)', marginTop: '4px' }}>{s.l}</p>
                 </div>
               ))}
@@ -773,8 +789,8 @@ export default function HomePage() {
         <div className="container featured-container" ref={featuredReveal.ref}>
           <div className={`featured-header reveal ${featuredReveal.visible ? 'visible' : ''}`} style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', marginBottom: '52px', flexWrap: 'wrap', gap: '20px' }}>
             <div className="featured-header-text">
-              <span className="sec-label">Featured</span>
-              <h2 id="featured-heading" className="sec-heading">Our Favorites</h2>
+              {/* <span className="sec-label">Featured</span> */}
+              <h2 id="featured-heading" className="sec-heading">Featured</h2>
             </div>
             <Link href="/order" className="btn-outline featured-view-all-btn">View Full Menu <ArrowRight size={15} aria-hidden="true" /></Link>
           </div>
@@ -801,16 +817,16 @@ export default function HomePage() {
                         </div>
                     }
                     {item.tag && <div className="fav-tag-badge" style={{ position: 'absolute', top: '14px', left: '14px', background: 'rgba(255,255,255,0.9)', backdropFilter: 'blur(8px)', border: '1px solid #E3BF2240', borderRadius: '20px', padding: '4px 12px' }}>
-                      <span className="fav-tag-text" style={{ fontSize: '12px', fontWeight: '700', color: '#1A1A1A', letterSpacing: '0.5px' }}>{item.tag}</span>
+                      <span className="fav-tag-text" style={{ fontSize: '12px', fontWeight: '700', color: '#4D4D4D', letterSpacing: '0.5px' }}>{item.tag}</span>
                     </div>}
                     <div className="fav-add-btn" style={{ position: 'absolute', bottom: '14px', right: '14px', width: '36px', height: '36px', borderRadius: '50%', background: '#E3BF22', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }} aria-hidden="true">
                       <Plus size={15} color="#000" strokeWidth={2.8} />
                     </div>
                   </div>
                   <div className="fav-card-body" style={{ padding: '0 14px 4px', width: '100%' }}>
-                    <p className="fav-card-name" style={{ fontSize: '14px', fontWeight: '500', color: '#1A1A1A', marginBottom: '4px', lineHeight: 1.3 }}>{item.name}</p>
+                    <p className="fav-card-name" style={{ fontSize: '14px', fontWeight: '500', color: '#4D4D4D', marginBottom: '4px', lineHeight: 1.3 }}>{item.name}</p>
                     {/* <p className="fav-card-desc" style={{ fontSize: '14px', color: '#888888', lineHeight: 1.4, marginBottom: '8px', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical' as any, overflow: 'hidden' }}>{item.desc}</p> */}
-                    <p className="fav-card-price" style={{ fontSize: '16px', fontWeight: '900', color: '#1A1A1A' }}>{item.price}</p>
+                    <p className="fav-card-price" style={{ fontSize: '16px', fontWeight: '900', color: '#4D4D4D' }}>{item.price}</p>
                   </div>
                 </div>
               ))}
@@ -833,7 +849,7 @@ export default function HomePage() {
                 style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '20px' }} />
             </div>
             <div className="about-content story-content">
-              <span className="sec-label">Our Story</span>
+            
               <h2 id="story-heading" className="story-heading">Born in the Heart of West Philly</h2>
 
               <p className="story-body">
@@ -857,7 +873,7 @@ export default function HomePage() {
         <div className="container quality-container">
           <div className="about-grid quality-grid">
             <div className="about-content quality-content">
-              <span className="sec-label">Quality First</span>
+            
               <h2 id="quality-heading" className="quality-heading">Fresh Ingredients, Bold Flavors</h2>
               <p className="quality-body">
                 We source quality ingredients and prep everything in-house daily. Whether you&apos;re
@@ -898,11 +914,11 @@ export default function HomePage() {
       <section id="menu" className="section-menu" style={{ background: '#F8F9FA', padding: '80px 0' }} aria-labelledby="menu-heading">
         <div className="container menu-container" ref={menuReveal.ref}>
           <div className={`menu-header reveal ${menuReveal.visible ? 'visible' : ''}`} style={{ textAlign: 'left', marginBottom: '52px' }}>
-            <span className="sec-label">Explore</span>
+        
             <h2 id="menu-heading" className="sec-heading">
              A Taste of Our Menu
             </h2>
-            <p className="menu-subheading" style={{ color: '#1A1A1A', marginTop: '14px', fontSize: '16px' }}>
+            <p className="menu-subheading" style={{ color: '#4D4D4D', marginTop: '14px', fontSize: '16px' }}>
               Bright Flavors, warm atmosphere, and a menu that has something for everyone. <br /> From classic breakfast sandwiches to bold specialty drinks,  get a glimpse of what we offer <br /> before you order. 
             </p>
           </div>
@@ -923,8 +939,8 @@ export default function HomePage() {
                     style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
                 </div>
                 <div className="menu-tile-body">
-                  <p className="menu-tile-label" style={{ fontSize: '16px', fontWeight: '700', color: '#1A1A1A', marginBottom: '4px' }}>{tile.label}</p>
-                  <p className="menu-tile-count" style={{ fontSize: '12px', color: '#1A1A1A', fontWeight: '600' }}>{tile.items}</p>
+                  <p className="menu-tile-label" style={{ fontSize: '16px', fontWeight: '700', color: '#4D4D4D', marginBottom: '4px' }}>{tile.label}</p>
+                  <p className="menu-tile-count" style={{ fontSize: '12px', color: '#4D4D4D', fontWeight: '600' }}>{tile.items}</p>
                 </div>
               </Link>
             ))}
@@ -952,7 +968,7 @@ export default function HomePage() {
                 style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '20px' }} />
             </div>
             <div className="about-content catering-content">
-              <span className="sec-label">Catering</span>
+             
               <h2 id="catering-heading" className="catering-heading">Let Us Cater Your Next Event</h2>
               <p className="catering-body">
                 From corporate breakfasts to birthday brunches, Eggs Ok brings the same fresh,
@@ -973,7 +989,7 @@ export default function HomePage() {
       <section id="reviews" className="section-reviews" style={{ background: '#F8F9FA', padding: '80px 0' }} aria-labelledby="reviews-heading">
         <div className="container reviews-container" ref={reviewsReveal.ref}>
           <div className={`reviews-header reveal ${reviewsReveal.visible ? 'visible' : ''}`} style={{ textAlign: 'center', marginBottom: '40px' }}>
-            <span className="sec-label">Reviews</span>
+            
             <h2 id="reviews-heading" className="sec-heading">
               What Our Guests Are Saying
             </h2>
@@ -1019,15 +1035,15 @@ export default function HomePage() {
                   <div className="review-stars" style={{ display: 'flex', gap: '3px', marginBottom: '18px' }} aria-label={`${r.stars} out of 5 stars`}>
                     {[0,1,2,3,4].map(s => <Star key={s} size={13} color={s < r.stars ? '#E3BF22' : '#D0D0D0'} fill={s < r.stars ? '#E3BF22' : 'none'} aria-hidden="true" />)}
                   </div>
-                  <blockquote className="review-quote" style={{ fontSize: '16px', color: '#1A1A1A', lineHeight: 1.75, marginBottom: '24px', fontStyle: 'italic' }}>
+                  <blockquote className="review-quote" style={{ fontSize: '16px', color: '#4D4D4D', lineHeight: 1.75, marginBottom: '24px', fontStyle: 'italic' }}>
                     &ldquo;{r.text}&rdquo;
                   </blockquote>
                   <div className="review-footer" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                     <div className="review-author" style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                       <div className="review-avatar" style={{ width: '38px', height: '38px', borderRadius: '50%', background: '#F0F0F0', border: '1px solid #E0E0E0', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }} aria-hidden="true">
-                        <span className="review-avatar-initial" style={{ fontSize: '14px', fontWeight: '700', color: '#1A1A1A' }}>{r.name[0]}</span>
+                        <span className="review-avatar-initial" style={{ fontSize: '14px', fontWeight: '700', color: '#4D4D4D' }}>{r.name[0]}</span>
                       </div>
-                      <cite className="review-name" style={{ fontSize: '16px', fontWeight: '600', color: '#1A1A1A', fontStyle: 'normal' }}>{r.name}</cite>
+                      <cite className="review-name" style={{ fontSize: '16px', fontWeight: '600', color: '#4D4D4D', fontStyle: 'normal' }}>{r.name}</cite>
                     </div>
                     <time className="review-date" style={{ fontSize: '12px', color: '#AAAAAA' }}>{r.date}</time>
                   </div>
@@ -1069,7 +1085,7 @@ export default function HomePage() {
       <section id="faq" className="section-faq" style={{ background: '#F8F9FA', padding: '80px 0' }} aria-labelledby="faq-heading">
         <div className="container faq-container" ref={faqReveal.ref}>
           <div className={`faq-header reveal ${faqReveal.visible ? 'visible' : ''}`} style={{ textAlign: 'center', marginBottom: '60px' }}>
-            <span className="sec-label">FAQ</span>
+       
             <h2 id="faq-heading" className="sec-heading">
               Frequently Asked Questions
             </h2>
@@ -1102,7 +1118,7 @@ export default function HomePage() {
           </div>
 
           <div id="faq-contact-cta" className="faq-contact-cta" style={{ textAlign: 'center', marginTop: '52px' }}>
-            <p className="faq-contact-text" style={{ fontSize: '16px', color: '#1A1A1A', marginBottom: '16px' }}>Still have questions?</p>
+            <p className="faq-contact-text" style={{ fontSize: '16px', color: '#4D4D4D', marginBottom: '16px' }}>Still have questions?</p>
             <Link href="/contact" className="btn-outline faq-contact-btn">Contact Us</Link>
           </div>
         </div>
@@ -1114,7 +1130,7 @@ export default function HomePage() {
       <section id="location" className="section-location" style={{ background: '#FFFFFF', padding: '80px 0' }} aria-labelledby="location-heading">
         <div className="container location-container" ref={locationReveal.ref}>
           <div className={`location-header reveal ${locationReveal.visible ? 'visible' : ''}`} style={{ textAlign: 'center', marginBottom: '56px' }}>
-            <span className="sec-label">Find Us</span>
+            
             <h2 id="location-heading" className="sec-heading">
               Our Location
             </h2>
@@ -1142,7 +1158,7 @@ export default function HomePage() {
                   <div className="location-address-row" style={{ display: 'flex', gap: '14px', alignItems: 'flex-start' }}>
                     <MapPin size={16} color="#000000ff" style={{ flexShrink: 0, marginTop: '2px' }} aria-hidden="true" />
                     <div className="location-address-text">
-                      <p className="location-street" style={{ fontSize: '16px', color: '#1A1A1A', fontWeight: '600' }}>3517 Lancaster Ave</p>
+                      <p className="location-street" style={{ fontSize: '16px', color: '#4D4D4D', fontWeight: '600' }}>3517 Lancaster Ave</p>
                       <p className="location-city" style={{ fontSize: '16px', color: '#888888' }}>Philadelphia, PA 19104</p>
                     </div>
                   </div>
@@ -1151,15 +1167,15 @@ export default function HomePage() {
                     <div id="location-hours-list" className="location-hours-list" style={{ display: 'flex', flexDirection: 'column', gap: '5px' }}>
                       {HOURS.map((row, i) => (
                         <div key={i} className={`location-hours-row-item location-hours-${row.d.toLowerCase()}`} style={{ display: 'flex', gap: '14px' }}>
-                          <span className="location-hours-day" style={{ fontSize: '16px', color: '#1A1A1A', fontWeight: '600', minWidth: '96px' }}>{row.d}</span>
-                          <span className="location-hours-time" style={{ fontSize: '16px', color: '#777777' }}>{row.h}</span>
+                          <span className="location-hours-day" style={{ fontSize: '16px', color: '#4D4D4D', fontWeight: '600', minWidth: '96px' }}>{row.d}</span>
+                          <span className="location-hours-time" style={{ fontSize: '16px', color: '#4D4D4D' }}>{row.h}</span>
                         </div>
                       ))}
                     </div>
                   </div>
                   <div className="location-phone-row" style={{ display: 'flex', gap: '14px', alignItems: 'center' }}>
                     <Smartphone size={16} color="#000000ff" style={{ flexShrink: 0 }} aria-hidden="true" />
-                    <a href="tel:2159489902" className="location-phone" style={{ fontSize: '16px', color: '#1A1A1A', textDecoration: 'none', fontWeight: '600' }}>215-948-9902</a>
+                    <a href="tel:2159489902" className="location-phone" style={{ fontSize: '16px', color: '#4D4D4D', textDecoration: 'none', fontWeight: '600' }}>215-948-9902</a>
                   </div>
                 </address>
               </div>
@@ -1183,7 +1199,7 @@ export default function HomePage() {
                 allowFullScreen loading="lazy" referrerPolicy="no-referrer-when-downgrade"
               />
               <div id="location-map-pin" className="location-map-pin" style={{ position: 'absolute', bottom: '20px', left: '20px', background: 'rgba(255,255,255,0.95)', backdropFilter: 'blur(12px)', borderRadius: '10px', padding: '10px 16px', border: '1px solid #E3BF2240', pointerEvents: 'none' }} aria-hidden="true">
-                <p className="location-map-pin-name bebas" style={{ fontSize: '14px', color: '#1A1A1A', letterSpacing: '-0.5px' }}>Eggs Ok</p>
+                <p className="location-map-pin-name bebas" style={{ fontSize: '14px', color: '#4D4D4D', letterSpacing: '-0.5px' }}>Eggs Ok</p>
                 <p className="location-map-pin-address" style={{ fontSize: '12px', color: '#888888' }}>3517 Lancaster Ave</p>
               </div>
             </div>
@@ -1197,9 +1213,9 @@ export default function HomePage() {
       <section id="delivery" className="delivery-hero section-delivery" aria-labelledby="delivery-heading">
         <div className="delivery-overlay" />
         <div className="delivery-content">
-          <span className="delivery-small-text">Order Online</span>
+        
           <h2 id="delivery-heading" className="delivery-heading">
-            Get It Delivered <br />
+            Get It Delivered 
             Straight to Your Door
           </h2>
           <p className="delivery-body">
@@ -1225,16 +1241,16 @@ export default function HomePage() {
                   <Image src="/logo.webp" alt="Eggs Ok" width={100} height={70} style={{ objectFit: 'contain' }} />
                 </div>
               </div>
-              <p className="footer-brand-tagline" style={{ fontSize: '16px', color: '#1A1A1A', lineHeight: 1.75, maxWidth: '280px', marginBottom: '22px' }}>
+              <p className="footer-brand-tagline" style={{ fontSize: '16px', color: '#4D4D4D', lineHeight: 1.75, maxWidth: '280px', marginBottom: '22px' }}>
                 Fresh breakfast and lunch in West Philadelphia. Made to order, every time.
               </p>
               <address id="footer-address" className="footer-address" style={{ fontStyle: 'normal' }}>
-                <p className="footer-address-line" style={{ fontSize: '16px', color: '#1A1A1A', display: 'flex', alignItems: 'center', gap: '7px', marginBottom: '8px' }}>
+                <p className="footer-address-line" style={{ fontSize: '16px', color: '#4D4D4D', display: 'flex', alignItems: 'center', gap: '7px', marginBottom: '8px' }}>
                   <MapPin size={13} color="#000000ff"  aria-hidden="true" href='https://www.google.com/maps?q=3517+Lancaster+Ave,+Philadelphia+PA+19104'/> <a href='https://www.google.com/maps?q=3517+Lancaster+Ave,+Philadelphia+PA+19104' className="footer-address-link">3517 Lancaster Ave, Philadelphia PA 19104</a>
                 </p>
-                <p className="footer-phone-line" style={{ fontSize: '16px', color: '#1A1A1A', display: 'flex', alignItems: 'center', gap: '7px' }}>
+                <p className="footer-phone-line" style={{ fontSize: '16px', color: '#4D4D4D', display: 'flex', alignItems: 'center', gap: '7px' }}>
                   <Smartphone size={13} color="#000000ff" aria-hidden="true" />
-                  <a href="tel:2159489902" className="footer-phone-link" style={{ color: '#1A1A1A', textDecoration: 'none' }}>215-948-9902</a>
+                  <a href="tel:2159489902" className="footer-phone-link" style={{ color: '#4D4D4D', textDecoration: 'none' }}>215-948-9902</a>
                 </p>
               </address>
             </div>
@@ -1258,7 +1274,7 @@ export default function HomePage() {
               <div id="footer-hours-list" className="footer-hours-list" style={{ display: 'flex', flexDirection: 'column', gap: '5px' }}>
                 {HOURS.map((row, i) => (
                   <div key={i} className={`footer-hours-row footer-hours-${row.d.toLowerCase()}`} style={{ display: 'flex', gap: '14px' }}>
-                    <span className="footer-hours-day" style={{ fontSize: '16px', color: '#1A1A1A', fontWeight: '600', minWidth: '96px' }}>{row.d}</span>
+                    <span className="footer-hours-day" style={{ fontSize: '16px', color: '#4D4D4D', fontWeight: '600', minWidth: '96px' }}>{row.d}</span>
                     <span className="footer-hours-time" style={{ fontSize: '16px', color: '#666666' }}>{row.h}</span>
                   </div>
                 ))}
@@ -1301,7 +1317,7 @@ export default function HomePage() {
                     {(['pickup', 'delivery'] as const).filter(type => type === 'pickup' ? isPickupEnabled : isDeliveryEnabled).map(type => (
                       <div key={type} className={`home-modal-price-card ${orderType === type ? 'active' : ''}`} onClick={() => setOrderType(type)}>
                         <p style={{ fontSize: '12px', color: '#777777', fontWeight: '600', textTransform: 'uppercase', marginBottom: '4px' }}>{type}</p>
-                        <p style={{ fontSize: '18px', fontWeight: '900', color: '#1A1A1A' }}>
+                        <p style={{ fontSize: '18px', fontWeight: '900', color: '#4D4D4D' }}>
                           ${(Number(type === 'pickup' ? fullMenuItem.pickupPrice : fullMenuItem.deliveryPrice) || 0).toFixed(2)}
                         </p>
                       </div>
@@ -1325,9 +1341,9 @@ export default function HomePage() {
                               <div style={{ width: '20px', height: '20px', borderRadius: group.maxSelections === 1 ? '50%' : '4px', border: isSel ? '2px solid #E3BF22' : '1px solid #D0D0D0', background: isSel ? '#E3BF22' : 'transparent', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                                 {isSel && <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#E3BF22" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>}
                               </div>
-                              <span style={{ fontSize: '16px', color: '#1A1A1A' }}>{opt.name}</span>
+                              <span style={{ fontSize: '16px', color: '#4D4D4D' }}>{opt.name}</span>
                             </div>
-                            <span style={{ fontSize: '13px', color: Number(opt.price) > 0 ? '#1A1A1A' : '#AAAAAA' }}>
+                            <span style={{ fontSize: '13px', color: Number(opt.price) > 0 ? '#4D4D4D' : '#AAAAAA' }}>
                               {Number(opt.price) > 0 ? `+$${Number(opt.price).toFixed(2)}` : 'Free'}
                             </span>
                           </div>
@@ -1343,7 +1359,7 @@ export default function HomePage() {
                       placeholder="Add a note (extra sauce, no onions, etc.)"
                       value={favInstructions}
                       onChange={e => setFavInstructions(e.target.value)}
-                      style={{ width: '100%', padding: '10px 14px', background: '#F8F9FA', border: '1px solid #D0D0D0', borderRadius: '10px', color: '#1A1A1A', fontSize: '13px', resize: 'none', height: '60px', outline: 'none', fontFamily: 'inherit' }}
+                      style={{ width: '100%', padding: '10px 14px', background: '#F8F9FA', border: '1px solid #D0D0D0', borderRadius: '10px', color: '#4D4D4D', fontSize: '13px', resize: 'none', height: '60px', outline: 'none', fontFamily: 'inherit' }}
                     />
                   </div>
 

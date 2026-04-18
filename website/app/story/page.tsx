@@ -38,7 +38,7 @@ export default function StoryPage() {
         .btn-yellow {
           display: inline-flex; align-items: center; gap: 8px;
           padding: 14px 28px; background: var(--y); color: #000;
-          border-radius: 10px; font-size: 16px; font-weight: 700;
+          border-radius: 10px; font-size: 16px; font-weight: 500;
           text-decoration: none; border: 2px solid transparent; cursor: pointer;
           transition: all 0.3s ease;
           font-family: var(--font-body);
@@ -201,12 +201,12 @@ export default function StoryPage() {
           align-items: center; flex-wrap: wrap; gap: 12px;
         }
         .footer-link {
-          display: block; font-size: 16px; color: #1A1A1A;
+          display: block; font-size: 16px; color: #4D4D4D;;
          text-decoration: none;
           transition: color 0.15s, padding-left 0.15s;
-          padding: 4px 12px;
+          padding: 4px 0px;
         }
-        .footer-link:hover { color: #555555; padding-left: 16px; }
+        .footer-link:hover { color: #4D4D4D; text-decoration: underline; }
 
         /* ═══ RESPONSIVE ═══ */
         @media (max-width: 1024px) {
@@ -250,7 +250,6 @@ export default function StoryPage() {
         <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: '1px', background: '#EBEBEB' }} aria-hidden="true" />
 
         <div className="container hero-container" style={{ textAlign: 'center', position: 'relative' }}>
-          <span id="hero-label" className="sec-label" style={{ justifyContent: 'center', display: 'block' }}>Our Story</span>
           <h1 id="hero-title" className="bebas" style={{ fontSize: '28px', color: '#1A1A1A', lineHeight: '1.2', marginBottom: '24px' }}>
             Made With Purpose
           </h1>
@@ -341,7 +340,7 @@ export default function StoryPage() {
                   width={480} height={360}
                   style={{ objectFit: 'cover', borderRadius: '16px', display: 'block', width: '100%', height: 'auto', aspectRatio: '4/3' }}
                 />
-                <div id="food-badge" className="img-float-badge-top">MADE FRESH DAILY</div>
+                
               </div>
             </div>
 
@@ -457,7 +456,7 @@ export default function StoryPage() {
                   { day: 'Sunday',     hours: '9:00 AM – 9:00 PM'  },
                 ].map((h, i) => (
                   <div key={i} className={`footer-hours-row footer-hours-${h.day.toLowerCase()}`} style={{ display: 'flex', gap: '14px' }}>
-                    <span className="footer-hours-day" style={{ fontSize: '14px', color: '#1A1A1A', fontWeight: '600', minWidth: '96px' }}>{h.day}</span>
+                    <span className="footer-hours-day" style={{ fontSize: '14px', color: '#4D4D4D;', fontWeight: '500', minWidth: '96px' }}>{h.day}</span>
                     <span className="footer-hours-time" style={{ fontSize: '14px', color: '#666666' }}>{h.hours}</span>
                   </div>
                 ))}
