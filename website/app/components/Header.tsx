@@ -80,7 +80,7 @@ const css = `
       <style>{css}</style>
       <header className="header-wrap" style={{
         position: 'fixed', top: 0, left: 0, right: 0, zIndex: 100,
-        background: scrolled ? 'rgba(255,255,255,0.98)' : 'transparent',
+        background: '#ffffff',
         backdropFilter: scrolled ? 'blur(12px)' : 'none',
         borderBottom: scrolled ? '1px solid #E5E5E5' : 'none',
         transition: 'all 0.3s ease',
