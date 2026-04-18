@@ -8,7 +8,7 @@
   <!--[if mso]><noscript><xml><o:OfficeDocumentSettings><o:PixelsPerInch>96</o:PixelsPerInch></o:OfficeDocumentSettings></xml></noscript><![endif]-->
   <style type="text/css">
     /* Google Font Import */
-    @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Playfair+Display:wght@600;700;800&display=swap');
 
     /* Reset */
     body, table, td, a { -webkit-text-size-adjust:100%; -ms-text-size-adjust:100%; }
@@ -17,7 +17,7 @@
 
     /* Mobile Responsive */
     @media only screen and (max-width: 600px) {
-      .email-wrapper { padding:16px 8px 30px !important; }
+      .email-wrapper { padding:16px 8px 30px !important; background:#F8F9FA !important; }
       .email-container { width:100% !important; max-width:100% !important; border-radius:16px !important; }
 
       /* Header */
@@ -29,13 +29,13 @@
       .hero-inner { padding:22px 16px 20px !important; }
       .hero-icon { width:50px !important; height:50px !important; }
       .hero-title { font-size:22px !important; }
-      .hero-subtitle { font-size:12px !important; }
+      .hero-subtitle { font-size:13px !important; }
 
       /* Greeting */
       .greeting-outer { padding:18px 14px 0 !important; }
       .greeting-inner { padding:16px 14px !important; }
       .greeting-name { font-size:18px !important; }
-      .greeting-msg { font-size:12px !important; }
+      .greeting-msg { font-size:14px !important; }
 
       /* Status Tracker */
       .tracker-cell { padding:14px 8px !important; }
@@ -50,8 +50,8 @@
 
       /* CTA Button */
       .cta-cell { padding:14px 20px 0 !important; }
-      .cta-btn { padding:12px 30px !important; }
-      .cta-text { font-size:9px !important; }
+      .cta-btn { padding:12px 28px !important; }
+      .cta-text { font-size:14px !important; }
 
       /* Driver info */
       .driver-outer { padding:12px 14px 0 !important; }
@@ -61,88 +61,122 @@
 
       /* Order Summary */
       .summary-outer { padding:12px 14px 0 !important; }
-      .summary-badge { width:70% !important; }
+      .summary-badge { width:85% !important; }
       .summary-badge-title { font-size:17px !important; }
-      .summary-badge-sub { font-size:10px !important; }
+      .summary-badge-sub { font-size:11px !important; }
       .items-cell { padding:12px 12px 0 !important; }
       .totals-cell { padding:6px 12px 14px !important; }
-      .totals-table { width:55% !important; }
+      .totals-table { width:65% !important; }
 
       /* Bottom Cards */
       .bottom-cards-cell { padding:10px 12px 16px !important; }
       .card-left { display:block !important; width:100% !important; padding:0 0 8px 0 !important; }
       .card-right { display:block !important; width:100% !important; padding:0 !important; }
-      .card-inner { height:auto !important; min-height:auto !important; padding:12px !important; }
+      .card-inner { height:auto !important; min-height:auto !important; padding:14px !important; }
       .card-title { font-size:12px !important; }
-      .card-data { font-size:10px !important; }
+      .card-data { font-size:11px !important; }
 
       /* Concern */
       .concern-cell { padding:22px 16px 18px !important; }
-      .concern-title { font-size:20px !important; }
-      .concern-subtitle { font-size:12px !important; }
+      .concern-title { font-size:22px !important; }
+      .concern-subtitle { font-size:13px !important; }
       .concern-buttons { width:100% !important; max-width:100% !important; }
       .concern-btn-left { padding-right:4px !important; }
       .concern-btn-right { padding-left:4px !important; }
-      .concern-btn-label { font-size:12px !important; }
-      .concern-btn-info { font-size:9px !important; }
+      .concern-btn-label { font-size:13px !important; }
+      .concern-btn-info { font-size:10px !important; }
       .concern-btn-icon { width:24px !important; height:24px !important; }
 
       /* Footer */
-      .footer-cell { padding:10px 12px !important; }
-      .footer-info { font-size:9px !important; line-height:16px !important; }
-      .footer-hours { font-size:10px !important; }
-      .footer-social-text { font-size:9px !important; padding-right:6px !important; }
-      .footer-social-icon { width:18px !important; height:18px !important; }
-      .footer-copyright { font-size:10px !important; }
+      .footer-cell { padding:14px 14px !important; }
+      .footer-info { font-size:11px !important; line-height:18px !important; }
+      .footer-hours { font-size:11px !important; }
+      .footer-social-text { font-size:11px !important; padding-right:6px !important; }
+      .footer-social-icon { width:20px !important; height:20px !important; }
+      .footer-copyright { font-size:11px !important; }
     }
 
     /* Extra small screens */
     @media only screen and (max-width: 400px) {
       .email-wrapper { padding:10px 4px 20px !important; }
-      .hero-title { font-size:19px !important; }
-      .hero-subtitle { font-size:11px !important; }
+      .hero-title { font-size:20px !important; }
+      .hero-subtitle { font-size:12px !important; }
       .greeting-name { font-size:16px !important; }
       .step-box { width:42px !important; height:52px !important; }
       .step-icon { width:22px !important; height:22px !important; }
       .step-label { font-size:7px !important; }
       .arrow-cell { font-size:10px !important; }
-      .concern-title { font-size:18px !important; }
-      .summary-badge { width:80% !important; }
+      .concern-title { font-size:20px !important; }
+      .summary-badge { width:92% !important; }
       .summary-badge-title { font-size:15px !important; }
-      .totals-table { width:65% !important; }
-      .footer-info { font-size:8px !important; }
+      .totals-table { width:75% !important; }
+      .footer-info { font-size:10px !important; }
     }
   </style>
 </head>
-<body style="margin:0;padding:30px 16px 50px;font-family:'Nunito',Arial,Helvetica,sans-serif;background-image:url('https://eggsokpa.com/webicons/bagroundimage.webp');background-size:cover;background-position:center;background-repeat:no-repeat;background-color:#111111;">
+<body style="margin:0;padding:30px 16px 50px;font-family:'Geist','Inter','Helvetica Neue',Helvetica,Arial,sans-serif;background-color:#F8F9FA;color:#4D4D4D;">
 
-<table width="100%" cellpadding="0" cellspacing="0" border="0" role="presentation">
-<tr><td align="center" class="email-wrapper" style="padding:30px 16px 50px;">
+<table width="100%" cellpadding="0" cellspacing="0" border="0" role="presentation" style="background-color:#F8F9FA;">
+<tr><td align="center" class="email-wrapper" style="padding:30px 16px 50px;background-color:#F8F9FA;">
 
-<table width="560" cellpadding="0" cellspacing="0" border="0" class="email-container" style="max-width:560px;width:100%;background:#111111;border-radius:22px;overflow:hidden;box-shadow:0 12px 48px rgba(0,0,0,0.45);">
+<table width="600" cellpadding="0" cellspacing="0" border="0" class="email-container" style="max-width:600px;width:100%;background:#FFFFFF;border:1px solid #E5E5E5;border-radius:16px;overflow:hidden;box-shadow:0 4px 20px rgba(13,13,13,0.06);">
+
+  <!-- Yellow accent strip -->
+  <tr><td style="height:5px;background:#E3BF22;font-size:0;line-height:0;">&nbsp;</td></tr>
 
   <!-- ══════ HEADER ══════ -->
-  <tr><td class="header-cell" style="background:#111111;padding:32px 24px 20px;text-align:center;border-bottom:3px solid #222;">
+  <tr><td class="header-cell" style="background:#FFFFFF;padding:32px 24px 22px;text-align:center;border-bottom:1px solid #E5E5E5;">
     <img src="https://eggsokpa.com/webicons/logo.webp" class="header-logo" width="180" height="72" alt="Eggs Ok" style="display:block;margin:0 auto;border:0;">
   </td></tr>
 
   <!-- ══════ HERO ══════ -->
-  <tr><td class="hero-outer" style="padding:20px 20px 4px;">
-    <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#1a1a1a;border:2px solid #dfdfdf;border-radius:14px;">
-      <tr><td class="hero-inner" style="padding:28px 20px 24px;text-align:center;">
-        <span style="display:block;margin-bottom:12px;"><img src="<%= heroIcon %>" class="hero-icon" style="width:60px;height:60px;" alt="Status" /></span>
-        <h1 class="hero-title" style="margin:0 0 6px;font-family:'Nunito',Arial,Helvetica,sans-serif;font-size:26px;font-weight:900;color:#ffffff;line-height:1.2;"><%= heroTitle %></h1>
-        <p class="hero-subtitle" style="margin:0;font-family:'Nunito',Arial,Helvetica,sans-serif;font-size:13px;color:#ffffff;font-weight:600;letter-spacing:0.3px;"><%= heroSubtitle %></p>
+  <tr><td class="hero-outer" style="padding:24px 24px 4px;background:#FFFFFF;">
+    <%
+      var heroBg = '#FFFBEB';
+      var heroBorder = '#E3BF22';
+      var heroBadgeBg = '#E3BF22';
+      var heroBadgeText = '#0D0D0D';
+      if (typeof isCancelled !== 'undefined' && isCancelled) {
+        heroBg = '#FEF2F2';
+        heroBorder = '#FC0301';
+        heroBadgeBg = '#FC0301';
+        heroBadgeText = '#FFFFFF';
+      } else if (typeof activeStep !== 'undefined') {
+        if (activeStep >= 5) { // delivered / picked_up
+          heroBg = '#F0FDF4';
+          heroBorder = '#22C55E';
+          heroBadgeBg = '#22C55E';
+          heroBadgeText = '#FFFFFF';
+        } else if (activeStep >= 3) { // picked up / on the way
+          heroBg = '#EFF6FF';
+          heroBorder = '#3B82F6';
+          heroBadgeBg = '#3B82F6';
+          heroBadgeText = '#FFFFFF';
+        } else if (activeStep >= 2) { // preparing / ready
+          heroBg = '#EFF6FF';
+          heroBorder = '#3B82F6';
+          heroBadgeBg = '#3B82F6';
+          heroBadgeText = '#FFFFFF';
+        }
+      }
+    %>
+    <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:<%= heroBg %>;border:1px solid <%= heroBorder %>;border-radius:14px;">
+      <tr><td class="hero-inner" style="padding:30px 22px 26px;text-align:center;">
+        <span style="display:inline-block;margin-bottom:14px;"><img src="<%= heroIcon %>" class="hero-icon" style="width:60px;height:60px;" alt="Status" /></span>
+        <div style="display:inline-block;padding:6px 14px;background:<%= heroBadgeBg %>;color:<%= heroBadgeText %>;border-radius:999px;font-family:'Geist','Inter',Arial,sans-serif;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.8px;margin-bottom:12px;">Order Status</div>
+        <h1 class="hero-title" style="margin:0 0 8px;font-family:'Playfair Display',Georgia,'Times New Roman',serif;font-size:28px;font-weight:700;color:#0D0D0D;line-height:1.2;"><%= heroTitle %></h1>
+        <p class="hero-subtitle" style="margin:0;font-family:'Geist','Inter',Arial,sans-serif;font-size:15px;color:#4D4D4D;font-weight:500;line-height:1.6;"><%= heroSubtitle %></p>
       </td></tr>
     </table>
   </td></tr>
 
   <!-- ══════ GREETING ══════ -->
-  <tr><td class="greeting-outer" style="padding:24px 28px 0;">
+  <tr><td class="greeting-outer" style="padding:24px 28px 0;background:#FFFFFF;">
     <table width="100%" cellpadding="0" cellspacing="0" border="0">
-      <tr><td class="greeting-inner" style="padding:20px 24px;">
-        <p class="greeting-name" style="margin:0 0 8px;font-family:'Nunito',Arial,Helvetica,sans-serif;font-size:20px;font-weight:900;color:#F5C200;">Hey <%= customerName %>!</p>
-        <p class="greeting-msg" style="margin:0;font-family:'Nunito',Arial,Helvetica,sans-serif;font-size:13px;color:#ffffff;font-weight:600;line-height:1.6;"><%= greetingMessage %></p>
+      <tr><td class="greeting-inner" style="padding:16px 0;">
+        <p style="margin:0 0 6px;font-family:'Geist','Inter',Arial,sans-serif;font-size:12px;font-weight:700;color:#777777;text-transform:uppercase;letter-spacing:0.8px;">Hello</p>
+        <p class="greeting-name" style="margin:0 0 10px;font-family:'Playfair Display',Georgia,serif;font-size:22px;font-weight:700;color:#0D0D0D;">Hey <%= customerName %>!</p>
+        <p class="greeting-msg" style="margin:0;font-family:'Geist','Inter',Arial,sans-serif;font-size:16px;color:#4D4D4D;font-weight:500;line-height:1.6;"><%= greetingMessage %></p>
       </td></tr>
     </table>
   </td></tr>
@@ -150,102 +184,107 @@
 <% if (!isCancelled) { %>
   <!-- ══════ ORDER STATUS TRACKER ══════ -->
   <tr>
-    <td class="tracker-cell" style="padding:20px;background:#000000;">
-      <table width="100%" cellpadding="0" cellspacing="0" border="0">
-        <tr>
-          <!-- STEP 1: Order Confirmed -->
-          <td align="center" width="18%">
-            <table class="step-box" width="60" height="70" cellpadding="0" cellspacing="0" style="background:<%= activeStep >= 1 ? '#F5C200' : '#F5E6A0' %>;border-radius:10px;">
-              <tr>
-                <td align="center" valign="middle" style="padding:8px 4px;">
-                  <img src="https://eggsokpa.com/webicons/OrderconfirmationBlack.webp" class="step-icon" width="35" height="35" alt="Confirmed" style="display:block;margin:0 auto 4px;">
-                  <div class="step-label" style="font-family:'Nunito',Arial,Helvetica,sans-serif;font-size:10px;color:#000000;font-weight:bold;line-height:1.2;text-align:center;">
-                    Order<br>Confirmed
-                  </div>
-                </td>
-              </tr>
-            </table>
-          </td>
+    <td class="tracker-cell" style="padding:20px 24px;background:#FFFFFF;">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#F8F9FA;border:1px solid #E5E5E5;border-radius:12px;">
+        <tr><td style="padding:18px 12px;">
+          <p style="margin:0 0 14px;font-family:'Geist','Inter',Arial,sans-serif;font-size:12px;font-weight:700;color:#777777;text-transform:uppercase;letter-spacing:0.8px;text-align:center;">Order Progress</p>
+          <table width="100%" cellpadding="0" cellspacing="0" border="0">
+            <tr>
+              <!-- STEP 1: Order Confirmed -->
+              <td align="center" width="18%">
+                <table class="step-box" width="60" height="70" cellpadding="0" cellspacing="0" style="background:<%= activeStep >= 1 ? '#E3BF22' : '#FFFFFF' %>;border:1px solid <%= activeStep >= 1 ? '#E3BF22' : '#E5E5E5' %>;border-radius:10px;">
+                  <tr>
+                    <td align="center" valign="middle" style="padding:8px 4px;">
+                      <img src="https://eggsokpa.com/webicons/OrderconfirmationBlack.webp" class="step-icon" width="32" height="32" alt="Confirmed" style="display:block;margin:0 auto 4px;<%= activeStep >= 1 ? '' : 'opacity:0.55;' %>">
+                      <div class="step-label" style="font-family:'Geist','Inter',Arial,sans-serif;font-size:9px;color:<%= activeStep >= 1 ? '#0D0D0D' : '#777777' %>;font-weight:700;line-height:1.2;text-align:center;text-transform:uppercase;letter-spacing:0.3px;">
+                        Order<br>Confirmed
+                      </div>
+                    </td>
+                  </tr>
+                </table>
+              </td>
 
-          <!-- ARROW -->
-          <td align="center" width="1%" class="arrow-cell" style="color:#F5C200;font-size:18px;font-family:Arial,sans-serif;">&raquo;</td>
+              <!-- ARROW -->
+              <td align="center" width="1%" class="arrow-cell" style="color:<%= activeStep >= 2 ? '#E3BF22' : '#E5E5E5' %>;font-size:18px;font-family:Arial,sans-serif;font-weight:700;">&raquo;</td>
 
-          <!-- STEP 2: Order Prepared -->
-          <td align="center" width="18%">
-            <table class="step-box" width="60" height="70" cellpadding="0" cellspacing="0" style="background:<%= activeStep >= 2 ? '#F5C200' : '#F5E6A0' %>;border-radius:10px;">
-              <tr>
-                <td align="center" valign="middle" style="padding:8px 4px;">
-                  <img src="https://eggsokpa.com/webicons/orderpreparedblack.webp" class="step-icon" width="35" height="35" alt="Prepared" style="display:block;margin:0 auto 4px;">
-                  <div class="step-label" style="font-family:'Nunito',Arial,Helvetica,sans-serif;font-size:10px;color:#000000;font-weight:bold;line-height:1.2;text-align:center;">
-                    Order<br>Prepared
-                  </div>
-                </td>
-              </tr>
-            </table>
-          </td>
+              <!-- STEP 2: Order Prepared -->
+              <td align="center" width="18%">
+                <table class="step-box" width="60" height="70" cellpadding="0" cellspacing="0" style="background:<%= activeStep >= 2 ? '#E3BF22' : '#FFFFFF' %>;border:1px solid <%= activeStep >= 2 ? '#E3BF22' : '#E5E5E5' %>;border-radius:10px;">
+                  <tr>
+                    <td align="center" valign="middle" style="padding:8px 4px;">
+                      <img src="https://eggsokpa.com/webicons/orderpreparedblack.webp" class="step-icon" width="32" height="32" alt="Prepared" style="display:block;margin:0 auto 4px;<%= activeStep >= 2 ? '' : 'opacity:0.55;' %>">
+                      <div class="step-label" style="font-family:'Geist','Inter',Arial,sans-serif;font-size:9px;color:<%= activeStep >= 2 ? '#0D0D0D' : '#777777' %>;font-weight:700;line-height:1.2;text-align:center;text-transform:uppercase;letter-spacing:0.3px;">
+                        Order<br>Prepared
+                      </div>
+                    </td>
+                  </tr>
+                </table>
+              </td>
 
-          <!-- ARROW -->
-          <td align="center" width="2%" class="arrow-cell" style="color:#F5C200;font-size:16px;font-family:Arial,sans-serif;">&raquo;</td>
+              <!-- ARROW -->
+              <td align="center" width="2%" class="arrow-cell" style="color:<%= activeStep >= 3 ? '#E3BF22' : '#E5E5E5' %>;font-size:16px;font-family:Arial,sans-serif;font-weight:700;">&raquo;</td>
 
-          <!-- STEP 3: Rider Picked Up -->
-          <td align="center" width="18%">
-            <table class="step-box" width="60" height="70" cellpadding="0" cellspacing="0" style="background:<%= activeStep >= 3 ? '#F5C200' : '#F5E6A0' %>;border-radius:10px;">
-              <tr>
-                <td align="center" valign="middle" style="padding:8px 4px;">
-                  <img src="https://eggsokpa.com/webicons/Readyforpickupblack.webp" class="step-icon" width="35" height="35" alt="Picked Up" style="display:block;margin:0 auto 4px;">
-                  <div class="step-label" style="font-family:'Nunito',Arial,Helvetica,sans-serif;font-size:10px;color:#000000;font-weight:bold;line-height:1.2;text-align:center;">
-                    Rider<br>Picked Up
-                  </div>
-                </td>
-              </tr>
-            </table>
-          </td>
+              <!-- STEP 3: Rider Picked Up -->
+              <td align="center" width="18%">
+                <table class="step-box" width="60" height="70" cellpadding="0" cellspacing="0" style="background:<%= activeStep >= 3 ? '#E3BF22' : '#FFFFFF' %>;border:1px solid <%= activeStep >= 3 ? '#E3BF22' : '#E5E5E5' %>;border-radius:10px;">
+                  <tr>
+                    <td align="center" valign="middle" style="padding:8px 4px;">
+                      <img src="https://eggsokpa.com/webicons/Readyforpickupblack.webp" class="step-icon" width="32" height="32" alt="Picked Up" style="display:block;margin:0 auto 4px;<%= activeStep >= 3 ? '' : 'opacity:0.55;' %>">
+                      <div class="step-label" style="font-family:'Geist','Inter',Arial,sans-serif;font-size:9px;color:<%= activeStep >= 3 ? '#0D0D0D' : '#777777' %>;font-weight:700;line-height:1.2;text-align:center;text-transform:uppercase;letter-spacing:0.3px;">
+                        Rider<br>Picked Up
+                      </div>
+                    </td>
+                  </tr>
+                </table>
+              </td>
 
-          <!-- ARROW -->
-          <td align="center" width="2%" class="arrow-cell" style="color:#F5C200;font-size:16px;font-family:Arial,sans-serif;">&raquo;</td>
+              <!-- ARROW -->
+              <td align="center" width="2%" class="arrow-cell" style="color:<%= activeStep >= 4 ? '#E3BF22' : '#E5E5E5' %>;font-size:16px;font-family:Arial,sans-serif;font-weight:700;">&raquo;</td>
 
-          <!-- STEP 4: On The Way -->
-          <td align="center" width="18%">
-            <table class="step-box" width="60" height="70" cellpadding="0" cellspacing="0" style="background:<%= activeStep >= 4 ? '#F5C200' : '#F5E6A0' %>;border-radius:10px;">
-              <tr>
-                <td align="center" valign="middle" style="padding:8px 4px;">
-                  <img src="https://eggsokpa.com/webicons/onthewayblack.webp" class="step-icon" width="35" height="35" alt="On The Way" style="display:block;margin:0 auto 4px;">
-                  <div class="step-label" style="font-family:'Nunito',Arial,Helvetica,sans-serif;font-size:10px;color:#000000;font-weight:bold;line-height:1.2;text-align:center;">
-                    On The<br>Way
-                  </div>
-                </td>
-              </tr>
-            </table>
-          </td>
+              <!-- STEP 4: On The Way -->
+              <td align="center" width="18%">
+                <table class="step-box" width="60" height="70" cellpadding="0" cellspacing="0" style="background:<%= activeStep >= 4 ? '#E3BF22' : '#FFFFFF' %>;border:1px solid <%= activeStep >= 4 ? '#E3BF22' : '#E5E5E5' %>;border-radius:10px;">
+                  <tr>
+                    <td align="center" valign="middle" style="padding:8px 4px;">
+                      <img src="https://eggsokpa.com/webicons/onthewayblack.webp" class="step-icon" width="32" height="32" alt="On The Way" style="display:block;margin:0 auto 4px;<%= activeStep >= 4 ? '' : 'opacity:0.55;' %>">
+                      <div class="step-label" style="font-family:'Geist','Inter',Arial,sans-serif;font-size:9px;color:<%= activeStep >= 4 ? '#0D0D0D' : '#777777' %>;font-weight:700;line-height:1.2;text-align:center;text-transform:uppercase;letter-spacing:0.3px;">
+                        On The<br>Way
+                      </div>
+                    </td>
+                  </tr>
+                </table>
+              </td>
 
-          <!-- ARROW -->
-          <td align="center" width="2%" class="arrow-cell" style="color:#F5C200;font-size:16px;font-family:Arial,sans-serif;">&raquo;</td>
+              <!-- ARROW -->
+              <td align="center" width="2%" class="arrow-cell" style="color:<%= activeStep >= 5 ? '#22C55E' : '#E5E5E5' %>;font-size:16px;font-family:Arial,sans-serif;font-weight:700;">&raquo;</td>
 
-          <!-- STEP 5: Order Delivered -->
-          <td align="center" width="18%">
-            <table class="step-box" width="60" height="70" cellpadding="0" cellspacing="0" style="background:<%= activeStep >= 5 ? '#F5C200' : '#F5E6A0' %>;border-radius:10px;">
-              <tr>
-                <td align="center" valign="middle" style="padding:8px 4px;">
-                  <img src="https://eggsokpa.com/webicons/orderdeliveredyellow.webp" class="step-icon" width="35" height="35" alt="Delivered" style="display:block;margin:0 auto 4px;">
-                  <div class="step-label" style="font-family:'Nunito',Arial,Helvetica,sans-serif;font-size:10px;color:#000000;font-weight:bold;line-height:1.2;text-align:center;">
-                    Order<br>Delivered
-                  </div>
-                </td>
-              </tr>
-            </table>
-          </td>
-        </tr>
+              <!-- STEP 5: Order Delivered -->
+              <td align="center" width="18%">
+                <table class="step-box" width="60" height="70" cellpadding="0" cellspacing="0" style="background:<%= activeStep >= 5 ? '#22C55E' : '#FFFFFF' %>;border:1px solid <%= activeStep >= 5 ? '#22C55E' : '#E5E5E5' %>;border-radius:10px;">
+                  <tr>
+                    <td align="center" valign="middle" style="padding:8px 4px;">
+                      <img src="https://eggsokpa.com/webicons/orderdeliveredyellow.webp" class="step-icon" width="32" height="32" alt="Delivered" style="display:block;margin:0 auto 4px;<%= activeStep >= 5 ? '' : 'opacity:0.55;' %>">
+                      <div class="step-label" style="font-family:'Geist','Inter',Arial,sans-serif;font-size:9px;color:<%= activeStep >= 5 ? '#FFFFFF' : '#777777' %>;font-weight:700;line-height:1.2;text-align:center;text-transform:uppercase;letter-spacing:0.3px;">
+                        Order<br>Delivered
+                      </div>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+          </table>
+        </td></tr>
       </table>
     </td>
   </tr>
 <% } else { %>
   <!-- ══════ CANCELLED STATUS ══════ -->
   <tr>
-    <td class="cancelled-outer" style="padding:20px;background:#000000;">
-      <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#1a1a1a;border:2px solid #e63b2e;border-radius:14px;">
-        <tr><td style="padding:20px;text-align:center;">
-          <p style="margin:0;font-family:'Nunito',Arial,Helvetica,sans-serif;font-size:16px;font-weight:900;color:#e63b2e;letter-spacing:0.5px;">ORDER CANCELLED</p>
-          <p style="margin:8px 0 0;font-family:'Nunito',Arial,Helvetica,sans-serif;font-size:12px;color:#ffffff;font-weight:600;">This order has been cancelled. If you have questions, please contact us.</p>
+    <td class="cancelled-outer" style="padding:20px 24px;background:#FFFFFF;">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#FEF2F2;border:1px solid #FC0301;border-radius:12px;">
+        <tr><td style="padding:22px 20px;text-align:center;">
+          <div style="display:inline-block;padding:6px 14px;background:#FC0301;color:#FFFFFF;border-radius:999px;font-family:'Geist','Inter',Arial,sans-serif;font-size:14px;font-weight:700;text-transform:uppercase;letter-spacing:0.8px;margin-bottom:8px;">Order Cancelled</div>
+          <p style="margin:6px 0 0;font-family:'Geist','Inter',Arial,sans-serif;font-size:14px;color:#4D4D4D;font-weight:500;line-height:1.6;">This order has been cancelled. If you have any questions, please contact us.</p>
         </td></tr>
       </table>
     </td>
@@ -253,26 +292,26 @@
 <% } %>
 
   <!-- ══════ CTA BUTTON ══════ -->
-  <tr><td class="cta-cell" style="padding:16px 40px 0;text-align:center;">
+  <tr><td class="cta-cell" style="padding:20px 40px 4px;text-align:center;background:#FFFFFF;">
     <table cellpadding="0" cellspacing="0" border="0" style="margin:0 auto;">
-      <tr><td class="cta-btn" style="background:#e63b2e;border-radius:50px;padding:14px 40px;text-align:center;">
-        <a href="<%= ctaUrl %>" class="cta-text" style="font-family:'Nunito',Arial,Helvetica,sans-serif;font-size:10px;font-weight:900;color:#ffffff;text-decoration:none;letter-spacing:0.5px;text-transform:uppercase;"><%= ctaText %></a>
-        <% if (showReviewStars) { %>
-        <div style="margin-top:6px;font-size:16px;color:#F5C200;letter-spacing:2px;">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
-        <% } %>
+      <tr><td class="cta-btn" style="background:#E3BF22;border-radius:8px;padding:12px 28px;text-align:center;">
+        <a href="<%= ctaUrl %>" class="cta-text" style="font-family:'Geist','Inter',Arial,sans-serif;font-size:16px;font-weight:600;color:#0D0D0D;text-decoration:none;letter-spacing:0.2px;"><%= ctaText %> &rsaquo;</a>
       </td></tr>
+      <% if (showReviewStars) { %>
+      <tr><td style="padding-top:10px;text-align:center;font-size:18px;color:#E3BF22;letter-spacing:3px;">&#9733;&#9733;&#9733;&#9733;&#9733;</td></tr>
+      <% } %>
     </table>
   </td></tr>
 
 <% if (driverName) { %>
   <!-- ══════ DRIVER INFO ══════ -->
-  <tr><td class="driver-outer" style="padding:16px 20px 0;">
-    <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#1a1a1a;border:2px solid #F5C200;border-radius:14px;overflow:hidden;">
+  <tr><td class="driver-outer" style="padding:20px 24px 0;background:#FFFFFF;">
+    <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#EFF6FF;border:1px solid #3B82F6;border-radius:12px;overflow:hidden;">
       <tr><td style="padding:18px 20px;text-align:center;">
-        <p style="margin:0 0 6px;font-family:'Nunito',Arial,Helvetica,sans-serif;font-size:14px;font-weight:900;color:#F5C200;">Your Driver</p>
-        <p style="margin:0;font-family:'Nunito',Arial,Helvetica,sans-serif;font-size:15px;font-weight:700;color:#ffffff;"><%= driverName %></p>
+        <p style="margin:0 0 4px;font-family:'Geist','Inter',Arial,sans-serif;font-size:12px;font-weight:700;color:#777777;text-transform:uppercase;letter-spacing:0.8px;">Your Driver</p>
+        <p style="margin:0;font-family:'Playfair Display',Georgia,serif;font-size:18px;font-weight:700;color:#0D0D0D;"><%= driverName %></p>
         <% if (driverEta) { %>
-        <p style="margin:6px 0 0;font-family:'Nunito',Arial,Helvetica,sans-serif;font-size:12px;font-weight:600;color:#ffffff;">Estimated Arrival: <%= driverEta %></p>
+        <p style="margin:6px 0 0;font-family:'Geist','Inter',Arial,sans-serif;font-size:14px;font-weight:500;color:#4D4D4D;">Estimated Arrival: <strong style="color:#3B82F6;"><%= driverEta %></strong></p>
         <% } %>
       </td></tr>
     </table>
@@ -280,21 +319,21 @@
 <% } %>
 
   <!-- ══════ Divider ══════ -->
-  <tr><td class="divider-cell" style="padding:12px 20px 0;"><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="height:1px;background:linear-gradient(to right,transparent,#2e2e2e,transparent);font-size:0;line-height:0;">&nbsp;</td></tr></table></td></tr>
+  <tr><td class="divider-cell" style="padding:20px 24px 0;background:#FFFFFF;"><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="height:1px;background:#E5E5E5;font-size:0;line-height:0;">&nbsp;</td></tr></table></td></tr>
 
   <!-- ══════ ORDER SUMMARY ══════ -->
-  <tr><td class="summary-outer" style="padding:16px 20px 0;">
-    <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#1a1a1a;border:2px solid #ffffff;border-radius:14px;overflow:hidden;">
+  <tr><td class="summary-outer" style="padding:20px 24px 0;background:#FFFFFF;">
+    <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#F8F9FA;border:1px solid #E5E5E5;border-radius:14px;overflow:hidden;">
 
       <!-- Yellow badge -->
       <tr>
-        <td style="padding:14px 14px 0;" align="center">
-          <table class="summary-badge" width="50%" align="center" cellpadding="0" cellspacing="0" border="0" style="background:#F5C200;border-radius:50px;">
+        <td style="padding:18px 14px 4px;" align="center">
+          <table class="summary-badge" width="70%" align="center" cellpadding="0" cellspacing="0" border="0" style="background:#E3BF22;border-radius:999px;">
             <tr>
               <td style="padding:10px 16px 12px;text-align:center;">
-                <p class="summary-badge-title" style="margin:0;font-family:'Nunito',Arial,Helvetica,sans-serif;font-size:20px;font-weight:900;color:#111111;line-height:1;">Order Summary</p>
-                <p class="summary-badge-sub" style="margin:3px 0 0;font-family:'Nunito',Arial,Helvetica,sans-serif;font-size:11px;color:#333333;font-weight:700;">
-                  Order Confirmation Number: <%= orderNumber %>
+                <p class="summary-badge-title" style="margin:0;font-family:'Playfair Display',Georgia,serif;font-size:20px;font-weight:700;color:#0D0D0D;line-height:1.1;">Order Summary</p>
+                <p class="summary-badge-sub" style="margin:3px 0 0;font-family:'Geist','Inter',Arial,sans-serif;font-size:12px;color:#0D0D0D;font-weight:600;">
+                  Confirmation #: <%= orderNumber %>
                 </p>
               </td>
             </tr>
@@ -303,40 +342,40 @@
       </tr>
 
       <!-- Items -->
-      <tr><td class="items-cell" style="padding:16px 18px 0;">
+      <tr><td class="items-cell" style="padding:18px 20px 0;">
         <%- itemsHtml %>
       </td></tr>
 
       <!-- Totals -->
       <tr>
-        <td class="totals-cell" style="padding:8px 18px 18px;" align="right">
-          <table class="totals-table" width="40%" align="right" cellpadding="0" cellspacing="0" border="0">
+        <td class="totals-cell" style="padding:8px 20px 20px;" align="right">
+          <table class="totals-table" width="50%" align="right" cellpadding="0" cellspacing="0" border="0">
 
             <tr>
-              <td style="font-family:'Nunito',Arial,Helvetica,sans-serif;font-size:13px;color:#ffffff;font-weight:700;padding:5px 0;border-bottom:1px solid #252525;">Subtotal</td>
-              <td align="right" style="font-family:'Nunito',Arial,Helvetica,sans-serif;font-size:13px;color:#ffffff;font-weight:700;padding:5px 0;border-bottom:1px solid #252525;">$<%= subtotal %></td>
+              <td style="font-family:'Geist','Inter',Arial,sans-serif;font-size:14px;color:#4D4D4D;font-weight:500;padding:6px 0;border-bottom:1px solid #E5E5E5;">Subtotal</td>
+              <td align="right" style="font-family:'Geist','Inter',Arial,sans-serif;font-size:14px;color:#0D0D0D;font-weight:600;padding:6px 0;border-bottom:1px solid #E5E5E5;">$<%= subtotal %></td>
             </tr>
 
             <tr>
-              <td style="font-family:'Nunito',Arial,Helvetica,sans-serif;font-size:13px;color:#ffffff;font-weight:700;padding:5px 0;border-bottom:1px solid #252525;">Tax</td>
-              <td align="right" style="font-family:'Nunito',Arial,Helvetica,sans-serif;font-size:13px;color:#ffffff;font-weight:700;padding:5px 0;border-bottom:1px solid #252525;">$<%= tax %></td>
+              <td style="font-family:'Geist','Inter',Arial,sans-serif;font-size:14px;color:#4D4D4D;font-weight:500;padding:6px 0;border-bottom:1px solid #E5E5E5;">Tax</td>
+              <td align="right" style="font-family:'Geist','Inter',Arial,sans-serif;font-size:14px;color:#0D0D0D;font-weight:600;padding:6px 0;border-bottom:1px solid #E5E5E5;">$<%= tax %></td>
             </tr>
 
             <tr>
-              <td style="font-family:'Nunito',Arial,Helvetica,sans-serif;font-size:13px;color:#ffffff;font-weight:700;padding:5px 0;border-bottom:1px solid #252525;">Tip</td>
-              <td align="right" style="font-family:'Nunito',Arial,Helvetica,sans-serif;font-size:13px;color:#ffffff;font-weight:700;padding:5px 0;border-bottom:1px solid #252525;">$<%= tip %></td>
+              <td style="font-family:'Geist','Inter',Arial,sans-serif;font-size:14px;color:#4D4D4D;font-weight:500;padding:6px 0;border-bottom:1px solid #E5E5E5;">Tip</td>
+              <td align="right" style="font-family:'Geist','Inter',Arial,sans-serif;font-size:14px;color:#0D0D0D;font-weight:600;padding:6px 0;border-bottom:1px solid #E5E5E5;">$<%= tip %></td>
             </tr>
 
             <% if (orderType === 'delivery') { %>
             <tr>
-              <td style="font-family:'Nunito',Arial,Helvetica,sans-serif;font-size:13px;color:#ffffff;font-weight:700;padding:5px 0;border-bottom:2px solid #F5C200;">Delivery Fee</td>
-              <td align="right" style="font-family:'Nunito',Arial,Helvetica,sans-serif;font-size:13px;color:#ffffff;font-weight:700;padding:5px 0;border-bottom:2px solid #F5C200;">$<%= deliveryFee %></td>
+              <td style="font-family:'Geist','Inter',Arial,sans-serif;font-size:14px;color:#4D4D4D;font-weight:500;padding:6px 0;border-bottom:2px solid #E3BF22;">Delivery Fee</td>
+              <td align="right" style="font-family:'Geist','Inter',Arial,sans-serif;font-size:14px;color:#0D0D0D;font-weight:600;padding:6px 0;border-bottom:2px solid #E3BF22;">$<%= deliveryFee %></td>
             </tr>
             <% } %>
 
             <tr>
-              <td style="font-family:'Nunito',Arial,Helvetica,sans-serif;font-size:16px;font-weight:900;color:#F5C200;padding:10px 0 2px;">Total Paid</td>
-              <td align="right" style="font-family:'Nunito',Arial,Helvetica,sans-serif;font-size:18px;font-weight:900;color:#F5C200;padding:10px 0 2px;">$<%= total %></td>
+              <td style="font-family:'Playfair Display',Georgia,serif;font-size:16px;font-weight:700;color:#0D0D0D;padding:12px 0 2px;">Total Paid</td>
+              <td align="right" style="font-family:'Playfair Display',Georgia,serif;font-size:20px;font-weight:700;color:#0D0D0D;padding:12px 0 2px;">$<%= total %></td>
             </tr>
 
           </table>
@@ -349,14 +388,14 @@
           <tr>
             <!-- LEFT: Order Summary Card -->
             <td class="card-left" width="50%" valign="top" style="padding-right:6px;">
-              <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#F5C200;border:1.5px solid #2e2e2e;border-radius:10px;">
+              <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#FFFFFF;border:1px solid #E5E5E5;border-radius:10px;">
                 <tr>
                   <td class="card-inner" style="padding:14px;vertical-align:top;height:100px;">
-                    <p class="card-title" style="margin:0 0 8px;font-family:'Nunito',Arial,Helvetica,sans-serif;font-size:13px;font-weight:900;color:#000000;">Order Summary</p>
+                    <p class="card-title" style="margin:0 0 10px;font-family:'Geist','Inter',Arial,sans-serif;font-size:12px;font-weight:700;color:#777777;text-transform:uppercase;letter-spacing:0.8px;">Order Summary</p>
                     <table width="100%" cellpadding="0" cellspacing="0" border="0">
-                      <tr><td class="card-data" style="font-family:'Nunito',Arial,Helvetica,sans-serif;font-size:11px;font-weight:700;color:#000000;padding:2px 0;">Order ID:</td><td class="card-data" style="font-family:'Nunito',Arial,Helvetica,sans-serif;font-size:11px;font-weight:700;color:#000000;padding:2px 0;"><%= orderNumber %></td></tr>
-                      <tr><td class="card-data" style="font-family:'Nunito',Arial,Helvetica,sans-serif;font-size:11px;font-weight:700;color:#000000;padding:2px 0;">Item QTY:</td><td class="card-data" style="font-family:'Nunito',Arial,Helvetica,sans-serif;font-size:11px;font-weight:700;color:#000000;padding:2px 0;"><%= itemCount %></td></tr>
-                      <tr><td class="card-data" style="font-family:'Nunito',Arial,Helvetica,sans-serif;font-size:11px;font-weight:700;color:#000000;padding:2px 0;">Order Total:</td><td class="card-data" style="font-family:'Nunito',Arial,Helvetica,sans-serif;font-size:11px;font-weight:700;color:#000000;padding:2px 0;">$<%= total %></td></tr>
+                      <tr><td class="card-data" style="font-family:'Geist','Inter',Arial,sans-serif;font-size:12px;font-weight:500;color:#4D4D4D;padding:3px 0;">Order ID:</td><td class="card-data" style="font-family:'Geist','Inter',Arial,sans-serif;font-size:12px;font-weight:600;color:#0D0D0D;padding:3px 0;"><%= orderNumber %></td></tr>
+                      <tr><td class="card-data" style="font-family:'Geist','Inter',Arial,sans-serif;font-size:12px;font-weight:500;color:#4D4D4D;padding:3px 0;">Item QTY:</td><td class="card-data" style="font-family:'Geist','Inter',Arial,sans-serif;font-size:12px;font-weight:600;color:#0D0D0D;padding:3px 0;"><%= itemCount %></td></tr>
+                      <tr><td class="card-data" style="font-family:'Geist','Inter',Arial,sans-serif;font-size:12px;font-weight:500;color:#4D4D4D;padding:3px 0;">Order Total:</td><td class="card-data" style="font-family:'Geist','Inter',Arial,sans-serif;font-size:12px;font-weight:700;color:#E3BF22;padding:3px 0;">$<%= total %></td></tr>
                     </table>
                   </td>
                 </tr>
@@ -365,15 +404,15 @@
 
             <!-- RIGHT: Customer Details Card -->
             <td class="card-right" width="50%" valign="top" style="padding-left:6px;">
-              <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#F5C200;border:1.5px solid #2e2e2e;border-radius:10px;">
+              <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#FFFFFF;border:1px solid #E5E5E5;border-radius:10px;">
                 <tr>
                   <td class="card-inner" style="padding:14px;vertical-align:top;height:100px;">
-                    <p class="card-title" style="margin:0 0 8px;font-family:'Nunito',Arial,Helvetica,sans-serif;font-size:13px;font-weight:900;color:#000000;">Customer Details</p>
+                    <p class="card-title" style="margin:0 0 10px;font-family:'Geist','Inter',Arial,sans-serif;font-size:12px;font-weight:700;color:#777777;text-transform:uppercase;letter-spacing:0.8px;">Customer Details</p>
                     <table width="100%" cellpadding="0" cellspacing="0" border="0">
-                      <tr><td class="card-data" style="font-family:'Nunito',Arial,Helvetica,sans-serif;font-size:11px;font-weight:700;color:#000000;padding:2px 0;">Name:</td><td class="card-data" style="font-family:'Nunito',Arial,Helvetica,sans-serif;font-size:11px;font-weight:700;color:#000000;padding:2px 0;"><%= customerName %></td></tr>
-                      <tr><td class="card-data" style="font-family:'Nunito',Arial,Helvetica,sans-serif;font-size:11px;font-weight:700;color:#000000;padding:2px 0;">Contact:</td><td class="card-data" style="font-family:'Nunito',Arial,Helvetica,sans-serif;font-size:11px;font-weight:700;color:#000000;padding:2px 0;"><%= customerPhone %></td></tr>
+                      <tr><td class="card-data" style="font-family:'Geist','Inter',Arial,sans-serif;font-size:12px;font-weight:500;color:#4D4D4D;padding:3px 0;">Name:</td><td class="card-data" style="font-family:'Geist','Inter',Arial,sans-serif;font-size:12px;font-weight:600;color:#0D0D0D;padding:3px 0;"><%= customerName %></td></tr>
+                      <tr><td class="card-data" style="font-family:'Geist','Inter',Arial,sans-serif;font-size:12px;font-weight:500;color:#4D4D4D;padding:3px 0;">Contact:</td><td class="card-data" style="font-family:'Geist','Inter',Arial,sans-serif;font-size:12px;font-weight:600;color:#0D0D0D;padding:3px 0;"><%= customerPhone %></td></tr>
                       <% if (orderType === 'delivery' && deliveryAddress) { %>
-                      <tr><td class="card-data" style="font-family:'Nunito',Arial,Helvetica,sans-serif;font-size:11px;font-weight:700;color:#000000;padding:2px 0;">Address:</td><td class="card-data" style="font-family:'Nunito',Arial,Helvetica,sans-serif;font-size:11px;font-weight:700;color:#000000;padding:2px 0;"><%= deliveryAddress %><%= deliveryApt ? ', ' + deliveryApt : '' %></td></tr>
+                      <tr><td class="card-data" style="font-family:'Geist','Inter',Arial,sans-serif;font-size:12px;font-weight:500;color:#4D4D4D;padding:3px 0;vertical-align:top;">Address:</td><td class="card-data" style="font-family:'Geist','Inter',Arial,sans-serif;font-size:12px;font-weight:600;color:#0D0D0D;padding:3px 0;"><%= deliveryAddress %><%= deliveryApt ? ', ' + deliveryApt : '' %></td></tr>
                       <% } %>
                     </table>
                   </td>
@@ -388,29 +427,30 @@
   </td></tr>
 
   <!-- ══════ CONCERN ══════ -->
-  <tr><td class="concern-cell" style="padding:28px 24px 22px;text-align:center;border-top:3px solid #1e1e1e;">
-    <h2 class="concern-title" style="margin:0 0 6px;font-family:'Nunito',Arial,Helvetica,sans-serif;font-size:24px;font-weight:900;color:#ffffff;line-height:1.2;">Do you have any concern?</h2>
-    <p class="concern-subtitle" style="margin:0 0 20px;font-family:'Nunito',Arial,Helvetica,sans-serif;font-size:13px;color:#ffffff;font-weight:600;">Don't hesitate to contact us if you have any problems with your order.</p>
-    <table class="concern-buttons" width="340" cellpadding="0" cellspacing="0" border="0" align="center" style="max-width:340px;width:100%;">
+  <tr><td class="concern-cell" style="padding:32px 28px 26px;text-align:center;border-top:1px solid #E5E5E5;background:#FFFFFF;">
+    <p style="margin:0 0 6px;font-family:'Geist','Inter',Arial,sans-serif;font-size:12px;font-weight:700;color:#777777;text-transform:uppercase;letter-spacing:0.8px;">Support</p>
+    <h2 class="concern-title" style="margin:0 0 8px;font-family:'Playfair Display',Georgia,serif;font-size:28px;font-weight:700;color:#0D0D0D;line-height:1.2;">Do you have any concern?</h2>
+    <p class="concern-subtitle" style="margin:0 0 22px;font-family:'Geist','Inter',Arial,sans-serif;font-size:14px;color:#4D4D4D;font-weight:500;line-height:1.6;">Don't hesitate to contact us if you have any problems with your order.</p>
+    <table class="concern-buttons" width="360" cellpadding="0" cellspacing="0" border="0" align="center" style="max-width:360px;width:100%;">
       <tr>
-        <td width="48%" class="concern-btn-left" style="padding-right:6px;">
+        <td width="50%" class="concern-btn-left" style="padding-right:6px;">
           <a href="mailto:eggsok3517@gmail.com" style="text-decoration:none;display:block;">
-            <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#e63b2e;border-radius:10px;">
-              <tr><td style="padding:14px 12px;text-align:center;">
-                <span style="display:block;margin-bottom:4px;"><img src="https://eggsokpa.com/webicons/email.webp" class="concern-btn-icon" style="width:30px;height:30px;border-radius:50%;" alt="Email" /></span>
-                <span class="concern-btn-label" style="font-family:'Nunito',Arial,Helvetica,sans-serif;font-size:14px;font-weight:900;color:#ffffff;display:block;">Email Us</span>
-                <span class="concern-btn-info" style="font-family:'Nunito',Arial,Helvetica,sans-serif;font-size:11px;color:#ffffff;font-weight:700;display:block;margin-top:2px;">eggsok3517@gmail.com</span>
+            <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#FFFFFF;border:1px solid #E5E5E5;border-radius:10px;">
+              <tr><td style="padding:16px 12px;text-align:center;">
+                <span style="display:block;margin-bottom:6px;"><img src="https://eggsokpa.com/webicons/email.webp" class="concern-btn-icon" style="width:28px;height:28px;border-radius:50%;" alt="Email" /></span>
+                <span class="concern-btn-label" style="font-family:'Geist','Inter',Arial,sans-serif;font-size:14px;font-weight:700;color:#0D0D0D;display:block;">Email Us</span>
+                <span class="concern-btn-info" style="font-family:'Geist','Inter',Arial,sans-serif;font-size:11px;color:#777777;font-weight:500;display:block;margin-top:2px;">eggsok3517@gmail.com</span>
               </td></tr>
             </table>
           </a>
         </td>
-        <td width="48%" class="concern-btn-right" style="padding-left:6px;">
+        <td width="50%" class="concern-btn-right" style="padding-left:6px;">
           <a href="tel:+12159489902" style="text-decoration:none;display:block;">
-            <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#e63b2e;border-radius:10px;">
-              <tr><td style="padding:14px 12px;text-align:center;">
-                <span style="display:block;margin-bottom:4px;"><img src="https://eggsokpa.com/webicons/Contact.webp" class="concern-btn-icon" style="width:30px;height:30px;border-radius:50%;" alt="Phone" /></span>
-                <span class="concern-btn-label" style="font-family:'Nunito',Arial,Helvetica,sans-serif;font-size:14px;font-weight:900;color:#ffffff;display:block;">Speak To Us</span>
-                <span class="concern-btn-info" style="font-family:'Nunito',Arial,Helvetica,sans-serif;font-size:11px;color:#ffffff;font-weight:700;display:block;margin-top:2px;">(215) 948-9902</span>
+            <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#E3BF22;border:1px solid #E3BF22;border-radius:10px;">
+              <tr><td style="padding:16px 12px;text-align:center;">
+                <span style="display:block;margin-bottom:6px;"><img src="https://eggsokpa.com/webicons/Contact.webp" class="concern-btn-icon" style="width:28px;height:28px;border-radius:50%;" alt="Phone" /></span>
+                <span class="concern-btn-label" style="font-family:'Geist','Inter',Arial,sans-serif;font-size:14px;font-weight:700;color:#0D0D0D;display:block;">Speak To Us</span>
+                <span class="concern-btn-info" style="font-family:'Geist','Inter',Arial,sans-serif;font-size:11px;color:#0D0D0D;font-weight:600;display:block;margin-top:2px;">(215) 948-9902</span>
               </td></tr>
             </table>
           </a>
@@ -421,48 +461,45 @@
 
   <!-- ══════ FOOTER ══════ -->
   <tr>
-    <td class="footer-cell" style="background:#0d0d0d;padding:12px 18px;">
-      <table width="100%" cellpadding="0" cellspacing="0" border="0">
-        <tr><td height="1" style="background:#ffffff;line-height:1px;font-size:1px;">&nbsp;</td></tr>
-      </table>
+    <td class="footer-cell" style="background:#F8F9FA;padding:20px 24px;border-top:1px solid #E5E5E5;">
 
       <!-- Info row -->
-      <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:8px;">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:10px;">
         <tr>
-          <td align="center" class="footer-info" style="font-family:'Nunito',Arial,Helvetica,sans-serif;font-size:11px;color:#ffffff;font-weight:700;line-height:18px;padding:8px 0;">
+          <td align="center" class="footer-info" style="font-family:'Geist','Inter',Arial,sans-serif;font-size:12px;color:#4D4D4D;font-weight:500;line-height:20px;padding:8px 0;">
             <img src="https://eggsokpa.com/webicons/Location.webp" width="14" height="14" style="vertical-align:middle;" alt="Location">
-            3517 Lancaster Ave, Philadelphia, PA 19104
+            <span style="color:#4D4D4D;">3517 Lancaster Ave, Philadelphia, PA 19104</span>
             &nbsp;&nbsp;
-            <a href="https://www.eggsokphilly.com" style="color:white;text-decoration:none;font-family:'Nunito',Arial,Helvetica,sans-serif;">
+            <a href="https://www.eggsokphilly.com" style="color:#4D4D4D;text-decoration:none;font-family:'Geist','Inter',Arial,sans-serif;">
               <img src="https://eggsokpa.com/webicons/Website.webp" width="14" height="14" style="vertical-align:middle;" alt="Website">
               www.eggsokphilly.com
             </a>
             &nbsp;&nbsp;
             <img src="https://eggsokpa.com/webicons/Contact.webp" width="14" height="14" style="vertical-align:middle;" alt="Phone">
-            (215) 948-9902
+            <span style="color:#4D4D4D;">(215) 948-9902</span>
           </td>
         </tr>
       </table>
 
       <!-- Divider -->
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
-        <tr><td height="1" style="background:#333;line-height:1px;font-size:1px;">&nbsp;</td></tr>
+        <tr><td height="1" style="background:#E5E5E5;line-height:1px;font-size:1px;">&nbsp;</td></tr>
       </table>
 
       <!-- Hours -->
-      <p class="footer-hours" style="margin:6px 0;text-align:center;font-family:'Nunito',Arial,Helvetica,sans-serif;font-size:11px;color:#F5C200;font-weight:800;letter-spacing:0.5px;">
+      <p class="footer-hours" style="margin:10px 0;text-align:center;font-family:'Geist','Inter',Arial,sans-serif;font-size:12px;color:#0D0D0D;font-weight:700;letter-spacing:0.4px;">
         Mon-Fri: 7AM-4PM &middot; Sat-Sun: 8AM-3PM
       </p>
 
       <!-- Divider -->
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
-        <tr><td height="1" style="background:#ffffff;line-height:1px;font-size:1px;">&nbsp;</td></tr>
+        <tr><td height="1" style="background:#E5E5E5;line-height:1px;font-size:1px;">&nbsp;</td></tr>
       </table>
 
       <!-- Social -->
-      <table cellpadding="0" cellspacing="0" border="0" align="center" style="margin:8px auto;">
+      <table cellpadding="0" cellspacing="0" border="0" align="center" style="margin:10px auto;">
         <tr>
-          <td class="footer-social-text" style="font-family:'Nunito',Arial,Helvetica,sans-serif;font-size:11px;color:#ffffff;font-weight:700;padding-right:10px;">Connect with us on social networks</td>
+          <td class="footer-social-text" style="font-family:'Geist','Inter',Arial,sans-serif;font-size:12px;color:#777777;font-weight:500;padding-right:10px;">Connect with us</td>
           <td style="padding:0 4px;"><a href="#"><img src="https://eggsokpa.com/webicons/FB.webp" class="footer-social-icon" width="22" height="22" alt="Facebook"></a></td>
           <td style="padding:0 4px;"><a href="#"><img src="https://eggsokpa.com/webicons/Insta.webp" class="footer-social-icon" width="22" height="22" alt="Instagram"></a></td>
           <td style="padding:0 4px;"><a href="#"><img src="https://eggsokpa.com/webicons/tiktok.webp" class="footer-social-icon" width="22" height="22" alt="TikTok"></a></td>
@@ -472,11 +509,11 @@
 
       <!-- Divider -->
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
-        <tr><td height="1" style="background:#ffffff;line-height:1px;font-size:1px;">&nbsp;</td></tr>
+        <tr><td height="1" style="background:#E5E5E5;line-height:1px;font-size:1px;">&nbsp;</td></tr>
       </table>
 
       <!-- Copyright -->
-      <p class="footer-copyright" style="margin:6px 0 0;text-align:center;font-family:'Nunito',Arial,Helvetica,sans-serif;font-size:11px;color:#ffffff;font-weight:700;">
+      <p class="footer-copyright" style="margin:10px 0 0;text-align:center;font-family:'Geist','Inter',Arial,sans-serif;font-size:12px;color:#777777;font-weight:500;">
         &copy; <%= new Date().getFullYear() %> Eggs Ok. All rights reserved.
       </p>
     </td>

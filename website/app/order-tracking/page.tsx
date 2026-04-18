@@ -104,7 +104,7 @@ function OrderTrackingContent() {
             )}
           </div>
           <h1 style={{ fontSize: '24px', fontWeight: 700, fontFamily: "'Playfair Display', Georgia, serif", marginBottom: '8px' }}>Order #{order.orderNumber}</h1>
-          <p style={{ fontSize: '16px', color: '#777777' }}>
+          <p style={{ fontSize: '16px', color: '#4D4D4D' }}>
             {isCancelled ? 'This order was cancelled' : statusDesc[order.status] || 'Processing'}
           </p>
         </div>

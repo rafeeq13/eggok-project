@@ -159,14 +159,15 @@ export default function ConfirmationPage() {
         {/* Success Icon */}
         <div style={{
           width: '100px', height: '100px', borderRadius: '50%',
-          background: 'linear-gradient(135deg, #E5B800, #E5C200)',
+          background: '#ffffff',
           display: 'flex', alignItems: 'center', justifyContent: 'center',
+          border: '2px solid #E5E5E5',
           margin: '0 auto 24px',
-          boxShadow: '0 0 60px #E5B80040',
+          boxShadow: '0 0 60px #ffffff',
           transform: visible ? 'scale(1)' : 'scale(0)',
           transition: 'transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275)',
         }}>
-          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#E5B800" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#000" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
             <polyline points="20 6 9 17 4 12" />
           </svg>
         </div>
@@ -176,7 +177,7 @@ export default function ConfirmationPage() {
           <h1 style={{ fontSize: '28px', fontWeight: 700, fontFamily: "'Playfair Display', Georgia, serif", color: '#1A1A1A', marginBottom: '8px', letterSpacing: '-1px' }}>
             Order <span style={{ color: '#1A1A1A' }}>Confirmed!</span>
           </h1>
-          <p style={{ fontSize: '16px', color: '#1A1A1A', marginBottom: '32px' }}>
+          <p style={{ fontSize: '16px', color: '#4D4D4D', marginBottom: '32px' }}>
             Thank you! Your order has been received and we are getting started right away.
           </p>
 
@@ -185,18 +186,18 @@ export default function ConfirmationPage() {
 
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px', paddingBottom: '16px', borderBottom: '1px solid #E5E5E5' }}>
               <div>
-                <p style={{ fontSize: '12px', color: '#1A1A1A', marginBottom: '4px', textTransform: 'uppercase', letterSpacing: '1px', margin: 0 }}>Order Number</p>
-                <p style={{ fontSize: '24px', fontWeight: 700, fontFamily: "'Playfair Display', Georgia, serif", color: '#1A1A1A', letterSpacing: '2px', margin: '4px 0 0' }}>{orderNumber || '...'}</p>
+                <p style={{ fontSize: '12px', color: '#1A1A1A', marginBottom: '4px',  letterSpacing: '1px', margin: 0 }}>Order Number</p>
+                <p style={{ fontSize: '16px', fontWeight: 500, fontFamily: " var(--font-body)", color: '#4D4D4D', letterSpacing: '2px', margin: '0px 0 0' }}>{orderNumber || '...'}</p>
               </div>
               <div style={{ textAlign: 'right' }}>
-                <p style={{ fontSize: '12px', color: '#1A1A1A', marginBottom: '4px', textTransform: 'uppercase', letterSpacing: '1px', margin: 0 }}>Est. {displayOrderType === 'delivery' ? 'Delivery' : 'Ready'}</p>
-                <p style={{ fontSize: '24px', fontWeight: 700, fontFamily: "'Playfair Display', Georgia, serif", color: '#1A1A1A', letterSpacing: '1px', margin: '4px 0 0' }}>{getEstimatedTime()}</p>
+                <p style={{ fontSize: '12px', color: '#1A1A1A', marginBottom: '4px',letterSpacing: '1px', margin: 0 }}>Est. {displayOrderType === 'delivery' ? 'Delivery' : 'Ready'}</p>
+                <p style={{ fontSize: '16px', fontWeight: 500, fontFamily: " var(--font-body)", color: '#4D4D4D', letterSpacing: '1px', margin: '0px 0 0' }}>{getEstimatedTime()}</p>
               </div>
             </div>
 
             {/* Items */}
             <div style={{ marginBottom: '20px' }}>
-              <p style={{ fontSize: '12px', color: '#1A1A1A', marginBottom: '12px', textTransform: 'uppercase', letterSpacing: '1px' }}>Items Ordered</p>
+              <p style={{ fontSize: '12px', color: '#1A1A1A', marginBottom: '0px', letterSpacing: '1px' }}>Items Ordered</p>
               {displayItems.length === 0 ? (
                 <p style={{ fontSize: '16px', color: '#AAAAAA' }}>No items</p>
               ) : displayItems.map((item: any, i: number) => {
@@ -206,17 +207,17 @@ export default function ConfirmationPage() {
                 const price = isCartItem ? getPrice(item.item) * item.quantity : item.price * item.quantity;
                 const note = isCartItem ? item.specialInstructions : item.specialInstructions;
                 return (
-                  <div key={i} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '10px 0', borderBottom: i < displayItems.length - 1 ? '1px solid #E5E5E5' : 'none' }}>
+                  <div key={i} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '0px 0', borderBottom: i < displayItems.length - 1 ? '1px solid #E5E5E5' : 'none' }}>
                     <div style={{ flex: 1, marginRight: '12px' }}>
-                      <p style={{ fontSize: '16px', fontWeight: '600', color: '#1A1A1A', margin: 0 }}>{qty}x {name}</p>
+                      <p style={{ fontSize: '16px', fontWeight: '500', color: '#4D4D4D', margin: 0 }}>{qty}x {name}</p>
 
                       {/* Modifiers for lastOrder items */}
                       {!isCartItem && item.modifiers && item.modifiers.length > 0 && (
                         <div style={{ marginTop: '4px' }}>
                           {item.modifiers.map((mod: any, mi: number) => (
                             <div key={mi} style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '1px' }}>
-                              <p style={{ fontSize: '12px', color: '#777777', margin: 0 }}>+ {mod.name}</p>
-                              <p style={{ fontSize: '12px', color: '#777777', margin: 0 }}>${(Number(mod.price) * qty).toFixed(2)}</p>
+                              <p style={{ fontSize: '16px', color: '#4D4D4D', margin: 0 }}>+ {mod.name}</p>
+                              <p style={{ fontSize: '16px', color: '#4D4D4D', margin: 0 }}>${(Number(mod.price) * qty).toFixed(2)}</p>
                             </div>
                           ))}
                         </div>
@@ -232,8 +233,8 @@ export default function ConfirmationPage() {
                               if (!opt) return null;
                               return (
                                 <div key={`${group.id}-${optId}`} style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '1px' }}>
-                                  <p style={{ fontSize: '12px', color: '#777777', margin: 0 }}>+ {opt.name}</p>
-                                  <p style={{ fontSize: '12px', color: '#777777', margin: 0 }}>${(opt.price * qty).toFixed(2)}</p>
+                                  <p style={{ fontSize: '16px', color: '#4D4D4D', margin: 0 }}>+ {opt.name}</p>
+                                  <p style={{ fontSize: '16px', color: '#4D4D4D', margin: 0 }}>${(opt.price * qty).toFixed(2)}</p>
                                 </div>
                               );
                             });
@@ -287,9 +288,9 @@ export default function ConfirmationPage() {
               <div style={{ display: 'flex', justifyContent: 'space-between', position: 'relative', zIndex: 2 }}>
                 {steps.map((step, i) => (
                   <div key={i} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px', flex: 1 }}>
-                    <div style={{ width: '40px', height: '40px', borderRadius: '50%', background: step.done ? '#22C55E' : step.active ? '#E5B800' : '#F0F0F0', border: `2px solid ${step.done ? '#22C55E' : step.active ? '#E5B800' : '#D0D0D0'}`, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    <div style={{ width: '40px', height: '40px', borderRadius: '50%', background: step.done ? '#E5B800' : step.active ? '#E5B800' : '#F0F0F0', border: `2px solid ${step.done ? '#E5B800' : step.active ? '#E5B800' : '#D0D0D0'}`, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                       {step.done ? (
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#E5B800" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12" /></svg>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#000" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12" /></svg>
                       ) : step.active ? (
                         <div style={{ width: '10px', height: '10px', borderRadius: '50%', background: '#000' }} />
                       ) : (
@@ -297,7 +298,7 @@ export default function ConfirmationPage() {
                       )}
                     </div>
                     <div style={{ textAlign: 'center' }}>
-                      <p style={{ fontSize: '16px', fontWeight: '700', color: step.done ? '#22C55E' : step.active ? '#1A1A1A' : '#1A1A1A', margin: 0 }}>{step.label}</p>
+                      <p style={{ fontSize: '16px', fontWeight: '500', color: step.done ? '#E5B800' : step.active ? '#1A1A1A' : '#1A1A1A', margin: 0 }}>{step.label}</p>
                       <p style={{ fontSize: '12px', color: '#1A1A1A', marginTop: '2px' }}>{step.desc}</p>
                     </div>
                   </div>
@@ -307,21 +308,21 @@ export default function ConfirmationPage() {
           </div>
 
           {/* Pickup / Delivery */}
-          <div style={{ background: '#E5B80010', border: '1px solid #E5B80030', borderRadius: '16px', padding: '20px', marginBottom: '20px', display: 'flex', gap: '16px', alignItems: 'center', textAlign: 'left' }}>
-            <div style={{ width: '48px', height: '48px', borderRadius: '12px', background: '#E5B80020', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0000" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <div style={{ background: '#ffffff', border: '1px solid #4D4D4D', borderRadius: '16px', padding: '20px', marginBottom: '20px', display: 'flex', gap: '16px', alignItems: 'center', textAlign: 'left' }}>
+            <div style={{ width: '48px', height: '48px', borderRadius: '12px', background: '#E0E0E0', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#4D4D4D" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" /><circle cx="12" cy="10" r="3" />
               </svg>
             </div>
             <div>
-              <p style={{ fontSize: '16px', fontWeight: '700', color: '#1A1A1A', marginBottom: '4px' }}>
+              <p style={{ fontSize: '16px', fontWeight: '500', color: '#1A1A1A', marginBottom: '4px' }}>
                 {displayOrderType === 'pickup' ? 'Pickup Location' : 'Delivering To'}
               </p>
-              <p style={{ fontSize: '14px', color: '#1A1A1A', margin: 0 }}>
+              <p style={{ fontSize: '14px', color: '#4D4D4D', margin: 0 }}>
                 {displayOrderType === 'pickup' ? storeAddress : (lastOrder?.deliveryAddress || deliveryAddress || '—')}
               </p>
               {displayOrderType === 'pickup' && orderNumber && (
-                <p style={{ fontSize: '12px', color: '#1A1A1A', marginTop: '4px', fontWeight: '600' }}>Show order #{orderNumber} at the counter</p>
+                <p style={{ fontSize: '12px', color: '#4D4D4D', marginTop: '4px', fontWeight: '600' }}>Show order #{orderNumber} at the counter</p>
               )}
             </div>
           </div>
@@ -372,14 +373,14 @@ export default function ConfirmationPage() {
 
           {/* Email note */}
           <div style={{ padding: '14px', background: '#FFFFFF', border: '1px solid #E5E5E5', borderRadius: '12px', marginBottom: '32px' }}>
-            <p style={{ fontSize: '14px', color: '#1A1A1A', margin: 0 }}>
+            <p style={{ fontSize: '14px', color: '#4D4D4D', margin: 0 }}>
               A confirmation has been sent to your email. Check your inbox for order details and updates.
             </p>
           </div>
 
           {/* Buttons */}
           <div style={{ display: 'flex', gap: '12px', justifyContent: 'center', flexWrap: 'wrap' as const }}>
-            <Link href="/order" style={{ padding: '14px 32px', background: '#E5B800', borderRadius: '12px', fontSize: '16px', fontWeight: '700', color: '#000', display: 'inline-flex', alignItems: 'center', gap: '8px', textDecoration: 'none' }}>
+            <Link href="/order" style={{ padding: '4px 32px', background: '#E5B800', borderRadius: '12px', fontSize: '16px', fontWeight: '500', color: '#000', display: 'inline-flex', alignItems: 'center', gap: '8px', textDecoration: 'none' }}>
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                 <circle cx="9" cy="21" r="1" /><circle cx="20" cy="21" r="1" />
                 <path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 001.95-1.57l1.65-7.43H6" />
@@ -387,11 +388,11 @@ export default function ConfirmationPage() {
               Order Again
             </Link>
             {lastOrder?.id && (
-              <Link href={`/order-tracking?id=${lastOrder.id}`} style={{ padding: '14px 32px', background: 'transparent', border: '1px solid #D0D0D0', borderRadius: '12px', fontSize: '16px', fontWeight: '600', color: '#1A1A1A', textDecoration: 'none' }}>
+              <Link href={`/order-tracking?id=${lastOrder.id}`} style={{ padding: '4px 32px', background: 'transparent', border: '1px solid #D0D0D0', borderRadius: '12px', fontSize: '16px', fontWeight: '500', color: '#1A1A1A', textDecoration: 'none' }}>
                 Track Order
               </Link>
             )}
-            <Link href="/" style={{ padding: '14px 32px', background: 'transparent', border: '1px solid #D0D0D0', borderRadius: '12px', fontSize: '16px', fontWeight: '600', color: '#777777', textDecoration: 'none' }}>
+            <Link href="/" style={{ padding: '4px 32px', background: 'transparent', border: '1px solid #D0D0D0', borderRadius: '12px', fontSize: '16px', fontWeight: '500', color: '#777777', textDecoration: 'none' }}>
               Back to Home
             </Link>
           </div>
