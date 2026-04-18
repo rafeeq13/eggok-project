@@ -280,8 +280,8 @@ export default function CateringPage() {
         /* ── Footer ── */
         .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 48px; margin-bottom: 40px; }
         .footer-bottom { border-top: 1px solid #E5E5E5; padding-top: 24px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
-        .footer-link { display: block; font-size: 16px; color: #1A1A1A;  text-decoration: none; transition: color 0.15s, padding-left 0.15s; padding: 4px 0px; }
-        .footer-link:hover { color: #1A1A1A; text-decoration: underline; }
+        .footer-link { display: block; font-size: 16px; color: #4D4D4D;  text-decoration: none; transition: color 0.15s, padding-left 0.15s; padding: 4px 0px; }
+        .footer-link:hover { color: #4D4D4D; text-decoration: underline; }
 
         /* ═══ RESPONSIVE ═══ */
         @media (max-width: 1024px) {
@@ -449,11 +449,11 @@ export default function CateringPage() {
           <div id="contact-inner" style={{ maxWidth: '700px', margin: '0 auto' }}>
 
             <div id="contact-header" style={{ marginBottom: '44px' }}>
-              <span className="sec-label">Get A Quote</span>
+              {/* <span className="sec-label">Get A Quote</span> */}
               <h2 id="contact-heading" className="sec-heading">
                 Let&apos;s Plan Your Event
               </h2>
-              <p id="contact-subtitle" style={{ fontSize: '16px', color: '#1A1A1A', marginTop: '14px', lineHeight: '1.7' }}>
+              <p id="contact-subtitle" style={{ fontSize: '16px', color: '#4D4D4D', marginTop: '14px', lineHeight: '1.7' }}>
                 Fill out the form below and we will get back to you within 24 hours.
               </p>
             </div>
@@ -603,19 +603,19 @@ export default function CateringPage() {
                   <Image src="/logo.webp" alt="Eggs Ok" width={100} height={70} style={{ objectFit: 'contain' }} />
                 </div>
               </div>
-              <p id="footer-tagline" style={{ fontSize: '16px', color: '#1A1A1A', lineHeight: '1.75', maxWidth: '280px', marginBottom: '22px' }}>
+              <p id="footer-tagline" style={{ fontSize: '16px', color: '#4D4D4D', lineHeight: '1.75', maxWidth: '280px', marginBottom: '22px' }}>
                 Fresh breakfast and lunch in West Philadelphia. Made to order, every time.
               </p>
               <address id="footer-address" style={{ fontStyle: 'normal' }}>
-                <p id="footer-address-line" style={{ fontSize: '14px', color: '#1A1A1A', display: 'flex', alignItems: 'center', gap: '7px', marginBottom: '8px' }}>
+                <p id="footer-address-line" style={{ fontSize: '14px', color: '#4D4D4D', display: 'flex', alignItems: 'center', gap: '7px', marginBottom: '8px' }}>
                   <MapPin size={13} color="#E5B800" aria-hidden="true" />
-                  <a id="footer-address-link" href="https://www.google.com/maps?q=3517+Lancaster+Ave,+Philadelphia+PA+19104" style={{ color: '#1A1A1A', textDecoration: 'none' }}>
+                  <a id="footer-address-link" href="https://www.google.com/maps?q=3517+Lancaster+Ave,+Philadelphia+PA+19104" style={{ color: '#4D4D4D', textDecoration: 'none' }}>
                     3517 Lancaster Ave, Philadelphia PA 19104
                   </a>
                 </p>
-                <p id="footer-phone-line" style={{ fontSize: '14px', color: '#1A1A1A', display: 'flex', alignItems: 'center', gap: '7px' }}>
+                <p id="footer-phone-line" style={{ fontSize: '14px', color: '#4D4D4D', display: 'flex', alignItems: 'center', gap: '7px' }}>
                   <Smartphone size={13} color="#E5B800" aria-hidden="true" />
-                  <a id="footer-phone-link" href="tel:2159489902" style={{ color: '#1A1A1A', textDecoration: 'none' }}>215-948-9902</a>
+                  <a id="footer-phone-link" href="tel:2159489902" style={{ color: '#4D4D4D', textDecoration: 'none' }}>215-948-9902</a>
                 </p>
               </address>
             </div>
@@ -649,8 +649,8 @@ export default function CateringPage() {
                   { day: 'Sunday',    hours: '9:00 AM – 9:00 PM'  },
                 ].map((h, i) => (
                   <div key={i} id={`footer-hours-row-${i}`} style={{ display: 'flex', gap: '14px' }}>
-                    <span style={{ fontSize: '14px', color: '#1A1A1A', fontWeight: '500', minWidth: '96px' }}>{h.day}</span>
-                    <span style={{ fontSize: '14px', color: '#1A1A1A' }}>{h.hours}</span>
+                    <span style={{ fontSize: '14px', color: '#4D4D4D', fontWeight: '500', minWidth: '96px' }}>{h.day}</span>
+                    <span style={{ fontSize: '14px', color: '#4D4D4D' }}>{h.hours}</span>
                   </div>
                 ))}
               </div>

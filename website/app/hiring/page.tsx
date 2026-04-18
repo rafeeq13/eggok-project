@@ -211,7 +211,7 @@ export default function HiringPage() {
           display: flex; align-items: center; justify-content: center; flex-shrink: 0;
         }
         .form-title { font-family: var(--font-head); font-size: 24px; font-weight: 700; letter-spacing: -0.5px; color: var(--t1); margin: 0 0 3px; line-height: 1.2; }
-        .form-subtitle { font-size: 16px; color: var(--t2); margin: 0; }
+        .form-subtitle { font-size: 16px; color: #4D4D4D; margin: 0; }
         .form-fields { display: flex; flex-direction: column; gap: 14px; }
         .form-row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
         .form-label { font-size: 12px; font-weight: 700; color: var(--t2); display: block; margin-bottom: 6px; letter-spacing: 0.5px; text-transform: uppercase; }
@@ -270,8 +270,8 @@ export default function HiringPage() {
         /* ── Footer ── */
         .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 48px; margin-bottom: 40px; }
         .footer-bottom { border-top: 1px solid #E5E5E5; padding-top: 24px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
-        .footer-link { display: block; font-size: 16px; color: #1A1A1A;  text-decoration: none; transition: color 0.15s, padding-left 0.15s; padding: 4px 0px; }
-        .footer-link:hover { color: #1A1A1A; text-decoration: underline; }
+        .footer-link { display: block; font-size: 16px; color: #4D4D4D;  text-decoration: none; transition: color 0.15s, padding-left 0.15s; padding: 4px 0px; }
+        .footer-link:hover { color: #4D4D4D; text-decoration: underline; }
 
         /* ═══ RESPONSIVE ═══ */
         @media (max-width: 1024px) {
@@ -314,7 +314,7 @@ export default function HiringPage() {
           <h1 id="hero-title" className="bebas" style={{ fontSize: '28px', color: '#1A1A1A', lineHeight: '1.2', marginBottom: '24px' }}>
             Work With The Best
           </h1>
-          <p id="hero-subtitle" style={{ fontSize: '16.94px', color: '#1A1A1A', lineHeight: '1.8', maxWidth: '520px', margin: '0 auto 40px', fontWeight: 500 }}>
+          <p id="hero-subtitle" style={{ fontSize: '16.94px', color: '#4D4D4D', lineHeight: '1.8', maxWidth: '520px', margin: '0 auto 40px', fontWeight: 500 }}>
             We are always looking for passionate, hardworking people to join the Eggs Ok family. Great pay, flexible hours, and free food every shift.
           </p>
           <div id="hero-cta" style={{ display: 'flex', gap: '14px', justifyContent: 'center', flexWrap: 'wrap' }}>
@@ -576,19 +576,19 @@ export default function HiringPage() {
                   <Image src="/logo.webp" alt="Eggs Ok" width={100} height={70} style={{ objectFit: 'contain' }} />
                 </div>
               </div>
-              <p id="footer-tagline" style={{ fontSize: '16px', color: '#1A1A1A', lineHeight: '1.75', maxWidth: '280px', marginBottom: '22px' }}>
+              <p id="footer-tagline" style={{ fontSize: '16px', color: '#4D4D4D', lineHeight: '1.75', maxWidth: '280px', marginBottom: '22px' }}>
                 Fresh breakfast and lunch in West Philadelphia. Made to order, every time.
               </p>
               <address id="footer-address" style={{ fontStyle: 'normal' }}>
-                <p id="footer-address-line" style={{ fontSize: '14px', color: '#1A1A1A', display: 'flex', alignItems: 'center', gap: '7px', marginBottom: '8px' }}>
-                  <MapPin size={13} color="#000000ff" aria-hidden="true" />
-                  <a id="footer-address-link" href="https://www.google.com/maps?q=3517+Lancaster+Ave,+Philadelphia+PA+19104" style={{ color: '#1A1A1A', textDecoration: 'none' }}>
+                <p id="footer-address-line" style={{ fontSize: '14px', color: '#4D4D4D', display: 'flex', alignItems: 'center', gap: '7px', marginBottom: '8px' }}>
+                  <MapPin size={13} color="#4D4D4D" aria-hidden="true" />
+                  <a id="footer-address-link" href="https://www.google.com/maps?q=3517+Lancaster+Ave,+Philadelphia+PA+19104" style={{ color: '#4D4D4D', textDecoration: 'none' }}>
                     3517 Lancaster Ave, Philadelphia PA 19104
                   </a>
                 </p>
-                <p id="footer-phone-line" style={{ fontSize: '14px', color: '#1A1A1A', display: 'flex', alignItems: 'center', gap: '7px' }}>
+                <p id="footer-phone-line" style={{ fontSize: '14px', color: '#4D4D4D', display: 'flex', alignItems: 'center', gap: '7px' }}>
                   <Smartphone size={13} color="#000000ff" aria-hidden="true" />
-                  <a id="footer-phone-link" href="tel:2159489902" style={{ color: '#1A1A1A', textDecoration: 'none' }}>215-948-9902</a>
+                  <a id="footer-phone-link" href="tel:2159489902" style={{ color: '#4D4D4D', textDecoration: 'none' }}>215-948-9902</a>
                 </p>
               </address>
             </div>
@@ -622,8 +622,8 @@ export default function HiringPage() {
                   { day: 'Sunday',    hours: '9:00 AM – 9:00 PM'  },
                 ].map((h, i) => (
                   <div key={i} className={`footer-hours-row footer-hours-${h.day.toLowerCase()}`} style={{ display: 'flex', gap: '14px' }}>
-                    <span className="footer-hours-day" style={{ fontSize: '14px', color: '#1A1A1A', fontWeight: '500', minWidth: '96px' }}>{h.day}</span>
-                    <span className="footer-hours-time" style={{ fontSize: '14px', color: '#1A1A1A' }}>{h.hours}</span>
+                    <span className="footer-hours-day" style={{ fontSize: '14px', color: '#4D4D4D', fontWeight: '500', minWidth: '96px' }}>{h.day}</span>
+                    <span className="footer-hours-time" style={{ fontSize: '14px', color: '#4D4D4D' }}>{h.hours}</span>
                   </div>
                 ))}
               </div>
@@ -632,10 +632,10 @@ export default function HiringPage() {
           </div>
 
           <div id="footer-bottom" className="footer-bottom">
-            <p id="footer-copyright" style={{ fontSize: '13px', color: '#888888' }}>
+            <p id="footer-copyright" style={{ fontSize: '13px', color: '#4D4D4D' }}>
               &copy; {new Date().getFullYear()} Eggs Ok. All rights reserved.
             </p>
-            <p id="footer-credit" style={{ fontSize: '13px', color: '#888888' }}>
+            <p id="footer-credit" style={{ fontSize: '13px', color: '#4D4D4D' }}>
               {/* Built by <span id="footer-credit-brand" style={{ color: '#E5B800' }}>RestoRise Business Solutions</span> */}
             </p>
           </div>

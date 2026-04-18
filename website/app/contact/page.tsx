@@ -176,8 +176,8 @@ export default function ContactPage() {
         .hours-open-text { font-size: 12px; color: var(--green); font-weight: 600; }
         .hours-row { display: flex; justify-content: space-between; align-items: center; padding: 6px 0; gap: 8px; }
         .hours-row + .hours-row { border-top: 1px solid #EBEBEB; }
-        .hours-row-day { font-size: 16px; color: var(--t2); white-space: nowrap; }
-        .hours-row-time { font-size: 16px; font-weight: 500; color: var(--t1); text-align: right; white-space: nowrap; }
+        .hours-row-day { font-size: 16px; color:#4D4D4D; white-space: nowrap; }
+        .hours-row-time { font-size: 16px; font-weight: 500; color:#4D4D4D; text-align: right; white-space: nowrap; }
 
         /* ── Map box ── */
         .map-box {
@@ -217,7 +217,7 @@ export default function ContactPage() {
         }
         .form-header { margin-bottom: 28px; padding-bottom: 22px; border-bottom: 1px solid var(--border); }
         .form-title { font-family: var(--font-head); font-size: 24px; font-weight: 700; letter-spacing: -0.5px; color: var(--t1); margin-bottom: 6px; line-height: 1.2; }
-        .form-subtitle { font-size: 16px; color: var(--t2); }
+        .form-subtitle { font-size: 16px; color: #4D4D4D; }
         .form-row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
         .form-label { font-size: 12px; font-weight: 700; color: var(--t2); display: block; margin-bottom: 6px; letter-spacing: 0.5px; text-transform: uppercase; }
         .form-input {
@@ -282,10 +282,10 @@ export default function ContactPage() {
         .site-footer { background: #F8F9FA; padding: 68px 0 32px; border-top: 1px solid #E5E5E5; }
         .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 48px; margin-bottom: 40px; }
         .footer-bottom { border-top: 1px solid #E5E5E5; padding-top: 24px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
-        .footer-link { display: block; font-size: 16px; color: #1A1A1A; text-decoration: none; transition: color 0.15s, padding-left 0.15s; padding: 4px 0px; }
+        .footer-link { display: block; font-size: 16px; color: #4D4D4D; text-decoration: none; transition: color 0.15s, padding-left 0.15s; padding: 4px 0px; }
         .footer-link:hover { color: #1A1A1A; text-decoration: underline; }
         .footer-hours-row { display: flex; gap: 14px; }
-        .footer-hours-day { font-size: 14px; color: #1A1A1A; font-weight: 500; min-width: 90px; }
+        .footer-hours-day { font-size: 14px; color: #4D4D4D; font-weight: 500; min-width: 90px; }
         .footer-hours-time { font-size: 14px; color: #666666; }
 
         /* ═══ RESPONSIVE ═══ */
@@ -360,7 +360,7 @@ export default function ContactPage() {
           <h1 id="hero-title" className="bebas" style={{ fontSize: '28px', color: '#1A1A1A', lineHeight: '1.2', marginBottom: '22px' }}>
             We&apos;d Love to Hear From You
           </h1>
-          <p id="hero-subtitle" style={{ fontSize: '16px', color: '#1A1A1A', lineHeight: '1.8', maxWidth: '500px', margin: '0 auto' }}>
+          <p id="hero-subtitle" style={{ fontSize: '16px', color: '#4D4D4D', lineHeight: '1.8', maxWidth: '500px', margin: '0 auto' }}>
             Questions, feedback, catering inquiries, or just want to say hi — we are here for it.
           </p>
         </div>
@@ -600,19 +600,19 @@ export default function ContactPage() {
                   <Image src="/logo.webp" alt="Eggs Ok" width={100} height={70} style={{ objectFit: 'contain' }} />
                 </div>
               </div>
-              <p id="footer-tagline" style={{ fontSize: '16px', color: '#1A1A1A', lineHeight: '1.75', maxWidth: '280px', marginBottom: '22px' }}>
+              <p id="footer-tagline" style={{ fontSize: '16px', color: '#4D4D4D', lineHeight: '1.75', maxWidth: '280px', marginBottom: '22px' }}>
                 Fresh breakfast and lunch in West Philadelphia. Made to order, every time.
               </p>
               <address id="footer-address" style={{ fontStyle: 'normal' }}>
-                <p id="footer-address-line" style={{ fontSize: '14px', color: '#1A1A1A', display: 'flex', alignItems: 'center', gap: '7px', marginBottom: '8px' }}>
+                <p id="footer-address-line" style={{ fontSize: '14px', color: '#4D4D4D', display: 'flex', alignItems: 'center', gap: '7px', marginBottom: '8px' }}>
                   <MapPin size={13} color="#000000ff" aria-hidden="true" />
                   <a id="footer-address-link" href="https://www.google.com/maps?q=3517+Lancaster+Ave,+Philadelphia+PA+19104" style={{ color: '#1A1A1A', textDecoration: 'none' }}>
                     3517 Lancaster Ave, Philadelphia PA 19104
                   </a>
                 </p>
-                <p id="footer-phone-line" style={{ fontSize: '14px', color: '#1A1A1A', display: 'flex', alignItems: 'center', gap: '7px' }}>
+                <p id="footer-phone-line" style={{ fontSize: '14px', color: '#4D4D4D', display: 'flex', alignItems: 'center', gap: '7px' }}>
                   <Smartphone size={13} color="#000000ff" aria-hidden="true" />
-                  <a id="footer-phone-link" href="tel:2159489902" style={{ color: '#1A1A1A', textDecoration: 'none' }}>215-948-9902</a>
+                  <a id="footer-phone-link" href="tel:2159489902" style={{ color: '#4D4D4D', textDecoration: 'none' }}>215-948-9902</a>
                 </p>
               </address>
             </div>

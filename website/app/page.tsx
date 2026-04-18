@@ -337,7 +337,8 @@ export default function HomePage() {
           background-size: cover; background-position: center; background-repeat: no-repeat;
         }
         .hero-tagline {
-          font-size: 28px; font-weight: 700; color: #ffffff;
+          font-size: clamp(0.875rem, 3.5vw, 1.75rem);
+          font-weight: 700; color: #ffffff;
           letter-spacing: -0.3px; line-height: 1.2;
           font-family: var(--font-body);
           text-shadow: 0 2px 16px rgba(0,0,0,0.55);
@@ -345,9 +346,9 @@ export default function HomePage() {
         }
         .hero-title {
           font-family: var(--font-heading);
-          font-size: 52px; font-weight: 700; line-height: 1.05;
+          font-size: clamp(2rem, 5.2vw, 3.5rem);
+          font-weight: 700; line-height: 1.05;
           color: #ffffff; letter-spacing: -1px;
-          // text-shadow: 0 2px 24px rgba(0,0,0,0.55), 0 1px 4px rgba(0,0,0,0.4);
           margin-bottom: 36px;
         }
         .hero-pickup-btn, .hero-menu-btn {
@@ -511,10 +512,18 @@ export default function HomePage() {
           position: relative; z-index: 1;
           background: rgba(255,255,255,0.95); padding: 44px 48px;
           border-radius: 20px; max-width: 440px;
-          margin: 40px auto 40px 48px;
+          // margin: 40px auto 40px 48px;
           border: 1px solid #E0E0E0;
           backdrop-filter: blur(16px);
         }
+         .order-card-box-rewards{
+         position: relative; z-index: 1;
+          background: rgba(255,255,255,0.95); padding: 44px 48px;
+          border-radius: 20px; max-width: 440px;
+          margin: 40px auto 40px 48px;
+          border: 1px solid #E0E0E0;
+          backdrop-filter: blur(16px);}
+
         .order-card-box h2 {
           font-family: 'Playfair Display', Georgia, serif;
           font-weight: 700;
@@ -678,14 +687,10 @@ export default function HomePage() {
           .order-ahead-overlay { background: rgba(0,0,0,0.55); }
           .order-card-box { margin: 40px auto; max-width: 92%; }
         }
-        @media (max-width: 1024px) {
-          .hero-title { font-size: 52px; }
-          .hero-tagline { font-size: 22px; }
-        }
         @media (max-width: 768px) {
           .hero-section { min-height: 70vh; padding: 80px 0 56px; }
-          .hero-title { font-size: 40px; margin-bottom: 24px; }
-          .hero-tagline { font-size: 18px; margin-bottom: 14px; }
+          .hero-title { margin-bottom: 24px; }
+          .hero-tagline { margin-bottom: 14px; }
           .hero-pickup-btn, .hero-menu-btn { padding: 7px 7px; font-size: 16px; }
           .hero-stats { margin-top: 24px; gap: 20px; }
           .hero-stat-value { font-size: clamp(22px, 5vw, 30px) !important; }
@@ -699,8 +704,8 @@ export default function HomePage() {
         }
         @media (max-width: 500px) {
           .hero-section { min-height: 62vh; padding-bottom: 40px; padding-top: 72px; }
-          .hero-title { font-size: 32px; margin-bottom: 20px; }
-          .hero-tagline { font-size: 15px; margin-bottom: 12px; }
+          .hero-title { margin-bottom: 20px; }
+          .hero-tagline { margin-bottom: 12px; }
           .hero-cta { gap: 10px; }
           .hero-pickup-btn, .hero-menu-btn { padding: 7px 7px; font-size: 16px; }
           .photo-gallery { grid-template-columns: 1fr; }
@@ -758,7 +763,7 @@ export default function HomePage() {
             </p>
 
             <h1 id="hero-title" className="hero-title">
-             Welcome to Eggs Ok West Philadelphia
+             Welcome to Eggs Ok West <br /> Philadelphia
             </h1>
 
             <div id="hero-cta-buttons" className="hero-cta">
@@ -1064,7 +1069,7 @@ export default function HomePage() {
       
       <div id="order-ahead" className="order-ahead-hero container">
         <div className="order-ahead-overlay" />
-        <div className="order-card-box">
+        <div className="order-card-box-rewards">
           <h2 id="order-ahead-heading" className="order-ahead-heading">Eggs Ok Rewards</h2>
           <p className="order-ahead-body">
              Every order earns you points. Redeem for free food, exclusive deals, and early access

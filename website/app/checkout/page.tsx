@@ -329,7 +329,7 @@ function CheckoutInner() {
 
   const inputStyle: React.CSSProperties = {
     width: '100%', padding: '12px 16px',
-    background: '#F8F9FA', border: '1px solid #D0D0D0',
+    background: '#F8F9FA', border: '1px solid #C0C0C0',
     borderRadius: '10px', color: '#1A1A1A',
     fontSize: '16px', outline: 'none',
     transition: 'border-color 0.2s',
@@ -349,7 +349,7 @@ function CheckoutInner() {
   };
 
   const sectionTitle: React.CSSProperties = {
-    fontSize: '20px', fontWeight: '700',
+    fontSize: '20px', fontWeight: '500',
     color: '#1A1A1A', marginBottom: '16px',
     fontFamily: "'Playfair Display', Georgia, serif",
   };
@@ -595,29 +595,29 @@ function CheckoutInner() {
                 {[10, 15, 20, 25].map(t => (
                   <button key={t} onClick={() => selectPresetTip(t)} style={{
                     padding: '12px 8px', borderRadius: '10px',
-                    background: isPreset(t) ? '#E5B80015' : '#F8F9FA',
-                    border: `1.5px solid ${isPreset(t) ? '#E5B800' : '#D0D0D0'}`,
+                    background: isPreset(t) ? '#ffffff' : '#F8F9FA',
+                    border: `1.5px solid ${isPreset(t) ? '#1A1A1A' : '#D0D0D0'}`,
                     color: isPreset(t) ? '#E5B800' : '#1A1A1A',
                     cursor: 'pointer', transition: 'all 0.15s', textAlign: 'center',
                   }}>
-                    <p style={{ fontSize: '16px', fontWeight: '900', margin: 0 ,color:'#1A1A1A',}}>${((subtotal * t) / 100).toFixed(2)}</p>
+                    <p style={{ fontSize: '16px', fontWeight: '500', margin: 0 ,color:'#1A1A1A',}}>${((subtotal * t) / 100).toFixed(2)}</p>
                     <p style={{ fontSize: '12px', margin: '2px 0 0', opacity: 0.7,color:'#1A1A1A', }}>{t}%</p>
                   </button>
                 ))}
                 <button onClick={() => setShowCustomTipModal(true)} style={{
                   padding: '12px 8px', borderRadius: '10px',
-                  background: isCustomActive ? '#E5B80015' : '#F8F9FA',
-                  border: `1.5px solid ${isCustomActive ? '#E5B800' : '#D0D0D0'}`,
-                  color: isCustomActive ? '#E5B800' : '#1A1A1A',
+                  background: isCustomActive ? '#ffffff' : '#F8F9FA',
+                  border: `1.5px solid ${isCustomActive ? '#1A1A1A' : '#D0D0D0'}`,
+                  color: isCustomActive ? '#4D4D4D' : '#1A1A1A',
                   cursor: 'pointer', transition: 'all 0.15s', textAlign: 'center',
                 }}>
                   {isCustomActive && customTipAmount ? (
                     <>
-                      <p style={{ fontSize: '16px', fontWeight: '900', margin: 0 }}>${parseFloat(customTipAmount).toFixed(2)}</p>
+                      <p style={{ fontSize: '16px', fontWeight: '500', margin: 0 }}>${parseFloat(customTipAmount).toFixed(2)}</p>
                       <p style={{ fontSize: '12px', margin: '2px 0 0', opacity: 0.7 }}>Custom</p>
                     </>
                   ) : (
-                    <p style={{ fontSize: '14px', fontWeight: '900', margin: 0 }}>Custom</p>
+                    <p style={{ fontSize: '14px', fontWeight: '500', margin: 0 }}>Custom</p>
                   )}
                 </button>
               </div>
@@ -630,7 +630,7 @@ function CheckoutInner() {
                 <div>
                   <label style={labelStyle}>Mobile number *</label>
                   <input type="tel" style={inputStyle} placeholder="(215) 555-0100" value={phone} onChange={e => setPhone(e.target.value)}
-                    onFocus={e => (e.target as HTMLInputElement).style.borderColor = '#E5B800'}
+                    onFocus={e => (e.target as HTMLInputElement).style.borderColor = '#C0C0C0'}
                     onBlur={e => (e.target as HTMLInputElement).style.borderColor = '#D0D0D0'} />
                   {phone && !isPhoneValid && <p style={{ fontSize: '12px', color: '#FC0301', marginTop: '4px' }}>Please enter a valid phone number (at least 10 digits)</p>}
                 </div>
@@ -638,20 +638,20 @@ function CheckoutInner() {
                   <div>
                     <label style={labelStyle}>First name *</label>
                     <input style={inputStyle} placeholder="John" value={firstName} onChange={e => setFirstName(e.target.value)}
-                      onFocus={e => (e.target as HTMLInputElement).style.borderColor = '#E5B800'}
+                      onFocus={e => (e.target as HTMLInputElement).style.borderColor = '#C0C0C0'}
                       onBlur={e => (e.target as HTMLInputElement).style.borderColor = '#D0D0D0'} />
                   </div>
                   <div>
                     <label style={labelStyle}>Last name *</label>
                     <input style={inputStyle} placeholder="Smith" value={lastName} onChange={e => setLastName(e.target.value)}
-                      onFocus={e => (e.target as HTMLInputElement).style.borderColor = '#E5B800'}
+                      onFocus={e => (e.target as HTMLInputElement).style.borderColor = '#C0C0C0'}
                       onBlur={e => (e.target as HTMLInputElement).style.borderColor = '#D0D0D0'} />
                   </div>
                 </div>
                 <div>
                   <label style={labelStyle}>Email address *</label>
                   <input type="email" style={inputStyle} placeholder="john@gmail.com" value={email} onChange={e => setEmail(e.target.value)}
-                    onFocus={e => (e.target as HTMLInputElement).style.borderColor = '#E5B800'}
+                    onFocus={e => (e.target as HTMLInputElement).style.borderColor = '#C0C0C0'}
                     onBlur={e => (e.target as HTMLInputElement).style.borderColor = '#D0D0D0'} />
                   {email && !isEmailValid && <p style={{ fontSize: '12px', color: '#FC0301', marginTop: '4px' }}>Please enter a valid email address</p>}
                 </div>
@@ -725,11 +725,11 @@ function CheckoutInner() {
 
             {/* Place Order */}
             <button onClick={handlePlaceOrder} disabled={!canPlaceOrder || placing} style={{
-              width: '100%', padding: '16px',
+              width: '100%', padding: '8px',
               background: canPlaceOrder && !placing ? '#E5B800' : '#E5E5E5',
               color: canPlaceOrder && !placing ? '#000' : '#AAAAAA',
               borderRadius: '12px', border: 'none',
-              fontSize: '16px', fontWeight: '900',
+              fontSize: '16px', fontWeight: '500',
               cursor: canPlaceOrder && !placing ? 'pointer' : 'not-allowed',
               transition: 'all 0.2s', marginBottom: '12px',
             }}>
@@ -787,10 +787,10 @@ function CheckoutInner() {
                     <input style={{ ...inputStyle, flex: 1 }} placeholder="Add coupon or gift card"
                       value={promoCode}
                       onChange={e => { setPromoCode(e.target.value.toUpperCase()); setPromoError(''); setPromoApplied(false); setPromoDiscount(0); setPromoLabel(''); }}
-                      onFocus={e => (e.target as HTMLInputElement).style.borderColor = '#E5B800'}
+                      onFocus={e => (e.target as HTMLInputElement).style.borderColor = '#C0C0C0'}
                       onBlur={e => (e.target as HTMLInputElement).style.borderColor = '#D0D0D0'} />
                     <button onClick={applyPromo} disabled={promoLoading}
-                      style={{ padding: '12px 14px', background: promoLoading ? '#E5E5E5' : '#E5B800', borderRadius: '10px', color: promoLoading ? '#AAAAAA' : '#000', fontSize: '16px', fontWeight: '700', cursor: promoLoading ? 'not-allowed' : 'pointer', border: 'none', flexShrink: 0, fontFamily: "'Geist', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" }}>
+                      style={{ padding: '12px 14px', background: promoLoading ? '#E5E5E5' : '#C0C0C0', borderRadius: '10px', color: promoLoading ? '#AAAAAA' : '#000', fontSize: '16px', fontWeight: '500', cursor: promoLoading ? 'not-allowed' : 'pointer', border: 'none', flexShrink: 0, fontFamily: "'Geist', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" }}>
                       {promoLoading ? '...' : 'Apply'}
                     </button>
                   </div>
@@ -876,7 +876,7 @@ function CheckoutInner() {
           <div style={{ background: '#FFFFFF', borderRadius: '20px', width: '100%', maxWidth: '400px', border: '1px solid #E5E5E5', padding: '24px' }}
             onClick={e => e.stopPropagation()}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
-              <h2 style={{ fontSize: '20px', fontWeight: '700', color: '#1A1A1A', margin: 0, fontFamily: "'Playfair Display', Georgia, serif" }}>Custom tip</h2>
+              <h2 style={{ fontSize: '20px', fontWeight: '500', color: '#1A1A1A', margin: 0, fontFamily: "'Playfair Display', Georgia, serif" }}>Custom tip</h2>
               <button onClick={() => setShowCustomTipModal(false)}
                 style={{ width: '30px', height: '30px', borderRadius: '50%', background: '#F0F0F0', border: '1px solid #D0D0D0', color: '#1A1A1A', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
@@ -901,7 +901,7 @@ function CheckoutInner() {
                     }}
                     autoFocus
                     style={{ ...inputStyle, paddingLeft: '28px' }}
-                    onFocus={e => (e.target as HTMLInputElement).style.borderColor = '#E5B800'}
+                    onFocus={e => (e.target as HTMLInputElement).style.borderColor = '#C0C0C0'}
                     onBlur={e => (e.target as HTMLInputElement).style.borderColor = '#D0D0D0'} />
                 </div>
               </div>
@@ -919,7 +919,7 @@ function CheckoutInner() {
                       }
                     }}
                     style={{ ...inputStyle, paddingRight: '28px' }}
-                    onFocus={e => (e.target as HTMLInputElement).style.borderColor = '#E5B800'}
+                    onFocus={e => (e.target as HTMLInputElement).style.borderColor = '#C0C0C0'}
                     onBlur={e => (e.target as HTMLInputElement).style.borderColor = '#D0D0D0'} />
                   <span style={{ position: 'absolute', right: '14px', top: '50%', transform: 'translateY(-50%)', color: '#1A1A1A', fontSize: '16px' }}>%</span>
                 </div>
@@ -927,7 +927,7 @@ function CheckoutInner() {
             </div>
 
             <button onClick={applyCustomTip} disabled={!customTipAmount || parseFloat(customTipAmount) <= 0}
-              style={{ width: '100%', padding: '14px', background: customTipAmount && parseFloat(customTipAmount) > 0 ? '#E5B800' : '#E5E5E5', border: 'none', borderRadius: '12px', color: customTipAmount && parseFloat(customTipAmount) > 0 ? '#000' : '#AAAAAA', fontSize: '16px', fontWeight: '900', cursor: customTipAmount && parseFloat(customTipAmount) > 0 ? 'pointer' : 'not-allowed', fontFamily: "'Geist', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" }}>
+              style={{ width: '100%', padding: '8px', background: customTipAmount && parseFloat(customTipAmount) > 0 ? '#E5B800' : '#E5E5E5', border: 'none', borderRadius: '12px', color: customTipAmount && parseFloat(customTipAmount) > 0 ? '#000' : '#AAAAAA', fontSize: '16px', fontWeight: '500', cursor: customTipAmount && parseFloat(customTipAmount) > 0 ? 'pointer' : 'not-allowed', fontFamily: "'Geist', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" }}>
               Done
             </button>
           </div>

@@ -163,18 +163,19 @@ button { cursor: pointer; border: none; background: none; }
 /* Responsive */
 @media (max-width: 768px) {
   .container { padding: 0 16px; }
+}
+
+/* ── Navbar: tablet + mobile use hamburger, desktop only at 1025px+ ── */
+@media (max-width: 1024px) {
   .hide-mobile { display: none !important; }
 }
 
-@media (min-width: 769px) {
+@media (min-width: 1025px) {
   .hide-desktop { display: none !important; }
 }
 
-/* ── Navbar responsive ── */
+/* ── Navbar responsive sizing ── */
 @media (max-width: 1024px) {
-  .nav-desktop-gap { gap: 2px !important; }
-}
-@media (max-width: 768px) {
   .header-inner { height: 64px !important; }
   .header-spacer { height: 64px !important; }
   .header-logo img { width: 100px !important; height: 44px !important; }

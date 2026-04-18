@@ -145,7 +145,7 @@ export default function StoryPage() {
 
         /* ── Story body text ── */
         .story-body {
-          font-size: 16px; color: var(--t2);
+          font-size: 16px; color: #4D4D4D;
           line-height: 1.85; margin-bottom: 20px;
         }
 
@@ -253,7 +253,7 @@ export default function StoryPage() {
           <h1 id="hero-title" className="bebas" style={{ fontSize: '28px', color: '#1A1A1A', lineHeight: '1.2', marginBottom: '24px' }}>
             Made With Purpose
           </h1>
-          <p id="hero-subtitle" style={{ fontSize: '16px', fontWeight: 500, color: 'var(--t2)', lineHeight: '1.8', maxWidth: '540px', margin: '0 auto 40px' }}>
+          <p id="hero-subtitle" style={{ fontSize: '16px', fontWeight: 500, color: '#4D4D4D', lineHeight: '1.8', maxWidth: '540px', margin: '0 auto 40px' }}>
             Born from a simple belief — everyone deserves a great breakfast. Fresh ingredients, bold flavors, from West Philadelphia.
           </p>
          
@@ -410,19 +410,19 @@ export default function StoryPage() {
                   <Image src="/logo.webp" alt="Eggs Ok" width={100} height={70} style={{ objectFit: 'contain' }} />
                 </div>
               </div>
-              <p id="footer-tagline" style={{ fontSize: '16px', color: '#1A1A1A', lineHeight: '1.75', maxWidth: '280px', marginBottom: '22px' }}>
+              <p id="footer-tagline" style={{ fontSize: '16px', color: '#4D4D4D', lineHeight: '1.75', maxWidth: '280px', marginBottom: '22px' }}>
                 Fresh breakfast and lunch in West Philadelphia. Made to order, every time.
               </p>
               <address id="footer-address" style={{ fontStyle: 'normal' }}>
-                <p id="footer-address-line" style={{ fontSize: '14px', color: '#1A1A1A', display: 'flex', alignItems: 'center', gap: '7px', marginBottom: '8px' }}>
+                <p id="footer-address-line" style={{ fontSize: '14px', color: '#4D4D4D', display: 'flex', alignItems: 'center', gap: '7px', marginBottom: '8px' }}>
                   <MapPin size={13} color="#000000ff" aria-hidden="true" />
                   <a href="https://www.google.com/maps?q=3517+Lancaster+Ave,+Philadelphia+PA+19104" id="footer-address-link" style={{ color: '#1A1A1A', textDecoration: 'none', transition: 'color 0.15s' }}>
                     3517 Lancaster Ave, Philadelphia PA 19104
                   </a>
                 </p>
-                <p id="footer-phone-line" style={{ fontSize: '14px', color: '#1A1A1A', display: 'flex', alignItems: 'center', gap: '7px' }}>
+                <p id="footer-phone-line" style={{ fontSize: '14px', color: '#4D4D4D', display: 'flex', alignItems: 'center', gap: '7px' }}>
                   <Smartphone size={13} color="#000000ff" aria-hidden="true" />
-                  <a href="tel:2159489902" id="footer-phone-link" style={{ color: '#1A1A1A', textDecoration: 'none', transition: 'color 0.15s' }}>215-948-9902</a>
+                  <a href="tel:2159489902" id="footer-phone-link" style={{ color: '#4D4D4D', textDecoration: 'none', transition: 'color 0.15s' }}>215-948-9902</a>
                 </p>
               </address>
             </div>

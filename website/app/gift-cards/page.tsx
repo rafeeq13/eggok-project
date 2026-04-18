@@ -241,8 +241,8 @@ export default function GiftCardsPage() {
         /* ── Footer ── */
         .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 48px; margin-bottom: 40px; }
         .footer-bottom { border-top: 1px solid #E5E5E5; padding-top: 24px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
-        .footer-link { display: block; font-size: 16px; color: #1A1A1A;  text-decoration: none; transition: color 0.15s, padding-left 0.15s; padding: 4px 0px; }
-        .footer-link:hover { color: #1A1A1A; text-decoration: underline; }
+        .footer-link { display: block; font-size: 16px; color: #4D4D4D;  text-decoration: none; transition: color 0.15s, padding-left 0.15s; padding: 4px 0px; }
+        .footer-link:hover { color: #4D4D4D; text-decoration: underline; }
 
         /* ═══ RESPONSIVE ═══ */
         @media (max-width: 1024px) {
@@ -287,7 +287,7 @@ export default function GiftCardsPage() {
           <h1 id="hero-title" className="bebas" style={{ fontSize: '28px', color: '#1A1A1A', lineHeight: '1.2', marginBottom: '22px' }}>
             Give the Gift of Breakfast
           </h1>
-          <p id="hero-subtitle" style={{ fontSize: '16px', color: '#1A1A1A', lineHeight: '1.8', maxWidth: '500px', margin: '0 auto 40px' }}>
+          <p id="hero-subtitle" style={{ fontSize: '16px', color: '#4D4D4D', lineHeight: '1.8', maxWidth: '500px', margin: '0 auto 40px' }}>
             Share the love with an Eggs Ok gift card. Perfect for friends, family, and coworkers who deserve a great meal.
           </p>
           <div id="hero-cta" style={{ display: 'flex', gap: '14px', justifyContent: 'center', flexWrap: 'wrap' }}>
@@ -313,7 +313,7 @@ export default function GiftCardsPage() {
 
               {/* Section header */}
               <div id="giftcard-left-header" style={{ marginBottom: '28px' }}>
-                <span className="sec-label">Choose Amount</span>
+                {/* <span className="sec-label">Choose Amount</span> */}
                 <h2 id="amount-heading" className="bebas" style={{ fontSize: '28px', fontWeight: 700, color: '#1A1A1A', lineHeight: '1.2' }}>
                   Pick Your Value
                 </h2>
@@ -528,19 +528,19 @@ export default function GiftCardsPage() {
                   <Image src="/logo.webp" alt="Eggs Ok" width={100} height={70} style={{ objectFit: 'contain' }} />
                 </div>
               </div>
-              <p id="footer-tagline" style={{ fontSize: '16px', color: '#1A1A1A', lineHeight: '1.75', maxWidth: '280px', marginBottom: '22px' }}>
+              <p id="footer-tagline" style={{ fontSize: '16px', color: '#4D4D4D', lineHeight: '1.75', maxWidth: '280px', marginBottom: '22px' }}>
                 Fresh breakfast and lunch in West Philadelphia. Made to order, every time.
               </p>
               <address id="footer-address" style={{ fontStyle: 'normal' }}>
-                <p id="footer-address-line" style={{ fontSize: '14px', color: '#1A1A1A', display: 'flex', alignItems: 'center', gap: '7px', marginBottom: '8px' }}>
+                <p id="footer-address-line" style={{ fontSize: '14px', color: '#4D4D4D', display: 'flex', alignItems: 'center', gap: '7px', marginBottom: '8px' }}>
                   <MapPin size={13} color="#000000ff" aria-hidden="true" />
-                  <a id="footer-address-link" href="https://www.google.com/maps?q=3517+Lancaster+Ave,+Philadelphia+PA+19104" style={{ color: '#1A1A1A', textDecoration: 'none' }}>
+                  <a id="footer-address-link" href="https://www.google.com/maps?q=3517+Lancaster+Ave,+Philadelphia+PA+19104" style={{ color: '#4D4D4D', textDecoration: 'none' }}>
                     3517 Lancaster Ave, Philadelphia PA 19104
                   </a>
                 </p>
-                <p id="footer-phone-line" style={{ fontSize: '14px', color: '#1A1A1A', display: 'flex', alignItems: 'center', gap: '7px' }}>
+                <p id="footer-phone-line" style={{ fontSize: '14px', color: '#4D4D4D', display: 'flex', alignItems: 'center', gap: '7px' }}>
                   <Smartphone size={13} color="#000000ff" aria-hidden="true" />
-                  <a id="footer-phone-link" href="tel:2159489902" style={{ color: '#1A1A1A', textDecoration: 'none' }}>215-948-9902</a>
+                  <a id="footer-phone-link" href="tel:2159489902" style={{ color: '#4D4D4D', textDecoration: 'none' }}>215-948-9902</a>
                 </p>
               </address>
             </div>
@@ -574,8 +574,8 @@ export default function GiftCardsPage() {
                   { day: 'Sunday',    hours: '9:00 AM – 9:00 PM'  },
                 ].map((h, i) => (
                   <div key={i} id={`footer-hours-row-${i}`} style={{ display: 'flex', gap: '14px' }}>
-                    <span style={{ fontSize: '14px', color: '#1A1A1A', fontWeight: '500', minWidth: '96px' }}>{h.day}</span>
-                    <span style={{ fontSize: '14px', color: '#1A1A1A' }}>{h.hours}</span>
+                    <span style={{ fontSize: '14px', color: '#4D4D4D', fontWeight: '500', minWidth: '96px' }}>{h.day}</span>
+                    <span style={{ fontSize: '14px', color: '#4D4D4D' }}>{h.hours}</span>
                   </div>
                 ))}
               </div>
