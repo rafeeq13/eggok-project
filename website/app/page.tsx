@@ -522,7 +522,7 @@ export default function HomePage() {
           letter-spacing: -0.5px; line-height: 1.2;
           color: #1A1A1A; margin-bottom: 14px;
         }
-        .order-card-box p { color: #666666; font-size: 16px; line-height: 1.75; margin-bottom: 24px; }
+        .order-card-box p { color: #4D4D4D; font-size: 16px; line-height: 1.75; margin-bottom: 24px; }
         .order-btn {
           display: inline-flex; align-items: center; gap: 8px;
           background: #E3BF22; color: #000;
@@ -819,7 +819,7 @@ export default function HomePage() {
                     {item.tag && <div className="fav-tag-badge" style={{ position: 'absolute', top: '14px', left: '14px', background: 'rgba(255,255,255,0.9)', backdropFilter: 'blur(8px)', border: '1px solid #E3BF2240', borderRadius: '20px', padding: '4px 12px' }}>
                       <span className="fav-tag-text" style={{ fontSize: '12px', fontWeight: '700', color: '#4D4D4D', letterSpacing: '0.5px' }}>{item.tag}</span>
                     </div>}
-                    <div className="fav-add-btn" style={{ position: 'absolute', bottom: '14px', right: '14px', width: '36px', height: '36px', borderRadius: '50%', background: '#E3BF22', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }} aria-hidden="true">
+                    <div className="fav-add-btn" style={{ position: 'absolute', bottom: '14px', right: '14px', width: '36px', height: '36px', borderRadius: '50%', background: '#ffffff', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }} aria-hidden="true">
                       <Plus size={15} color="#000" strokeWidth={2.8} />
                     </div>
                   </div>
@@ -995,7 +995,7 @@ export default function HomePage() {
             </h2>
             <div id="reviews-rating-bar" className="reviews-rating-bar" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '5px', marginTop: '14px' }}>
               {[0,1,2,3,4].map(i => <Star key={i} size={19} color="#E3BF22" fill="#E3BF22" aria-hidden="true" />)}
-              <span className="reviews-rating-text" style={{ fontSize: '16px', color: '#888888', marginLeft: '8px' }}>
+              <span className="reviews-rating-text" style={{ fontSize: '16px', color: '#4D4D4D', marginLeft: '8px' }}>
                 {allReviews.length > 0
                   ? `${(allReviews.reduce((a, r) => a + r.stars, 0) / allReviews.length).toFixed(1)} average from ${allReviews.length} reviews`
                   : '5.0 average'}
@@ -1045,7 +1045,7 @@ export default function HomePage() {
                       </div>
                       <cite className="review-name" style={{ fontSize: '16px', fontWeight: '600', color: '#4D4D4D', fontStyle: 'normal' }}>{r.name}</cite>
                     </div>
-                    <time className="review-date" style={{ fontSize: '12px', color: '#AAAAAA' }}>{r.date}</time>
+                    <time className="review-date" style={{ fontSize: '12px', color: '#4D4D4D' }}>{r.date}</time>
                   </div>
                 </article>
               ))}

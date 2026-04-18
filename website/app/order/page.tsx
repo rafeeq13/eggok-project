@@ -107,11 +107,12 @@ const css = `
   /* ── Cart button ── */
   .nav-cart-btn {
     position: relative; width: 42px; height: 42px;
-    background: var(--y); border: 2px solid transparent; border-radius: 10px;
+    
+    background: #ffffff; border: 2px solid transparent; border-radius: 10px;
     cursor: pointer; display: flex; align-items: center; justify-content: center;
     flex-shrink: 0; transition: all 0.3s ease;
   }
-  .nav-cart-btn:hover { background: #E5B800; border-color: transparent; transform: none; box-shadow: none; }
+  .nav-cart-btn:hover { background: #ffffff; border-color: transparent; transform: none; box-shadow: none; }
   .nav-cart-badge {
     position: absolute; top: -6px; right: -6px;
     width: 20px; height: 20px; background: var(--r);
@@ -304,7 +305,7 @@ const css = `
   .grid-card-img { width: 120px; height: 120px; border-radius: 12px; overflow: hidden; background: #E0E0E0; border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; }
   .grid-card-img img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s ease; }
   .grid-card:hover .grid-card-img img { transform: scale(1.05); }
-  .grid-card-add-btn { position: absolute; bottom: -8px; right: -8px; width: 30px; height: 30px; border-radius: 50%; background: var(--y); display: flex; align-items: center; justify-content: center; border: 2px solid var(--bg3); box-shadow: 0 2px 10px rgba(0,0,0,0.06); }
+  .grid-card-add-btn { position: absolute; bottom: -8px; right: -8px; width: 30px; height: 30px; border-radius: 50%; background: #ffffff; display: flex; align-items: center; justify-content: center; border: 2px solid var(--bg3); box-shadow: 0 2px 10px rgba(0,0,0,0.06); }
 
   /* ── Search results header ── */
   .search-results-meta { font-size: 14px; color: var(--t3); margin-bottom: 20px; }
@@ -926,7 +927,7 @@ function OrderContent() {
 
           {/* Cart */}
           <button id="nav-cart-btn" className="nav-cart-btn" onClick={() => setShowCart(true)} aria-label={`Cart, ${mounted ? cartCount : 0} items`}>
-            <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#E5B800" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+            <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#4D4D4D" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
               <circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/>
               <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
             </svg>
@@ -1731,7 +1732,7 @@ function GridCard({ item, orderType, onSelect, borderRadius }: { item: MenuItem;
           }
         </div>
         <div className="grid-card-add-btn" aria-hidden="true">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#E5B800" strokeWidth="2.8" strokeLinecap="round">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#4D4D4D" strokeWidth="2.8" strokeLinecap="round">
             <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
           </svg>
         </div>
