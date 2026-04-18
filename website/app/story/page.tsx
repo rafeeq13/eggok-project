@@ -88,7 +88,7 @@ export default function StoryPage() {
         .story-img-side { display: flex; align-items: center; justify-content: center; }
 
         /* ── Image frame ── */
-        .story-img-frame { position: relative; width: 100%; max-width: 480px; }
+        .story-img-frame { position: relative; }
         // .story-img-frame::after {
         //   content: ''; position: absolute;
         //   bottom: -16px; right: -16px;
@@ -102,7 +102,7 @@ export default function StoryPage() {
         }
         .story-img-frame img {
           object-fit: cover; border-radius: 16px;
-          display: block; width: 100%; height: auto; aspect-ratio: 4/3;
+          display: block;  aspect-ratio: 4/3;
           transition: transform 0.5s cubic-bezier(0.16,1,0.3,1);
         }
         .story-img-frame:hover img { transform: scale(1.02); }
@@ -242,7 +242,7 @@ export default function StoryPage() {
       {/* ══════════════════════════════════════════
           HERO
       ══════════════════════════════════════════ */}
-      <section id="story-hero" className="hero-section" style={{ padding: '120px 0 88px', background: '#FFFFFF', position: 'relative', overflow: 'hidden' }}>
+      <section id="story-hero" className="hero-section" style={{ padding: '48px 0 32px', background: '#FFFFFF', position: 'relative', overflow: 'hidden' }}>
 
         {/* Glow */}
         <div className="hero-glow" style={{ position: 'absolute', top: 0, left: '50%', transform: 'translateX(-50%)', width: '600px', height: '600px', borderRadius: '50%', background: 'radial-gradient(circle, rgba(254,216,0,0.04) 0%, transparent 70%)', pointerEvents: 'none' }} aria-hidden="true" />
@@ -250,7 +250,7 @@ export default function StoryPage() {
         <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: '1px', background: '#EBEBEB' }} aria-hidden="true" />
 
         <div className="container hero-container" style={{ textAlign: 'center', position: 'relative' }}>
-          <h1 id="hero-title" className="bebas" style={{ fontSize: '28px', color: '#1A1A1A', lineHeight: '1.2', marginBottom: '24px' }}>
+          <h1 id="hero-title" className="bebas" style={{ fontSize: '50px', color: '#1A1A1A', lineHeight: '1.2', marginBottom: '24px' }}>
             Made With Purpose
           </h1>
           <p id="hero-subtitle" style={{ fontSize: '16px', fontWeight: 500, color: '#4D4D4D', lineHeight: '1.8', maxWidth: '540px', margin: '0 auto 40px' }}>
@@ -263,7 +263,7 @@ export default function StoryPage() {
       {/* ══════════════════════════════════════════
           SECTION 1 — THE ORIGIN
       ══════════════════════════════════════════ */}
-      <section id="story-origin" className="section-pad" style={{ padding: '96px 0', background: '#FFFFFF', position: 'relative', overflow: 'hidden' }}>
+      <section id="story-origin" className="section-pad" style={{ padding: '48px 32px', background: '#FFFFFF', position: 'relative', overflow: 'hidden' }}>
         <div className="section-bg-glow" style={{ position: 'absolute', inset: 0, backgroundImage: 'radial-gradient(circle at 80% 50%, rgba(254,216,0,0.04) 0%, transparent 60%)', pointerEvents: 'none' }} aria-hidden="true" />
 
         <div className="container origin-container">
@@ -275,8 +275,8 @@ export default function StoryPage() {
                 <Image
                   src="/main-menu/Our-Story/1.webp"
                   alt="The original Eggs Ok sandwich"
-                  width={480} height={360}
-                  style={{ objectFit: 'cover', borderRadius: '16px', display: 'block', width: '100%', height: 'auto', aspectRatio: '4/3' }}
+                  width={533.2} height={533.2}
+                  style={{ objectFit: 'cover', borderRadius: '16px', display: 'block',  aspectRatio: '4/3' }}
                 />
                
               </div>
@@ -308,7 +308,7 @@ export default function StoryPage() {
       {/* ══════════════════════════════════════════
           SECTION 2 — THE FOOD
       ══════════════════════════════════════════ */}
-      <section id="story-food" className="section-pad" style={{ padding: '96px 0', background: '#F8F9FA', position: 'relative', overflow: 'hidden' }}>
+      <section id="story-food" className="section-pad" style={{ padding: '48px 32px', background: '#F8F9FA', position: 'relative', overflow: 'hidden' }}>
         <div className="section-bg-glow" style={{ position: 'absolute', inset: 0, backgroundImage: 'radial-gradient(circle at 20% 50%, rgba(254,216,0,0.04) 0%, transparent 60%)', pointerEvents: 'none' }} aria-hidden="true" />
 
         <div className="container food-container">
@@ -337,8 +337,8 @@ export default function StoryPage() {
                 <Image
                   src="/main-menu/Our-Story/2.webp"
                   alt="Eggs Ok — fresh, made to order"
-                  width={480} height={360}
-                  style={{ objectFit: 'cover', borderRadius: '16px', display: 'block', width: '100%', height: 'auto', aspectRatio: '4/3' }}
+                  width={533.2} height={533.2}
+                  style={{ objectFit: 'cover', borderRadius: '16px', display: 'block', aspectRatio: '4/3' }}
                 />
                 
               </div>
@@ -353,7 +353,7 @@ export default function StoryPage() {
       {/* ══════════════════════════════════════════
           SECTION 3 — COMMUNITY
       ══════════════════════════════════════════ */}
-      <section id="story-community" className="section-pad" style={{ padding: '96px 0', background: '#FFFFFF', position: 'relative', overflow: 'hidden' }}>
+      <section id="story-community" className="section-pad" style={{ padding: '48px 32px', background: '#FFFFFF', position: 'relative', overflow: 'hidden' }}>
         <div className="section-bg-glow" style={{ position: 'absolute', inset: 0, backgroundImage: 'radial-gradient(circle at 70% 60%, rgba(254,216,0,0.04) 0%, transparent 55%)', pointerEvents: 'none' }} aria-hidden="true" />
 
         <div className="container community-container">
@@ -365,8 +365,8 @@ export default function StoryPage() {
                 <Image
                   src="/main-menu/Our-Story/3.webp"
                   alt="Serving West Philadelphia"
-                  width={480} height={360}
-                  style={{ objectFit: 'cover', borderRadius: '16px', display: 'block', width: '100%', height: 'auto', aspectRatio: '4/3' }}
+                  width={533.2} height={533.2}
+                  style={{ objectFit: 'cover', borderRadius: '16px', display: 'block',  aspectRatio: '4/3' }}
                 />
                
               </div>
@@ -399,7 +399,7 @@ export default function StoryPage() {
       {/* ══════════════════════════════════════════
           FOOTER
       ══════════════════════════════════════════ */}
-      <footer id="story-footer" className="site-footer" style={{ background: '#F8F9FA', padding: '68px 0 32px', borderTop: '1px solid #E5E5E5' }}>
+      <footer id="story-footer" className="site-footer" style={{ background: '#F8F9FA', padding: '48px 0 32px', borderTop: '1px solid #E5E5E5' }}>
         <div className="container footer-container">
           <div id="footer-grid" className="footer-grid">
 
