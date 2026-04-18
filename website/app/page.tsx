@@ -352,9 +352,9 @@ export default function HomePage() {
         }
         .hero-pickup-btn, .hero-menu-btn {
           display: inline-flex; align-items: center; gap: 8px;
-          padding: 7px 28px; background: #E3BF22; color: #0D0D0D;
+          padding: 7px 16px; background: #E3BF22; color: #0D0D0D;
           border: 2px solid #E3BF22;
-          border-radius: 10px; font-size: 17px; font-weight: 700;
+          border-radius: 10px; font-size: 17px; font-weight: 500;
           transition: all 0.25s ease; font-family: var(--font-body); cursor: pointer;
           text-decoration: none;
           box-shadow: 0 4px 16px rgba(0,0,0,0.18);
@@ -686,7 +686,7 @@ export default function HomePage() {
           .hero-section { min-height: 70vh; padding: 80px 0 56px; }
           .hero-title { font-size: 40px; margin-bottom: 24px; }
           .hero-tagline { font-size: 18px; margin-bottom: 14px; }
-          .hero-pickup-btn, .hero-menu-btn { padding: 7px 12px 22px; font-size: 15px; }
+          .hero-pickup-btn, .hero-menu-btn { padding: 7px 7px; font-size: 16px; }
           .hero-stats { margin-top: 24px; gap: 20px; }
           .hero-stat-value { font-size: clamp(22px, 5vw, 30px) !important; }
           .fav-card { min-width: calc(50% - 10px); max-width: calc(50% - 10px); }
@@ -702,7 +702,7 @@ export default function HomePage() {
           .hero-title { font-size: 32px; margin-bottom: 20px; }
           .hero-tagline { font-size: 15px; margin-bottom: 12px; }
           .hero-cta { gap: 10px; }
-          .hero-pickup-btn, .hero-menu-btn { padding: 7px 18px; font-size: 14px; }
+          .hero-pickup-btn, .hero-menu-btn { padding: 7px 7px; font-size: 16px; }
           .photo-gallery { grid-template-columns: 1fr; }
           .gallery-item { height: 220px; }
         }
