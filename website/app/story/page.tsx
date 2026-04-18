@@ -457,7 +457,7 @@ export default function StoryPage() {
                 ].map((h, i) => (
                   <div key={i} className={`footer-hours-row footer-hours-${h.day.toLowerCase()}`} style={{ display: 'flex', gap: '14px' }}>
                     <span className="footer-hours-day" style={{ fontSize: '14px', color: '#4D4D4D;', fontWeight: '500', minWidth: '96px' }}>{h.day}</span>
-                    <span className="footer-hours-time" style={{ fontSize: '14px', color: '#666666' }}>{h.hours}</span>
+                    <span className="footer-hours-time" style={{ fontSize: '14px', color: '#4D4D4D' }}>{h.hours}</span>
                   </div>
                 ))}
               </div>

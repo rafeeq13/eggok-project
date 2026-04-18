@@ -109,7 +109,7 @@ export default function HiringPage() {
         .btn-yellow {
           display: inline-flex; align-items: center; gap: 8px;
           padding: 14px 28px; background: var(--y); color: #000;
-          border-radius: 10px; font-size: 16px; font-weight: 700;
+          border-radius: 10px; font-size: 16px; font-weight: 500;
           text-decoration: none; border: 2px solid transparent; cursor: pointer;
           transition: all 0.3s ease;
           font-family: var(--font-body);
@@ -119,7 +119,7 @@ export default function HiringPage() {
         .btn-outline {
           display: inline-flex; align-items: center; gap: 8px;
           padding: 14px 28px; background: transparent; color: #1A1A1A;
-          border-radius: 10px; font-size: 16px; font-weight: 700;
+          border-radius: 10px; font-size: 16px; font-weight: 500;
           text-decoration: none; border: 1.5px solid #1A1A1A;
           transition: border-color 0.15s, color 0.15s;
           font-family: var(--font-body);
@@ -246,7 +246,7 @@ export default function HiringPage() {
         .form-textarea::placeholder { color: var(--t3); }
         .form-submit-btn {
           width: 100%; padding: 15px; background: var(--y);
-          border-radius: 12px; font-size: 16px; font-weight: 700;
+          border-radius: 12px; font-size: 16px; font-weight: 500;
           color: #000; cursor: pointer; border: 2px solid transparent;
           display: flex; align-items: center; justify-content: center; gap: 8px;
           font-family: var(--font-body);
@@ -622,8 +622,8 @@ export default function HiringPage() {
                   { day: 'Sunday',    hours: '9:00 AM – 9:00 PM'  },
                 ].map((h, i) => (
                   <div key={i} className={`footer-hours-row footer-hours-${h.day.toLowerCase()}`} style={{ display: 'flex', gap: '14px' }}>
-                    <span className="footer-hours-day" style={{ fontSize: '14px', color: '#1A1A1A', fontWeight: '600', minWidth: '96px' }}>{h.day}</span>
-                    <span className="footer-hours-time" style={{ fontSize: '14px', color: '#666666' }}>{h.hours}</span>
+                    <span className="footer-hours-day" style={{ fontSize: '14px', color: '#1A1A1A', fontWeight: '500', minWidth: '96px' }}>{h.day}</span>
+                    <span className="footer-hours-time" style={{ fontSize: '14px', color: '#1A1A1A' }}>{h.hours}</span>
                   </div>
                 ))}
               </div>

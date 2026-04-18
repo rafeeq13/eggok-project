@@ -88,7 +88,7 @@ export default function GiftCardsPage() {
         .btn-yellow {
           display: inline-flex; align-items: center; gap: 8px;
           padding: 14px 28px; background: var(--y); color: #000;
-          border-radius: 10px; font-size: 16px; font-weight: 700;
+          border-radius: 10px; font-size: 16px; font-weight: 500;
           text-decoration: none; border: 2px solid transparent; cursor: pointer;
           transition: all 0.3s ease;
           font-family: var(--font-body);
@@ -98,7 +98,7 @@ export default function GiftCardsPage() {
         .btn-outline {
           display: inline-flex; align-items: center; gap: 8px;
           padding: 14px 28px; background: transparent; color: #1A1A1A;
-          border-radius: 10px; font-size: 16px; font-weight: 700;
+          border-radius: 10px; font-size: 16px; font-weight: 500;
           text-decoration: none; border: 1.5px solid #1A1A1A;
           transition: border-color 0.15s, color 0.15s;
           font-family: var(--font-body); cursor: pointer;
@@ -214,7 +214,7 @@ export default function GiftCardsPage() {
         /* ── Submit btn ── */
         .form-submit-btn {
           width: 100%; padding: 16px; border-radius: 12px; font-size: 16px;
-          font-weight: 700; cursor: pointer; border: 2px solid transparent;
+          font-weight: 500; cursor: pointer; border: 2px solid transparent;
           display: flex; align-items: center; justify-content: center; gap: 8px;
           font-family: var(--font-body); transition: all 0.3s ease;
         }
@@ -574,8 +574,8 @@ export default function GiftCardsPage() {
                   { day: 'Sunday',    hours: '9:00 AM – 9:00 PM'  },
                 ].map((h, i) => (
                   <div key={i} id={`footer-hours-row-${i}`} style={{ display: 'flex', gap: '14px' }}>
-                    <span style={{ fontSize: '14px', color: '#1A1A1A', fontWeight: '600', minWidth: '96px' }}>{h.day}</span>
-                    <span style={{ fontSize: '14px', color: '#666666' }}>{h.hours}</span>
+                    <span style={{ fontSize: '14px', color: '#1A1A1A', fontWeight: '500', minWidth: '96px' }}>{h.day}</span>
+                    <span style={{ fontSize: '14px', color: '#1A1A1A' }}>{h.hours}</span>
                   </div>
                 ))}
               </div>

@@ -52,7 +52,7 @@ export default function TrackPage() {
           <input
             value={query}
             onChange={e => { setQuery(e.target.value); setError(''); }}
-            placeholder="Order number (EO-123456-789) or email"
+            placeholder="Order number (EO-xxxxx) or email"
             style={{
               padding: '14px 18px', background: '#F8F9FA', border: '1px solid #D0D0D0',
               borderRadius: '12px', color: '#1A1A1A', fontSize: '16px', textAlign: 'center', outline: 'none',
@@ -65,7 +65,7 @@ export default function TrackPage() {
 
           <button type="submit" disabled={searching || !query.trim()} style={{
             padding: '8px 12px', background: searching ? '#E5E5E5' : '#E5B800', border: 'none',
-            borderRadius: '12px', color: searching ? '#777777' : '#000', fontSize: '16px', fontWeight: '700',
+            borderRadius: '12px', color: searching ? '#777777' : '#000', fontSize: '16px', fontWeight: '500',
             cursor: searching ? 'not-allowed' : 'pointer',
           }}>
             {searching ? 'Searching...' : 'Track Order'}

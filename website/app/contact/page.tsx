@@ -177,7 +177,7 @@ export default function ContactPage() {
         .hours-row { display: flex; justify-content: space-between; align-items: center; padding: 6px 0; gap: 8px; }
         .hours-row + .hours-row { border-top: 1px solid #EBEBEB; }
         .hours-row-day { font-size: 16px; color: var(--t2); white-space: nowrap; }
-        .hours-row-time { font-size: 16px; font-weight: 600; color: var(--t1); text-align: right; white-space: nowrap; }
+        .hours-row-time { font-size: 16px; font-weight: 500; color: var(--t1); text-align: right; white-space: nowrap; }
 
         /* ── Map box ── */
         .map-box {
@@ -247,7 +247,7 @@ export default function ContactPage() {
         .form-textarea::placeholder { color: var(--t3); }
         .form-submit-btn {
           width: 100%; padding: 16px; background: var(--y);
-          border-radius: 12px; font-size: 16px; font-weight: 700;
+          border-radius: 12px; font-size: 16px; font-weight: 500;
           color: #000; cursor: pointer; border: 2px solid transparent;
           display: flex; align-items: center; justify-content: center; gap: 8px;
           font-family: var(--font-body);
@@ -285,7 +285,7 @@ export default function ContactPage() {
         .footer-link { display: block; font-size: 16px; color: #1A1A1A; text-decoration: none; transition: color 0.15s, padding-left 0.15s; padding: 4px 0px; }
         .footer-link:hover { color: #1A1A1A; text-decoration: underline; }
         .footer-hours-row { display: flex; gap: 14px; }
-        .footer-hours-day { font-size: 14px; color: #1A1A1A; font-weight: 600; min-width: 90px; }
+        .footer-hours-day { font-size: 14px; color: #1A1A1A; font-weight: 500; min-width: 90px; }
         .footer-hours-time { font-size: 14px; color: #666666; }
 
         /* ═══ RESPONSIVE ═══ */
@@ -356,7 +356,7 @@ export default function ContactPage() {
         <div className="hero-glow" style={{ position: 'absolute', top: '-60px', left: '50%', transform: 'translateX(-50%)', width: '600px', height: '600px', borderRadius: '50%', background: 'radial-gradient(circle, rgba(254,216,0,0.04) 0%, transparent 70%)', pointerEvents: 'none' }} aria-hidden="true" />
 
         <div className="container hero-container" style={{ position: 'relative' }}>
-          <span id="hero-label" className="sec-label">Get In Touch</span>
+         
           <h1 id="hero-title" className="bebas" style={{ fontSize: '28px', color: '#1A1A1A', lineHeight: '1.2', marginBottom: '22px' }}>
             We&apos;d Love to Hear From You
           </h1>
