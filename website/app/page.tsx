@@ -520,6 +520,7 @@ export default function HomePage() {
           // margin: 40px auto 40px 48px;
           border: 1px solid #E0E0E0;
           backdrop-filter: blur(16px);
+          margin-right: 50px;
         }
          .order-card-box-rewards{
          position: relative; z-index: 1;
@@ -684,7 +685,7 @@ export default function HomePage() {
           .footer-grid { grid-template-columns: 1fr 1fr; gap: 32px; }
           .footer-brand { grid-column: 1 / -1; }
           .order-card-box { margin: 40px auto 40px 32px; }
-        }
+     
         @media (max-width: 900px) {
           .photo-gallery { grid-template-columns: repeat(2,1fr); }
           .about-grid { grid-template-columns: 1fr; }
@@ -835,7 +836,7 @@ export default function HomePage() {
                     </div>
                   </div>
                   <div className="fav-card-body" style={{ padding: '0 14px 4px', width: '100%' }}>
-                    <p className="fav-card-name" style={{ fontSize: '14px', fontWeight: '500', color: '#4D4D4D', marginBottom: '4px', lineHeight: 1.3 }}>{item.name}</p>
+                    <p className="fav-card-name" style={{ fontSize: '16px', fontWeight: '500', color: '#0D0D0D', marginBottom: '4px', lineHeight: 1.3 }}>{item.name}</p>
                     {/* <p className="fav-card-desc" style={{ fontSize: '14px', color: '#888888', lineHeight: 1.4, marginBottom: '8px', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical' as any, overflow: 'hidden' }}>{item.desc}</p> */}
                     {/* <p className="fav-card-price" style={{ fontSize: '16px', fontWeight: '900', color: '#4D4D4D' }}>{item.price}</p> */}
                   </div>
