@@ -59,7 +59,7 @@ export default function ContactPage() {
   ];
 
   return (
-    <div id="contact-page" style={{ background: '#FFFFFF', minHeight: '100vh', fontFamily: 'DM Sans, -apple-system, BlinkMacSystemFont, sans-serif' }}>
+    <div id="contact-page" style={{ background: '#FFFFFF', minHeight: '100vh', fontFamily: '"Geist", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif' }}>
 
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;0,9..40,800;1,9..40,400&display=swap');
@@ -79,7 +79,7 @@ export default function ContactPage() {
           --t2: #333333;
           --t3: #888888;
           --font-head: 'Playfair Display', Georgia, serif;
-          --font-body: 'Geist', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+          --font-body: 'Geist', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
         }
 
         /* ── Accessibility ── */

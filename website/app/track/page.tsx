@@ -35,7 +35,7 @@ export default function TrackPage() {
   };
 
   return (
-    <div style={{ background: '#FFFFFF', minHeight: '100vh', color: '#1A1A1A', fontFamily: "'Geist', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif", fontWeight: 500 }}>
+    <div style={{ background: '#FFFFFF', minHeight: '100vh', color: '#4D4D4D', fontFamily: "'Geist', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif", fontWeight: 500 }}>
       <Header />
       <div style={{ maxWidth: '500px', margin: '0 auto', padding: '120px 20px 60px', textAlign: 'center' }}>
 

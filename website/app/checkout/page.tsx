@@ -129,9 +129,9 @@ const css = `
   .co-del-field-textarea:focus { border-color: #E5B800; }
   .co-del-field-textarea::placeholder { color: #AAAAAA; }
   .co-del-from { padding: 14px 16px; background: #F8F9FA; border-radius: 12px; border: 1px solid #E5E5E5; }
-  .co-btn-primary { width: 100%; padding: 14px; background: #E5B800; border: 2px solid transparent; border-radius: 12px; color: #000; font-size: 16px; font-weight: 900; cursor: pointer; transition: all 0.3s ease; font-family: 'Geist', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; }
+  .co-btn-primary { width: 100%; padding: 14px; background: #E5B800; border: 2px solid transparent; border-radius: 12px; color: #000; font-size: 16px; font-weight: 900; cursor: pointer; transition: all 0.3s ease; font-family: 'Geist', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
   .co-btn-primary:hover { background: #E5B800; color: #000; border-color: transparent; transform: none; box-shadow: none; }
-  .co-btn-secondary { width: 100%; padding: 14px; background: transparent; border: 1.5px solid #D0D0D0; border-radius: 12px; color: #555555; font-size: 16px; font-weight: 600; cursor: pointer; transition: border-color 0.15s; font-family: 'Geist', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; }
+  .co-btn-secondary { width: 100%; padding: 14px; background: transparent; border: 1.5px solid #D0D0D0; border-radius: 12px; color: #555555; font-size: 16px; font-weight: 600; cursor: pointer; transition: border-color 0.15s; font-family: 'Geist', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
   .co-btn-secondary:hover { border-color: #C0C0C0; color: #1A1A1A; }
 
   .co-schedule-box { background: #FFFFFF; border-radius: 20px; width: 100%; max-width: 420px; border: 1px solid #E5E5E5; box-shadow: 0 24px 64px rgba(0,0,0,0.1); overflow: hidden; max-height: 90vh; display: flex; flex-direction: column; }
@@ -150,7 +150,7 @@ const css = `
   .co-radio.unselected { border-color: #D0D0D0; background: transparent; }
   .co-radio-inner { width: 8px; height: 8px; border-radius: 50%; background: #000; }
   .co-schedule-footer { padding: 16px 24px; border-top: 1px solid #E5E5E5; flex-shrink: 0; }
-  .co-schedule-confirm { width: 100%; padding: 14px; background: #E5B800; border: 2px solid transparent; border-radius: 12px; color: #000; font-size: 16px; font-weight: 900; cursor: pointer; transition: all 0.3s ease; font-family: 'Geist', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; }
+  .co-schedule-confirm { width: 100%; padding: 14px; background: #E5B800; border: 2px solid transparent; border-radius: 12px; color: #000; font-size: 16px; font-weight: 900; cursor: pointer; transition: all 0.3s ease; font-family: 'Geist', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
   .co-schedule-confirm:hover { background: #E5B800; color: #000; border-color: transparent; transform: none; }
 `;
 
@@ -334,7 +334,7 @@ function CheckoutInner() {
     fontSize: '16px', outline: 'none',
     transition: 'border-color 0.2s',
     boxSizing: 'border-box',
-    fontFamily: "'Geist', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif",
+    fontFamily: "'Geist', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
   };
 
   const labelStyle: React.CSSProperties = {
@@ -528,7 +528,7 @@ function CheckoutInner() {
   if (!mounted) return <div style={{ background: '#F5F5F5', minHeight: '100vh' }} />;
 
   return (
-    <div style={{ background: '#F5F5F5', minHeight: '100vh', color: '#1A1A1A', fontFamily: "'Geist', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif" }}>
+    <div style={{ background: '#F5F5F5', minHeight: '100vh', color: '#4D4D4D', fontFamily: "'Geist', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" }}>
       <style>{css}</style>
 
       <div className="checkout-wrap">
@@ -790,7 +790,7 @@ function CheckoutInner() {
                       onFocus={e => (e.target as HTMLInputElement).style.borderColor = '#E5B800'}
                       onBlur={e => (e.target as HTMLInputElement).style.borderColor = '#D0D0D0'} />
                     <button onClick={applyPromo} disabled={promoLoading}
-                      style={{ padding: '12px 14px', background: promoLoading ? '#E5E5E5' : '#E5B800', borderRadius: '10px', color: promoLoading ? '#AAAAAA' : '#000', fontSize: '16px', fontWeight: '700', cursor: promoLoading ? 'not-allowed' : 'pointer', border: 'none', flexShrink: 0, fontFamily: "'Geist', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif" }}>
+                      style={{ padding: '12px 14px', background: promoLoading ? '#E5E5E5' : '#E5B800', borderRadius: '10px', color: promoLoading ? '#AAAAAA' : '#000', fontSize: '16px', fontWeight: '700', cursor: promoLoading ? 'not-allowed' : 'pointer', border: 'none', flexShrink: 0, fontFamily: "'Geist', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" }}>
                       {promoLoading ? '...' : 'Apply'}
                     </button>
                   </div>
@@ -927,7 +927,7 @@ function CheckoutInner() {
             </div>
 
             <button onClick={applyCustomTip} disabled={!customTipAmount || parseFloat(customTipAmount) <= 0}
-              style={{ width: '100%', padding: '14px', background: customTipAmount && parseFloat(customTipAmount) > 0 ? '#E5B800' : '#E5E5E5', border: 'none', borderRadius: '12px', color: customTipAmount && parseFloat(customTipAmount) > 0 ? '#000' : '#AAAAAA', fontSize: '16px', fontWeight: '900', cursor: customTipAmount && parseFloat(customTipAmount) > 0 ? 'pointer' : 'not-allowed', fontFamily: "'Geist', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif" }}>
+              style={{ width: '100%', padding: '14px', background: customTipAmount && parseFloat(customTipAmount) > 0 ? '#E5B800' : '#E5E5E5', border: 'none', borderRadius: '12px', color: customTipAmount && parseFloat(customTipAmount) > 0 ? '#000' : '#AAAAAA', fontSize: '16px', fontWeight: '900', cursor: customTipAmount && parseFloat(customTipAmount) > 0 ? 'pointer' : 'not-allowed', fontFamily: "'Geist', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" }}>
               Done
             </button>
           </div>

@@ -464,7 +464,7 @@ export default function AccountPage() {
   // ── LOGIN VIEW ──
   if (view === 'login') {
     return (
-      <div style={{ background: '#FFFFFF', minHeight: '100vh', fontFamily: "'Geist', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif", fontWeight: 500 }}>
+      <div style={{ background: '#FFFFFF', minHeight: '100vh', fontFamily: "'Geist', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif", fontWeight: 500 }}>
         <Header />
         <div style={{ maxWidth: '440px', margin: '0 auto', padding: '96px 24px 48px' }}>
           <div style={{ textAlign: 'center', marginBottom: '32px' }}>
@@ -539,7 +539,7 @@ export default function AccountPage() {
   // ── FORGOT PASSWORD VIEW ──
   if (view === 'forgot') {
     return (
-      <div style={{ background: '#FFFFFF', minHeight: '100vh', fontFamily: "'Geist', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif", fontWeight: 500 }}>
+      <div style={{ background: '#FFFFFF', minHeight: '100vh', fontFamily: "'Geist', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif", fontWeight: 500 }}>
         <Header />
         <div style={{ maxWidth: '440px', margin: '0 auto', padding: '96px 24px 48px' }}>
           <button onClick={() => setView('login')} style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#1A1A1A', fontSize: '16px', marginBottom: '28px', background: 'transparent', border: 'none', cursor: 'pointer' }}>
@@ -578,7 +578,7 @@ export default function AccountPage() {
   // ── FORGOT PASSWORD SENT VIEW ──
   if (view === 'forgot-sent') {
     return (
-      <div style={{ background: '#FFFFFF', minHeight: '100vh', fontFamily: "'Geist', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif", fontWeight: 500 }}>
+      <div style={{ background: '#FFFFFF', minHeight: '100vh', fontFamily: "'Geist', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif", fontWeight: 500 }}>
         <Header />
         <div style={{ maxWidth: '440px', margin: '0 auto', padding: '96px 24px 48px' }}>
           <div style={{ textAlign: 'center' }}>
@@ -607,7 +607,7 @@ export default function AccountPage() {
   // ── REGISTER VIEW ──
   if (view === 'register') {
     return (
-      <div style={{ background: '#FFFFFF', minHeight: '100vh', fontFamily: "'Geist', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif", fontWeight: 500 }}>
+      <div style={{ background: '#FFFFFF', minHeight: '100vh', fontFamily: "'Geist', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif", fontWeight: 500 }}>
         <Header />
         <div style={{ maxWidth: '480px', margin: '0 auto', padding: '96px 24px 48px' }}>
           <button onClick={() => setView('login')} style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#1A1A1A', fontSize: '16px', marginBottom: '28px', background: 'transparent', border: 'none', cursor: 'pointer' }}>
@@ -735,7 +735,7 @@ export default function AccountPage() {
 
   // ── ACCOUNT DASHBOARD ──
   return (
-    <div style={{ background: '#FFFFFF', minHeight: '100vh', fontFamily: "'Geist', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif", fontWeight: 500 }}>
+    <div style={{ background: '#FFFFFF', minHeight: '100vh', fontFamily: "'Geist', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif", fontWeight: 500 }}>
       <Header />
 
       {successMsg && (

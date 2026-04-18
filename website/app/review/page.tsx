@@ -44,7 +44,7 @@ function ReviewContent() {
   const inputStyle: React.CSSProperties = { width: '100%', padding: '12px 16px', background: '#F8F9FA', border: '1px solid #D0D0D0', borderRadius: '10px', color: '#1A1A1A', fontSize: '16px', outline: 'none' };
 
   return (
-    <div style={{ background: '#FFFFFF', minHeight: '100vh', color: '#1A1A1A', fontFamily: "'Geist', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif", fontWeight: 500 }}>
+    <div style={{ background: '#FFFFFF', minHeight: '100vh', color: '#4D4D4D', fontFamily: "'Geist', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif", fontWeight: 500 }}>
       <Header />
       <div style={{ maxWidth: '560px', margin: '0 auto', padding: '100px 20px 60px' }}>
 

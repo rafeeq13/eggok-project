@@ -260,7 +260,7 @@ export default function HomePage() {
   const toggleFaq = useCallback((i: number) => setOpenFaq(prev => prev === i ? null : i), []);
 
   return (
-    <main id="main-content" className="homepage-main" style={{ background: '#FFFFFF', minHeight: '100vh', fontFamily: "'Geist', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif", fontSize: '16px', fontWeight: 500 }}>
+    <main id="main-content" className="homepage-main" style={{ background: '#FFFFFF', minHeight: '100vh', fontFamily: "'Geist', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif", fontSize: '16px', fontWeight: 500 }}>
 
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(JSON_LD) }} />
 

@@ -78,7 +78,7 @@ function ResetPasswordForm() {
 
   if (!token) {
     return (
-      <div style={{ background: '#FFFFFF', minHeight: '100vh', fontFamily: "'Geist', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif", fontWeight: 500 }}>
+      <div style={{ background: '#FFFFFF', minHeight: '100vh', fontFamily: "'Geist', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif", fontWeight: 500 }}>
         <Nav />
         <div style={{ maxWidth: '440px', margin: '0 auto', padding: '96px 24px 48px', textAlign: 'center' }}>
           <div style={{ width: '72px', height: '72px', borderRadius: '50%', background: '#2A0A0A', border: '2px solid #FC030140', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 24px' }}>
@@ -98,7 +98,7 @@ function ResetPasswordForm() {
 
   if (success) {
     return (
-      <div style={{ background: '#FFFFFF', minHeight: '100vh', fontFamily: "'Geist', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif", fontWeight: 500 }}>
+      <div style={{ background: '#FFFFFF', minHeight: '100vh', fontFamily: "'Geist', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif", fontWeight: 500 }}>
         <Nav />
         <div style={{ maxWidth: '440px', margin: '0 auto', padding: '96px 24px 48px', textAlign: 'center' }}>
           <div style={{ width: '72px', height: '72px', borderRadius: '50%', background: '#22C55E15', border: '2px solid #22C55E40', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 24px' }}>
@@ -117,7 +117,7 @@ function ResetPasswordForm() {
   }
 
   return (
-    <div style={{ background: '#FFFFFF', minHeight: '100vh', fontFamily: "'Geist', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif", fontWeight: 500 }}>
+    <div style={{ background: '#FFFFFF', minHeight: '100vh', fontFamily: "'Geist', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif", fontWeight: 500 }}>
       <Nav />
       <div style={{ maxWidth: '440px', margin: '0 auto', padding: '96px 24px 48px' }}>
         <div style={{ textAlign: 'center', marginBottom: '32px' }}>

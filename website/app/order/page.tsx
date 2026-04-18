@@ -34,7 +34,7 @@ const css = `
     --t4: #AAAAAA;
     --green: #22C55E;
     --font-head: 'Playfair Display', Georgia, serif;
-    --font-body: 'Geist', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    --font-body: 'Geist', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   }
 
   /* ── Base ── */
