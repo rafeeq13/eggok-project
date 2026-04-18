@@ -1224,7 +1224,7 @@ export default function HomePage() {
       {/* ══════════════════════════════════════════
           12. DELIVERY CTA
       ══════════════════════════════════════════ */}
-      <section id="delivery" className=" section-delivery" aria-labelledby="delivery-heading" style={{  padding: '48px 15px' }}>
+      <section id="delivery" className=" section-delivery" aria-labelledby="delivery-heading" style={{ display:'none', padding: '48px 15px' }}>
       
         <div className="delivery-hero">
           <div className='delivery-content '>
