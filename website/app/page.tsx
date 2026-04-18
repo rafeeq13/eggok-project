@@ -598,7 +598,7 @@ export default function HomePage() {
         .review-card {
           background: #FFFFFF;
           border: 1px solid #E5E5E5;
-          border-left: 3px solid #E3BF22;
+          border-left: 3px solid #0C0C0C;
           border-radius: 18px; padding: 28px;
           transition: transform 0.25s, box-shadow 0.25s;
           min-width: calc(33.33% - 11px); max-width: calc(33.33% - 11px); flex-shrink: 0;
@@ -608,11 +608,11 @@ export default function HomePage() {
           position: absolute; top: 50%; transform: translateY(-50%); z-index: 10;
           width: 44px; height: 44px; border-radius: 50%;
           background: rgba(255,255,255,0.95); border: 1px solid #E5E5E5;
-          color: #B8A000; cursor: pointer;
+          color: #1A1A1A; cursor: pointer;
           display: flex; align-items: center; justify-content: center;
           transition: background 0.15s, border-color 0.15s;
         }
-        .review-arrow:hover { background: #FFFFFF; border-color: #E3BF22; }
+        .review-arrow:hover { background: #FFFFFF; border-color: #C0C0C0; }
         .review-arrow-left { left: -22px; }
         .review-arrow-right { right: -22px; }
         .star-filter-wrap {
@@ -999,7 +999,7 @@ export default function HomePage() {
               What Our Guests Are Saying
             </h2>
             <div id="reviews-rating-bar" className="reviews-rating-bar" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '5px', marginTop: '14px' }}>
-              {[0,1,2,3,4].map(i => <Star key={i} size={19} color="#E3BF22" fill="#E3BF22" aria-hidden="true" />)}
+              {[0,1,2,3,4].map(i => <Star key={i} size={19} color="#4D4D4D" fill="#4D4D4D" aria-hidden="true" />)}
               <span className="reviews-rating-text" style={{ fontSize: '16px', color: '#4D4D4D', marginLeft: '8px' }}>
                 {allReviews.length > 0
                   ? `${(allReviews.reduce((a, r) => a + r.stars, 0) / allReviews.length).toFixed(1)} average from ${allReviews.length} reviews`
@@ -1014,7 +1014,7 @@ export default function HomePage() {
               </button>
               {[5, 4, 3, 2, 1].map(s => (
                 <button key={s} className={`star-filter-btn ${starFilter === s ? 'active' : ''}`} onClick={() => setStarFilter(starFilter === s ? null : s)}>
-                  {s} <Star size={12} color="#E3BF22" fill="#E3BF22" />
+                  {s} <Star size={12} color="#4D4D4D" fill="#4D4D4D" />
                 </button>
               ))}
             </div>
@@ -1038,7 +1038,7 @@ export default function HomePage() {
                   role="listitem"
                 >
                   <div className="review-stars" style={{ display: 'flex', gap: '3px', marginBottom: '18px' }} aria-label={`${r.stars} out of 5 stars`}>
-                    {[0,1,2,3,4].map(s => <Star key={s} size={13} color={s < r.stars ? '#E3BF22' : '#D0D0D0'} fill={s < r.stars ? '#E3BF22' : 'none'} aria-hidden="true" />)}
+                    {[0,1,2,3,4].map(s => <Star key={s} size={13} color={s < r.stars ? '#4D4D4D' : '#4D4D4D'} fill={s < r.stars ? '#4D4D4D' : 'none'} aria-hidden="true" />)}
                   </div>
                   <blockquote className="review-quote" style={{ fontSize: '16px', color: '#4D4D4D', lineHeight: 1.75, marginBottom: '24px', fontStyle: 'italic' }}>
                     &ldquo;{r.text}&rdquo;
