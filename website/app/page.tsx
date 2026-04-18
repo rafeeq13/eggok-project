@@ -334,7 +334,7 @@ export default function HomePage() {
 
         /* ── Hero ── */
         .hero-section {
-          min-height: 100vh; display: flex; align-items: flex-end; justify-content: flex-start;
+          min-height: 80vh; display: flex; align-items: flex-end; justify-content: flex-start;
           text-align: left; position: relative; overflow: hidden;
           padding-bottom: 40px;
           background-image: url('/main-menu/Hero-Banner.webp');
@@ -516,7 +516,7 @@ export default function HomePage() {
         .order-card-box {
           position: relative; z-index: 1;
           background: rgba(255,255,255,0.95); padding: 44px 48px;
-          border-radius: 20px; max-width: 60%;
+          border-radius: 20px; max-width: 45%;
           // margin: 40px auto 40px 48px;
           border: 1px solid #E0E0E0;
           backdrop-filter: blur(16px);
@@ -524,7 +524,7 @@ export default function HomePage() {
          .order-card-box-rewards{
          position: relative; z-index: 1;
           background: rgba(255,255,255,0.95); padding: 44px 48px;
-          border-radius: 20px; max-width: 60%;
+          border-radius: 20px; max-width: 45%;
           margin: 40px auto 40px 48px;
           border: 1px solid #E0E0E0;
           backdrop-filter: blur(16px);}
