@@ -35,6 +35,12 @@ const MENU_TILES = [
   { label: 'Smoothies',            img: '/main-menu/Our-Gallery/7.webp',        items: '7 items' },
   { label: 'Omelettes',            img: '/main-menu/Our-Gallery/8.webp',       items: '4 items' },
   { label: 'Burritos',             img: '/main-menu/Our-Gallery/9.webp',        items: '9 items' },
+
+
+
+    { label: 'Smoothies',            img: '/main-menu/Our-Gallery/10.jpg',        items: '10 items' },
+  { label: 'Omelettes',            img: '/main-menu/Our-Gallery/11.jpg',       items: '11 items' },
+  { label: 'Burritos',             img: '/main-menu/Our-Gallery/12.jpg',        items: '12 items' },
 ];
 
 const REVIEWS = [
