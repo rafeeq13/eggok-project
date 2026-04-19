@@ -637,6 +637,7 @@ const css = `
 
   /* ══ TABLET + MOBILE ≤ 1024px (tablet uses mobile layout) ══ */
   @media (max-width: 1024px) {
+  .item-modal-box {min-height: 60vh;}
     .nav-signin { display: none; }
     .sidebar { position: fixed; top: 72px; left: 0; height: calc(100vh - 72px); transform: translateX(-100%); box-shadow: 6px 0 32px rgba(0,0,0,0.1); z-index: 149; width: 250px; }
     .sidebar.open { transform: translateX(0); }
@@ -648,7 +649,7 @@ const css = `
     .menu-grid { grid-template-columns: 1fr; }
     .cart-panel { width: 100%; }
     .pop-card { width: 160px; }
-    .grid-card-img { width: 90px; height: 90px; }
+    .grid-card-img { width: 150px; height: 150px; }
     .order-row { gap: 8px; }
   }
 
@@ -656,7 +657,7 @@ const css = `
   @media (max-width: 480px) {
     .sidebar { width: 220px; }
     .pop-card { width: 148px; }
-    .grid-card-img { width: 80px; height: 80px; }
+    .grid-card-img { width: 140px; height: 140px; }
     .main-inner { padding: 66px 12px 100px !important; }
     .cat-section { scroll-margin-top: 76px; }
     .item-modal-img-wrap { height: 220px; }
@@ -1687,7 +1688,7 @@ function OrderContent() {
                   onClick={handleAddToCart}
                   disabled={!canAddToCart()}
                 >
-                  Add to cart · ${((getItemPrice(selectedItem) + getModifierTotal()) * quantity).toFixed(2)} →
+                  Add to cart · ${((getItemPrice(selectedItem) + getModifierTotal()) * quantity).toFixed(2)} 
                 </button>
               </div>
             </div>

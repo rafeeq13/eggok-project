@@ -9,6 +9,153 @@ import { useGoogleMaps, initAutocomplete } from '../../hooks/useGoogleMaps';
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3002/api';
 
+const ACCOUNT_RESPONSIVE_CSS = `
+  /* ═══ ACCOUNT PAGE RESPONSIVE ═══ */
+
+  /* Tablet + mobile (≤1024px) */
+  @media (max-width: 1024px) {
+    .acct-page-root { overflow-x: hidden; }
+    .acct-container {
+      padding: 80px 16px 40px !important;
+      max-width: 100% !important;
+    }
+    .acct-profile-header {
+      flex-wrap: wrap !important;
+      gap: 14px !important;
+      padding: 18px !important;
+    }
+    .acct-profile-header > :first-child {
+      width: 56px !important;
+      height: 56px !important;
+      font-size: 18px !important;
+    }
+    .acct-profile-header .acct-profile-info {
+      flex: 1 1 160px !important;
+      min-width: 0 !important;
+    }
+    .acct-profile-header .acct-profile-info h1 {
+      font-size: 18px !important;
+      letter-spacing: 0.4px !important;
+    }
+    .acct-profile-header .acct-profile-info p {
+      font-size: 13px !important;
+      word-break: break-word !important;
+    }
+    .acct-stats {
+      flex-wrap: wrap !important;
+      width: 100% !important;
+      gap: 8px !important;
+    }
+    .acct-stats > div {
+      flex: 1 1 0 !important;
+      min-width: 76px !important;
+      padding: 8px 10px !important;
+    }
+    .acct-stats > div p:first-child { font-size: 17px !important; }
+
+    .acct-tabs {
+      flex-wrap: wrap !important;
+      gap: 4px !important;
+    }
+    .acct-tabs > button {
+      flex: 1 0 calc(50% - 4px) !important;
+      font-size: 13px !important;
+      padding: 8px 6px !important;
+      white-space: nowrap;
+    }
+
+    .acct-orders-toolbar {
+      flex-wrap: wrap !important;
+      gap: 10px !important;
+    }
+    .acct-orders-toolbar > :first-child {
+      flex: 1 1 100% !important;
+      min-width: 0 !important;
+    }
+
+    .acct-order-row {
+      flex-wrap: wrap !important;
+      gap: 10px !important;
+      padding: 14px 16px !important;
+    }
+    .acct-order-row > :first-child { flex: 1 1 100% !important; min-width: 0 !important; }
+    .acct-order-right {
+      width: 100% !important;
+      text-align: left !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: space-between !important;
+    }
+
+    .acct-two-col {
+      grid-template-columns: 1fr !important;
+      gap: 12px !important;
+    }
+    .acct-rewards-grid { grid-template-columns: 1fr !important; }
+    .acct-benefits-grid {
+      grid-template-columns: repeat(3, 1fr) !important;
+      gap: 8px !important;
+    }
+    .acct-benefits-grid > div { padding: 12px 6px !important; }
+    .acct-benefits-grid p { font-size: 11px !important; }
+
+    .acct-toast {
+      top: 72px !important;
+      left: 12px !important;
+      right: 12px !important;
+      font-size: 13px !important;
+    }
+
+    .acct-section-card { padding: 18px !important; }
+
+    .acct-login-container {
+      padding: 80px 16px 40px !important;
+      max-width: 100% !important;
+    }
+
+    .acct-register-container {
+      padding: 80px 16px 40px !important;
+      max-width: 100% !important;
+    }
+
+    .acct-address-form > div:first-child { flex-wrap: wrap !important; gap: 8px !important; }
+
+    .acct-points-card { padding: 22px !important; }
+    .acct-points-card p.acct-points-value { font-size: 28px !important; }
+
+    .acct-reward-code-row {
+      flex-wrap: wrap !important;
+      gap: 10px !important;
+    }
+    .acct-reward-code-row > div:last-child {
+      text-align: left !important;
+    }
+  }
+
+  /* Mobile (≤767px) */
+  @media (max-width: 767px) {
+    .acct-container { padding: 72px 12px 36px !important; }
+    .acct-login-container,
+    .acct-register-container { padding: 72px 12px 36px !important; }
+    .acct-profile-header > :first-child { width: 48px !important; height: 48px !important; font-size: 16px !important; }
+    .acct-profile-header .acct-profile-info h1 { font-size: 16px !important; }
+    .acct-stats > div { padding: 6px 8px !important; }
+    .acct-stats > div p:first-child { font-size: 15px !important; }
+    .acct-stats > div p:last-child { font-size: 11px !important; }
+    .acct-orders-toolbar p { font-size: 13px !important; }
+    .acct-section-card p:first-child { font-size: 20px !important; }
+  }
+
+  /* Very small (≤480px) */
+  @media (max-width: 480px) {
+    .acct-container { padding: 68px 10px 28px !important; }
+    .acct-tabs > button { font-size: 12px !important; padding: 8px 4px !important; }
+    .acct-benefits-grid { grid-template-columns: 1fr !important; }
+    .acct-benefits-grid > div { padding: 10px 12px !important; flex-direction: row !important; justify-content: flex-start !important; gap: 10px !important; }
+    .acct-benefits-grid p { font-size: 13px !important; margin: 0 !important; }
+  }
+`;
+
 type View = 'login' | 'register' | 'account' | 'forgot' | 'forgot-sent';
 
 type Order = { id: string; dbId: number; date: string; items: string; total: string; status: string; rawItems: any[]; orderType: string; deliveryProvider?: string };
@@ -464,9 +611,10 @@ export default function AccountPage() {
   // ── LOGIN VIEW ──
   if (view === 'login') {
     return (
-      <div style={{ background: '#FFFFFF', minHeight: '100vh', fontFamily: "'Geist', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif", fontWeight: 500 }}>
+      <div className="acct-page-root" style={{ background: '#FFFFFF', minHeight: '100vh', fontFamily: "'Geist', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif", fontWeight: 500 }}>
+        <style dangerouslySetInnerHTML={{ __html: ACCOUNT_RESPONSIVE_CSS }} />
         <Header />
-        <div style={{ maxWidth: '440px', margin: '0 auto', padding: '96px 24px 48px' }}>
+        <div className="acct-login-container" style={{ maxWidth: '440px', margin: '0 auto', padding: '96px 24px 48px' }}>
           <div style={{ textAlign: 'center', marginBottom: '32px' }}>
             <div style={{  borderRadius: '16px', overflow: 'hidden', margin: '0 auto 16px', display: 'none', alignItems: 'center', justifyContent: 'center' }}>
               <img src="/logo.webp" alt="Eggs Ok" style={{ width: '135px', height: '80px', objectFit: 'contain' }} onError={e => { (e.target as HTMLImageElement).style.display = 'none'; }} />
@@ -539,9 +687,10 @@ export default function AccountPage() {
   // ── FORGOT PASSWORD VIEW ──
   if (view === 'forgot') {
     return (
-      <div style={{ background: '#FFFFFF', minHeight: '100vh', fontFamily: "'Geist', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif", fontWeight: 500 }}>
+      <div className="acct-page-root" style={{ background: '#FFFFFF', minHeight: '100vh', fontFamily: "'Geist', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif", fontWeight: 500 }}>
+        <style dangerouslySetInnerHTML={{ __html: ACCOUNT_RESPONSIVE_CSS }} />
         <Header />
-        <div style={{ maxWidth: '440px', margin: '0 auto', padding: '96px 24px 48px' }}>
+        <div className="acct-login-container" style={{ maxWidth: '440px', margin: '0 auto', padding: '96px 24px 48px' }}>
           <button onClick={() => setView('login')} style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#1A1A1A', fontSize: '16px', marginBottom: '28px', background: 'transparent', border: 'none', cursor: 'pointer' }}>
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="15 18 9 12 15 6" /></svg>
             Back to Sign In
@@ -578,9 +727,10 @@ export default function AccountPage() {
   // ── FORGOT PASSWORD SENT VIEW ──
   if (view === 'forgot-sent') {
     return (
-      <div style={{ background: '#FFFFFF', minHeight: '100vh', fontFamily: "'Geist', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif", fontWeight: 500 }}>
+      <div className="acct-page-root" style={{ background: '#FFFFFF', minHeight: '100vh', fontFamily: "'Geist', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif", fontWeight: 500 }}>
+        <style dangerouslySetInnerHTML={{ __html: ACCOUNT_RESPONSIVE_CSS }} />
         <Header />
-        <div style={{ maxWidth: '440px', margin: '0 auto', padding: '96px 24px 48px' }}>
+        <div className="acct-login-container" style={{ maxWidth: '440px', margin: '0 auto', padding: '96px 24px 48px' }}>
           <div style={{ textAlign: 'center' }}>
             <div style={{ width: '72px', height: '72px', borderRadius: '50%', background: '#22C55E15', border: '2px solid #22C55E40', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 24px' }}>
               <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#22C55E" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12" /></svg>
@@ -607,9 +757,10 @@ export default function AccountPage() {
   // ── REGISTER VIEW ──
   if (view === 'register') {
     return (
-      <div style={{ background: '#FFFFFF', minHeight: '100vh', fontFamily: "'Geist', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif", fontWeight: 500 }}>
+      <div className="acct-page-root" style={{ background: '#FFFFFF', minHeight: '100vh', fontFamily: "'Geist', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif", fontWeight: 500 }}>
+        <style dangerouslySetInnerHTML={{ __html: ACCOUNT_RESPONSIVE_CSS }} />
         <Header />
-        <div style={{ maxWidth: '480px', margin: '0 auto', padding: '96px 24px 48px' }}>
+        <div className="acct-register-container" style={{ maxWidth: '480px', margin: '0 auto', padding: '96px 24px 48px' }}>
           <button onClick={() => setView('login')} style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#1A1A1A', fontSize: '16px', marginBottom: '28px', background: 'transparent', border: 'none', cursor: 'pointer' }}>
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="15 18 9 12 15 6" /></svg>
             Back to Sign In
@@ -620,7 +771,7 @@ export default function AccountPage() {
             <p style={{ fontSize: '16px', color: '#1A1A1A' }}>Join Eggs Ok for faster ordering and loyalty rewards</p>
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '8px', marginBottom: '28px' }}>
+          <div className="acct-benefits-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '8px', marginBottom: '28px' }}>
             {[
               { icon: <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#000" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" /><polyline points="14 2 14 8 20 8" /></svg>, text: 'Order History' },
               { icon: <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#000" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 12 20 22 4 22 4 12" /><rect x="2" y="7" width="20" height="5" /><path d="M12 22V7M12 7H7.5a2.5 2.5 0 010-5C11 2 12 7 12 7zM12 7h4.5a2.5 2.5 0 000-5C13 2 12 7 12 7z" /></svg>, text: 'Loyalty Points' },
@@ -634,7 +785,7 @@ export default function AccountPage() {
           </div>
 
           <form onSubmit={handleRegister} style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
+            <div className="acct-two-col" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
               <div>
                 <label style={labelStyle}>First Name *</label>
                 <input style={inputStyle} placeholder="John" value={regFirstName} onChange={e => setRegFirstName(e.target.value)}
@@ -735,32 +886,33 @@ export default function AccountPage() {
 
   // ── ACCOUNT DASHBOARD ──
   return (
-    <div style={{ background: '#FFFFFF', minHeight: '100vh', fontFamily: "'Geist', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif", fontWeight: 500 }}>
+    <div className="acct-page-root" style={{ background: '#FFFFFF', minHeight: '100vh', fontFamily: "'Geist', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif", fontWeight: 500 }}>
+      <style dangerouslySetInnerHTML={{ __html: ACCOUNT_RESPONSIVE_CSS }} />
       <Header />
 
       {successMsg && (
-        <div style={{ position: 'fixed', top: '80px', right: '20px', zIndex: 9999, background: '#22C55E', color: '#000', padding: '12px 20px', borderRadius: '10px', fontSize: '14px', fontWeight: '600', boxShadow: '0 4px 20px rgba(34,197,94,0.3)' }}>
+        <div className="acct-toast" style={{ position: 'fixed', top: '80px', right: '20px', zIndex: 9999, background: '#22C55E', color: '#000', padding: '12px 20px', borderRadius: '10px', fontSize: '14px', fontWeight: '600', boxShadow: '0 4px 20px rgba(34,197,94,0.3)' }}>
           {successMsg}
         </div>
       )}
       {accountError && (
-        <div style={{ position: 'fixed', top: '80px', right: '20px', zIndex: 9999, background: '#FC0301', color: '#fff', padding: '12px 20px', borderRadius: '10px', fontSize: '14px', fontWeight: '600', boxShadow: '0 4px 20px rgba(252,3,1,0.3)' }}>
+        <div className="acct-toast" style={{ position: 'fixed', top: '80px', right: '20px', zIndex: 9999, background: '#FC0301', color: '#fff', padding: '12px 20px', borderRadius: '10px', fontSize: '14px', fontWeight: '600', boxShadow: '0 4px 20px rgba(252,3,1,0.3)' }}>
           {accountError}
         </div>
       )}
 
-      <div style={{ maxWidth: '900px', margin: '0 auto', padding: '80px 24px 48px' }}>
+      <div className="acct-container" style={{ maxWidth: '900px', margin: '0 auto', padding: '80px 24px 48px' }}>
 
         {/* Profile Header */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '20px', marginBottom: '32px', padding: '24px', background: '#FFFFFF', border: '1px solid #E5E5E5', borderRadius: '16px', boxShadow: '0 1px 3px rgba(0,0,0,0.08)' }}>
+        <div className="acct-profile-header" style={{ display: 'flex', alignItems: 'center', gap: '20px', marginBottom: '32px', padding: '24px', background: '#FFFFFF', border: '1px solid #E5E5E5', borderRadius: '16px', boxShadow: '0 1px 3px rgba(0,0,0,0.08)' }}>
           <div style={{fontFamily:"'Geist', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif", width: '64px', height: '64px', borderRadius: '50%', background: '#ffffff', border: '1px solid #E5E5E5', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '20px', fontWeight: '700', color: '#000', flexShrink: 0 }}>
             {savedFirstName.charAt(0)}{savedLastName.charAt(0)}
           </div>
-          <div style={{ flex: 1 }}>
+          <div className="acct-profile-info" style={{ flex: 1, minWidth: 0 }}>
             <h1 style={{ fontFamily:"'Geist', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif", fontSize: '20px', fontWeight: 700,  color: '#1A1A1A', marginBottom: '4px', letterSpacing: '0.9px' }}>{savedFirstName} {savedLastName}</h1>
             <p style={{ fontSize: '14px', color: '#777777', margin: 0 }}>{savedEmail} · Member since {formatJoinDate()}</p>
           </div>
-          <div style={{ display: 'flex', gap: '10px' }}>
+          <div className="acct-stats" style={{ display: 'flex', gap: '10px' }}>
             <div style={{ padding: '10px 16px', background: '#FFFFFF', border: '1px solid #E5E5E5', borderRadius: '10px', textAlign: 'center' }}>
               <p style={{ fontFamily:"'Geist', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" ,fontSize: '20px', fontWeight: 700, color: '#1A1A1A', margin: 0 }}>{userPoints}</p>
               <p style={{ fontSize: '12px', color: '#777777', margin: '2px 0 0' }}>Points</p>
@@ -777,7 +929,7 @@ export default function AccountPage() {
         </div>
 
         {/* Tabs */}
-        <div style={{ display: 'flex', gap: '4px', background: '#F5F5F5', padding: '4px', borderRadius: '12px', marginBottom: '24px', border: '1px solid #E5E5E5' }}>
+        <div className="acct-tabs" style={{ display: 'flex', gap: '4px', background: '#F5F5F5', padding: '4px', borderRadius: '12px', marginBottom: '24px', border: '1px solid #E5E5E5' }}>
           {[
             { id: 'orders', label: 'Order History' },
             { id: 'profile', label: 'My Profile' },
@@ -793,7 +945,7 @@ export default function AccountPage() {
         {/* ORDER HISTORY */}
         {activeTab === 'orders' && (
           <div>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px', gap: '12px', flexWrap: 'wrap' }}>
+            <div className="acct-orders-toolbar" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px', gap: '12px', flexWrap: 'wrap' }}>
               <div style={{ flex: 1, minWidth: '200px', position: 'relative' }}>
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#777777" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)' }}>
                   <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
@@ -818,7 +970,7 @@ export default function AccountPage() {
             ) : (
               <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
                 {filteredOrders.map(order => (
-                  <div key={order.id} style={{ padding: '16px 20px', background: '#FFFFFF', border: '1px solid #E5E5E5', borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '16px', boxShadow: '0 1px 3px rgba(0,0,0,0.06)' }}>
+                  <div key={order.id} className="acct-order-row" style={{ padding: '16px 20px', background: '#FFFFFF', border: '1px solid #E5E5E5', borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '16px', boxShadow: '0 1px 3px rgba(0,0,0,0.06)' }}>
                     <div style={{ flex: 1 }}>
                       <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '4px' }}>
                         <p style={{ fontSize: '16px', fontWeight: '700', color: '#1A1A1A', margin: 0 }}>{order.id}</p>
@@ -827,7 +979,7 @@ export default function AccountPage() {
                       <p style={{ fontSize: '12px', color: '#777777', margin: '0 0 2px' }}>{order.date}</p>
                       <p style={{ fontSize: '14px', color: '#555555', margin: 0 }}>{order.items}</p>
                     </div>
-                    <div style={{ textAlign: 'right', flexShrink: 0 }}>
+                    <div className="acct-order-right" style={{ textAlign: 'right', flexShrink: 0 }}>
                       <p style={{ fontSize: '16px', fontWeight: '700', color: '#1A1A1A', marginBottom: '8px' }}>{order.total}</p>
                       <div style={{ display: 'flex', gap: '6px', justifyContent: 'flex-end' }}>
                         {!['Delivered', 'Picked Up', 'Cancelled'].includes(order.status) && (
@@ -845,10 +997,10 @@ export default function AccountPage() {
 
         {/* PROFILE */}
         {activeTab === 'profile' && (
-          <div style={{ background: '#FFFFFF', border: '1px solid #E5E5E5', borderRadius: '14px', padding: '24px', boxShadow: '0 1px 3px rgba(0,0,0,0.08)' }}>
+          <div className="acct-section-card" style={{ background: '#FFFFFF', border: '1px solid #E5E5E5', borderRadius: '14px', padding: '24px', boxShadow: '0 1px 3px rgba(0,0,0,0.08)' }}>
             <p style={{ fontSize: '24px', fontWeight: 700, fontFamily: "'Playfair Display', Georgia, serif", color: '#1A1A1A', marginBottom: '20px' }}>Personal Information</p>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
+              <div className="acct-two-col" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
                 <div>
                   <label style={labelStyle}>First Name</label>
                   <input style={inputStyle} value={savedFirstName} onChange={e => setSavedFirstName(e.target.value)}
@@ -973,11 +1125,11 @@ export default function AccountPage() {
         {activeTab === 'loyalty' && (
           <div>
             {/* Points Card */}
-            <div style={{ background: 'linear-gradient(135deg, #E5B800, #E5C200)', borderRadius: '16px', padding: '28px', marginBottom: '20px', position: 'relative', overflow: 'hidden' }}>
+            <div className="acct-points-card" style={{ background: 'linear-gradient(135deg, #E5B800, #E5C200)', borderRadius: '16px', padding: '28px', marginBottom: '20px', position: 'relative', overflow: 'hidden' }}>
               <div style={{ position: 'absolute', top: '-40px', right: '-40px', width: '200px', height: '200px', borderRadius: '50%', background: 'rgba(0,0,0,0.08)' }} />
               <div style={{ position: 'absolute', bottom: '-60px', left: '-20px', width: '160px', height: '160px', borderRadius: '50%', background: 'rgba(0,0,0,0.05)' }} />
               <p style={{ fontSize: '12px', fontWeight: '700', color: '#00000080', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '8px' }}>Your Points Balance</p>
-              <p style={{ fontSize: '28px', fontWeight: 700, fontFamily: "'Playfair Display', Georgia, serif", color: '#000', lineHeight: '1', marginBottom: '8px' }}>{userPoints}</p>
+              <p className="acct-points-value" style={{ fontSize: '28px', fontWeight: 700, fontFamily: "'Playfair Display', Georgia, serif", color: '#000', lineHeight: '1', marginBottom: '8px' }}>{userPoints}</p>
               <p style={{ fontSize: '16px', color: '#00000070', marginBottom: '4px' }}>
                 {userTier} Member
                 {userTier === 'Gold'
@@ -1000,7 +1152,7 @@ export default function AccountPage() {
                 <p style={{ fontSize: '20px', fontWeight: 700, fontFamily: "'Playfair Display', Georgia, serif", color: '#22C55E', marginBottom: '10px' }}>Your Reward Codes</p>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
                   {unusedRewardCodes.map((r: any, i: number) => (
-                    <div key={i} style={{ padding: '14px 18px', background: '#22C55E10', border: '1px solid #22C55E30', borderRadius: '10px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '8px' }}>
+                    <div key={i} className="acct-reward-code-row" style={{ padding: '14px 18px', background: '#22C55E10', border: '1px solid #22C55E30', borderRadius: '10px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '8px' }}>
                       <div>
                         <p style={{ fontSize: '14px', color: '#1A1A1A', fontWeight: '600', margin: 0 }}>{r.rewardName}</p>
                         <p style={{ fontSize: '12px', color: '#777777', marginTop: '2px' }}>
@@ -1024,7 +1176,7 @@ export default function AccountPage() {
                 <p style={{ fontSize: '14px', color: '#777777', margin: 0 }}>No rewards available right now. Check back soon!</p>
               </div>
             ) : (
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '10px', marginBottom: '24px' }}>
+              <div className="acct-rewards-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '10px', marginBottom: '24px' }}>
                 {rewards.filter((r: any) => r.active).map((reward: any) => {
                   const canRedeem = userPoints >= reward.pointsCost;
                   const isRedeeming = redeemingId === reward.id;
