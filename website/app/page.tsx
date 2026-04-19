@@ -422,7 +422,7 @@ export default function HomePage() {
         }
         .home-modal-close:hover { background: rgba(0,0,0,0.95); }
         .home-modal-body { padding: 24px; }
-        .home-modal-name { font-family: 'var(--font-head)'; font-weight: 500; font-size: 28px; letter-spacing: 0.5px; color: #0D0D0D;  }
+        .home-modal-name { font-family: 'var(--font-body)'; font-weight: 500; font-size: 22px; letter-spacing: 0.5px; color: #0D0D0D;  }
         .home-modal-desc { font-size: 16px; color: #666; line-height: 1.7; margin-bottom: 20px; }
         .home-modal-price-row { display: flex; gap: 10px; margin-bottom: 20px; }
         .home-modal-price-card {
@@ -840,7 +840,7 @@ export default function HomePage() {
         .home-modal-price-type { font-size: 12px; color: #777777; font-weight: 500; text-transform: uppercase; margin-bottom: 4px; }
         .home-modal-price-val { font-size: 18px; font-weight: 900; color: #4D4D4D; }
         .home-modal-modifier-badge.required { background: #FC030120; color: #FC0301; border: 1px solid #FC030140; }
-        .home-modal-modifier-badge.optional { background: #22C55E20; color: #22C55E; border: 1px solid #22C55E40; }
+        .home-modal-modifier-badge.optional { background: #C0C0C0; color: #0D0D0D; border: 1px solid #22C55E40; }
         .home-modal-opt-left { display: flex; align-items: center; gap: 10px; }
         .home-modal-check {
           width: 20px; height: 20px;
