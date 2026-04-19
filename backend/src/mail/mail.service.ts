@@ -329,7 +329,7 @@ export class MailService {
 
         const html = await this.renderTemplate('order_status', {
             activeStep: 4,
-            heroIcon: 'https://eggsokpa.com/webicons/onthewayblack.webp',
+            heroIcon: 'https://eggsokpa.com/webicons/Contactonthewayblack.png',
             heroTitle: 'Your order is on the way!',
             heroSubtitle: 'Great news! Your order has been picked up and is heading your way.',
             greetingMessage: `Great news! Your order ${this.safeText(order.orderNumber)} has been picked up and is heading your way.`,
@@ -863,6 +863,7 @@ export class MailService {
     }
 
     private renderOwnerOrderItems(items: any[]) {
+        const FONT_BODY = `'Geist','Inter','Helvetica Neue',Helvetica,Arial,sans-serif`;
         return items
             .map((item, index) => {
                 const quantity = Number(item?.quantity || 1);
@@ -872,26 +873,26 @@ export class MailService {
                 const itemTotal = (price + modifierTotal) * quantity;
                 const isLast = index === items.length - 1;
 
-                let html = `<table width="100%" cellpadding="0" cellspacing="0" border="0" style="${!isLast ? 'border-bottom:1px solid #ffffff;margin-bottom:14px;' : ''}">
+                let html = `<table width="100%" cellpadding="0" cellspacing="0" border="0" style="${!isLast ? 'border-bottom:1px solid #E5E5E5;margin-bottom:12px;' : ''}">
                     <tr>
-                        <td style="padding-bottom:14px;">
-                            <p style="margin:0;font-size:15px;font-weight:900;color:#F5C200;line-height:1.2;">${name}</p>
-                            <p style="margin:2px 0 0;font-size:12px;color:#ffffff;font-weight:700;">QTY: X${quantity}</p>
+                        <td style="padding-bottom:12px;">
+                            <p style="margin:0;font-family:${FONT_BODY};font-size:15px;font-weight:700;color:#1A1A1A;line-height:1.3;">${name}</p>
+                            <p style="margin:2px 0 0;font-family:${FONT_BODY};font-size:12px;color:#4D4D4D;font-weight:600;letter-spacing:0.4px;">QTY: X${quantity}</p>
                         </td>
-                        <td align="right" valign="top" style="padding-bottom:14px;padding-left:12px;white-space:nowrap;">
-                            <p style="margin:0;font-size:15px;font-weight:900;color:#F5C200;">$${itemTotal.toFixed(2)}</p>
+                        <td align="right" valign="top" style="padding-bottom:12px;padding-left:12px;white-space:nowrap;">
+                            <p style="margin:0;font-family:${FONT_BODY};font-size:15px;font-weight:700;color:#1A1A1A;">$${itemTotal.toFixed(2)}</p>
                         </td>
                     </tr>`;
 
                 if (item.modifiers && Array.isArray(item.modifiers) && item.modifiers.length > 0) {
                     item.modifiers.forEach((mod: any) => {
                         const modPrice = Number(mod.price) || 0;
-                        html += `<tr><td colspan="2" style="padding:0 0 2px 8px;"><span style="font-size:11px;color:#ffffff;">+ ${this.escapeHtml(mod.name)}${modPrice > 0 ? ` ($${modPrice.toFixed(2)})` : ''}</span></td></tr>`;
+                        html += `<tr><td colspan="2" style="padding:0 0 4px 10px;"><span style="font-family:${FONT_BODY};font-size:12px;color:#4D4D4D;font-weight:500;">+ ${this.escapeHtml(mod.name)}${modPrice > 0 ? ` <span style="color:#777777;">($${modPrice.toFixed(2)})</span>` : ''}</span></td></tr>`;
                     });
                 }
 
                 if (item.specialInstructions) {
-                    html += `<tr><td colspan="2" style="padding:2px 0 4px 8px;"><span style="font-size:11px;color:#F5C200;font-style:italic;">Note: ${this.escapeHtml(item.specialInstructions)}</span></td></tr>`;
+                    html += `<tr><td colspan="2" style="padding:2px 0 6px 10px;"><span style="font-family:${FONT_BODY};font-size:12px;color:#E3BF22;font-weight:600;font-style:italic;">Note: ${this.escapeHtml(item.specialInstructions)}</span></td></tr>`;
                 }
 
                 html += '</table>';
@@ -939,142 +940,186 @@ export class MailService {
         const FONT_HEAD = `'Playfair Display',Georgia,'Times New Roman',serif`;
 
         const sectionsHtml = (payload.sections || []).map(s => `
-      <tr><td style="padding:16px 40px 0;">
-        <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:#F8F9FA;border-radius:12px;border:1px solid #E5E5E5;overflow:hidden;">
-          <tr><td style="background:#E3BF22;padding:10px 20px;">
-            <span style="font-family:${FONT_BODY};font-size:12px;font-weight:700;color:#0D0D0D;letter-spacing:1.5px;text-transform:uppercase;">${esc(s.title)}</span>
-          </td></tr>
-          <tr><td style="padding:16px 20px;">
-            ${s.lines.map(l => `<p style="margin:0 0 6px;font-family:${FONT_BODY};font-size:16px;font-weight:500;color:#4D4D4D;line-height:1.6;">${esc(l)}</p>`).join('')}
-          </td></tr>
-        </table>
-      </td></tr>`).join('');
+  <tr><td style="padding:16px 28px 0;">
+    <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#F8F9FA;border:1px solid #E5E5E5;border-left:4px solid #E3BF22;border-radius:12px;">
+      <tr><td style="padding:18px 20px;">
+        <p style="margin:0 0 8px;font-family:${FONT_BODY};font-size:12px;font-weight:700;color:#777777;letter-spacing:1.2px;text-transform:uppercase;">${esc(s.title)}</p>
+        ${s.lines.map(l => `<p style="margin:0 0 6px;font-family:${FONT_BODY};font-size:15px;font-weight:500;color:#0D0D0D;line-height:1.6;">${esc(l)}</p>`).join('')}
+      </td></tr>
+    </table>
+  </td></tr>`).join('');
 
         const ctaHtml = payload.cta ? `
-      <tr><td style="padding:32px 40px 0;text-align:center;">
-        <table cellpadding="0" cellspacing="0" border="0" style="margin:0 auto;"><tr><td style="background-color:#E3BF22;border-radius:8px;padding:12px 28px;">
-          <a href="${payload.cta.link}" style="font-family:${FONT_BODY};font-size:16px;font-weight:600;color:#0D0D0D;text-decoration:none;">${esc(payload.cta.text)} &rsaquo;</a>
-        </td></tr></table>
-        <p style="margin:14px 0 0;font-family:${FONT_BODY};font-size:14px;color:#777777;">Or visit us at <a href="https://eggsokphilly.com" style="color:#0D0D0D;text-decoration:underline;font-weight:600;">eggsokphilly.com</a></p>
-      </td></tr>` : '';
+  <tr><td style="padding:24px 40px 4px;text-align:center;">
+    <table cellpadding="0" cellspacing="0" border="0" style="margin:0 auto;">
+      <tr><td style="background:#E3BF22;border-radius:8px;padding:12px 28px;">
+        <a href="${payload.cta.link}" style="font-family:${FONT_BODY};font-size:16px;font-weight:600;color:#0D0D0D;text-decoration:none;">${esc(payload.cta.text)} &rsaquo;</a>
+      </td></tr>
+    </table>
+  </td></tr>` : '';
 
         const footerNote = payload.footer ? `
-      <tr><td style="padding:20px 40px 0;">
-        <p style="margin:0;font-family:${FONT_BODY};font-size:16px;color:#4D4D4D;line-height:1.7;font-weight:500;">${esc(payload.footer)}</p>
-      </td></tr>` : '';
+  <tr><td style="padding:18px 28px 0;">
+    <p style="margin:0;font-family:${FONT_BODY};font-size:14px;color:#777777;line-height:1.6;font-weight:500;text-align:center;">${esc(payload.footer)}</p>
+  </td></tr>` : '';
 
-        const preheader = payload.preheader ? `
-<div style="display:none;max-height:0;overflow:hidden;mso-hide:all;visibility:hidden;opacity:0;color:transparent;height:0;width:0;">${esc(payload.preheader)}</div>` : '';
+        const preheader = payload.preheader ? `<div style="display:none;max-height:0;overflow:hidden;mso-hide:all;visibility:hidden;opacity:0;color:transparent;height:0;width:0;">${esc(payload.preheader)}</div>` : '';
 
         return `<!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width,initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>${esc(payload.title)}</title>
+  <title>${esc(payload.title)} - Eggs Ok</title>
   <!--[if mso]><noscript><xml><o:OfficeDocumentSettings><o:PixelsPerInch>96</o:PixelsPerInch></o:OfficeDocumentSettings></xml></noscript><![endif]-->
   <style type="text/css">
-    @import url('https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Playfair+Display:wght@400;600;700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Playfair+Display:wght@600;700;800&display=swap');
+    body, table, td, a { -webkit-text-size-adjust:100%; -ms-text-size-adjust:100%; }
+    table, td { mso-table-lspace:0pt; mso-table-rspace:0pt; }
+    img { -ms-interpolation-mode:bicubic; border:0; outline:none; text-decoration:none; }
+
+    @media only screen and (max-width: 600px) {
+      .email-wrapper { padding:16px 8px 30px !important; }
+      .email-container { width:100% !important; max-width:100% !important; border-radius:16px !important; }
+      .header-cell { padding:24px 16px 16px !important; }
+      .header-logo { width:140px !important; height:56px !important; }
+      .eyebrow-banner { font-size:10px !important; padding:8px 12px !important; letter-spacing:1px !important; }
+      .hero-outer { padding:20px 14px 4px !important; }
+      .hero-inner { padding:24px 16px 20px !important; }
+      .hero-eyebrow { font-size:11px !important; }
+      .hero-title { font-size:24px !important; }
+      .hero-intro { font-size:14px !important; }
+      .concern-cell { padding:24px 16px 20px !important; }
+      .concern-title { font-size:22px !important; }
+      .concern-subtitle { font-size:14px !important; }
+      .concern-buttons { width:100% !important; max-width:100% !important; }
+      .concern-btn-left { padding-right:4px !important; }
+      .concern-btn-right { padding-left:4px !important; }
+      .concern-btn-label { font-size:13px !important; }
+      .concern-btn-info { font-size:11px !important; }
+      .concern-btn-icon { width:24px !important; height:24px !important; }
+      .footer-cell { padding:18px 14px !important; }
+      .footer-info { font-size:12px !important; line-height:18px !important; }
+      .footer-hours { font-size:12px !important; }
+      .footer-social-text { font-size:11px !important; padding-right:6px !important; }
+      .footer-social-icon { width:22px !important; height:22px !important; }
+      .footer-copyright { font-size:11px !important; }
+    }
+    @media only screen and (max-width: 400px) {
+      .email-wrapper { padding:10px 4px 20px !important; }
+      .hero-title { font-size:20px !important; }
+      .hero-intro { font-size:13px !important; }
+      .concern-title { font-size:20px !important; }
+      .footer-info { font-size:11px !important; }
+    }
   </style>
 </head>
-<body style="margin:0;padding:0;background-color:#F8F9FA;font-family:${FONT_BODY};color:#4D4D4D;">
+<body style="margin:0;padding:30px 16px 50px;font-family:${FONT_BODY};background-color:#F8F9FA;color:#4D4D4D;">
 ${preheader}
-<table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:#F8F9FA;">
-<tr><td align="center" style="padding:30px 16px;">
-<table width="600" cellpadding="0" cellspacing="0" border="0" style="max-width:600px;width:100%;background-color:#FFFFFF;border-radius:16px;overflow:hidden;border:1px solid #E5E5E5;box-shadow:0 4px 24px rgba(0,0,0,0.04);">
+<table width="100%" cellpadding="0" cellspacing="0" border="0" role="presentation" style="background-color:#F8F9FA;">
+<tr><td align="center" class="email-wrapper" style="padding:30px 16px 50px;">
+
+<table width="600" cellpadding="0" cellspacing="0" border="0" class="email-container" style="max-width:600px;width:100%;background:#FFFFFF;border:1px solid #E5E5E5;border-radius:16px;overflow:hidden;box-shadow:0 8px 32px rgba(13,13,13,0.06);">
 
   <!-- HEADER -->
-  <tr><td style="background-color:#FFFFFF;padding:0;">
-    <table width="100%" cellpadding="0" cellspacing="0" border="0">
-      <tr><td style="background-color:#E3BF22;padding:8px 0;text-align:center;">
-        <span style="font-family:${FONT_BODY};font-size:12px;font-weight:700;color:#0D0D0D;letter-spacing:2px;text-transform:uppercase;">Fresh Made To Order &middot; Philadelphia, PA</span>
-      </td></tr>
-      <tr><td style="background-color:#FFFFFF;padding:32px 40px 16px;text-align:center;border-bottom:1px solid #E5E5E5;">
-        <img src="https://eggsokpa.com/webicons/logo.webp" width="120" height="50" alt="Eggs Ok" style="display:block;margin:0 auto 10px;border:0;">
-        <p style="margin:0;font-family:${FONT_BODY};font-size:13px;color:#4D4D4D;letter-spacing:3px;text-transform:uppercase;font-weight:500;">Breakfast &amp; Lunch</p>
+  <tr><td class="header-cell" style="background:#FFFFFF;padding:32px 24px 20px;text-align:center;border-bottom:1px solid #E5E5E5;">
+    <img src="https://eggsokpa.com/webicons/logo.webp" class="header-logo" width="180" height="72" alt="Eggs Ok" style="display:block;margin:0 auto 14px;border:0;">
+  </td></tr>
+
+  <!-- EYEBROW STRIPE -->
+  <tr><td style="background:#E3BF22;padding:0;">
+    <p class="eyebrow-banner" style="margin:0;padding:10px 16px;font-family:${FONT_BODY};font-size:12px;font-weight:700;color:#0D0D0D;letter-spacing:1.4px;text-transform:uppercase;text-align:center;">
+      Fresh Made To Order &middot; Philadelphia, PA
+    </p>
+  </td></tr>
+
+  <!-- HERO -->
+  <tr><td class="hero-outer" style="padding:24px 24px 4px;">
+    <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#F8F9FA;border:1px solid #E5E5E5;border-radius:12px;">
+      <tr><td class="hero-inner" style="padding:30px 24px 26px;text-align:center;">
+        <p class="hero-eyebrow" style="margin:0 0 10px;font-family:${FONT_BODY};font-size:12px;font-weight:700;color:#777777;letter-spacing:1.2px;text-transform:uppercase;">${esc(payload.eyebrow)}</p>
+        <h1 class="hero-title" style="margin:0 0 10px;font-family:${FONT_HEAD};font-size:28px;font-weight:700;color:#0D0D0D;line-height:1.2;">${esc(payload.title)}</h1>
+        <p class="hero-intro" style="margin:0;font-family:${FONT_BODY};font-size:16px;font-weight:500;color:#4D4D4D;line-height:1.6;">${esc(payload.intro)}</p>
       </td></tr>
     </table>
-  </td></tr>
-
-  <!-- HERO BANNER -->
-  <tr><td style="background-color:#FFFFFF;padding:40px 40px 24px;text-align:center;">
-    <p style="margin:0 0 12px;font-family:${FONT_BODY};font-size:13px;font-weight:700;color:#E3BF22;letter-spacing:2px;text-transform:uppercase;">${esc(payload.eyebrow)}</p>
-    <h1 style="margin:0;font-family:${FONT_HEAD};font-size:28px;font-weight:700;color:#0D0D0D;line-height:1.2;letter-spacing:-0.3px;">${esc(payload.title)}</h1>
-  </td></tr>
-
-  <!-- BODY CONTENT -->
-  <tr><td style="padding:0 40px 8px;">
-    <p style="margin:0;font-family:${FONT_BODY};font-size:16px;color:#4D4D4D;line-height:1.6;font-weight:500;">${esc(payload.intro)}</p>
   </td></tr>
 
   ${sectionsHtml}
   ${ctaHtml}
   ${footerNote}
 
-  <!-- INFO BOXES -->
-  <tr><td style="padding:32px 40px 0;">
-    <table width="100%" cellpadding="0" cellspacing="0" border="0"><tr>
-      <td width="48%" style="background-color:#F8F9FA;border-radius:12px;border:1px solid #E5E5E5;padding:20px 16px;text-align:center;vertical-align:top;">
-        <p style="margin:0 0 8px;font-family:${FONT_BODY};"><img src="https://cdn.simpleicons.org/googlemaps/E3BF22" width="22" height="22" alt="Location" style="border:0;"></p>
-        <p style="margin:0 0 6px;font-family:${FONT_BODY};font-size:12px;font-weight:700;color:#0D0D0D;letter-spacing:1px;text-transform:uppercase;">Location</p>
-        <p style="margin:0;font-family:${FONT_BODY};font-size:14px;color:#4D4D4D;line-height:1.5;font-weight:500;">3517 Lancaster Ave<br>Philadelphia, PA 19104</p>
-      </td>
-      <td width="4%">&nbsp;</td>
-      <td width="48%" style="background-color:#F8F9FA;border-radius:12px;border:1px solid #E5E5E5;padding:20px 16px;text-align:center;vertical-align:top;">
-        <p style="margin:0 0 8px;font-family:${FONT_BODY};"><img src="https://cdn.simpleicons.org/clockify/E3BF22" width="22" height="22" alt="Hours" style="border:0;"></p>
-        <p style="margin:0 0 6px;font-family:${FONT_BODY};font-size:12px;font-weight:700;color:#0D0D0D;letter-spacing:1px;text-transform:uppercase;">Hours</p>
-        <p style="margin:0;font-family:${FONT_BODY};font-size:14px;color:#4D4D4D;line-height:1.5;font-weight:500;">Mon-Fri: 7AM-4PM<br>Sat-Sun: 8AM-3PM</p>
-      </td>
-    </tr></table>
-  </td></tr>
-
-  <!-- DIVIDER -->
-  <tr><td style="padding:32px 40px 0;"><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="height:1px;background-color:#E5E5E5;font-size:0;line-height:0;">&nbsp;</td></tr></table></td></tr>
-
-  <!-- SOCIAL LINKS -->
-  <tr><td style="padding:24px 40px 0;text-align:center;">
-    <p style="margin:0 0 16px;font-family:${FONT_BODY};font-size:12px;color:#777777;letter-spacing:1px;text-transform:uppercase;font-weight:600;">Follow Us</p>
-    <table cellpadding="0" cellspacing="0" border="0" style="margin:0 auto;"><tr>
-      <td style="padding:0 4px;"><table cellpadding="0" cellspacing="0" border="0"><tr><td style="background:#FFFFFF;border:1px solid #E5E5E5;border-radius:8px;padding:8px 14px;"><a href="https://facebook.com/eggsokphilly" style="font-family:${FONT_BODY};font-size:12px;font-weight:600;color:#0D0D0D;text-decoration:none;">Facebook</a></td></tr></table></td>
-      <td style="padding:0 4px;"><table cellpadding="0" cellspacing="0" border="0"><tr><td style="background:#FFFFFF;border:1px solid #E5E5E5;border-radius:8px;padding:8px 14px;"><a href="https://instagram.com/eggsokphilly" style="font-family:${FONT_BODY};font-size:12px;font-weight:600;color:#0D0D0D;text-decoration:none;">Instagram</a></td></tr></table></td>
-      <td style="padding:0 4px;"><table cellpadding="0" cellspacing="0" border="0"><tr><td style="background:#FFFFFF;border:1px solid #E5E5E5;border-radius:8px;padding:8px 14px;"><a href="https://tiktok.com/@eggsokphilly" style="font-family:${FONT_BODY};font-size:12px;font-weight:600;color:#0D0D0D;text-decoration:none;">TikTok</a></td></tr></table></td>
-      <td style="padding:0 4px;"><table cellpadding="0" cellspacing="0" border="0"><tr><td style="background:#FFFFFF;border:1px solid #E5E5E5;border-radius:8px;padding:8px 14px;"><a href="https://g.page/eggsokphilly" style="font-family:${FONT_BODY};font-size:12px;font-weight:600;color:#0D0D0D;text-decoration:none;">Google</a></td></tr></table></td>
-    </tr></table>
-  </td></tr>
-
-  <!-- FOOTER -->
-  <tr><td style="padding:28px 40px 0;">
-    <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:#F8F9FA;border-radius:12px;overflow:hidden;border:1px solid #E5E5E5;">
-      <tr><td style="padding:24px 28px 16px;text-align:center;border-bottom:1px solid #E5E5E5;">
-        <img src="https://eggsokpa.com/webicons/logo.webp" width="100" height="42" alt="Eggs Ok" style="display:block;margin:0 auto 6px;border:0;">
-        <p style="margin:0;font-family:${FONT_BODY};font-size:12px;color:#777777;letter-spacing:2px;text-transform:uppercase;font-weight:600;">Breakfast &amp; Lunch &middot; Philadelphia</p>
-      </td></tr>
-      <tr><td style="padding:16px 28px;text-align:center;">
-        <table width="100%" cellpadding="0" cellspacing="0" border="0">
-          <tr><td style="text-align:center;padding-bottom:8px;">
-            <span style="font-family:${FONT_BODY};font-size:14px;color:#4D4D4D;font-weight:500;">3517 Lancaster Ave, Philadelphia, PA 19104</span>
-          </td></tr>
-          <tr><td style="text-align:center;padding-bottom:8px;">
-            <a href="tel:2159489902" style="font-family:${FONT_BODY};font-size:14px;color:#0D0D0D;text-decoration:none;font-weight:600;">(215) 948-9902</a>
-            <span style="font-family:${FONT_BODY};font-size:14px;color:#777777;"> &middot; </span>
-            <a href="https://eggsokphilly.com" style="font-family:${FONT_BODY};font-size:14px;color:#0D0D0D;text-decoration:none;font-weight:600;">eggsokphilly.com</a>
-          </td></tr>
-          <tr><td style="text-align:center;padding-bottom:16px;border-bottom:1px solid #E5E5E5;">
-            <span style="font-family:${FONT_BODY};font-size:13px;color:#777777;font-weight:500;">Mon-Fri: 7AM-4PM &middot; Sat-Sun: 8AM-3PM</span>
-          </td></tr>
-          <tr><td style="text-align:center;padding-top:16px;">
-            <p style="margin:0;font-family:${FONT_BODY};font-size:12px;color:#999999;font-weight:500;">&copy; ${year} Eggs Ok. All rights reserved.</p>
-          </td></tr>
-        </table>
-      </td></tr>
-      <tr><td style="background-color:#E3BF22;padding:10px;text-align:center;">
-        <span style="font-family:${FONT_BODY};font-size:11px;font-weight:700;color:#0D0D0D;letter-spacing:1.5px;text-transform:uppercase;">Made with Care in Philadelphia &middot; Eggs Ok</span>
-      </td></tr>
+  <!-- CONCERN -->
+  <tr><td class="concern-cell" style="padding:28px 28px 24px;text-align:center;border-top:1px solid #E5E5E5;margin-top:20px;">
+    <h2 class="concern-title" style="margin:0 0 6px;font-family:${FONT_HEAD};font-size:28px;font-weight:700;color:#0D0D0D;line-height:1.2;">Do you have any concern?</h2>
+    <p class="concern-subtitle" style="margin:0 0 22px;font-family:${FONT_BODY};font-size:16px;font-weight:500;color:#4D4D4D;line-height:1.6;">Don't hesitate to contact us if you have any questions.</p>
+    <table class="concern-buttons" width="380" cellpadding="0" cellspacing="0" border="0" align="center" style="max-width:380px;width:100%;">
+      <tr>
+        <td width="48%" class="concern-btn-left" style="padding-right:6px;">
+          <a href="mailto:eggsok3517@gmail.com" style="text-decoration:none;display:block;">
+            <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#F8F9FA;border:1px solid #E5E5E5;border-radius:12px;">
+              <tr><td style="padding:16px 12px;text-align:center;">
+                <span style="display:block;margin-bottom:6px;"><img src="https://eggsokpa.com/webicons/Contactemail.png" class="concern-btn-icon" style="width:28px;height:28px;border-radius:50%;" alt="Email" /></span>
+                <span class="concern-btn-label" style="font-family:${FONT_BODY};font-size:15px;font-weight:700;color:#0D0D0D;display:block;">Email Us</span>
+                <span class="concern-btn-info" style="font-family:${FONT_BODY};font-size:12px;color:#777777;font-weight:500;display:block;margin-top:3px;">eggsok3517@gmail.com</span>
+              </td></tr>
+            </table>
+          </a>
+        </td>
+        <td width="48%" class="concern-btn-right" style="padding-left:6px;">
+          <a href="tel:+12159489902" style="text-decoration:none;display:block;">
+            <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#F8F9FA;border:1px solid #E5E5E5;border-radius:12px;">
+              <tr><td style="padding:16px 12px;text-align:center;">
+                <span style="display:block;margin-bottom:6px;"><img src="https://eggsokpa.com/webicons/ContactLayer.png" class="concern-btn-icon" style="width:28px;height:28px;border-radius:50%;" alt="Phone" /></span>
+                <span class="concern-btn-label" style="font-family:${FONT_BODY};font-size:15px;font-weight:700;color:#0D0D0D;display:block;">Speak To Us</span>
+                <span class="concern-btn-info" style="font-family:${FONT_BODY};font-size:12px;color:#777777;font-weight:500;display:block;margin-top:3px;">(215) 948-9902</span>
+              </td></tr>
+            </table>
+          </a>
+        </td>
+      </tr>
     </table>
   </td></tr>
 
-  <tr><td style="padding:24px;">&nbsp;</td></tr>
+  <!-- FOOTER -->
+  <tr>
+    <td class="footer-cell" style="background:#F8F9FA;padding:22px 24px;border-top:1px solid #E5E5E5;">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:10px;">
+        <tr>
+          <td align="center" class="footer-info" style="font-family:${FONT_BODY};font-size:13px;color:#4D4D4D;font-weight:500;line-height:20px;padding:6px 0;">
+            <img src="https://eggsokpa.com/webicons/ContactLocation.png" width="14" height="14" style="vertical-align:middle;" alt="Location">
+            3517 Lancaster Ave, Philadelphia, PA 19104
+            &nbsp;&middot;&nbsp;
+            <a href="https://www.eggsokphilly.com" style="color:#4D4D4D;text-decoration:none;font-family:${FONT_BODY};">
+              <img src="https://eggsokpa.com/webicons/ContactWebsite.png" width="14" height="14" style="vertical-align:middle;" alt="Website">
+              www.eggsokphilly.com
+            </a>
+            &nbsp;&middot;&nbsp;
+            <img src="https://eggsokpa.com/webicons/ContactLayer.png" width="14" height="14" style="vertical-align:middle;" alt="Phone">
+            (215) 948-9902
+          </td>
+        </tr>
+      </table>
+      <table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td height="1" style="background:#E5E5E5;line-height:1px;font-size:1px;">&nbsp;</td></tr></table>
+      <p class="footer-hours" style="margin:10px 0;text-align:center;font-family:${FONT_BODY};font-size:13px;color:#0D0D0D;font-weight:600;letter-spacing:0.3px;">
+        Mon-Fri: 7AM-4PM &middot; Sat-Sun: 8AM-3PM
+      </p>
+      <table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td height="1" style="background:#E5E5E5;line-height:1px;font-size:1px;">&nbsp;</td></tr></table>
+      <table cellpadding="0" cellspacing="0" border="0" align="center" style="margin:12px auto;">
+        <tr>
+          <td class="footer-social-text" style="font-family:${FONT_BODY};font-size:12px;color:#777777;font-weight:500;padding-right:10px;">Connect with us on social networks</td>
+          <td style="padding:0 4px;"><a href="#"><img src="https://eggsokpa.com/webicons/ContactFB.png" class="footer-social-icon" width="24" height="24" alt="Facebook"></a></td>
+          <td style="padding:0 4px;"><a href="#"><img src="https://eggsokpa.com/webicons/ContactInsta.png" class="footer-social-icon" width="24" height="24" alt="Instagram"></a></td>
+          <td style="padding:0 4px;"><a href="#"><img src="https://eggsokpa.com/webicons/Contacttiktok.png" class="footer-social-icon" width="24" height="24" alt="TikTok"></a></td>
+          <td style="padding:0 4px;"><a href="#"><img src="https://eggsokpa.com/webicons/Contactgoogleplus.png" class="footer-social-icon" width="24" height="24" alt="Google"></a></td>
+        </tr>
+      </table>
+      <table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td height="1" style="background:#E5E5E5;line-height:1px;font-size:1px;">&nbsp;</td></tr></table>
+      <p class="footer-copyright" style="margin:10px 0 0;text-align:center;font-family:${FONT_BODY};font-size:12px;color:#777777;font-weight:500;">
+        &copy; ${year} Eggs Ok. All rights reserved.
+      </p>
+    </td>
+  </tr>
 
 </table>
 </td></tr>

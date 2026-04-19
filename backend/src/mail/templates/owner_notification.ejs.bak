@@ -17,14 +17,14 @@
 
   <!-- ══════ HEADER ══════ -->
   <tr><td style="background:#111111;padding:32px 24px 20px;text-align:center;border-bottom:3px solid #222;">
-    <img src="https://eggsokpa.com/webicons/logo.webp" width="180" height="72" alt="Eggs Ok" style="display:block;margin:0 auto;border:0;">
+    <img src="https://eggsokpa.com/webicons/logo.png" width="180" height="72" alt="Eggs Ok" style="display:block;margin:0 auto;border:0;">
   </td></tr>
 
   <!-- ══════ HERO ══════ -->
   <tr><td style="padding:20px 20px 4px;">
     <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#1a1a1a;border:2px solid #2a2a2a;border-radius:14px;">
       <tr><td style="padding:28px 20px 24px;text-align:center;">
-        <span style="font-size:52px;display:block;margin-bottom:12px;"><img src="/webicons/order-received.webp" style="width:52px;height:52px;" /></span>
+        <span style="font-size:52px;display:block;margin-bottom:12px;"><img src="/webicons/Contactorder-received.png" style="width:52px;height:52px;" /></span>
         <h1 style="margin:0 0 6px;font-size:26px;font-weight:900;color:#ffffff;line-height:1.2;">You've Received a New Order!</h1>
         <p style="margin:0;font-size:13px;color:#aaaaaa;font-weight:600;letter-spacing:0.3px;">Order received! Let's get it ready for <%= orderType === 'delivery' ? 'delivery' : 'pickup' %>.</p>
       </td></tr>
@@ -168,7 +168,7 @@
           <a href="mailto:eggsok3517@gmail.com" style="text-decoration:none;display:block;">
             <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#e63b2e;border-radius:10px;">
               <tr><td style="padding:14px 12px;text-align:center;">
-                <span style="font-size:22px;display:block;margin-bottom:4px;"><img src="/webicons/email.webp" style="width:52px;height:52px;" /></span>
+                <span style="font-size:22px;display:block;margin-bottom:4px;"><img src="/webicons/Contactemail.png" style="width:52px;height:52px;" /></span>
                 <span style="font-size:14px;font-weight:900;color:#ffffff;display:block;">Email Us</span>
                 <span style="font-size:11px;color:rgba(255,255,255,0.8);font-weight:700;display:block;margin-top:2px;">eggsok3517@gmail.com</span>
               </td></tr>
@@ -179,7 +179,7 @@
           <a href="tel:+12159489902" style="text-decoration:none;display:block;">
             <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#e63b2e;border-radius:10px;">
               <tr><td style="padding:14px 12px;text-align:center;">
-                <span style="font-size:22px;display:block;margin-bottom:4px;"><img src="/webicons/Contact.webp" style="width:52px;height:52px;" /></span>
+                <span style="font-size:22px;display:block;margin-bottom:4px;"><img src="/webicons/ContactLayer.png" style="width:52px;height:52px;" /></span>
                 <span style="font-size:14px;font-weight:900;color:#ffffff;display:block;">Speak To Us</span>
                 <span style="font-size:11px;color:rgba(255,255,255,0.8);font-weight:700;display:block;margin-top:2px;">(215) 948-9902</span>
               </td></tr>
@@ -196,11 +196,11 @@
     <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:12px;">
       <tr>
         <td style="text-align:center;padding:2px 0;">
-          <span style="font-size:11px;color:#777777;font-weight:700;"><img src="/webicons/Location.webp" style="width:52px;height:52px;" />; 3517 Lancaster Ave, Philadelphia, PA 19104</span>
+          <span style="font-size:11px;color:#777777;font-weight:700;"><img src="/webicons/ContactLocation.png" style="width:52px;height:52px;" />; 3517 Lancaster Ave, Philadelphia, PA 19104</span>
           <span style="color:#444;"> &nbsp; </span>
-          <span style="font-size:11px;color:#777777;font-weight:700;"><img src="/webicons/Website.webp" style="width:52px;height:52px;" />; www.eggsokphilly.com</span>
+          <span style="font-size:11px;color:#777777;font-weight:700;"><img src="/webicons/ContactWebsite.png" style="width:52px;height:52px;" />; www.eggsokphilly.com</span>
           <span style="color:#444;"> &nbsp; </span>
-          <span style="font-size:11px;color:#777777;font-weight:700;"><img src="/webicons/Contact.webp" style="width:52px;height:52px;" />; (215) 948-9902</span>
+          <span style="font-size:11px;color:#777777;font-weight:700;"><img src="/webicons/ContactLayer.png" style="width:52px;height:52px;" />; (215) 948-9902</span>
         </td>
       </tr>
     </table>
@@ -210,10 +210,10 @@
     <table cellpadding="0" cellspacing="0" border="0" align="center" style="margin-bottom:14px;">
       <tr>
         <td style="font-size:11px;color:#666;font-weight:700;padding-right:10px;">Connect with us on social networks</td>
-        <td style="padding:0 3px;"><a href="#" style="display:inline-block;width:28px;height:28px;background:#1877f2;border-radius:6px;text-align:center;line-height:28px;font-size:15px;color:#fff;text-decoration:none;font-weight:700;"><img src="/webicons/FB.webp" style="width:52px;height:52px;" /></a></td>
-        <td style="padding:0 3px;"><a href="#" style="display:inline-block;width:28px;height:28px;background:linear-gradient(135deg,#f58529,#dd2a7b,#8134af);border-radius:6px;text-align:center;line-height:28px;font-size:13px;color:#fff;text-decoration:none;"><img src="/webicons/Insta.webp" style="width:52px;height:52px;" /></a></td>
-        <td style="padding:0 3px;"><a href="#" style="display:inline-block;width:28px;height:28px;background:#000000;border:1px solid #333;border-radius:6px;text-align:center;line-height:28px;font-size:13px;color:#fff;text-decoration:none;"><img src="/webicons/tiktok.webp" style="width:52px;height:52px;" />;</a></td>
-        <td style="padding:0 3px;"><a href="#" style="display:inline-block;width:28px;height:28px;background:#ea4335;border-radius:6px;text-align:center;line-height:28px;font-size:12px;color:#fff;text-decoration:none;font-weight:700;"><img src="/webicons/googleplus.webp" style="width:52px;height:52px;" /></a></td>
+        <td style="padding:0 3px;"><a href="#" style="display:inline-block;width:28px;height:28px;background:#1877f2;border-radius:6px;text-align:center;line-height:28px;font-size:15px;color:#fff;text-decoration:none;font-weight:700;"><img src="/webicons/ContactFB.png" style="width:52px;height:52px;" /></a></td>
+        <td style="padding:0 3px;"><a href="#" style="display:inline-block;width:28px;height:28px;background:linear-gradient(135deg,#f58529,#dd2a7b,#8134af);border-radius:6px;text-align:center;line-height:28px;font-size:13px;color:#fff;text-decoration:none;"><img src="/webicons/ContactInsta.png" style="width:52px;height:52px;" /></a></td>
+        <td style="padding:0 3px;"><a href="#" style="display:inline-block;width:28px;height:28px;background:#000000;border:1px solid #333;border-radius:6px;text-align:center;line-height:28px;font-size:13px;color:#fff;text-decoration:none;"><img src="/webicons/Contacttiktok.png" style="width:52px;height:52px;" />;</a></td>
+        <td style="padding:0 3px;"><a href="#" style="display:inline-block;width:28px;height:28px;background:#ea4335;border-radius:6px;text-align:center;line-height:28px;font-size:12px;color:#fff;text-decoration:none;font-weight:700;"><img src="/webicons/Contactgoogleplus.png" style="width:52px;height:52px;" /></a></td>
       </tr>
     </table>
     <!-- Copyright -->
