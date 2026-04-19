@@ -50,7 +50,7 @@ const css = `
   .order-nav {
     position: fixed; top: 0; left: 0; right: 0; z-index: 100;
     background: rgba(255,255,255,0.98); backdrop-filter: blur(24px);
-    border-bottom: 1px solid #E5E5E5;
+   
     height: 72px; display: flex; align-items: center;
     padding: 0 20px; gap: 12px;
   }
@@ -123,46 +123,46 @@ const css = `
 
   /* ── Sidebar ── */
   .sidebar {
-    width: 260px; flex-shrink: 0;
+    width: 17%; flex-shrink: 0;
     position: sticky; top: 72px;
     height: calc(100vh - 72px); overflow-y: auto;
-    border-right: 1px solid #E5E5E5;
+    // border-right: 1px solid #E5E5E5;
     background: var(--bg2); padding: 24px 0;
     scrollbar-width: none; z-index: 50;
     transition: transform 0.3s cubic-bezier(.4,0,.2,1);
   }
   .sidebar::-webkit-scrollbar { display: none; }
 
-  .sidebar-search-wrap { padding: 0 16px 20px; border-bottom: 1px solid #E5E5E5; }
-  .sidebar-search-inner { position: relative; color: var(--t2); }
+  .sidebar-search-wrap { padding: 0 0% 0px 4%; }
+  .sidebar-search-inner { position: relative; color:#ffffff; }
   .sidebar-search-icon { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); pointer-events: none; }
   .sidebar-search-input {
     width: 100%; padding: 10px 12px 10px 36px;
-    background: var(--bg4); border: 1px solid #D0D0D0;
+    background: #ffffff; border: 1px solid #D0D0D0;
     border-radius: 10px; color: var(--t1); font-size: 16px;
     outline: none; font-family: var(--font-body);
     transition: border-color 0.15s;
   }
-  // .sidebar-search-input:focus { border-color: #000; }
+  // .sidebar-search-input:focus { border-color: 2px solid #000; }
     .sidebar-search-input:hover { border-color: #000; background: #ffffff; }
-  .sidebar-search-input::placeholder { color: var(--t4); }
+  .sidebar-search-input::placeholder { color: #D0D0D0); }
 
-  .sidebar-menu-wrap { padding: 16px 0; }
+  .sidebar-menu-wrap { padding: 16px 0px; margin-left:4%}
   .sidebar-menu-label {
     font-size: 15px; color: #1A1A1A; font-weight: 900;
     letter-spacing: 2px; text-transform: uppercase;
     padding: 0 16px 10px; display: block; font-family: var(--font-body);
   }
   .sidebar-cat-btn {
-    width: 100%; padding: 8px 12px; text-align: left;
-    background: transparent; color: var(--t2); border: none;
+    width: 100%; border-radius:8px;padding:10px 8px; text-align: left;
+    background: transparent; color: #4D4D4D; border: none;
     font-size: 16px; font-weight: 500; cursor: pointer;
     transition: all 0.15s; border-left: 3px solid transparent;
     font-family: var(--font-body); display: flex; align-items: center; gap: 8px;
   }
-  .sidebar-cat-btn:hover { background: var(--bg4); color: var(--t1); border-left-color: #D0D0D0; }
+  .sidebar-cat-btn:hover { background: var(--bg4); color: var(--t1); }
   .sidebar-cat-btn.active {
-    background: #D0D0D0; color: var(--t1);
+    background: #000; color: #ffffff;border-radius:8px;padding:10px 8px;
     font-weight: 500; ;
   }
   .sidebar-cat-dot { width: 5px; height: 5px; border-radius: 50%; background: currentColor; flex-shrink: 0; opacity: 0.5; }
@@ -173,15 +173,15 @@ const css = `
   .sidebar-overlay.visible { display: block; }
 
   /* ── Main scroll ── */
-  .main-scroll { flex: 1; overflow-y: auto; height: calc(100vh - 72px); min-width: 0; background: var(--bg1); }
-  .main-inner { max-width: 960px; margin: 0 auto; padding: 36px 36px 100px; }
+  .main-scroll { flex: 1; overflow-y: auto; height: calc(100vh - 72px); min-width: 0; background: #ffffff; }
+  .main-inner { max-width: 960px; margin: 0 auto; padding: 20px 36px 100px; }
 
   /* ── Page header ── */
   .page-header { margin-bottom: 32px; }
   .page-title {
     font-family: var(--font-head);
     font-size: 28px;
-    font-weight: 700;
+    font-weight: 500;
     letter-spacing: 0.5px; line-height: 1.2;
     color: var(--t1); margin: 0 0 12px;
   }
@@ -194,7 +194,7 @@ const css = `
   .status-dot.open { background: var(--green); }
   .status-dot.closed { background: var(--r); }
   .status-text { font-size: 13px; font-weight: 600; }
-  .status-text.open { color: var(--green); }
+  .status-text.open { color: #0C0C; }
   .status-text.closed { color: var(--r); }
 
   /* ── Order row ── */
@@ -202,16 +202,16 @@ const css = `
 
   /* ── Order type toggle ── */
   .order-type-toggle {
-    display: flex; background: var(--bg4); border-radius: 12px;
+    display: flex; background: var(--bg4); border-radius: 20px;
     padding: 1px; border: 1px solid var(--border); flex-shrink: 0;
   }
   .order-type-btn {
-    padding: 8px 20px; border-radius: 10px; border: none;
+    padding: 10px 20px; border-radius: 10px; border: none;
     cursor: pointer; font-size: 16px; font-weight: 500;
     transition: all 0.2s; font-family: var(--font-body);
   }
-  .order-type-btn.active { background: #ffffff; color: #000; }
-  .order-type-btn.inactive { background: transparent; color: var(--t4); }
+  .order-type-btn.active { background: #ffffff; color: #000; border-radius: 20px; }
+  .order-type-btn.inactive { background: transparent; color: #4D4D4D; }
   .order-type-btn.inactive:hover { color: var(--t2); }
 
   /* ── Delivery address btn ── */
@@ -219,7 +219,7 @@ const css = `
     display: flex; align-items: center; gap: 7px;
     padding: 9px 14px; background: var(--bg4);
     border: 1px solid var(--border); border-radius: 10px;
-    color: var(--t2); font-size: 14px; cursor: pointer;
+    color: #000; font-size: 14px; cursor: pointer;
     font-weight: 500; max-width: 200px;
     transition: border-color 0.15s, color 0.15s;
     font-family: var(--font-body);
@@ -292,21 +292,21 @@ const css = `
 
   /* ── Grid card ── */
   .grid-card {
-    display: flex; align-items: center; gap: 16px; padding: 20px;
-    background: var(--bg3); cursor: pointer; min-height: 130px;
+    display: flex; align-items: center; gap: 16px;
+    background: #ffffff; cursor: pointer; min-height: 130px;
     transition: background 0.15s, box-shadow 0.2s, border-color 0.2s;
     border: 1px solid #E5E5E5; border-radius: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.06);
   }
-  .grid-card:hover { background: #F8F8F8; box-shadow: 0 4px 12px rgba(0,0,0,0.1); border-color: #D0D0D0; }
-  .grid-card-body { flex: 1; min-width: 0; }
+  .grid-card:hover { background: #F8F8F8;border-color: #D0D0D0; }
+  .grid-card-body { flex: 1; min-width: 0; padding-left: 20px; }
   .grid-card-name { font-size: 16px; font-weight: 500; color: #1A1A1A; margin-bottom: 5px; line-height: 1.4; }
   .grid-card-price { font-size: 16px; font-weight: 500; color: #1A1A1A; margin-bottom: 6px; }
   .grid-card-desc { font-size: 14px; color: #4D4D4D; line-height: 1.5; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
   .grid-card-img-wrap { position: relative; flex-shrink: 0; }
-  .grid-card-img { width: 120px; height: 120px; border-radius: 12px; overflow: hidden; background: #E0E0E0; border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; }
-  .grid-card-img img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s ease; }
+  .grid-card-img { width: 200px; height: 200px;  overflow: hidden; background: #E0E0E0; border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; }
+  .grid-card-img img { width: 100%; height: 100%; object-fit: cover; }
   .grid-card:hover .grid-card-img img { transform: scale(1.05); }
-  .grid-card-add-btn { position: absolute; bottom: -8px; right: -8px; width: 30px; height: 30px; border-radius: 50%; background: #ffffff; display: flex; align-items: center; justify-content: center; border: 2px solid var(--bg3); box-shadow: 0 2px 10px rgba(0,0,0,0.06); }
+  .grid-card-add-btn { position: absolute; bottom: 7px; right: 10px; width: 30px; height: 30px; border-radius: 20%; background: #ffffff; display: flex; align-items: center; justify-content: center; border: 2px solid var(--bg3); box-shadow: 0 2px 10px rgba(0,0,0,0.06); }
 
   /* ── Search results header ── */
   .search-results-meta { font-size: 14px; color: var(--t3); margin-bottom: 20px; }
@@ -1026,7 +1026,7 @@ function OrderContent() {
           </div>
 
           <div id="sidebar-categories" className="sidebar-menu-wrap">
-            <span className="sidebar-menu-label">Menu</span>
+            
            {categories
   .filter(cat => cat.name !== "Popular")
   .map(cat => (
@@ -1051,7 +1051,7 @@ function OrderContent() {
             {/* Page header */}
             <header id="order-page-header" className="page-header">
               <h1 id="order-page-title" className="page-title">
-                Eggs Ok
+                Eggs Ok Menu
               </h1>
               <div id="order-page-meta" className="page-meta">
                 <div className="page-meta-location">
@@ -1737,7 +1737,7 @@ function GridCard({ item, orderType, onSelect, borderRadius }: { item: MenuItem;
           }
         </div>
         <div className="grid-card-add-btn" aria-hidden="true">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#4D4D4D" strokeWidth="2.8" strokeLinecap="round">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#000" strokeWidth="2.8" strokeLinecap="round">
             <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
           </svg>
         </div>
