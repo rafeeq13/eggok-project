@@ -546,7 +546,7 @@ export default function HomePage() {
           max-width: 100%; 
           max-height: 100vh !important;
           min-height: 100vh !important;
-          background-image: url('/main-menu/Main-Page/review-rewards.webp');
+          background-image: url('/main-menu/Main-Page/review-rewards.jpeg');
           background-size: cover; background-position: center;
           display: flex; align-items: center; justify-content: flex-end;
           }

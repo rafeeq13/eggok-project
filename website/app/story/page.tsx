@@ -277,7 +277,7 @@ export default function StoryPage() {
             <div id="origin-img-side" className="story-img-side">
               <div id="origin-img-frame" className="story-img-frame">
                 <Image
-                  src="/main-menu/Our-Story/1.webp"
+                  src="/main-menu/Our-Story/2.webp"
                   alt="The original Eggs Ok sandwich"
                   width={533.2} height={533.2}
                   style={{ objectFit: 'cover', borderRadius: '16px', display: 'block',  aspectRatio: '4/3' }}
@@ -339,7 +339,7 @@ export default function StoryPage() {
             <div id="food-img-side" className="story-img-side">
               <div id="food-img-frame" className="story-img-frame story-img-frame-alt">
                 <Image
-                  src="/main-menu/Our-Story/2.webp"
+                  src="/main-menu/Our-Story/2.jpg"
                   alt="Eggs Ok — fresh, made to order"
                   width={533.2} height={533.2}
                   style={{ objectFit: 'cover', borderRadius: '16px', display: 'block', aspectRatio: '4/3' }}
