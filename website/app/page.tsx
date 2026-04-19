@@ -437,7 +437,7 @@ export default function HomePage() {
           color: #000; cursor: pointer; display: flex; align-items: center; justify-content: center;
           backdrop-filter: blur(6px);
         }
-        .home-modal-close:hover { background: rgba(0,0,0,0.95); }
+        .home-modal-close:hover { background: #ffffff; }
         .home-modal-img-wrap { position: relative; overflow: hidden; border-radius: 24px 24px 0 0; flex-shrink: 0; }
         .home-modal-img-wrap img { width: 100%; height: 100%; object-fit: cover; }
         .home-modal-body { padding: 0 24px 24px; }

@@ -637,7 +637,7 @@ const css = `
 
   /* ══ TABLET + MOBILE ≤ 1024px (tablet uses mobile layout) ══ */
   @media (max-width: 1024px) {
-  .item-modal-box {min-height: 60vh;max-width: 94vh;}
+  .item-modal-box {min-height: 60vh;max-width: 80vh;}
     .nav-signin { display: none; }
     .sidebar { position: fixed; top: 72px; left: 0; height: calc(100vh - 72px); transform: translateX(-100%); box-shadow: 6px 0 32px rgba(0,0,0,0.1); z-index: 149; width: 250px; }
     .sidebar.open { transform: translateX(0); }
