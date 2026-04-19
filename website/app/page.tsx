@@ -613,15 +613,15 @@ export default function HomePage() {
         .review-card:hover { transform: translateY(-2px); box-shadow: 0 12px 36px rgba(0,0,0,0.06); }
         .review-arrow {
           position: absolute; top: 50%; transform: translateY(-50%); z-index: 10;
-          width: 44px; height: 44px; border-radius: 50%;
+          width:30px; height: 30px; border-radius: 50%;
           background: rgba(255,255,255,0.95); border: 1px solid #E5E5E5;
           color: #1A1A1A; cursor: pointer;
           display: flex; align-items: center; justify-content: center;
           transition: background 0.15s, border-color 0.15s;
         }
         .review-arrow:hover { background: #FFFFFF; border-color: #C0C0C0; }
-        .review-arrow-left { left: -50px; }
-        .review-arrow-right { right: -50px; }
+        .review-arrow-left { left: -10px; }
+        .review-arrow-right { right: -10px; }
         .star-filter-wrap {
           display: flex; justify-content: center; gap: 8px; margin-top: 20px; flex-wrap: wrap;
         }
@@ -904,8 +904,8 @@ export default function HomePage() {
         @media (max-width: 768px) {
         .order-ahead-hero { max-height: 50vh !important; min-height:70vh !important; flex-direction: column;}
 
-        .fav-arrow-left { left: -18px; }
-        .fav-arrow-right { right: -18px; }
+        .fav-arrow-left { left: -10px; }
+        .fav-arrow-right { right: -10px; }
         .fav-arrow{width: 25px; height: 25px;}
         .fav-img-wrap{height: 140px;}
         // .sec-heading{font-size: 20px !important;}
