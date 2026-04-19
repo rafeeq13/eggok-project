@@ -351,7 +351,7 @@ function CheckoutInner() {
 
   const labelStyle: React.CSSProperties = {
     fontSize: '14px', fontWeight: '600',
-    color: '#555555', display: 'block',
+    color: '#4D4D4D', display: 'block',
     marginBottom: '6px',
   };
 
@@ -675,16 +675,16 @@ function CheckoutInner() {
             {/* Payment */}
             <div style={cardStyle}>
               <p style={sectionTitle}>Payment</p>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '10px 14px', background: '#F8F9FA', borderRadius: '8px', border: '1px solid #22C55E20', marginBottom: '16px' }}>
+              {/* <div style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '10px 14px', background: '#F8F9FA', borderRadius: '8px', border: '1px solid #22C55E20', marginBottom: '16px' }}>
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#22C55E" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
                 </svg>
                 <span style={{ fontSize: '14px', color: '#22C55E' }}>Secured by Stripe 256-bit SSL encryption</span>
-              </div>
+              </div> */}
               {stripe ? (
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
                   <div>
-                    <label style={{ fontSize: '14px', color: '#777777', display: 'block', marginBottom: '6px', fontWeight: '600' }}>Card Number</label>
+                    <label style={{ fontSize: '14px', color: '#4D4D4D', display: 'block', marginBottom: '6px', fontWeight: '600' }}>Card Number</label>
                     <div style={{ padding: '14px', background: '#F8F9FA', border: '1px solid #D0D0D0', borderRadius: '10px' }}>
                       <CardNumberElement
                         options={{
@@ -699,7 +699,7 @@ function CheckoutInner() {
                   </div>
                   <div className="payment-grid">
                     <div>
-                      <label style={{ fontSize: '14px', color: '#777777', display: 'block', marginBottom: '6px', fontWeight: '600' }}>Expiry Date</label>
+                      <label style={{ fontSize: '14px', color: '#4D4D4D', display: 'block', marginBottom: '6px', fontWeight: '600' }}>Expiry Date</label>
                       <div style={{ padding: '14px', background: '#F8F9FA', border: '1px solid #D0D0D0', borderRadius: '10px' }}>
                         <CardExpiryElement
                           options={{
@@ -713,7 +713,7 @@ function CheckoutInner() {
                       </div>
                     </div>
                     <div>
-                      <label style={{ fontSize: '14px', color: '#777777', display: 'block', marginBottom: '6px', fontWeight: '600' }}>CVV</label>
+                      <label style={{ fontSize: '14px', color: '#4D4D4D', display: 'block', marginBottom: '6px', fontWeight: '600' }}>CVV</label>
                       <div style={{ padding: '14px', background: '#F8F9FA', border: '1px solid #D0D0D0', borderRadius: '10px' }}>
                         <CardCvcElement
                           options={{
@@ -737,9 +737,9 @@ function CheckoutInner() {
 
             {/* Place Order */}
             <button onClick={handlePlaceOrder} disabled={!canPlaceOrder || placing} style={{
-              width: '100%', padding: '8px',
-              background: canPlaceOrder && !placing ? '#E5B800' : '#E5E5E5',
-              color: canPlaceOrder && !placing ? '#000' : '#AAAAAA',
+              width: '100%', padding: '10px',
+              background: canPlaceOrder && !placing ? '#E5B800' : '#E5B800',
+              color: canPlaceOrder && !placing ? '#000' : '#000',
               borderRadius: '12px', border: 'none',
               fontSize: '16px', fontWeight: '500',
               cursor: canPlaceOrder && !placing ? 'pointer' : 'not-allowed',
@@ -799,10 +799,10 @@ function CheckoutInner() {
                     <input style={{ ...inputStyle, flex: 1 }} placeholder="Add coupon or gift card"
                       value={promoCode}
                       onChange={e => { setPromoCode(e.target.value.toUpperCase()); setPromoError(''); setPromoApplied(false); setPromoDiscount(0); setPromoLabel(''); }}
-                      onFocus={e => (e.target as HTMLInputElement).style.borderColor = '#C0C0C0'}
-                      onBlur={e => (e.target as HTMLInputElement).style.borderColor = '#D0D0D0'} />
+                      onFocus={e => (e.target as HTMLInputElement).style.borderColor = '#E5B800'}
+                      onBlur={e => (e.target as HTMLInputElement).style.borderColor = '#E5B800'} />
                     <button onClick={applyPromo} disabled={promoLoading}
-                      style={{ padding: '12px 14px', background: promoLoading ? '#E5E5E5' : '#C0C0C0', borderRadius: '10px', color: promoLoading ? '#AAAAAA' : '#000', fontSize: '16px', fontWeight: '500', cursor: promoLoading ? 'not-allowed' : 'pointer', border: 'none', flexShrink: 0, fontFamily: "'Geist', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" }}>
+                      style={{ padding: '12px 14px', background: promoLoading ? '#E5B800' : '#E5B800', borderRadius: '10px', color: promoLoading ? '#AAAAAA' : '#000', fontSize: '16px', fontWeight: '500', cursor: promoLoading ? 'not-allowed' : 'pointer', border: 'none', flexShrink: 0, fontFamily: "'Geist', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" }}>
                       {promoLoading ? '...' : 'Apply'}
                     </button>
                   </div>
@@ -851,10 +851,10 @@ function CheckoutInner() {
                         )}
 
                         {cartItem.specialInstructions && <p style={{ fontSize: '12px', color: '#777777', margin: '2px 0 0' }}>{cartItem.specialInstructions}</p>}
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '0', marginTop: '6px', border: '1px solid #D0D0D0', borderRadius: '6px', overflow: 'hidden', width: 'fit-content' }}>
-                          <button onClick={() => updateQuantity(cartItem.id, cartItem.quantity - 1)} style={{ width: '28px', height: '28px', background: '#F8F9FA', border: 'none', color: '#1A1A1A', fontSize: '16px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>−</button>
-                          <span style={{ width: '30px', textAlign: 'center', fontSize: '12px', fontWeight: '700', color: '#1A1A1A', background: '#F8F9FA' }}>{cartItem.quantity}</span>
-                          <button onClick={() => updateQuantity(cartItem.id, cartItem.quantity + 1)} style={{ width: '28px', height: '28px', background: '#F8F9FA', border: 'none', color: '#1A1A1A', fontSize: '16px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>+</button>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '0', marginTop: '6px', border: '1px solid #D0D0D0', background: '#D0D0D0', borderRadius: '6px', overflow: 'hidden', width: 'fit-content' }}>
+                          <button onClick={() => updateQuantity(cartItem.id, cartItem.quantity - 1)} style={{ width: '28px', height: '28px', background: '#ffffff', border: 'none', color: '#1A1A1A', fontSize: '16px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>−</button>
+                          <span style={{ width: '30px', textAlign: 'center', fontSize: '12px', fontWeight: '700', color: '#1A1A1A', background: '#D0D0D0' }}>{cartItem.quantity}</span>
+                          <button onClick={() => updateQuantity(cartItem.id, cartItem.quantity + 1)} style={{ width: '28px', height: '28px', background: '#ffffff', border: 'none', color: '#1A1A1A', fontSize: '16px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>+</button>
                         </div>
                       </div>
                       <p style={{ fontSize: '16px', fontWeight: '700', color: '#1A1A1A', flexShrink: 0 }}>${(getPrice(cartItem.item) * cartItem.quantity).toFixed(2)}</p>

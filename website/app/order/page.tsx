@@ -381,26 +381,26 @@ const css = `
     box-shadow: -20px 0 60px rgba(0,0,0,0.1);
   }
   .cart-header { padding: 20px; border-bottom: 1px solid #E5E5E5; display: flex; align-items: center; justify-content: space-between; }
-  .cart-title { font-family: var(--font-body); font-size: 16px; font-weight: 500; letter-spacing: -0.5px; color: #4D4D4D; margin: 0; }
+  .cart-title { font-family: var(--font-body); font-size: 22px; font-weight: 500; letter-spacing: 0.1px; color: #1A1A1A; margin: 0; }
   .cart-close-btn { width: 32px; height: 32px; border-radius: 8px; background: var(--bg4); border: 1px solid var(--border); color: var(--t3); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background 0.15s; }
   .cart-close-btn:hover { background: #EEEEEE; color: var(--t1); }
   .cart-type-wrap { padding: 14px 20px; border-bottom: 1px solid #E5E5E5; }
-  .cart-type-toggle { display: flex; background: var(--bg4); border-radius: 12px; padding:2px; border: 1px solid var(--border); }
-  .cart-type-btn { flex: 1; padding: 9px; border-radius: 10px; border: none; cursor: pointer; font-size: 16px; font-weight: 500; transition: all 0.2s; font-family: var(--font-body); }
-  .cart-type-btn.active { background: #ffffff; color: #4D4D4D; }
-  .cart-type-btn.inactive { background: transparent; color: #4D4D4D; }
+  .cart-type-toggle { display: flex; background: var(--bg4); border-radius: 20px; padding:1px; border: 1px solid var(--border); }
+  .cart-type-btn { flex: 1; padding: 9px; border-radius: 20px; border: none; cursor: pointer; font-size: 16px; font-weight: 500; transition: all 0.2s; font-family: var(--font-body); }
+  .cart-type-btn.active { background: #ffffff; color: #0D0D0D;  }
+  .cart-type-btn.inactive { background: transparent; color: #0D0D0D; }
   .cart-body { flex: 1; overflow-y: auto; padding: 16px 20px; }
   .cart-empty { text-align: center; padding: 72px 20px; }
   .cart-empty-title { font-size: 16px; color: var(--t4); font-weight: 600; margin-top: 16px; }
   .cart-empty-sub { font-size: 14px; color: var(--t4); margin-top: 4px; }
   .cart-item { padding: 16px 0; border-bottom: 1px solid #E5E5E5; }
   .cart-item-top { display: flex; justify-content: space-between; margin-bottom: 10px; }
-  .cart-item-name { font-size: 16px; font-weight: 500; color: #4D4D4D; flex: 1; margin-right: 10px; line-height: 1.4; }
-  .cart-item-price { font-size: 16px; font-weight: 500; color: #4D4D4D; flex-shrink: 0; }
+  .cart-item-name { font-size: 16px; font-weight: 500; color: #0D0D0D; flex: 1; margin-right: 10px; line-height: 1.4; }
+  .cart-item-price { font-size: 16px; font-weight: 500; color: #0D0D0D; flex-shrink: 0; }
   .cart-item-modifiers { margin-bottom: 10px; padding-left: 4px; }
   .cart-modifier-row { display: flex; justify-content: space-between; margin-bottom: 2px; }
-  .cart-modifier-name { font-size: 14px; color: var(--t4); }
-  .cart-modifier-price { font-size: 14px; color: var(--t4); }
+  .cart-modifier-name { font-size: 16px; color: #4D4D4D; }
+  .cart-modifier-price { font-size: 16px; color: #4D4D4D; }
   .cart-item-controls { display: flex; align-items: center; justify-content: space-between; }
   .cart-qty-wrap { display: flex; align-items: center; gap: 12px; background: var(--bg4); border-radius: 10px; padding: 4px 10px; border: 1px solid var(--border); }
   .cart-qty-btn { width: 28px; height: 28px; border-radius: 8px; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 16px; transition: background 0.15s; }
@@ -409,12 +409,12 @@ const css = `
   .cart-qty-inc { background: #E0E0E0; color: #000; }
   .cart-qty-inc:hover { background: #ffffff; }
   .cart-qty-val { font-size: 16px; font-weight: 500; color: #4D4D4D; min-width: 18px; text-align: center; }
-  .cart-remove-btn { font-size: 12px; color: #555555; background: none; border: none; cursor: pointer; text-decoration: underline; transition: color 0.15s; font-family: var(--font-body); }
+  .cart-remove-btn { font-size: 12px; color: #0D0D0D; background: none; border: none; cursor: pointer; text-decoration: underline; transition: color 0.15s; font-family: var(--font-body); }
   .cart-remove-btn:hover { color: var(--r); }
   .cart-footer { padding: 18px 20px; border-top: 1px solid #E5E5E5; }
   .cart-summary-row { display: flex; justify-content: space-between; margin-bottom: 7px; }
-  .cart-summary-label { font-size: 16px; color: #4D4D4D; }
-  .cart-summary-val { font-size: 16px; color: #4D4D4D; }
+  .cart-summary-label { font-size: 22px; color: #0D0D0D; }
+  .cart-summary-val { font-size: 22px; color: #0D0D0D; }
   .cart-total-row { display: flex; justify-content: space-between; margin-bottom: 18px; margin-top: 8px; padding-top: 12px; border-top: 1px solid #E5E5E5; }
   .cart-total-label { font-family: var(--font-body); font-size: 16px; letter-spacing: -0.5px; color: #4D4D4D; }
   .cart-total-val { font-family: var(--font-body); font-size: 16px; letter-spacing: -0.5px; color: #4D4D4D; }
@@ -532,20 +532,40 @@ const css = `
   .schedule-confirm-btn:hover { background: #E5B800; color: #000; border-color: transparent; transform: none; }
 
   /* ══ ITEM MODAL ══ */
-  .item-modal-backdrop { position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 200; display: flex; align-items: flex-end; justify-content: center; }
+  .item-modal-backdrop { position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 200; display: flex; align-items: flex-start; justify-content: center;}
   .item-modal-box {
+    margin-top:20px;
     background: var(--bg2); border-radius: 24px 24px 0 0; width: 100%; max-width: 600px;
     max-height: 94vh; overflow: auto; border: 1px solid #E5E5E5;
     box-shadow: 0 -16px 60px rgba(0,0,0,0.1);
+    display: flex; flex-direction: column;
   }
-  .item-modal-img-wrap { position: relative; height: 280px; background: var(--bg1); overflow: hidden; border-radius: 24px 24px 0 0; }
+  .item-modal-close {
+    position: sticky; top: 8px; z-index: 30;
+    align-self: flex-end;
+    margin: 12px 12px -56px 0;
+    width: 40px; min-height: 40px; border-radius: 50%;
+    background: rgba(255, 255, 255, 0.85); border: 1px solid rgba(0, 0, 0, 0.1);
+    color: var(--t1); cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: background 0.15s;
+    backdrop-filter: blur(6px);
+  }
+  .item-modal-close:hover { background: rgba(255, 255, 255, 0.98); }
+  .item-modal-img-wrap { position: relative;  background: var(--bg1); overflow: hidden; border-radius: 24px 24px 0 0; flex-shrink: 0; }
   .item-modal-img { width: 100%; height: 100%; object-fit: cover; }
   .item-modal-img-placeholder { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #FAFAE0, var(--bg1)); }
   .item-popular-badge { position: absolute; top: 16px; left: 16px; background: var(--y); color: #000; padding: 5px 14px; border-radius: 20px; font-size: 11px; font-weight: 900; display: flex; align-items: center; gap: 4px; font-family: var(--font-head); letter-spacing: -0.5px; }
-  .item-modal-close { position: absolute; top: 12px; right: 12px; width: 44px; height: 44px; border-radius: 50%; background: rgba(255, 255, 255, 0.75); border: 1px solid rgba(0, 0, 0, 0.1); color: var(--t1); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background 0.15s; }
-  .item-modal-close:hover { background: rgba(255, 255, 255, 0.9); }
-  .item-modal-body { padding: 28px; }
-  .item-modal-name { font-family: var(--font-body); font-size: 22px; font-weight: 500; letter-spacing: 0.9px; line-height: 1; color: #0D0D0D; margin-bottom: 10px; }
+  .item-modal-body { padding: 0 28px 28px; }
+  .item-modal-name {
+    position: sticky; top: 0; z-index: 10;
+    background: var(--bg2);
+    margin: 0 -28px 10px;
+    padding: 18px 68px 12px 28px;
+    font-family: var(--font-body); font-size: 22px; font-weight: 500;
+    letter-spacing: 0.9px; line-height: 1; color: #0D0D0D;
+    border-bottom: 1px solid #F0F0F0;
+  }
   .item-modal-desc { font-size: 16px; color: #333333; line-height: 1.7; margin-bottom: 20px; }
   .item-price-row { display: flex; gap: 10px; margin-bottom: 28px; }
   .item-price-card { flex: 1; padding: 4px; border-radius: 12px; text-align: center; cursor: pointer; transition: border-color 0.15s, background 0.15s; border: 2px solid; }
@@ -564,28 +584,28 @@ const css = `
   .modifier-options { display: flex; flex-direction: column; gap: 6px; }
   .modifier-option {
     display: flex; align-items: center; justify-content: space-between;
-    padding: 13px 16px; border-radius: 10px; cursor: pointer; border: 1px solid;
+    padding: 13px 16px; border-radius: 10px; cursor: pointer;
     transition: all 0.15s;
   }
   .modifier-option.selected { background: #ffffff; border-color: #C0C0C0; }
-  .modifier-option.unselected { background: var(--bg1); border-color: #E5E5E5; }
+  .modifier-option.unselected {  }
   .modifier-option:hover.unselected { border-color: #D0D0D0; }
   .modifier-option-left { display: flex; align-items: center; gap: 12px; }
   .modifier-check { width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; border: 2px solid; transition: border-color 0.15s, background 0.15s; }
   .modifier-check.radio { border-radius: 50%; }
   .modifier-check.checkbox { border-radius: 5px; }
-  .modifier-check.selected { border-color: #C0C0C0; background: #ffffff; }
+  .modifier-check.selected { border-color: #000; background: #000; }
   .modifier-check.unselected { border-color: #D0D0D0; background: transparent; }
   .modifier-option-name { font-size: 16px; color: var(--t1); font-weight: 500; }
   .modifier-option-price { font-size: 14px; font-weight: 600; }
   .modifier-option-price.paid { color: var(--t1); font-weight: 700; }
   .modifier-option-price.free { color: var(--t4); }
-  .item-instructions-label { font-family: var(--font-body); font-size: 16px; font-weight: 500; letter-spacing: -0.5px; color: #4D4D4D; margin-bottom: 10px; }
+  .item-instructions-label { font-family: var(--font-body); font-size: 22px; font-weight: 500; letter-spacing: -0.9px; color: #1A1A1A; margin-bottom: 10px; }
   .item-instructions-input { width: 100%; padding: 14px; background: var(--bg1); border: 1px solid #E5E5E5; border-radius: 10px; color: var(--t1); font-size: 16px; height: 80px; resize: none; outline: none; font-family: var(--font-body); box-sizing: border-box; transition: border-color 0.15s; }
   .item-instructions-input:focus { border-color: #C0C0C0; }
   .item-instructions-input::placeholder { color: var(--t4); }
   .upsell-section { margin-bottom: 28px; }
-  .upsell-label { font-size: 16px; font-weight: 500; color: #4D4D4D; margin-bottom: 12px; letter-spacing: 0.2px; }
+  .upsell-label { font-size: 22px; font-weight: 500; color: #1A1A1A; margin-bottom: 12px; letter-spacing: -0.9px; }
   .upsell-row { display: flex; gap: 10px; overflow-x: auto; scrollbar-width: none; padding-bottom: 4px; }
   .upsell-row::-webkit-scrollbar { display: none; }
   .upsell-card { flex-shrink: 0; width: 130px; background: var(--bg1); border-radius: 12px; overflow: hidden; cursor: pointer; border: 1px solid #E5E5E5; transition: border-color 0.15s; }
@@ -595,7 +615,14 @@ const css = `
   .upsell-card-body { padding: 8px 10px; }
   .upsell-card-name { font-size: 13px; font-weight: 500; color: #4D4D4D; margin-bottom: 3px; line-height: 1.3; }
   .upsell-card-price { font-size: 14px; color: #4D4D4D; font-weight: 500; }
-  .item-add-row { display: flex; gap: 12px; align-items: center; }
+  .item-add-row {
+    display: flex; gap: 12px; align-items: center;
+    position: sticky; bottom: 0; z-index: 10;
+    background: var(--bg2);
+    margin: 0 -28px -28px;
+    padding: 14px 28px;
+    border-top: 1px solid #E5E5E5;
+  }
   .item-qty-wrap { display: flex; align-items: center; gap: 14px; background: var(--bg1); border: 1px solid #E5E5E5; border-radius: 12px; padding: 4px 16px; flex-shrink: 0; }
   .item-qty-btn { width: 32px; height: 32px; border-radius: 8px; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 18px; transition: background 0.15s; }
   .item-qty-dec { background: var(--bg4); color: var(--t1); }
@@ -606,7 +633,7 @@ const css = `
   .item-add-btn { flex: 1; padding: 8px; border-radius: 12px; border: 2px solid transparent; font-size: 16px; font-weight: 500; cursor: pointer; font-family: var(--font-body); transition: all 0.3s ease; }
   .item-add-btn.enabled { background: var(--y); color: #000; }
   .item-add-btn.enabled:hover { background: #E5B800; color: #000; border-color: transparent; transform: none; box-shadow: none; }
-  .item-add-btn.disabled { background: var(--bg4); color: var(--t4); cursor: not-allowed; }
+  .item-add-btn.disabled { background: #E5B800; color: #000; cursor: not-allowed; }
 
   /* ══ TABLET + MOBILE ≤ 1024px (tablet uses mobile layout) ══ */
   @media (max-width: 1024px) {
@@ -1316,12 +1343,12 @@ function OrderContent() {
             {cart.length > 0 && (
               <div id="cart-footer" className="cart-footer">
                 <div className="cart-summary-row"><span className="cart-summary-label">Subtotal</span><span className="cart-summary-val">${cartTotal.toFixed(2)}</span></div>
-                {orderType === 'delivery' && <div className="cart-summary-row"><span className="cart-summary-label">Delivery fee</span><span className="cart-summary-val">${(deliveryFee || defaultDeliveryFee).toFixed(2)}</span></div>}
+                {/* {orderType === 'delivery' && <div className="cart-summary-row"><span className="cart-summary-label">Delivery fee</span><span className="cart-summary-val">${(deliveryFee || defaultDeliveryFee).toFixed(2)}</span></div>}
                 <div className="cart-summary-row"><span className="cart-summary-label">Tax</span><span className="cart-summary-val">${(cartTotal * taxRate).toFixed(2)}</span></div>
                 <div className="cart-total-row">
                   <span className="cart-total-label">Total</span>
                   <span className="cart-total-val">${(cartTotal + (orderType === 'delivery' ? (deliveryFee || defaultDeliveryFee) : 0) + cartTotal * taxRate).toFixed(2)}</span>
-                </div>
+                </div> */}
                 <Link id="cart-checkout-btn" href="/checkout" className="cart-checkout-btn" onClick={() => setShowCart(false)}>
                   Checkout →
                 </Link>
@@ -1529,6 +1556,11 @@ function OrderContent() {
         <div id="item-modal-backdrop" className="item-modal-backdrop" onClick={() => setSelectedItem(null)}>
           <div id="item-modal" className="item-modal-box" onClick={e => e.stopPropagation()} role="dialog" aria-label={selectedItem.name} aria-modal="true">
 
+            {/* Sticky close (stays top-right while scrolling) */}
+            <button id="item-modal-close" className="item-modal-close" onClick={() => setSelectedItem(null)} aria-label="Close item">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            </button>
+
             {/* Image */}
             <div id="item-modal-img-wrap" className="item-modal-img-wrap">
               {selectedItem.imageUrl
@@ -1543,9 +1575,6 @@ function OrderContent() {
                   POPULAR
                 </div>
               )}
-              <button id="item-modal-close" className="item-modal-close" onClick={() => setSelectedItem(null)} aria-label="Close item">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-              </button>
             </div>
 
             <div id="item-modal-body" className="item-modal-body">
@@ -1594,7 +1623,7 @@ function OrderContent() {
                         >
                           <div className="modifier-option-left">
                             <div className={`modifier-check ${group.maxSelections === 1 ? 'radio' : 'checkbox'} ${isSel ? 'selected' : 'unselected'}`}>
-                              {isSel && <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#4D4D4D" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>}
+                              {isSel && <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ffffff" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>}
                             </div>
                             <span className="modifier-option-name">{opt.name}</span>
                           </div>

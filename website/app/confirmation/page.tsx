@@ -150,7 +150,7 @@ export default function ConfirmationPage() {
       {/* NAV */}
       <div style={{ position: 'fixed', top: 0, left: 0, right: 0, zIndex: 100, background: 'rgba(255,255,255,0.98)', backdropFilter: 'blur(20px)', borderBottom: '1px solid #E0E0E0', height: '64px', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '0 28px' }}>
         <Link href="/" style={{ display: 'flex', alignItems: 'center', textDecoration: 'none' }}>
-          <img src="/logo.webp" alt="Eggs Ok" style={{ height: '40px', objectFit: 'contain' }} onError={e => { (e.target as HTMLImageElement).style.display = 'none'; }} />
+          <img src="/logo.webp" alt="Eggs Ok" style={{ height: '80px', objectFit: 'contain' }} onError={e => { (e.target as HTMLImageElement).style.display = 'none'; }} />
         </Link>
       </div>
 
@@ -186,18 +186,18 @@ export default function ConfirmationPage() {
 
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px', paddingBottom: '16px', borderBottom: '1px solid #E5E5E5' }}>
               <div>
-                <p style={{ fontSize: '12px', color: '#1A1A1A', marginBottom: '4px',  letterSpacing: '1px', margin: 0 }}>Order Number</p>
+                <p style={{ fontSize: '20px', fontWeight: 700,fontFamily:"'var(--font-family)",color: '#1A1A1A', marginBottom: '4px',  letterSpacing: '1px', margin: 0 }}>Order Number</p>
                 <p style={{ fontSize: '16px', fontWeight: 500, fontFamily: " var(--font-body)", color: '#4D4D4D', letterSpacing: '2px', margin: '0px 0 0' }}>{orderNumber || '...'}</p>
               </div>
               <div style={{ textAlign: 'right' }}>
-                <p style={{ fontSize: '12px', color: '#1A1A1A', marginBottom: '4px',letterSpacing: '1px', margin: 0 }}>Est. {displayOrderType === 'delivery' ? 'Delivery' : 'Ready'}</p>
+                <p style={{ fontSize: '20px', fontWeight: 700,fontFamily:"'var(--font-family)", color: '#1A1A1A', marginBottom: '4px',letterSpacing: '1px', margin: 0 }}>Est. {displayOrderType === 'delivery' ? 'Delivery' : 'Ready'}</p>
                 <p style={{ fontSize: '16px', fontWeight: 500, fontFamily: " var(--font-body)", color: '#4D4D4D', letterSpacing: '1px', margin: '0px 0 0' }}>{getEstimatedTime()}</p>
               </div>
             </div>
 
             {/* Items */}
             <div style={{ marginBottom: '20px' }}>
-              <p style={{ fontSize: '12px', color: '#1A1A1A', marginBottom: '0px', letterSpacing: '1px' }}>Items Ordered</p>
+              <p style={{ fontSize: '20px', fontWeight: 700,fontFamily:"'var(--font-family)", color: '#1A1A1A', marginBottom: '0px', letterSpacing: '1px' }}>Items Ordered</p>
               {displayItems.length === 0 ? (
                 <p style={{ fontSize: '16px', color: '#AAAAAA' }}>No items</p>
               ) : displayItems.map((item: any, i: number) => {
@@ -253,17 +253,17 @@ export default function ConfirmationPage() {
             {/* Bill */}
             <div style={{ borderTop: '1px solid #E5E5E5', paddingTop: '14px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                <span style={{ fontSize: '14px', color: '#1A1A1A' }}>Subtotal</span>
-                <span style={{ fontSize: '14px', color: '#1A1A1A' }}>${lastOrder ? Number(lastOrder.subtotal).toFixed(2) : subtotal.toFixed(2)}</span>
+                <span style={{ fontSize: '20px', fontWeight: 700,fontFamily:"'var(--font-family)", color: '#1A1A1A' }}>Subtotal</span>
+                <span style={{ fontSize: '20px', fontWeight: 700,fontFamily:"'var(--font-family)", color: '#1A1A1A' }}>${lastOrder ? Number(lastOrder.subtotal).toFixed(2) : subtotal.toFixed(2)}</span>
               </div>
               <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                <span style={{ fontSize: '14px', color: '#1A1A1A' }}>Taxes & fees</span>
-                <span style={{ fontSize: '14px', color: '#1A1A1A' }}>${lastOrder ? Number(lastOrder.tax).toFixed(2) : taxes.toFixed(2)}</span>
+                <span style={{ fontSize: '16px', color: '#1A1A1A' }}>Taxes & fees</span>
+                <span style={{ fontSize: '16px', color: '#1A1A1A' }}>${lastOrder ? Number(lastOrder.tax).toFixed(2) : taxes.toFixed(2)}</span>
               </div>
               {displayOrderType === 'delivery' && (
                 <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                  <span style={{ fontSize: '14px', color: '#1A1A1A' }}>Delivery fee</span>
-                  <span style={{ fontSize: '14px', color: '#1A1A1A' }}>${lastOrder ? Number(lastOrder.deliveryFee).toFixed(2) : deliveryFee.toFixed(2)}</span>
+                  <span style={{ fontSize: '16px', color: '#1A1A1A' }}>Delivery fee</span>
+                  <span style={{ fontSize: '16px', color: '#1A1A1A' }}>${lastOrder ? Number(lastOrder.deliveryFee).toFixed(2) : deliveryFee.toFixed(2)}</span>
                 </div>
               )}
               {tipAmount > 0 && (
@@ -274,7 +274,7 @@ export default function ConfirmationPage() {
               )}
               <div style={{ display: 'flex', justifyContent: 'space-between', paddingTop: '10px', borderTop: '1px solid #E5E5E5', marginTop: '4px' }}>
                 <span style={{ fontSize: '20px', fontWeight: 700, fontFamily: "'Playfair Display', Georgia, serif", color: '#1A1A1A' }}>Total Paid</span>
-                <span style={{ fontSize: '20px', fontWeight: 700, fontFamily: "'Playfair Display', Georgia, serif", color: '#1A1A1A' }}>${displayTotal.toFixed(2)}</span>
+                <span style={{ fontSize: '20px', fontWeight: 700, fontFamily: "'var(--font-family)", color: '#1A1A1A' }}>${displayTotal.toFixed(2)}</span>
               </div>
             </div>
           </div>
