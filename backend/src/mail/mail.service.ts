@@ -1090,9 +1090,9 @@ ${preheader}
             <img src="https://eggsokpa.com/webicons/ContactLocation.png" width="14" height="14" style="vertical-align:middle;" alt="Location">
             3517 Lancaster Ave, Philadelphia, PA 19104
             &nbsp;&middot;&nbsp;
-            <a href="https://www.eggsokphilly.com" style="color:#4D4D4D;text-decoration:none;font-family:${FONT_BODY};">
+            <a href="https://www.eggsokpa.com" style="color:#4D4D4D;text-decoration:none;font-family:${FONT_BODY};">
               <img src="https://eggsokpa.com/webicons/ContactWebsite.png" width="14" height="14" style="vertical-align:middle;" alt="Website">
-              www.eggsokphilly.com
+              www.eggsokpa.com
             </a>
             &nbsp;&middot;&nbsp;
             <img src="https://eggsokpa.com/webicons/ContactLayer.png" width="14" height="14" style="vertical-align:middle;" alt="Phone">
