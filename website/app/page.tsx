@@ -260,7 +260,7 @@ export default function HomePage() {
   const toggleFaq = useCallback((i: number) => setOpenFaq(prev => prev === i ? null : i), []);
 
   return (
-    <main id="main-content" className="homepage-main" style={{ background: '#FFFFFF', minHeight: '100vh', fontFamily: "'Geist', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif", fontSize: '16px', fontWeight: 500 }}>
+    <main id="main-content" className="homepage-main">
 
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(JSON_LD) }} />
 
@@ -673,6 +673,197 @@ export default function HomePage() {
         .footer-link { display: block; font-size: 16px; color: #4D4D4D;  padding: 4px 0px; text-decoration: none; transition: color 0.15s, padding-left 0.15s; }
         .footer-link:hover { color: #4D4D4D; text-decoration: underline; }
 
+        /* ── Homepage root ── */
+        .homepage-main {
+          background: #FFFFFF; min-height: 100vh;
+          font-family: 'Geist', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+          font-size: 16px; font-weight: 500;
+        }
+
+        /* ── Hero overlay + container ── */
+        .hero-overlay {
+          position: absolute; inset: 0; z-index: 0;
+          background: linear-gradient(to top, rgba(0,0,0,0.75) 0%, rgba(43, 43, 43, 0.35) 20%, rgba(151, 151, 151, 0.05) 100%);
+        }
+        .hero-container { position: relative; z-index: 1; width: 100%; }
+        .hero-inner { display: flex; flex-direction: column; align-items: flex-start; }
+
+        /* ── Section wrappers ── */
+        .section-featured,
+        .section-quality,
+        .section-menu,
+        .section-reviews,
+        .section-faq { background: #F8F9FA; padding: 48px 32px; }
+        .section-story,
+        .section-catering,
+        .section-location { background: #FFFFFF; padding: 48px 32px; }
+        .section-rewards { background: #FFFFFF; padding: 48px 15px; }
+        .section-order-ahead-cta { padding: 48px 10px; }
+        .section-delivery { display: none; padding: 48px 15px; }
+
+        /* ── Featured header ── */
+        .featured-header { display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 15px; flex-wrap: wrap; gap: 20px; }
+
+        /* ── Fav card internals ── */
+        .fav-card { --reveal-delay: 0s; transition-delay: var(--reveal-delay); }
+        .fav-card-img-el { width: 100%; height: 100%; object-fit: cover; display: block; }
+        .fav-card-placeholder { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #F5F5E8, #F8F9FA); }
+        .fav-tag-badge { position: absolute; top: 14px; left: 14px; background: rgba(255,255,255,0.9); backdrop-filter: blur(8px); border: 1px solid #E3BF2240; border-radius: 20px; padding: 4px 12px; }
+        .fav-tag-text { font-size: 12px; font-weight: 700; color: #4D4D4D; letter-spacing: 0.5px; }
+        .fav-add-btn {
+          position: absolute; bottom: 14px; right: 14px;
+          width: 36px; height: 36px; border-radius: 50%;
+          background: #ffffff; display: flex; align-items: center; justify-content: center;
+          box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        .fav-card-body { padding: 0 14px 4px; width: 100%; }
+        .fav-card-name { font-size: 16px; font-weight: 500; color: #0D0D0D; margin-bottom: 4px; line-height: 1.3; }
+
+        /* ── About image element ── */
+        .about-img-el { width: 100%; height: 100%; object-fit: cover; border-radius: 20px; }
+
+        /* ── Story/Quality/Catering CTAs ── */
+        .story-cta-btn,
+        .quality-cta-btn,
+        .catering-cta-btn { margin-top: 32px; }
+
+        /* ── Menu gallery ── */
+        .menu-header-wrap { text-align: left; margin-bottom: 20px; }
+        .menu-subheading { color: #4D4D4D; margin-top: 14px; font-size: 16px; }
+        .menu-tile { --reveal-delay: 0s; transition-delay: var(--reveal-delay); }
+        .menu-tile-img-el { width: 100%; height: 100%; object-fit: cover; display: block; }
+        .menu-tile-label { font-size: 16px; font-weight: 700; color: #4D4D4D; margin-bottom: 4px; }
+        .menu-tile-count { font-size: 12px; color: #4D4D4D; font-weight: 600; }
+
+        /* ── Reviews ── */
+        .reviews-header { text-align: center; margin-bottom: 40px; }
+        .reviews-rating-bar { display: flex; justify-content: center; align-items: center; gap: 5px; margin-top: 14px; }
+        .reviews-rating-text { font-size: 16px; color: #4D4D4D; margin-left: 8px; }
+        .reviews-empty { min-width: 100%; text-align: center; padding: 40px 20px; }
+        .reviews-empty-text { font-size: 16px; color: #AAAAAA; }
+        .review-card { --reveal-delay: 0s; transition-delay: var(--reveal-delay); }
+        .review-stars { display: flex; gap: 3px; margin-bottom: 18px; }
+        .review-quote { font-size: 16px; color: #4D4D4D; line-height: 1.75; margin-bottom: 24px; font-style: italic; }
+        .review-footer { display: flex; justify-content: space-between; align-items: center; }
+        .review-author { display: flex; align-items: center; gap: 10px; }
+        .review-avatar {
+          width: 38px; height: 38px; border-radius: 50%;
+          background: #F0F0F0; border: 1px solid #E0E0E0;
+          display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+        }
+        .review-avatar-initial { font-size: 14px; font-weight: 700; color: #4D4D4D; }
+        .review-name { font-size: 16px; font-weight: 600; color: #4D4D4D; font-style: normal; }
+        .review-date { font-size: 12px; color: #4D4D4D; }
+
+        /* ── FAQ ── */
+        .faq-header { text-align: center; margin-bottom: 60px; }
+        .faq-list { max-width: 800px; margin: 0 auto; }
+        .faq-item { --reveal-delay: 0s; transition-delay: var(--reveal-delay); }
+        .faq-chevron { flex-shrink: 0; transition: transform 0.3s cubic-bezier(0.16,1,0.3,1); }
+        .faq-chevron.open { transform: rotate(180deg); }
+        .faq-contact-cta { text-align: center; margin-top: 52px; }
+        .faq-contact-text { font-size: 16px; color: #4D4D4D; margin-bottom: 16px; }
+
+        /* ── Location ── */
+        .location-header { text-align: center; margin-bottom: 56px; }
+        .location-info-panel {
+          background: #F8F9FA;
+          padding: clamp(32px, 5vw, 60px);
+          display: flex; flex-direction: column; justify-content: space-between; gap: 36px;
+        }
+          .location-info-panel{ padding: clamp(10px,10px, 10px);}
+           
+        .location-status-badge {
+          display: inline-flex; align-items: center; gap: 8px;
+          border-radius: 20px; padding: 5px 14px; margin-bottom: 20px;
+          background: #22C55E15; border: 1px solid #22C55E30;
+        }
+        .location-status-badge.closed { background: #FC030115; border-color: #FC030130; }
+        .location-status-dot { width: 7px; height: 7px; border-radius: 50%; background: #22C55E; }
+        .location-status-badge.closed .location-status-dot { background: #FC0301; }
+        .location-status-text { font-size: 12px; font-weight: 600; color: #22C55E; }
+        .location-status-badge.closed .location-status-text { color: #FC0301; }
+        .location-name { font-size: 28px; font-family: 'Playfair Display', Georgia, serif; color: #1A1A1A; margin-bottom: 28px; }
+        .location-address { font-style: normal; display: flex; flex-direction: column; gap: 16px; }
+        .location-address-row { display: flex; gap: 14px; align-items: flex-start; }
+        .location-address-icon { flex-shrink: 0; margin-top: 2px; }
+        .location-street { font-size: 16px; color: #4D4D4D; font-weight: 600; }
+        .location-city { font-size: 16px; color: #888888; }
+        .location-hours-row { display: flex; gap: 14px; align-items: flex-start; }
+        .location-hours-icon { flex-shrink: 0; margin-top: 3px; }
+        .location-hours-list { display: flex; flex-direction: column; gap: 5px; }
+        .location-hours-row-item { display: flex; gap: 14px; }
+        .location-hours-day { font-size: 16px; color: #4D4D4D; font-weight: 600; min-width: 96px; }
+        .location-hours-time { font-size: 16px; color: #4D4D4D; }
+        .location-phone-row { display: flex; gap: 14px; align-items: center; }
+        .location-phone-icon { flex-shrink: 0; }
+        .location-phone { font-size: 16px; color: #4D4D4D; text-decoration: none; font-weight: 600; }
+        .location-cta-buttons { display: flex; gap: 12px; flex-wrap: wrap; }
+        .location-directions-btn,
+        .location-order-btn { font-size: 16px; padding: 8px 22px; }
+        .location-map-panel { background: #F8F9FA; min-height: 460px; position: relative; overflow: hidden; }
+        .location-map-iframe { border: 0; min-height: 460px; display: block; }
+        .location-map-pin {
+          position: absolute; bottom: 20px; left: 20px;
+          background: rgba(255,255,255,0.95); backdrop-filter: blur(12px);
+          border-radius: 10px; padding: 10px 16px;
+          border: 1px solid #E3BF2240; pointer-events: none;
+        }
+        .location-map-pin-name { font-size: 14px; color: #4D4D4D; letter-spacing: -0.5px; }
+        .location-map-pin-address { font-size: 12px; color: #888888; }
+
+        /* ── Footer ── */
+        .site-footer { background: #F8F9FA; padding: 48px 0 20px; border-top: 1px solid #E5E5E5; }
+        .footer-logo-wrap { display: flex; align-items: center; gap: 10px; margin-bottom: 18px; }
+        .footer-logo-img-wrap { border-radius: 10px; overflow: hidden; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+        .footer-logo-img { object-fit: contain; }
+        .footer-brand-tagline { font-size: 16px; color: #4D4D4D; line-height: 1.75; max-width: 280px; margin-bottom: 22px; }
+        .footer-address { font-style: normal; }
+        .footer-address-line { font-size: 16px; color: #4D4D4D; display: flex; align-items: center; gap: 7px; margin-bottom: 8px; }
+        .footer-phone-line { font-size: 16px; color: #4D4D4D; display: flex; align-items: center; gap: 7px; }
+        .footer-phone-link { color: #4D4D4D; text-decoration: none; }
+        .footer-nav-heading,
+        .footer-hours-heading {
+          font-size: 18px; font-family: 'Playfair Display', Georgia, serif;
+          font-weight: 700; color: #1A1A1A; letter-spacing: 2px;
+          text-transform: uppercase; margin-bottom: 20px;
+        }
+        .footer-hours-list { display: flex; flex-direction: column; gap: 5px; }
+        .footer-hours-row { display: flex; gap: 14px; }
+        .footer-hours-day { font-size: 16px; color: #4D4D4D; font-weight: 600; min-width: 96px; }
+        .footer-hours-time { font-size: 16px; color: #666666; }
+        .footer-copyright { font-size: 16px; color: #888888; }
+
+        /* ── Home modal internals ── */
+        .home-modal-img { width: 100%; height: 100%; object-fit: cover; }
+        .home-modal-img-placeholder { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #F5F5E8, #F8F9FA); }
+        .home-modal-price-type { font-size: 12px; color: #777777; font-weight: 500; text-transform: uppercase; margin-bottom: 4px; }
+        .home-modal-price-val { font-size: 18px; font-weight: 900; color: #4D4D4D; }
+        .home-modal-modifier-badge.required { background: #FC030120; color: #FC0301; border: 1px solid #FC030140; }
+        .home-modal-modifier-badge.optional { background: #22C55E20; color: #22C55E; border: 1px solid #22C55E40; }
+        .home-modal-opt-left { display: flex; align-items: center; gap: 10px; }
+        .home-modal-check {
+          width: 20px; height: 20px;
+          border: 1px solid #D0D0D0; background: transparent;
+          display: flex; align-items: center; justify-content: center;
+        }
+        .home-modal-check.radio { border-radius: 50%; }
+        .home-modal-check.checkbox { border-radius: 4px; }
+        .home-modal-check.selected { border: 2px solid #E3BF22; background: #E3BF22; }
+        .home-modal-opt-name { font-size: 16px; color: #4D4D4D; }
+        .home-modal-opt-price { font-size: 13px; color: #AAAAAA; }
+        .home-modal-opt-price.paid { color: #4D4D4D; }
+        .home-modal-instructions-wrap { margin-bottom: 8px; }
+        .home-modal-instructions-label { font-size: 12px; font-weight: 700; color: #777777; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; }
+        .home-modal-instructions-input {
+          width: 100%; padding: 10px 14px;
+          background: #F8F9FA; border: 1px solid #D0D0D0;
+          border-radius: 10px; color: #4D4D4D; font-size: 13px;
+          resize: none; height: 60px; outline: none; font-family: inherit;
+        }
+        .home-modal-loading { text-align: center; padding: 20px 0; }
+        .home-modal-loading-text { font-size: 13px; color: #777777; }
+
         /* ═══ RESPONSIVE ═══ */
         @media (max-width: 1024px) {
           .hero-section { min-height: 60vh; padding-bottom: 48px; padding-top: 90px; }
@@ -687,14 +878,40 @@ export default function HomePage() {
           .order-card-box { margin: 40px auto 40px 32px; }
      
         @media (max-width: 900px) {
+
+           .section-featured,
+        .section-quality,
+        .section-menu,
+        .section-reviews,
+        .section-faq,
+        .section-story,
+        .section-rewards,
+        .section-location,
+        .section-catering {  padding: 48px 5px; }
+        .site-footer { padding: 48px 5px 20px; }
+
+        .order-card-box-rewards{width: 95%; max-width: 95%; margin: 20px 5px;}
+        // .order-ahead-heading{font-size: 20px !important;}
+        .order-ahead-body{margin: 10px 0px 10px;}
+        .order-card-box-rewards{padding: 20px 15px;}
           .photo-gallery { grid-template-columns: repeat(2,1fr); }
           .about-grid { grid-template-columns: 1fr; }
           .about-img { height: 340px; }
-          .order-ahead-hero { justify-content: center; }
-          .order-ahead-overlay { background: rgba(0,0,0,0.55); }
+          // .order-ahead-hero { justify-content: center; }
+          // .order-ahead-overlay { background: rgba(0,0,0,0.55); }
           .order-card-box { margin: 40px auto; max-width: 92%; }
         }
         @media (max-width: 768px) {
+        .fav-arrow-left { left: -18px; }
+        .fav-arrow-right { right: -18px; }
+        .fav-arrow{width: 25px; height: 25px;}
+        .fav-img-wrap{height: 140px;}
+        // .sec-heading{font-size: 20px !important;}
+          // .order-ahead-heading{font-size:20px !important;}
+        .order-ahead-hero { max-height: 80vh !important; flex-direction: column;
+          min-height: 80vh !important;}
+           .location-hours-row-item { display: flex; gap: 4px; }
+        .container { padding: 0 5px; }
           .hero-section { min-height: 70vh; padding: 80px 0 56px; }
           .hero-title { margin-bottom: 24px; }
           .hero-tagline { margin-bottom: 14px; }
@@ -707,9 +924,12 @@ export default function HomePage() {
           .footer-brand { grid-column: unset; }
           .footer-bottom { flex-direction: column; text-align: center; }
           .rewards-steps { grid-template-columns: 1fr; }
-          .order-card-box { margin: 24px; max-width: 100%; padding: 32px 28px; }
+          .order-card-box { margin: 10px; max-width: 100%; padding: 32px 15px; }
         }
         @media (max-width: 500px) {
+        .sec-heading{display: flex; justify-content: left;}
+        h3{font-size: 22px !important;}
+        h2{font-size: 22px !important;}
           .hero-section { min-height: 62vh; padding-bottom: 40px; padding-top: 72px; }
           .hero-title { margin-bottom: 20px; }
           .hero-tagline { margin-bottom: 12px; }
@@ -719,7 +939,7 @@ export default function HomePage() {
           .gallery-item { height: 220px; }
         }
         @media (max-width: 480px) {
-          .container { padding: 0 14px; }
+          
           .menu-tiles { grid-template-columns: repeat(2,1fr); gap: 8px; }
           .menu-tile-img { height: 160px; }
         }
@@ -739,14 +959,13 @@ export default function HomePage() {
           1. HERO
       ══════════════════════════════════════════ */}
       <section id="hero" className="hero-section" aria-label="Welcome to Eggs Ok">
-        <div className="hero-overlay" style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(0,0,0,0.75) 0%, rgba(43, 43, 43, 0.35) 20%, rgba(151, 151, 151, 0.05) 100%)', zIndex: 0 }} />
+        <div className="hero-overlay" />
 
-        <div className="container hero-container" style={{ position: 'relative', zIndex: 1, width: '100%' }}>
+        <div className="container hero-container">
           <div
             id="hero-content"
             className={`hero-inner reveal ${heroReveal.visible ? 'visible' : ''}`}
             ref={heroReveal.ref}
-            style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}
           >
             {/* Store status badge */}
             {/* <div
@@ -797,9 +1016,9 @@ export default function HomePage() {
       {/* ══════════════════════════════════════════
           2. FEATURED FAVORITES
       ══════════════════════════════════════════ */}
-      <section id="featured" className="section-featured" style={{ background: '#F8F9FA', padding: '48px 32px' }} aria-labelledby="featured-heading">
+      <section id="featured" className="section-featured" aria-labelledby="featured-heading">
         <div className="container featured-container" ref={featuredReveal.ref}>
-          <div className={`featured-header reveal ${featuredReveal.visible ? 'visible' : ''}`} style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', marginBottom: '15px', flexWrap: 'wrap', gap: '20px' }}>
+          <div className={`featured-header reveal ${featuredReveal.visible ? 'visible' : ''}`}>
             <div className="featured-header-text">
               {/* <span className="sec-label">Featured</span> */}
               <h2 id="featured-heading" className="sec-heading">Featured</h2>
@@ -817,28 +1036,26 @@ export default function HomePage() {
                   key={`fav-${item.id}-${i}`}
                   id={`fav-card-${item.id}`}
                   className={`fav-card reveal ${featuredReveal.visible ? 'visible' : ''}`}
-                  style={{ transitionDelay: `${0.08 * i}s` }}
+                  style={{ ['--reveal-delay' as any]: `${0.08 * i}s` }}
                   role="listitem" aria-label={`${item.name} — ${item.price}`}
                   onClick={() => openFavModal(item)}
                 >
                   <div className="fav-img-wrap">
                     {item.img
-                      ? <img src={item.img} alt={item.name} style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
-                      : <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'linear-gradient(135deg, #F5F5E8, #F8F9FA)' }}>
+                      ? <img src={item.img} alt={item.name} className="fav-card-img-el" />
+                      : <div className="fav-card-placeholder">
                           <svg width="40" height="40" viewBox="0 0 64 64" fill="none"><circle cx="32" cy="32" r="22" stroke="#D0D0D0" strokeWidth="1.5"/><path d="M20 32 Q32 20 44 32" stroke="#D0D0D0" strokeWidth="1.5" strokeLinecap="round"/><circle cx="32" cy="38" r="6" stroke="#D0D0D0" strokeWidth="1.5"/></svg>
                         </div>
                     }
-                    {item.tag && <div className="fav-tag-badge" style={{ position: 'absolute', top: '14px', left: '14px', background: 'rgba(255,255,255,0.9)', backdropFilter: 'blur(8px)', border: '1px solid #E3BF2240', borderRadius: '20px', padding: '4px 12px' }}>
-                      <span className="fav-tag-text" style={{ fontSize: '12px', fontWeight: '700', color: '#4D4D4D', letterSpacing: '0.5px' }}>{item.tag}</span>
+                    {item.tag && <div className="fav-tag-badge">
+                      <span className="fav-tag-text">{item.tag}</span>
                     </div>}
-                    <div className="fav-add-btn" style={{ position: 'absolute', bottom: '14px', right: '14px', width: '36px', height: '36px', borderRadius: '50%', background: '#ffffff', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }} aria-hidden="true">
+                    <div className="fav-add-btn" aria-hidden="true">
                       <Plus size={15} color="#000" strokeWidth={2.8} />
                     </div>
                   </div>
-                  <div className="fav-card-body" style={{ padding: '0 14px 4px', width: '100%' }}>
-                    <p className="fav-card-name" style={{ fontSize: '16px', fontWeight: '500', color: '#0D0D0D', marginBottom: '4px', lineHeight: 1.3 }}>{item.name}</p>
-                    {/* <p className="fav-card-desc" style={{ fontSize: '14px', color: '#888888', lineHeight: 1.4, marginBottom: '8px', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical' as any, overflow: 'hidden' }}>{item.desc}</p> */}
-                    {/* <p className="fav-card-price" style={{ fontSize: '16px', fontWeight: '900', color: '#4D4D4D' }}>{item.price}</p> */}
+                  <div className="fav-card-body">
+                    <p className="fav-card-name">{item.name}</p>
                   </div>
                 </div>
               ))}
@@ -853,15 +1070,15 @@ export default function HomePage() {
       {/* ══════════════════════════════════════════
           3. OUR STORY
       ══════════════════════════════════════════ */}
-      <section id="our-story" className="section-story" style={{ background: '#FFFFFF', padding: '48px 32px' }}>
+      <section id="our-story" className="section-story">
         <div className="container story-container">
           <div className="about-grid story-grid">
             <div className="about-img story-img">
               <Image src="/main-menu/Main-Page/Born-in-the-Heart-of-West-Philly.webp" alt="Inside Eggs Ok" width={600} height={460}
-                style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '20px' }} />
+                className="about-img-el" />
             </div>
             <div className="about-content story-content">
-            
+
               <h2 id="story-heading" className="story-heading">Born in the Heart of West Philly</h2>
 
               <p className="story-body">
@@ -870,7 +1087,7 @@ export default function HomePage() {
                 made-to-order sandwiches, burritos, omelettes, and specialty drinks since day one.
                 Every item on our menu is crafted with care and ready in about 15 minutes.
               </p>
-              <Link href="/story" className="btn-yellow story-cta-btn" style={{ marginTop: '32px' }}>
+              <Link href="/story" className="btn-yellow story-cta-btn">
                 Our Story <ArrowRight size={15} />
               </Link>
             </div>
@@ -881,11 +1098,11 @@ export default function HomePage() {
       {/* ══════════════════════════════════════════
           4. FRESH INGREDIENTS
       ══════════════════════════════════════════ */}
-      <section id="quality" className="section-quality" style={{ background: '#F8F9FA', padding: '48px 32px' }}>
+      <section id="quality" className="section-quality">
         <div className="container quality-container">
           <div className="about-grid quality-grid">
             <div className="about-content quality-content">
-            
+
               <h2 id="quality-heading" className="quality-heading">Fresh Ingredients, Bold Flavors</h2>
               <p className="quality-body">
                 We source quality ingredients and prep everything in-house daily. Whether you&apos;re
@@ -893,13 +1110,13 @@ export default function HomePage() {
                 matcha or smoothie, every bite and sip is made to satisfy. No shortcuts. No reheating.
                 Just good food, every time.
               </p>
-              <Link href="/order" className="btn-yellow quality-cta-btn" style={{ marginTop: '32px' }}>
+              <Link href="/order" className="btn-yellow quality-cta-btn">
                 Order Now <ArrowRight size={15} />
               </Link>
             </div>
             <div className="about-img quality-img">
               <Image src="/main-menu/Main-Page/Fresh-Ingredients-Bold-Flavors.webp" alt="Fresh Eggs Ok ingredients" width={600} height={460}
-                style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '20px' }} />
+                className="about-img-el" />
             </div>
           </div>
         </div>
@@ -908,7 +1125,7 @@ export default function HomePage() {
       {/* ══════════════════════════════════════════
           5. ORDER AHEAD CTA
       ══════════════════════════════════════════ */}
-      <section style={{ padding: '48px 10px' }}>
+      <section className="section-order-ahead-cta">
           <div id="order-ahead" className="order-ahead-hero container">
             <div className="order-ahead-overlay" />
             <div className="order-card-box">
@@ -926,15 +1143,15 @@ export default function HomePage() {
       {/* ══════════════════════════════════════════
           6. OUR MENU GALLERY
       ══════════════════════════════════════════ */}
-      <section id="menu" className="section-menu" style={{ background: '#F8F9FA', padding: '48px 32px' }} aria-labelledby="menu-heading">
+      <section id="menu" className="section-menu" aria-labelledby="menu-heading">
         <div className="container menu-container" ref={menuReveal.ref}>
-          <div className={`menu-header reveal ${menuReveal.visible ? 'visible' : ''}`} style={{ textAlign: 'left', marginBottom: '20px' }}>
-        
+          <div className={`menu-header menu-header-wrap reveal ${menuReveal.visible ? 'visible' : ''}`}>
+
             <h2 id="menu-heading" className="sec-heading">
              A Taste of Our Menu
             </h2>
-            <p className="menu-subheading" style={{ color: '#4D4D4D', marginTop: '14px', fontSize: '16px' }}>
-              Bright Flavors, warm atmosphere, and a menu that has something for everyone. <br /> From classic breakfast sandwiches to bold specialty drinks,  get a glimpse of what we offer <br /> before you order. 
+            <p className="menu-subheading">
+              Bright Flavors, warm atmosphere, and a menu that has something for everyone. <br /> From classic breakfast sandwiches to bold specialty drinks,  get a glimpse of what we offer <br /> before you order.
             </p>
           </div>
 
@@ -945,17 +1162,17 @@ export default function HomePage() {
                 key={i}
                 id={`menu-tile-${i}`}
                 className={`menu-tile reveal ${menuReveal.visible ? 'visible' : ''}`}
-                style={{ transitionDelay: `${0.07 * i}s` }}
+                style={{ ['--reveal-delay' as any]: `${0.07 * i}s` }}
                 role="listitem"
                 aria-label={`${tile.label} — ${tile.items}`}
               >
                 <div className="menu-tile-img">
                   <Image src={tile.img} alt={tile.label} width={400} height={300}
-                    style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
+                    className="menu-tile-img-el" />
                 </div>
                 <div className="menu-tile-body">
-                  <p className="menu-tile-label" style={{ fontSize: '16px', fontWeight: '700', color: '#4D4D4D', marginBottom: '4px' }}>{tile.label}</p>
-                  <p className="menu-tile-count" style={{ fontSize: '12px', color: '#4D4D4D', fontWeight: '600' }}>{tile.items}</p>
+                  <p className="menu-tile-label">{tile.label}</p>
+                  <p className="menu-tile-count">{tile.items}</p>
                 </div>
               </Link>
             ))}
@@ -975,22 +1192,22 @@ export default function HomePage() {
       {/* ══════════════════════════════════════════
           7. CATERING
       ══════════════════════════════════════════ */}
-      <section id="catering" className="section-catering" style={{ background: '#FFFFFF', padding: '48px 32px' }} aria-labelledby="catering-heading">
+      <section id="catering" className="section-catering" aria-labelledby="catering-heading">
         <div className="container catering-container">
           <div className="about-grid catering-grid">
             <div className="about-img catering-img">
               <Image src="/main-menu/Main-Page/catering-home.webp" alt="Eggs Ok catering spread" width={600} height={460}
-                style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '20px' }} />
+                className="about-img-el" />
             </div>
             <div className="about-content catering-content">
-             
+
               <h2 id="catering-heading" className="catering-heading">Let Us Cater Your Next Event</h2>
               <p className="catering-body">
                 From corporate breakfasts to birthday brunches, Eggs Ok brings the same fresh,
                 made-to-order quality to your event. We handle setup, variety, and volume — you
                 enjoy the moment. Submit a request and we&apos;ll get back to you within 24 hours.
               </p>
-              <Link href="/catering" className="btn-yellow catering-cta-btn" style={{ marginTop: '32px' }}>
+              <Link href="/catering" className="btn-yellow catering-cta-btn">
                 Request Catering <ArrowRight size={15} />
               </Link>
             </div>
@@ -1001,16 +1218,16 @@ export default function HomePage() {
       {/* ══════════════════════════════════════════
           8. REVIEWS
       ══════════════════════════════════════════ */}
-      <section id="reviews" className="section-reviews" style={{ background: '#F8F9FA', padding: '48px 32px' }} aria-labelledby="reviews-heading">
+      <section id="reviews" className="section-reviews" aria-labelledby="reviews-heading">
         <div className="container reviews-container" ref={reviewsReveal.ref}>
-          <div className={`reviews-header reveal ${reviewsReveal.visible ? 'visible' : ''}`} style={{ textAlign: 'center', marginBottom: '40px' }}>
-            
+          <div className={`reviews-header reveal ${reviewsReveal.visible ? 'visible' : ''}`}>
+
             <h2 id="reviews-heading" className="sec-heading">
               What Our Guests Are Saying
             </h2>
-            <div id="reviews-rating-bar" className="reviews-rating-bar" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '5px', marginTop: '14px' }}>
+            <div id="reviews-rating-bar" className="reviews-rating-bar">
               {[0,1,2,3,4].map(i => <Star key={i} size={19} color="#4D4D4D" fill="#4D4D4D" aria-hidden="true" />)}
-              <span className="reviews-rating-text" style={{ fontSize: '16px', color: '#4D4D4D', marginLeft: '8px' }}>
+              <span className="reviews-rating-text">
                 {allReviews.length > 0
                   ? `${(allReviews.reduce((a, r) => a + r.stars, 0) / allReviews.length).toFixed(1)} average from ${allReviews.length} reviews`
                   : '5.0 average'}
@@ -1036,31 +1253,31 @@ export default function HomePage() {
             </button>
             <div id="reviews-grid" className="reviews-grid" ref={reviewScrollRef} role="list" aria-label="Customer reviews">
               {displayReviews.length === 0 ? (
-                <div style={{ minWidth: '100%', textAlign: 'center', padding: '40px 20px' }}>
-                  <p style={{ fontSize: '16px', color: '#AAAAAA' }}>No {starFilter}-star reviews yet</p>
+                <div className="reviews-empty">
+                  <p className="reviews-empty-text">No {starFilter}-star reviews yet</p>
                 </div>
               ) : displayReviews.map((r, i) => (
                 <article
                   key={i}
                   id={`review-card-${i}`}
                   className={`review-card reveal ${reviewsReveal.visible ? 'visible' : ''}`}
-                  style={{ transitionDelay: `${0.1 * i}s` }}
+                  style={{ ['--reveal-delay' as any]: `${0.1 * i}s` }}
                   role="listitem"
                 >
-                  <div className="review-stars" style={{ display: 'flex', gap: '3px', marginBottom: '18px' }} aria-label={`${r.stars} out of 5 stars`}>
+                  <div className="review-stars" aria-label={`${r.stars} out of 5 stars`}>
                     {[0,1,2,3,4].map(s => <Star key={s} size={13} color={s < r.stars ? '#4D4D4D' : '#4D4D4D'} fill={s < r.stars ? '#4D4D4D' : 'none'} aria-hidden="true" />)}
                   </div>
-                  <blockquote className="review-quote" style={{ fontSize: '16px', color: '#4D4D4D', lineHeight: 1.75, marginBottom: '24px', fontStyle: 'italic' }}>
+                  <blockquote className="review-quote">
                     &ldquo;{r.text}&rdquo;
                   </blockquote>
-                  <div className="review-footer" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                    <div className="review-author" style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                      <div className="review-avatar" style={{ width: '38px', height: '38px', borderRadius: '50%', background: '#F0F0F0', border: '1px solid #E0E0E0', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }} aria-hidden="true">
-                        <span className="review-avatar-initial" style={{ fontSize: '14px', fontWeight: '700', color: '#4D4D4D' }}>{r.name[0]}</span>
+                  <div className="review-footer">
+                    <div className="review-author">
+                      <div className="review-avatar" aria-hidden="true">
+                        <span className="review-avatar-initial">{r.name[0]}</span>
                       </div>
-                      <cite className="review-name" style={{ fontSize: '16px', fontWeight: '600', color: '#4D4D4D', fontStyle: 'normal' }}>{r.name}</cite>
+                      <cite className="review-name">{r.name}</cite>
                     </div>
-                    <time className="review-date" style={{ fontSize: '12px', color: '#4D4D4D' }}>{r.date}</time>
+                    <time className="review-date">{r.date}</time>
                   </div>
                 </article>
               ))}
@@ -1075,7 +1292,7 @@ export default function HomePage() {
       {/* ══════════════════════════════════════════
           9. REWARDS
       ══════════════════════════════════════════ */}
-      <section id="rewards" className="section-rewards" style={{ background: '#FFFFFF', padding: '48px 15px' }} aria-labelledby="rewards-heading">
+      <section id="rewards" className="section-rewards" aria-labelledby="rewards-heading">
       
       <div id="order-ahead" className="order-ahead-hero container">
         <div className="order-ahead-overlay" />
@@ -1086,7 +1303,7 @@ export default function HomePage() {
                 to new menu items. The more you eat, the more you earn.
           </p>
          <Link href="/account" className="btn-yellow rewards-join-btn">
-                <Gift size={16} aria-hidden="true" /> Join Rewards — It&apos;s Free
+                <Gift size={16} aria-hidden="true" /> Join Rewards  It&apos;s Free
               </Link>
         </div>
       </div>
@@ -1097,18 +1314,18 @@ export default function HomePage() {
       {/* ══════════════════════════════════════════
           10. FAQ
       ══════════════════════════════════════════ */}
-      <section id="faq" className="section-faq" style={{ background: '#F8F9FA', padding: '48px 32px' }} aria-labelledby="faq-heading">
+      <section id="faq" className="section-faq" aria-labelledby="faq-heading">
         <div className="container faq-container" ref={faqReveal.ref}>
-          <div className={`faq-header reveal ${faqReveal.visible ? 'visible' : ''}`} style={{ textAlign: 'center', marginBottom: '60px' }}>
+          <div className={`faq-header reveal ${faqReveal.visible ? 'visible' : ''}`}>
        
             <h2 id="faq-heading" className="sec-heading">
               Frequently Asked Questions
             </h2>
           </div>
 
-          <div id="faq-list" className="faq-list" style={{ maxWidth: '800px', margin: '0 auto' }} role="list">
+          <div id="faq-list" className="faq-list" role="list">
             {FAQS.map((faq, i) => (
-              <div key={i} id={`faq-item-${i}`} className={`faq-item reveal ${faqReveal.visible ? 'visible' : ''}`} style={{ transitionDelay: `${0.06 * i}s` }} role="listitem">
+              <div key={i} id={`faq-item-${i}`} className={`faq-item reveal ${faqReveal.visible ? 'visible' : ''}`} style={{ ['--reveal-delay' as any]: `${0.06 * i}s` }} role="listitem">
                 <button
                   className="faq-q"
                   onClick={() => toggleFaq(i)}
@@ -1120,7 +1337,7 @@ export default function HomePage() {
                   <ChevronDown
                     size={18} aria-hidden="true"
                     color={openFaq === i ? '#555555' : '#777777'}
-                    style={{ flexShrink: 0, transform: openFaq === i ? 'rotate(180deg)' : 'rotate(0deg)', transition: 'transform 0.3s cubic-bezier(0.16,1,0.3,1)' }}
+                    className={`faq-chevron ${openFaq === i ? 'open' : ''}`}
                   />
                 </button>
                 <div className="faq-answer-wrap" data-open={openFaq === i ? 'true' : 'false'} id={`faq-answer-${i}`} role="region" aria-labelledby={`faq-button-${i}`}>
@@ -1132,8 +1349,8 @@ export default function HomePage() {
             ))}
           </div>
 
-          <div id="faq-contact-cta" className="faq-contact-cta" style={{ textAlign: 'center', marginTop: '52px' }}>
-            <p className="faq-contact-text" style={{ fontSize: '16px', color: '#4D4D4D', marginBottom: '16px' }}>Still have questions?</p>
+          <div id="faq-contact-cta" className="faq-contact-cta">
+            <p className="faq-contact-text">Still have questions?</p>
             <Link href="/contact" className="btn-outline faq-contact-btn">Contact Us</Link>
           </div>
         </div>
@@ -1142,9 +1359,9 @@ export default function HomePage() {
       {/* ══════════════════════════════════════════
           11. OUR LOCATION
       ══════════════════════════════════════════ */}
-      <section id="location" className="section-location" style={{ background: '#FFFFFF', padding: '48px 32px' }} aria-labelledby="location-heading">
+      <section id="location" className="section-location" aria-labelledby="location-heading">
         <div className="container location-container" ref={locationReveal.ref}>
-          <div className={`location-header reveal ${locationReveal.visible ? 'visible' : ''}`} style={{ textAlign: 'center', marginBottom: '56px' }}>
+          <div className={`location-header reveal ${locationReveal.visible ? 'visible' : ''}`}>
             
             <h2 id="location-heading" className="sec-heading">
               Our Location
@@ -1153,69 +1370,68 @@ export default function HomePage() {
 
           <div id="location-grid" className={`location-grid reveal ${locationReveal.visible ? 'visible' : ''} reveal-d1`}>
             {/* Info panel */}
-            <div id="location-info" className="location-info-panel" style={{ background: '#F8F9FA', padding: 'clamp(32px, 5vw, 60px)', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', gap: '36px' }}>
+            <div id="location-info" className="location-info-panel">
               <div className="location-info-body">
                 <div
                   id="location-status-badge"
-                  className="location-status-badge"
-                  style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', background: isOpen ? '#22C55E15' : '#FC030115', border: `1px solid ${isOpen ? '#22C55E30' : '#FC030130'}`, borderRadius: '20px', padding: '5px 14px', marginBottom: '20px' }}
+                  className={`location-status-badge ${isOpen ? '' : 'closed'}`}
                   role="status" aria-live="polite"
                 >
-                  <div className="location-status-dot" style={{ width: '7px', height: '7px', borderRadius: '50%', background: isOpen ? '#22C55E' : '#FC0301' }} aria-hidden="true" />
-                  <span className="location-status-text" style={{ fontSize: '12px', color: isOpen ? '#22C55E' : '#FC0301', fontWeight: '600' }}>{isOpen ? 'Open Now' : 'Closed'}</span>
+                  <div className="location-status-dot" aria-hidden="true" />
+                  <span className="location-status-text">{isOpen ? 'Open Now' : 'Closed'}</span>
                 </div>
 
-                <h3 id="location-name" className="location-name bebas" style={{ fontSize: '28px', fontFamily: "'Playfair Display', Georgia, serif", color: '#1A1A1A', marginBottom: '28px' }}>
+                <h3 id="location-name" className="location-name bebas">
                   Eggs Ok<br />West Philadelphia
                 </h3>
 
-                <address id="location-address" className="location-address" style={{ fontStyle: 'normal', display: 'flex', flexDirection: 'column', gap: '16px' }}>
-                  <div className="location-address-row" style={{ display: 'flex', gap: '14px', alignItems: 'flex-start' }}>
-                    <MapPin size={16} color="#000000ff" style={{ flexShrink: 0, marginTop: '2px' }} aria-hidden="true" />
+                <address id="location-address" className="location-address">
+                  <div className="location-address-row">
+                    <MapPin size={16} color="#000000ff" className="location-address-icon" aria-hidden="true" />
                     <div className="location-address-text">
-                      <p className="location-street" style={{ fontSize: '16px', color: '#4D4D4D', fontWeight: '600' }}>3517 Lancaster Ave</p>
-                      <p className="location-city" style={{ fontSize: '16px', color: '#888888' }}>Philadelphia, PA 19104</p>
+                      <p className="location-street">3517 Lancaster Ave</p>
+                      <p className="location-city">Philadelphia, PA 19104</p>
                     </div>
                   </div>
-                  <div className="location-hours-row" style={{ display: 'flex', gap: '14px', alignItems: 'flex-start' }}>
-                    <Clock size={16} color="#000000ff" style={{ flexShrink: 0, marginTop: '3px' }} aria-hidden="true" />
-                    <div id="location-hours-list" className="location-hours-list" style={{ display: 'flex', flexDirection: 'column', gap: '5px' }}>
+                  <div className="location-hours-row">
+                    <Clock size={16} color="#000000ff" className="location-hours-icon" aria-hidden="true" />
+                    <div id="location-hours-list" className="location-hours-list">
                       {HOURS.map((row, i) => (
-                        <div key={i} className={`location-hours-row-item location-hours-${row.d.toLowerCase()}`} style={{ display: 'flex', gap: '14px' }}>
-                          <span className="location-hours-day" style={{ fontSize: '16px', color: '#4D4D4D', fontWeight: '600', minWidth: '96px' }}>{row.d}</span>
-                          <span className="location-hours-time" style={{ fontSize: '16px', color: '#4D4D4D' }}>{row.h}</span>
+                        <div key={i} className={`location-hours-row-item location-hours-${row.d.toLowerCase()}`}>
+                          <span className="location-hours-day">{row.d}</span>
+                          <span className="location-hours-time">{row.h}</span>
                         </div>
                       ))}
                     </div>
                   </div>
-                  <div className="location-phone-row" style={{ display: 'flex', gap: '14px', alignItems: 'center' }}>
-                    <Smartphone size={16} color="#000000ff" style={{ flexShrink: 0 }} aria-hidden="true" />
-                    <a href="tel:2159489902" className="location-phone" style={{ fontSize: '16px', color: '#4D4D4D', textDecoration: 'none', fontWeight: '600' }}>215-948-9902</a>
+                  <div className="location-phone-row">
+                    <Smartphone size={16} color="#000000ff" className="location-phone-icon" aria-hidden="true" />
+                    <a href="tel:2159489902" className="location-phone">215-948-9902</a>
                   </div>
                 </address>
               </div>
 
-              <div id="location-cta-buttons" className="location-cta-buttons" style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
-                <a href="https://maps.google.com/?q=3517+Lancaster+Ave+Philadelphia+PA+19104" target="_blank" rel="noopener noreferrer" className="btn-yellow location-directions-btn" style={{ fontSize: '16px', padding: '8px 22px' }}>
+              <div id="location-cta-buttons" className="location-cta-buttons">
+                <a href="https://maps.google.com/?q=3517+Lancaster+Ave+Philadelphia+PA+19104" target="_blank" rel="noopener noreferrer" className="btn-yellow location-directions-btn">
                   <MapPin size={14} aria-hidden="true" /> Get Directions
                 </a>
-                <Link href="/order" className="btn-outline location-order-btn" style={{ fontSize: '16px', padding: '8px 22px' }}>Order Now</Link>
+                <Link href="/order" className="btn-outline location-order-btn">Order Now</Link>
               </div>
             </div>
 
             {/* Map */}
-            <div id="location-map" className="location-map-panel" style={{ background: '#F8F9FA', minHeight: '460px', position: 'relative', overflow: 'hidden' }}>
+            <div id="location-map" className="location-map-panel">
               <iframe
                 id="location-map-iframe"
                 title="Eggs Ok location on Google Maps  3517 Lancaster Ave, Philadelphia PA 19104"
                 src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3058.7!2d-75.2!3d39.96!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c6c65b7a6a5555%3A0x0!2s3517+Lancaster+Ave%2C+Philadelphia%2C+PA+19104!5e0!3m2!1sen!2sus!4v1234567890"
                 width="100%" height="100%"
-                style={{ border: 0, minHeight: '460px', display: 'block' }}
+                className="location-map-iframe"
                 allowFullScreen loading="lazy" referrerPolicy="no-referrer-when-downgrade"
               />
-              <div id="location-map-pin" className="location-map-pin" style={{ position: 'absolute', bottom: '20px', left: '20px', background: 'rgba(255,255,255,0.95)', backdropFilter: 'blur(12px)', borderRadius: '10px', padding: '10px 16px', border: '1px solid #E3BF2240', pointerEvents: 'none' }} aria-hidden="true">
-                <p className="location-map-pin-name bebas" style={{ fontSize: '14px', color: '#4D4D4D', letterSpacing: '-0.5px' }}>Eggs Ok</p>
-                <p className="location-map-pin-address" style={{ fontSize: '12px', color: '#888888' }}>3517 Lancaster Ave</p>
+              <div id="location-map-pin" className="location-map-pin" aria-hidden="true">
+                <p className="location-map-pin-name bebas">Eggs Ok</p>
+                <p className="location-map-pin-address">3517 Lancaster Ave</p>
               </div>
             </div>
           </div>
@@ -1225,7 +1441,7 @@ export default function HomePage() {
       {/* ══════════════════════════════════════════
           12. DELIVERY CTA
       ══════════════════════════════════════════ */}
-      <section id="delivery" className=" section-delivery" aria-labelledby="delivery-heading" style={{ display:'none', padding: '48px 15px' }}>
+      <section id="delivery" className="section-delivery" aria-labelledby="delivery-heading">
       
         <div className="delivery-hero">
           <div className='delivery-content '>
@@ -1248,31 +1464,31 @@ export default function HomePage() {
       {/* ══════════════════════════════════════════
           FOOTER
       ══════════════════════════════════════════ */}
-      <footer id="footer" className="site-footer" style={{ background: '#F8F9FA', padding: '48px 0 20px', borderTop: '1px solid #E5E5E5' }}>
+      <footer id="footer" className="site-footer">
         <div className="container footer-container">
           <div className="footer-grid">
             <div id="footer-brand" className="footer-brand">
-              <div className="footer-logo-wrap" style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '18px' }}>
-                <div className="footer-logo-img-wrap" style={{ borderRadius: '10px', overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                  <Image src="/logo.webp" alt="Eggs Ok" width={100} height={70} style={{ objectFit: 'contain' }} />
+              <div className="footer-logo-wrap">
+                <div className="footer-logo-img-wrap">
+                  <Image src="/logo.webp" alt="Eggs Ok" width={100} height={70} className="footer-logo-img" />
                 </div>
               </div>
-              <p className="footer-brand-tagline" style={{ fontSize: '16px', color: '#4D4D4D', lineHeight: 1.75, maxWidth: '280px', marginBottom: '22px' }}>
+              <p className="footer-brand-tagline">
                 Fresh breakfast and lunch in West Philadelphia. Made to order, every time.
               </p>
-              <address id="footer-address" className="footer-address" style={{ fontStyle: 'normal' }}>
-                <p className="footer-address-line" style={{ fontSize: '16px', color: '#4D4D4D', display: 'flex', alignItems: 'center', gap: '7px', marginBottom: '8px' }}>
+              <address id="footer-address" className="footer-address">
+                <p className="footer-address-line">
                   <MapPin size={13} color="#000000ff"  aria-hidden="true" href='https://www.google.com/maps?q=3517+Lancaster+Ave,+Philadelphia+PA+19104'/> <a href='https://www.google.com/maps?q=3517+Lancaster+Ave,+Philadelphia+PA+19104' className="footer-address-link">3517 Lancaster Ave, Philadelphia PA 19104</a>
                 </p>
-                <p className="footer-phone-line" style={{ fontSize: '16px', color: '#4D4D4D', display: 'flex', alignItems: 'center', gap: '7px' }}>
+                <p className="footer-phone-line">
                   <Smartphone size={13} color="#000000ff" aria-hidden="true" />
-                  <a href="tel:2159489902" className="footer-phone-link" style={{ color: '#4D4D4D', textDecoration: 'none' }}>215-948-9902</a>
+                  <a href="tel:2159489902" className="footer-phone-link">215-948-9902</a>
                 </p>
               </address>
             </div>
 
             <nav id="footer-nav" className="footer-nav" aria-label="Quick links">
-              <p className="footer-nav-heading" style={{ fontSize: '18px', fontFamily: "'Playfair Display', Georgia, serif", fontWeight: '700', color: '#1A1A1A', letterSpacing: '2px', textTransform: 'uppercase', marginBottom: '20px' }}>Quick Links</p>
+              <p className="footer-nav-heading">Quick Links</p>
               {[
                 { label: 'Home',         href: '/'           },
                 { label: 'Order Online', href: '/order'      },
@@ -1286,12 +1502,12 @@ export default function HomePage() {
             </nav>
 
             <div id="footer-hours" className="footer-hours">
-              <p className="footer-hours-heading" style={{ fontSize: '18px', fontFamily: "'Playfair Display', Georgia, serif", fontWeight: '700', color: '#1A1A1A', letterSpacing: '2px', textTransform: 'uppercase', marginBottom: '20px' }}>Hours</p>
-              <div id="footer-hours-list" className="footer-hours-list" style={{ display: 'flex', flexDirection: 'column', gap: '5px' }}>
+              <p className="footer-hours-heading">Hours</p>
+              <div id="footer-hours-list" className="footer-hours-list">
                 {HOURS.map((row, i) => (
-                  <div key={i} className={`footer-hours-row footer-hours-${row.d.toLowerCase()}`} style={{ display: 'flex', gap: '14px' }}>
-                    <span className="footer-hours-day" style={{ fontSize: '16px', color: '#4D4D4D', fontWeight: '600', minWidth: '96px' }}>{row.d}</span>
-                    <span className="footer-hours-time" style={{ fontSize: '16px', color: '#666666' }}>{row.h}</span>
+                  <div key={i} className={`footer-hours-row footer-hours-${row.d.toLowerCase()}`}>
+                    <span className="footer-hours-day">{row.d}</span>
+                    <span className="footer-hours-time">{row.h}</span>
                   </div>
                 ))}
               </div>
@@ -1299,7 +1515,7 @@ export default function HomePage() {
           </div>
 
           <div id="footer-bottom" className="footer-bottom">
-            <p id="footer-copyright" className="footer-copyright" style={{ fontSize: '16px', color: '#888888' }}>&copy; {new Date().getFullYear()} Eggs Ok. All rights reserved.</p>
+            <p id="footer-copyright" className="footer-copyright">&copy; {new Date().getFullYear()} Eggs Ok. All rights reserved.</p>
             {/* <p id="footer-credit" className="footer-credit" style={{ fontSize: '13px', color: '#ffffff' }}>Built by <span className="footer-credit-brand" style={{ color: '#E3BF22' }}>RestoRise Business Solutions</span></p> */}
           </div>
         </div>
@@ -1313,8 +1529,8 @@ export default function HomePage() {
           <div className="home-modal-box" onClick={e => e.stopPropagation()}>
             <div className="home-modal-img-wrap">
               {selectedFav.img
-                ? <img src={selectedFav.img} alt={selectedFav.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                : <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'linear-gradient(135deg, #F5F5E8, #F8F9FA)' }}>
+                ? <img src={selectedFav.img} alt={selectedFav.name} className="home-modal-img" />
+                : <div className="home-modal-img-placeholder">
                     <svg width="48" height="48" viewBox="0 0 64 64" fill="none"><circle cx="32" cy="32" r="22" stroke="#D0D0D0" strokeWidth="1.5"/><path d="M20 32 Q32 20 44 32" stroke="#D0D0D0" strokeWidth="1.5" strokeLinecap="round"/><circle cx="32" cy="38" r="6" stroke="#D0D0D0" strokeWidth="1.5"/></svg>
                   </div>
               }
@@ -1332,8 +1548,8 @@ export default function HomePage() {
                   <div className="home-modal-price-row">
                     {(['pickup', 'delivery'] as const).filter(type => type === 'pickup' ? isPickupEnabled : isDeliveryEnabled).map(type => (
                       <div key={type} className={`home-modal-price-card ${orderType === type ? 'active' : ''}`} onClick={() => setOrderType(type)}>
-                        <p style={{ fontSize: '12px', color: '#777777', fontWeight: '500', textTransform: 'uppercase', marginBottom: '4px' }}>{type}</p>
-                        <p style={{ fontSize: '18px', fontWeight: '900', color: '#4D4D4D' }}>
+                        <p className="home-modal-price-type">{type}</p>
+                        <p className="home-modal-price-val">
                           ${(Number(type === 'pickup' ? fullMenuItem.pickupPrice : fullMenuItem.deliveryPrice) || 0).toFixed(2)}
                         </p>
                       </div>
@@ -1345,7 +1561,7 @@ export default function HomePage() {
                     <div key={group.id} className="home-modal-modifier-group">
                       <div className="home-modal-modifier-header">
                         <p className="home-modal-modifier-name">{group.name}</p>
-                        <span className="home-modal-modifier-badge" style={{ background: group.required ? '#FC030120' : '#22C55E20', color: group.required ? '#FC0301' : '#22C55E', border: `1px solid ${group.required ? '#FC030140' : '#22C55E40'}` }}>
+                        <span className={`home-modal-modifier-badge ${group.required ? 'required' : 'optional'}`}>
                           {group.required ? 'Required' : 'Optional'} · {group.maxSelections === 1 ? 'Choose 1' : `Up to ${group.maxSelections}`}
                         </span>
                       </div>
@@ -1353,14 +1569,14 @@ export default function HomePage() {
                         const isSel = (selectedModifiers[group.id] || []).includes(opt.id);
                         return (
                           <div key={opt.id} className={`home-modal-modifier-opt ${isSel ? 'selected' : ''}`} onClick={() => toggleModifier(group.id, opt.id, group.maxSelections)}>
-                            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                              <div style={{ width: '20px', height: '20px', borderRadius: group.maxSelections === 1 ? '50%' : '4px', border: isSel ? '2px solid #E3BF22' : '1px solid #D0D0D0', background: isSel ? '#E3BF22' : 'transparent', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                            <div className="home-modal-opt-left">
+                              <div className={`home-modal-check ${group.maxSelections === 1 ? 'radio' : 'checkbox'} ${isSel ? 'selected' : ''}`}>
                                 {isSel && <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#E3BF22" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>}
                               </div>
-                              <span style={{ fontSize: '16px', color: '#4D4D4D' }}>{opt.name}</span>
+                              <span className="home-modal-opt-name">{opt.name}</span>
                             </div>
-                            <span style={{ fontSize: '13px', color: Number(opt.price) > 0 ? '#4D4D4D' : '#AAAAAA' }}>
-                              {Number(opt.price) > 0 ? `+$${Number(opt.price).toFixed(2)}` : 'Free'}
+                            <span className={`home-modal-opt-price ${Number(opt.price) > 0 ? 'paid' : ''}`}>
+                              {Number(opt.price) > 0 ? `+${Number(opt.price).toFixed(2)}` : 'Free'}
                             </span>
                           </div>
                         );
@@ -1369,13 +1585,13 @@ export default function HomePage() {
                   ))}
 
                   {/* Special instructions */}
-                  <div style={{ marginBottom: '8px' }}>
-                    <p style={{ fontSize: '12px', fontWeight: '700', color: '#777777', textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: '6px' }}>Special Instructions</p>
+                  <div className="home-modal-instructions-wrap">
+                    <p className="home-modal-instructions-label">Special Instructions</p>
                     <textarea
                       placeholder="Add a note (extra sauce, no onions, etc.)"
                       value={favInstructions}
                       onChange={e => setFavInstructions(e.target.value)}
-                      style={{ width: '100%', padding: '10px 14px', background: '#F8F9FA', border: '1px solid #D0D0D0', borderRadius: '10px', color: '#4D4D4D', fontSize: '13px', resize: 'none', height: '60px', outline: 'none', fontFamily: 'inherit' }}
+                      className="home-modal-instructions-input"
                     />
                   </div>
 
@@ -1396,8 +1612,8 @@ export default function HomePage() {
                   </div>
                 </>
               ) : (
-                <div style={{ textAlign: 'center', padding: '20px 0' }}>
-                  <p style={{ fontSize: '13px', color: '#777777' }}>Loading item details...</p>
+                <div className="home-modal-loading">
+                  <p className="home-modal-loading-text">Loading item details...</p>
                 </div>
               )}
             </div>
