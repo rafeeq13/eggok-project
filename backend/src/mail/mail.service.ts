@@ -1024,7 +1024,7 @@ ${preheader}
 
   <!-- HEADER -->
   <tr><td class="header-cell" style="background:#FFFFFF;padding:32px 24px 20px;text-align:center;border-bottom:1px solid #E5E5E5;">
-    <img src="https://eggsokpa.com/webicons/logo.webp" class="header-logo" width="180" height="72" alt="Eggs Ok" style="display:block;margin:0 auto 14px;border:0;">
+    <img src="https://eggsokpa.com/webicons/logo.png" class="header-logo" width="180" height="72" alt="Eggs Ok" style="display:block;margin:0 auto 14px;border:0;">
   </td></tr>
 
   <!-- EYEBROW STRIPE -->
