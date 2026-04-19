@@ -139,7 +139,7 @@ export default function CateringPage() {
         /* ── Section heading ── */
         .sec-heading {
           font-family: var(--font-head);
-          font-size: 28px;
+          font-size: 50px;
           font-weight: 700;
           letter-spacing: -0.5px; line-height: 1.2; color: var(--t1);
         }
@@ -444,7 +444,7 @@ export default function CateringPage() {
       {/* ══════════════════════════════════════════
           CONTACT FORM
       ══════════════════════════════════════════ */}
-      <section id="contact" style={{ padding: '88px 0', background: '#F8F9FA' }}>
+      <section id="contact" style={{ padding: '48px 32px', background: '#F8F9FA' }}>
         <div className="container contact-container">
           <div id="contact-inner" style={{ maxWidth: '700px', margin: '0 auto' }}>
 
@@ -592,7 +592,7 @@ export default function CateringPage() {
       {/* ══════════════════════════════════════════
           FOOTER
       ══════════════════════════════════════════ */}
-      <footer id="catering-footer" className="site-footer" style={{ background: '#F8F9FA', padding: '68px 0 32px', borderTop: '1px solid #E5E5E5' }}>
+      <footer id="catering-footer" className="site-footer" style={{ background: '#F8F9FA', padding: '48px 0 32px', borderTop: '1px solid #E5E5E5' }}>
         <div className="container footer-container">
           <div id="footer-grid" className="footer-grid">
 

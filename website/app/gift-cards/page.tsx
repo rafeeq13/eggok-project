@@ -277,14 +277,14 @@ export default function GiftCardsPage() {
       {/* ══════════════════════════════════════════
           HERO
       ══════════════════════════════════════════ */}
-      <section id="giftcards-hero" style={{ padding: '110px 0 80px', background: '#FFFFFF', position: 'relative', overflow: 'hidden', borderBottom: '1px solid #EBEBEB' }}>
+      <section id="giftcards-hero" style={{ padding: '48px 32px', background: '#FFFFFF', position: 'relative', overflow: 'hidden', borderBottom: '1px solid #EBEBEB' }}>
 
         <div className="hero-glow" style={{ position: 'absolute', top: '-100px', right: '-80px', width: '500px', height: '500px', borderRadius: '50%', background: 'radial-gradient(circle, rgba(254,216,0,0.04) 0%, transparent 70%)', pointerEvents: 'none' }} aria-hidden="true" />
         <div className="hero-glow-left" style={{ position: 'absolute', bottom: '-80px', left: '-60px', width: '400px', height: '400px', borderRadius: '50%', background: 'radial-gradient(circle, rgba(252,3,1,0.03) 0%, transparent 70%)', pointerEvents: 'none' }} aria-hidden="true" />
 
         <div className="container hero-container" style={{ position: 'relative', textAlign: 'center' }}>
           <span id="hero-label" className="sec-label">Gift Cards</span>
-          <h1 id="hero-title" className="bebas" style={{ fontSize: '28px', color: '#1A1A1A', lineHeight: '1.2', marginBottom: '22px' }}>
+          <h1 id="hero-title" className="bebas" style={{ fontSize: '50px', color: '#1A1A1A', lineHeight: '1.2', marginBottom: '22px' }}>
             Give the Gift of Breakfast
           </h1>
           <p id="hero-subtitle" style={{ fontSize: '16px', color: '#4D4D4D', lineHeight: '1.8', maxWidth: '500px', margin: '0 auto 40px' }}>
@@ -304,7 +304,7 @@ export default function GiftCardsPage() {
       {/* ══════════════════════════════════════════
           MAIN — Card + Form
       ══════════════════════════════════════════ */}
-      <section id="buy" style={{ padding: '88px 0', background: '#F8F9FA' }}>
+      <section id="buy" style={{ padding: '48px 48px', background: '#F8F9FA' }}>
         <div className="container">
           <div id="giftcard-grid" className="giftcard-grid">
 
@@ -517,7 +517,7 @@ export default function GiftCardsPage() {
       {/* ══════════════════════════════════════════
           FOOTER
       ══════════════════════════════════════════ */}
-      <footer id="giftcards-footer" className="site-footer" style={{ background: '#F8F9FA', padding: '68px 0 32px', borderTop: '1px solid #E5E5E5' }}>
+      <footer id="giftcards-footer" className="site-footer" style={{ background: '#F8F9FA', padding: '48px 0 32px', borderTop: '1px solid #E5E5E5' }}>
         <div className="container footer-container">
           <div id="footer-grid" className="footer-grid">
 

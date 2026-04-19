@@ -351,13 +351,13 @@ export default function ContactPage() {
       {/* ══════════════════════════════════════════
           HERO
       ══════════════════════════════════════════ */}
-      <section id="contact-hero" className="contact-hero">
+      <section id="contact-hero" className="contact-hero" style={{padding:'48px 0 32px'}}>
 
         <div className="hero-glow" style={{ position: 'absolute', top: '-60px', left: '50%', transform: 'translateX(-50%)', width: '600px', height: '600px', borderRadius: '50%', background: 'radial-gradient(circle, rgba(254,216,0,0.04) 0%, transparent 70%)', pointerEvents: 'none' }} aria-hidden="true" />
 
         <div className="container hero-container" style={{ position: 'relative' }}>
          
-          <h1 id="hero-title" className="bebas" style={{ fontSize: '28px', color: '#1A1A1A', lineHeight: '1.2', marginBottom: '22px' }}>
+          <h1 id="hero-title" className="bebas" style={{ fontSize: '50px', color: '#1A1A1A', lineHeight: '1.2', marginBottom: '22px' }}>
             We&apos;d Love to Hear From You
           </h1>
           <p id="hero-subtitle" style={{ fontSize: '16px', color: '#4D4D4D', lineHeight: '1.8', maxWidth: '500px', margin: '0 auto' }}>
@@ -369,7 +369,7 @@ export default function ContactPage() {
       {/* ══════════════════════════════════════════
           MAIN CONTENT
       ══════════════════════════════════════════ */}
-      <section id="contact-main" className="contact-main">
+      <section id="contact-main" className="contact-main" style={{padding:'48px 0 32px'}}>
         <div className="container contact-container">
           <div id="contact-grid" className="contact-grid">
 
@@ -589,7 +589,7 @@ export default function ContactPage() {
       {/* ══════════════════════════════════════════
           FOOTER
       ══════════════════════════════════════════ */}
-      <footer id="contact-footer" className="site-footer">
+      <footer id="contact-footer" className="site-footer" style={{padding:'48px 0 32px'}}>
         <div className="container footer-container">
           <div id="footer-grid" className="footer-grid">
 

@@ -303,7 +303,7 @@ export default function HiringPage() {
       {/* ══════════════════════════════════════════
           HERO
       ══════════════════════════════════════════ */}
-      <section id="hiring-hero" style={{ padding: '110px 0 80px', background: '#FFFFFF', position: 'relative', overflow: 'hidden', borderBottom: '1px solid #EBEBEB' }}>
+      <section id="hiring-hero" style={{ padding: '48px 32px', background: '#FFFFFF', position: 'relative', overflow: 'hidden', borderBottom: '1px solid #EBEBEB' }}>
 
         {/* Glow */}
         <div className="hero-glow" style={{ position: 'absolute', top: '-80px', right: '-80px', width: '500px', height: '500px', borderRadius: '50%', background: 'radial-gradient(circle, rgba(254,216,0,0.04) 0%, transparent 70%)', pointerEvents: 'none' }} aria-hidden="true" />
@@ -311,7 +311,7 @@ export default function HiringPage() {
 
         <div className="container hero-container" style={{ position: 'relative', textAlign: 'center' }}>
           <span id="hero-label" className="sec-label" style={{ display: 'block' }}>Join Our Team</span>
-          <h1 id="hero-title" className="bebas" style={{ fontSize: '28px', color: '#1A1A1A', lineHeight: '1.2', marginBottom: '24px' }}>
+          <h1 id="hero-title" className="bebas" style={{ fontSize: '50px', color: '#1A1A1A', lineHeight: '1.2', marginBottom: '24px' }}>
             Work With The Best
           </h1>
           <p id="hero-subtitle" style={{ fontSize: '16.94px', color: '#4D4D4D', lineHeight: '1.8', maxWidth: '520px', margin: '0 auto 40px', fontWeight: 500 }}>
@@ -336,7 +336,7 @@ export default function HiringPage() {
       {/* ══════════════════════════════════════════
           JOBS + FORM
       ══════════════════════════════════════════ */}
-      <section id="positions" style={{ padding: '88px 0', background: '#FFFFFF' }}>
+      <section id="positions" style={{ padding: '48px 48px', background: '#FFFFFF' }}>
         <div className="container positions-container">
           <div id="jobs-form-grid" className="jobs-grid">
 
@@ -524,7 +524,7 @@ export default function HiringPage() {
       {/* ══════════════════════════════════════════
           FOOTER
       ══════════════════════════════════════════ */}
-      <footer id="hiring-footer" className="site-footer" style={{ background: '#F8F9FA', padding: '68px 0 32px', borderTop: '1px solid #E5E5E5' }}>
+      <footer id="hiring-footer" className="site-footer" style={{ background: '#F8F9FA', padding: '48px 0 32px', borderTop: '1px solid #E5E5E5' }}>
         <div className="container footer-container">
           <div id="footer-grid" className="footer-grid">
 
