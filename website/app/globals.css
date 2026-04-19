@@ -178,7 +178,7 @@ button { cursor: pointer; border: none; background: none; }
 @media (max-width: 1024px) {
   .header-inner { height: 64px !important; }
   .header-spacer { height: 64px !important; }
-  .header-logo img { width: 100px !important; height: 44px !important; }
+  .header-logo img { width: 120px !important; height: 90px !important;padding: 10px 10px; }
   .header-wrap { padding: 0 16px !important; }
 }
 

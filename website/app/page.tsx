@@ -812,7 +812,7 @@ export default function HomePage() {
         .location-status-badge.closed { background: #FC030115; border-color: #FC030130; }
         .location-status-dot { width: 7px; height: 7px; border-radius: 50%; background: #22C55E; }
         .location-status-badge.closed .location-status-dot { background: #FC0301; }
-        .location-status-text { font-size: 12px; font-weight: 600; color: #22C55E; }
+        .location-status-text { font-size: 12px; font-weight: 600; color: #007a2d; }
         .location-status-badge.closed .location-status-text { color: #FC0301; }
         .location-name { font-size: 28px; font-family: 'Playfair Display', Georgia, serif; color: #1A1A1A; margin-bottom: 28px; }
         .location-address { font-style: normal; display: flex; flex-direction: column; gap: 16px; }

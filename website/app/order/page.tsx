@@ -194,7 +194,7 @@ const css = `
   .status-dot.open { background: var(--green); }
   .status-dot.closed { background: var(--r); }
   .status-text { font-size: 13px; font-weight: 600; }
-  .status-text.open { color: #0C0C; }
+  .status-text.open { color: #007a2d; }
   .status-text.closed { color: var(--r); }
 
   /* ── Order row ── */
