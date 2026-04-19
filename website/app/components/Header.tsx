@@ -94,7 +94,7 @@ const css = `
           {/* Logo */}
           <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
             <div className="header-logo" style={{  borderRadius: '10px', overflow: 'hidden', background: 'transparent', flexShrink: 0 }}>
-              <Image src="/logo.webp" alt="EggsOK Eatery" width={80} height={80} style={{ objectFit: 'contain' }} />
+              <Image src="/logo.webp" alt="EggsOK Eatery" width={120} height={120} style={{ objectFit: 'contain' }} />
             </div>
             <div>
               {/* <p style={{ fontSize: '17px', fontWeight: '800', color: '#E5B800', letterSpacing: '1px', fontFamily: 'DM Sans, sans-serif' }}>EggsOK</p>
