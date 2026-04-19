@@ -351,7 +351,7 @@ export default function HomePage() {
           min-height: 90vh; display: flex; align-items: flex-end; justify-content: flex-start;
           text-align: left; position: relative; overflow: hidden;
           padding-bottom: 40px;
-          background-image: url('/main-menu/Hero-Banner.webp');
+          background-image: url('/main-menu/Hero-Banner.jpeg');
           background-size: cover; background-position: center; background-repeat: no-repeat;
         }
         .hero-tagline {
@@ -536,7 +536,7 @@ export default function HomePage() {
           max-width: 100%; 
           max-height: 100vh !important;
           min-height: 100vh !important;
-          background-image: url('/main-menu/Main-Page/order-ahead.webp');
+          background-image: url('/main-menu/Main-Page/order-ahead.jpeg');
           background-size: cover; background-position: center;
           display: flex; align-items: center; justify-content: flex-end;
         }
@@ -944,7 +944,7 @@ export default function HomePage() {
         }
         @media (max-width: 768px) {
         .order-ahead-hero { max-height: 50vh !important; min-height:70vh !important; flex-direction: column;}
-
+.order-ahead-hero-rewards { max-height: 50vh !important; min-height:70vh !important; flex-direction: column;}
         .fav-arrow-left { left: -10px; }
         .fav-arrow-right { right: -10px; }
         .fav-arrow{width: 25px; height: 25px;}
