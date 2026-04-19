@@ -410,19 +410,32 @@ export default function HomePage() {
         .home-modal-box {
           background: #FFFFFF; border: 1px solid #E5E5E5; border-radius: 24px;
           max-width: 480px; width: 100%; max-height: 90vh; overflow-y: auto;
+          display: flex; flex-direction: column;
         }
         .home-modal-box::-webkit-scrollbar { width: 4px; }
         .home-modal-box::-webkit-scrollbar-thumb { background: #D0D0D0; border-radius: 4px; }
-        .home-modal-img-wrap { position: relative; height: 260px; overflow: hidden; border-radius: 24px 24px 0 0; }
-        .home-modal-img-wrap img { width: 100%; height: 100%; object-fit: cover; }
         .home-modal-close {
-          position: absolute; top: 12px; right: 12px; width: 40px; height: 40px;
-          border-radius: 50%; background: rgba(0,0,0,0.75); border: 1px solid rgba(255,255,255,0.1);
-          color: #fff; cursor: pointer; display: flex; align-items: center; justify-content: center;
+          position: sticky; top: 12px; z-index: 30;
+          align-self: flex-end;
+          margin: 12px 12px -52px 0;
+          width: 40px; min-height: 40px !important;
+          border-radius: 50%; background: #ffffff; border: 1px solid rgba(255,255,255,0.1);
+          color: #000; cursor: pointer; display: flex; align-items: center; justify-content: center;
+          backdrop-filter: blur(6px);
         }
         .home-modal-close:hover { background: rgba(0,0,0,0.95); }
-        .home-modal-body { padding: 24px; }
-        .home-modal-name { font-family: 'var(--font-body)'; font-weight: 500; font-size: 22px; letter-spacing: 0.5px; color: #0D0D0D;  }
+        .home-modal-img-wrap { position: relative; height: 260px; overflow: hidden; border-radius: 24px 24px 0 0; flex-shrink: 0; }
+        .home-modal-img-wrap img { width: 100%; height: 100%; object-fit: cover; }
+        .home-modal-body { padding: 0 24px 24px; }
+        .home-modal-name {
+          position: sticky; top: 0; z-index: 10;
+          background: #FFFFFF;
+          margin: 0 -24px 10px;
+          padding: 16px 64px 12px 24px;
+          font-family: 'var(--font-body)'; font-weight: 500;
+          font-size: 22px; letter-spacing: 0.5px; color: #0D0D0D;
+          border-bottom: 1px solid #F0F0F0;
+        }
         .home-modal-desc { font-size: 16px; color: #666; line-height: 1.7; margin-bottom: 20px; }
         .home-modal-price-row { display: flex; gap: 10px; margin-bottom: 20px; }
         .home-modal-price-card {
@@ -443,8 +456,12 @@ export default function HomePage() {
         .home-modal-modifier-opt.selected { border-color: #E3BF22; background: #E3BF2210; }
         .home-modal-modifier-opt:hover { border-color: #D0D0D0; }
         .home-modal-add-row {
-          display: flex; align-items: center; gap: 12px; margin-top: 20px;
-          padding-top: 16px; border-top: 1px solid #E0E0E0;
+          display: flex; align-items: center; gap: 12px;
+          position: sticky; bottom: 0; z-index: 10;
+          background: #FFFFFF;
+          margin: 20px -24px -24px;
+          padding: 14px 24px;
+          border-top: 1px solid #E0E0E0;
         }
         .home-modal-qty-wrap {
           display: flex; align-items: center; gap: 0; border: 1px solid #D0D0D0;
@@ -464,7 +481,7 @@ export default function HomePage() {
         }
         .home-modal-add-btn.enabled { background: #E3BF22; color: #000; }
         .home-modal-add-btn.enabled:hover { background: #E3BF22; color: #000; }
-        .home-modal-add-btn.disabled { background: #F0F0F0; color: #AAAAAA; cursor: not-allowed; }
+        .home-modal-add-btn.disabled { background: #E3BF22; color: #000; cursor: not-allowed; }
 
         /* ── Menu Tiles ── */
         .menu-tiles { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; margin-bottom: 0px; }
@@ -1528,6 +1545,9 @@ export default function HomePage() {
       {selectedFav && (
         <div className="home-modal-backdrop" onClick={() => { setSelectedFav(null); setFullMenuItem(null); }}>
           <div className="home-modal-box" onClick={e => e.stopPropagation()}>
+            <button className="home-modal-close" onClick={() => { setSelectedFav(null); setFullMenuItem(null); }}>
+              <X size={16} />
+            </button>
             <div className="home-modal-img-wrap">
               {selectedFav.img
                 ? <img src={selectedFav.img} alt={selectedFav.name} className="home-modal-img" />
@@ -1535,9 +1555,6 @@ export default function HomePage() {
                     <svg width="48" height="48" viewBox="0 0 64 64" fill="none"><circle cx="32" cy="32" r="22" stroke="#D0D0D0" strokeWidth="1.5"/><path d="M20 32 Q32 20 44 32" stroke="#D0D0D0" strokeWidth="1.5" strokeLinecap="round"/><circle cx="32" cy="38" r="6" stroke="#D0D0D0" strokeWidth="1.5"/></svg>
                   </div>
               }
-              <button className="home-modal-close" onClick={() => { setSelectedFav(null); setFullMenuItem(null); }}>
-                <X size={16} />
-              </button>
             </div>
             <div className="home-modal-body">
               <h2 className="home-modal-name">{selectedFav.name}</h2>
