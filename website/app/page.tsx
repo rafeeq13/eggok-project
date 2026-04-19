@@ -540,6 +540,16 @@ export default function HomePage() {
           background-size: cover; background-position: center;
           display: flex; align-items: center; justify-content: flex-end;
         }
+          .order-ahead-hero-rewards{
+            position: relative; overflow: hidden;
+          border-radius: 24px; margin:0px auto;
+          max-width: 100%; 
+          max-height: 100vh !important;
+          min-height: 100vh !important;
+          background-image: url('/main-menu/Main-Page/review-rewards.webp');
+          background-size: cover; background-position: center;
+          display: flex; align-items: center; justify-content: flex-end;
+          }
         .order-ahead-overlay {
           position: absolute; inset: 0;
           // background: linear-gradient(90deg, transparent 0%, rgba(0,0,0,0.88) 45%);
@@ -1327,7 +1337,7 @@ export default function HomePage() {
       ══════════════════════════════════════════ */}
       <section id="rewards" className="section-rewards" aria-labelledby="rewards-heading">
       
-      <div id="order-ahead" className="order-ahead-hero container">
+      <div id="order-ahead" className="order-ahead-hero-rewards container">
         <div className="order-ahead-overlay" />
         <div className="order-card-box-rewards">
           <h2 id="order-ahead-heading" className="order-ahead-heading">Eggs Ok Rewards</h2>

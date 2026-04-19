@@ -378,7 +378,7 @@ export class MailService {
 
         const html = await this.renderTemplate('order_status', {
             activeStep: 3,
-            heroIcon: 'https://eggsokpa.com/webicons/Readyforpickupblack.webp',
+            heroIcon: 'https://eggsokpa.com/webicons/ContactReadyforpickupblack.png',
             heroTitle: 'Your order is Picked Up!',
             heroSubtitle: 'Great news! Your order has been picked up.',
             greetingMessage: `Great news! Your order ${this.safeText(order.orderNumber)} has been picked up and is heading your way.`,
@@ -424,7 +424,7 @@ export class MailService {
 
         const html = await this.renderTemplate('order_status', {
             activeStep: 5,
-            heroIcon: 'https://eggsokpa.com/webicons/orderdeliveredyellow.webp',
+            heroIcon: 'https://eggsokpa.com/webicons/Contactorderdeliveredyellow.png',
             heroTitle: 'Your order has been Delivered!',
             heroSubtitle: `Great news! your order ${this.safeText(order.orderNumber)} has been delivered. Enjoy your meal!`,
             greetingMessage: `Great news! your order ${this.safeText(order.orderNumber)} has been delivered.\nEnjoy your meal!`,
@@ -471,21 +471,21 @@ export class MailService {
         const statusConfig: Record<string, { activeStep: number; heroIcon: string; heroTitle: string; heroSubtitle: string; greetingMessage: string }> = {
             confirmed: {
                 activeStep: 1,
-                heroIcon: 'https://eggsokpa.com/webicons/OrderconfirmationBlack.webp',
+                heroIcon: 'https://eggsokpa.com/webicons/ContactOrderconfirmationBlack.png',
                 heroTitle: 'Your Order is Confirmed!',
                 heroSubtitle: 'Thanks for your order. Will be Ready very soon.',
                 greetingMessage: 'Your order has been received and we\'re already getting it ready for you. Get ready for something delicious!',
             },
             preparing: {
                 activeStep: 2,
-                heroIcon: 'https://eggsokpa.com/webicons/orderpreparedblack.webp',
+                heroIcon: 'https://eggsokpa.com/webicons/Contactorderpreparedblack.png',
                 heroTitle: 'Your Order is Being Prepared!',
                 heroSubtitle: 'Our kitchen is working on your delicious meal right now.',
                 greetingMessage: `The kitchen is now preparing your order #${this.safeText(order.orderNumber)}. It won't be long — get ready for something delicious!`,
             },
             ready: {
                 activeStep: 3,
-                heroIcon: 'https://eggsokpa.com/webicons/Readyforpickupblack.webp',
+                heroIcon: 'https://eggsokpa.com/webicons/ContactReadyforpickupblack.png',
                 heroTitle: order.orderType === 'delivery' ? 'Ready for Delivery!' : 'Your Order is Ready!',
                 heroSubtitle: order.orderType === 'delivery'
                     ? 'Your order is packed and waiting for the driver.'
@@ -545,7 +545,7 @@ export class MailService {
 
         const html = await this.renderTemplate('order_status', {
             activeStep: 0,
-            heroIcon: 'https://eggsokpa.com/webicons/OrderconfirmationBlack.webp',
+            heroIcon: 'https://eggsokpa.com/webicons/ContactOrderconfirmationBlack.png',
             heroTitle: 'Your Order has been Cancelled',
             heroSubtitle: `Order #${this.safeText(order.orderNumber)} was cancelled. If you didn't request this, please contact us.`,
             greetingMessage: `Your order #${this.safeText(order.orderNumber)} has been cancelled. If you didn't request this, please contact us right away.`,
@@ -594,7 +594,7 @@ export class MailService {
 
         const html = await this.renderTemplate('order_status', {
             activeStep: 5,
-            heroIcon: 'https://eggsokpa.com/webicons/orderdeliveredyellow.webp',
+            heroIcon: 'https://eggsokpa.com/webicons/Contactorderdeliveredyellow.png',
             heroTitle: 'Your order has been Delivered!',
             heroSubtitle: `Great news! your order ${this.safeText(order.orderNumber)} has been delivered. Enjoy your meal!`,
             greetingMessage: `Great news! your order ${this.safeText(order.orderNumber)} has been delivered.\nEnjoy your meal!`,
@@ -1087,16 +1087,24 @@ ${preheader}
       <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:10px;">
         <tr>
           <td align="center" class="footer-info" style="font-family:${FONT_BODY};font-size:13px;color:#4D4D4D;font-weight:500;line-height:20px;padding:6px 0;">
-            <img src="https://eggsokpa.com/webicons/ContactLocation.png" width="14" height="14" style="vertical-align:middle;" alt="Location">
-            3517 Lancaster Ave, Philadelphia, PA 19104
-            &nbsp;&middot;&nbsp;
-            <a href="https://www.eggsokpa.com" style="color:#4D4D4D;text-decoration:none;font-family:${FONT_BODY};">
-              <img src="https://eggsokpa.com/webicons/ContactWebsite.png" width="14" height="14" style="vertical-align:middle;" alt="Website">
-              www.eggsokpa.com
-            </a>
-            &nbsp;&middot;&nbsp;
-            <img src="https://eggsokpa.com/webicons/ContactLayer.png" width="14" height="14" style="vertical-align:middle;" alt="Phone">
-            (215) 948-9902
+            <span style="white-space:nowrap;display:inline-block;margin:0 6px;">
+              <a href="https://maps.google.com/?q=3517+Lancaster+Ave+Philadelphia+PA+19104" style="color:#4D4D4D;text-decoration:none;font-family:${FONT_BODY};">
+                <img src="https://eggsokpa.com/webicons/ContactLocation.png" width="14" height="14" style="vertical-align:middle;" alt="Location">
+                3517 Lancaster Ave, Philadelphia, PA 19104
+              </a>
+            </span>
+            <span style="white-space:nowrap;display:inline-block;margin:0 6px;">
+              <a href="https://www.eggsokpa.com" style="color:#4D4D4D;text-decoration:none;font-family:${FONT_BODY};">
+                <img src="https://eggsokpa.com/webicons/ContactWebsite.png" width="14" height="14" style="vertical-align:middle;" alt="Website">
+                www.eggsokpa.com
+              </a>
+            </span>
+            <span style="white-space:nowrap;display:inline-block;margin:0 6px;">
+              <a href="tel:+12159489902" style="color:#4D4D4D;text-decoration:none;font-family:${FONT_BODY};">
+                <img src="https://eggsokpa.com/webicons/ContactLayer.png" width="14" height="14" style="vertical-align:middle;" alt="Phone">
+                (215) 948-9902
+              </a>
+            </span>
           </td>
         </tr>
       </table>
@@ -1108,10 +1116,10 @@ ${preheader}
       <table cellpadding="0" cellspacing="0" border="0" align="center" style="margin:12px auto;">
         <tr>
           <td class="footer-social-text" style="font-family:${FONT_BODY};font-size:12px;color:#777777;font-weight:500;padding-right:10px;">Connect with us on social networks</td>
-          <td style="padding:0 4px;"><a href="#"><img src="https://eggsokpa.com/webicons/ContactFB.png" class="footer-social-icon" width="24" height="24" alt="Facebook"></a></td>
-          <td style="padding:0 4px;"><a href="#"><img src="https://eggsokpa.com/webicons/ContactInsta.png" class="footer-social-icon" width="24" height="24" alt="Instagram"></a></td>
-          <td style="padding:0 4px;"><a href="#"><img src="https://eggsokpa.com/webicons/Contacttiktok.png" class="footer-social-icon" width="24" height="24" alt="TikTok"></a></td>
-          <td style="padding:0 4px;"><a href="#"><img src="https://eggsokpa.com/webicons/Contactgoogleplus.png" class="footer-social-icon" width="24" height="24" alt="Google"></a></td>
+          <td style="padding:0 4px;"><a href="https://www.facebook.com/eggsokphilly" target="_blank" rel="noopener"><img src="https://eggsokpa.com/webicons/ContactFB.png" class="footer-social-icon" width="24" height="24" alt="Facebook"></a></td>
+          <td style="padding:0 4px;"><a href="https://www.instagram.com/eggsokphilly" target="_blank" rel="noopener"><img src="https://eggsokpa.com/webicons/ContactInsta.png" class="footer-social-icon" width="24" height="24" alt="Instagram"></a></td>
+          <td style="padding:0 4px;"><a href="https://www.tiktok.com/@eggsokphilly" target="_blank" rel="noopener"><img src="https://eggsokpa.com/webicons/Contacttiktok.png" class="footer-social-icon" width="24" height="24" alt="TikTok"></a></td>
+          <td style="padding:0 4px;"><a href="https://maps.google.com/?q=3517+Lancaster+Ave+Philadelphia+PA+19104" target="_blank" rel="noopener"><img src="https://eggsokpa.com/webicons/Contactgoogleplus.png" class="footer-social-icon" width="24" height="24" alt="Google"></a></td>
         </tr>
       </table>
       <table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td height="1" style="background:#E5E5E5;line-height:1px;font-size:1px;">&nbsp;</td></tr></table>

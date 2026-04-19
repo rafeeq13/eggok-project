@@ -210,6 +210,7 @@ export default function StoryPage() {
 
         /* ═══ RESPONSIVE ═══ */
         @media (max-width: 1024px) {
+        .story-img-frame img { width: 100%; height: 282px; object-fit: cover; }
           .footer-grid { grid-template-columns: 1fr 1fr; gap: 32px; }
           .footer-brand { grid-column: 1 / -1; }
         }
@@ -226,6 +227,7 @@ export default function StoryPage() {
           .footer-grid { grid-template-columns: 1fr; gap: 28px; }
           .footer-brand { grid-column: unset; }
           .footer-bottom { flex-direction: column; text-align: center; }
+          .story-img-frame img { width: 100%; height: 282px; object-fit: cover; }
         }
         @media (max-width: 480px) {
           .container { padding: 0 14px; }
