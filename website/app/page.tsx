@@ -259,6 +259,20 @@ export default function HomePage() {
 
   const toggleFaq = useCallback((i: number) => setOpenFaq(prev => prev === i ? null : i), []);
 
+  // Lock background scroll when the favorites modal is open
+  useEffect(() => {
+    if (!selectedFav) return;
+    const prevOverflow = document.body.style.overflow;
+    const prevPaddingRight = document.body.style.paddingRight;
+    const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
+    document.body.style.overflow = 'hidden';
+    if (scrollbarWidth > 0) document.body.style.paddingRight = `${scrollbarWidth}px`;
+    return () => {
+      document.body.style.overflow = prevOverflow;
+      document.body.style.paddingRight = prevPaddingRight;
+    };
+  }, [selectedFav]);
+
   return (
     <main id="main-content" className="homepage-main">
 
@@ -424,7 +438,7 @@ export default function HomePage() {
           backdrop-filter: blur(6px);
         }
         .home-modal-close:hover { background: rgba(0,0,0,0.95); }
-        .home-modal-img-wrap { position: relative; height: 260px; overflow: hidden; border-radius: 24px 24px 0 0; flex-shrink: 0; }
+        .home-modal-img-wrap { position: relative; overflow: hidden; border-radius: 24px 24px 0 0; flex-shrink: 0; }
         .home-modal-img-wrap img { width: 100%; height: 100%; object-fit: cover; }
         .home-modal-body { padding: 0 24px 24px; }
         .home-modal-name {
@@ -451,9 +465,9 @@ export default function HomePage() {
         .home-modal-modifier-opt {
           display: flex; justify-content: space-between; align-items: center;
           padding: 10px 12px; border-radius: 10px; cursor: pointer;
-          border: 1px solid #E5E5E5; margin-bottom: 6px; transition: all 0.12s;
+         
         }
-        .home-modal-modifier-opt.selected { border-color: #E3BF22; background: #E3BF2210; }
+        .home-modal-modifier-opt.selected {  }
         .home-modal-modifier-opt:hover { border-color: #D0D0D0; }
         .home-modal-add-row {
           display: flex; align-items: center; gap: 12px;
@@ -866,7 +880,7 @@ export default function HomePage() {
         }
         .home-modal-check.radio { border-radius: 50%; }
         .home-modal-check.checkbox { border-radius: 4px; }
-        .home-modal-check.selected { border: 2px solid #E3BF22; background: #E3BF22; }
+        .home-modal-check.selected { border: 2px solid #000; background: #000; }
         .home-modal-opt-name { font-size: 16px; color: #4D4D4D; }
         .home-modal-opt-price { font-size: 13px; color: #AAAAAA; }
         .home-modal-opt-price.paid { color: #4D4D4D; }
@@ -1589,7 +1603,7 @@ export default function HomePage() {
                           <div key={opt.id} className={`home-modal-modifier-opt ${isSel ? 'selected' : ''}`} onClick={() => toggleModifier(group.id, opt.id, group.maxSelections)}>
                             <div className="home-modal-opt-left">
                               <div className={`home-modal-check ${group.maxSelections === 1 ? 'radio' : 'checkbox'} ${isSel ? 'selected' : ''}`}>
-                                {isSel && <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#E3BF22" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>}
+                                {isSel && <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#ffffff" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>}
                               </div>
                               <span className="home-modal-opt-name">{opt.name}</span>
                             </div>

@@ -345,7 +345,7 @@ const css = `
     transition: background 0.15s, color 0.15s, border-color 0.15s;
     font-family: var(--font-body); line-height: 1;
   }
-  .mobile-cat-pill.active { background: var(--y); color: #000; border-color: var(--y); }
+  .mobile-cat-pill.active { background: #000; color: #ffffff; border-color: var(--y); }
   .mobile-cat-pill:not(.active):hover { border-color: #C0C0C0; color: var(--t2); }
   .mobile-cat-divider { width: 1px; height: 20px; background: #D0D0D0; flex-shrink: 0; }
   .mobile-search-icon-btn {
@@ -579,8 +579,8 @@ const css = `
   .modifier-group-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 8px; }
   .modifier-group-name { font-family: var(--font-body); font-size: 20px; font-weight: 700; letter-spacing: -0.5px; color: var(--t1); }
   .modifier-badge { font-size: 11px; padding: 3px 10px; border-radius: 20px; font-weight: 600; border: 1px solid; }
-  .modifier-badge.required { background: #ffffff; color: var(--t1); border-color: #C0C0C0; }
-  .modifier-badge.optional { background: var(--bg4); color: var(--t4); border-color: #E0E0E0; }
+  .modifier-badge.required { background: #FC030120; color: #FC0301; border: 1px solid #FC030140;  }
+  .modifier-badge.optional { background: var(--bg4); color: #000; border-color: #E0E0E0; }
   .modifier-options { display: flex; flex-direction: column; gap: 6px; }
   .modifier-option {
     display: flex; align-items: center; justify-content: space-between;
@@ -637,7 +637,7 @@ const css = `
 
   /* ══ TABLET + MOBILE ≤ 1024px (tablet uses mobile layout) ══ */
   @media (max-width: 1024px) {
-  .item-modal-box {min-height: 60vh;}
+  .item-modal-box {min-height: 60vh;max-width: 94vh;}
     .nav-signin { display: none; }
     .sidebar { position: fixed; top: 72px; left: 0; height: calc(100vh - 72px); transform: translateX(-100%); box-shadow: 6px 0 32px rgba(0,0,0,0.1); z-index: 149; width: 250px; }
     .sidebar.open { transform: translateX(0); }
@@ -825,6 +825,20 @@ function OrderContent() {
     window.addEventListener('resize', onResize);
     return () => window.removeEventListener('resize', onResize);
   }, []);
+
+  // Lock background scroll when the item modal is open
+  useEffect(() => {
+    if (!selectedItem) return;
+    const prevOverflow = document.body.style.overflow;
+    const prevPaddingRight = document.body.style.paddingRight;
+    const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
+    document.body.style.overflow = 'hidden';
+    if (scrollbarWidth > 0) document.body.style.paddingRight = `${scrollbarWidth}px`;
+    return () => {
+      document.body.style.overflow = prevOverflow;
+      document.body.style.paddingRight = prevPaddingRight;
+    };
+  }, [selectedItem]);
 
   const popularItems = menuItems.filter(i => i.isPopular);
   const getItemsByCategory = (catId: number) => catId === 0 ? popularItems : menuItems.filter(i => i.categoryId === catId);
