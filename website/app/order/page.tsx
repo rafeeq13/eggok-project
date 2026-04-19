@@ -655,6 +655,7 @@ const css = `
 
   /* ══ SMALL ≤ 480px ══ */
   @media (max-width: 480px) {
+  .item-modal-box {min-height: 60vh;max-width: 80vh;}
     .sidebar { width: 220px; }
     .pop-card { width: 148px; }
     .grid-card-img { width: 140px; height: 140px; }
