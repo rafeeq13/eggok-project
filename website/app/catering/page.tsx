@@ -291,6 +291,8 @@ export default function CateringPage() {
           .footer-brand  { grid-column: 1 / -1; }
         }
         @media (max-width: 768px) {
+        h2{font-size: 22px !important;}
+        #contact{padding: 40px 0px !important;}
           .packages-grid { grid-template-columns: 1fr; }
           .form-row-2    { grid-template-columns: 1fr; }
           .form-wrap     { padding: 24px 18px; }

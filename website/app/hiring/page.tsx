@@ -283,6 +283,9 @@ export default function HiringPage() {
           .footer-brand { grid-column: 1 / -1; }
         }
         @media (max-width: 768px) {
+        h1{font-size: 26px !important;}
+        h2{font-size: 22px !important;}
+        #positions,#hiring-hero{padding: 40px 0px !important;}
           .jobs-grid { grid-template-columns: 1fr; gap: 36px; }
           .apply-form-wrap { position: static !important; top: unset !important; }
           .footer-grid { grid-template-columns: 1fr; gap: 28px; }

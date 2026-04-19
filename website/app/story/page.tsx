@@ -214,6 +214,8 @@ export default function StoryPage() {
           .footer-brand { grid-column: 1 / -1; }
         }
         @media (max-width: 768px) {
+        h1{font-size: 26px !important;}
+        h2{font-size: 22px !important;}
           .section-pad { padding: 64px 0 !important; }
           .story-grid { grid-template-columns: 1fr; gap: 36px; }
           .story-img-side { order: -1; }

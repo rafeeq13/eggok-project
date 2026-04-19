@@ -301,6 +301,9 @@ export default function ContactPage() {
         }
 
         @media (max-width: 768px) {
+        h1{font-size: 26px !important;}
+        h2{font-size: 22px !important;}
+        
           .container     { padding: 0 18px; }
           .contact-hero  { padding: 80px 0 56px; }
           .contact-main  { padding: 56px 0; }

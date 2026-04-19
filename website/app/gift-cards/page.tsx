@@ -250,6 +250,9 @@ export default function GiftCardsPage() {
           .footer-brand { grid-column: 1 / -1; }
         }
         @media (max-width: 768px) {
+        h1{font-size: 26px !important;}
+        h2{font-size: 22px !important;}
+        #giftcards-hero,#buy{padding: 40px 0px !important;}
           .giftcard-grid { grid-template-columns: 1fr; gap: 36px; }
           .footer-grid   { grid-template-columns: 1fr; gap: 28px; }
           .footer-brand  { grid-column: unset; }

@@ -867,6 +867,7 @@ export default function HomePage() {
         /* ═══ RESPONSIVE ═══ */
         @media (max-width: 1024px) {
           .hero-section { min-height: 60vh; padding-bottom: 48px; padding-top: 90px; }
+          .order-ahead-hero { max-height: 50vh !important; min-height:40vh !important; flex-direction: column;}
           
           .fav-card { min-width: calc(33.33% - 14px); max-width: calc(33.33% - 14px); }
           .review-card { min-width: calc(50% - 8px); max-width: calc(50% - 8px); }
@@ -878,7 +879,6 @@ export default function HomePage() {
           .order-card-box { margin: 40px auto 40px 32px; }
      
         @media (max-width: 900px) {
-
            .section-featured,
         .section-quality,
         .section-menu,
@@ -902,14 +902,15 @@ export default function HomePage() {
           .order-card-box { margin: 40px auto; max-width: 92%; }
         }
         @media (max-width: 768px) {
+        .order-ahead-hero { max-height: 50vh !important; min-height:70vh !important; flex-direction: column;}
+
         .fav-arrow-left { left: -18px; }
         .fav-arrow-right { right: -18px; }
         .fav-arrow{width: 25px; height: 25px;}
         .fav-img-wrap{height: 140px;}
         // .sec-heading{font-size: 20px !important;}
           // .order-ahead-heading{font-size:20px !important;}
-        .order-ahead-hero { max-height: 80vh !important; flex-direction: column;
-          min-height: 80vh !important;}
+    
            .location-hours-row-item { display: flex; gap: 4px; }
         .container { padding: 0 5px; }
           .hero-section { min-height: 70vh; padding: 80px 0 56px; }
