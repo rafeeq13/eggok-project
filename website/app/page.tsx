@@ -959,6 +959,7 @@ export default function HomePage() {
           .order-card-box { margin: 10px; max-width: 100%; padding: 32px 15px; }
         }
         @media (max-width: 500px) {
+        .location-hours-row{display: none;}
         .sec-heading{display: flex; justify-content: left;}
         h3{font-size: 22px !important;}
         h2{font-size: 22px !important;}
