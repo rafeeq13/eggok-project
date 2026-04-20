@@ -298,7 +298,7 @@ export default function StoryPage() {
             
               <div id="origin-cta" className="cta-group">
                 <Link href="/order" className="btn-yellow">
-                  Taste the Story <ArrowRight size={15} aria-hidden="true" />
+                  Tell the Story <ArrowRight size={15} aria-hidden="true" />
                 </Link>
               </div>
             </div>
@@ -433,7 +433,7 @@ export default function StoryPage() {
 
             {/* Quick links */}
             <nav id="footer-nav" aria-label="Quick links">
-              <p id="footer-nav-heading" style={{ fontSize: '18px', fontFamily: "'Playfair Display', Georgia, serif", fontWeight: '700', color: '#1A1A1A', letterSpacing: '2px', textTransform: 'uppercase', marginBottom: '20px' }}>Quick Links</p>
+              <p id="footer-nav-heading" style={{ fontSize: '18px', fontFamily: "'Playfair Display', Georgia, serif", fontWeight: '700', color: '#1A1A1A', letterSpacing: '2px', marginBottom: '20px' }}>Quick Links</p>
               {[
                 { label: 'Home',         href: '/'           },
                 { label: 'Order Online', href: '/order'      },
@@ -448,7 +448,7 @@ export default function StoryPage() {
 
             {/* Hours */}
             <div id="footer-hours">
-              <p id="footer-hours-heading" style={{ fontSize: '18px', fontFamily: "'Playfair Display', Georgia, serif", fontWeight: '700', color: '#1A1A1A', letterSpacing: '2px', textTransform: 'uppercase', marginBottom: '20px' }}>Hours</p>
+              <p id="footer-hours-heading" style={{ fontSize: '18px', fontFamily: "'Playfair Display', Georgia, serif", fontWeight: '700', color: '#1A1A1A', letterSpacing: '2px',  marginBottom: '20px' }}>Hours</p>
               <div id="footer-hours-list" style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
                 {[
                   { day: 'Monday',  hours: '8:00 AM – 10:00 PM' },

@@ -88,7 +88,7 @@ export default function ContactPage() {
 
         /* ── Layout ── */
         .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
-        .bebas { font-family: var(--font-head); letter-spacing: -0.5px; }
+        // .bebas { font-family: var(--font-head); letter-spacing: -0.5px; }
 
         /* ── Buttons ── */
         .btn-yellow {
@@ -299,6 +299,7 @@ export default function ContactPage() {
           .footer-grid  { grid-template-columns: 1fr 1fr; gap: 32px; }
           .footer-brand { grid-column: 1 / -1; }
         }
+          #contact-info-heading{font-family: var(--font-head)}
 
         @media (max-width: 768px) {
         h1{font-size: 26px !important;}
@@ -368,7 +369,7 @@ export default function ContactPage() {
             We&apos;d Love to Hear From You
           </h1>
           <p id="hero-subtitle" style={{ fontSize: '16px', color: '#4D4D4D', lineHeight: '1.8', maxWidth: '500px', margin: '0 auto' }}>
-            Questions, feedback, catering inquiries, or just want to say hi — we are here for it.
+            Questions, feedback, catering inquiries, or just want to say hi we are here for it.
           </p>
         </div>
       </section>
@@ -386,8 +387,8 @@ export default function ContactPage() {
               {/* Section header */}
               <div id="contact-info-header" style={{ marginBottom: '28px' }}>
                 <span className="sec-label">Contact Info</span>
-                <h2 id="contact-info-heading" className="bebas" style={{ fontSize: '28px', fontWeight: 700, color: '#1A1A1A', lineHeight: '1.2' }}>
-                  Reach <span style={{ color: '#1A1A1A' }}>Us Anytime</span>
+                <h2 id="contact-info-heading" className="bebas" style={{ fontSize: '24px', fontWeight: 700, color: '#1A1A1A', lineHeight: '1.2' }}>
+                  Reach Us Anytime
                 </h2>
               </div>
 
@@ -570,7 +571,7 @@ export default function ContactPage() {
 
                     {/* Submit */}
                     <button id="form-submit-btn" type="submit" className="form-submit-btn" disabled={submitting} style={submitting ? { opacity: 0.6, cursor: 'not-allowed' } : {}}>
-                      {submitting ? 'Sending...' : 'Send Message'} {!submitting && <ArrowRight size={16} aria-hidden="true" />}
+                      {submitting ? 'Sending...' : 'Send Us Message'} {!submitting && <ArrowRight size={16} aria-hidden="true" />}
                     </button>
 
                   </form>
@@ -626,7 +627,7 @@ export default function ContactPage() {
 
             {/* Quick links */}
             <nav id="footer-nav" aria-label="Quick links">
-              <p id="footer-nav-heading" style={{ fontSize: '18px', fontFamily: "'Playfair Display', Georgia, serif", fontWeight: '700', color: '#1A1A1A', letterSpacing: '2px', textTransform: 'uppercase', marginBottom: '20px' }}>Quick Links</p>
+              <p id="footer-nav-heading" style={{ fontSize: '18px', fontFamily: "'Playfair Display', Georgia, serif", fontWeight: '700', color: '#1A1A1A', letterSpacing: '2px', marginBottom: '20px' }}>Quick Links</p>
               {[
                 { label: 'Home',         href: '/'          },
                 { label: 'Order Online', href: '/order'     },
@@ -641,7 +642,7 @@ export default function ContactPage() {
 
             {/* Hours */}
             <div id="footer-hours">
-              <p id="footer-hours-heading" style={{ fontSize: '18px', fontFamily: "'Playfair Display', Georgia, serif", fontWeight: '700', color: '#1A1A1A', letterSpacing: '2px', textTransform: 'uppercase', marginBottom: '20px' }}>Hours</p>
+              <p id="footer-hours-heading" style={{ fontSize: '18px', fontFamily: "'Playfair Display', Georgia, serif", fontWeight: '700', color: '#1A1A1A', letterSpacing: '2px', marginBottom: '20px' }}>Hours</p>
               <div id="footer-hours-list" style={{ display: 'flex', flexDirection: 'column', gap: '5px' }}>
                 {[
                   { day: 'Monday',    hours: '8:00 AM – 10:00 PM' },

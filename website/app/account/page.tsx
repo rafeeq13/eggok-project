@@ -676,7 +676,7 @@ export default function AccountPage() {
 
           <p style={{ textAlign: 'center', marginTop: '20px', fontSize: '16px', color: '#1A1A1A' }}>
             Continue as{' '}
-            <Link href="/order" style={{ color: '#333333', fontWeight: '600' }}>Guest</Link>
+            <Link href="/order" style={{ color: '#000', fontWeight: '600', textDecoration: 'underline' ,fontSize: '18px'}}>Guest</Link>
             {' '}— no account needed
           </p>
         </div>

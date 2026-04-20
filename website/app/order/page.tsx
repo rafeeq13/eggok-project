@@ -180,8 +180,8 @@ const css = `
   .page-header { margin-bottom: 32px; }
   .page-title {
     font-family: var(--font-head);
-    font-size: 28px;
-    font-weight: 500;
+    font-size: 22px;
+    font-weight: 600;
     letter-spacing: 0.5px; line-height: 1.2;
     color: var(--t1); margin: 0 0 12px;
   }

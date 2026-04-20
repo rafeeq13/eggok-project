@@ -357,7 +357,7 @@ export default function HomePage() {
           min-height: 90vh; display: flex; align-items: flex-end; justify-content: flex-start;
           text-align: left; position: relative; overflow: hidden;
           padding-bottom: 40px;
-          background-image: url('/main-menu/Hero-Banner.jpeg');
+          background-image: url('/main-menu/Hero-Banner.png');
           background-size: cover; background-position: center; background-repeat: no-repeat;
         }
         .hero-tagline {
@@ -584,6 +584,7 @@ export default function HomePage() {
           letter-spacing: -0.5px; line-height: 1.2;
           color: #1A1A1A; margin-bottom: 14px;
         }
+        .faq-question-text{font-family: var(--font-heading);}
         .order-card-box p { color: #4D4D4D; font-size: 16px; line-height: 1.75; margin-bottom: 24px; }
         .order-btn {
           display: inline-flex; align-items: center; gap: 8px;
@@ -695,8 +696,8 @@ export default function HomePage() {
         /* ── FAQ ── */
         .faq-item { border-bottom: 1px solid #E5E5E5; }
         .faq-q {
-          width: 100%; background: none; border: none; color: #4D4D4D;
-          font-size: 16px; font-weight: 600; cursor: pointer;
+          width: 100%; background: none; border: none; color: #0D0D0D;
+          font-size: 20px;  cursor: pointer;
           display: flex; justify-content: space-between; align-items: center;
           padding: 22px 0; gap: 16px; text-align: left;
           font-family: inherit; transition: color 0.15s;
@@ -873,7 +874,7 @@ export default function HomePage() {
         .footer-hours-heading {
           font-size: 18px; font-family: 'Playfair Display', Georgia, serif;
           font-weight: 700; color: #1A1A1A; letter-spacing: 2px;
-          text-transform: uppercase; margin-bottom: 20px;
+         margin-bottom: 20px;
         }
         .footer-hours-list { display: flex; flex-direction: column; gap: 5px; }
         .footer-hours-row { display: flex; gap: 14px; }
@@ -913,6 +914,7 @@ export default function HomePage() {
 
         /* ═══ RESPONSIVE ═══ */
         @media (max-width: 1024px) {
+        .faq-q {font-size: 18px;}
           .hero-section { min-height: 60vh; padding-bottom: 48px; padding-top: 90px; }
           .order-ahead-hero { max-height: 50vh !important; min-height:40vh !important; flex-direction: column;}
           
@@ -926,6 +928,7 @@ export default function HomePage() {
           .order-card-box { margin: 40px auto 40px 32px; }
      
         @media (max-width: 900px) {
+        .faq-q {font-size: 18px;}
            .section-featured,
         .section-quality,
         .section-menu,
@@ -949,6 +952,7 @@ export default function HomePage() {
           .order-card-box { margin: 40px auto; max-width: 92%; }
         }
         @media (max-width: 768px) {
+        .faq-q {font-size: 16px;}
         .order-ahead-hero { max-height: 50vh !important; min-height:70vh !important; flex-direction: column;}
 .order-ahead-hero-rewards { max-height: 50vh !important; min-height:70vh !important; flex-direction: column;}
         .fav-arrow-left { left: -10px; }
