@@ -635,6 +635,8 @@ export default function ContactPage() {
                 { label: 'Our Story',    href: '/story'     },
                 { label: 'Gift Cards',   href: '/gift-cards'},
                 { label: 'Contact',      href: '/contact'   },
+                { label: 'Terms of Service', href: '/terms'    },
+                { label: 'Privacy Policy',   href: '/privacy'  },
               ].map(l => (
                 <Link key={l.href} href={l.href} className="footer-link">{l.label}</Link>
               ))}

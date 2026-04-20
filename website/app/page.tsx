@@ -1543,12 +1543,14 @@ export default function HomePage() {
             <nav id="footer-nav" className="footer-nav" aria-label="Quick links">
               <p className="footer-nav-heading">Quick Links</p>
               {[
-                { label: 'Home',         href: '/'           },
-                { label: 'Order Online', href: '/order'      },
-                { label: 'Catering',     href: '/catering'   },
-                { label: 'Our Story',    href: '/story'      },
-                { label: 'Gift Cards',   href: '/gift-cards' },
-                { label: 'Contact',      href: '/contact'    },
+                { label: 'Home',             href: '/'           },
+                { label: 'Order Online',     href: '/order'      },
+                { label: 'Catering',         href: '/catering'   },
+                { label: 'Our Story',        href: '/story'      },
+                { label: 'Gift Cards',       href: '/gift-cards' },
+                { label: 'Contact',          href: '/contact'    },
+                { label: 'Terms of Service', href: '/terms'      },
+                { label: 'Privacy Policy',   href: '/privacy'    },
               ].map(l => (
                 <Link key={l.href} href={l.href} className="footer-link">{l.label}</Link>
               ))}

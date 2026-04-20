@@ -860,7 +860,11 @@ export default function AccountPage() {
                 {agreeTerms && <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#E5B800" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12" /></svg>}
               </div>
               <p style={{ fontSize: '14px', color: '#1A1A1A', lineHeight: '1.5', margin: 0 }}>
-                I agree to the <span style={{ color: '#333333', fontWeight: '600' }}>Terms of Service</span> and <span style={{ color: '#333333', fontWeight: '600' }}>Privacy Policy</span>. I consent to receiving order updates via email.
+                I agree to the{' '}
+                <Link href="/terms" onClick={e => e.stopPropagation()} style={{ color: '#1A1A1A', fontWeight: 600, textDecoration: 'underline' }}>Terms of Service</Link>
+                {' '}and{' '}
+                <Link href="/privacy" onClick={e => e.stopPropagation()} style={{ color: '#1A1A1A', fontWeight: 600, textDecoration: 'underline' }}>Privacy Policy</Link>.
+                I consent to receiving order updates via email.
               </p>
             </div>
 

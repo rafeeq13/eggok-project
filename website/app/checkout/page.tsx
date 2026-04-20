@@ -753,7 +753,10 @@ function CheckoutInner() {
               </p>
             )}
             <p style={{ fontSize: '14px', color: '#777777', textAlign: 'center', lineHeight: '1.6' }}>
-              By placing your order, you agree to our Terms of Service and Privacy Policy.
+              By placing your order, you agree to our{' '}
+              <Link href="/terms" style={{ color: '#1A1A1A', fontWeight: 600, textDecoration: 'underline' }}>Terms of Service</Link>
+              {' '}and{' '}
+              <Link href="/privacy" style={{ color: '#1A1A1A', fontWeight: 600, textDecoration: 'underline' }}>Privacy Policy</Link>.
             </p>
           </div>
 
