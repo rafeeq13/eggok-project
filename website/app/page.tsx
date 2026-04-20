@@ -357,7 +357,7 @@ export default function HomePage() {
           min-height: 90vh; display: flex; align-items: flex-end; justify-content: flex-start;
           text-align: left; position: relative; overflow: hidden;
           padding-bottom: 40px;
-          background-image: url('/main-menu/Hero-Banner.png');
+          background-image: url('/main-menu/Hero-Banner.jpeg');
           background-size: cover; background-position: center; background-repeat: no-repeat;
         }
         .hero-tagline {
