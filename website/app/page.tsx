@@ -38,7 +38,7 @@ const MENU_TILES = [
 
 
 
-    { label: 'Smoothies',            img: '/main-menu/Our-Gallery/10.jpg',        items: '10 items' },
+  { label: 'Smoothies',            img: '/main-menu/Our-Gallery/10.jpg',        items: '10 items' },
   { label: 'Omelettes',            img: '/main-menu/Our-Gallery/11.jpg',       items: '11 items' },
   { label: 'Burritos',             img: '/main-menu/Our-Gallery/12.jpg',        items: '12 items' },
 ];
@@ -1161,7 +1161,7 @@ export default function HomePage() {
         <div className="container story-container">
           <div className="about-grid story-grid">
             <div className="about-img story-img">
-              <Image src="/main-menu/Main-Page/Born-in-the-Heart-of-West-Philly.webp" alt="Inside Eggs Ok" width={600} height={460}
+              <Image src="/main-menu/Main-Page/Born-in-the-Heart-of-West-Philly.jpg" alt="Inside Eggs Ok" width={600} height={460}
                 className="about-img-el" />
             </div>
             <div className="about-content story-content">

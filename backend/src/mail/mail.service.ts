@@ -109,34 +109,63 @@ export class MailService {
 
     async sendOwnerNotification(order: any) {
         const settings = await this.getResolvedMailSettings();
-        if (!this.isConfigured(settings) || !settings.enabled) return false;
+        if (!settings.enabled) {
+            console.error('[OWNER-EMAIL] Skipped: mail is disabled in Admin → Mail Settings.');
+            return false;
+        }
+        if (!this.isConfigured(settings)) {
+            const missing = ['host', 'port', 'user', 'password', 'fromEmail', 'ownerEmail']
+                .filter(k => !settings[k as keyof typeof settings]);
+            console.error(`[OWNER-EMAIL] Skipped: mail not fully configured. Missing: ${missing.join(', ')}`);
+            return false;
+        }
+        const ownerTo = String(settings.ownerEmail || '').trim();
+        if (!ownerTo) {
+            console.error('[OWNER-EMAIL] Skipped: ownerEmail is empty in mail settings.');
+            return false;
+        }
+
+        console.log(`[OWNER-EMAIL] Preparing order #${order.orderNumber} for owner: ${ownerTo}`);
 
         const items = order.items || [];
-        const itemsHtml = this.renderOwnerOrderItems(items);
+        let itemsHtml: string;
+        try {
+            itemsHtml = this.renderOwnerOrderItems(items);
+        } catch (err: any) {
+            console.error(`[OWNER-EMAIL] Failed to render items for order #${order.orderNumber}:`, err?.message || err);
+            throw err;
+        }
         const itemCount = items.reduce((sum: number, i: any) => sum + (Number(i.quantity) || 1), 0);
 
-        const html = await this.renderTemplate('owner_notification', {
-            orderNumber: this.safeText(order.orderNumber),
-            customerName: this.safeText(order.customerName),
-            customerEmail: this.safeText(order.customerEmail),
-            customerPhone: this.safeText(order.customerPhone),
-            itemsHtml,
-            itemCount,
-            subtotal: Number(order.subtotal || 0).toFixed(2),
-            tax: Number(order.tax || 0).toFixed(2),
-            tip: Number(order.tip || 0).toFixed(2),
-            deliveryFee: Number(order.deliveryFee || 0).toFixed(2),
-            total: Number(order.total || 0).toFixed(2),
-            orderType: this.safeText(order.orderType),
-            deliveryAddress: this.safeText(order.deliveryAddress || ''),
-            deliveryApt: this.safeText(order.deliveryApt || ''),
-            deliveryInstructions: this.safeText(order.deliveryInstructions || ''),
-        });
+        let html: string;
+        try {
+            html = await this.renderTemplate('owner_notification', {
+                orderNumber: this.safeText(order.orderNumber),
+                customerName: this.safeText(order.customerName),
+                customerEmail: this.safeText(order.customerEmail),
+                customerPhone: this.safeText(order.customerPhone),
+                itemsHtml,
+                itemCount,
+                subtotal: Number(order.subtotal || 0).toFixed(2),
+                tax: Number(order.tax || 0).toFixed(2),
+                tip: Number(order.tip || 0).toFixed(2),
+                deliveryFee: Number(order.deliveryFee || 0).toFixed(2),
+                total: Number(order.total || 0).toFixed(2),
+                orderType: this.safeText(order.orderType),
+                deliveryAddress: this.safeText(order.deliveryAddress || ''),
+                deliveryApt: this.safeText(order.deliveryApt || ''),
+                deliveryInstructions: this.safeText(order.deliveryInstructions || ''),
+            }) as string;
+        } catch (err: any) {
+            console.error(`[OWNER-EMAIL] Template render failed for owner_notification.ejs:`, err?.message || err);
+            throw err;
+        }
 
         await this.sendMail(
-            { to: settings.ownerEmail, subject: `New Order Received - #${order.orderNumber}`, html, text: `New order ${order.orderNumber} from ${order.customerName}.` },
+            { to: ownerTo, subject: `New Order Received - #${order.orderNumber}`, html, text: `New order ${order.orderNumber} from ${order.customerName}.` },
             settings,
         );
+        console.log(`[OWNER-EMAIL] Sent successfully to ${ownerTo} for order #${order.orderNumber}`);
         return true;
     }
 
@@ -983,7 +1012,7 @@ export class MailService {
       .email-wrapper { padding:16px 8px 30px !important; }
       .email-container { width:100% !important; max-width:100% !important; border-radius:16px !important; }
       .header-cell { padding:24px 16px 16px !important; }
-      .header-logo { width:140px !important; height:56px !important; }
+      .header-logo { width:120px !important; height:120px !important; }
       .eyebrow-banner { font-size:10px !important; padding:8px 12px !important; letter-spacing:1px !important; }
       .hero-outer { padding:20px 14px 4px !important; }
       .hero-inner { padding:24px 16px 20px !important; }
@@ -1024,7 +1053,7 @@ ${preheader}
 
   <!-- HEADER -->
   <tr><td class="header-cell" style="background:#FFFFFF;padding:32px 24px 20px;text-align:center;border-bottom:1px solid #E5E5E5;">
-    <img src="https://eggsokpa.com/webicons/logo.png" class="header-logo" width="180" height="72" alt="Eggs Ok" style="display:block;margin:0 auto 14px;border:0;">
+    <img src="https://eggsokpa.com/webicons/logo.png" class="header-logo" width="150" height="150" alt="Eggs Ok" style="display:block;margin:0 auto 14px;border:0;">
   </td></tr>
 
   <!-- EYEBROW STRIPE -->
