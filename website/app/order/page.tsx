@@ -950,7 +950,6 @@ function OrderContent() {
     if (!selectedItem || !canAddToCart()) return;
     addToCart(selectedItem, quantity, selectedModifiers, specialInstructions);
     setSelectedItem(null);
-    setShowCart(true);
   };
 
   const scrollToCategory = (catId: number) => {
