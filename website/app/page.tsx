@@ -882,6 +882,39 @@ export default function HomePage() {
         .footer-hours-time { font-size: 16px; color: #666666; }
         .footer-copyright { font-size: 16px; color: #888888; }
 
+        /* ── Sticky "Order online" CTA (mobile + tablet only) ── */
+        .sticky-order-cta {
+          display: none;
+          position: fixed;
+          left: 12px; right: 12px;
+          bottom: 14px;
+          z-index: 150;
+          padding: 14px 20px;
+          background: #E3BF22;
+          color: #000;
+          font-family: var(--font-body);
+          font-size: 16px;
+          font-weight: 500;
+          text-align: center;
+          text-decoration: none;
+          border-radius: 14px;
+          border: 2px solid transparent;
+          box-shadow: 0 10px 28px rgba(0,0,0,0.18), 0 2px 6px rgba(0,0,0,0.08);
+          opacity: 0;
+          transform: translateY(16px);
+          transition: opacity 0.25s ease, transform 0.25s ease;
+          pointer-events: none;
+        }
+        .sticky-order-cta.visible {
+          opacity: 1;
+          transform: translateY(0);
+          pointer-events: auto;
+        }
+        .sticky-order-cta:hover { background: #D4B01E; color: #000; }
+        @media (max-width: 1024px) {
+          .sticky-order-cta { display: block; }
+        }
+
         /* ── Home modal internals ── */
         .home-modal-img { width: 100%; height: 100%; object-fit: cover; }
         .home-modal-img-placeholder { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #F5F5E8, #F8F9FA); }
@@ -1676,6 +1709,15 @@ export default function HomePage() {
           </div>
         </div>
       )}
+
+      {/* Sticky Order CTA (mobile + tablet — always visible) */}
+      <Link
+        href="/order"
+        className={`sticky-order-cta${selectedFav ? '' : ' visible'}`}
+        aria-hidden={!!selectedFav}
+      >
+        Order online
+      </Link>
     </main>
   );
 }

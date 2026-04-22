@@ -697,6 +697,42 @@ const css = `
     .item-modal-img-wrap { height: 220px; }
   }
 
+  /* ══ STICKY "VIEW CART" CTA (mobile + tablet only) ══ */
+  .sticky-view-cart {
+    position: fixed;
+    left: 12px; right: 12px;
+    bottom: 14px;
+    z-index: 150;
+    padding: 12px 18px;
+    background: var(--y);
+    color: #000;
+    font-family: var(--font-body);
+    font-size: 16px;
+    font-weight: 500;
+    text-align: center;
+    border: 2px solid transparent;
+    border-radius: 14px;
+    cursor: pointer;
+    box-shadow: 0 10px 28px rgba(0,0,0,0.18), 0 2px 6px rgba(0,0,0,0.08);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  .sticky-view-cart:hover { transform: translateY(-1px); }
+  .sticky-view-cart-label { display: flex; align-items: center; gap: 8px; }
+  .sticky-view-cart-badge {
+    background: #000; color: var(--y);
+    border-radius: 999px; padding: 2px 10px;
+    font-size: 13px; font-weight: 800;
+    min-width: 24px; text-align: center;
+  }
+  .sticky-view-cart-total { font-weight: 800; }
+  @media (min-width: 1025px) {
+    .sticky-view-cart { display: none !important; }
+  }
+
   /* ══ REDUCED MOTION ══ */
   @media (prefers-reduced-motion: reduce) {
     .pop-card-inner, .grid-card, .cart-checkout-btn, .item-add-btn { transition: none; }
@@ -1340,6 +1376,26 @@ function OrderContent() {
           </div>
         </main>
       </div>
+
+      {/* Sticky "View Cart" CTA (mobile + tablet, only when cart has items) */}
+      {mounted && cartCount > 0 && !showCart && !selectedItem && (
+        <button
+          type="button"
+          className="sticky-view-cart"
+          onClick={() => setShowCart(true)}
+          aria-label={`View cart, ${cartCount} ${cartCount === 1 ? 'item' : 'items'}`}
+        >
+          <span className="sticky-view-cart-label">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <circle cx="9" cy="21" r="1" /><circle cx="20" cy="21" r="1" />
+              <path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 001.95-1.57l1.65-7.43H6" />
+            </svg>
+            View cart  .  {cartCount} {cartCount === 1 ? 'item' : 'items'}
+            {/* <span className="sticky-view-cart-badge"></span> */}
+          </span>
+          {/* <span className="sticky-view-cart-total">${cartTotal.toFixed(2)}</span> */}
+        </button>
+      )}
 
       {/* ══════════════════════════════════════════
           CART PANEL
