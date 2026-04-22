@@ -647,13 +647,13 @@ export default function ContactPage() {
               <p id="footer-hours-heading" style={{ fontSize: '18px', fontFamily: "'Playfair Display', Georgia, serif", fontWeight: '700', color: '#1A1A1A', letterSpacing: '2px', marginBottom: '20px' }}>Hours</p>
               <div id="footer-hours-list" style={{ display: 'flex', flexDirection: 'column', gap: '5px' }}>
                 {[
-                  { day: 'Monday',    hours: '8:00 AM – 10:00 PM' },
-                  { day: 'Tuesday',   hours: '8:00 AM – 10:00 PM' },
-                  { day: 'Wednesday', hours: '8:00 AM – 10:00 PM' },
-                  { day: 'Thursday',  hours: '8:00 AM – 10:00 PM' },
-                  { day: 'Friday',    hours: '8:00 AM – 10:00 PM' },
-                  { day: 'Saturday',  hours: '9:00 AM – 11:00 PM' },
-                  { day: 'Sunday',    hours: '9:00 AM – 9:00 PM'  },
+                  { day: 'Monday',    hours: '7:00 AM – 3:00 PM' },
+                  { day: 'Tuesday',   hours: '7:00 AM – 3:00 PM' },
+                  { day: 'Wednesday', hours: '7:00 AM – 3:00 PM' },
+                  { day: 'Thursday',  hours: '7:00 AM – 3:00 PM' },
+                  { day: 'Friday',    hours: '7:00 AM – 3:00 PM' },
+                  { day: 'Saturday',  hours: '7:00 AM – 3:00 PM' },
+                  { day: 'Sunday',    hours: '7:00 AM – 3:00 PM'  },
                 ].map((h, i) => (
                   <div key={i} id={`footer-hours-row-${i}`} className="footer-hours-row">
                     <span className="footer-hours-day">{h.day}</span>

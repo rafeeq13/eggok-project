@@ -71,7 +71,7 @@ const css = `
     }
 
     .tip-grid {
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(5, 1fr);
     }
 
     .checkout-wrap {
@@ -81,6 +81,10 @@ const css = `
 
   /* â•â•â•â• SMALL â‰¤ 480px â•â•â•â• */
   @media (max-width: 480px) {
+
+  // .tip-grid{p}
+  // .tip-button{width:20%;}
+  .tip-amount {display:none;}
     .checkout-wrap {
       padding: 16px 12px;
     }
@@ -93,9 +97,9 @@ const css = `
       grid-template-columns: 1fr;
     }
 
-    .tip-grid {
-      grid-template-columns: repeat(3, 1fr);
-    }
+    // .tip-grid {
+    //   grid-template-columns: repeat(3, 1fr);
+    // }
   }
 
   /* ══ MODALS ══ */
@@ -566,7 +570,7 @@ function CheckoutInner() {
               <p style={sectionTitle}>{orderType === 'pickup' ? 'Pickup details' : 'Delivery details'}</p>
 
               <div style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '13px 16px', background: '#F8F9FA', borderRadius: '10px', border: '1px solid #D0D0D0', marginBottom: '10px' }}>
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0000" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#000" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
                   <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" /><circle cx="12" cy="10" r="3" />
                 </svg>
                 <span style={{ fontSize: '16px', color: '#1A1A1A', flex: 1, wordBreak: 'break-word' }}>
@@ -576,7 +580,7 @@ function CheckoutInner() {
               </div>
 
               <div style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '13px 16px', background: '#F8F9FA', borderRadius: '10px', border: '1px solid #D0D0D0', marginBottom: orderType === 'delivery' ? '10px' : '0' }}>
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0000" strokeWidth="2" strokeLinecap="round" style={{ flexShrink: 0 }}>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#000" strokeWidth="2" strokeLinecap="round" style={{ flexShrink: 0 }}>
                   <circle cx="12" cy="12" r="10" /><polyline points="12 6 12 12 16 14" />
                 </svg>
                 <span style={{ fontSize: '16px', color: '#1A1A1A', flex: 1 }}>{getScheduleLabel()}</span>
@@ -605,18 +609,18 @@ function CheckoutInner() {
               <p style={sectionTitle}>Tip</p>
               <div className="tip-grid">
                 {[10, 15, 20, 25].map(t => (
-                  <button key={t} onClick={() => selectPresetTip(t)} style={{
+                  <button key={t} onClick={() => selectPresetTip(t)} className='tip-button' style={{
                     padding: '12px 8px', borderRadius: '10px',
                     background: isPreset(t) ? '#ffffff' : '#F8F9FA',
                     border: `1.5px solid ${isPreset(t) ? '#1A1A1A' : '#D0D0D0'}`,
                     color: isPreset(t) ? '#E5B800' : '#1A1A1A',
                     cursor: 'pointer', transition: 'all 0.15s', textAlign: 'center',
                   }}>
-                    <p style={{ fontSize: '16px', fontWeight: '500', margin: 0 ,color:'#1A1A1A',}}>${((subtotal * t) / 100).toFixed(2)}</p>
-                    <p style={{ fontSize: '12px', margin: '2px 0 0', opacity: 0.7,color:'#1A1A1A', }}>{t}%</p>
+                    <p className='tip-amount' style={{ fontSize: '16px', fontWeight: '500', margin: 0 ,color:'#1A1A1A',}}>${((subtotal * t) / 100).toFixed(2)}</p>
+                    <p className='tip-percentage' style={{ fontSize: '12px', margin: '2px 0 0', opacity: 0.7,color:'#1A1A1A', }}>{t}%</p>
                   </button>
                 ))}
-                <button onClick={() => setShowCustomTipModal(true)} style={{
+                <button className='tip-button' onClick={() => setShowCustomTipModal(true)} style={{
                   padding: '12px 8px', borderRadius: '10px',
                   background: isCustomActive ? '#ffffff' : '#F8F9FA',
                   border: `1.5px solid ${isCustomActive ? '#1A1A1A' : '#D0D0D0'}`,
@@ -625,8 +629,8 @@ function CheckoutInner() {
                 }}>
                   {isCustomActive && customTipAmount ? (
                     <>
-                      <p style={{ fontSize: '16px', fontWeight: '500', margin: 0 }}>${parseFloat(customTipAmount).toFixed(2)}</p>
-                      <p style={{ fontSize: '12px', margin: '2px 0 0', opacity: 0.7 }}>Custom</p>
+                      <p className='tip-amount' style={{ fontSize: '16px', fontWeight: '500', margin: 0 }}>${parseFloat(customTipAmount).toFixed(2)}</p>
+                      <p className='tip-percentage' style={{ fontSize: '12px', margin: '2px 0 0', opacity: 0.7 }}>Custom</p>
                     </>
                   ) : (
                     <p style={{ fontSize: '14px', fontWeight: '500', margin: 0 }}>Custom</p>
@@ -1056,8 +1060,8 @@ function CheckoutInner() {
                     <div className="co-schedule-dates-grid">
                       {visibleDays.map(d => (
                         <button key={d.value} className={`co-schedule-date-btn ${selectedVal === d.value ? 'active' : 'inactive'}`} onClick={() => setScheduleDate(d.value)}>
-                          <p style={{ fontSize: '16px', fontWeight: '500', margin: 0, color: selectedVal === d.value ? '#ffffff' : '#1A1A1A' }}>{d.label}</p>
-                          <p style={{ fontSize: '16px', color: '#575656ff', marginLeft: '20px' }}>{d.sub}</p>
+                          <p style={{ fontSize: '14px', fontWeight: '500', margin: 0, color: selectedVal === d.value ? '#ffffff' : '#1A1A1A' }}>{d.label}</p>
+                          <p style={{ fontSize: '12px', color: '#575656ff'  }}>{d.sub}</p>
                         </button>
                       ))}
                     </div>

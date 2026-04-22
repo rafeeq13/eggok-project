@@ -217,7 +217,7 @@ const css = `
   /* ── Delivery address btn ── */
   .delivery-addr-btn {
     display: flex; align-items: center; gap: 7px;
-    padding: 9px 14px; background: var(--bg4);
+    padding: 9px 5px; background: var(--bg4);
     border: 1px solid var(--border); border-radius: 10px;
     color: #000; font-size: 14px; cursor: pointer;
     font-weight: 500; max-width: 200px;
@@ -228,8 +228,9 @@ const css = `
 
   /* ── Schedule btn ── */
   .schedule-btn {
+  
     display: flex; align-items: center; gap: 6px;
-    padding: 9px 14px; background: transparent;
+    padding: 9px 5px; background: transparent;
     border: 1.5px solid #C0C0C0; border-radius: 999px;
     color: var(--t1); font-size: 16px; cursor: pointer;
     font-weight: 500; white-space: nowrap; flex-shrink: 0;
@@ -286,7 +287,33 @@ const css = `
     display: flex; align-items: center; gap: 4px;
     font-family: var(--font-head); letter-spacing: -0.5px;
   }
+.delivery-schedule-wrapper {
+  
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
 
+.delivery-addr-btn,
+.schedule-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  width:50% ;
+  padding: 10px 5px;
+  border-radius: 20px;
+  background: #f5f5f5;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.address-text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 180px;
+}
   /* ── Menu grid ── */
   .menu-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 25px; }
 
@@ -637,6 +664,12 @@ const css = `
 
   /* ══ TABLET + MOBILE ≤ 1024px (tablet uses mobile layout) ══ */
   @media (max-width: 1024px) {
+  .delivery-schedule-wrapper {width:100% !important}
+  .order-type-toggle{
+  width: 100% !important;
+  }
+  .order-type-btn{width: 100% !important;}
+
   .item-modal-box {min-height: 60vh;max-width: 80vh;}
     .nav-signin { display: none; }
     .sidebar { position: fixed; top: 72px; left: 0; height: calc(100vh - 72px); transform: translateX(-100%); box-shadow: 6px 0 32px rgba(0,0,0,0.1); z-index: 149; width: 250px; }
@@ -712,7 +745,7 @@ function OrderContent() {
     try {
       const tz = new Intl.DateTimeFormat('en-US', { timeZone: storeTimezone || 'America/New_York', timeZoneName: 'short' }).formatToParts(new Date()).find(p => p.type === 'timeZoneName')?.value;
       if (tz) setTzAbbr(tz);
-    } catch {}
+    } catch { }
   }, [storeTimezone]);
 
   // Set default order type based on allowed options
@@ -932,8 +965,8 @@ function OrderContent() {
         {/* Burger — tablet only */}
         <button id="sidebar-burger" className="burger" onClick={() => setSidebarOpen(v => !v)} aria-label="Toggle category menu">
           {sidebarOpen
-            ? <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-            : <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+            ? <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" /></svg>
+            : <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><line x1="3" y1="6" x2="21" y2="6" /><line x1="3" y1="12" x2="21" y2="12" /><line x1="3" y1="18" x2="21" y2="18" /></svg>
           }
         </button>
 
@@ -952,7 +985,7 @@ function OrderContent() {
           <div id="nav-more-wrap" ref={moreMenuRef} className="nav-more-wrap">
             <button id="nav-more-btn" className="nav-more-btn" onClick={() => setShowMoreMenu(!showMoreMenu)}>
               More
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#1A1A1A" strokeWidth="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#1A1A1A" strokeWidth="2.5"><polyline points="6 9 12 15 18 9" /></svg>
             </button>
             {showMoreMenu && (
               <>
@@ -968,7 +1001,7 @@ function OrderContent() {
           {/* Sign In */}
           <Link href="/account" id="nav-signin" className="nav-signin">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" /><circle cx="12" cy="7" r="4" />
             </svg>
             Sign In
           </Link>
@@ -976,8 +1009,8 @@ function OrderContent() {
           {/* Cart */}
           <button id="nav-cart-btn" className="nav-cart-btn" onClick={() => setShowCart(true)} aria-label={`Cart, ${mounted ? cartCount : 0} items`}>
             <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#4D4D4D" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-              <circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/>
-              <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
+              <circle cx="9" cy="21" r="1" /><circle cx="20" cy="21" r="1" />
+              <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
             </svg>
             {mounted && cartCount > 0 && (
               <div id="cart-badge" className="nav-cart-badge" aria-hidden="true">{cartCount}</div>
@@ -995,7 +1028,7 @@ function OrderContent() {
             <div className="mobile-search-input-wrap">
               <svg style={{ position: 'absolute', left: '11px', top: '50%', transform: 'translateY(-50%)', pointerEvents: 'none' }}
                 width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#1A1A1A" strokeWidth="2.2">
-                <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                <circle cx="11" cy="11" r="8" /><line x1="21" y1="21" x2="16.65" y2="16.65" />
               </svg>
               <input
                 id="mobile-search-input"
@@ -1017,13 +1050,13 @@ function OrderContent() {
             {/* Search icon pill */}
             <button id="mobile-search-trigger" className="mobile-search-icon-btn" onClick={() => setShowMobileSearch(true)} aria-label="Search menu">
               <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#999" strokeWidth="2.2">
-                <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                <circle cx="11" cy="11" r="8" /><line x1="21" y1="21" x2="16.65" y2="16.65" />
               </svg>
               Search
             </button>
             {/* <div className="mobile-cat-divider" aria-hidden="true" /> */}
             {categories.map(cat => (
-                cat.name !== "Popular" && (
+              cat.name !== "Popular" && (
 
                 <button
                   key={cat.id}
@@ -1035,8 +1068,8 @@ function OrderContent() {
                 >
                   {cat.name}
 
-              </button>
-               )
+                </button>
+              )
             ))}
           </div>
         )}
@@ -1055,7 +1088,7 @@ function OrderContent() {
           <div id="sidebar-search" className="sidebar-search-wrap">
             <div className="sidebar-search-inner">
               <svg className="sidebar-search-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#666" strokeWidth="2">
-                <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                <circle cx="11" cy="11" r="8" /><line x1="21" y1="21" x2="16.65" y2="16.65" />
               </svg>
               <input
                 id="sidebar-search-input"
@@ -1069,20 +1102,20 @@ function OrderContent() {
           </div>
 
           <div id="sidebar-categories" className="sidebar-menu-wrap">
-            
-           {categories
-  .filter(cat => cat.name !== "Popular")
-  .map(cat => (
-    <button
-      key={cat.id}
-      id={`sidebar-cat-${cat.id}`}
-      className={`sidebar-cat-btn${activeCategory === cat.id ? ' active' : ''}`}
-      onClick={() => scrollToCategory(cat.id)}
-      aria-pressed={activeCategory === cat.id}
-    >
-      <div>{cat.name}</div>
-    </button>
-))}
+
+            {categories
+              .filter(cat => cat.name !== "Popular")
+              .map(cat => (
+                <button
+                  key={cat.id}
+                  id={`sidebar-cat-${cat.id}`}
+                  className={`sidebar-cat-btn${activeCategory === cat.id ? ' active' : ''}`}
+                  onClick={() => scrollToCategory(cat.id)}
+                  aria-pressed={activeCategory === cat.id}
+                >
+                  <div>{cat.name}</div>
+                </button>
+              ))}
 
           </div>
         </aside>
@@ -1099,8 +1132,8 @@ function OrderContent() {
               <div id="order-page-meta" className="page-meta">
                 <div className="page-meta-location">
                   <svg width="13" height="13" viewBox="0 0 24 24" fill="#4D4D4D" aria-hidden="true">
-                    <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/>
-                    <circle cx="12" cy="9" r="2.5" fill="#ffffff"/>
+                    <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z" />
+                    <circle cx="12" cy="9" r="2.5" fill="#ffffff" />
                   </svg>
                   <span style={{ fontSize: '16px', color: '#4D4D4D' }}>{storeAddress}</span>
                 </div>
@@ -1137,21 +1170,49 @@ function OrderContent() {
                     </button>
                   )}
                 </div>
+                <div className="delivery-schedule-wrapper">
 
-                {/* Delivery address */}
-                {mounted && orderType === 'delivery' && (
-                  <button id="delivery-addr-btn" className="delivery-addr-btn" onClick={() => setShowDeliveryModal(true)}>
-                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#1A1A1A" strokeWidth="2" strokeLinecap="round" style={{ flexShrink: 0 }}>
-                      <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>
+                  {/* Delivery address */}
+                  {mounted && orderType === 'delivery' && (
+                    <button
+                      id="delivery-addr-btn"
+                      className="delivery-addr-btn"
+                      onClick={() => setShowDeliveryModal(true)}
+                    >
+                      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#1A1A1A" strokeWidth="2" strokeLinecap="round">
+                        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+                        <polyline points="9 22 9 12 15 12 15 22" />
+                      </svg>
+
+                      <span className="address-text">
+                        {truncateAddress(deliveryAddress)}
+                      </span>
+                    </button>
+                  )}
+
+                  {/* Schedule */}
+                  <button
+                    id="schedule-btn"
+                    className="schedule-btn"
+                    onClick={() => setShowScheduleModal(true)}
+                  >
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#1A1A1A" strokeWidth="2.5">
+                      <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
                     </svg>
-                    <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                      {truncateAddress(deliveryAddress)}
+
+                    <span className="schedule-label">
+                      {mounted ? getScheduleLabel() : 'ASAP (15 min)'}
                     </span>
+
+                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#666" strokeWidth="2.5">
+                      <polyline points="6 9 12 15 18 9" />
+                    </svg>
                   </button>
-                )}
+
+                </div>
 
                 {/* Schedule */}
-                <button id="schedule-btn" className="schedule-btn" onClick={() => setShowScheduleModal(true)}>
+                {/* <button id="schedule-btn" className="schedule-btn" onClick={() => setShowScheduleModal(true)}>
                   <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#0000" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                     <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
                   </svg>
@@ -1159,7 +1220,7 @@ function OrderContent() {
                     {mounted ? getScheduleLabel() : 'ASAP (15 min)'}
                   </span>
                   <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#666" strokeWidth="2.5" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
-                </button>
+                </button> */}
 
               </div>
             </header>
@@ -1236,7 +1297,7 @@ function OrderContent() {
                         {(['left', 'right'] as const).map(dir => (
                           <button key={dir} id={`popular-scroll-${dir}`} className="popular-scroll-btn" onClick={() => scrollPopular(dir)} aria-label={`Scroll popular ${dir}`}>
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
-                              <polyline points={dir === 'left' ? '15 18 9 12 15 6' : '9 18 15 12 9 6'}/>
+                              <polyline points={dir === 'left' ? '15 18 9 12 15 6' : '9 18 15 12 9 6'} />
                             </svg>
                           </button>
                         ))}
@@ -1292,7 +1353,7 @@ function OrderContent() {
               <h3 className="cart-title">Cart</h3>
               <button id="cart-close-btn" className="cart-close-btn" onClick={() => setShowCart(false)} aria-label="Close cart">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
-                  <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+                  <line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" />
                 </svg>
               </button>
             </div>
@@ -1316,8 +1377,8 @@ function OrderContent() {
               {cart.length === 0 ? (
                 <div id="cart-empty" className="cart-empty">
                   <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#D0D0D0" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round">
-                    <circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/>
-                    <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
+                    <circle cx="9" cy="21" r="1" /><circle cx="20" cy="21" r="1" />
+                    <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
                   </svg>
                   <p className="cart-empty-title">Your cart is empty</p>
                   <p className="cart-empty-sub">Add items to get started</p>
@@ -1384,7 +1445,7 @@ function OrderContent() {
               <div id="delivery-modal-header" className="delivery-modal-header">
                 <h2 className="modal-title">Order Details</h2>
                 <button id="delivery-modal-close" className="modal-close-btn" onClick={() => setShowDeliveryModal(false)} aria-label="Close">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" /></svg>
                 </button>
               </div>
 
@@ -1405,7 +1466,7 @@ function OrderContent() {
                 <div id="delivery-step-1">
                   <div className="delivery-input-wrap">
                     <svg style={{ position: 'absolute', left: '14px', top: '50%', transform: 'translateY(-50%)' }} width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#666" strokeWidth="2">
-                      <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                      <circle cx="11" cy="11" r="8" /><line x1="21" y1="21" x2="16.65" y2="16.65" />
                     </svg>
                     <input
                       id="delivery-address-input"
@@ -1441,7 +1502,7 @@ function OrderContent() {
                 <div id="delivery-step-2" style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
                   <div id="delivery-addr-row" className="delivery-addr-row">
                     <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#666" strokeWidth="2">
-                      <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                      <circle cx="11" cy="11" r="8" /><line x1="21" y1="21" x2="16.65" y2="16.65" />
                     </svg>
                     <span style={{ flex: 1, fontSize: '16px', color: '#1A1A1A', fontWeight: '500', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{deliveryAddress}</span>
                     <button className="delivery-addr-change" onClick={() => setDeliveryStep(1)}>Change</button>
@@ -1492,7 +1553,7 @@ function OrderContent() {
             <div id="schedule-modal-header" className="schedule-modal-header">
               <h2 className="modal-title">Order Time</h2>
               <button id="schedule-modal-close" className="modal-close-btn" onClick={() => setShowScheduleModal(false)} aria-label="Close">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" /></svg>
               </button>
             </div>
 
@@ -1522,7 +1583,7 @@ function OrderContent() {
                     <button id="schedule-more-dates-btn" className="schedule-more-btn" onClick={() => setShowMoreDates(p => !p)}>
                       {showMoreDates ? 'Less dates' : 'More dates'}
                       <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#1A1A1A" strokeWidth="2.5">
-                        <polyline points={showMoreDates ? '18 15 12 9 6 15' : '6 9 12 15 18 9'}/>
+                        <polyline points={showMoreDates ? '18 15 12 9 6 15' : '6 9 12 15 18 9'} />
                       </svg>
                     </button>
                   </>
@@ -1574,7 +1635,7 @@ function OrderContent() {
 
             {/* Sticky close (stays top-right while scrolling) */}
             <button id="item-modal-close" className="item-modal-close" onClick={() => setSelectedItem(null)} aria-label="Close item">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" /></svg>
             </button>
 
             {/* Image */}
@@ -1582,12 +1643,12 @@ function OrderContent() {
               {selectedItem.imageUrl
                 ? <img src={selectedItem.imageUrl} alt={selectedItem.name} className="item-modal-img" />
                 : <div className="item-modal-img-placeholder">
-                  <svg width="64" height="64" viewBox="0 0 64 64" fill="none"><circle cx="32" cy="32" r="22" stroke="#D0D0D0" strokeWidth="1.5"/><path d="M20 32 Q32 20 44 32" stroke="#D0D0D0" strokeWidth="1.5" strokeLinecap="round"/><circle cx="32" cy="38" r="6" stroke="#D0D0D0" strokeWidth="1.5"/></svg>
+                  <svg width="64" height="64" viewBox="0 0 64 64" fill="none"><circle cx="32" cy="32" r="22" stroke="#D0D0D0" strokeWidth="1.5" /><path d="M20 32 Q32 20 44 32" stroke="#D0D0D0" strokeWidth="1.5" strokeLinecap="round" /><circle cx="32" cy="38" r="6" stroke="#D0D0D0" strokeWidth="1.5" /></svg>
                 </div>
               }
               {selectedItem.isPopular && (
                 <div id="item-popular-badge" className="item-popular-badge" aria-label="Popular item">
-                  <svg width="10" height="10" viewBox="0 0 24 24" fill="#000"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                  <svg width="10" height="10" viewBox="0 0 24 24" fill="#000"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" /></svg>
                   POPULAR
                 </div>
               )}
@@ -1598,7 +1659,7 @@ function OrderContent() {
               <p id="item-modal-desc" className="item-modal-desc">{selectedItem.description}</p>
 
               {/* Price cards */}
-              <div id="item-price-row" className="item-price-row" style={{display:'none'}}>
+              <div id="item-price-row" className="item-price-row" style={{ display: 'none' }}>
                 {(['pickup', 'delivery'] as const).filter(type => type === 'pickup' ? isPickupEnabled : isDeliveryEnabled).map(type => (
                   <div
                     key={type}
@@ -1639,7 +1700,7 @@ function OrderContent() {
                         >
                           <div className="modifier-option-left">
                             <div className={`modifier-check ${group.maxSelections === 1 ? 'radio' : 'checkbox'} ${isSel ? 'selected' : 'unselected'}`}>
-                              {isSel && <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ffffff" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>}
+                              {isSel && <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ffffff" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12" /></svg>}
                             </div>
                             <span className="modifier-option-name">{opt.name}</span>
                           </div>
@@ -1675,7 +1736,7 @@ function OrderContent() {
                         <div className="upsell-card-img">
                           {item.imageUrl
                             ? <img src={item.imageUrl} alt={item.name} />
-                            : <svg width="28" height="28" viewBox="0 0 64 64" fill="none"><circle cx="32" cy="32" r="22" stroke="#D0D0D0" strokeWidth="1.5"/></svg>
+                            : <svg width="28" height="28" viewBox="0 0 64 64" fill="none"><circle cx="32" cy="32" r="22" stroke="#D0D0D0" strokeWidth="1.5" /></svg>
                           }
                         </div>
                         <div className="upsell-card-body">
@@ -1703,7 +1764,7 @@ function OrderContent() {
                   onClick={handleAddToCart}
                   disabled={!canAddToCart()}
                 >
-                  Add to cart · ${((getItemPrice(selectedItem) + getModifierTotal()) * quantity).toFixed(2)} 
+                  Add to cart · ${((getItemPrice(selectedItem) + getModifierTotal()) * quantity).toFixed(2)}
                 </button>
               </div>
             </div>
@@ -1737,7 +1798,7 @@ function PopularCard({ item, orderType, onSelect }: { item: MenuItem; orderType:
         {item.imageUrl
           ? <img src={item.imageUrl} alt={item.name} className="pop-card-img" />
           : <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'linear-gradient(135deg,#E5E5E5,#F8F9FA)' }}>
-            <svg width="44" height="44" viewBox="0 0 64 64" fill="none"><circle cx="32" cy="32" r="22" stroke="#D0D0D0" strokeWidth="1.5"/><path d="M20 32 Q32 20 44 32" stroke="#D0D0D0" strokeWidth="1.5" strokeLinecap="round"/><circle cx="32" cy="38" r="6" stroke="#D0D0D0" strokeWidth="1.5"/></svg>
+            <svg width="44" height="44" viewBox="0 0 64 64" fill="none"><circle cx="32" cy="32" r="22" stroke="#D0D0D0" strokeWidth="1.5" /><path d="M20 32 Q32 20 44 32" stroke="#D0D0D0" strokeWidth="1.5" strokeLinecap="round" /><circle cx="32" cy="38" r="6" stroke="#D0D0D0" strokeWidth="1.5" /></svg>
           </div>
         }
         {item.isPopular && (
@@ -1745,7 +1806,7 @@ function PopularCard({ item, orderType, onSelect }: { item: MenuItem; orderType:
         )}
         <div className="pop-card-add-btn" aria-hidden="true">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#E5B800" strokeWidth="2.8" strokeLinecap="round">
-            <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+            <line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" />
           </svg>
         </div>
       </div>
@@ -1766,7 +1827,7 @@ function GridCard({ item, orderType, onSelect, borderRadius }: { item: MenuItem;
     <div
       id={`grid-card-${item.id}`}
       className="grid-card"
-    style={{ borderRadius: '8px' }}
+      style={{ borderRadius: '8px' }}
       onClick={() => onSelect(item)}
     >
       <div className="grid-card-body">
@@ -1778,12 +1839,12 @@ function GridCard({ item, orderType, onSelect, borderRadius }: { item: MenuItem;
         <div className="grid-card-img">
           {item.imageUrl
             ? <img src={item.imageUrl} alt={item.name} />
-            : <svg width="36" height="36" viewBox="0 0 64 64" fill="none"><circle cx="32" cy="32" r="22" stroke="#D0D0D0" strokeWidth="1.5"/><path d="M20 32 Q32 20 44 32" stroke="#D0D0D0" strokeWidth="1.5" strokeLinecap="round"/><circle cx="32" cy="38" r="6" stroke="#D0D0D0" strokeWidth="1.5"/></svg>
+            : <svg width="36" height="36" viewBox="0 0 64 64" fill="none"><circle cx="32" cy="32" r="22" stroke="#D0D0D0" strokeWidth="1.5" /><path d="M20 32 Q32 20 44 32" stroke="#D0D0D0" strokeWidth="1.5" strokeLinecap="round" /><circle cx="32" cy="38" r="6" stroke="#D0D0D0" strokeWidth="1.5" /></svg>
           }
         </div>
         <div className="grid-card-add-btn" aria-hidden="true">
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#000" strokeWidth="2.8" strokeLinecap="round">
-            <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+            <line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" />
           </svg>
         </div>
       </div>

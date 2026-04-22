@@ -60,13 +60,13 @@ const FAQS = [
 ];
 
 const HOURS = [
-  { d: 'Monday',    h: '8:00 AM – 10:00 PM' },
-  { d: 'Tuesday',   h: '8:00 AM – 10:00 PM' },
-  { d: 'Wednesday', h: '8:00 AM – 10:00 PM' },
-  { d: 'Thursday',  h: '8:00 AM – 10:00 PM' },
-  { d: 'Friday',    h: '8:00 AM – 10:00 PM' },
-  { d: 'Saturday',  h: '9:00 AM – 11:00 PM' },
-  { d: 'Sunday',    h: '9:00 AM – 9:00 PM'  },
+  { d: 'Monday',    h: '7:00 AM – 3:00 PM' },
+  { d: 'Tuesday',   h: '7:00 AM – 3:00 PM' },
+  { d: 'Wednesday', h: '7:00 AM – 3:00 PM' },
+  { d: 'Thursday',  h: '7:00 AM – 3:00 PM' },
+  { d: 'Friday',    h: '7:00 AM – 3:00 PM' },
+  { d: 'Saturday',  h: '7:00 AM – 3:00 PM' },
+  { d: 'Sunday',    h: '7:00 AM – 3:00 PM'  },
 ];
 
 /* ─────────────────────────────────────────────
@@ -895,6 +895,7 @@ export default function HomePage() {
           border: 1px solid #D0D0D0; background: transparent;
           display: flex; align-items: center; justify-content: center;
         }
+          .location-info-body{margin-left: 10px;}
         .home-modal-check.radio { border-radius: 50%; }
         .home-modal-check.checkbox { border-radius: 4px; }
         .home-modal-check.selected { border: 2px solid #000; background: #000; }
@@ -954,7 +955,7 @@ export default function HomePage() {
         @media (max-width: 768px) {
         .faq-q {font-size: 16px;}
         .order-ahead-hero { max-height: 50vh !important; min-height:70vh !important; flex-direction: column;}
-.order-ahead-hero-rewards { max-height: 50vh !important; min-height:70vh !important; flex-direction: column;}
+        .order-ahead-hero-rewards { max-height: 50vh !important; min-height:70vh !important; flex-direction: column;}
         .fav-arrow-left { left: -10px; }
         .fav-arrow-right { right: -10px; }
         .fav-arrow{width: 25px; height: 25px;}
@@ -1465,7 +1466,7 @@ export default function HomePage() {
               </div>
 
               <div id="location-cta-buttons" className="location-cta-buttons">
-                <a href="https://maps.google.com/?q=3517+Lancaster+Ave+Philadelphia+PA+19104" target="_blank" rel="noopener noreferrer" className="btn-yellow location-directions-btn">
+                <a href="https://maps.app.goo.gl/pDWemPAVo272gRNW6" target="_blank" rel="noopener noreferrer" className="btn-yellow location-directions-btn">
                   <MapPin size={14} aria-hidden="true" /> Get Directions
                 </a>
                 <Link href="/order" className="btn-outline location-order-btn">Order Now</Link>
@@ -1477,7 +1478,7 @@ export default function HomePage() {
               <iframe
                 id="location-map-iframe"
                 title="Eggs Ok location on Google Maps  3517 Lancaster Ave, Philadelphia PA 19104"
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3058.7!2d-75.2!3d39.96!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c6c65b7a6a5555%3A0x0!2s3517+Lancaster+Ave%2C+Philadelphia%2C+PA+19104!5e0!3m2!1sen!2sus!4v1234567890"
+                src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d2225.985082274644!2d-75.192929!3d39.9583712!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c6c70b98ffe7f7%3A0x160ea05e3fd45b64!2sEGGS%20OK!5e1!3m2!1sen!2s!4v1776887472466!5m2!1sen!2s"
                 width="100%" height="100%"
                 className="location-map-iframe"
                 allowFullScreen loading="lazy" referrerPolicy="no-referrer-when-downgrade"
