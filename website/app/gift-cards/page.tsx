@@ -297,9 +297,9 @@ export default function GiftCardsPage() {
             <a id="hero-buy-btn" href="#buy" className="btn-yellow" style={{ fontSize: '16px', padding: '8px 34px' }}>
               Buy a Gift Card <ArrowRight size={16} aria-hidden="true" />
             </a>
-            <a id="hero-redeem-btn" href="#buy" className="btn-outline" style={{ fontSize: '16px', padding: '8px 34px' }}>
+            {/* <a id="hero-redeem-btn" href="#buy" className="btn-outline" style={{ fontSize: '16px', padding: '8px 34px' }}>
               Redeem a Card
-            </a>
+            </a> */}
           </div>
         </div>
       </section>

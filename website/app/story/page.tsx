@@ -258,7 +258,16 @@ export default function StoryPage() {
             Made With Purpose
           </h1>
           <p id="hero-subtitle" style={{ fontSize: '16px', fontWeight: 500, color: '#4D4D4D', lineHeight: '1.8', maxWidth: '540px', margin: '0 auto 40px' }}>
-            Born from a simple belief , everyone deserves a great breakfast. Fresh ingredients, bold flavors, from West Philadelphia.
+
+              From the success of our halal favorites - OK HOT CHICKEN, OK SMASHED BURGER, and OK CHEESESTEAK , we saw something bigger: a chance to bring halal food into every part of the day.
+
+              Now, we’re taking the next step.
+
+              Introducing EGGS OK is our Halal Breakfast & Lunch - crafted with the same quality, flavor, and passion our community already loves. 
+
+              Starting in West Philly, we’re bringing people together over great food that everyone can enjoy, any time of day.
+
+              And this is just the beginning - more locations, more growth, and more to come.
           </p>
          
         </div>
@@ -383,7 +392,7 @@ export default function StoryPage() {
                 West Philly Is Home
               </h2>
               <p id="community-body" className="story-body">
-                3517 Lancaster Ave isn&apos;t just our address — it&apos;s our anchor. Every order supports our local team and the neighborhood we&apos;ve always called home.
+                3517 Lancaster Ave isn&apos;t just our address it&apos;s our anchor. Every order supports our local team and the neighborhood we&apos;ve always called home.
               </p>
           
               <div id="community-cta" className="cta-group">

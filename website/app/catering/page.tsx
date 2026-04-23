@@ -486,7 +486,7 @@ export default function CateringPage() {
                 </div>
               </div>
             ) : (
-              <form id="catering-form" className="form-wrap" onSubmit={handleSubmit} noValidate>
+              <form id="catering-form" className="form-wrap" onSubmit={handleSubmit}>
                 <div id="form-fields" style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
 
                   {/* Name + Phone */}
@@ -534,7 +534,7 @@ export default function CateringPage() {
                   {/* Event Type + Location */}
                   <div id="form-row-type-location" className="form-row-2">
                     <div id="form-group-type">
-                      <label htmlFor="input-type" className="form-label">Event Type</label>
+                      <label htmlFor="input-type" className="form-label">Event Type *</label>
                       <select id="input-type" className="form-select"
                         value={formData.eventType} onChange={e => setFormData({ ...formData, eventType: e.target.value })}>
                         <option value="">Select</option>
@@ -546,7 +546,7 @@ export default function CateringPage() {
                       </select>
                     </div>
                     <div id="form-group-location">
-                      <label htmlFor="input-location" className="form-label">Event Location</label>
+                      <label htmlFor="input-location" className="form-label">Event Location *</label>
                       <input id="input-location" className="form-input" placeholder="Address or venue name"
                         value={formData.location} onChange={e => setFormData({ ...formData, location: e.target.value })} />
                     </div>
@@ -554,7 +554,7 @@ export default function CateringPage() {
 
                   {/* Message */}
                   <div id="form-group-message">
-                    <label htmlFor="input-message" className="form-label">Additional Details</label>
+                    <label htmlFor="input-message" className="form-label">Additional Details *</label>
                     <textarea id="input-message" className="form-textarea"
                       placeholder="Tell us about your event, dietary restrictions, special requests..."
                       value={formData.message} onChange={e => setFormData({ ...formData, message: e.target.value })} />

@@ -28,7 +28,7 @@ import { useCart } from './context/CartContext';
 const MENU_TILES = [
   { label: 'Breakfast Sandwiches', img: '/main-menu/Our-Gallery/1.webp', items: '9 items' },
   { label: 'Specialty Lattes',     img: '/main-menu/Our-Gallery/2.webp',       items: '4 items' },
-  { label: 'Matcha Edition',       img: '/main-menu/Our-Gallery/3.webp',        items: '9 items' },
+  { label: 'Matcha Edition',       img: '/main-menu/Our-Gallery/3.jpg',        items: '9 items' },
   { label: 'Smoothies',            img: '/main-menu/Our-Gallery/4.webp',        items: '7 items' },
   { label: 'Omelettes',            img: '/main-menu/Our-Gallery/5.webp',       items: '4 items' },
   { label: 'Burritos',             img: '/main-menu/Our-Gallery/6.webp',        items: '9 items' },
@@ -542,7 +542,7 @@ export default function HomePage() {
           max-width: 100%; 
           max-height: 100vh !important;
           min-height: 100vh !important;
-          background-image: url('/main-menu/Main-Page/order-ahead.jpeg');
+          background-image: url('/main-menu/Main-Page/order-ahead.jpg');
           background-size: cover; background-position: center;
           display: flex; align-items: center; justify-content: flex-end;
         }
@@ -887,7 +887,7 @@ export default function HomePage() {
           display: none;
           position: fixed;
           left: 12px; right: 12px;
-          bottom: 14px;
+          bottom: 1px;
           z-index: 150;
           padding: 14px 20px;
           background: #E3BF22;

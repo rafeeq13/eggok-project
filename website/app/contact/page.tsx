@@ -42,13 +42,13 @@ export default function ContactPage() {
   };
 
   const hours = [
-    { day: 'Monday',    hours: '8:00 AM – 10:00 PM' },
-    { day: 'Tuesday',   hours: '8:00 AM – 10:00 PM' },
-    { day: 'Wednesday', hours: '8:00 AM – 10:00 PM' },
-    { day: 'Thursday',  hours: '8:00 AM – 10:00 PM' },
-    { day: 'Friday',    hours: '8:00 AM – 11:00 PM' },
-    { day: 'Saturday',  hours: '9:00 AM – 11:00 PM' },
-    { day: 'Sunday',    hours: '9:00 AM – 9:00 PM'  },
+    { day: 'Monday',    hours: '7:00 AM – 3:00 PM' },
+    { day: 'Tuesday',   hours: '7:00 AM – 3:00 PM' },
+    { day: 'Wednesday', hours: '7:00 AM – 3:00 PM' },
+    { day: 'Thursday',  hours: '7:00 AM – 3:00 PM' },
+    { day: 'Friday',    hours: '7:00 AM – 3:00 PM' },
+    { day: 'Saturday',  hours: '7:00 AM – 3:00 PM' },
+    { day: 'Sunday',    hours: '7:00 AM – 3:00 PM'  },
   ];
 
   const contactInfo = [
@@ -500,7 +500,7 @@ export default function ContactPage() {
                     <p id="form-subtitle" className="form-subtitle">We typically respond within a few hours during business hours.</p>
                   </div>
 
-                  <form id="contact-form" onSubmit={handleSubmit} noValidate style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                  <form id="contact-form" onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
 
                     {/* Name + Phone */}
                     <div id="form-row-name-phone" className="form-row-2">
@@ -514,7 +514,7 @@ export default function ContactPage() {
                         />
                       </div>
                       <div id="form-group-phone">
-                        <label htmlFor="input-phone" className="form-label">Phone Number</label>
+                        <label htmlFor="input-phone" className="form-label">Phone Number *</label>
                         <input
                           id="input-phone" type="tel" className="form-input"
                           placeholder="215-555-0100"
@@ -537,7 +537,7 @@ export default function ContactPage() {
 
                     {/* Subject */}
                     <div id="form-group-subject">
-                      <label htmlFor="input-subject" className="form-label">Subject</label>
+                      <label htmlFor="input-subject" className="form-label">Subject *</label>
                       <select
                         id="input-subject" className="form-select"
                         value={formData.subject}
@@ -582,7 +582,7 @@ export default function ContactPage() {
                     <p className="form-phone-note-text">
                       Prefer to call?{' '}
                       <a id="form-phone-link" href="tel:2159489902" className="form-phone-note-link">215-948-9902</a>
-                      {' '}· Mon–Fri 8AM–10PM
+                      {' '}· Mon–Fri 7AM–3PM
                     </p>
                   </div>
 

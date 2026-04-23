@@ -701,7 +701,7 @@ const css = `
   .sticky-view-cart {
     position: fixed;
     left: 12px; right: 12px;
-    bottom: 14px;
+    bottom: 1px;
     z-index: 150;
     padding: 12px 18px;
     background: var(--y);

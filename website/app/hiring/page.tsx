@@ -324,9 +324,9 @@ export default function HiringPage() {
             We are always looking for passionate, hardworking people to join the Eggs Ok family. Great pay, flexible hours, and free food every shift.
           </p>
           <div id="hero-cta" style={{ display: 'flex', gap: '14px', justifyContent: 'center', flexWrap: 'wrap' }}>
-            <a href="#positions" id="hero-view-positions-btn" className="btn-yellow" style={{ fontSize: '16px', padding: '8px 34px' }}>
+            {/* <a href="#positions" id="hero-view-positions-btn" className="btn-yellow" style={{ fontSize: '16px', padding: '8px 34px' }}>
               View Open Positions <ArrowRight size={16} aria-hidden="true" />
-            </a>
+            </a> */}
             <a href="#apply" id="hero-apply-btn" className="btn-outline" style={{ fontSize: '16px', padding: '8px 34px' }}>
               Apply Now
             </a>
@@ -380,7 +380,7 @@ export default function HiringPage() {
                   </Link>
                 </div>
               ) : (
-                <form id="apply-form" className="apply-form-wrap" onSubmit={handleApply} noValidate>
+                <form id="apply-form" className="apply-form-wrap" onSubmit={handleApply}>
 
                   {/* Form header */}
                   <div id="form-header" className="form-header">
@@ -453,7 +453,7 @@ export default function HiringPage() {
 
                     {/* Experience */}
                     <div id="form-group-experience">
-                      <label htmlFor="input-experience" className="form-label">Experience</label>
+                      <label htmlFor="input-experience" className="form-label">Experience *</label>
                       <select
                         id="input-experience"
                         className="form-select"
@@ -470,7 +470,7 @@ export default function HiringPage() {
 
                     {/* Message */}
                     <div id="form-group-message">
-                      <label htmlFor="input-message" className="form-label">Tell Us About Yourself</label>
+                      <label htmlFor="input-message" className="form-label">Tell Us About Yourself *</label>
                       <textarea
                         id="input-message"
                         className="form-textarea"
@@ -482,7 +482,7 @@ export default function HiringPage() {
 
                     {/* Resume Upload */}
                     <div id="form-group-resume">
-                      <label className="form-label">Resume / CV (optional, max 5MB)</label>
+                      <label className="form-label">Resume / CV (optional, max 5MB) *</label>
                       <div style={{
                         border: `2px dashed ${resumeFile ? '#22C55E' : '#D0D0D0'}`,
                         borderRadius: '12px', padding: '20px', textAlign: 'center',
