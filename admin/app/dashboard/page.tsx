@@ -131,7 +131,7 @@ function DashboardContent() {
       <div style={{ padding: '2px', borderBottom: '1px solid #2A2A2A', display: 'flex', alignItems: 'center', justifyContent: 'space-around' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
           <div style={{ borderRadius: '10px', overflow: 'hidden', flexShrink: 0, background: '#000' }}>
-            <Image src="/logo.webp" alt="Eggs Ok" width={40} height={40} unoptimized style={{ objectFit: 'contain', width: '100%', height: '100%' }} />
+            <Image src="/logo.webp" alt="Eggs Ok" width={60} height={60} unoptimized style={{ objectFit: 'contain' }} />
           </div>
           {/* <div>
             <div style={{ fontSize: '12px', fontWeight: '800', color: '#E5B800', letterSpacing: '1px' }}>EGGS OK</div>
