@@ -38,13 +38,11 @@ export default function KitchenDisplay() {
     if (!soundEnabled) return;
     try {
       if (!audioRef.current) {
-        audioRef.current = new Audio('data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdH2JjYeFdWBYX2p3goqNi4R5b2RdX2l0foaLi4eCeW9nZWdsc3uCh4mIhYB5c29tcHN4fYKFhoaFg4B9enl5eXp7fX+Bg4SEhISDgn9+fX18fX1+f4CBgoKCgoKBgH9/fn5+fn5/f4CAgYGBgYGBgYCAf39/f39/f4CAgICBgYGBgICAf4B/f39/f3+AgICAgYCBgYCAgIB/gH9/f39/gICAgICAgYCAgICAgH+Af3+Af3+AgICAgICAgICAgICAgICAf4CAgH+AgICAgICAgICAgICAf3+AgICAgIB/gICAgA==');
+        audioRef.current = new Audio('/kitchendispalynotification.mp3');
+        audioRef.current.preload = 'auto';
       }
       audioRef.current.currentTime = 0;
       audioRef.current.play().catch(() => {});
-      // Play 3 beeps
-      setTimeout(() => { audioRef.current?.play().catch(() => {}); }, 300);
-      setTimeout(() => { audioRef.current?.play().catch(() => {}); }, 600);
     } catch {}
   }, [soundEnabled]);
 

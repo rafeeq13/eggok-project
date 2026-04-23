@@ -1655,8 +1655,8 @@ function OrderContent() {
                 <span className="schedule-time-label">ASAP</span>
               </div>
 
-              {/* Time slots */}
-              {Array.from({ length: 57 }, (_, i) => {
+              {/* Time slots — store hours 7:00 AM – 3:00 PM */}
+              {Array.from({ length: 33 }, (_, i) => {
                 const totalMins = 7 * 60 + i * 15; const h = Math.floor(totalMins / 60); const m = totalMins % 60;
                 const label = `${h > 12 ? h - 12 : h === 0 ? 12 : h}:${m.toString().padStart(2, '0')} ${h >= 12 ? 'PM' : 'AM'} ${tzAbbr}`;
                 const val = `${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}`;

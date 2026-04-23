@@ -760,7 +760,7 @@ export default function HomePage() {
         .fav-tag-text { font-size: 12px; font-weight: 700; color: #4D4D4D; letter-spacing: 0.5px; }
         .fav-add-btn {
           position: absolute; bottom: 14px; right: 14px;
-          width: 36px; height: 36px; border-radius: 50%;
+          width: 36px; height: 36px; border-radius: 20%;
           background: #ffffff; display: flex; align-items: center; justify-content: center;
           box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         }
@@ -912,6 +912,7 @@ export default function HomePage() {
         }
         .sticky-order-cta:hover { background: #D4B01E; color: #000; }
         @media (max-width: 1024px) {
+
           .sticky-order-cta { display: block; }
         }
 
@@ -1138,7 +1139,7 @@ export default function HomePage() {
                       <span className="fav-tag-text">{item.tag}</span>
                     </div>}
                     <div className="fav-add-btn" aria-hidden="true">
-                      <Plus size={15} color="#000" strokeWidth={2.8} />
+                      <Plus size={18} color="#000" strokeWidth={2.8} />
                     </div>
                   </div>
                   <div className="fav-card-body">
