@@ -3,6 +3,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import Header from '../components/Header';
+import StickyOrderCta from '../components/StickyOrderCta';
 import {
   UtensilsCrossed, DollarSign, CalendarDays, TrendingUp,
   Shirt, Users, ChevronDown, ChevronUp, Check,
@@ -530,7 +531,7 @@ export default function HiringPage() {
       {/* ══════════════════════════════════════════
           FOOTER
       ══════════════════════════════════════════ */}
-      <footer id="hiring-footer" className="site-footer" style={{ background: '#F8F9FA', padding: '48px 0 32px', borderTop: '1px solid #E5E5E5' }}>
+      <footer id="hiring-footer" className="site-footer" style={{ background: '#F8F9FA', padding: '48px 0 0px', borderTop: '1px solid #E5E5E5' }}>
         <div className="container footer-container">
           <div id="footer-grid" className="footer-grid">
 
@@ -609,6 +610,7 @@ export default function HiringPage() {
         </div>
       </footer>
 
+      <StickyOrderCta />
     </div>
   );
 }

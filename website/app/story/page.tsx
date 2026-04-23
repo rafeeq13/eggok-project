@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import Header from '../components/Header';
+import StickyOrderCta from '../components/StickyOrderCta';
 import { Flame, Globe, Users, MapPin, Smartphone, ArrowRight } from 'lucide-react';
 
 export default function StoryPage() {
@@ -412,7 +413,7 @@ export default function StoryPage() {
       {/* ══════════════════════════════════════════
           FOOTER
       ══════════════════════════════════════════ */}
-      <footer id="story-footer" className="site-footer" style={{ background: '#F8F9FA', padding: '48px 0 32px', borderTop: '1px solid #E5E5E5' }}>
+      <footer id="story-footer" className="site-footer" style={{ background: '#F8F9FA', padding: '48px 0 0px', borderTop: '1px solid #E5E5E5' }}>
         <div className="container footer-container">
           <div id="footer-grid" className="footer-grid">
 
@@ -491,6 +492,7 @@ export default function StoryPage() {
         </div>
       </footer>
 
+      <StickyOrderCta />
     </div>
   );
 }

@@ -3,6 +3,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import Header from '../components/Header';
+import StickyOrderCta from '../components/StickyOrderCta';
 import {
   ChefHat, Truck, SlidersHorizontal, ClipboardList,
   Lightbulb, UtensilsCrossed, MapPin, Smartphone,
@@ -594,7 +595,7 @@ export default function CateringPage() {
       {/* ══════════════════════════════════════════
           FOOTER
       ══════════════════════════════════════════ */}
-      <footer id="catering-footer" className="site-footer" style={{ background: '#F8F9FA', padding: '48px 0 32px', borderTop: '1px solid #E5E5E5' }}>
+      <footer id="catering-footer" className="site-footer" style={{ background: '#F8F9FA', padding: '48px 0 0px', borderTop: '1px solid #E5E5E5' }}>
         <div className="container footer-container">
           <div id="footer-grid" className="footer-grid">
 
@@ -673,6 +674,7 @@ export default function CateringPage() {
         </div>
       </footer>
 
+      <StickyOrderCta />
     </div>
   );
 }

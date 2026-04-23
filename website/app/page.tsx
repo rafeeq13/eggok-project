@@ -887,14 +887,14 @@ export default function HomePage() {
           display: none;
           position: fixed;
           left: 12px; right: 12px;
-          bottom: 1px;
+          bottom: 8px;
           z-index: 150;
           padding: 14px 20px;
           background: #E3BF22;
           color: #000;
           font-family: var(--font-body);
           font-size: 16px;
-          font-weight: 500;
+          font-weight: 600;
           text-align: center;
           text-decoration: none;
           border-radius: 14px;
@@ -973,7 +973,7 @@ export default function HomePage() {
         .section-rewards,
         .section-location,
         .section-catering {  padding: 48px 5px; }
-        .site-footer { padding: 48px 5px 20px; }
+        .site-footer { padding: 48px 5px 83px; }
 
         .order-card-box-rewards{width: 95%; max-width: 95%; margin: 20px 5px;}
         // .order-ahead-heading{font-size: 20px !important;}

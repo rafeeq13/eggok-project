@@ -3,6 +3,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import Header from '../components/Header';
+import StickyOrderCta from '../components/StickyOrderCta';
 import { useStoreSettings } from '../../hooks/useStoreSettings';
 import {
   MapPin, Phone, Mail, Clock,
@@ -597,7 +598,7 @@ export default function ContactPage() {
       {/* ══════════════════════════════════════════
           FOOTER
       ══════════════════════════════════════════ */}
-      <footer id="contact-footer" className="site-footer" style={{padding:'48px 0 32px'}}>
+      <footer id="contact-footer" className="site-footer" style={{padding:'48px 0 0px'}}>
         <div className="container footer-container">
           <div id="footer-grid" className="footer-grid">
 
@@ -676,6 +677,7 @@ export default function ContactPage() {
         </div>
       </footer>
 
+      <StickyOrderCta />
     </div>
   );
 }
