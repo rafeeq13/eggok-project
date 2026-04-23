@@ -86,7 +86,7 @@ function SetPasswordContent() {
             marginBottom: '12px',
             position: 'relative',
           }}>
-            <Image src="/logo.webp" alt="Eggs Ok Logo" fill style={{ objectFit: 'contain', objectPosition: 'center' }} />
+            <Image src="/logo.webp" alt="Eggs Ok Logo" fill unoptimized style={{ objectFit: 'contain', objectPosition: 'center' }} />
           </div>
           <p style={{ color: '#FEFEFE', fontSize: '11px', letterSpacing: '3px', textTransform: 'uppercase', marginTop: '0' }}>Admin Dashboard</p>
         </div>

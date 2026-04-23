@@ -95,6 +95,7 @@ export default function LoginPage() {
               src="/logo.webp"
               alt="Eggs Ok Logo"
               fill
+              unoptimized
               style={{ objectFit: 'contain', objectPosition: 'center' }}
             />
           </div>
