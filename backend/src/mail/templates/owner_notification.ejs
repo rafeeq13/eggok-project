@@ -139,9 +139,63 @@
   </td></tr>
 
   <% if (orderType === 'delivery' && deliveryAddress) { %>
-  <!-- ══════ DELIVERY ADDRESS ══════ -->
+  <!-- ══════ CUSTOMER DELIVERY ADDRESS ══════ -->
   <tr><td class="info-cell" style="padding:16px 28px 0;">
     <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#F8F9FA;border:1px solid #E5E5E5;border-left:4px solid #E3BF22;border-radius:12px;">
+      <tr><td style="padding:18px 20px;">
+        <p class="info-title" style="margin:0 0 8px;font-family:'Geist','Inter','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:12px;font-weight:700;color:#777777;letter-spacing:1.2px;text-transform:uppercase;">Deliver To</p>
+        <p style="margin:0;font-family:'Geist','Inter','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:15px;font-weight:600;color:#0D0D0D;line-height:1.5;"><%= deliveryAddress %><% if (deliveryApt) { %> &middot; <%= deliveryApt %><% } %></p>
+        <% if (deliveryInstructions) { %><p style="margin:8px 0 0;font-family:'Geist','Inter','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:13px;color:#4D4D4D;font-style:italic;">Instructions: <%= deliveryInstructions %></p><% } %>
+      </td></tr>
+    </table>
+  </td></tr>
+  <% } %>
+
+  <!-- ══════ ORDER SUMMARY ══════ -->
+  <tr><td class="summary-outer" style="padding:20px 28px 0;">
+    <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:12px;">
+      <tr><td>
+        <p class="summary-sub" style="margin:0 0 4px;font-family:'Geist','Inter','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:12px;font-weight:700;color:#777777;letter-spacing:1.2px;text-transform:uppercase;">Order Summary</p>
+        <p class="summary-title" style="margin:0;font-family:'Playfair Display',Georgia,'Times New Roman',serif;font-size:22px;font-weight:700;color:#0D0D0D;line-height:1.2;">Items &amp; Charges</p>
+      </td></tr>
+    </table>
+
+    <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#FFFFFF;border:1px solid #E5E5E5;border-radius:12px;overflow:hidden;">
+      <tr><td class="items-cell" style="padding:18px 20px 4px;color:#4D4D4D;font-family:'Geist','Inter','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:16px;font-weight:500;line-height:1.6;">
+        <%- itemsHtml %>
+      </td></tr>
+      <tr><td class="totals-cell" style="padding:10px 20px 18px;">
+        <table class="totals-table" width="100%" cellpadding="0" cellspacing="0" border="0">
+          <tr>
+            <td style="font-family:'Geist','Inter','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:15px;color:#4D4D4D;font-weight:500;padding:8px 0;border-bottom:1px solid #E5E5E5;">Subtotal</td>
+            <td align="right" style="font-family:'Geist','Inter','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:15px;color:#0D0D0D;font-weight:600;padding:8px 0;border-bottom:1px solid #E5E5E5;">$<%= subtotal %></td>
+          </tr>
+          <tr>
+            <td style="font-family:'Geist','Inter','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:15px;color:#4D4D4D;font-weight:500;padding:8px 0;border-bottom:1px solid #E5E5E5;">Tax</td>
+            <td align="right" style="font-family:'Geist','Inter','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:15px;color:#0D0D0D;font-weight:600;padding:8px 0;border-bottom:1px solid #E5E5E5;">$<%= tax %></td>
+          </tr>
+          <% if (orderType === 'delivery') { %>
+          <tr>
+            <td style="font-family:'Geist','Inter','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:15px;color:#4D4D4D;font-weight:500;padding:8px 0;border-bottom:1px solid #E5E5E5;">Delivery Fee</td>
+            <td align="right" style="font-family:'Geist','Inter','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:15px;color:#0D0D0D;font-weight:600;padding:8px 0;border-bottom:1px solid #E5E5E5;">$<%= deliveryFee %></td>
+          </tr>
+          <% } %>
+          <tr>
+            <td style="font-family:'Geist','Inter','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:15px;color:#4D4D4D;font-weight:500;padding:8px 0;border-bottom:1px solid #E5E5E5;">Tip</td>
+            <td align="right" style="font-family:'Geist','Inter','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:15px;color:#0D0D0D;font-weight:600;padding:8px 0;border-bottom:1px solid #E5E5E5;">$<%= tip %></td>
+          </tr>
+          <tr>
+            <td style="font-family:'Playfair Display',Georgia,'Times New Roman',serif;font-size:18px;font-weight:700;color:#0D0D0D;padding:14px 0 2px;">Total Paid</td>
+            <td align="right" style="font-family:'Playfair Display',Georgia,'Times New Roman',serif;font-size:20px;font-weight:700;color:#0D0D0D;padding:14px 0 2px;">$<%= total %></td>
+          </tr>
+        </table>
+      </td></tr>
+    </table>
+  </td></tr>
+
+  <!-- ══════ STORE FOOTER ══════ -->
+  <tr><td class="info-cell" style="padding:16px 28px 0;">
+    <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#F8F9FA;border:1px solid #E5E5E5;border-radius:12px;">
       <tr><td style="padding:18px 20px;">
         <p class="info-title" style="margin:0 0 6px;font-family:'Geist','Inter','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:12px;font-weight:700;color:#777777;letter-spacing:1.2px;text-transform:uppercase;">
           <span style="white-space:nowrap;display:inline-block;margin:0 6px;">

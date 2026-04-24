@@ -786,12 +786,10 @@ function CheckoutInner() {
                       <span style={{ fontSize: '16px', color: '#1A1A1A' }}>${deliveryFee.toFixed(2)}</span>
                     </div>
                   )}
-                  {tipAmount > 0 && (
-                    <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                      <span style={{ fontSize: '16px', color: '#1A1A1A' }}>Tip</span>
-                      <span style={{ fontSize: '16px', color: '#1A1A1A' }}>${tipAmount.toFixed(2)}</span>
-                    </div>
-                  )}
+                  <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                    <span style={{ fontSize: '16px', color: '#1A1A1A' }}>Tip</span>
+                    <span style={{ fontSize: '16px', color: '#1A1A1A' }}>${tipAmount.toFixed(2)}</span>
+                  </div>
                   {promoApplied && discount > 0 && (
                     <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                       <span style={{ fontSize: '16px', color: '#22C55E' }}>Discount ({promoCode})</span>
@@ -1021,8 +1019,8 @@ function CheckoutInner() {
                     <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                       <p style={{ fontSize: '16px', fontWeight: '700', color: '#1A1A1A', margin: 0 }}>{storeName}</p>
                       <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-                        <div style={{ width: '6px', height: '6px', borderRadius: '50%', background: isOpen ? '#22C55E' : '#FC0301' }} />
-                        <span style={{ fontSize: '12px', color: isOpen ? '#22C55E' : '#FC0301', fontWeight: '600' }}>{isOpen ? statusMessage : 'Closed Now'}</span>
+                        <div style={{ width: '6px', height: '6px', borderRadius: '50%', background: isOpen ? '#008834ff' : '#FC0301' }} />
+                        <span style={{ fontSize: '12px', color: isOpen ? '#008834ff' : '#FC0301', fontWeight: '600' }}>{isOpen ? statusMessage : 'Closed Now'}</span>
                       </div>
                     </div>
                     <p style={{ fontSize: '14px', color: '#AAAAAA', marginTop: '2px' }}>{storeAddress}</p>

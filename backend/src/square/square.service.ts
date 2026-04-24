@@ -185,17 +185,32 @@ export class SquareService {
               scope: 'ORDER' as const,
             },
           ],
-          serviceCharges: order.tip && order.tip > 0 ? [
-            {
-              name: 'Tip',
-              amountMoney: {
-                amount: BigInt(Math.round(order.tip * 100)),
-                currency: 'USD' as const,
-              },
-              calculationPhase: 'SUBTOTAL_PHASE' as const,
-              taxable: false,
-            },
-          ] : undefined,
+          serviceCharges: (() => {
+            const charges: any[] = [];
+            if (order.deliveryFee && order.deliveryFee > 0) {
+              charges.push({
+                name: 'Delivery Fee',
+                amountMoney: {
+                  amount: BigInt(Math.round(order.deliveryFee * 100)),
+                  currency: 'USD' as const,
+                },
+                calculationPhase: 'SUBTOTAL_PHASE' as const,
+                taxable: false,
+              });
+            }
+            if (order.tip && order.tip > 0) {
+              charges.push({
+                name: 'Tip',
+                amountMoney: {
+                  amount: BigInt(Math.round(order.tip * 100)),
+                  currency: 'USD' as const,
+                },
+                calculationPhase: 'SUBTOTAL_PHASE' as const,
+                taxable: false,
+              });
+            }
+            return charges.length ? charges : undefined;
+          })(),
           fulfillments: [fulfillment],
           metadata: {
             source: 'eggok_online',

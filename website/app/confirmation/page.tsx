@@ -103,6 +103,11 @@ export default function ConfirmationPage() {
   }, []);
 
   const displayItems = lastOrder?.items || cart;
+  const displaySubtotal = lastOrder ? Number(lastOrder.subtotal) : subtotal;
+  const displayTax = lastOrder ? Number(lastOrder.tax) : taxes;
+  const displayDeliveryFee = lastOrder ? Number(lastOrder.deliveryFee || 0) : deliveryFee;
+  const displayTip = lastOrder ? Number(lastOrder.tip || 0) : tipAmount;
+  const displayDiscount = lastOrder ? Number(lastOrder.discount || 0) : 0;
   const displayTotal = lastOrder ? Number(lastOrder.total) : total;
   const displayOrderType = lastOrder?.orderType || orderType;
 
@@ -254,22 +259,28 @@ export default function ConfirmationPage() {
             <div style={{ borderTop: '1px solid #E5E5E5', paddingTop: '14px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                 <span style={{ fontSize: '20px', fontWeight: 700,fontFamily:"'var(--font-family)", color: '#1A1A1A' }}>Subtotal</span>
-                <span style={{ fontSize: '20px', fontWeight: 700,fontFamily:"'var(--font-family)", color: '#1A1A1A' }}>${lastOrder ? Number(lastOrder.subtotal).toFixed(2) : subtotal.toFixed(2)}</span>
+                <span style={{ fontSize: '20px', fontWeight: 700,fontFamily:"'var(--font-family)", color: '#1A1A1A' }}>${displaySubtotal.toFixed(2)}</span>
               </div>
               <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                 <span style={{ fontSize: '16px', color: '#1A1A1A' }}>Taxes & fees</span>
-                <span style={{ fontSize: '16px', color: '#1A1A1A' }}>${lastOrder ? Number(lastOrder.tax).toFixed(2) : taxes.toFixed(2)}</span>
+                <span style={{ fontSize: '16px', color: '#1A1A1A' }}>${displayTax.toFixed(2)}</span>
               </div>
               {displayOrderType === 'delivery' && (
                 <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                   <span style={{ fontSize: '16px', color: '#1A1A1A' }}>Delivery fee</span>
-                  <span style={{ fontSize: '16px', color: '#1A1A1A' }}>${lastOrder ? Number(lastOrder.deliveryFee).toFixed(2) : deliveryFee.toFixed(2)}</span>
+                  <span style={{ fontSize: '16px', color: '#1A1A1A' }}>${displayDeliveryFee.toFixed(2)}</span>
                 </div>
               )}
-              {tipAmount > 0 && (
+              {displayDiscount > 0 && (
                 <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                  <span style={{ fontSize: '14px', color: '#1A1A1A' }}>Tip</span>
-                  <span style={{ fontSize: '14px', color: '#1A1A1A' }}>${lastOrder ? Number(lastOrder.tip).toFixed(2) : tipAmount.toFixed(2)}</span>
+                  <span style={{ fontSize: '16px', color: '#22C55E' }}>Discount</span>
+                  <span style={{ fontSize: '16px', color: '#22C55E' }}>-${displayDiscount.toFixed(2)}</span>
+                </div>
+              )}
+              {displayTip > 0 && (
+                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                  <span style={{ fontSize: '16px', color: '#1A1A1A' }}>Tip</span>
+                  <span style={{ fontSize: '16px', color: '#1A1A1A' }}>${displayTip.toFixed(2)}</span>
                 </div>
               )}
               <div style={{ display: 'flex', justifyContent: 'space-between', paddingTop: '10px', borderTop: '1px solid #E5E5E5', marginTop: '4px' }}>

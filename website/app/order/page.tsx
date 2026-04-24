@@ -1578,8 +1578,8 @@ function OrderContent() {
                     <div className="delivery-from-name-row">
                       <p style={{ fontSize: '16px', fontWeight: '700', color: '#1A1A1A', margin: 0 }}>{storeName}</p>
                       <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-                        <div style={{ width: '6px', height: '6px', borderRadius: '50%', background: isOpen ? '#22C55E' : '#FC0301' }} />
-                        <span style={{ fontSize: '14px', color: isOpen ? '#22C55E' : '#FC0301', fontWeight: '600' }}>{isOpen ? statusMessage : 'Closed Now'}</span>
+                        <div style={{ width: '6px', height: '6px', borderRadius: '50%', background: isOpen ? '#008834ff' : '#FC0301' }} />
+                        <span style={{ fontSize: '14px', color: isOpen ? '#008834ff' : '#FC0301', fontWeight: '600' }}>{isOpen ? statusMessage : 'Closed Now'}</span>
                       </div>
                     </div>
                     <p style={{ fontSize: '14px', color: '#AAAAAA', marginTop: '2px' }}>{storeAddress}</p>
