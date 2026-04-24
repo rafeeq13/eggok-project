@@ -26,7 +26,7 @@ export default function StoreSettings() {
 
   // Hours — keyed by day
   const [hours, setHours] = useState(
-    dayKeys.map(day => ({ day, open: true, from: '08:00', to: '21:00' }))
+    dayKeys.map(day => ({ day, open: true, from: '07:00', to: '15:00' }))
   );
 
   const [specialHours, setSpecialHours] = useState<{
@@ -55,8 +55,8 @@ export default function StoreSettings() {
             setHours(dayKeys.map(day => ({
               day,
               open: hoursData[day]?.isOpen ?? true,
-              from: hoursData[day]?.open ?? '08:00',
-              to: hoursData[day]?.close ?? '21:00',
+              from: hoursData[day]?.open ?? '07:00',
+              to: hoursData[day]?.close ?? '15:00',
             })));
             if (hoursData.special) setSpecialHours(hoursData.special);
           }

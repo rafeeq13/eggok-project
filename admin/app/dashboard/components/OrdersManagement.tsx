@@ -211,18 +211,20 @@ export default function OrdersManagement() {
 
   const displayOrders = getTabOrders();
 
+  const STORE_TZ = 'America/New_York';
+
   const formatTime = (dateStr: string) => {
     if (!dateStr) return '—';
     const d = new Date(dateStr);
     if (isNaN(d.getTime())) return '—';
-    return d.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true });
+    return d.toLocaleTimeString('en-US', { timeZone: STORE_TZ, hour: 'numeric', minute: '2-digit', hour12: true });
   };
 
   const formatDate = (dateStr: string) => {
     if (!dateStr) return '—';
     const d = new Date(dateStr);
     if (isNaN(d.getTime())) return '—';
-    return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+    return d.toLocaleDateString('en-US', { timeZone: STORE_TZ, month: 'short', day: 'numeric' });
   };
 
   const safePrice = (val: any) => {
@@ -400,7 +402,7 @@ export default function OrdersManagement() {
                       {selectedOrder.deliveryEta && (
                         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                           <span style={{ fontSize: '12px', color: '#FEFEFE' }}>ETA</span>
-                          <span style={{ fontSize: '12px', color: '#FEFEFE' }}>{new Date(selectedOrder.deliveryEta).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })}</span>
+                          <span style={{ fontSize: '12px', color: '#FEFEFE' }}>{new Date(selectedOrder.deliveryEta).toLocaleTimeString('en-US', { timeZone: STORE_TZ, hour: 'numeric', minute: '2-digit' })}</span>
                         </div>
                       )}
                       <div style={{ display: 'flex', gap: '8px', marginTop: '4px' }}>
@@ -439,7 +441,7 @@ export default function OrdersManagement() {
                           const res = await adminFetch(`${API}/orders/${selectedOrder.id}/delivery-quote`);
                           const data = await res.json();
                           if (data.error) { showSuccess(data.error); return; }
-                          const eta = data.eta ? new Date(data.eta).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' }) : 'N/A';
+                          const eta = data.eta ? new Date(data.eta).toLocaleTimeString('en-US', { timeZone: STORE_TZ, hour: 'numeric', minute: '2-digit' }) : 'N/A';
                           showSuccess(`Uber quote: $${data.fee?.toFixed(2)} · ETA: ${eta}`);
                         } catch { showSuccess('Could not get quote'); }
                       }} style={{
@@ -520,7 +522,7 @@ export default function OrdersManagement() {
       <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '10px' }}>
         <button onClick={() => {
           const rows = [['Order #', 'Customer', 'Email', 'Phone', 'Type', 'Status', 'Tip', 'Total', 'Date']];
-          displayOrders.forEach((o: any) => rows.push([o.orderNumber, o.customerName, o.customerEmail, o.customerPhone, o.orderType, o.status, `$${Number(o.tip || 0).toFixed(2)}`, `$${Number(o.total).toFixed(2)}`, new Date(o.createdAt).toLocaleDateString()]));
+          displayOrders.forEach((o: any) => rows.push([o.orderNumber, o.customerName, o.customerEmail, o.customerPhone, o.orderType, o.status, `$${Number(o.tip || 0).toFixed(2)}`, `$${Number(o.total).toFixed(2)}`, new Date(o.createdAt).toLocaleDateString('en-US', { timeZone: STORE_TZ })]));
           const csv = rows.map(r => r.map(v => `"${v}"`).join(',')).join('\n');
           const blob = new Blob([csv], { type: 'text/csv' });
           const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `orders-${activeTab}-${new Date().toISOString().split('T')[0]}.csv`; a.click();

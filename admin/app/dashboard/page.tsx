@@ -343,7 +343,7 @@ function DashboardContent() {
                           <span style={{ fontSize: '10px', padding: '2px 8px', borderRadius: '20px', fontWeight: '600', background: order.orderType === 'Delivery' ? '#0A1628' : '#1A1A00', color: order.orderType === 'Delivery' ? '#60A5FA' : '#E5B800', border: `1px solid ${order.orderType === 'Delivery' ? '#1E3A5F' : '#3A3A00'}` }}>{order.orderType}</span>
                           <span style={{ fontSize: '10px', padding: '2px 8px', borderRadius: '20px', fontWeight: '600', color: statusColor[order.status] || '#FEFEFE', background: `${statusColor[order.status] || '#FEFEFE'}18`, border: `1px solid ${statusColor[order.status] || '#FEFEFE'}40` }}>{order.status}</span>
                           <span style={{ fontSize: '10px', color: '#FEFEFE', marginLeft: 'auto' }}>
-                            {hasMounted ? new Date(order.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : '--:--'}
+                            {hasMounted ? new Date(order.createdAt).toLocaleTimeString('en-US', { timeZone: 'America/New_York', hour: '2-digit', minute: '2-digit' }) : '--:--'}
                           </span>
                         </div>
                       </div>
@@ -373,7 +373,7 @@ function DashboardContent() {
                               <span style={{ fontSize: '10px', padding: '2px 8px', borderRadius: '20px', fontWeight: '600', color: statusColor[order.status] || '#FEFEFE', background: `${statusColor[order.status] || '#FEFEFE'}18`, border: `1px solid ${statusColor[order.status] || '#FEFEFE'}40` }}>{order.status}</span>
                             </td>
                             <td style={{ padding: '12px 16px', fontSize: '11px', color: '#FEFEFE' }}>
-                              {hasMounted ? new Date(order.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : '--:--'}
+                              {hasMounted ? new Date(order.createdAt).toLocaleTimeString('en-US', { timeZone: 'America/New_York', hour: '2-digit', minute: '2-digit' }) : '--:--'}
                             </td>
                           </tr>
                         ))}

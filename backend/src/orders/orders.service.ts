@@ -882,8 +882,11 @@ export class OrdersService {
     const hourMap: Record<number, number> = {};
     for (let i = 0; i < 24; i++) hourMap[i] = 0;
     orders.forEach(o => {
-      const hour = o.createdAt.getHours();
-      hourMap[hour] += 1;
+      // Bucket by Philadelphia hour so the chart reflects the actual peak for the store,
+      // independent of where the backend happens to be hosted.
+      const hourStr = o.createdAt.toLocaleString('en-US', { timeZone: 'America/New_York', hour: '2-digit', hour12: false });
+      const hour = Number(hourStr) % 24;
+      hourMap[hour] = (hourMap[hour] || 0) + 1;
     });
     const peakHoursData = Object.entries(hourMap).map(([hour, count]) => {
       const h = parseInt(hour);

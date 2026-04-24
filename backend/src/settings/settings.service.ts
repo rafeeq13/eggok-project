@@ -4,13 +4,13 @@ import { Repository } from 'typeorm';
 import { Settings } from './settings.entity';
 
 const DEFAULT_HOURS = {
-  monday: { open: '07:00', close: '21:00', isOpen: true },
-  tuesday: { open: '07:00', close: '21:00', isOpen: true },
-  wednesday: { open: '07:00', close: '21:00', isOpen: true },
-  thursday: { open: '07:00', close: '21:00', isOpen: true },
-  friday: { open: '07:00', close: '21:00', isOpen: true },
-  saturday: { open: '08:00', close: '21:00', isOpen: true },
-  sunday: { open: '08:00', close: '21:00', isOpen: true },
+  monday: { open: '07:00', close: '15:00', isOpen: true },
+  tuesday: { open: '07:00', close: '15:00', isOpen: true },
+  wednesday: { open: '07:00', close: '15:00', isOpen: true },
+  thursday: { open: '07:00', close: '15:00', isOpen: true },
+  friday: { open: '07:00', close: '15:00', isOpen: true },
+  saturday: { open: '07:00', close: '15:00', isOpen: true },
+  sunday: { open: '07:00', close: '15:00', isOpen: true },
 };
 
 const DEFAULT_LOYALTY = {
@@ -104,9 +104,22 @@ export class SettingsService implements OnModuleInit {
       };
     }
 
-    const now = new Date();
+    // Compute the current day/hour/minute in the store's timezone (Philadelphia by default),
+    // NOT the server's local timezone — otherwise open/close windows drift with server location.
+    const tz = (storeSettings && storeSettings.storeTimezone) || 'America/New_York';
+    const parts = new Intl.DateTimeFormat('en-US', {
+      timeZone: tz,
+      weekday: 'long',
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: false,
+    }).formatToParts(new Date());
+    const weekday = (parts.find(p => p.type === 'weekday')?.value || '').toLowerCase();
+    const tzHour = Number(parts.find(p => p.type === 'hour')?.value || 0);
+    const tzMinute = Number(parts.find(p => p.type === 'minute')?.value || 0);
+
     const days = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
-    const today = days[now.getDay()];
+    const today = days.includes(weekday) ? weekday : days[new Date().getDay()];
     const todayHours = hours[today];
 
     if (!todayHours || !todayHours.isOpen) {
@@ -115,7 +128,7 @@ export class SettingsService implements OnModuleInit {
 
     const [openH, openM] = todayHours.open.split(':').map(Number);
     const [closeH, closeM] = todayHours.close.split(':').map(Number);
-    const currentMins = now.getHours() * 60 + now.getMinutes();
+    const currentMins = tzHour * 60 + tzMinute;
     const openMins = openH * 60 + openM;
     const closeMins = closeH * 60 + closeM;
 

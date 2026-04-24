@@ -184,7 +184,7 @@ function OrderTrackingContent() {
             {order.deliveryEta && (
               <div style={{ display: 'flex', justifyContent: 'space-between', padding: '12px 0', borderTop: '1px solid #F0F0F0' }}>
                 <span style={{ fontSize: '14px', color: '#777777', fontWeight: 500 }}>ETA</span>
-                <span style={{ fontSize: '14px', color: '#0D0D0D', fontWeight: 600 }}>{new Date(order.deliveryEta).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })}</span>
+                <span style={{ fontSize: '14px', color: '#0D0D0D', fontWeight: 600 }}>{new Date(order.deliveryEta).toLocaleTimeString('en-US', { timeZone: 'America/New_York', hour: 'numeric', minute: '2-digit' })}</span>
               </div>
             )}
             {order.deliveryTrackingUrl && (

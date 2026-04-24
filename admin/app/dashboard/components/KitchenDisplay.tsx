@@ -48,8 +48,9 @@ export default function KitchenDisplay() {
 
   const generateTicketHtml = useCallback((order: Order) => {
     const items = Array.isArray(order.items) ? order.items : [];
-    const time = new Date(order.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-    const date = new Date(order.createdAt).toLocaleDateString();
+    const TZ = 'America/New_York';
+    const time = new Date(order.createdAt).toLocaleTimeString('en-US', { timeZone: TZ, hour: '2-digit', minute: '2-digit' });
+    const date = new Date(order.createdAt).toLocaleDateString('en-US', { timeZone: TZ });
 
     return `<!DOCTYPE html>
 <html><head><style>

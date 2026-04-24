@@ -6,7 +6,7 @@ import { useStoreSettings } from '../../hooks/useStoreSettings';
 
 export default function ConfirmationPage() {
   const { cart, cartTotal, orderType, getPrice, scheduleType, scheduleTime, deliveryAddress, deliveryFee: cartDeliveryFee } = useCart();
-  const { taxRate, storeName, storeAddress } = useStoreSettings();
+  const { taxRate, storeName, storeAddress, storeTimezone } = useStoreSettings();
   const [visible, setVisible] = useState(false);
   const [orderNumber, setOrderNumber] = useState('');
   const [lastOrder, setLastOrder] = useState<any>(null);
@@ -37,11 +37,12 @@ export default function ConfirmationPage() {
       const [h, m] = scheduleTime.split(':').map(Number);
       return `${h > 12 ? h - 12 : h === 0 ? 12 : h}:${m.toString().padStart(2, '0')} ${h >= 12 ? 'PM' : 'AM'}`;
     }
-    const now = new Date();
-    now.setMinutes(now.getMinutes() + 15);
-    const h = now.getHours();
-    const m = now.getMinutes();
-    return `${h > 12 ? h - 12 : h === 0 ? 12 : h}:${m.toString().padStart(2, '0')} ${h >= 12 ? 'PM' : 'AM'}`;
+    return new Date(Date.now() + 15 * 60 * 1000).toLocaleTimeString('en-US', {
+      timeZone: storeTimezone || 'America/New_York',
+      hour: 'numeric',
+      minute: '2-digit',
+      hour12: true,
+    });
   };
 
   useEffect(() => {
@@ -367,7 +368,7 @@ export default function ConfirmationPage() {
               {deliveryTracking.eta && (
                 <div style={{ display: 'flex', justifyContent: 'space-between', padding: '8px 0', borderTop: '1px solid #D0D0D0' }}>
                   <span style={{ fontSize: '14px', color: '#777777' }}>ETA</span>
-                  <span style={{ fontSize: '14px', color: '#1A1A1A' }}>{new Date(deliveryTracking.eta).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })}</span>
+                  <span style={{ fontSize: '14px', color: '#1A1A1A' }}>{new Date(deliveryTracking.eta).toLocaleTimeString('en-US', { timeZone: storeTimezone || 'America/New_York', hour: 'numeric', minute: '2-digit' })}</span>
                 </div>
               )}
               {deliveryTracking.trackingUrl && (
