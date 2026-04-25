@@ -141,7 +141,7 @@ export class SquareService {
         try {
           await client.payments.create({
             sourceId: 'EXTERNAL',
-            idempotencyKey: `eggok-pay-${order.orderNumber}`,
+            idempotencyKey: `eggok-pay-${order.orderNumber}-${already.id.slice(0, 16)}`,
             amountMoney: { amount: BigInt(Math.round(order.total * 100)), currency: 'USD' as const },
             orderId: already.id,
             locationId: creds.squareLocationId,
@@ -297,7 +297,10 @@ export class SquareService {
         try {
           await client.payments.create({
             sourceId: 'EXTERNAL',
-            idempotencyKey: `eggok-pay-${order.orderNumber}`,
+            // Bind the idempotency key to the Square order id so a re-sync that
+// creates a fresh Square order records its own payment instead of returning
+// the cached payment linked to a previous Square order with the same orderNumber.
+idempotencyKey: `eggok-pay-${order.orderNumber}-${squareOrderId.slice(0, 16)}`,
             amountMoney: {
               amount: squareTotal,
               currency: 'USD' as const,
