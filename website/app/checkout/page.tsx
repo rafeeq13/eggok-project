@@ -440,52 +440,51 @@ function CheckoutInner() {
     };
 
     try {
-      // Step 1: Create order FIRST to get real order number
-      const response = await fetch(`${API_URL}/orders`, {
+      // Step 1: Create Stripe PaymentIntent with full cart embedded in metadata.
+      // The order row is NOT created in DB yet — it'll be created server-side
+      // only after Stripe confirms the charge.
+      const piRes = await fetch(`${API_URL}/payments/create-payment-intent-for-cart`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(orderData),
       });
 
-      if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}));
-        const message = Array.isArray(errorData?.message) ? errorData.message[0] : errorData?.message;
-        throw new Error(message || 'Unable to place your order right now.');
+      if (!piRes.ok) {
+        const err = await piRes.json().catch(() => ({}));
+        const message = Array.isArray(err?.message) ? err.message[0] : err?.message;
+        throw new Error(message || 'Payment setup failed');
       }
 
-      const order = await response.json();
+      const { clientSecret, paymentIntentId } = await piRes.json();
 
-      // Step 2: Process payment with REAL order number
+      // Step 2: Confirm card with Stripe
       const cardElement = stripe && elements ? elements.getElement(CardNumberElement) : null;
-      if (stripe && cardElement) {
-        const piRes = await fetch(`${API_URL}/payments/create-payment-intent`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ amount: total, orderNumber: order.orderNumber, customerEmail: email, customerName: `${firstName} ${lastName}` }),
-        });
-
-        if (!piRes.ok) {
-          const err = await piRes.json().catch(() => ({}));
-          throw new Error(err.message || 'Payment setup failed');
-        }
-
-        const { clientSecret, paymentIntentId } = await piRes.json();
-
-        const { error: stripeError } = await stripe.confirmCardPayment(clientSecret, {
-          payment_method: { card: cardElement, billing_details: { name: `${firstName} ${lastName}`, email } },
-        });
-
-        if (stripeError) {
-          throw new Error(stripeError.message || 'Payment failed');
-        }
-
-        // Payment succeeded — notify backend (Stripe webhook is primary, this is fallback)
-        fetch(`${API_URL}/orders/confirm-payment`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ orderNumber: order.orderNumber, paymentIntentId }),
-        }).catch(() => {});
+      if (!stripe || !cardElement) {
+        throw new Error('Payment form not ready. Please refresh and try again.');
       }
+      const { error: stripeError } = await stripe.confirmCardPayment(clientSecret, {
+        payment_method: { card: cardElement, billing_details: { name: `${firstName} ${lastName}`, email } },
+      });
+      if (stripeError) {
+        throw new Error(stripeError.message || 'Payment failed');
+      }
+
+      // Step 3: Create the order on the backend now that payment succeeded.
+      // The Stripe webhook is the primary creator; this is the fallback so the
+      // customer sees their order even if webhook delivery is slow. Idempotent
+      // on paymentIntentId, so it's safe to race the webhook.
+      const orderRes = await fetch(`${API_URL}/orders/confirm-payment`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ paymentIntentId }),
+      });
+      if (!orderRes.ok) {
+        // Payment went through but order creation hiccupped — the webhook will
+        // still create it. Send the user to confirmation with what we have.
+        const errBody = await orderRes.json().catch(() => ({}));
+        throw new Error(errBody?.message || 'Payment succeeded but order creation is delayed. Check your email shortly.');
+      }
+      const order = await orderRes.json();
 
       localStorage.setItem('eggok_last_order', JSON.stringify(order));
       router.push('/confirmation');

@@ -19,13 +19,22 @@ export class OrdersController {
   }
 
   /**
-   * Backward-compatible confirm-payment endpoint.
-   * Now accepts optional paymentIntentId for Stripe verification.
-   * The Stripe webhook is the primary source of truth; this is a fallback.
+   * Post-payment fallback. Frontend calls this after Stripe.confirmCardPayment
+   * succeeds; if the Stripe webhook hasn't run yet, this creates the order from
+   * the PaymentIntent's metadata. Idempotent on paymentIntentId — safe to call
+   * even if the webhook already created the order.
+   *
+   * Legacy clients can still pass orderNumber instead.
    */
   @Post('confirm-payment')
-  confirmPayment(@Body() body: { orderNumber: string; paymentIntentId?: string }) {
-    return this.ordersService.confirmOrderPayment(body.orderNumber, body.paymentIntentId);
+  async confirmPayment(@Body() body: { orderNumber?: string; paymentIntentId?: string }) {
+    if (body.paymentIntentId) {
+      return this.ordersService.createOrderFromPayment(body.paymentIntentId);
+    }
+    if (body.orderNumber) {
+      return this.ordersService.confirmOrderPayment(body.orderNumber);
+    }
+    throw new NotFoundException('paymentIntentId or orderNumber required');
   }
 
   @Get('search')

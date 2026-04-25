@@ -287,6 +287,95 @@ export class OrdersService {
   // Order Creation (pre-payment)
   // ──────────────────────────────────────────────
 
+  /**
+   * Create the order in DB AFTER Stripe has confirmed the payment.
+   * Cart data is recovered from PaymentIntent metadata (set by
+   * payments.service.createPaymentIntentForCart). Idempotent on paymentIntentId,
+   * so the Stripe webhook and the client-side fallback can both call this safely.
+   */
+  async createOrderFromPayment(paymentIntentId: string): Promise<Order> {
+    if (!paymentIntentId) throw new Error('paymentIntentId is required');
+
+    // Idempotency
+    const existing = await this.ordersRepository.findOne({ where: { paymentIntentId } });
+    if (existing) return existing;
+
+    // Verify payment + recover cart from Stripe
+    const { paid, cart } = await this.paymentsService.getCartFromPaymentIntent(paymentIntentId);
+    if (!paid) throw new Error(`Payment not yet succeeded for ${paymentIntentId}`);
+
+    const orderNumber = await this.generateOrderNumber();
+    const order = this.ordersRepository.create({
+      orderNumber,
+      customerName: cart.customerName,
+      customerEmail: cart.customerEmail,
+      customerPhone: cart.customerPhone,
+      orderType: cart.orderType,
+      scheduleType: cart.scheduleType,
+      scheduledDate: cart.scheduledDate || null,
+      scheduledTime: cart.scheduledTime || null,
+      deliveryAddress: cart.deliveryAddress || null,
+      deliveryApt: cart.deliveryApt || null,
+      deliveryInstructions: cart.deliveryInstructions || null,
+      items: cart.items || [],
+      subtotal: cart.subtotal,
+      tax: cart.tax,
+      deliveryFee: cart.deliveryFee || 0,
+      tip: cart.tip || 0,
+      total: cart.total,
+      promoCode: cart.promoCode || null,
+      discount: cart.discount || 0,
+      notes: cart.notes || null,
+      status: 'paid',
+      paymentIntentId,
+      squareSyncStatus: 'pending',
+    });
+    const saved = await this.ordersRepository.save(order);
+    this.logger.log(`[PAYMENT] ✓ Order ${orderNumber} created post-payment (PI: ${paymentIntentId})`);
+
+    // Post-payment side-effects (emails, transaction, customer upsert, loyalty, Square sync)
+    this.runPostPaymentFlow(saved, paymentIntentId);
+    return saved;
+  }
+
+  private runPostPaymentFlow(order: Order, paymentIntentId: string) {
+    this.mailService.sendOrderConfirmation(order).catch(err => {
+      this.logger.error(`Failed to send order confirmation email: ${err.message}`);
+    });
+    this.mailService.sendOwnerNotification(order).catch(err => {
+      this.logger.error(`Failed to send owner notification email: ${err.message}`);
+    });
+
+    this.paymentsService.recordTransaction({
+      orderNumber: order.orderNumber,
+      customer: order.customerName,
+      type: order.orderType === 'delivery' ? 'Delivery' : 'Pickup',
+      orderTotal: Number(order.total),
+      deliveryFee: Number(order.deliveryFee),
+      tip: Number(order.tip) || 0,
+      paymentIntentId,
+    }).catch(err => {
+      this.logger.error(`[PAYMENT] Failed to record transaction for ${order.orderNumber}: ${err.message}`);
+    });
+
+    if (order.customerEmail) {
+      this.upsertCustomer({
+        name: order.customerName,
+        email: order.customerEmail,
+        phone: order.customerPhone,
+        total: Number(order.total),
+        orderNumber: order.orderNumber,
+      }).catch(err => {
+        this.logger.error(`Failed to upsert customer record: ${err.message}`);
+      });
+      this.awardLoyaltyPoints(order).catch(() => {});
+    }
+
+    this.attemptSquareSync(order).catch(err => {
+      this.logger.warn(`[PAYMENT] Immediate Square sync failed for ${order.orderNumber}, worker will retry: ${err.message}`);
+    });
+  }
+
   async createOrder(data: any): Promise<Order> {
     const order = this.ordersRepository.create({
       orderNumber: await this.generateOrderNumber(),

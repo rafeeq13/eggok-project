@@ -68,6 +68,83 @@ export class PaymentsService {
     }
 
     /**
+     * Create a Stripe PaymentIntent for a cart that has NOT been written to the
+     * orders table yet. The whole cart is packed into Stripe metadata in 450-char
+     * chunks (Stripe allows 50 keys × 500 chars). The order itself is created
+     * by createOrderFromPayment() once Stripe confirms the charge — so a failed
+     * payment leaves zero trace in the DB.
+     */
+    async createPaymentIntentForCart(cart: any): Promise<{ clientSecret: string; paymentIntentId: string }> {
+        const stripe = await this.getStripe();
+        if (!stripe) {
+            throw new BadRequestException('Stripe is not configured. Add your secret key in Admin → Integrations.');
+        }
+
+        const totalCents = Math.round(Number(cart?.total) * 100);
+        if (!totalCents || totalCents < 50) {
+            throw new BadRequestException('Order amount too small for payment processing.');
+        }
+
+        const cartJson = JSON.stringify(cart);
+        const chunks: Record<string, string> = {};
+        let i = 0;
+        for (let pos = 0; pos < cartJson.length; pos += 450, i++) {
+            chunks[`cart_${i}`] = cartJson.substring(pos, pos + 450);
+        }
+        chunks['cart_chunks'] = String(i);
+
+        if (i > 48) {
+            throw new BadRequestException('Order is too large to process — please remove some items.');
+        }
+
+        const paymentIntent = await stripe.paymentIntents.create({
+            amount: totalCents,
+            currency: 'usd',
+            payment_method_types: ['card'],
+            metadata: chunks,
+            receipt_email: cart?.customerEmail || undefined,
+            description: `Eggs Ok Order - ${cart?.customerName || 'Customer'}`,
+        });
+
+        return {
+            clientSecret: paymentIntent.client_secret!,
+            paymentIntentId: paymentIntent.id,
+        };
+    }
+
+    /**
+     * Reassemble cart JSON from Stripe metadata chunks written by createPaymentIntentForCart.
+     */
+    unpackCartFromMetadata(metadata: Record<string, string>): any {
+        const count = Number(metadata?.cart_chunks || 0);
+        if (!count) throw new BadRequestException('Missing cart data in PaymentIntent metadata');
+        let json = '';
+        for (let i = 0; i < count; i++) {
+            json += metadata[`cart_${i}`] || '';
+        }
+        try {
+            return JSON.parse(json);
+        } catch {
+            throw new BadRequestException('Corrupt cart data in PaymentIntent metadata');
+        }
+    }
+
+    /**
+     * Fetch a PaymentIntent and tell the caller whether it has succeeded plus the
+     * cart it carried. Used by the webhook handler and the post-payment fallback
+     * endpoint when creating the order in DB.
+     */
+    async getCartFromPaymentIntent(paymentIntentId: string): Promise<{ paid: boolean; cart: any }> {
+        const stripe = await this.getStripe();
+        if (!stripe) throw new BadRequestException('Stripe is not configured.');
+        const pi = await stripe.paymentIntents.retrieve(paymentIntentId);
+        return {
+            paid: pi.status === 'succeeded',
+            cart: this.unpackCartFromMetadata(pi.metadata as Record<string, string>),
+        };
+    }
+
+    /**
      * Verify Stripe webhook signature and parse event.
      * Returns null if verification fails (signature mismatch or missing secret).
      */
