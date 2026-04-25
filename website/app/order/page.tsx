@@ -637,8 +637,16 @@ const css = `
   .upsell-row::-webkit-scrollbar { display: none; }
   .upsell-card { flex-shrink: 0; width: 130px; background: var(--bg1); border-radius: 12px; overflow: hidden; cursor: pointer; border: 1px solid #E5E5E5; transition: border-color 0.15s; }
   .upsell-card:hover { border-color: rgba(254,216,0,0.2); }
-  .upsell-card-img { height: 80px; background: var(--bg2); overflow: hidden; display: flex; align-items: center; justify-content: center; }
+  .upsell-card.upsell-card-selected { border-color: #E5B800; }
+  .upsell-card-img { position: relative; height: 80px; background: var(--bg2); overflow: hidden; display: flex; align-items: center; justify-content: center; }
   .upsell-card-img img { width: 100%; height: 100%; object-fit: cover; }
+  .upsell-card-add-btn { position: absolute; right: 6px; bottom: 6px; width: 26px; height: 26px; background: #FFFFFF; border: 1px solid #E5E5E5; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 6px rgba(0,0,0,0.08); }
+  .upsell-card:hover .upsell-card-add-btn { background: #fffff; border-color: #4D4D4D; }
+  .upsell-card:hover .upsell-card-add-btn svg { stroke: #000; }
+  .upsell-card-qty { position: absolute; right: 6px; bottom: 6px; display: flex; align-items: center; gap: 4px; background: #FFFFFF; border: 1px solid #E5B800; border-radius: 999px; padding: 2px 4px; box-shadow: 0 2px 6px rgba(0,0,0,0.08); }
+  .upsell-qty-btn { width: 22px; height: 22px; border-radius: 50%; border: none; background: transparent; color: #1A1A1A; cursor: pointer; font-size: 14px; font-weight: 700; display: flex; align-items: center; justify-content: center; line-height: 1; padding: 0; }
+  .upsell-qty-btn:hover { background: #F0F0F0; }
+  .upsell-qty-val { min-width: 14px; text-align: center; font-size: 13px; font-weight: 700; color: #1A1A1A; }
   .upsell-card-body { padding: 8px 10px; }
   .upsell-card-name { font-size: 13px; font-weight: 500; color: #4D4D4D; margin-bottom: 3px; line-height: 1.3; }
   .upsell-card-price { font-size: 14px; color: #4D4D4D; font-weight: 500; }
@@ -762,6 +770,10 @@ function OrderContent() {
   const [selectedModifiers, setSelectedModifiers] = useState<Record<number, number[]>>({});
   const [quantity, setQuantity] = useState(1);
   const [specialInstructions, setSpecialInstructions] = useState('');
+  // Upsells the user picked alongside the main item: { itemId: qty }.
+  // Cleared when a new item is opened or after the main "Add to cart" commits,
+  // so the modal's price totals always reflect just this session.
+  const [selectedUpsells, setSelectedUpsells] = useState<Record<number, number>>({});
   const [categories, setCategories] = useState<Category[]>([]);
   const [menuItems, setMenuItems] = useState<MenuItem[]>([]);
   const [upsellIds, setUpsellIds] = useState<number[]>([]);
@@ -938,7 +950,7 @@ function OrderContent() {
       setShowScheduleModal(true);
       return;
     }
-    setSelectedItem(item); setSelectedModifiers({}); setQuantity(1); setSpecialInstructions('');
+    setSelectedItem(item); setSelectedModifiers({}); setQuantity(1); setSpecialInstructions(''); setSelectedUpsells({});
   };
 
   const toggleModifier = (groupId: number, optId: number, maxSelections: number) => {
@@ -959,7 +971,32 @@ function OrderContent() {
   const handleAddToCart = () => {
     if (!selectedItem || !canAddToCart()) return;
     addToCart(selectedItem, quantity, selectedModifiers, specialInstructions);
+    // Also commit any upsells the user picked from "You might also like".
+    Object.entries(selectedUpsells).forEach(([id, qty]) => {
+      const item = menuItems.find(m => m.id === Number(id));
+      if (item && qty > 0) addToCart(item, qty, {}, '');
+    });
+    setSelectedUpsells({});
     setSelectedItem(null);
+  };
+
+  const upsellsTotal = Object.entries(selectedUpsells).reduce((sum, [id, qty]) => {
+    const item = menuItems.find(m => m.id === Number(id));
+    if (!item) return sum;
+    const price = Number(orderType === 'pickup' ? item.pickupPrice : item.deliveryPrice);
+    return sum + price * qty;
+  }, 0);
+
+  const incrementUpsell = (id: number) => {
+    setSelectedUpsells(prev => ({ ...prev, [id]: (prev[id] || 0) + 1 }));
+  };
+  const decrementUpsell = (id: number) => {
+    setSelectedUpsells(prev => {
+      const next = { ...prev };
+      const v = (next[id] || 0) - 1;
+      if (v <= 0) delete next[id]; else next[id] = v;
+      return next;
+    });
   };
 
   const scrollToCategory = (catId: number) => {
@@ -1805,29 +1842,45 @@ function OrderContent() {
                   <div id="item-upsell" className="upsell-section">
                     <p className="upsell-label">You might also like</p>
                     <div id="upsell-row" className="upsell-row">
-                      {upsellItems.map(item => (
-                        <div
-                          key={item.id}
-                          id={`upsell-${item.id}`}
-                          className="upsell-card"
-                          role="button"
-                          aria-label={`Add ${item.name} to cart`}
-                          onClick={(e) => { e.stopPropagation(); addToCart(item, 1, {}, ''); }}
-                        >
-                          <div className="upsell-card-img">
-                            {item.imageUrl
-                              ? <img src={item.imageUrl} alt={item.name} />
-                              : <svg width="28" height="28" viewBox="0 0 64 64" fill="none"><circle cx="32" cy="32" r="22" stroke="#D0D0D0" strokeWidth="1.5" /></svg>
-                            }
+                      {upsellItems.map(item => {
+                        const qty = selectedUpsells[item.id] || 0;
+                        return (
+                          <div
+                            key={item.id}
+                            id={`upsell-${item.id}`}
+                            className={`upsell-card${qty > 0 ? ' upsell-card-selected' : ''}`}
+                            role="button"
+                            aria-label={`Add ${item.name} to cart`}
+                            onClick={(e) => { e.stopPropagation(); incrementUpsell(item.id); }}
+                          >
+                            <div className="upsell-card-img">
+                              {item.imageUrl
+                                ? <img src={item.imageUrl} alt={item.name} />
+                                : <svg width="28" height="28" viewBox="0 0 64 64" fill="none"><circle cx="32" cy="32" r="22" stroke="#D0D0D0" strokeWidth="1.5" /></svg>
+                              }
+                              {qty === 0 ? (
+                                <div className="upsell-card-add-btn" aria-hidden="true">
+                                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#000" strokeWidth="2.8" strokeLinecap="round">
+                                    <line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" />
+                                  </svg>
+                                </div>
+                              ) : (
+                                <div className="upsell-card-qty" onClick={(e) => e.stopPropagation()}>
+                                  <button type="button" className="upsell-qty-btn" onClick={(e) => { e.stopPropagation(); decrementUpsell(item.id); }} aria-label={`Remove one ${item.name}`}>−</button>
+                                  <span className="upsell-qty-val" aria-label={`Quantity: ${qty}`}>{qty}</span>
+                                  <button type="button" className="upsell-qty-btn" onClick={(e) => { e.stopPropagation(); incrementUpsell(item.id); }} aria-label={`Add another ${item.name}`}>+</button>
+                                </div>
+                              )}
+                            </div>
+                            <div className="upsell-card-body">
+                              <p className="upsell-card-name">{item.name}</p>
+                              <p className="upsell-card-price">
+                                ${Number(orderType === 'pickup' ? item.pickupPrice : item.deliveryPrice).toFixed(2)}
+                              </p>
+                            </div>
                           </div>
-                          <div className="upsell-card-body">
-                            <p className="upsell-card-name">{item.name}</p>
-                            <p className="upsell-card-price">
-                              ${Number(orderType === 'pickup' ? item.pickupPrice : item.deliveryPrice).toFixed(2)}
-                            </p>
-                          </div>
-                        </div>
-                      ))}
+                        );
+                      })}
                     </div>
                   </div>
                 );
@@ -1846,7 +1899,7 @@ function OrderContent() {
                   onClick={handleAddToCart}
                   disabled={!canAddToCart()}
                 >
-                  Add to cart · ${((getItemPrice(selectedItem) + getModifierTotal()) * quantity).toFixed(2)}
+                  Add to cart · ${(((getItemPrice(selectedItem) + getModifierTotal()) * quantity) + upsellsTotal).toFixed(2)}
                 </button>
               </div>
             </div>
