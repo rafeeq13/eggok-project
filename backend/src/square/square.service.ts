@@ -194,23 +194,29 @@ export class SquareService {
         order.notes ? `Notes: ${order.notes}` : '',
       ].filter(Boolean).join(' | ');
 
-      // Build fulfillment based on order type
+      // Build fulfillment based on order type.
+      // For delivery orders we send Square `SHIPMENT` rather than `DELIVERY`.
+      // Square Free plan filters DELIVERY-type orders out of Order Manager
+      // (proven by direct experiments: TEST-A..D all hidden, TEST-E shipment shown);
+      // SHIPMENT renders cleanly with the recipient name + address. The order
+      // is still treated as delivery internally — Uber Direct dispatch, customer
+      // emails and our admin views all read `orderType = 'delivery'`. Only the
+      // Square representation is normalised so kitchen sees it on the dashboard.
       const isDelivery = order.orderType === 'delivery';
       const fulfillment = isDelivery
         ? {
-            type: 'DELIVERY' as const,
+            type: 'SHIPMENT' as const,
             state: 'PROPOSED' as const,
-            deliveryDetails: {
+            shipmentDetails: {
               recipient: {
-                displayName: order.customerName,
+                displayName: `🚚 ${order.customerName}`,
                 phoneNumber: order.customerPhone,
               },
-              scheduleType: 'ASAP' as const,
-              // deliverAt is required for Square dashboard to schedule the order;
-              // without it the order won't appear under the active/upcoming view.
-              deliverAt: new Date(Date.now() + 30 * 60000).toISOString(),
-              note: order.deliveryAddress || undefined,
-              dropoffNotes: order.notes || undefined,
+              expectedShippedAt: new Date(Date.now() + 30 * 60000).toISOString(),
+              shippingNote: [
+                order.deliveryAddress ? `Deliver to: ${order.deliveryAddress}` : '',
+                order.notes ? `Notes: ${order.notes}` : '',
+              ].filter(Boolean).join(' | ').slice(0, 500) || undefined,
             },
           }
         : {
