@@ -442,10 +442,12 @@ export class SquareService {
         return false;
       }
 
-      // Update fulfillment state (not order state)
+      // Update fulfillment state — preserve all existing fields (pickup_details,
+      // delivery_details, recipient, etc.) so Square dashboard keeps showing the
+      // proper Source / Type / Channel after completion. Sending only {uid,type,state}
+      // makes Square strip the metadata and fall back to generic "In store" / "Order".
       const updatedFulfillments = fulfillments.map((f: any) => ({
-        uid: f.uid,
-        type: f.type,
+        ...f,
         state: fulfillmentState as any,
       }));
 
