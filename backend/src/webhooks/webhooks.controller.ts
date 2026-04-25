@@ -58,25 +58,33 @@ export class WebhooksController {
     switch (eventType) {
       case 'payment_intent.succeeded': {
         const paymentIntent = event.data?.object || event;
-        const orderNumber = paymentIntent.metadata?.orderNumber;
         const paymentIntentId = paymentIntent.id;
 
-        if (!orderNumber) {
-          this.logger.warn('[STRIPE WEBHOOK] payment_intent.succeeded missing orderNumber in metadata');
-          return;
+        // New flow: cart embedded in PI metadata, create order from PI.
+        if (paymentIntent.metadata?.cart_chunks) {
+          this.logger.log(`[STRIPE WEBHOOK] Payment succeeded (PI: ${paymentIntentId}) — creating order from cart metadata`);
+          await this.ordersService.createOrderFromPayment(paymentIntentId);
+          break;
         }
 
-        this.logger.log(`[STRIPE WEBHOOK] Payment succeeded: ${orderNumber} (PI: ${paymentIntentId})`);
-        await this.ordersService.handlePaymentConfirmed(orderNumber, paymentIntentId);
+        // Legacy flow fallback (orderNumber pre-created in DB).
+        const orderNumber = paymentIntent.metadata?.orderNumber;
+        if (orderNumber) {
+          this.logger.log(`[STRIPE WEBHOOK] Payment succeeded (legacy): ${orderNumber} (PI: ${paymentIntentId})`);
+          await this.ordersService.handlePaymentConfirmed(orderNumber, paymentIntentId);
+        } else {
+          this.logger.warn('[STRIPE WEBHOOK] payment_intent.succeeded with no cart/orderNumber metadata');
+        }
         break;
       }
 
       case 'payment_intent.payment_failed': {
         const paymentIntent = event.data?.object || event;
+        this.logger.warn(`[STRIPE WEBHOOK] Payment failed (PI: ${paymentIntent.id})`);
+        // New flow: nothing to clean up — order was never created.
+        // Legacy flow only: purge the placeholder row.
         const orderNumber = paymentIntent.metadata?.orderNumber;
-
-        if (orderNumber) {
-          this.logger.warn(`[STRIPE WEBHOOK] Payment failed: ${orderNumber}`);
+        if (orderNumber && !paymentIntent.metadata?.cart_chunks) {
           await this.ordersService.handlePaymentFailed(orderNumber);
         }
         break;
