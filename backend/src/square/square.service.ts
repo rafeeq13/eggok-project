@@ -206,6 +206,9 @@ export class SquareService {
                 phoneNumber: order.customerPhone,
               },
               scheduleType: 'ASAP' as const,
+              // deliverAt is required for Square dashboard to schedule the order;
+              // without it the order won't appear under the active/upcoming view.
+              deliverAt: new Date(Date.now() + 30 * 60000).toISOString(),
               note: order.deliveryAddress || undefined,
               dropoffNotes: order.notes || undefined,
             },
