@@ -17,7 +17,9 @@ import { API, adminFetch } from '../../../lib/api';
 
 export default function MenuManagement() {
   const [mounted, setMounted] = useState(false);
-  const [activeTab, setActiveTab] = useState<'categories' | 'items' | 'modifiers' | 'history'>('categories');
+  const [activeTab, setActiveTab] = useState<'categories' | 'items' | 'modifiers' | 'upsell' | 'history'>('categories');
+  const [upsellIds, setUpsellIds] = useState<Set<number>>(new Set());
+  const [upsellSaving, setUpsellSaving] = useState(false);
   const [categories, setCategories] = useState<Category[]>([]);
   const [items, setItems] = useState<MenuItem[]>([]);
   const [modifierGroups, setModifierGroups] = useState<GlobalModifierGroup[]>([]);
@@ -49,7 +51,7 @@ export default function MenuManagement() {
 
   useEffect(() => {
     const saved = localStorage.getItem('menuTab');
-    if (saved && ['categories', 'items', 'modifiers', 'history'].includes(saved)) {
+    if (saved && ['categories', 'items', 'modifiers', 'upsell', 'history'].includes(saved)) {
       setActiveTab(saved as any);
     }
     setMounted(true);
@@ -94,9 +96,45 @@ export default function MenuManagement() {
 
   useEffect(() => { loadData(); }, []);
 
-  const switchTab = (tab: 'categories' | 'items' | 'modifiers' | 'history') => {
+  const switchTab = (tab: 'categories' | 'items' | 'modifiers' | 'upsell' | 'history') => {
     setActiveTab(tab);
     localStorage.setItem('menuTab', tab);
+  };
+
+  // Load upsell list from backend once on mount
+  useEffect(() => {
+    adminFetch(`${API}/settings/upsell`)
+      .then(r => (r.ok ? r.json() : null))
+      .then(data => {
+        if (Array.isArray(data)) setUpsellIds(new Set(data.map((x: any) => Number(x)).filter((n: number) => !isNaN(n))));
+      })
+      .catch(() => {});
+  }, []);
+
+  const toggleUpsell = (id: number) => {
+    setUpsellIds(prev => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id); else next.add(id);
+      return next;
+    });
+  };
+
+  const saveUpsell = async () => {
+    setUpsellSaving(true);
+    try {
+      const arr = Array.from(upsellIds);
+      const res = await adminFetch(`${API}/settings/upsell`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(arr),
+      });
+      if (res.ok) {
+        setSuccessMsg(`Saved ${arr.length} upsell item${arr.length === 1 ? '' : 's'}`);
+        setTimeout(() => setSuccessMsg(''), 2500);
+      }
+    } finally {
+      setUpsellSaving(false);
+    }
   };
 
   const confirm = (title: string, message: string, onConfirm: () => void) => setConfirmDialog({ show: true, title, message, onConfirm });
@@ -298,6 +336,7 @@ export default function MenuManagement() {
     { id: 'categories', label: 'Categories', count: categories.length },
     { id: 'items', label: 'Items', count: items.length },
     { id: 'modifiers', label: 'Modifier Library', count: modifierGroups.length },
+    { id: 'upsell', label: 'You May Like', count: upsellIds.size },
     { id: 'history', label: 'History', count: history.length },
   ] as const;
 
@@ -709,6 +748,71 @@ export default function MenuManagement() {
           ))}
         </div>
       )}
+
+      {/* UPSELL TAB — pick items to show in "You might also like" on the customer-facing item modal */}
+      {activeTab === 'upsell' && (() => {
+        const eligible = items.filter(i => (!i.linkedModifierIds || i.linkedModifierIds.length === 0));
+        const ineligibleCount = items.length - eligible.length;
+        return (
+          <div>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px', flexWrap: 'wrap', gap: '10px' }}>
+              <div>
+                <p style={{ fontSize: '14px', color: '#FEFEFE', margin: 0, fontWeight: 600 }}>Pick items to show in &quot;You might also like&quot;</p>
+                <p style={{ fontSize: '12px', color: '#AAAAAA', margin: '4px 0 0' }}>
+                  Customers tap once on these to add them to their cart. Only items without modifiers are shown here, so single-tap add always works cleanly.
+                  {ineligibleCount > 0 && ` (${ineligibleCount} item${ineligibleCount === 1 ? '' : 's'} hidden — they have modifiers.)`}
+                </p>
+              </div>
+              <button
+                onClick={saveUpsell}
+                disabled={upsellSaving}
+                style={{ padding: '10px 22px', background: upsellSaving ? '#444' : '#E5B800', color: '#000', border: 'none', borderRadius: '8px', fontSize: '13px', fontWeight: 700, cursor: upsellSaving ? 'not-allowed' : 'pointer' }}
+              >
+                {upsellSaving ? 'Saving…' : `Save (${upsellIds.size} selected)`}
+              </button>
+            </div>
+
+            {eligible.length === 0 ? (
+              <p style={{ padding: '40px', textAlign: 'center', color: '#AAAAAA', fontSize: '13px', background: '#1A1A1A', border: '1px solid #2A2A2A', borderRadius: '12px' }}>
+                No modifier-free items yet. Add an item without modifiers to make it available here.
+              </p>
+            ) : (
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(240px, 1fr))', gap: '10px' }}>
+                {eligible.map(item => {
+                  const checked = upsellIds.has(item.id);
+                  const cat = categories.find(c => c.id === item.categoryId)?.name || '—';
+                  return (
+                    <label
+                      key={item.id}
+                      style={{
+                        display: 'flex', alignItems: 'center', gap: '12px',
+                        padding: '12px 14px', borderRadius: '10px', cursor: 'pointer',
+                        background: checked ? '#E5B80018' : '#1A1A1A',
+                        border: `1px solid ${checked ? '#E5B800' : '#2A2A2A'}`,
+                        transition: 'background 0.15s, border-color 0.15s',
+                      }}
+                    >
+                      <input
+                        type="checkbox"
+                        checked={checked}
+                        onChange={() => toggleUpsell(item.id)}
+                        style={{ width: '18px', height: '18px', cursor: 'pointer', accentColor: '#E5B800' }}
+                      />
+                      <div style={{ flex: 1, minWidth: 0 }}>
+                        <p style={{ margin: 0, fontSize: '13px', color: '#FEFEFE', fontWeight: 600, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{item.name}</p>
+                        <p style={{ margin: '2px 0 0', fontSize: '11px', color: '#AAAAAA' }}>
+                          {cat} · ${Number(item.pickupPrice || 0).toFixed(2)}
+                          {!item.available && <span style={{ color: '#FC0301', marginLeft: 6 }}>· unavailable</span>}
+                        </p>
+                      </div>
+                    </label>
+                  );
+                })}
+              </div>
+            )}
+          </div>
+        );
+      })()}
 
       {/* HISTORY TAB */}
       {activeTab === 'history' && (

@@ -764,6 +764,7 @@ function OrderContent() {
   const [specialInstructions, setSpecialInstructions] = useState('');
   const [categories, setCategories] = useState<Category[]>([]);
   const [menuItems, setMenuItems] = useState<MenuItem[]>([]);
+  const [upsellIds, setUpsellIds] = useState<number[]>([]);
   const [loading, setLoading] = useState(true);
   const [showCart, setShowCart] = useState(false);
   const [showDeliveryModal, setShowDeliveryModal] = useState(false);
@@ -846,11 +847,13 @@ function OrderContent() {
     Promise.all([
       fetch(`${API}/menu/categories`).then(r => r.json()),
       fetch(`${API}/menu/items`).then(r => r.json()),
-    ]).then(([cats, items]) => {
+      fetch(`${API}/settings/upsell`).then(r => (r.ok ? r.json() : [])).catch(() => []),
+    ]).then(([cats, items, upsell]) => {
       const activeCategories = cats.filter((c: any) => c.isActive);
       const availableItems = items.filter((i: any) => i.isAvailable).map((i: any) => ({ ...i, imageUrl: i.image || '' }));
       setCategories([{ id: 0, name: 'Popular' }, ...activeCategories]);
       setMenuItems(availableItems);
+      setUpsellIds(Array.isArray(upsell) ? upsell.map((x: any) => Number(x)).filter((n: number) => !isNaN(n)) : []);
       setLoading(false);
       const pId = searchParams.get('productId');
       if (pId && availableItems.length > 0) {
@@ -1781,30 +1784,47 @@ function OrderContent() {
                 />
               </div>
 
-              {/* Upsell */}
-              {menuItems.filter(i => i.id !== selectedItem.id && i.categoryId === selectedItem.categoryId).length > 0 && (
-                <div id="item-upsell" className="upsell-section">
-                  <p className="upsell-label">You might also like</p>
-                  <div id="upsell-row" className="upsell-row">
-                    {menuItems.filter(i => i.id !== selectedItem.id && i.categoryId === selectedItem.categoryId).slice(0, 4).map(item => (
-                      <div key={item.id} id={`upsell-${item.id}`} className="upsell-card" onClick={() => openItem(item)}>
-                        <div className="upsell-card-img">
-                          {item.imageUrl
-                            ? <img src={item.imageUrl} alt={item.name} />
-                            : <svg width="28" height="28" viewBox="0 0 64 64" fill="none"><circle cx="32" cy="32" r="22" stroke="#D0D0D0" strokeWidth="1.5" /></svg>
-                          }
+              {/* Upsell — admin-picked modifier-free items. Tap once to add to cart without replacing
+                  the item currently being configured in this modal. */}
+              {(() => {
+                const upsellSet = new Set(upsellIds);
+                const upsellItems = menuItems.filter(i =>
+                  upsellSet.has(i.id) &&
+                  i.id !== selectedItem.id &&
+                  (!i.modifiers || i.modifiers.length === 0)
+                ).slice(0, 8);
+                if (upsellItems.length === 0) return null;
+                return (
+                  <div id="item-upsell" className="upsell-section">
+                    <p className="upsell-label">You might also like</p>
+                    <div id="upsell-row" className="upsell-row">
+                      {upsellItems.map(item => (
+                        <div
+                          key={item.id}
+                          id={`upsell-${item.id}`}
+                          className="upsell-card"
+                          role="button"
+                          aria-label={`Add ${item.name} to cart`}
+                          onClick={(e) => { e.stopPropagation(); addToCart(item, 1, {}, ''); }}
+                        >
+                          <div className="upsell-card-img">
+                            {item.imageUrl
+                              ? <img src={item.imageUrl} alt={item.name} />
+                              : <svg width="28" height="28" viewBox="0 0 64 64" fill="none"><circle cx="32" cy="32" r="22" stroke="#D0D0D0" strokeWidth="1.5" /></svg>
+                            }
+                          </div>
+                          <div className="upsell-card-body">
+                            <p className="upsell-card-name">{item.name}</p>
+                            <p className="upsell-card-price">
+                              ${Number(orderType === 'pickup' ? item.pickupPrice : item.deliveryPrice).toFixed(2)}
+                            </p>
+                          </div>
                         </div>
-                        <div className="upsell-card-body">
-                          <p className="upsell-card-name">{item.name}</p>
-                          <p className="upsell-card-price">
-                            ${Number(orderType === 'pickup' ? item.pickupPrice : item.deliveryPrice).toFixed(2)}
-                          </p>
-                        </div>
-                      </div>
-                    ))}
+                      ))}
+                    </div>
                   </div>
-                </div>
-              )}
+                );
+              })()}
 
               {/* Add to cart row */}
               <div id="item-add-row" className="item-add-row">
