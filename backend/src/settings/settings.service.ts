@@ -106,16 +106,18 @@ export class SettingsService implements OnModuleInit {
 
     // Compute the current day/hour/minute in the store's timezone (Philadelphia by default),
     // NOT the server's local timezone — otherwise open/close windows drift with server location.
+    // hourCycle:'h23' forces 00-23 range; en-US with hour12:false returns '24' for midnight,
+    // which would break the comparison against open times stored as "00:00".
     const tz = (storeSettings && storeSettings.storeTimezone) || 'America/New_York';
     const parts = new Intl.DateTimeFormat('en-US', {
       timeZone: tz,
       weekday: 'long',
       hour: '2-digit',
       minute: '2-digit',
-      hour12: false,
+      hourCycle: 'h23',
     }).formatToParts(new Date());
     const weekday = (parts.find(p => p.type === 'weekday')?.value || '').toLowerCase();
-    const tzHour = Number(parts.find(p => p.type === 'hour')?.value || 0);
+    const tzHour = Number(parts.find(p => p.type === 'hour')?.value || 0) % 24;
     const tzMinute = Number(parts.find(p => p.type === 'minute')?.value || 0);
 
     const days = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
