@@ -930,9 +930,14 @@ function OrderContent() {
   };
 
   const openItem = (item: MenuItem) => {
-    // When the store is closed, only block ASAP orders. Customers who pick
-    // "Schedule for later" can still add items to the cart.
-    if (!isOpen && scheduleType !== 'scheduled') return;
+    // When the store is closed, force the customer to schedule. Instead of
+    // silently blocking the click (confusing UX), open the schedule modal so
+    // they can pick a future time slot. Once a time is picked, scheduleType
+    // becomes 'scheduled' and subsequent clicks open the item normally.
+    if (!isOpen && scheduleType !== 'scheduled') {
+      setShowScheduleModal(true);
+      return;
+    }
     setSelectedItem(item); setSelectedModifiers({}); setQuantity(1); setSpecialInstructions('');
   };
 
