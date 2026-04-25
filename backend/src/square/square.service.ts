@@ -429,6 +429,16 @@ export class SquareService {
     const fulfillmentState = fulfillmentStateMap[status];
     if (!fulfillmentState) return false;
 
+    // For terminal statuses, also flip the parent order.state so Square dashboard
+    // moves the order out of "Active" into the matching tab. Square does NOT
+    // auto-transition order.state when fulfillment.state hits COMPLETED.
+    const orderStateMap: Record<string, string> = {
+      delivered: 'COMPLETED',
+      picked_up: 'COMPLETED',
+      cancelled: 'CANCELED',
+    };
+    const orderState = orderStateMap[status];
+
     try {
       const client = this.getClient(creds);
 
@@ -457,11 +467,12 @@ export class SquareService {
           locationId: creds.squareLocationId,
           version,
           fulfillments: updatedFulfillments,
+          ...(orderState ? { state: orderState as any } : {}),
         },
         idempotencyKey: `eggok-update-${squareOrderId}-${status}-${Date.now()}`,
       });
 
-      console.log(`[SQUARE] Order ${squareOrderId} fulfillment → ${fulfillmentState}`);
+      console.log(`[SQUARE] Order ${squareOrderId} fulfillment → ${fulfillmentState}${orderState ? ` (order.state → ${orderState})` : ''}`);
       return true;
     } catch (err: any) {
       const message = err?.errors?.[0]?.detail || err?.message || 'Unknown error';
