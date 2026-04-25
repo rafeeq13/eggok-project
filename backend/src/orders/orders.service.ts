@@ -25,13 +25,16 @@ const VALID_TRANSITIONS: Record<string, string[]> = {
   cancelled: [],
 };
 
-const SQUARE_MAX_SYNC_ATTEMPTS = 5;
+const SQUARE_MAX_SYNC_ATTEMPTS = 100; // ~50 min of attempts before pausing
 const SQUARE_SYNC_INTERVAL_MS = 30_000; // 30 seconds
+const SQUARE_RESCUE_INTERVAL_MS = 5 * 60_000; // 5 minutes — re-queue failed orders
+const SQUARE_RESCUE_MAX_AGE_MS = 72 * 60 * 60_000; // give up only after 3 days
 
 @Injectable()
 export class OrdersService {
   private readonly logger = new Logger('OrdersService');
   private squareSyncTimer: ReturnType<typeof setInterval> | null = null;
+  private squareRescueTimer: ReturnType<typeof setInterval> | null = null;
 
   constructor(
     @InjectRepository(Order)
@@ -59,7 +62,35 @@ export class OrdersService {
         this.logger.error(`[SQUARE WORKER] Unexpected error: ${err.message}`);
       });
     }, SQUARE_SYNC_INTERVAL_MS);
-    this.logger.log('[SQUARE WORKER] Started — checking every 30s for pending syncs');
+    this.squareRescueTimer = setInterval(() => {
+      this.rescueFailedSquareSyncs().catch(err => {
+        this.logger.error(`[SQUARE RESCUE] Unexpected error: ${err.message}`);
+      });
+    }, SQUARE_RESCUE_INTERVAL_MS);
+    this.logger.log('[SQUARE WORKER] Started — pending sync every 30s, failed-rescue every 5m');
+  }
+
+  /**
+   * Re-queue orders that exhausted their attempt budget but are still recent.
+   * Resets attempt counter so the main worker picks them up again. Square API
+   * outages can last hours; this prevents an order from being permanently stuck
+   * when it's only the API that was temporarily failing.
+   */
+  private async rescueFailedSquareSyncs() {
+    const cutoff = new Date(Date.now() - SQUARE_RESCUE_MAX_AGE_MS);
+    const result = await this.ordersRepository
+      .createQueryBuilder()
+      .update()
+      .set({ squareSyncStatus: 'pending', squareSyncAttempts: 0 })
+      .where('squareSyncStatus = :failed', { failed: 'failed' })
+      .andWhere('createdAt >= :cutoff', { cutoff })
+      .andWhere('status IN (:...statuses)', {
+        statuses: ['paid', 'sent_to_kitchen', 'confirmed', 'preparing', 'ready', 'out_for_delivery'],
+      })
+      .execute();
+    if ((result.affected || 0) > 0) {
+      this.logger.log(`[SQUARE RESCUE] Re-queued ${result.affected} failed order(s) for retry`);
+    }
   }
 
   /**
