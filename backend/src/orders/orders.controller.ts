@@ -37,6 +37,16 @@ export class OrdersController {
     throw new NotFoundException('paymentIntentId or orderNumber required');
   }
 
+  /**
+   * Place an order paid entirely by gift card. Used when the gift card balance
+   * covers the whole total — there's no Stripe leg because the remaining charge
+   * would be below Stripe's $0.50 PaymentIntent minimum.
+   */
+  @Post('place-with-gift-card')
+  placeWithGiftCard(@Body() body: any) {
+    return this.ordersService.placeOrderWithGiftCard(body);
+  }
+
   @Get('search')
   @UseGuards(AdminGuard)
   searchOrder(@Query('q') q: string) {

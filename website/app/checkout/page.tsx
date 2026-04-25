@@ -311,6 +311,9 @@ function CheckoutInner() {
   const [promoDiscount, setPromoDiscount] = useState(0);
   const [promoLabel, setPromoLabel] = useState('');
   const [promoLoading, setPromoLoading] = useState(false);
+  // Gift card uses the same input as promos but is treated as a payment method
+  // (deducts from the Stripe charge), not as a discount line on the order total.
+  const [giftCard, setGiftCard] = useState<{ code: string; balance: number; appliedAmount: number } | null>(null);
 
   const [tipMode, setTipMode] = useState<'preset' | 'custom'>('preset');
   const [tipPercent, setTipPercent] = useState(15);
@@ -342,6 +345,10 @@ function CheckoutInner() {
     : (subtotal * tipPercent) / 100;
 
   const total = subtotal + taxes + deliveryFee - discount + tipAmount;
+  // What the gift card actually applies to the order — the lesser of its
+  // balance and the order total, recomputed when the cart changes.
+  const giftCardApplied = giftCard ? Math.min(giftCard.balance, total) : 0;
+  const stripeCharge = Math.max(0, total - giftCardApplied);
 
   const inputStyle: React.CSSProperties = {
     width: '100%', padding: '12px 16px',
@@ -381,19 +388,28 @@ function CheckoutInner() {
         body: JSON.stringify({ code: promoCode, subtotal }),
       });
       const data = await res.json();
-      if (data.valid) {
+      if (data.valid && data.kind === 'gift_card' && data.giftCard) {
+        // Gift cards aren't a discount — they reduce the Stripe charge instead.
+        setGiftCard(data.giftCard);
+        setPromoApplied(false);
+        setPromoDiscount(0);
+        setPromoLabel('');
+        setPromoError('');
+      } else if (data.valid) {
         setPromoApplied(true);
         setPromoDiscount(data.discountAmount);
         setPromoLabel(data.message);
         setPromoError('');
+        setGiftCard(null);
       } else {
         setPromoApplied(false);
         setPromoDiscount(0);
         setPromoLabel('');
-        setPromoError(data.message || 'Invalid promo code');
+        setGiftCard(null);
+        setPromoError(data.message || 'Invalid code');
       }
     } catch {
-      setPromoError('Unable to validate promo code. Please try again.');
+      setPromoError('Unable to validate code. Please try again.');
     }
     setPromoLoading(false);
   };
@@ -437,12 +453,36 @@ function CheckoutInner() {
       promoCode: promoApplied ? promoCode : null,
       discount,
       isAuthenticated: isLoggedIn,
+      // Gift card fields are read by the backend after Stripe confirms; the
+      // backend then atomically debits the card balance against the order.
+      giftCardCode: giftCard?.code || null,
+      giftCardAmount: giftCardApplied || 0,
     };
 
     try {
-      // Step 1: Create Stripe PaymentIntent with full cart embedded in metadata.
-      // The order row is NOT created in DB yet — it'll be created server-side
-      // only after Stripe confirms the charge.
+      // Case A — gift card covers the whole order, no Stripe charge needed (would
+      // be below the $0.50 PaymentIntent minimum). Place the order via the dedicated
+      // free-order endpoint that redeems the card atomically.
+      if (giftCard && stripeCharge < 0.5) {
+        const freeRes = await fetch(`${API_URL}/orders/place-with-gift-card`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(orderData),
+        });
+        if (!freeRes.ok) {
+          const err = await freeRes.json().catch(() => ({}));
+          throw new Error(err?.message || 'Could not place order with gift card');
+        }
+        const order = await freeRes.json();
+        localStorage.setItem('eggok_last_order', JSON.stringify(order));
+        router.push('/confirmation');
+        setTimeout(() => clearCart(), 500);
+        return;
+      }
+
+      // Case B — Stripe pays the full or remaining amount. The backend reads
+      // giftCardCode + giftCardAmount from the cart and computes the actual
+      // Stripe charge as `total − giftCardAmount` itself.
       const piRes = await fetch(`${API_URL}/payments/create-payment-intent-for-cart`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -457,7 +497,7 @@ function CheckoutInner() {
 
       const { clientSecret, paymentIntentId } = await piRes.json();
 
-      // Step 2: Confirm card with Stripe
+      // Confirm card with Stripe
       const cardElement = stripe && elements ? elements.getElement(CardNumberElement) : null;
       if (!stripe || !cardElement) {
         throw new Error('Payment form not ready. Please refresh and try again.');
@@ -469,18 +509,14 @@ function CheckoutInner() {
         throw new Error(stripeError.message || 'Payment failed');
       }
 
-      // Step 3: Create the order on the backend now that payment succeeded.
-      // The Stripe webhook is the primary creator; this is the fallback so the
-      // customer sees their order even if webhook delivery is slow. Idempotent
-      // on paymentIntentId, so it's safe to race the webhook.
+      // Create the order on the backend now that payment succeeded. Idempotent
+      // on paymentIntentId — safe to race the Stripe webhook.
       const orderRes = await fetch(`${API_URL}/orders/confirm-payment`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ paymentIntentId }),
       });
       if (!orderRes.ok) {
-        // Payment went through but order creation hiccupped — the webhook will
-        // still create it. Send the user to confirmation with what we have.
         const errBody = await orderRes.json().catch(() => ({}));
         throw new Error(errBody?.message || 'Payment succeeded but order creation is delayed. Check your email shortly.');
       }
@@ -488,10 +524,8 @@ function CheckoutInner() {
 
       localStorage.setItem('eggok_last_order', JSON.stringify(order));
       router.push('/confirmation');
-      // Clear cart after navigation starts so the "empty cart" error doesn't flash
       setTimeout(() => clearCart(), 500);
     } catch (err) {
-      // Order placement failed
       setOrderError(err instanceof Error ? err.message : 'Unable to place your order right now.');
       setPlacing(false);
       placingRef.current = false;
@@ -795,6 +829,12 @@ function CheckoutInner() {
                       <span style={{ fontSize: '16px', color: '#22C55E' }}>-${discount.toFixed(2)}</span>
                     </div>
                   )}
+                  {giftCard && giftCardApplied > 0 && (
+                    <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                      <span style={{ fontSize: '16px', color: '#22C55E' }}>Gift card ({giftCard.code})</span>
+                      <span style={{ fontSize: '16px', color: '#22C55E' }}>-${giftCardApplied.toFixed(2)}</span>
+                    </div>
+                  )}
                 </div>
 
                 {/* Promo */}
@@ -811,6 +851,12 @@ function CheckoutInner() {
                     </button>
                   </div>
                   {promoApplied && <p style={{ fontSize: '12px', color: '#22C55E', marginTop: '6px' }}>&#10003; {promoLabel}</p>}
+                  {giftCard && (
+                    <p style={{ fontSize: '12px', color: '#22C55E', marginTop: '6px' }}>
+                      &#10003; Gift card {giftCard.code} — applying ${giftCardApplied.toFixed(2)} of ${giftCard.balance.toFixed(2)}
+                      {' '}<button type="button" onClick={() => { setGiftCard(null); setPromoCode(''); }} style={{ background: 'none', border: 'none', color: '#FC0301', fontSize: '12px', cursor: 'pointer', textDecoration: 'underline', padding: 0 }}>remove</button>
+                    </p>
+                  )}
                   {promoError && <p style={{ fontSize: '12px', color: '#FC0301', marginTop: '6px' }}>{promoError}</p>}
                 </div>
 

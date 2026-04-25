@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Promotion } from './promotion.entity';
 import { Customer } from '../customers/customer.entity';
+import { GiftCardsService } from '../gift-cards/gift-cards.service';
 
 @Injectable()
 export class PromotionsService {
@@ -11,6 +12,7 @@ export class PromotionsService {
         private readonly promotionRepository: Repository<Promotion>,
         @InjectRepository(Customer)
         private readonly customerRepository: Repository<Customer>,
+        private readonly giftCardsService: GiftCardsService,
     ) { }
 
     async findAll(): Promise<Promotion[]> {
@@ -48,9 +50,35 @@ export class PromotionsService {
         discountAmount: number;
         discountLabel: string;
         message: string;
+        kind?: 'promo' | 'reward' | 'gift_card';
+        giftCard?: { code: string; balance: number; appliedAmount: number };
     }> {
+        const trimmed = (code || '').toUpperCase().trim();
+
+        // Gift cards live in their own table and behave as a payment method, not a
+        // discount. Route GC- codes through the gift card service so the checkout
+        // page can render the redemption separately and split the Stripe charge.
+        if (trimmed.startsWith('GC-')) {
+            const result = await this.giftCardsService.validateForCheckout(trimmed, subtotal);
+            if (!result.valid) {
+                return { valid: false, discountAmount: 0, discountLabel: '', message: result.message, kind: 'gift_card' };
+            }
+            return {
+                valid: true,
+                discountAmount: 0, // not a discount — frontend adjusts the Stripe charge instead
+                discountLabel: `Gift card $${(result.appliedAmount || 0).toFixed(2)}`,
+                message: result.message,
+                kind: 'gift_card',
+                giftCard: {
+                    code: result.code!,
+                    balance: result.balance!,
+                    appliedAmount: result.appliedAmount!,
+                },
+            };
+        }
+
         const promo = await this.promotionRepository.findOne({
-            where: { code: code.toUpperCase().trim() },
+            where: { code: trimmed },
         });
 
         if (!promo) {

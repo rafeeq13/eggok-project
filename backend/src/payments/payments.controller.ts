@@ -3,6 +3,7 @@ import { PaymentsService } from './payments.service';
 import { OrdersService } from '../orders/orders.service';
 import { Transaction } from './transaction.entity';
 import { AdminGuard } from '../auth/admin.guard';
+import { GiftCardsService } from '../gift-cards/gift-cards.service';
 
 @Controller('payments')
 export class PaymentsController {
@@ -11,6 +12,7 @@ export class PaymentsController {
     constructor(
         private readonly paymentsService: PaymentsService,
         private readonly ordersService: OrdersService,
+        private readonly giftCardsService: GiftCardsService,
     ) { }
 
     @Get('stripe-key')
@@ -89,6 +91,13 @@ export class PaymentsController {
             case 'payment_intent.succeeded': {
                 const paymentIntent = event.data?.object || event;
                 const paymentIntentId = paymentIntent.id;
+
+                // Gift card purchase — issue the card and email the recipient.
+                if (paymentIntent.metadata?.type === 'gift_card') {
+                    this.logger.log(`[STRIPE WEBHOOK] Gift card payment succeeded (PI: ${paymentIntentId}) — issuing card`);
+                    await this.giftCardsService.issueFromPayment(paymentIntentId);
+                    break;
+                }
 
                 // New flow: cart embedded in metadata, create order from PI
                 if (paymentIntent.metadata?.cart_chunks) {

@@ -8,6 +8,7 @@ import { DeliveryService } from '../delivery/delivery.service';
 import { PaymentsService } from '../payments/payments.service';
 import { LoyaltyService } from '../loyalty/loyalty.service';
 import { SquareService } from '../square/square.service';
+import { GiftCardsService } from '../gift-cards/gift-cards.service';
 
 // Valid state transitions — the order state machine
 const VALID_TRANSITIONS: Record<string, string[]> = {
@@ -55,6 +56,7 @@ export class OrdersService {
     private paymentsService: PaymentsService,
     private loyaltyService: LoyaltyService,
     private squareService: SquareService,
+    private giftCardsService: GiftCardsService,
   ) {
     // Start background workers on service init
     this.startSquareSyncWorker();
@@ -306,6 +308,11 @@ export class OrdersService {
     if (!paid) throw new Error(`Payment not yet succeeded for ${paymentIntentId}`);
 
     const orderNumber = await this.generateOrderNumber();
+    const giftCardCode: string | undefined = cart.giftCardCode
+      ? String(cart.giftCardCode).trim().toUpperCase()
+      : undefined;
+    const giftCardAmount = Number(cart.giftCardAmount || 0);
+
     const order = this.ordersRepository.create({
       orderNumber,
       customerName: cart.customerName,
@@ -329,13 +336,89 @@ export class OrdersService {
       notes: cart.notes || null,
       status: 'paid',
       paymentIntentId,
+      giftCardCode,
+      giftCardAmount,
       squareSyncStatus: 'pending',
     });
     const saved = await this.ordersRepository.save(order);
     this.logger.log(`[PAYMENT] ✓ Order ${orderNumber} created post-payment (PI: ${paymentIntentId})`);
 
+    // Redeem gift card portion if present. Idempotent on (giftCardId, orderNumber),
+    // so if the webhook + post-payment fallback both run, only one debit happens.
+    if (giftCardCode && giftCardAmount > 0) {
+      try {
+        await this.giftCardsService.redeem({
+          code: giftCardCode,
+          requestedAmount: giftCardAmount,
+          orderNumber,
+        });
+      } catch (err: any) {
+        this.logger.error(`[GIFT-CARD] Redemption failed for ${orderNumber} (${giftCardCode}): ${err.message}`);
+      }
+    }
+
     // Post-payment side-effects (emails, transaction, customer upsert, loyalty, Square sync)
     this.runPostPaymentFlow(saved, paymentIntentId);
+    return saved;
+  }
+
+  /**
+   * Place an order paid 100% by gift card. The Stripe charge would be below the
+   * $0.50 PaymentIntent minimum, so there's no Stripe leg — we redeem the card
+   * inline and create the order in a single atomic operation.
+   */
+  async placeOrderWithGiftCard(cart: any): Promise<Order> {
+    const code = cart?.giftCardCode ? String(cart.giftCardCode).trim().toUpperCase() : '';
+    if (!code) throw new Error('giftCardCode is required');
+    const total = Number(cart?.total);
+    if (!Number.isFinite(total) || total <= 0) throw new Error('Invalid order total');
+
+    // Validate the card has enough balance BEFORE creating the order so we don't
+    // leave an orphan order if redemption fails.
+    const validation = await this.giftCardsService.validateForCheckout(code, total);
+    if (!validation.valid || (validation.balance ?? 0) < total) {
+      throw new Error(validation.message || 'Gift card does not have enough balance to cover this order');
+    }
+
+    const orderNumber = await this.generateOrderNumber();
+    const order = this.ordersRepository.create({
+      orderNumber,
+      customerName: cart.customerName,
+      customerEmail: cart.customerEmail,
+      customerPhone: cart.customerPhone,
+      orderType: cart.orderType,
+      scheduleType: cart.scheduleType,
+      scheduledDate: cart.scheduledDate || null,
+      scheduledTime: cart.scheduledTime || null,
+      deliveryAddress: cart.deliveryAddress || null,
+      deliveryApt: cart.deliveryApt || null,
+      deliveryInstructions: cart.deliveryInstructions || null,
+      items: cart.items || [],
+      subtotal: cart.subtotal,
+      tax: cart.tax,
+      deliveryFee: cart.deliveryFee || 0,
+      tip: cart.tip || 0,
+      total,
+      promoCode: cart.promoCode || null,
+      discount: cart.discount || 0,
+      notes: cart.notes || null,
+      status: 'paid',
+      giftCardCode: code,
+      giftCardAmount: total,
+      squareSyncStatus: 'pending',
+    });
+    const saved = await this.ordersRepository.save(order);
+
+    try {
+      await this.giftCardsService.redeem({ code, requestedAmount: total, orderNumber });
+    } catch (err: any) {
+      // Roll back: a failed redemption shouldn't leave a paid order with no real payment.
+      await this.ordersRepository.delete(saved.id);
+      throw new Error(`Gift card redemption failed: ${err.message}`);
+    }
+
+    this.logger.log(`[PAYMENT] ✓ Order ${orderNumber} created with full gift card payment (${code})`);
+    this.runPostPaymentFlow(saved, '');
     return saved;
   }
 
@@ -355,6 +438,7 @@ export class OrdersService {
       deliveryFee: Number(order.deliveryFee),
       tip: Number(order.tip) || 0,
       paymentIntentId,
+      giftCardPaid: Number(order.giftCardAmount) || 0,
     }).catch(err => {
       this.logger.error(`[PAYMENT] Failed to record transaction for ${order.orderNumber}: ${err.message}`);
     });
@@ -666,12 +750,17 @@ export class OrdersService {
       this.mailService.sendPickupCompleteEmail(updated).catch(() => {});
     }
 
-    // Cancelled — cancel delivery if active
+    // Cancelled — cancel delivery if active, and refund any gift card amount.
     if (status === 'cancelled') {
       this.mailService.sendOrderCancelledEmail(updated).catch(() => {});
       if (updated.deliveryQuoteId) {
         this.deliveryService.cancelDelivery(updated.deliveryQuoteId).catch(err => {
           this.logger.error(`[ORDERS] Failed to cancel delivery: ${err}`);
+        });
+      }
+      if (updated.giftCardCode && Number(updated.giftCardAmount) > 0) {
+        this.giftCardsService.refundRedemption(updated.orderNumber).catch(err => {
+          this.logger.error(`[ORDERS] Gift card refund failed for ${updated.orderNumber}: ${err.message}`);
         });
       }
     }

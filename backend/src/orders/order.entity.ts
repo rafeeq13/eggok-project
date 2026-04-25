@@ -72,6 +72,15 @@ export class Order {
   @Column({ nullable: true, unique: true })
   paymentIntentId: string;
 
+  // Gift card payment tracking. giftCardAmount is the amount debited from the
+  // card; the rest of the total is charged via Stripe (or zero if the card
+  // covers the whole order — in that case paymentIntentId stays null).
+  @Column({ nullable: true })
+  giftCardCode: string;
+
+  @Column({ type: 'decimal', precision: 10, scale: 2, default: 0 })
+  giftCardAmount: number;
+
   // Square POS sync tracking
   @Column({ nullable: true })
   squareOrderId: string;

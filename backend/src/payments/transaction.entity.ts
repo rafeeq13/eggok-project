@@ -35,6 +35,15 @@ export class Transaction {
     @Column({ type: 'decimal', precision: 10, scale: 2, default: 0 })
     refundAmount: number;
 
+    // Split-payment tracking for orders partially paid by gift card.
+    // giftCardPaid was booked as revenue when the gift card itself was sold,
+    // so it's excluded from netRevenue here to avoid double-counting.
+    @Column({ type: 'decimal', precision: 10, scale: 2, default: 0 })
+    giftCardPaid: number;
+
+    @Column({ type: 'decimal', precision: 10, scale: 2, default: 0 })
+    stripePaid: number;
+
     @CreateDateColumn()
     date: Date;
 }

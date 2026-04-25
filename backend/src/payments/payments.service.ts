@@ -80,7 +80,13 @@ export class PaymentsService {
             throw new BadRequestException('Stripe is not configured. Add your secret key in Admin → Integrations.');
         }
 
-        const totalCents = Math.round(Number(cart?.total) * 100);
+        // Stripe only needs to charge the portion not covered by a gift card.
+        // The cart's `total` stays the real order total (used to build the order
+        // row), and we compute the actual Stripe amount as total − giftCardAmount.
+        const realTotal = Number(cart?.total) || 0;
+        const giftCardAmount = Math.min(Number(cart?.giftCardAmount || 0), realTotal);
+        const chargeAmount = Math.max(0, realTotal - giftCardAmount);
+        const totalCents = Math.round(chargeAmount * 100);
         if (!totalCents || totalCents < 50) {
             throw new BadRequestException('Order amount too small for payment processing.');
         }
@@ -165,6 +171,7 @@ export class PaymentsService {
         deliveryFee: number;
         tip: number;
         paymentIntentId?: string;
+        giftCardPaid?: number;
     }): Promise<Transaction> {
         // Idempotency: check if transaction already exists for this order
         const existing = await this.transactionRepository.findOne({ where: { id: data.orderNumber } });
@@ -173,8 +180,15 @@ export class PaymentsService {
             return existing;
         }
 
-        const stripeFee = Number((data.orderTotal * 0.029 + 0.30).toFixed(2));
-        const netRevenue = Number((data.orderTotal - stripeFee).toFixed(2));
+        // Stripe fees only apply to the portion actually charged through Stripe.
+        // The gift-card portion was already booked as revenue when the card was sold,
+        // so we charge no fee on it and exclude it from netRevenue to avoid double-count.
+        const giftCardPaid = Number(data.giftCardPaid || 0);
+        const stripePaid = Math.max(0, Number((data.orderTotal - giftCardPaid).toFixed(2)));
+        const stripeFee = stripePaid > 0
+            ? Number((stripePaid * 0.029 + 0.30).toFixed(2))
+            : 0;
+        const netRevenue = Number((stripePaid - stripeFee).toFixed(2));
 
         return this.transactionRepository.save(this.transactionRepository.create({
             id: data.orderNumber,
@@ -186,6 +200,8 @@ export class PaymentsService {
             tip: data.tip || 0,
             netRevenue,
             status: 'Paid',
+            giftCardPaid,
+            stripePaid,
         }));
     }
 

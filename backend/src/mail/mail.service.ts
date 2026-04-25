@@ -715,6 +715,78 @@ export class MailService {
         );
     }
 
+    /**
+     * Sent to the recipient after a gift card purchase clears Stripe. Includes the
+     * redemption code, balance, and the sender's personal message. Best-effort —
+     * called from GiftCardsService.issueFromPayment.
+     */
+    async sendGiftCardIssuedEmail(card: {
+        code: string;
+        initialBalance: number | string;
+        recipientName?: string | null;
+        recipientEmail?: string | null;
+        senderName?: string | null;
+        message?: string | null;
+        expiresAt?: string | null;
+    }) {
+        const settings = await this.getResolvedMailSettings();
+        if (!this.isConfigured(settings) || !settings.enabled) {
+            console.error('[GIFT-CARD EMAIL] Skipped: mail not configured or disabled.');
+            return false;
+        }
+        if (!card.recipientEmail) {
+            console.error('[GIFT-CARD EMAIL] Skipped: no recipient email on card.');
+            return false;
+        }
+
+        const websiteUrl = this.configService.get<string>('FRONTEND_URL') || 'http://localhost:3000';
+        const amount = Number(card.initialBalance || 0).toFixed(2);
+        const recipientName = this.safeText(card.recipientName || 'there');
+        const senderName = this.safeText(card.senderName || 'A friend');
+        const personalMessage = this.safeText(card.message || '');
+        const expiryLine = card.expiresAt
+            ? `Expires ${card.expiresAt}`
+            : 'Never expires — use it whenever you like.';
+
+        const sections: Array<{ title: string; lines: string[] }> = [
+            {
+                title: 'Your gift card code',
+                lines: [card.code, `Balance: $${amount}`, expiryLine],
+            },
+        ];
+        if (personalMessage) {
+            sections.push({ title: `Message from ${senderName}`, lines: [personalMessage] });
+        }
+        sections.push({
+            title: 'How to redeem',
+            lines: [
+                'Add items to your cart and head to checkout.',
+                'Enter the code above in the "Add coupon or gift card" field.',
+                'The balance applies to your order — any remainder can be used later.',
+            ],
+        });
+
+        await this.sendMail(
+            {
+                to: card.recipientEmail,
+                subject: `${senderName} sent you a $${amount} Eggs Ok gift card`,
+                html: this.wrapEmail({
+                    eyebrow: 'Gift Card',
+                    title: `You received a $${amount} Eggs Ok gift card`,
+                    preheader: `${senderName} sent you a $${amount} Eggs Ok gift card. Code inside.`,
+                    intro: `Hi ${recipientName}, ${senderName} sent you an Eggs Ok gift card worth $${amount}. Use the code below at checkout — the balance carries over between orders.`,
+                    cta: { text: 'Order Now', link: `${websiteUrl}/order` },
+                    sections,
+                    footer: 'Keep this code safe — anyone with it can redeem the balance.',
+                }),
+                text: `Hi ${recipientName}, ${senderName} sent you a $${amount} Eggs Ok gift card.\n\nCode: ${card.code}\nBalance: $${amount}\n${personalMessage ? `\nMessage: ${personalMessage}\n` : ''}\nRedeem at ${websiteUrl}/order.`,
+            },
+            settings,
+        );
+        console.log(`[GIFT-CARD EMAIL] Sent to ${card.recipientEmail} for code ${card.code}`);
+        return true;
+    }
+
     async sendGiftCardRequest(payload: any) {
         const settings = await this.assertMailReady();
         const amount = Number(payload?.amount || 0).toFixed(2);

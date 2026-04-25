@@ -1,15 +1,44 @@
 'use client';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import Header from '../components/Header';
 import StickyOrderCta from '../components/StickyOrderCta';
+import { loadStripe } from '@stripe/stripe-js';
+import {
+  Elements, CardNumberElement, CardExpiryElement, CardCvcElement,
+  useStripe, useElements,
+} from '@stripe/react-stripe-js';
 import {
   Gift, Send, Check, MapPin, Smartphone,
   ShieldCheck, RefreshCw, Infinity, ArrowRight,
 } from 'lucide-react';
 
+const API = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3002/api';
+
 export default function GiftCardsPage() {
+  const [stripePromise, setStripePromise] = useState<any>(null);
+  useEffect(() => {
+    fetch(`${API}/payments/stripe-key`)
+      .then(r => r.ok ? r.json() : { key: null })
+      .then(data => {
+        if (data?.key && data.key.startsWith('pk_') && data.key.length > 20) {
+          setStripePromise(loadStripe(data.key));
+        }
+      })
+      .catch(() => {});
+  }, []);
+
+  return (
+    <Elements stripe={stripePromise} options={{ appearance: { theme: 'stripe', variables: { colorPrimary: '#E5B800', colorBackground: '#F8F9FA', colorText: '#1A1A1A', borderRadius: '10px' } } }}>
+      <GiftCardsPageInner />
+    </Elements>
+  );
+}
+
+function GiftCardsPageInner() {
+  const stripe = useStripe();
+  const elements = useElements();
   const [amount, setAmount] = useState(25);
   const [customAmount, setCustomAmount] = useState('');
   const [recipientName, setRecipientName] = useState('');
@@ -23,22 +52,61 @@ export default function GiftCardsPage() {
 
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState('');
+  const [cardNumberComplete, setCardNumberComplete] = useState(false);
+  const [cardExpiryComplete, setCardExpiryComplete] = useState(false);
+  const [cardCvcComplete, setCardCvcComplete] = useState(false);
+  const cardComplete = cardNumberComplete && cardExpiryComplete && cardCvcComplete;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!stripe || !elements) {
+      setSubmitError('Payment is still loading. Please wait a moment and try again.');
+      return;
+    }
+    if (!cardComplete) {
+      setSubmitError('Please enter complete card details.');
+      return;
+    }
     setSubmitting(true);
     setSubmitError('');
     try {
-      const API = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3002/api';
-      const res = await fetch(`${API}/mail/gift-card`, {
+      // Step 1 — create the gift card PaymentIntent. The actual gift card row is
+      // not created in DB until the payment confirms (the webhook + the
+      // issue-from-payment fallback both create it idempotently).
+      const piRes = await fetch(`${API}/gift-cards/create-payment-intent`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ amount: finalAmount, recipientName, recipientEmail, senderName, message }),
+        body: JSON.stringify({
+          amount: finalAmount,
+          recipientName, recipientEmail, senderName,
+          senderEmail: recipientEmail, // receipt also goes to sender if they have one
+          message,
+        }),
       });
-      if (!res.ok) {
-        const data = await res.json().catch(() => ({}));
-        throw new Error(data.message || 'Failed to send gift card');
+      if (!piRes.ok) {
+        const data = await piRes.json().catch(() => ({}));
+        const msg = Array.isArray(data?.message) ? data.message[0] : data?.message;
+        throw new Error(msg || 'Could not start payment');
       }
+      const { clientSecret, paymentIntentId } = await piRes.json();
+
+      // Step 2 — confirm the card with Stripe
+      const cardElement = elements.getElement(CardNumberElement);
+      if (!cardElement) throw new Error('Card form not ready. Please refresh and try again.');
+      const { error: stripeError } = await stripe.confirmCardPayment(clientSecret, {
+        payment_method: { card: cardElement, billing_details: { name: senderName, email: recipientEmail } },
+      });
+      if (stripeError) throw new Error(stripeError.message || 'Card payment failed');
+
+      // Step 3 — fallback issuance in case the Stripe webhook is delayed.
+      // This is idempotent on paymentIntentId, so the webhook + this call
+      // both safely converge on the same gift card record.
+      await fetch(`${API}/gift-cards/issue-from-payment`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ paymentIntentId }),
+      }).catch(() => { /* webhook will still issue */ });
+
       setSubmitted(true);
     } catch (err) {
       setSubmitError(err instanceof Error ? err.message : 'Failed to send. Please try again.');
@@ -404,7 +472,7 @@ export default function GiftCardsPage() {
                   </p>
                   <p id="success-email" className="success-email">{recipientEmail}</p>
                   <p id="success-note" className="success-note">
-                    Note: Gift cards will be fully activated once backend payment is connected.
+                    The recipient will receive an email with their gift card code and balance.
                   </p>
                   <div id="success-actions" className="success-actions">
                     <button
@@ -487,6 +555,37 @@ export default function GiftCardsPage() {
                       />
                     </div>
 
+                    {/* Card details — uses the same form-input look so the page UI is unchanged */}
+                    <div id="form-group-card-number">
+                      <label htmlFor="input-card-number" className="form-label">Card Number *</label>
+                      <div id="input-card-number" className="form-input" style={{ padding: '14px 16px' }}>
+                        <CardNumberElement
+                          options={{ style: { base: { fontSize: '16px', color: '#1A1A1A', '::placeholder': { color: '#888888' } } } }}
+                          onChange={e => setCardNumberComplete(e.complete)}
+                        />
+                      </div>
+                    </div>
+                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
+                      <div id="form-group-card-exp">
+                        <label htmlFor="input-card-exp" className="form-label">Expiry *</label>
+                        <div id="input-card-exp" className="form-input" style={{ padding: '14px 16px' }}>
+                          <CardExpiryElement
+                            options={{ style: { base: { fontSize: '16px', color: '#1A1A1A', '::placeholder': { color: '#888888' } } } }}
+                            onChange={e => setCardExpiryComplete(e.complete)}
+                          />
+                        </div>
+                      </div>
+                      <div id="form-group-card-cvc">
+                        <label htmlFor="input-card-cvc" className="form-label">CVC *</label>
+                        <div id="input-card-cvc" className="form-input" style={{ padding: '14px 16px' }}>
+                          <CardCvcElement
+                            options={{ style: { base: { fontSize: '16px', color: '#1A1A1A', '::placeholder': { color: '#888888' } } } }}
+                            onChange={e => setCardCvcComplete(e.complete)}
+                          />
+                        </div>
+                      </div>
+                    </div>
+
                     {/* Order summary */}
                     <div id="order-summary" className="order-summary">
                       <p className="order-summary-label">Gift card value</p>
@@ -501,12 +600,12 @@ export default function GiftCardsPage() {
                     <button
                       id="form-submit-btn"
                       type="submit"
-                      disabled={finalAmount <= 0 || submitting}
-                      className={`form-submit-btn ${finalAmount > 0 && !submitting ? 'enabled' : 'disabled'}`}
+                      disabled={finalAmount <= 0 || submitting || !cardComplete || !stripe}
+                      className={`form-submit-btn ${finalAmount > 0 && !submitting && cardComplete && stripe ? 'enabled' : 'disabled'}`}
                       style={submitting ? { opacity: 0.6, cursor: 'not-allowed' } : {}}
                     >
                       <Gift size={18} strokeWidth={2.5} aria-hidden="true" />
-                      {submitting ? 'Sending...' : `Purchase Gift Card · $${finalAmount > 0 ? finalAmount : 0}`}
+                      {submitting ? 'Processing...' : `Purchase Gift Card · $${finalAmount > 0 ? finalAmount : 0}`}
                     </button>
 
                   </form>
