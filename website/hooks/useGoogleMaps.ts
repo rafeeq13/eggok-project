@@ -100,6 +100,7 @@ export function initAutocomplete(
 
   const autocompleteService = new g.maps.places.AutocompleteService();
   const placesService = new g.maps.places.PlacesService(document.createElement('div'));
+  const geocoder = new g.maps.Geocoder();
   let sessionToken = new g.maps.places.AutocompleteSessionToken();
 
   const dropdown = document.createElement('div');
@@ -125,21 +126,51 @@ export function initAutocomplete(
   const hide = () => { dropdown.style.display = 'none'; };
   const show = () => { positionDropdown(); dropdown.style.display = 'block'; };
 
-  const render = (predictions: any[] | null) => {
+  // Geocode the raw typed text — used as a fallback so the user can always proceed
+  // even when Places returns no predictions or is denied/limited.
+  const selectByGeocode = (text: string) => {
+    geocoder.geocode({ address: text, componentRestrictions: { country: 'US' } }, (results: any[] | null, status: any) => {
+      if (status === 'OK' && results && results[0]?.geometry?.location) {
+        const r = results[0];
+        const address = r.formatted_address || text;
+        input.value = address;
+        onPlaceSelected({
+          address,
+          lat: r.geometry.location.lat(),
+          lng: r.geometry.location.lng(),
+        });
+      } else {
+        console.warn('[gmaps] geocode failed:', status, 'for', text);
+      }
+      hide();
+    });
+  };
+
+  const buildItem = (label: string, sublabel: string | null, onSelect: () => void, isFirst: boolean) => {
+    const item = document.createElement('div');
+    item.setAttribute('role', 'option');
+    item.style.cssText =
+      'padding:10px 14px;cursor:pointer;font-size:16px;color:#1A1A1A;' +
+      `border-top:${isFirst ? 'none' : '1px solid #F0F0F0'};`;
+    const escape = (s: string) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    item.innerHTML = sublabel
+      ? `<div style="font-weight:600;line-height:1.3;">${escape(label)}</div>` +
+        `<div style="font-size:12px;color:#777;margin-top:2px;">${escape(sublabel)}</div>`
+      : `<div>${escape(label)}</div>`;
+    item.addEventListener('mouseenter', () => { item.style.background = '#F5F5F5'; });
+    item.addEventListener('mouseleave', () => { item.style.background = ''; });
+    item.addEventListener('mousedown', (e) => { e.preventDefault(); onSelect(); });
+    return item;
+  };
+
+  const render = (predictions: any[] | null, query: string) => {
     dropdown.innerHTML = '';
-    if (!predictions || predictions.length === 0) { hide(); return; }
-    predictions.slice(0, 5).forEach((p: any, i: number) => {
-      const item = document.createElement('div');
-      item.setAttribute('role', 'option');
-      item.style.cssText =
-        'padding:10px 14px;cursor:pointer;font-size:16px;color:#1A1A1A;' +
-        `border-top:${i === 0 ? 'none' : '1px solid #F0F0F0'};`;
-      item.textContent = p.description;
-      item.addEventListener('mouseenter', () => { item.style.background = '#F5F5F5'; });
-      item.addEventListener('mouseleave', () => { item.style.background = ''; });
-      // mousedown so it fires before the input's blur (which would otherwise hide the dropdown first).
-      item.addEventListener('mousedown', (e) => {
-        e.preventDefault();
+    const items: HTMLElement[] = [];
+
+    (predictions || []).slice(0, 5).forEach((p: any, i: number) => {
+      const main = p.structured_formatting?.main_text || p.description;
+      const secondary = p.structured_formatting?.secondary_text || null;
+      items.push(buildItem(main, secondary, () => {
         placesService.getDetails(
           { placeId: p.place_id, fields: ['formatted_address', 'geometry'], sessionToken },
           (place: any, status: any) => {
@@ -151,15 +182,30 @@ export function initAutocomplete(
                 lat: place.geometry.location.lat(),
                 lng: place.geometry.location.lng(),
               });
-              // New session after a selection — per Google billing best-practice.
               sessionToken = new g.maps.places.AutocompleteSessionToken();
+              hide();
+            } else {
+              console.warn('[gmaps] getDetails failed:', status, '— falling back to geocode');
+              selectByGeocode(p.description);
             }
-            hide();
-          }
+          },
         );
-      });
-      dropdown.appendChild(item);
+      }, i === 0));
     });
+
+    // Always-visible fallback row so the user can proceed even if Places returned
+    // ZERO_RESULTS or was denied. Geocoder resolves the typed text to lat/lng.
+    if (query.length >= 2) {
+      items.push(buildItem(
+        `Use “${query}”`,
+        'Search this exact address',
+        () => selectByGeocode(query),
+        items.length === 0,
+      ));
+    }
+
+    if (items.length === 0) { hide(); return; }
+    items.forEach(it => dropdown.appendChild(it));
     show();
   };
 
@@ -168,11 +214,14 @@ export function initAutocomplete(
     const reqId = ++currentRequestId;
     autocompleteService.getPlacePredictions(
       { input: query, componentRestrictions: { country: 'us' }, sessionToken },
-      (predictions: any[] | null) => {
-        // Drop out-of-order responses
-        if (reqId !== currentRequestId) return;
-        render(predictions);
-      }
+      (predictions: any[] | null, status: any) => {
+        if (reqId !== currentRequestId) return; // out-of-order
+        const PS = g.maps.places.PlacesServiceStatus;
+        if (status && status !== PS.OK && status !== PS.ZERO_RESULTS) {
+          console.error('[gmaps] AutocompleteService failed:', status, '— check Google Cloud key, billing, Places API enabled, and HTTP referer restrictions for this domain');
+        }
+        render(predictions, query);
+      },
     );
   };
 

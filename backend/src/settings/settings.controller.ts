@@ -68,12 +68,11 @@ export class SettingsController {
   @UseGuards(AdminGuard)
   async testUberDirect() {
     try {
-      const available = await this.deliveryService.isAvailable();
-      if (!available) {
-        return { success: false, message: 'Missing Uber Direct credentials or not marked as connected' };
+      const settings = await this.settingsService.getSetting('integrations');
+      if (!settings?.uberDirectClientId || !settings?.uberDirectClientSecret || !settings?.uberDirectCustomerId) {
+        return { success: false, message: 'Missing Uber Direct credentials (Client ID, Secret, or Customer ID)' };
       }
       // Try to get an OAuth token to verify credentials work
-      const settings = await this.settingsService.getSetting('integrations');
       const res = await fetch('https://login.uber.com/oauth/v2/token', {
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
