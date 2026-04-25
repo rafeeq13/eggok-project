@@ -85,7 +85,11 @@ export class SquareService {
    */
   private async findExistingByReference(client: SquareClient, locationId: string, reference: string): Promise<{ id: string } | null> {
     try {
-      const since = new Date(Date.now() - 24 * 60 * 60_000).toISOString();
+      // Short window — only the last few minutes. Goal is to catch network-drop
+      // retries (response lost between Square accepting our create and our process
+      // reading it). NOT to adopt historical orders that happen to share a
+      // reference_id (e.g. after truncating our DB and reusing EO-XXXX numbers).
+      const since = new Date(Date.now() - 5 * 60_000).toISOString();
       const result = await client.orders.search({
         locationIds: [locationId],
         query: {
@@ -94,7 +98,7 @@ export class SquareService {
           },
           sort: { sortField: 'CREATED_AT', sortOrder: 'DESC' },
         },
-        limit: 200,
+        limit: 100,
       });
       const match = (result.orders || []).find((o: any) => o.referenceId === reference);
       return match ? { id: match.id! } : null;
