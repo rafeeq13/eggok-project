@@ -30,11 +30,19 @@ const SQUARE_SYNC_INTERVAL_MS = 30_000; // 30 seconds
 const SQUARE_RESCUE_INTERVAL_MS = 5 * 60_000; // 5 minutes — re-queue failed orders
 const SQUARE_RESCUE_MAX_AGE_MS = 72 * 60 * 60_000; // give up only after 3 days
 
+// Unpaid order lifecycle: rows exist only so we can attach the orderNumber to a Stripe
+// PaymentIntent. They're invisible to admin/customer until payment confirms, and any
+// order that doesn't pay within this window is purged so abandoned carts leave no trace.
+const UNPAID_STATUSES = ['pending_payment', 'pending'] as const;
+const ABANDONED_ORDER_TTL_MS = 30 * 60_000; // 30 minutes
+const ABANDONED_CLEANUP_INTERVAL_MS = 5 * 60_000; // sweep every 5 minutes
+
 @Injectable()
 export class OrdersService {
   private readonly logger = new Logger('OrdersService');
   private squareSyncTimer: ReturnType<typeof setInterval> | null = null;
   private squareRescueTimer: ReturnType<typeof setInterval> | null = null;
+  private abandonedCleanupTimer: ReturnType<typeof setInterval> | null = null;
 
   constructor(
     @InjectRepository(Order)
@@ -48,8 +56,35 @@ export class OrdersService {
     private loyaltyService: LoyaltyService,
     private squareService: SquareService,
   ) {
-    // Start the Square sync worker on service init
+    // Start background workers on service init
     this.startSquareSyncWorker();
+    this.startAbandonedOrderCleanup();
+  }
+
+  /**
+   * Periodically delete unpaid orders older than the abandonment TTL. These rows only
+   * exist to attach an orderNumber to a Stripe PaymentIntent — if payment never confirms,
+   * we don't want them lingering in the DB or showing up anywhere.
+   */
+  private startAbandonedOrderCleanup() {
+    this.abandonedCleanupTimer = setInterval(() => {
+      this.cleanupAbandonedOrders().catch(err => {
+        this.logger.error(`[ORDER CLEANUP] Unexpected error: ${err.message}`);
+      });
+    }, ABANDONED_CLEANUP_INTERVAL_MS);
+  }
+
+  private async cleanupAbandonedOrders() {
+    const cutoff = new Date(Date.now() - ABANDONED_ORDER_TTL_MS);
+    const result = await this.ordersRepository
+      .createQueryBuilder()
+      .delete()
+      .where('status IN (:...statuses)', { statuses: UNPAID_STATUSES })
+      .andWhere('createdAt < :cutoff', { cutoff })
+      .execute();
+    if ((result.affected || 0) > 0) {
+      this.logger.log(`[ORDER CLEANUP] Purged ${result.affected} abandoned unpaid order(s) older than ${ABANDONED_ORDER_TTL_MS / 60_000}m`);
+    }
   }
 
   // ──────────────────────────────────────────────
@@ -375,13 +410,12 @@ export class OrdersService {
     const order = await this.ordersRepository.findOne({ where: { orderNumber } });
     if (!order) return;
 
-    // Only update if still in pending_payment state
-    if (order.status === 'pending_payment' || order.status === 'pending') {
-      await this.ordersRepository.update(order.id, {
-        status: 'cancelled',
-        squareSyncStatus: 'not_required',
-      });
-      this.logger.warn(`[PAYMENT] Order ${orderNumber} payment failed — cancelled`);
+    // If the order never made it past payment, purge it entirely so failed payments
+    // leave no trace (no row in admin orders, no entry in customer history). Already-paid
+    // orders that later "fail" (e.g. dispute webhooks) are left alone for accounting.
+    if ((UNPAID_STATUSES as unknown as string[]).includes(order.status)) {
+      await this.ordersRepository.delete(order.id);
+      this.logger.warn(`[PAYMENT] Order ${orderNumber} payment failed — purged from DB`);
     }
   }
 
@@ -476,6 +510,7 @@ export class OrdersService {
 
   async getAllOrders(page = 1, limit = 50): Promise<{ data: Order[]; total: number; page: number; limit: number }> {
     const [data, total] = await this.ordersRepository.findAndCount({
+      where: { status: Not(In(UNPAID_STATUSES as unknown as string[])) },
       order: { createdAt: 'DESC' },
       skip: (page - 1) * limit,
       take: limit,
@@ -758,10 +793,12 @@ export class OrdersService {
   }
 
   async getActiveOrders(): Promise<Order[]> {
+    // Drop unpaid (pending_payment / pending) — those are pre-payment placeholders
+    // that shouldn't appear anywhere customer- or admin-facing.
     return this.ordersRepository
       .createQueryBuilder('order')
       .where('order.status IN (:...statuses)', {
-        statuses: ['pending_payment', 'paid', 'sent_to_kitchen', 'pending', 'confirmed', 'preparing', 'ready', 'out_for_delivery'],
+        statuses: ['paid', 'sent_to_kitchen', 'confirmed', 'preparing', 'ready', 'out_for_delivery'],
       })
       .orderBy('order.createdAt', 'ASC')
       .getMany();
@@ -772,7 +809,7 @@ export class OrdersService {
       .createQueryBuilder('order')
       .where('order.scheduleType = :type', { type: 'scheduled' })
       .andWhere('order.status NOT IN (:...statuses)', {
-        statuses: ['delivered', 'picked_up', 'cancelled'],
+        statuses: ['delivered', 'picked_up', 'cancelled', ...UNPAID_STATUSES],
       })
       .orderBy('order.scheduledDate', 'ASC')
       .getMany();

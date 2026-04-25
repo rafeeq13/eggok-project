@@ -305,15 +305,19 @@ export class AuthService {
         return addresses;
     }
 
-    // My Orders
+    // My Orders — only show orders the customer has actually paid for.
+    // Unpaid placeholders (pending_payment/pending) are server-internal until Stripe confirms.
     async getMyOrders(customerId: number) {
         const customer = await this.customersRepository.findOne({ where: { id: customerId } });
         if (!customer) throw new UnauthorizedException('User not found');
-        const orders = await this.customersRepository.manager.find(Order, {
-            where: { customerEmail: customer.email },
-            order: { createdAt: 'DESC' },
-            take: 50,
-        });
+        const orders = await this.customersRepository.manager
+            .getRepository(Order)
+            .createQueryBuilder('order')
+            .where('order.customerEmail = :email', { email: customer.email })
+            .andWhere('order.status NOT IN (:...unpaid)', { unpaid: ['pending_payment', 'pending'] })
+            .orderBy('order.createdAt', 'DESC')
+            .take(50)
+            .getMany();
         return orders;
     }
 
