@@ -189,8 +189,8 @@ export class OrdersService {
         .createQueryBuilder()
         .update()
         .set({
-          totalOrders: () => '"totalOrders" + 1',
-          totalSpent: () => `"totalSpent" + ${Number(data.total)}`,
+          totalOrders: () => '`totalOrders` + 1',
+          totalSpent: () => `\`totalSpent\` + ${Number(data.total)}`,
           lastOrder: today,
           lastActivity: today,
           name: existing.name || data.name,
