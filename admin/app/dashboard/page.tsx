@@ -81,7 +81,7 @@ function DashboardContent() {
   const allSidebarItems = [
     { id: 'overview', label: 'Overview', icon: '📊', roles: ['Staff', 'Manager', 'Super Admin'] },
     { id: 'orders', label: 'Orders', icon: '🧾', roles: ['Staff', 'Manager', 'Super Admin'] },
-    { id: 'kitchen', label: 'Kitchen Display', icon: '🖨️', roles: ['Staff', 'Manager', 'Super Admin'] },
+    // { id: 'kitchen', label: 'Kitchen Display', icon: '🖨️', roles: ['Staff', 'Manager', 'Super Admin'] },
     { id: 'menu', label: 'Menu Management', icon: '🍽️', roles: ['Manager', 'Super Admin'] },
     { id: 'customers', label: 'Customers', icon: '👥', roles: ['Manager', 'Super Admin'] },
     { id: 'promotions', label: 'Promotions', icon: '🎟️', roles: ['Manager', 'Super Admin'] },
@@ -130,8 +130,8 @@ function DashboardContent() {
       {/* Brand / Logo */}
       <div style={{ padding: '2px', borderBottom: '1px solid #2A2A2A', display: 'flex', alignItems: 'center', justifyContent: 'space-around' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-          <div style={{ borderRadius: '10px', overflow: 'hidden', flexShrink: 0, background: '#000' }}>
-            <Image src="/logo.webp" alt="Eggs Ok" width={60} height={60} unoptimized style={{ objectFit: 'contain' }} />
+          <div style={{ borderRadius: '10px', overflow: 'hidden', flexShrink: 0,  }}>
+            <Image src="/logo.png" alt="Eggs Ok" width={60} height={60} unoptimized style={{ objectFit: 'contain' }} />
           </div>
           {/* <div>
             <div style={{ fontSize: '12px', fontWeight: '800', color: '#E5B800', letterSpacing: '1px' }}>EGGS OK</div>
