@@ -930,7 +930,9 @@ function OrderContent() {
   };
 
   const openItem = (item: MenuItem) => {
-    if (!isOpen) return;
+    // When the store is closed, only block ASAP orders. Customers who pick
+    // "Schedule for later" can still add items to the cart.
+    if (!isOpen && scheduleType !== 'scheduled') return;
     setSelectedItem(item); setSelectedModifiers({}); setQuantity(1); setSpecialInstructions('');
   };
 

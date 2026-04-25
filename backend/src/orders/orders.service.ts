@@ -279,14 +279,9 @@ export class OrdersService {
     });
     const savedOrder = await this.ordersRepository.save(order);
 
-    // Send emails asynchronously (order received, payment pending)
-    this.mailService.sendOrderConfirmation(savedOrder).catch(err => {
-      this.logger.error(`Failed to send order confirmation email: ${err.message}`);
-    });
-    this.mailService.sendOwnerNotification(savedOrder).catch(err => {
-      this.logger.error(`Failed to send owner notification email: ${err.message}`);
-    });
-
+    // No emails here — payment is not yet confirmed. Customer + owner notifications
+    // are sent from handlePaymentConfirmed once Stripe confirms the charge succeeded,
+    // so abandoned/failed-payment orders never trigger any external notifications.
     return savedOrder;
   }
 
@@ -320,6 +315,18 @@ export class OrdersService {
     });
 
     this.logger.log(`[PAYMENT] ✓ Order ${orderNumber} confirmed (PI: ${paymentIntentId})`);
+
+    // Send notifications NOW that payment is confirmed — customer confirmation
+    // and owner notification. Pulled fresh so they include status='paid'.
+    const paidOrder = await this.ordersRepository.findOne({ where: { id: order.id } });
+    if (paidOrder) {
+      this.mailService.sendOrderConfirmation(paidOrder).catch(err => {
+        this.logger.error(`Failed to send order confirmation email: ${err.message}`);
+      });
+      this.mailService.sendOwnerNotification(paidOrder).catch(err => {
+        this.logger.error(`Failed to send owner notification email: ${err.message}`);
+      });
+    }
 
     // Record transaction (idempotent — won't duplicate)
     this.paymentsService.recordTransaction({
