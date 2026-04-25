@@ -165,6 +165,7 @@ export class OrdersService {
         tax: Number(order.tax),
         deliveryFee: Number(order.deliveryFee),
         tip: Number(order.tip) || 0,
+        discount: Number(order.discount) || 0,
         total: Number(order.total),
         deliveryAddress: order.deliveryAddress,
         notes: order.notes,

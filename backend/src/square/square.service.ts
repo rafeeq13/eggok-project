@@ -76,6 +76,33 @@ export class SquareService {
    * Sync an order to Square POS so the kitchen can see and print it.
    * Creates an order in Square with line items matching our order.
    */
+  /**
+   * Look for an order already pushed to Square by reference_id. Used before
+   * create to avoid duplicating an order if a previous attempt got through to
+   * Square but we never saw the response (network drop / timeout). Square's
+   * SearchOrders has no direct reference_id filter, so we scan recent orders
+   * at our location and match in memory.
+   */
+  private async findExistingByReference(client: SquareClient, locationId: string, reference: string): Promise<{ id: string } | null> {
+    try {
+      const since = new Date(Date.now() - 24 * 60 * 60_000).toISOString();
+      const result = await client.orders.search({
+        locationIds: [locationId],
+        query: {
+          filter: {
+            dateTimeFilter: { createdAt: { startAt: since } },
+          },
+          sort: { sortField: 'CREATED_AT', sortOrder: 'DESC' },
+        },
+        limit: 200,
+      });
+      const match = (result.orders || []).find((o: any) => o.referenceId === reference);
+      return match ? { id: match.id! } : null;
+    } catch {
+      return null;
+    }
+  }
+
   async syncOrder(order: {
     orderNumber: string;
     customerName: string;
@@ -87,6 +114,7 @@ export class SquareService {
     tax: number;
     deliveryFee?: number;
     tip?: number;
+    discount?: number;
     total: number;
     deliveryAddress?: string;
     notes?: string;
@@ -99,6 +127,26 @@ export class SquareService {
 
     try {
       const client = this.getClient(creds);
+
+      // If a previous attempt actually reached Square (response lost on our
+      // end), don't create a duplicate — adopt the existing order.
+      const already = await this.findExistingByReference(client, creds.squareLocationId, order.orderNumber);
+      if (already) {
+        console.log(`[SQUARE] Order ${order.orderNumber} already exists in Square (${already.id}), reusing`);
+        // Best-effort: ensure external payment is recorded so it shows as Paid.
+        try {
+          await client.payments.create({
+            sourceId: 'EXTERNAL',
+            idempotencyKey: `eggok-pay-${order.orderNumber}`,
+            amountMoney: { amount: BigInt(Math.round(order.total * 100)), currency: 'USD' as const },
+            orderId: already.id,
+            locationId: creds.squareLocationId,
+            externalDetails: { type: 'OTHER' as const, source: 'Stripe Online Payment' },
+            note: `Online Order ${order.orderNumber} - Paid via Stripe`,
+          });
+        } catch { /* idempotent: already paid is fine */ }
+        return { squareOrderId: already.id };
+      }
 
       // Build line items from order items
       const lineItems = (order.items || []).map((item: any) => {
@@ -185,6 +233,16 @@ export class SquareService {
               scope: 'ORDER' as const,
             },
           ],
+          discounts: (order.discount && order.discount > 0)
+            ? [{
+                name: 'Promo / Discount',
+                amountMoney: {
+                  amount: BigInt(Math.round(order.discount * 100)),
+                  currency: 'USD' as const,
+                },
+                scope: 'ORDER' as const,
+              }]
+            : undefined,
           serviceCharges: (() => {
             const charges: any[] = [];
             if (order.deliveryFee && order.deliveryFee > 0) {
@@ -219,7 +277,11 @@ export class SquareService {
             note: orderNotes.slice(0, 255),
           },
         },
-        idempotencyKey: `eggok-${order.orderNumber}`,
+        // Per-attempt unique idempotency key. Square Orders API caches the
+        // first response per key permanently, so a stuck error from a prior
+        // attempt would otherwise repeat forever. The findExistingByReference
+        // call above prevents the duplicate-creation risk this normally implies.
+        idempotencyKey: `eggok-${order.orderNumber}-${Date.now()}`,
       });
 
       const squareOrderId = response.order?.id || '';
