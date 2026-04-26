@@ -157,6 +157,7 @@ export class SquareService {
     deliveryFee?: number;
     tip?: number;
     discount?: number;
+    promoCode?: string;
     total: number;
     deliveryAddress?: string;
     notes?: string;
