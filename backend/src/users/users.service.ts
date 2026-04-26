@@ -22,7 +22,24 @@ export class UsersService implements OnModuleInit {
     ) { }
 
     async onModuleInit() {
-        // Seed default Super Admin if none exists
+        // Seed default Super Admin if none exists. We check by role rather
+        // than by a fixed email so the owner can rename their own email
+        // without triggering re-seeding on the next restart.
+        const existingSuperAdmin = await this.userRepository.findOne({ where: { role: 'Super Admin' } });
+        if (existingSuperAdmin) {
+            if (existingSuperAdmin.status === 'Invited') {
+                const defaultPassword = process.env.ADMIN_DEFAULT_PASSWORD || 'ChangeMe!2026';
+                const hashedPassword = await bcrypt.hash(defaultPassword, 10);
+                await this.userRepository.update(existingSuperAdmin.id, {
+                    password: hashedPassword,
+                    status: 'Active',
+                    inviteToken: null as any,
+                    inviteTokenExpiry: null as any,
+                });
+                console.log('[USERS] Default Super Admin activated');
+            }
+            return;
+        }
         const existing = await this.userRepository.findOne({ where: { email: 'admin@eggok.com' } });
         if (!existing) {
             const defaultPassword = process.env.ADMIN_DEFAULT_PASSWORD || 'ChangeMe!2026';
@@ -84,7 +101,27 @@ export class UsersService implements OnModuleInit {
     }
 
     async update(id: string, user: Partial<User>): Promise<User | null> {
-        await this.userRepository.update(id, user);
+        const updates: Partial<User> = { ...user };
+        if (typeof updates.password === 'string') {
+            const raw = updates.password.trim();
+            if (!raw) {
+                delete updates.password;
+            } else {
+                if (raw.length < 8) {
+                    throw new BadRequestException('Password must be at least 8 characters');
+                }
+                updates.password = await bcrypt.hash(raw, 10);
+            }
+        }
+        if (typeof updates.email === 'string') {
+            const newEmail = updates.email.trim().toLowerCase();
+            updates.email = newEmail;
+            const conflict = await this.userRepository.findOne({ where: { email: newEmail } });
+            if (conflict && conflict.id !== id) {
+                throw new BadRequestException('Email is already in use by another account');
+            }
+        }
+        await this.userRepository.update(id, updates);
         return this.findOne(id);
     }
 

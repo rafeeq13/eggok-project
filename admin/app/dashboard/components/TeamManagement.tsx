@@ -52,6 +52,17 @@ export default function TeamManagement() {
     email: '',
     role: 'Staff' as Role,
   });
+  const [currentUserId, setCurrentUserId] = useState<string | null>(null);
+  const [showProfileForm, setShowProfileForm] = useState(false);
+  const [profileForm, setProfileForm] = useState({
+    name: '',
+    email: '',
+    password: '',
+    confirmPassword: '',
+  });
+  const [profileSaving, setProfileSaving] = useState(false);
+  const [showProfilePassword, setShowProfilePassword] = useState(false);
+  const [showProfileConfirmPassword, setShowProfileConfirmPassword] = useState(false);
 
   const fetchTeam = async () => {
     try {
@@ -78,7 +89,23 @@ export default function TeamManagement() {
 
   useEffect(() => {
     fetchTeam();
+    try {
+      const saved = localStorage.getItem('admin_user');
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (parsed?.id) setCurrentUserId(parsed.id);
+      }
+    } catch {
+      // ignore parsing errors
+    }
   }, []);
+
+  useEffect(() => {
+    if (!showProfileForm) return;
+    const handleEsc = (e: KeyboardEvent) => { if (e.key === 'Escape') closeProfileForm(); };
+    document.addEventListener('keydown', handleEsc);
+    return () => document.removeEventListener('keydown', handleEsc);
+  }, [showProfileForm]);
 
   useEffect(() => {
     if (!showInviteForm) return;
@@ -136,6 +163,68 @@ export default function TeamManagement() {
     setFormData({ name: member.name, email: member.email, role: member.role });
     setEditingMember(member);
     setShowInviteForm(true);
+  };
+
+  const openProfileForm = (member: TeamMember) => {
+    setProfileForm({ name: member.name, email: member.email, password: '', confirmPassword: '' });
+    setShowProfileForm(true);
+  };
+
+  const closeProfileForm = () => {
+    setShowProfileForm(false);
+    setProfileForm({ name: '', email: '', password: '', confirmPassword: '' });
+  };
+
+  const handleProfileSave = async () => {
+    if (!currentUserId) return;
+    const name = profileForm.name.trim();
+    const email = profileForm.email.trim();
+    if (!name || !email) {
+      setErrorMsg('Name and email are required'); setTimeout(() => setErrorMsg(''), 3000); return;
+    }
+    if (!isValidEmail(email)) {
+      setErrorMsg('Please enter a valid email address'); setTimeout(() => setErrorMsg(''), 3000); return;
+    }
+    if (profileForm.password || profileForm.confirmPassword) {
+      if (profileForm.password.length < 8) {
+        setErrorMsg('Password must be at least 8 characters'); setTimeout(() => setErrorMsg(''), 3000); return;
+      }
+      if (profileForm.password !== profileForm.confirmPassword) {
+        setErrorMsg('Passwords do not match'); setTimeout(() => setErrorMsg(''), 3000); return;
+      }
+    }
+    const body: Record<string, string> = { name, email };
+    if (profileForm.password) body.password = profileForm.password;
+    try {
+      setProfileSaving(true);
+      const res = await adminFetch(`${API}/users/${currentUserId}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body),
+      });
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        setErrorMsg(data?.message || 'Failed to update profile'); setTimeout(() => setErrorMsg(''), 3000);
+        return;
+      }
+      try {
+        const saved = localStorage.getItem('admin_user');
+        if (saved) {
+          const parsed = JSON.parse(saved);
+          localStorage.setItem('admin_user', JSON.stringify({ ...parsed, name, email }));
+        }
+      } catch {
+        // ignore
+      }
+      showSuccess('Profile updated');
+      closeProfileForm();
+      fetchTeam();
+    } catch (err) {
+      console.error('Profile update failed:', err);
+      setErrorMsg('Failed to update profile'); setTimeout(() => setErrorMsg(''), 3000);
+    } finally {
+      setProfileSaving(false);
+    }
   };
 
   const handleSuspend = async (member: TeamMember) => {
@@ -312,6 +401,117 @@ export default function TeamManagement() {
         </div>
       )}
 
+      {/* Edit Profile Modal */}
+      {showProfileForm && (
+        <div role="dialog" aria-modal="true" style={{
+          position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.85)',
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          zIndex: 1000, padding: '20px',
+        }}>
+          <div style={{
+            background: '#1A1A1A', border: '1px solid #2A2A2A',
+            borderRadius: '16px', padding: '28px',
+            width: '100%', maxWidth: '460px',
+          }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
+              <h2 style={{ fontSize: '18px', fontWeight: '700', color: '#FEFEFE' }}>Edit Your Profile</h2>
+              <button onClick={closeProfileForm} style={{ background: 'transparent', color: '#FEFEFE', fontSize: '20px', border: 'none', cursor: 'pointer' }}>✕</button>
+            </div>
+
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+              <div>
+                <label style={labelStyle}>Full Name *</label>
+                <input
+                  style={inputStyle}
+                  value={profileForm.name}
+                  onChange={e => setProfileForm({ ...profileForm, name: e.target.value })}
+                  onFocus={e => e.target.style.borderColor = '#E5B800'}
+                  onBlur={e => e.target.style.borderColor = '#2A2A2A'}
+                />
+              </div>
+
+              <div>
+                <label style={labelStyle}>Email Address *</label>
+                <input
+                  type="email" style={inputStyle}
+                  value={profileForm.email}
+                  onChange={e => setProfileForm({ ...profileForm, email: e.target.value })}
+                  onFocus={e => e.target.style.borderColor = '#E5B800'}
+                  onBlur={e => e.target.style.borderColor = '#2A2A2A'}
+                />
+              </div>
+
+              <div style={{ height: '1px', background: '#2A2A2A', margin: '4px 0' }} />
+
+              <p style={{ fontSize: '12px', color: '#FEFEFE' }}>
+                Change password (leave blank to keep current)
+              </p>
+
+              <div>
+                <label style={labelStyle}>New Password</label>
+                <div style={{ position: 'relative' }}>
+                  <input
+                    type={showProfilePassword ? 'text' : 'password'}
+                    style={{ ...inputStyle, paddingRight: '44px' }}
+                    placeholder="At least 8 characters"
+                    value={profileForm.password}
+                    onChange={e => setProfileForm({ ...profileForm, password: e.target.value })}
+                    onFocus={e => e.target.style.borderColor = '#E5B800'}
+                    onBlur={e => e.target.style.borderColor = '#2A2A2A'}
+                  />
+                  <button type="button" onClick={() => setShowProfilePassword(!showProfilePassword)}
+                    aria-label={showProfilePassword ? 'Hide password' : 'Show password'}
+                    style={{ position: 'absolute', right: '12px', top: '50%', transform: 'translateY(-50%)', background: 'transparent', border: 'none', color: '#888', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '4px' }}>
+                    {showProfilePassword
+                      ? <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0112 20c-7 0-11-8-11-8a18.45 18.45 0 015.06-5.94" /><path d="M9.9 4.24A9.12 9.12 0 0112 4c7 0 11 8 11 8a18.5 18.5 0 01-2.16 3.19" /><line x1="1" y1="1" x2="23" y2="23" /></svg>
+                      : <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" /><circle cx="12" cy="12" r="3" /></svg>
+                    }
+                  </button>
+                </div>
+              </div>
+
+              <div>
+                <label style={labelStyle}>Confirm New Password</label>
+                <div style={{ position: 'relative' }}>
+                  <input
+                    type={showProfileConfirmPassword ? 'text' : 'password'}
+                    style={{ ...inputStyle, paddingRight: '44px' }}
+                    placeholder="Re-enter new password"
+                    value={profileForm.confirmPassword}
+                    onChange={e => setProfileForm({ ...profileForm, confirmPassword: e.target.value })}
+                    onFocus={e => e.target.style.borderColor = '#E5B800'}
+                    onBlur={e => e.target.style.borderColor = '#2A2A2A'}
+                  />
+                  <button type="button" onClick={() => setShowProfileConfirmPassword(!showProfileConfirmPassword)}
+                    aria-label={showProfileConfirmPassword ? 'Hide password' : 'Show password'}
+                    style={{ position: 'absolute', right: '12px', top: '50%', transform: 'translateY(-50%)', background: 'transparent', border: 'none', color: '#888', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '4px' }}>
+                    {showProfileConfirmPassword
+                      ? <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0112 20c-7 0-11-8-11-8a18.45 18.45 0 015.06-5.94" /><path d="M9.9 4.24A9.12 9.12 0 0112 4c7 0 11 8 11 8a18.5 18.5 0 01-2.16 3.19" /><line x1="1" y1="1" x2="23" y2="23" /></svg>
+                      : <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" /><circle cx="12" cy="12" r="3" /></svg>
+                    }
+                  </button>
+                </div>
+              </div>
+
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', marginTop: '4px' }}>
+                <button onClick={closeProfileForm} disabled={profileSaving} style={{
+                  padding: '12px', background: 'transparent',
+                  border: '1px solid #2A2A2A', borderRadius: '8px',
+                  color: '#FEFEFE', fontSize: '13px', cursor: profileSaving ? 'not-allowed' : 'pointer',
+                  opacity: profileSaving ? 0.6 : 1,
+                }}>Cancel</button>
+                <button onClick={handleProfileSave} disabled={profileSaving} style={{
+                  padding: '12px', background: '#E5B800',
+                  border: 'none', borderRadius: '8px',
+                  color: '#000', fontSize: '13px', fontWeight: '700', cursor: profileSaving ? 'not-allowed' : 'pointer',
+                  opacity: profileSaving ? 0.6 : 1,
+                }}>{profileSaving ? 'Saving...' : 'Save Changes'}</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Role Permissions Modal */}
       {showPermissions && (
         <div role="dialog" aria-modal="true" style={{
@@ -426,7 +626,15 @@ export default function TeamManagement() {
                 <td style={{ padding: '14px 16px', fontSize: '12px', color: '#FEFEFE' }}>{member.lastActive}</td>
                 <td style={{ padding: '14px 16px' }}>
                   {member.role === 'Super Admin' ? (
-                    <span style={{ fontSize: '11px', color: '#FEFEFE' }}>Owner account</span>
+                    member.id === currentUserId ? (
+                      <button onClick={() => openProfileForm(member)} style={{
+                        padding: '5px 10px', background: 'transparent',
+                        border: '1px solid #E5B80040', borderRadius: '6px',
+                        color: '#E5B800', fontSize: '11px', fontWeight: '600', cursor: 'pointer',
+                      }}>Edit Profile</button>
+                    ) : (
+                      <span style={{ fontSize: '11px', color: '#FEFEFE' }}>Owner account</span>
+                    )
                   ) : (
                     <div style={{ display: 'flex', gap: '6px' }}>
                       <button onClick={() => handleEdit(member)} style={{
