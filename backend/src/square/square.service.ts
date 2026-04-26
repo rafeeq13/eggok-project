@@ -77,6 +77,44 @@ export class SquareService {
    * Creates an order in Square with line items matching our order.
    */
   /**
+   * Convert a scheduled date+time pair (entered by the customer in store local
+   * time) into a UTC ISO timestamp that Square's `pickup_at` / `expected_shipped_at`
+   * fields require. Store is in America/New_York; we use the current NY offset
+   * (EDT in summer, EST in winter) so DST is handled automatically.
+   */
+  private parseScheduledTime(date: string, time: string): string {
+    const naive = new Date(`${date}T${time}:00`); // interpreted as server-local
+    if (isNaN(naive.getTime())) return new Date(Date.now() + 15 * 60000).toISOString();
+    // Find what NY says for an arbitrary reference instant — use that to
+    // compute the offset for our scheduled instant.
+    const probe = new Date(`${date}T12:00:00Z`);
+    const nyParts = new Intl.DateTimeFormat('en-US', {
+      timeZone: 'America/New_York',
+      year: 'numeric', month: '2-digit', day: '2-digit',
+      hour: '2-digit', minute: '2-digit', second: '2-digit',
+      hourCycle: 'h23',
+    }).formatToParts(probe);
+    const nyAsLocal = Date.UTC(
+      Number(nyParts.find(p => p.type === 'year')?.value),
+      Number(nyParts.find(p => p.type === 'month')?.value) - 1,
+      Number(nyParts.find(p => p.type === 'day')?.value),
+      Number(nyParts.find(p => p.type === 'hour')?.value),
+      Number(nyParts.find(p => p.type === 'minute')?.value),
+      Number(nyParts.find(p => p.type === 'second')?.value),
+    );
+    const offsetMs = nyAsLocal - probe.getTime();
+    // The customer's local instant in NY = scheduled wallclock - offset
+    const utcMs = Date.UTC(
+      Number(date.slice(0, 4)),
+      Number(date.slice(5, 7)) - 1,
+      Number(date.slice(8, 10)),
+      Number(time.slice(0, 2)),
+      Number(time.slice(3, 5)),
+    ) - offsetMs;
+    return new Date(utcMs).toISOString();
+  }
+
+  /**
    * Look for an order already pushed to Square by reference_id. Used before
    * create to avoid duplicating an order if a previous attempt got through to
    * Square but we never saw the response (network drop / timeout). Square's
@@ -122,6 +160,9 @@ export class SquareService {
     total: number;
     deliveryAddress?: string;
     notes?: string;
+    scheduleType?: string; // 'asap' | 'scheduled'
+    scheduledDate?: string; // 'YYYY-MM-DD'
+    scheduledTime?: string; // 'HH:mm' (24h, store timezone)
   }): Promise<SquareOrderResult | null> {
     const creds = await this.getCredentials();
     if (!creds) {
@@ -203,6 +244,18 @@ export class SquareService {
       // emails and our admin views all read `orderType = 'delivery'`. Only the
       // Square representation is normalised so kitchen sees it on the dashboard.
       const isDelivery = order.orderType === 'delivery';
+      // Compute the target fulfillment time. For ASAP we use a short offset
+      // (15 min pickup / 30 min delivery). For scheduled orders we honour the
+      // customer's chosen date+time, interpreted in store timezone (defaults
+      // to America/New_York; -04:00 EDT / -05:00 EST). This makes Square move
+      // the order into its "Scheduled" tab instead of "Active".
+      const isScheduled = order.scheduleType === 'scheduled' && !!order.scheduledDate && !!order.scheduledTime;
+      const scheduledAt = isScheduled
+        ? this.parseScheduledTime(order.scheduledDate!, order.scheduledTime!)
+        : null;
+      const pickupAt = scheduledAt || new Date(Date.now() + 15 * 60000).toISOString();
+      const shipAt = scheduledAt || new Date(Date.now() + 30 * 60000).toISOString();
+
       const fulfillment = isDelivery
         ? {
             type: 'SHIPMENT' as const,
@@ -212,8 +265,9 @@ export class SquareService {
                 displayName: `🚚 ${order.customerName}`,
                 phoneNumber: order.customerPhone,
               },
-              expectedShippedAt: new Date(Date.now() + 30 * 60000).toISOString(),
+              expectedShippedAt: shipAt,
               shippingNote: [
+                isScheduled ? `SCHEDULED for ${order.scheduledDate} ${order.scheduledTime}` : '',
                 order.deliveryAddress ? `Deliver to: ${order.deliveryAddress}` : '',
                 order.notes ? `Notes: ${order.notes}` : '',
               ].filter(Boolean).join(' | ').slice(0, 500) || undefined,
@@ -227,7 +281,8 @@ export class SquareService {
                 displayName: order.customerName,
                 phoneNumber: order.customerPhone,
               },
-              pickupAt: new Date(Date.now() + 15 * 60000).toISOString(),
+              scheduleType: isScheduled ? 'SCHEDULED' as const : 'ASAP' as const,
+              pickupAt,
             },
           };
 

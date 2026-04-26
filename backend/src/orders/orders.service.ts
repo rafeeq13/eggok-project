@@ -168,9 +168,13 @@ export class OrdersService {
         deliveryFee: Number(order.deliveryFee),
         tip: Number(order.tip) || 0,
         discount: Number(order.discount) || 0,
+        promoCode: order.promoCode || undefined,
         total: Number(order.total),
         deliveryAddress: order.deliveryAddress,
         notes: order.notes,
+        scheduleType: order.scheduleType,
+        scheduledDate: order.scheduledDate || undefined,
+        scheduledTime: order.scheduledTime || undefined,
       });
 
       if (result?.squareOrderId) {
