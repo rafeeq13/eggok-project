@@ -208,15 +208,15 @@
           <!-- ARROW -->
           <td align="center" width="2%" class="arrow-cell" style="color:#E5E5E5;font-size:16px;font-family:Arial,sans-serif;">&raquo;</td>
 
-          <!-- STEP 3 -->
+          <% if (orderType === 'delivery') { %>
+          <!-- STEP 3 (delivery): Rider Picked Up -->
           <td align="center" width="18%">
             <table class="step-box" width="62" height="72" cellpadding="0" cellspacing="0" style="background:#F8F9FA;border:1px solid #E5E5E5;border-radius:10px;">
               <tr>
                 <td align="center" valign="middle" style="padding:8px 4px;">
                   <img src="https://eggsokpa.com/webicons/ContactReadyforpickupblack.png" class="step-icon" width="32" height="32" alt="Picked Up" style="display:block;margin:0 auto 4px;opacity:0.55;">
                   <div class="step-label" style="font-family:'Geist','Inter','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:9px;color:#777777;font-weight:700;line-height:1.2;text-align:center;letter-spacing:0.3px;">
-                    Rider<br>
-                    <%= orderType === 'delivery' ? 'Picked Up' : 'Pickedup' %>
+                    Rider<br>Picked Up
                   </div>
                 </td>
               </tr>
@@ -226,7 +226,7 @@
           <!-- ARROW -->
           <td align="center" width="2%" class="arrow-cell" style="color:#E5E5E5;font-size:16px;font-family:Arial,sans-serif;">&raquo;</td>
 
-          <!-- STEP 4 -->
+          <!-- STEP 4 (delivery): On The Way -->
           <td align="center" width="18%">
             <table class="step-box" width="62" height="72" cellpadding="0" cellspacing="0" style="background:#F8F9FA;border:1px solid #E5E5E5;border-radius:10px;">
               <tr>
@@ -243,7 +243,7 @@
           <!-- ARROW -->
           <td align="center" width="2%" class="arrow-cell" style="color:#E5E5E5;font-size:16px;font-family:Arial,sans-serif;">&raquo;</td>
 
-          <!-- STEP 5 -->
+          <!-- STEP 5 (delivery): Order Delivered -->
           <td align="center" width="18%">
             <table class="step-box" width="62" height="72" cellpadding="0" cellspacing="0" style="background:#F8F9FA;border:1px solid #E5E5E5;border-radius:10px;">
               <tr>
@@ -256,6 +256,38 @@
               </tr>
             </table>
           </td>
+          <% } else { %>
+          <!-- STEP 3 (pickup): Ready for Pickup -->
+          <td align="center" width="18%">
+            <table class="step-box" width="62" height="72" cellpadding="0" cellspacing="0" style="background:#F8F9FA;border:1px solid #E5E5E5;border-radius:10px;">
+              <tr>
+                <td align="center" valign="middle" style="padding:8px 4px;">
+                  <img src="https://eggsokpa.com/webicons/ContactReadyforpickupblack.png" class="step-icon" width="32" height="32" alt="Ready" style="display:block;margin:0 auto 4px;opacity:0.55;">
+                  <div class="step-label" style="font-family:'Geist','Inter','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:9px;color:#777777;font-weight:700;line-height:1.2;text-align:center;letter-spacing:0.3px;">
+                    Ready for<br>Pickup
+                  </div>
+                </td>
+              </tr>
+            </table>
+          </td>
+
+          <!-- ARROW -->
+          <td align="center" width="2%" class="arrow-cell" style="color:#E5E5E5;font-size:16px;font-family:Arial,sans-serif;">&raquo;</td>
+
+          <!-- STEP 4 (pickup): Picked Up -->
+          <td align="center" width="18%">
+            <table class="step-box" width="62" height="72" cellpadding="0" cellspacing="0" style="background:#F8F9FA;border:1px solid #E5E5E5;border-radius:10px;">
+              <tr>
+                <td align="center" valign="middle" style="padding:8px 4px;">
+                  <img src="https://eggsokpa.com/webicons/Contactorderpickedupblack.png" class="step-icon" width="32" height="32" alt="Picked Up" style="display:block;margin:0 auto 4px;opacity:0.55;">
+                  <div class="step-label" style="font-family:'Geist','Inter','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:9px;color:#777777;font-weight:700;line-height:1.2;text-align:center;letter-spacing:0.3px;">
+                    Picked<br>Up
+                  </div>
+                </td>
+              </tr>
+            </table>
+          </td>
+          <% } %>
         </tr>
       </table>
     </td>
