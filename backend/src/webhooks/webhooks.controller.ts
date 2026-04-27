@@ -27,18 +27,26 @@ export class WebhooksController {
   ) {
     const webhookSecret = await this.paymentsService.getWebhookSecret();
 
+    // Express raw() middleware (configured in main.ts) gives req.body as a Buffer
+    // for this route, which is exactly what Stripe needs for signature verification.
+    const bodyBuffer: Buffer = Buffer.isBuffer(req.body)
+      ? req.body
+      : (req.rawBody || Buffer.from(JSON.stringify(req.body || {})));
+
     let event: any;
     if (webhookSecret && signature) {
-      const rawBody = req.rawBody || req.body;
-      const bodyBuffer = Buffer.isBuffer(rawBody) ? rawBody : Buffer.from(JSON.stringify(rawBody));
       event = this.paymentsService.verifyWebhookEvent(bodyBuffer, signature, webhookSecret);
       if (!event) {
         this.logger.error('[STRIPE WEBHOOK] Invalid signature, rejecting');
         return res.status(400).json({ error: 'Invalid signature' });
       }
     } else {
-      this.logger.warn('[STRIPE WEBHOOK] No webhook secret configured accepting unverified event. Configure stripeWebhookSecret in Admin → Integrations.');
-      event = req.body;
+      this.logger.warn('[STRIPE WEBHOOK] No webhook secret configured — accepting unverified event. Configure stripeWebhookSecret in Admin → Integrations.');
+      try {
+        event = JSON.parse(bodyBuffer.toString('utf8'));
+      } catch {
+        event = req.body;
+      }
     }
 
     // Respond 200 immediately to prevent Stripe retries
@@ -118,14 +126,17 @@ export class WebhooksController {
     @Res() res: any,
     @Headers('x-square-hmacsha256-signature') squareSignature: string,
   ) {
-    // Verify Square webhook signature
+    // Verify Square webhook signature. Express raw() middleware in main.ts
+    // gives req.body as a Buffer for this route — exactly what HMAC needs.
     const settings = await this.settingsService.getSetting('integrations');
     const signingKey = settings?.squareWebhookSigningKey;
 
-    if (signingKey && squareSignature) {
-      const rawBody = req.rawBody || req.body;
-      const bodyStr = Buffer.isBuffer(rawBody) ? rawBody.toString('utf8') : JSON.stringify(rawBody);
+    const bodyBuffer: Buffer = Buffer.isBuffer(req.body)
+      ? req.body
+      : (req.rawBody || Buffer.from(JSON.stringify(req.body || {})));
+    const bodyStr = bodyBuffer.toString('utf8');
 
+    if (signingKey && squareSignature) {
       // Square HMAC: HMAC-SHA256(signingKey, webhookUrl + body)
       const webhookUrl = settings?.squareWebhookUrl || `https://eggsokpa.com/api/square/webhook`;
       const hmac = crypto.createHmac('sha256', signingKey);
@@ -144,7 +155,8 @@ export class WebhooksController {
     res.status(200).json({ received: true });
 
     try {
-      const body = req.body;
+      let body: any;
+      try { body = JSON.parse(bodyStr); } catch { body = req.body || {}; }
       const eventType = body.type;
       this.logger.log(`[SQUARE WEBHOOK] Event: ${eventType}`);
 
