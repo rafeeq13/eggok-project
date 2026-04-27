@@ -1,5 +1,6 @@
 'use client';
 import React, { useState, useEffect } from 'react';
+import { Camera, User } from 'lucide-react';
 
 type Section = 'brand' | 'contact' | 'location' | 'social' | 'seo' | 'owner';
 
@@ -216,7 +217,7 @@ export default function BusinessProfile() {
           }} />
         ) : (
           <div style={{ textAlign: 'center', padding: '16px' }}>
-            <p style={{ fontSize: '28px', marginBottom: '6px' }}>📷</p>
+            <div style={{ marginBottom: '6px', display: 'flex', justifyContent: 'center', color: '#FEFEFE' }}><Camera size={28} /></div>
             <p style={{ fontSize: '12px', fontWeight: '600', color: '#FEFEFE', marginBottom: '3px' }}>
               Upload {label}
             </p>
@@ -287,14 +288,14 @@ export default function BusinessProfile() {
                   label="Restaurant Logo"
                   preview={logoPreview}
                   onUpload={e => handleImageUpload(e, setLogoPreview)}
-                  hint="SVG or PNG — recommended 400x400px"
+                  hint="SVG or PNG recommended 400x400px"
                   square
                 />
                 <ImageUploadBox
                   label="Cover Photo"
                   preview={coverPreview}
                   onUpload={e => handleImageUpload(e, setCoverPreview)}
-                  hint="JPG — recommended 1440x500px"
+                  hint="JPG recommended 1440x500px"
                 />
               </div>
 
@@ -470,7 +471,7 @@ export default function BusinessProfile() {
                     onBlur={e => e.target.style.borderColor = '#2A2A2A'}
                   />
                   <p style={{ fontSize: '11px', color: '#888888', marginTop: '4px' }}>
-                    Paste your Google Maps share link — shown on website contact section
+                    Paste your Google Maps share link shown on website contact section
                   </p>
                 </div>
                 <div>
@@ -637,7 +638,7 @@ export default function BusinessProfile() {
                     {ownerPhotoPreview ? (
                       <img src={ownerPhotoPreview} alt="Owner" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                     ) : (
-                      <span style={{ fontSize: '36px' }}>👤</span>
+                      <User size={36} color="#FEFEFE" />
                     )}
                     <input type="file" accept="image/*"
                       onChange={e => handleImageUpload(e, setOwnerPhotoPreview)}
@@ -669,13 +670,13 @@ export default function BusinessProfile() {
                   <label style={labelStyle}>Contact Phone</label>
                   <input style={inputStyle} value={ownerPhone}
                     onChange={e => setOwnerPhone(e.target.value)}
-                    placeholder="Private — not shown publicly"
+                    placeholder="Private not shown publicly"
                     onFocus={e => e.target.style.borderColor = '#E5B800'}
                     onBlur={e => e.target.style.borderColor = '#2A2A2A'}
                   />
                 </div>
                 <div>
-                  <label style={labelStyle}>Owner Bio (optional — shown on website)</label>
+                  <label style={labelStyle}>Owner Bio (optional shown on website)</label>
                   <textarea style={{ ...inputStyle, height: '80px', resize: 'none' as const }}
                     value={ownerBio}
                     onChange={e => setOwnerBio(e.target.value)}

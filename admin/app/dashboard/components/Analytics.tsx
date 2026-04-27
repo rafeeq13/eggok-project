@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { ArrowUp, ArrowDown } from 'lucide-react';
 import DateRangePicker from './DateRangePicker';
 import {
   AreaChart, Area, BarChart, Bar, XAxis, YAxis, CartesianGrid,
@@ -231,8 +232,8 @@ export default function Analytics() {
         <div style={{ padding: '16px 20px', borderBottom: '1px solid #2A2A2A', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <h3 style={{ fontSize: '14px', fontWeight: '700', color: '#FEFEFE' }}>Item Performance</h3>
           <div style={{ display: 'flex', gap: '8px' }}>
-            <span style={{ fontSize: '11px', background: '#22C55E20', color: '#22C55E', border: '1px solid #22C55E40', padding: '3px 10px', borderRadius: '20px' }}>↑ Trending Up</span>
-            <span style={{ fontSize: '11px', background: '#FC030120', color: '#FC0301', border: '1px solid #FC030140', padding: '3px 10px', borderRadius: '20px' }}>↓ Dropping</span>
+            <span style={{ fontSize: '11px', background: '#22C55E20', color: '#22C55E', border: '1px solid #22C55E40', padding: '3px 10px', borderRadius: '20px', display: 'inline-flex', alignItems: 'center', gap: '4px' }}><ArrowUp size={11} /> Trending Up</span>
+            <span style={{ fontSize: '11px', background: '#FC030120', color: '#FC0301', border: '1px solid #FC030140', padding: '3px 10px', borderRadius: '20px', display: 'inline-flex', alignItems: 'center', gap: '4px' }}><ArrowDown size={11} /> Dropping</span>
           </div>
         </div>
         <table style={{ width: '100%', borderCollapse: 'collapse' }}>
@@ -261,9 +262,9 @@ export default function Analytics() {
                 <td style={{ padding: '13px 16px', fontSize: '13px', fontWeight: '600', color: '#E5B800' }}>${item.revenue.toLocaleString()}</td>
                 <td style={{ padding: '13px 16px' }}>
                   <span style={{
-                    fontSize: '16px',
                     color: item.trend === 'up' ? '#22C55E' : '#FC0301',
-                  }}>{item.trend === 'up' ? '↑' : '↓'}</span>
+                    display: 'inline-flex', alignItems: 'center',
+                  }}>{item.trend === 'up' ? <ArrowUp size={16} /> : <ArrowDown size={16} />}</span>
                 </td>
                 <td style={{ padding: '13px 16px' }}>
                   <span style={{

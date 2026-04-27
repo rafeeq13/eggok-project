@@ -149,7 +149,7 @@ export default function DateRangePicker({ from, to, onChange }: Props) {
       return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
     };
     if (from === to) return fmtDate(from);
-    return `${fmtDate(from)} — ${fmtDate(to)}`;
+    return `${fmtDate(from)} ${fmtDate(to)}`;
   };
 
   return (
@@ -252,7 +252,7 @@ export default function DateRangePicker({ from, to, onChange }: Props) {
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '16px', paddingTop: '12px', borderTop: '1px solid #2A2A2A' }}>
                 <p style={{ fontSize: '12px', color: '#FEFEFE' }}>
                   {customFrom && <span style={{ color: '#E5B800' }}>Start: {customFrom}</span>}
-                  {customFrom && customTo && <span style={{ color: '#FEFEFE' }}> — </span>}
+                  {customFrom && customTo && <span style={{ color: '#FEFEFE' }}> </span>}
                   {customTo && <span style={{ color: '#E5B800' }}>End: {customTo}</span>}
                 </p>
                 <div style={{ display: 'flex', gap: '8px' }}>

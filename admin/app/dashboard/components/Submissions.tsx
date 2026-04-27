@@ -1,5 +1,6 @@
 'use client';
 import { useState, useEffect, useMemo } from 'react';
+import { X } from 'lucide-react';
 
 type Submission = {
   id: number;
@@ -384,7 +385,7 @@ export default function Submissions() {
                     }}>{selected.status}</span>
                   </div>
                 </div>
-                <button onClick={() => setSelected(null)} style={{ background: 'none', border: 'none', color: '#888', cursor: 'pointer', fontSize: '18px' }}>✕</button>
+                <button onClick={() => setSelected(null)} style={{ background: 'none', border: 'none', color: '#888', cursor: 'pointer', display: 'flex', alignItems: 'center' }}><X size={18} /></button>
               </div>
 
               {/* Details */}

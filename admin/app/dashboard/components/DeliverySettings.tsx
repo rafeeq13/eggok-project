@@ -1,5 +1,6 @@
 'use client';
 import { useState, useEffect, useRef, useCallback } from 'react';
+import { X, Check } from 'lucide-react';
 
 type Zone = {
   id: number;
@@ -396,7 +397,7 @@ export default function DeliverySettings() {
               <h2 style={{ fontSize: '18px', fontWeight: '700', color: '#FEFEFE' }}>
                 {editingZone ? 'Edit Delivery Zone' : 'Create Delivery Zone'}
               </h2>
-              <button onClick={resetForm} style={{ background: 'transparent', color: '#FEFEFE', fontSize: '20px', border: 'none', cursor: 'pointer' }}>✕</button>
+              <button onClick={resetForm} style={{ background: 'transparent', color: '#FEFEFE', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center' }}><X size={20} /></button>
             </div>
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
@@ -502,7 +503,7 @@ export default function DeliverySettings() {
                   {zones.filter(z => z.active).map(zone => (
                     <div key={zone.id} style={{ display: 'flex', alignItems: 'center', gap: '6px', background: 'rgba(26,26,26,0.9)', padding: '4px 8px', borderRadius: '6px' }}>
                       <div style={{ width: '10px', height: '10px', borderRadius: '50%', background: zone.color, flexShrink: 0 }} />
-                      <span style={{ fontSize: '10px', color: '#FEFEFE' }}>{zone.name} — {zone.radiusMiles} mi</span>
+                      <span style={{ fontSize: '10px', color: '#FEFEFE' }}>{zone.name} {zone.radiusMiles} mi</span>
                     </div>
                   ))}
                 </div>
@@ -545,7 +546,7 @@ export default function DeliverySettings() {
                   {zones.filter(z => z.active).map(zone => (
                     <div key={zone.id} style={{ display: 'flex', alignItems: 'center', gap: '6px', background: '#1A1A1A90', padding: '4px 8px', borderRadius: '6px' }}>
                       <div style={{ width: '10px', height: '10px', borderRadius: '50%', background: zone.color, flexShrink: 0 }} />
-                      <span style={{ fontSize: '10px', color: '#FEFEFE' }}>{zone.name} — {zone.radiusMiles} mi</span>
+                      <span style={{ fontSize: '10px', color: '#FEFEFE' }}>{zone.name} {zone.radiusMiles} mi</span>
                     </div>
                   ))}
                 </div>
@@ -644,7 +645,7 @@ export default function DeliverySettings() {
               }}>
                 {testResult.eligible ? (
                   <div>
-                    <p style={{ fontSize: '13px', fontWeight: '700', color: '#22C55E', marginBottom: '8px' }}>✓ Delivery Available</p>
+                    <p style={{ fontSize: '13px', fontWeight: '700', color: '#22C55E', marginBottom: '8px', display: 'inline-flex', alignItems: 'center', gap: '6px' }}><Check size={14} /> Delivery Available</p>
                     <div style={{ display: 'flex', gap: '20px', flexWrap: 'wrap' as const }}>
                       {[
                         ['Zone', testResult.zone.name],
@@ -661,7 +662,7 @@ export default function DeliverySettings() {
                   </div>
                 ) : (
                   <div>
-                    <p style={{ fontSize: '13px', fontWeight: '700', color: '#FC0301', marginBottom: '4px' }}>✗ Outside Delivery Area</p>
+                    <p style={{ fontSize: '13px', fontWeight: '700', color: '#FC0301', marginBottom: '4px', display: 'inline-flex', alignItems: 'center', gap: '6px' }}><X size={14} /> Outside Delivery Area</p>
                     <p style={{ fontSize: '12px', color: '#FEFEFE' }}>This address is outside all active delivery zones. Only pickup is available.</p>
                   </div>
                 )}
@@ -680,7 +681,7 @@ export default function DeliverySettings() {
               <div>
                 <p style={{ fontSize: '15px', fontWeight: '700', color: '#FEFEFE', marginBottom: '4px' }}>Delivery Service</p>
                 <p style={{ fontSize: '12px', color: deliveryEnabled ? '#22C55E' : '#FC0301' }}>
-                  {deliveryEnabled ? `Delivery is enabled — ${deliveryProvider === 'uber_direct' ? 'Uber Direct' : deliveryProvider === 'doordash' ? 'DoorDash Drive' : 'Manual'} is active` : 'Delivery is disabled — customers can only place pickup orders'}
+                  {deliveryEnabled ? `Delivery is enabled ${deliveryProvider === 'uber_direct' ? 'Uber Direct' : deliveryProvider === 'doordash' ? 'DoorDash Drive' : 'Manual'} is active` : 'Delivery is disabled customers can only place pickup orders'}
                 </p>
               </div>
               {toggleSwitch(deliveryEnabled, () => {

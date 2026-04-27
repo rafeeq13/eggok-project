@@ -1,5 +1,6 @@
 'use client';
 import { useState, useEffect } from 'react';
+import { X } from 'lucide-react';
 import SingleDatePicker from './SingleDatePicker';
 
 type Promo = {
@@ -219,7 +220,7 @@ export default function Promotions() {
               <h2 style={{ fontSize: '18px', fontWeight: '700', color: '#FEFEFE' }}>
                 {editingPromo ? 'Edit Promo Code' : 'Create Promo Code'}
               </h2>
-              <button onClick={resetForm} style={{ background: 'transparent', color: '#FEFEFE', fontSize: '20px', border: 'none', cursor: 'pointer' }}>✕</button>
+              <button onClick={resetForm} style={{ background: 'transparent', color: '#FEFEFE', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center' }}><X size={20} /></button>
             </div>
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
@@ -295,7 +296,7 @@ export default function Promotions() {
               </div>
 
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '12px 14px', background: '#111111', borderRadius: '8px', border: '1px solid #2A2A2A' }}>
-                <span style={{ fontSize: '13px', color: '#CACACA' }}>Active — customers can use this code</span>
+                <span style={{ fontSize: '13px', color: '#CACACA' }}>Active customers can use this code</span>
                 <div onClick={() => setFormData({ ...formData, active: !formData.active })} style={{
                   width: '42px', height: '24px',
                   background: formData.active ? '#E5B800' : '#2A2A2A',

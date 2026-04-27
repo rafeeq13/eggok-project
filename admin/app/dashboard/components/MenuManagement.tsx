@@ -1,5 +1,6 @@
 'use client';
 import React, { useState, useEffect } from 'react';
+import { X, Menu as MenuIcon, LayoutGrid, ArrowLeft, ArrowRight, Star } from 'lucide-react';
 import ItemForm from './ItemForm';
 
 type Category = { id: number; name: string; active: boolean; sortOrder: number };
@@ -140,7 +141,7 @@ export default function MenuManagement() {
   const confirm = (title: string, message: string, onConfirm: () => void) => setConfirmDialog({ show: true, title, message, onConfirm });
   // Backend-backed audit log. Writes go to /audit-logs (the backend stamps the
   // user, role and IP from the admin token). Reads pull the most recent 100
-  // entries on mount and after every write — so changes from any admin/device
+  // entries on mount and after every write so changes from any admin/device
   // show up here, not just the ones made on this browser.
   const addHistory = (action: string, target: string, detail: string) => {
     // Optimistic prepend so the UI updates immediately; backend write happens
@@ -201,7 +202,7 @@ export default function MenuManagement() {
     if (editingCategory) {
       await adminFetch(`${API}/menu/categories/${editingCategory.id}`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ name: newCategoryName }) });
       setCategories(prev => prev.map(c => c.id === editingCategory.id ? { ...c, name: newCategoryName } : c));
-      addHistory('UPDATED', 'Category', `${editingCategory.name} → ${newCategoryName}`);
+      addHistory('UPDATED', 'Category', `${editingCategory.name} to ${newCategoryName}`);
       showSuccess('Category updated');
     } else {
       const res = await adminFetch(`${API}/menu/categories`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ name: newCategoryName, sortOrder: categories.length + 1 }) });
@@ -215,11 +216,11 @@ export default function MenuManagement() {
 
   const handleDeleteCategory = (cat: Category) => {
     const linkedCount = items.filter(i => i.categoryId === cat.id).length;
-    confirm('Delete Category?', `Delete "${cat.name}"? ${linkedCount > 0 ? `⚠️ ${linkedCount} item(s) will become uncategorized.` : 'This cannot be undone.'}`,
+    confirm('Delete Category?', `Delete "${cat.name}"? ${linkedCount > 0 ? `Warning: ${linkedCount} item(s) will become uncategorized.` : 'This cannot be undone.'}`,
       async () => {
         await adminFetch(`${API}/menu/categories/${cat.id}`, { method: 'DELETE' });
         setCategories(prev => prev.filter(c => c.id !== cat.id));
-        addHistory('DELETED', 'Category', `${cat.name} — permanently deleted`);
+        addHistory('DELETED', 'Category', `${cat.name} permanently deleted`);
         showSuccess('Category deleted');
         setConfirmDialog(null);
         loadData();
@@ -230,10 +231,22 @@ export default function MenuManagement() {
   const toggleCategoryActive = async (cat: Category) => {
     await adminFetch(`${API}/menu/categories/${cat.id}`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ isActive: !cat.active }) });
     setCategories(prev => prev.map(c => c.id === cat.id ? { ...c, active: !c.active } : c));
-    addHistory('TOGGLED', 'Category', `${cat.name} — ${cat.active ? 'disabled' : 'enabled'}`);
+    addHistory('TOGGLED', 'Category', `${cat.name} ${cat.active ? 'disabled' : 'enabled'}`);
   };
 
   // ── ITEM HANDLERS ──
+  const persistItemModifierLinks = async (itemId: number, prevIds: number[], nextIds: number[]) => {
+    const toRemove = prevIds.filter(id => !nextIds.includes(id));
+    const toAdd = nextIds.filter(id => !prevIds.includes(id));
+    for (const modId of toRemove) {
+      await adminFetch(`${API}/menu/items/${itemId}/modifiers/${modId}`, { method: 'DELETE' });
+    }
+    for (const modId of toAdd) {
+      const sortOrder = nextIds.indexOf(modId);
+      await adminFetch(`${API}/menu/items/${itemId}/modifiers/${modId}`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ sortOrder }) });
+    }
+  };
+
   const handleSaveItem = async (data: any) => {
     const payload = {
       name: data.name, description: data.description,
@@ -243,15 +256,26 @@ export default function MenuManagement() {
       isAvailable: data.available,
       image: data.imageUrl || null,
     };
+    const nextLinkedIds: number[] = data.linkedModifierIds || [];
     if (editingItem) {
       await adminFetch(`${API}/menu/items/${editingItem.id}`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
-      setItems(prev => prev.map(i => i.id === editingItem.id ? { ...i, ...data, categoryId: Number(data.categoryId), available: data.available, imageUrl: data.imageUrl || '' } : i));
-      addHistory('UPDATED', 'Item', `${editingItem.name} — edited`);
+      await persistItemModifierLinks(editingItem.id, editingItem.linkedModifierIds || [], nextLinkedIds);
+      const itemId = editingItem.id;
+      setItems(prev => prev.map(i => i.id === itemId ? { ...i, ...data, categoryId: Number(data.categoryId), available: data.available, imageUrl: data.imageUrl || '', linkedModifierIds: nextLinkedIds } : i));
+      setModifierGroups(prev => prev.map(g => {
+        const wasLinked = g.linkedItemIds.includes(itemId);
+        const shouldBeLinked = nextLinkedIds.includes(g.id);
+        if (wasLinked === shouldBeLinked) return g;
+        return { ...g, linkedItemIds: shouldBeLinked ? [...g.linkedItemIds, itemId] : g.linkedItemIds.filter(id => id !== itemId) };
+      }));
+      addHistory('UPDATED', 'Item', `${editingItem.name} edited`);
       showSuccess('Item updated');
     } else {
       const res = await adminFetch(`${API}/menu/items`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
       const created = await res.json();
-      setItems(prev => [...prev, { id: created.id, categoryId: created.categoryId, name: created.name, description: created.description, pickupPrice: created.pickupPrice, deliveryPrice: created.deliveryPrice, available: created.isAvailable, imageUrl: created.image || '', linkedModifierIds: [] }]);
+      await persistItemModifierLinks(created.id, [], nextLinkedIds);
+      setItems(prev => [...prev, { id: created.id, categoryId: created.categoryId, name: created.name, description: created.description, pickupPrice: created.pickupPrice, deliveryPrice: created.deliveryPrice, available: created.isAvailable, imageUrl: created.image || '', linkedModifierIds: nextLinkedIds }]);
+      setModifierGroups(prev => prev.map(g => nextLinkedIds.includes(g.id) ? { ...g, linkedItemIds: [...g.linkedItemIds, created.id] } : g));
       addHistory('ADDED', 'Item', data.name);
       showSuccess('Item added');
     }
@@ -264,7 +288,7 @@ export default function MenuManagement() {
         await adminFetch(`${API}/menu/items/${item.id}`, { method: 'DELETE' });
         setItems(prev => prev.filter(i => i.id !== item.id));
         setModifierGroups(prev => prev.map(g => ({ ...g, linkedItemIds: g.linkedItemIds.filter(id => id !== item.id) })));
-        addHistory('DELETED', 'Item', `${item.name} — permanently deleted`);
+        addHistory('DELETED', 'Item', `${item.name} permanently deleted`);
         showSuccess('Item deleted');
         setConfirmDialog(null);
       }
@@ -274,7 +298,7 @@ export default function MenuManagement() {
   const toggleItemAvailable = async (item: MenuItem) => {
     await adminFetch(`${API}/menu/items/${item.id}`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ isAvailable: !item.available }) });
     setItems(prev => prev.map(i => i.id === item.id ? { ...i, available: !i.available } : i));
-    addHistory('TOGGLED', 'Item', `${item.name} — ${item.available ? 'unavailable' : 'available'}`);
+    addHistory('TOGGLED', 'Item', `${item.name} ${item.available ? 'unavailable' : 'available'}`);
   };
 
   // ── MODIFIER HANDLERS ──
@@ -305,7 +329,7 @@ export default function MenuManagement() {
       const res = await adminFetch(`${API}/menu/modifier-groups`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
       const created = await res.json();
       setModifierGroups(prev => [...prev, { id: created.id, name: created.name, required: created.required, minSelections: created.minSelections, maxSelections: created.maxSelections, options: created.options.map((o: any) => ({ id: o.id, name: o.name, price: parseFloat(o.price), isDefault: o.isDefault })), linkedItemIds: [] }]);
-      addHistory('ADDED', 'Modifier Group', `${modName} — ${modOptions.length} options`);
+      addHistory('ADDED', 'Modifier Group', `${modName} ${modOptions.length} options`);
       showSuccess('Modifier group created');
     }
     setShowModifierForm(false);
@@ -318,7 +342,7 @@ export default function MenuManagement() {
         await adminFetch(`${API}/menu/modifier-groups/${id}`, { method: 'DELETE' });
         setModifierGroups(prev => prev.filter(g => g.id !== id));
         setItems(prev => prev.map(i => ({ ...i, linkedModifierIds: i.linkedModifierIds.filter(mid => mid !== id) })));
-        addHistory('DELETED', 'Modifier Group', `${group?.name} — permanently deleted`);
+        addHistory('DELETED', 'Modifier Group', `${group?.name} permanently deleted`);
         showSuccess('Modifier deleted');
         setConfirmDialog(null);
       }
@@ -338,7 +362,7 @@ export default function MenuManagement() {
       // Update local state only - junction table is already persisted by the POST/DELETE above
       setModifierGroups(prev => prev.map(g => g.id === modifierId ? { ...g, linkedItemIds: isLinked ? g.linkedItemIds.filter(id => id !== itemId) : [...g.linkedItemIds, itemId] } : g));
       setItems(prev => prev.map(i => i.id === itemId ? { ...i, linkedModifierIds: isLinked ? i.linkedModifierIds.filter(mid => mid !== modifierId) : [...i.linkedModifierIds, modifierId] } : i));
-      addHistory(isLinked ? 'UNLINKED' : 'LINKED', 'Modifier', `${group?.name} → ${item?.name}`);
+      addHistory(isLinked ? 'UNLINKED' : 'LINKED', 'Modifier', `${group?.name} to ${item?.name}`);
     } catch (err) {
       console.error('Toggle link failed:', err);
       showSuccess('Failed to update modifier link');
@@ -414,7 +438,7 @@ export default function MenuManagement() {
           <div style={{ background: '#1A1A1A', border: '1px solid #2A2A2A', borderRadius: '16px', padding: '28px', width: '100%', maxWidth: '420px' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
               <h2 style={{ fontSize: '18px', fontWeight: '700', color: '#FEFEFE' }}>{editingCategory ? 'Edit Category' : 'Add New Category'}</h2>
-              <button onClick={() => { setShowCategoryForm(false); setEditingCategory(null); setNewCategoryName(''); }} style={{ background: 'transparent', color: '#FEFEFE', fontSize: '20px', border: 'none', cursor: 'pointer' }}>✕</button>
+              <button onClick={() => { setShowCategoryForm(false); setEditingCategory(null); setNewCategoryName(''); }} style={{ background: 'transparent', color: '#FEFEFE', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center' }}><X size={20} /></button>
             </div>
             <div style={{ marginBottom: '20px' }}>
               <p style={{ fontSize: '12px', color: '#FEFEFE', marginBottom: '6px' }}>Category Name *</p>
@@ -434,7 +458,7 @@ export default function MenuManagement() {
           <div style={{ background: '#1A1A1A', border: '1px solid #2A2A2A', borderRadius: '16px', width: '100%', maxWidth: '560px', maxHeight: '90vh', display: 'flex', flexDirection: 'column' }}>
             <div style={{ padding: '18px 24px', borderBottom: '1px solid #2A2A2A', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexShrink: 0 }}>
               <h2 style={{ fontSize: '17px', fontWeight: '700', color: '#FEFEFE' }}>{editingModifier ? 'Edit Modifier Group' : 'Create Modifier Group'}</h2>
-              <button onClick={() => setShowModifierForm(false)} style={{ background: 'transparent', color: '#FEFEFE', fontSize: '20px', border: 'none', cursor: 'pointer' }}>✕</button>
+              <button onClick={() => setShowModifierForm(false)} style={{ background: 'transparent', color: '#FEFEFE', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center' }}><X size={20} /></button>
             </div>
             <div style={{ overflow: 'auto', padding: '20px 24px', flex: 1 }}>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
@@ -473,7 +497,7 @@ export default function MenuManagement() {
                         {toggleSwitch(opt.isDefault, () => updateOption(opt.id, 'isDefault', !opt.isDefault))}
                         <span style={{ fontSize: '10px', color: '#FEFEFE' }}>Default</span>
                       </div>
-                      <button onClick={() => deleteOption(opt.id)} style={{ width: '30px', height: '30px', background: 'transparent', border: '1px solid #FC030130', borderRadius: '6px', color: '#FC0301', fontSize: '14px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>✕</button>
+                      <button onClick={() => deleteOption(opt.id)} style={{ width: '30px', height: '30px', background: 'transparent', border: '1px solid #FC030130', borderRadius: '6px', color: '#FC0301', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><X size={14} /></button>
                     </div>
                   ))}
                 </div>
@@ -496,7 +520,7 @@ export default function MenuManagement() {
                 <h2 style={{ fontSize: '16px', fontWeight: '700', color: '#FEFEFE' }}>Link to Items</h2>
                 <p style={{ fontSize: '12px', color: '#FEFEFE', marginTop: '3px' }}>{linkingGroup.name}</p>
               </div>
-              <button onClick={() => setShowLinkModal(false)} style={{ background: 'transparent', color: '#FEFEFE', fontSize: '20px', border: 'none', cursor: 'pointer' }}>✕</button>
+              <button onClick={() => setShowLinkModal(false)} style={{ background: 'transparent', color: '#FEFEFE', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center' }}><X size={20} /></button>
             </div>
             <div style={{ overflow: 'auto', padding: '16px 24px', flex: 1 }}>
               {categories.map(cat => {
@@ -628,8 +652,8 @@ export default function MenuManagement() {
             </select>
             <div style={{ display: 'flex', background: '#111111', border: '1px solid #2A2A2A', borderRadius: '8px', overflow: 'hidden' }}>
               {(['table', 'grid'] as const).map(v => (
-                <button key={v} onClick={() => setViewMode(v)} style={{ padding: '8px 14px', background: viewMode === v ? '#E5B800' : 'transparent', border: 'none', cursor: 'pointer', fontSize: '13px', color: viewMode === v ? '#000' : '#FEFEFE' }}>
-                  {v === 'table' ? '☰ Table' : '⊞ Grid'}
+                <button key={v} onClick={() => setViewMode(v)} style={{ padding: '8px 14px', background: viewMode === v ? '#E5B800' : 'transparent', border: 'none', cursor: 'pointer', fontSize: '13px', color: viewMode === v ? '#000' : '#FEFEFE', display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
+                  {v === 'table' ? <><MenuIcon size={14} /> Table</> : <><LayoutGrid size={14} /> Grid</>}
                 </button>
               ))}
             </div>
@@ -687,7 +711,7 @@ export default function MenuManagement() {
                                   await adminFetch(`${API}/menu/items/${created.id}/modifiers/${modId}`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ sortOrder: 0 }) });
                                 }
                                 setItems(prev => [...prev, { id: created.id, categoryId: created.categoryId, name: created.name, description: created.description, pickupPrice: created.pickupPrice, deliveryPrice: created.deliveryPrice, available: created.isAvailable, imageUrl: created.image || '', linkedModifierIds: [...item.linkedModifierIds] }]);
-                                addHistory('DUPLICATED', 'Item', `${item.name} → ${created.name}`);
+                                addHistory('DUPLICATED', 'Item', `${item.name} to ${created.name}`);
                                 showSuccess(`Duplicated "${item.name}"`);
                               } catch { showSuccess('Failed to duplicate'); }
                             }} style={{ padding: '5px 10px', background: 'transparent', border: '1px solid #E5B80030', borderRadius: '6px', color: '#E5B800', fontSize: '11px', cursor: 'pointer' }}>Duplicate</button>
@@ -759,8 +783,8 @@ export default function MenuManagement() {
               </div>
               <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' as const }}>
                 {group.options.map(opt => (
-                  <span key={opt.id} style={{ fontSize: '11px', padding: '4px 10px', background: opt.isDefault ? '#E5B80020' : '#111111', border: `1px solid ${opt.isDefault ? '#E5B80040' : '#2A2A2A'}`, borderRadius: '20px', color: opt.isDefault ? '#E5B800' : '#FEFEFE' }}>
-                    {opt.name}{opt.price > 0 ? ` +$${opt.price.toFixed(2)}` : ' (free)'}{opt.isDefault ? ' ★' : ''}
+                  <span key={opt.id} style={{ fontSize: '11px', padding: '4px 10px', background: opt.isDefault ? '#E5B80020' : '#111111', border: `1px solid ${opt.isDefault ? '#E5B80040' : '#2A2A2A'}`, borderRadius: '20px', color: opt.isDefault ? '#E5B800' : '#FEFEFE', display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+                    {opt.name}{opt.price > 0 ? ` +$${opt.price.toFixed(2)}` : ' (free)'}{opt.isDefault && <Star size={10} fill="#E5B800" />}
                   </span>
                 ))}
               </div>
@@ -780,7 +804,7 @@ export default function MenuManagement() {
         </div>
       )}
 
-      {/* UPSELL TAB — pick items to show in "You might also like" on the customer-facing item modal */}
+      {/* UPSELL TAB pick items to show in "You might also like" on the customer-facing item modal */}
       {activeTab === 'upsell' && (() => {
         const eligible = items.filter(i => (!i.linkedModifierIds || i.linkedModifierIds.length === 0));
         const ineligibleCount = items.length - eligible.length;
@@ -791,7 +815,7 @@ export default function MenuManagement() {
                 <p style={{ fontSize: '14px', color: '#FEFEFE', margin: 0, fontWeight: 600 }}>Pick items to show in &quot;You might also like&quot;</p>
                 <p style={{ fontSize: '12px', color: '#AAAAAA', margin: '4px 0 0' }}>
                   Customers tap once on these to add them to their cart. Only items without modifiers are shown here, so single-tap add always works cleanly.
-                  {ineligibleCount > 0 && ` (${ineligibleCount} item${ineligibleCount === 1 ? '' : 's'} hidden — they have modifiers.)`}
+                  {ineligibleCount > 0 && ` (${ineligibleCount} item${ineligibleCount === 1 ? '' : 's'} hidden they have modifiers.)`}
                 </p>
               </div>
               <button
@@ -876,9 +900,9 @@ export default function MenuManagement() {
           </div>
           {totalHistoryPages > 1 && (
             <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '8px', marginTop: '16px' }}>
-              <button onClick={() => setHistoryPage(p => Math.max(1, p - 1))} disabled={historyPage === 1} style={{ padding: '6px 14px', background: historyPage === 1 ? '#111111' : '#1A1A1A', border: '1px solid #2A2A2A', borderRadius: '6px', color: historyPage === 1 ? '#444' : '#FEFEFE', fontSize: '12px', cursor: historyPage === 1 ? 'not-allowed' : 'pointer' }}>← Prev</button>
+              <button onClick={() => setHistoryPage(p => Math.max(1, p - 1))} disabled={historyPage === 1} style={{ padding: '6px 14px', background: historyPage === 1 ? '#111111' : '#1A1A1A', border: '1px solid #2A2A2A', borderRadius: '6px', color: historyPage === 1 ? '#444' : '#FEFEFE', fontSize: '12px', cursor: historyPage === 1 ? 'not-allowed' : 'pointer', display: 'inline-flex', alignItems: 'center', gap: '4px' }}><ArrowLeft size={12} /> Prev</button>
               <span style={{ fontSize: '12px', color: '#FEFEFE' }}>Page {historyPage} of {totalHistoryPages}</span>
-              <button onClick={() => setHistoryPage(p => Math.min(totalHistoryPages, p + 1))} disabled={historyPage === totalHistoryPages} style={{ padding: '6px 14px', background: historyPage === totalHistoryPages ? '#111111' : '#1A1A1A', border: '1px solid #2A2A2A', borderRadius: '6px', color: historyPage === totalHistoryPages ? '#444' : '#FEFEFE', fontSize: '12px', cursor: historyPage === totalHistoryPages ? 'not-allowed' : 'pointer' }}>Next →</button>
+              <button onClick={() => setHistoryPage(p => Math.min(totalHistoryPages, p + 1))} disabled={historyPage === totalHistoryPages} style={{ padding: '6px 14px', background: historyPage === totalHistoryPages ? '#111111' : '#1A1A1A', border: '1px solid #2A2A2A', borderRadius: '6px', color: historyPage === totalHistoryPages ? '#444' : '#FEFEFE', fontSize: '12px', cursor: historyPage === totalHistoryPages ? 'not-allowed' : 'pointer', display: 'inline-flex', alignItems: 'center', gap: '4px' }}>Next <ArrowRight size={12} /></button>
             </div>
           )}
         </div>

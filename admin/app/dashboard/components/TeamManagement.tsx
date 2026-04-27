@@ -1,5 +1,6 @@
 'use client';
 import { useState, useEffect } from 'react';
+import { X, Check } from 'lucide-react';
 
 type Role = 'Super Admin' | 'Manager' | 'Staff';
 
@@ -312,7 +313,7 @@ export default function TeamManagement() {
               <h2 style={{ fontSize: '18px', fontWeight: '700', color: '#FEFEFE' }}>
                 {editingMember ? 'Edit Team Member' : 'Invite Team Member'}
               </h2>
-              <button onClick={resetForm} style={{ background: 'transparent', color: '#FEFEFE', fontSize: '20px', border: 'none', cursor: 'pointer' }}>✕</button>
+              <button onClick={resetForm} style={{ background: 'transparent', color: '#FEFEFE', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center' }}><X size={20} /></button>
             </div>
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
@@ -415,7 +416,7 @@ export default function TeamManagement() {
           }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
               <h2 style={{ fontSize: '18px', fontWeight: '700', color: '#FEFEFE' }}>Edit Your Profile</h2>
-              <button onClick={closeProfileForm} style={{ background: 'transparent', color: '#FEFEFE', fontSize: '20px', border: 'none', cursor: 'pointer' }}>✕</button>
+              <button onClick={closeProfileForm} style={{ background: 'transparent', color: '#FEFEFE', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center' }}><X size={20} /></button>
             </div>
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
@@ -528,12 +529,12 @@ export default function TeamManagement() {
               <h2 style={{ fontSize: '18px', fontWeight: '700', color: '#FEFEFE' }}>
                 {showPermissions} Permissions
               </h2>
-              <button onClick={() => setShowPermissions(null)} style={{ background: 'transparent', color: '#FEFEFE', fontSize: '20px', border: 'none', cursor: 'pointer' }}>✕</button>
+              <button onClick={() => setShowPermissions(null)} style={{ background: 'transparent', color: '#FEFEFE', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center' }}><X size={20} /></button>
             </div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
               {rolePermissions[showPermissions].map((perm, i) => (
                 <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '10px 14px', background: '#111111', borderRadius: '8px' }}>
-                  <span style={{ color: '#22C55E', fontSize: '14px' }}>✓</span>
+                  <span style={{ color: '#22C55E', display: 'inline-flex', alignItems: 'center' }}><Check size={14} /></span>
                   <span style={{ fontSize: '13px', color: '#FEFEFE' }}>{perm}</span>
                 </div>
               ))}
@@ -574,7 +575,7 @@ export default function TeamManagement() {
             borderRadius: '20px', cursor: 'pointer',
             fontSize: '11px', fontWeight: '600', color: roleColor[role],
           }}>
-            {role} — view permissions
+            {role} view permissions
           </button>
         ))}
       </div>

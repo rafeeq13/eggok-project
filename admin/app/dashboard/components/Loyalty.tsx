@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { X, Star, Check } from 'lucide-react';
 
 import { API, adminFetch } from '../../../lib/api';
 
@@ -380,7 +381,7 @@ export default function Loyalty() {
               <h2 style={{ fontSize: '16px', fontWeight: '700', color: '#FEFEFE' }}>
                 {editingReward ? 'Edit Reward' : 'Create Reward'}
               </h2>
-              <button onClick={resetForm} style={{ background: 'transparent', color: '#FEFEFE', fontSize: '20px', border: 'none', cursor: 'pointer' }}>✕</button>
+              <button onClick={resetForm} style={{ background: 'transparent', color: '#FEFEFE', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center' }}><X size={20} /></button>
             </div>
             <div style={{ padding: '20px 24px' }}>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
@@ -428,7 +429,7 @@ export default function Loyalty() {
                   />
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '12px 14px', background: '#111111', borderRadius: '8px', border: '1px solid #2A2A2A' }}>
-                  <span style={{ fontSize: '13px', color: '#FEFEFE' }}>Active — customers can redeem</span>
+                  <span style={{ fontSize: '13px', color: '#FEFEFE' }}>Active customers can redeem</span>
                   {toggleSwitch(formData.active, () => setFormData({ ...formData, active: !formData.active }))}
                 </div>
               </div>
@@ -459,7 +460,7 @@ export default function Loyalty() {
                   <p style={{ fontSize: '12px', color: '#888', margin: 0 }}>{selectedMember.email}</p>
                 </div>
               </div>
-              <button onClick={() => setSelectedMember(null)} style={{ background: 'transparent', color: '#888', fontSize: '20px', border: 'none', cursor: 'pointer' }}>✕</button>
+              <button onClick={() => setSelectedMember(null)} style={{ background: 'transparent', color: '#888', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center' }}><X size={20} /></button>
             </div>
 
             <div style={{ padding: '20px 24px' }}>
@@ -590,7 +591,7 @@ export default function Loyalty() {
               <div>
                 <p style={{ fontSize: '15px', fontWeight: '700', color: '#FEFEFE', marginBottom: '4px' }}>Loyalty Program</p>
                 <p style={{ fontSize: '12px', color: loyaltyEnabled ? '#22C55E' : '#FC0301' }}>
-                  {loyaltyEnabled ? 'Active customers are earning and redeeming points' : 'Disabled — loyalty program is paused'}
+                  {loyaltyEnabled ? 'Active customers are earning and redeeming points' : 'Disabled loyalty program is paused'}
                 </p>
               </div>
               {toggleSwitch(loyaltyEnabled, () => setLoyaltyEnabled(!loyaltyEnabled))}
@@ -620,7 +621,7 @@ export default function Loyalty() {
               {tiers.map(tier => (
                 <div key={tier.id} style={{ background: '#111111', border: `1px solid ${tier.color}30`, borderRadius: '10px', padding: '16px' }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '10px' }}>
-                    <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: `${tier.color}20`, border: `2px solid ${tier.color}`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '14px' }}>⭐</div>
+                    <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: `${tier.color}20`, border: `2px solid ${tier.color}`, display: 'flex', alignItems: 'center', justifyContent: 'center', color: tier.color }}><Star size={14} fill={tier.color} /></div>
                     <div>
                       <p style={{ fontSize: '14px', fontWeight: '700', color: tier.color }}>{tier.name}</p>
                       <p style={{ fontSize: '11px', color: '#FEFEFE' }}>{tier.minPoints}+ points</p>
@@ -629,7 +630,7 @@ export default function Loyalty() {
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
                     {tier.perks.map((perk, i) => (
                       <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                        <span style={{ color: tier.color, fontSize: '10px', flexShrink: 0 }}>✓</span>
+                        <span style={{ color: tier.color, flexShrink: 0, display: 'inline-flex', alignItems: 'center' }}><Check size={10} /></span>
                         <span style={{ fontSize: '11px', color: '#FEFEFE' }}>{perk}</span>
                       </div>
                     ))}

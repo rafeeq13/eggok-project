@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { X, Star } from 'lucide-react';
 
 import { API, adminFetch } from '../../../lib/api';
 import Pagination from './Pagination';
@@ -23,7 +24,7 @@ type Review = {
 
 const initialReviews: Review[] = [
   { id: 1, customer: 'John Smith', email: 'john@gmail.com', rating: 5, title: 'Best breakfast in Philly!', body: 'The Signature Bacon Egg & Cheese is absolutely amazing. The bread is perfectly toasted and the OK sauce is incredible. Will definitely be back!', date: '2026-03-20', orderType: 'Pickup', orderId: 'EO-1001', status: 'Published', reply: '', repliedAt: '' },
-  { id: 2, customer: 'Sarah Lee', email: 'sarah@gmail.com', rating: 4, title: 'Great food, fast delivery', body: 'Nashville Hot Chicken sandwich was delicious. Delivery was quick and food arrived hot. Only minor issue was the packaging could be better.', date: '2026-03-19', orderType: 'Delivery', orderId: 'EO-0997', status: 'Published', reply: 'Thank you Sarah! We appreciate your feedback on the packaging — we are always looking to improve!', repliedAt: '2026-03-19' },
+  { id: 2, customer: 'Sarah Lee', email: 'sarah@gmail.com', rating: 4, title: 'Great food, fast delivery', body: 'Nashville Hot Chicken sandwich was delicious. Delivery was quick and food arrived hot. Only minor issue was the packaging could be better.', date: '2026-03-19', orderType: 'Delivery', orderId: 'EO-0997', status: 'Published', reply: 'Thank you Sarah! We appreciate your feedback on the packaging we are always looking to improve!', repliedAt: '2026-03-19' },
   { id: 3, customer: 'Mike Johnson', email: 'mike@gmail.com', rating: 5, title: 'Absolutely love this place', body: 'I order from here at least twice a week. The breakfast burritos are incredible and the matcha drinks are the best I have had in the city.', date: '2026-03-18', orderType: 'Pickup', orderId: 'EO-0995', status: 'Published', reply: '', repliedAt: '' },
   { id: 4, customer: 'Emma Davis', email: 'emma@gmail.com', rating: 3, title: 'Good food but waited long', body: 'The food was tasty but my pickup order took 35 minutes when it said 15. Would appreciate more accurate timing.', date: '2026-03-17', orderType: 'Pickup', orderId: 'EO-0990', status: 'Published', reply: '', repliedAt: '' },
   { id: 5, customer: 'James Wilson', email: 'james@gmail.com', rating: 2, title: 'Order was missing items', body: 'My order was missing one of the drinks I paid for. I tried calling but no one answered. Hope this gets resolved.', date: '2026-03-16', orderType: 'Delivery', orderId: 'EO-0985', status: 'Flagged', reply: '', repliedAt: '' },
@@ -45,9 +46,10 @@ const ratingColor = (r: number) => {
 
 const Stars = ({ rating, size = 14 }: { rating: number; size?: number }) => (
   <div style={{ display: 'flex', gap: '2px' }}>
-    {[1, 2, 3, 4, 5].map(i => (
-      <span key={i} style={{ fontSize: `${size}px`, color: i <= rating ? '#E5B800' : '#2A2A2A' }}>★</span>
-    ))}
+    {[1, 2, 3, 4, 5].map(i => {
+      const filled = i <= rating;
+      return <Star key={i} size={size} color={filled ? '#E5B800' : '#2A2A2A'} fill={filled ? '#E5B800' : 'none'} />;
+    })}
   </div>
 );
 
@@ -186,7 +188,7 @@ export default function Reviews() {
 
             <div style={{ padding: '18px 24px', borderBottom: '1px solid #2A2A2A', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexShrink: 0 }}>
               <h2 style={{ fontSize: '16px', fontWeight: '700', color: '#FEFEFE' }}>Review Detail</h2>
-              <button onClick={() => { setSelectedReview(null); setReplyText(''); }} style={{ background: 'transparent', color: '#FEFEFE', fontSize: '20px', border: 'none', cursor: 'pointer' }}>✕</button>
+              <button onClick={() => { setSelectedReview(null); setReplyText(''); }} style={{ background: 'transparent', color: '#FEFEFE', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center' }}><X size={20} /></button>
             </div>
 
             <div style={{ overflow: 'auto', padding: '20px 24px', flex: 1 }}>
@@ -230,7 +232,7 @@ export default function Reviews() {
               {/* Existing reply */}
               {selectedReview.reply && (
                 <div style={{ background: '#0A1A0A', border: '1px solid #22C55E30', borderRadius: '10px', padding: '14px 16px', marginBottom: '14px' }}>
-                  <p style={{ fontSize: '11px', color: '#22C55E', fontWeight: '600', marginBottom: '6px' }}>Your Reply — {selectedReview.repliedAt}</p>
+                  <p style={{ fontSize: '11px', color: '#22C55E', fontWeight: '600', marginBottom: '6px' }}>Your Reply {selectedReview.repliedAt}</p>
                   <p style={{ fontSize: '13px', color: '#CACACA', lineHeight: '1.6' }}>{selectedReview.reply}</p>
                 </div>
               )}
@@ -296,7 +298,7 @@ export default function Reviews() {
           {ratingCounts.map(({ rating, count, pct }) => (
             <div key={rating} style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '8px' }}>
               <span style={{ fontSize: '12px', color: '#FEFEFE', width: '12px', textAlign: 'right', flexShrink: 0 }}>{rating}</span>
-              <span style={{ fontSize: '12px', color: '#E5B800', flexShrink: 0 }}>★</span>
+              <span style={{ color: '#E5B800', flexShrink: 0, display: 'inline-flex', alignItems: 'center' }}><Star size={12} fill="#E5B800" /></span>
               <div style={{ flex: 1, height: '8px', background: '#2A2A2A', borderRadius: '4px', overflow: 'hidden' }}>
                 <div style={{ width: `${pct}%`, height: '100%', background: ratingColor(rating), borderRadius: '4px', transition: 'width 0.3s' }} />
               </div>

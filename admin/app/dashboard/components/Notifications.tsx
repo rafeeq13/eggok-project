@@ -1,5 +1,6 @@
 'use client';
 import { useState, useEffect } from 'react';
+import { X, ChefHat } from 'lucide-react';
 
 import { API, adminFetch } from '../../../lib/api';
 
@@ -76,21 +77,21 @@ const initialEmailTemplates: EmailTemplate[] = [
 ];
 
 const initialPushTemplates: PushTemplate[] = [
-  { id: 'order_confirmed_push', name: 'Order Confirmed', title: 'Order Confirmed! 🎉', body: 'Your order #{{order_id}} has been received. Estimated time: {{estimated_time}}', trigger: 'When order is placed', active: true },
-  { id: 'order_preparing_push', name: 'Order Preparing', title: 'We\'re cooking! 👨‍🍳', body: 'Your order #{{order_id}} is being prepared right now.', trigger: 'When status changes to Preparing', active: true },
-  { id: 'order_ready_push', name: 'Order Ready', title: 'Your order is ready! ✅', body: 'Come pick up your order #{{order_id}} at Eggs Ok , 3517 Lancaster Ave', trigger: 'When status changes to Ready', active: true },
-  { id: 'driver_assigned_push', name: 'Driver Assigned', title: 'Driver on the way! 🚗', body: 'Your Dasher has been assigned and is heading to pick up your order.', trigger: 'When DoorDash assigns a driver', active: true },
-  { id: 'order_delivered_push', name: 'Order Delivered', title: 'Delivered! 🎊', body: 'Your Eggs Ok order has been delivered. Enjoy your meal!', trigger: 'When order is delivered', active: true },
-  { id: 'promo_push', name: 'Promotional', title: '{{promo_title}}', body: '{{promo_body}}', trigger: 'Manual — sent from promotions', active: false },
+  { id: 'order_confirmed_push', name: 'Order Confirmed', title: 'Order Confirmed!', body: 'Your order #{{order_id}} has been received. Estimated time: {{estimated_time}}', trigger: 'When order is placed', active: true },
+  { id: 'order_preparing_push', name: 'Order Preparing', title: "We're cooking!", body: 'Your order #{{order_id}} is being prepared right now.', trigger: 'When status changes to Preparing', active: true },
+  { id: 'order_ready_push', name: 'Order Ready', title: 'Your order is ready!', body: 'Come pick up your order #{{order_id}} at Eggs Ok , 3517 Lancaster Ave', trigger: 'When status changes to Ready', active: true },
+  { id: 'driver_assigned_push', name: 'Driver Assigned', title: 'Driver on the way!', body: 'Your Dasher has been assigned and is heading to pick up your order.', trigger: 'When DoorDash assigns a driver', active: true },
+  { id: 'order_delivered_push', name: 'Order Delivered', title: 'Delivered!', body: 'Your Eggs Ok order has been delivered. Enjoy your meal!', trigger: 'When order is delivered', active: true },
+  { id: 'promo_push', name: 'Promotional', title: '{{promo_title}}', body: '{{promo_body}}', trigger: 'Manual sent from promotions', active: false },
 ];
 
 const notifHistory: NotifHistory[] = [
   { id: 1, type: 'Email', recipient: 'john@gmail.com', subject: 'Your Eggs Ok order #EO-1001 is confirmed!', status: 'Sent', time: '2026-03-20 09:12 AM' },
-  { id: 2, type: 'Push', recipient: 'John Smith', subject: 'Order Confirmed! 🎉', status: 'Sent', time: '2026-03-20 09:12 AM' },
+  { id: 2, type: 'Push', recipient: 'John Smith', subject: 'Order Confirmed!', status: 'Sent', time: '2026-03-20 09:12 AM' },
   { id: 3, type: 'Email', recipient: 'sarah@gmail.com', subject: 'Your Eggs Ok order #EO-1002 is confirmed!', status: 'Sent', time: '2026-03-20 09:05 AM' },
-  { id: 4, type: 'Push', recipient: 'Sarah Lee', subject: 'Driver on the way! 🚗', status: 'Sent', time: '2026-03-20 09:35 AM' },
+  { id: 4, type: 'Push', recipient: 'Sarah Lee', subject: 'Driver on the way!', status: 'Sent', time: '2026-03-20 09:35 AM' },
   { id: 5, type: 'Email', recipient: 'mike@gmail.com', subject: 'Your Eggs Ok order is ready!', status: 'Sent', time: '2026-03-20 09:15 AM' },
-  { id: 6, type: 'Push', recipient: 'Mike Johnson', subject: 'Your order is ready! ✅', status: 'Failed', time: '2026-03-20 09:15 AM' },
+  { id: 6, type: 'Push', recipient: 'Mike Johnson', subject: 'Your order is ready!', status: 'Failed', time: '2026-03-20 09:15 AM' },
   { id: 7, type: 'Email', recipient: 'emma@gmail.com', subject: 'Welcome to Eggs Ok!', status: 'Sent', time: '2026-03-19 02:30 PM' },
 ];
 
@@ -219,7 +220,7 @@ export default function Notifications() {
           <div style={{ background: '#1A1A1A', border: '1px solid #2A2A2A', borderRadius: '16px', width: '100%', maxWidth: '600px', maxHeight: '90vh', display: 'flex', flexDirection: 'column' }}>
             <div style={{ padding: '18px 24px', borderBottom: '1px solid #2A2A2A', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexShrink: 0 }}>
               <h2 style={{ fontSize: '16px', fontWeight: '700', color: '#FEFEFE' }}>Edit Email Template</h2>
-              <button onClick={() => setEditingEmail(null)} style={{ background: 'transparent', color: '#FEFEFE', fontSize: '20px', border: 'none', cursor: 'pointer' }}>✕</button>
+              <button onClick={() => setEditingEmail(null)} style={{ background: 'transparent', color: '#FEFEFE', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center' }}><X size={20} /></button>
             </div>
             <div style={{ overflow: 'auto', padding: '20px 24px', flex: 1 }}>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
@@ -244,7 +245,7 @@ export default function Notifications() {
                   </div>
                   {showVariables && (
                     <div style={{ background: '#111111', borderRadius: '8px', padding: '12px', marginBottom: '8px', border: '1px solid #2A2A2A' }}>
-                      <p style={{ fontSize: '11px', color: '#E5B800', fontWeight: '600', marginBottom: '8px' }}>Available variables — click to copy</p>
+                      <p style={{ fontSize: '11px', color: '#E5B800', fontWeight: '600', marginBottom: '8px' }}>Available variables click to copy</p>
                       <div style={{ display: 'flex', flexWrap: 'wrap' as const, gap: '6px' }}>
                         {variables.map(v => (
                           <button key={v.var} onClick={() => { navigator.clipboard.writeText(v.var); showSuccess(`Copied ${v.var}`); }}
@@ -285,7 +286,7 @@ export default function Notifications() {
           <div style={{ background: '#1A1A1A', border: '1px solid #2A2A2A', borderRadius: '16px', width: '100%', maxWidth: '500px' }}>
             <div style={{ padding: '18px 24px', borderBottom: '1px solid #2A2A2A', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
               <h2 style={{ fontSize: '16px', fontWeight: '700', color: '#FEFEFE' }}>Edit Push Template</h2>
-              <button onClick={() => setEditingPush(null)} style={{ background: 'transparent', color: '#FEFEFE', fontSize: '20px', border: 'none', cursor: 'pointer' }}>✕</button>
+              <button onClick={() => setEditingPush(null)} style={{ background: 'transparent', color: '#FEFEFE', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center' }}><X size={20} /></button>
             </div>
             <div style={{ padding: '20px 24px' }}>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
@@ -313,7 +314,7 @@ export default function Notifications() {
                   <p style={{ fontSize: '11px', color: '#FEFEFE', marginBottom: '10px', fontWeight: '600' }}>Preview</p>
                   <div style={{ background: '#2A2A2A', borderRadius: '12px', padding: '12px 14px' }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px' }}>
-                      <div style={{ width: '20px', height: '20px', background: '#E5B800', borderRadius: '4px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '10px' }}>🍳</div>
+                      <div style={{ width: '20px', height: '20px', background: '#E5B800', borderRadius: '4px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#000' }}><ChefHat size={12} /></div>
                       <span style={{ fontSize: '11px', color: '#FEFEFE' }}>Eggs Ok · now</span>
                     </div>
                     <p style={{ fontSize: '13px', fontWeight: '700', color: '#FEFEFE', marginBottom: '3px' }}>{editingPush.title || 'Notification title'}</p>
@@ -428,7 +429,7 @@ export default function Notifications() {
                 <label style={labelStyle}>Notification Title *</label>
                 <input style={inputStyle} value={pushTitle}
                   onChange={e => setPushTitle(e.target.value)}
-                  placeholder="e.g. Special Weekend Deal! 🎉"
+                  placeholder="e.g. Special Weekend Deal!"
                   onFocus={e => e.target.style.borderColor = '#E5B800'}
                   onBlur={e => e.target.style.borderColor = '#2A2A2A'}
                 />
@@ -450,7 +451,7 @@ export default function Notifications() {
                   <p style={{ fontSize: '11px', color: '#FEFEFE', marginBottom: '10px' }}>Preview</p>
                   <div style={{ background: '#2A2A2A', borderRadius: '12px', padding: '12px 14px' }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px' }}>
-                      <div style={{ width: '20px', height: '20px', background: '#E5B800', borderRadius: '4px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '10px' }}>🍳</div>
+                      <div style={{ width: '20px', height: '20px', background: '#E5B800', borderRadius: '4px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#000' }}><ChefHat size={12} /></div>
                       <span style={{ fontSize: '11px', color: '#FEFEFE' }}>Eggs Ok · now</span>
                     </div>
                     <p style={{ fontSize: '13px', fontWeight: '700', color: '#FEFEFE', marginBottom: '3px' }}>{pushTitle}</p>

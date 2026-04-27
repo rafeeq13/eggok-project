@@ -1,5 +1,6 @@
 'use client';
 import { useState } from 'react';
+import { X } from 'lucide-react';
 
 export type Modifier = {
   id: number;
@@ -242,9 +243,9 @@ export default function ModifierBuilder({ groups, onChange }: Props) {
                     <button onClick={() => deleteModifier(group.id, mod.id)} style={{
                       width: '32px', height: '32px', background: 'transparent',
                       border: '1px solid #FC030130', borderRadius: '6px',
-                      color: '#FC0301', fontSize: '14px', cursor: 'pointer',
+                      color: '#FC0301', cursor: 'pointer',
                       display: 'flex', alignItems: 'center', justifyContent: 'center',
-                    }}>✕</button>
+                    }}><X size={14} /></button>
                   </div>
                 ))}
 

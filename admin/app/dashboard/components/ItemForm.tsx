@@ -1,5 +1,6 @@
 'use client';
 import React, { useState } from 'react';
+import { X, ArrowRight, Check } from 'lucide-react';
 
 type ModifierOption = {
   id: number;
@@ -128,7 +129,7 @@ export default function ItemForm({ categories, modifierGroups, initialData, onSa
           <h2 style={{ fontSize: '18px', fontWeight: '700', color: '#FEFEFE' }}>
             {isEditing ? 'Edit Menu Item' : 'Add New Menu Item'}
           </h2>
-          <button onClick={onCancel} style={{ background: 'transparent', color: '#FEFEFE', fontSize: '20px', border: 'none', cursor: 'pointer' }}>✕</button>
+          <button onClick={onCancel} style={{ background: 'transparent', color: '#FEFEFE', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center' }}><X size={20} /></button>
         </div>
 
         {/* Tabs */}
@@ -163,7 +164,7 @@ export default function ItemForm({ categories, modifierGroups, initialData, onSa
                   ) : (
                     <div>
                       <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#FEFEFE" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ margin: '0 auto 8px' }}><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
-                      <p style={{ fontSize: '12px', color: '#FEFEFE' }}>Upload photo — 800x800px JPG/PNG</p>
+                      <p style={{ fontSize: '12px', color: '#FEFEFE' }}>Upload photo 800x800px JPG/PNG</p>
                     </div>
                   )}
                   <input type="file" accept="image/jpeg,image/png,image/webp" onChange={handleImageUpload}
@@ -248,8 +249,8 @@ export default function ItemForm({ categories, modifierGroups, initialData, onSa
                 {toggleSwitch(available, () => setAvailable(!available))}
               </div>
 
-              <button onClick={() => setActiveSection('modifiers')} style={{ padding: '10px', background: 'transparent', border: '1px dashed #2A2A2A', borderRadius: '8px', color: '#FEFEFE', fontSize: '12px', cursor: 'pointer', textAlign: 'center' }}>
-                Go to Modifiers tab to link modifier groups →
+              <button onClick={() => setActiveSection('modifiers')} style={{ padding: '10px', background: 'transparent', border: '1px dashed #2A2A2A', borderRadius: '8px', color: '#FEFEFE', fontSize: '12px', cursor: 'pointer', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }}>
+                Go to Modifiers tab to link modifier groups <ArrowRight size={12} />
               </button>
             </div>
           )}
@@ -276,7 +277,7 @@ export default function ItemForm({ categories, modifierGroups, initialData, onSa
               {linkedModifierIds.length > 0 && (
                 <div style={{ marginBottom: '14px' }}>
                   <p style={{ fontSize: '11px', fontWeight: '600', color: '#E5B800', textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: '8px' }}>
-                    Linked — drag to reorder
+                    Linked drag to reorder
                   </p>
                   {linkedModifierIds.map((mid, index) => {
                     const group = modifierGroups.find(g => g.id === mid);
@@ -344,7 +345,7 @@ export default function ItemForm({ categories, modifierGroups, initialData, onSa
               {modifierGroups.filter(g => g.name.toLowerCase().includes(modifierSearch.toLowerCase())).length === 0 ? (
                 <div style={{ padding: '40px 20px', textAlign: 'center', background: '#111111', borderRadius: '10px' }}>
                   <p style={{ fontSize: '13px', color: '#FEFEFE', marginBottom: '8px' }}>No modifier groups created yet.</p>
-                  <p style={{ fontSize: '12px', color: '#FEFEFE' }}>Go to Menu Management → Modifier Library to create groups first.</p>
+                  <p style={{ fontSize: '12px', color: '#FEFEFE' }}>Go to Menu Management, then Modifier Library to create groups first.</p>
                 </div>
               ) : modifierGroups.filter(g => g.name.toLowerCase().includes(modifierSearch.toLowerCase())).map(group => {
                 const isLinked = linkedModifierIds.includes(group.id);
@@ -377,8 +378,8 @@ export default function ItemForm({ categories, modifierGroups, initialData, onSa
                           )}
                         </div>
                       </div>
-                      <span style={{ fontSize: '12px', fontWeight: '600', color: isLinked ? '#22C55E' : '#FEFEFE', flexShrink: 0, marginLeft: '12px' }}>
-                        {isLinked ? 'Linked ✓' : 'Not linked'}
+                      <span style={{ fontSize: '12px', fontWeight: '600', color: isLinked ? '#22C55E' : '#FEFEFE', flexShrink: 0, marginLeft: '12px', display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+                        {isLinked ? <>Linked <Check size={12} /></> : 'Not linked'}
                       </span>
                     </div>
                   </div>

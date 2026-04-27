@@ -1,5 +1,6 @@
 'use client';
 import React, { useEffect, useState, useRef, useCallback } from 'react';
+import { ChefHat } from 'lucide-react';
 import { API, adminFetch } from '../../../lib/api';
 
 type Order = {
@@ -232,7 +233,7 @@ export default function KitchenDisplay() {
       {/* Orders Grid */}
       {orders.length === 0 ? (
         <div style={{ textAlign: 'center', padding: '80px 20px' }}>
-          <div style={{ fontSize: '48px', marginBottom: '16px', opacity: 0.3 }}>🍳</div>
+          <div style={{ marginBottom: '16px', opacity: 0.3, display: 'flex', justifyContent: 'center', color: '#FEFEFE' }}><ChefHat size={48} /></div>
           <p style={{ fontSize: '16px', color: '#888', fontWeight: '600' }}>No active orders</p>
           <p style={{ fontSize: '12px', color: '#555', marginTop: '4px' }}>New orders will appear here automatically</p>
         </div>

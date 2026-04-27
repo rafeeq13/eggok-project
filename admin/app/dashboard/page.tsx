@@ -2,6 +2,7 @@
 import React, { useState, useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Image from 'next/image';
+import { X, Menu as MenuIcon, ArrowRight } from 'lucide-react';
 import StoreSettings from './components/StoreSettings';
 import Promotions from './components/Promotions';
 import Customers from './components/Customers';
@@ -79,23 +80,22 @@ function DashboardContent() {
 
   // Role-based access: Staff=orders only, Manager=most tabs, Super Admin=everything
   const allSidebarItems = [
-    { id: 'overview', label: 'Overview', icon: '📊', roles: ['Staff', 'Manager', 'Super Admin'] },
-    { id: 'orders', label: 'Orders', icon: '🧾', roles: ['Staff', 'Manager', 'Super Admin'] },
-    // { id: 'kitchen', label: 'Kitchen Display', icon: '🖨️', roles: ['Staff', 'Manager', 'Super Admin'] },
-    { id: 'menu', label: 'Menu Management', icon: '🍽️', roles: ['Manager', 'Super Admin'] },
-    { id: 'customers', label: 'Customers', icon: '👥', roles: ['Manager', 'Super Admin'] },
-    { id: 'promotions', label: 'Promotions', icon: '🎟️', roles: ['Manager', 'Super Admin'] },
-    { id: 'analytics', label: 'Analytics', icon: '📈', roles: ['Manager', 'Super Admin'] },
-    { id: 'payments', label: 'Payments', icon: '💳', roles: ['Super Admin'] },
-    { id: 'delivery', label: 'Delivery Settings', icon: '🚗', roles: ['Manager', 'Super Admin'] },
-    { id: 'team', label: 'Team', icon: '👤', roles: ['Super Admin'] },
-    { id: 'business', label: 'Business Profile', icon: '🏪', roles: ['Super Admin'] },
-    { id: 'integrations', label: 'Integrations', icon: '🔌', roles: ['Super Admin'] },
-    { id: 'submissions', label: 'Submissions', icon: '📬', roles: ['Manager', 'Super Admin'] },
-    { id: 'notifications', label: 'Notifications', icon: '🔔', roles: ['Manager', 'Super Admin'] },
-    { id: 'reviews', label: 'Reviews', icon: '⭐', roles: ['Manager', 'Super Admin'] },
-    { id: 'loyalty', label: 'Loyalty Program', icon: '🎁', roles: ['Manager', 'Super Admin'] },
-    { id: 'settings', label: 'Store Settings', icon: '⚙️', roles: ['Super Admin'] },
+    { id: 'overview', label: 'Overview', roles: ['Staff', 'Manager', 'Super Admin'] },
+    { id: 'orders', label: 'Orders', roles: ['Staff', 'Manager', 'Super Admin'] },
+    { id: 'menu', label: 'Menu Management', roles: ['Manager', 'Super Admin'] },
+    { id: 'customers', label: 'Customers', roles: ['Manager', 'Super Admin'] },
+    { id: 'promotions', label: 'Promotions', roles: ['Manager', 'Super Admin'] },
+    { id: 'analytics', label: 'Analytics', roles: ['Manager', 'Super Admin'] },
+    { id: 'payments', label: 'Payments', roles: ['Super Admin'] },
+    { id: 'delivery', label: 'Delivery Settings', roles: ['Manager', 'Super Admin'] },
+    { id: 'team', label: 'Team', roles: ['Super Admin'] },
+    { id: 'business', label: 'Business Profile', roles: ['Super Admin'] },
+    { id: 'integrations', label: 'Integrations', roles: ['Super Admin'] },
+    { id: 'submissions', label: 'Submissions', roles: ['Manager', 'Super Admin'] },
+    { id: 'notifications', label: 'Notifications', roles: ['Manager', 'Super Admin'] },
+    { id: 'reviews', label: 'Reviews', roles: ['Manager', 'Super Admin'] },
+    { id: 'loyalty', label: 'Loyalty Program', roles: ['Manager', 'Super Admin'] },
+    { id: 'settings', label: 'Store Settings', roles: ['Super Admin'] },
   ];
   const userRole = adminUser?.role || 'Staff';
   const sidebarItems = allSidebarItems.filter(item => item.roles.includes(userRole));
@@ -139,7 +139,7 @@ function DashboardContent() {
           </div> */}
         </div>
         {isMobile && (
-          <button onClick={() => setSidebarOpen(false)} aria-label="Close navigation" style={{ background: 'transparent', border: 'none', color: '#FEFEFE', fontSize: '20px', cursor: 'pointer', padding: '8px', minWidth: '44px', minHeight: '44px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>✕</button>
+          <button onClick={() => setSidebarOpen(false)} aria-label="Close navigation" style={{ background: 'transparent', border: 'none', color: '#FEFEFE', cursor: 'pointer', padding: '8px', minWidth: '44px', minHeight: '44px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><X size={20} /></button>
         )}
       </div>
 
@@ -246,7 +246,7 @@ function DashboardContent() {
         />
       )}
 
-      {/* Sidebar — Desktop always visible, Mobile drawer */}
+      {/* Sidebar — Desktop always visible (sticky), Mobile drawer */}
       <div style={{
         width: '220px',
         background: '#111111',
@@ -257,7 +257,9 @@ function DashboardContent() {
           zIndex: 50, width: '260px',
           transform: sidebarOpen ? 'translateX(0)' : 'translateX(-100%)',
           transition: 'transform 0.25s ease',
-        } : {}),
+        } : {
+          position: 'sticky', top: 0, height: '100vh', alignSelf: 'flex-start',
+        }),
       }}>
         <SidebarContent />
       </div>
@@ -277,9 +279,9 @@ function DashboardContent() {
             {isMobile && (
               <button onClick={() => setSidebarOpen(true)} aria-label="Open navigation menu" style={{
                 background: 'transparent', border: 'none',
-                color: '#FEFEFE', fontSize: '22px', cursor: 'pointer', padding: '2px',
+                color: '#FEFEFE', cursor: 'pointer', padding: '2px',
                 display: 'flex', alignItems: 'center', minWidth: '44px', minHeight: '44px', justifyContent: 'center',
-              }}>☰</button>
+              }}><MenuIcon size={22} /></button>
             )}
             <div>
               <h1 style={{ fontSize: isMobile ? '15px' : '17px', fontWeight: '700', color: '#FEFEFE' }}>
@@ -327,7 +329,7 @@ function DashboardContent() {
               <div style={{ background: '#1A1A1A', border: '1px solid #2A2A2A', borderRadius: '12px', overflow: 'hidden' }}>
                 <div style={{ padding: '14px 16px', borderBottom: '1px solid #2A2A2A', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                   <h3 style={{ fontSize: '13px', fontWeight: '600', color: '#FEFEFE' }}>Recent Orders</h3>
-                  <button onClick={() => setActiveTab('orders')} style={{ fontSize: '12px', color: '#E5B800', background: 'transparent', border: 'none', cursor: 'pointer' }}>View All →</button>
+                  <button onClick={() => setActiveTab('orders')} style={{ fontSize: '12px', color: '#E5B800', background: 'transparent', border: 'none', cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: '4px' }}>View All <ArrowRight size={12} /></button>
                 </div>
                 {isMobile ? (
                   <div>

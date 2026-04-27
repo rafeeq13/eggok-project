@@ -1,5 +1,6 @@
 'use client';
 import { useState, useEffect, useCallback } from 'react';
+import { RefreshCw, ArrowRight } from 'lucide-react';
 import DateRangePicker from './DateRangePicker';
 import Pagination from './Pagination';
 
@@ -257,8 +258,8 @@ export default function OrdersManagement() {
       {/* Refresh button */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
         <p style={{ fontSize: '13px', color: '#FEFEFE', margin: 0 }}>Auto-refreshes every 30 seconds</p>
-        <button onClick={() => { fetchOrders(); fetchStats(); }} style={{ padding: '7px 14px', background: '#1A1A1A', border: '1px solid #2A2A2A', borderRadius: '8px', color: '#E5B800', fontSize: '12px', fontWeight: '600', cursor: 'pointer' }}>
-          ↻ Refresh Now
+        <button onClick={() => { fetchOrders(); fetchStats(); }} style={{ padding: '7px 14px', background: '#1A1A1A', border: '1px solid #2A2A2A', borderRadius: '8px', color: '#E5B800', fontSize: '12px', fontWeight: '600', cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
+          <RefreshCw size={12} /> Refresh Now
         </button>
       </div>
 
@@ -485,8 +486,9 @@ export default function OrdersManagement() {
                         borderRadius: '8px', cursor: 'pointer', fontSize: '12px', fontWeight: '600',
                         background: status === 'cancelled' ? '#2A0A0A' : `${statusColor[status]}15`,
                         color: statusColor[status],
+                        display: 'inline-flex', alignItems: 'center', gap: '6px',
                       }}>
-                        → {statusLabel[status]}
+                        <ArrowRight size={12} /> {statusLabel[status]}
                       </button>
                     ))}
                   </div>

@@ -1,5 +1,6 @@
 'use client';
 import { useState, useEffect } from 'react';
+import { X } from 'lucide-react';
 
 type Customer = {
   id: number;
@@ -88,7 +89,7 @@ export default function Customers() {
           <div style={{ background: '#1A1A1A', border: '1px solid #2A2A2A', borderRadius: '16px', padding: '28px', width: '100%', maxWidth: '480px' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
               <h2 style={{ fontSize: '18px', fontWeight: '700', color: '#FEFEFE' }}>Customer Details</h2>
-              <button onClick={() => setSelectedCustomer(null)} style={{ background: 'transparent', color: '#FEFEFE', fontSize: '20px', border: 'none', cursor: 'pointer' }}>✕</button>
+              <button onClick={() => setSelectedCustomer(null)} style={{ background: 'transparent', color: '#FEFEFE', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center' }}><X size={20} /></button>
             </div>
 
             <div style={{ display: 'flex', alignItems: 'center', gap: '14px', marginBottom: '24px' }}>

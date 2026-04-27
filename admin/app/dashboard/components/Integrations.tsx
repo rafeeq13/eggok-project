@@ -1,5 +1,6 @@
 'use client';
 import React, { useEffect, useState } from 'react';
+import { Eye, EyeOff, Check, X, ArrowRight, TestTube, Rocket } from 'lucide-react';
 
 type IntegrationStatus = 'connected' | 'disconnected' | 'error';
 
@@ -434,9 +435,10 @@ export default function Integrations() {
           style={{
             position: 'absolute', right: '10px', top: '50%',
             transform: 'translateY(-50%)', background: 'transparent',
-            border: 'none', cursor: 'pointer', fontSize: '14px', color: '#FEFEFE',
+            border: 'none', cursor: 'pointer', color: '#FEFEFE',
+            display: 'flex', alignItems: 'center',
           }}
-        >{show ? '🙈' : '👁️'}</button>
+        >{show ? <EyeOff size={16} /> : <Eye size={16} />}</button>
       </div>
     );
   };
@@ -473,13 +475,13 @@ export default function Integrations() {
 
       {/* Success / Error Toast */}
       {successMsg && (
-        <div style={{ position: 'fixed', top: '20px', right: '20px', zIndex: 9999, background: '#22C55E', color: '#000', padding: '12px 20px', borderRadius: '10px', fontSize: '13px', fontWeight: '600' }}>
-          ✓ {successMsg}
+        <div style={{ position: 'fixed', top: '20px', right: '20px', zIndex: 9999, background: '#22C55E', color: '#000', padding: '12px 20px', borderRadius: '10px', fontSize: '13px', fontWeight: '600', display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
+          <Check size={14} /> {successMsg}
         </div>
       )}
       {errorMsg && (
-        <div style={{ position: 'fixed', top: '20px', right: '20px', zIndex: 9999, background: '#FC0301', color: '#fff', padding: '12px 20px', borderRadius: '10px', fontSize: '13px', fontWeight: '600' }}>
-          ✗ {errorMsg}
+        <div style={{ position: 'fixed', top: '20px', right: '20px', zIndex: 9999, background: '#FC0301', color: '#fff', padding: '12px 20px', borderRadius: '10px', fontSize: '13px', fontWeight: '600', display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
+          <X size={14} /> {errorMsg}
         </div>
       )}
 
@@ -569,7 +571,7 @@ export default function Integrations() {
                   </div>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                     <span style={{ fontSize: '11px', color: statusColor[item.status] }}>{statusLabel[item.status]}</span>
-                    <button onClick={() => setActiveSection(item.id)} style={{ fontSize: '11px', color: '#E5B800', background: 'transparent', border: 'none', cursor: 'pointer' }}>Configure →</button>
+                    <button onClick={() => setActiveSection(item.id)} style={{ fontSize: '11px', color: '#E5B800', background: 'transparent', border: 'none', cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: '4px' }}>Configure <ArrowRight size={11} /></button>
                   </div>
                 </div>
               ))}
@@ -594,10 +596,10 @@ export default function Integrations() {
               <div style={{ padding: '12px 14px', background: '#111111', borderRadius: '8px', marginBottom: '16px', border: '1px solid #E5B80020' }}>
                 <p style={{ fontSize: '12px', color: '#E5B800', fontWeight: '600', marginBottom: '4px' }}>Where to get these credentials</p>
                 <p style={{ fontSize: '11px', color: '#FEFEFE', lineHeight: '1.6' }}>
-                  1. Go to developer.squareup.com → My Applications<br />
+                  1. Go to developer.squareup.com {'>'} My Applications<br />
                   2. Create or select your application<br />
-                  3. Go to Credentials tab — copy Application ID and Access Token<br />
-                  4. Go to Locations tab — copy your Location ID
+                  3. Go to Credentials tab copy Application ID and Access Token<br />
+                  4. Go to Locations tab copy your Location ID
                 </p>
               </div>
 
@@ -637,7 +639,7 @@ export default function Integrations() {
                     onFocus={e => e.target.style.borderColor = '#E5B800'}
                     onBlur={e => e.target.style.borderColor = '#2A2A2A'}
                   />
-                  <p style={{ fontSize: '11px', color: '#FEFEFE', marginTop: '4px' }}>Found in Square Dashboard → Locations</p>
+                  <p style={{ fontSize: '11px', color: '#FEFEFE', marginTop: '4px' }}>Found in Square Dashboard {'>'} Locations</p>
                 </div>
 
                 {/* Terminal Device */}
@@ -704,7 +706,7 @@ export default function Integrations() {
                     onBlur={e => e.target.style.borderColor = '#2A2A2A'}
                   />
                   <p style={{ fontSize: '11px', color: '#FEFEFE', marginTop: '4px' }}>
-                    {squareTerminalDeviceId ? `Terminal: ${squareTerminalDeviceId.slice(0, 20)}...` : 'No terminal selected — orders will sync to Square but won\'t appear on terminal'}
+                    {squareTerminalDeviceId ? `Terminal: ${squareTerminalDeviceId.slice(0, 20)}...` : 'No terminal selected orders will sync to Square but won\'t appear on terminal'}
                   </p>
                 </div>
 
@@ -739,9 +741,9 @@ export default function Integrations() {
               <div style={{ padding: '12px 14px', background: '#111111', borderRadius: '8px', marginBottom: '16px', border: '1px solid #E5B80020' }}>
                 <p style={{ fontSize: '12px', color: '#E5B800', fontWeight: '600', marginBottom: '4px' }}>Where to get these credentials</p>
                 <p style={{ fontSize: '11px', color: '#FEFEFE', lineHeight: '1.6' }}>
-                  1. Go to dashboard.stripe.com → Developers → API Keys<br />
+                  1. Go to dashboard.stripe.com {'>'} Developers {'>'} API Keys<br />
                   2. Copy Publishable key and Secret key<br />
-                  3. For webhook secret: Developers → Webhooks → Add endpoint → copy Signing secret
+                  3. For webhook secret: Developers {'>'} Webhooks {'>'} Add endpoint {'>'} copy Signing secret
                 </p>
               </div>
 
@@ -809,7 +811,7 @@ export default function Integrations() {
               <div style={{ padding: '12px 14px', background: '#111111', borderRadius: '8px', marginBottom: '16px', border: '1px solid #E5B80020' }}>
                 <p style={{ fontSize: '12px', color: '#E5B800', fontWeight: '600', marginBottom: '4px' }}>Where to get these credentials</p>
                 <p style={{ fontSize: '11px', color: '#FEFEFE', lineHeight: '1.6' }}>
-                  1. Go to developer.doordash.com → Portal<br />
+                  1. Go to developer.doordash.com {'>'} Portal<br />
                   2. Create a new application under DoorDash Drive<br />
                   3. Copy Developer ID, Key ID, and Signing Secret from credentials page
                 </p>
@@ -826,8 +828,9 @@ export default function Integrations() {
                         border: `1px solid ${doordashEnvironment === env ? '#E5B800' : '#2A2A2A'}`,
                         color: doordashEnvironment === env ? '#000' : '#FEFEFE',
                         fontSize: '13px', fontWeight: '600',
+                        display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: '6px',
                       }}>
-                        {env === 'sandbox' ? '🧪 Sandbox (Testing)' : '🚀 Production (Live)'}
+                        {env === 'sandbox' ? <><TestTube size={14} /> Sandbox (Testing)</> : <><Rocket size={14} /> Production (Live)</>}
                       </button>
                     ))}
                   </div>
@@ -875,7 +878,7 @@ export default function Integrations() {
               <div style={{ padding: '12px 14px', background: '#111111', borderRadius: '8px', marginBottom: '16px', border: '1px solid #E5B80020' }}>
                 <p style={{ fontSize: '12px', color: '#E5B800', fontWeight: '600', marginBottom: '4px' }}>Where to get these credentials</p>
                 <p style={{ fontSize: '11px', color: '#FEFEFE', lineHeight: '1.6' }}>
-                  1. Go to developer.uber.com → Dashboard<br />
+                  1. Go to developer.uber.com {'>'} Dashboard<br />
                   2. Create a new app or select existing one<br />
                   3. Enable the Direct API scope<br />
                   4. Copy Customer ID, Client ID, and Client Secret from the app settings
@@ -930,7 +933,7 @@ export default function Integrations() {
                     'Delivery cost estimation before dispatch',
                   ].map((feature, i) => (
                     <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px' }}>
-                      <span style={{ color: '#22C55E', fontSize: '12px' }}>✓</span>
+                      <span style={{ color: '#22C55E', display: 'inline-flex', alignItems: 'center' }}><Check size={12} /></span>
                       <span style={{ fontSize: '12px', color: '#FEFEFE' }}>{feature}</span>
                     </div>
                   ))}
@@ -1119,11 +1122,11 @@ export default function Integrations() {
 
               <div style={{ marginBottom: '16px' }}>
                 <p style={{ fontSize: '13px', fontWeight: '700', color: '#FEFEFE', marginBottom: '12px', paddingBottom: '8px', borderBottom: '1px solid #2A2A2A' }}>
-                  Android — Firebase Cloud Messaging (FCM)
+                  Android Firebase Cloud Messaging (FCM)
                 </p>
                 <div style={{ padding: '10px 14px', background: '#111111', borderRadius: '8px', marginBottom: '12px', border: '1px solid #E5B80020' }}>
                   <p style={{ fontSize: '11px', color: '#FEFEFE', lineHeight: '1.6' }}>
-                    Go to console.firebase.google.com → Project Settings → Cloud Messaging → Copy Server Key
+                    Go to console.firebase.google.com {'>'} Project Settings {'>'} Cloud Messaging {'>'} Copy Server Key
                   </p>
                 </div>
                 <div>
@@ -1134,11 +1137,11 @@ export default function Integrations() {
 
               <div style={{ marginBottom: '16px' }}>
                 <p style={{ fontSize: '13px', fontWeight: '700', color: '#FEFEFE', marginBottom: '12px', paddingBottom: '8px', borderBottom: '1px solid #2A2A2A' }}>
-                  iOS — Apple Push Notification Service (APNs)
+                  iOS Apple Push Notification Service (APNs)
                 </p>
                 <div style={{ padding: '10px 14px', background: '#111111', borderRadius: '8px', marginBottom: '12px', border: '1px solid #E5B80020' }}>
                   <p style={{ fontSize: '11px', color: '#FEFEFE', lineHeight: '1.6' }}>
-                    Go to developer.apple.com → Certificates → Keys → Create a new key with APNs enabled → Copy Key ID and Team ID
+                    Go to developer.apple.com {'>'} Certificates {'>'} Keys {'>'} Create a new key with APNs enabled {'>'} Copy Key ID and Team ID
                   </p>
                 </div>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
@@ -1195,7 +1198,7 @@ export default function Integrations() {
                   1. Go to console.cloud.google.com<br />
                   2. Create a new project or select existing<br />
                   3. Enable Maps JavaScript API and Places API<br />
-                  4. Go to Credentials → Create API Key → Copy it
+                  4. Go to Credentials {'>'} Create API Key {'>'} Copy it
                 </p>
               </div>
 
@@ -1218,7 +1221,7 @@ export default function Integrations() {
                     'Customer delivery tracking map',
                   ].map((feature, i) => (
                     <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px' }}>
-                      <span style={{ color: '#22C55E', fontSize: '12px' }}>✓</span>
+                      <span style={{ color: '#22C55E', display: 'inline-flex', alignItems: 'center' }}><Check size={12} /></span>
                       <span style={{ fontSize: '12px', color: '#FEFEFE' }}>{feature}</span>
                     </div>
                   ))}

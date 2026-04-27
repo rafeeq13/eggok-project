@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
+import { X } from 'lucide-react';
 
 const API = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3002/api';
 
@@ -228,7 +229,7 @@ export default function LoginPage() {
               <div style={{ background: '#1A1A1A', border: '1px solid #2A2A2A', borderRadius: '16px', padding: '28px', width: '100%', maxWidth: '400px' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
                   <h3 style={{ fontSize: '16px', fontWeight: '700', color: '#fff', margin: 0 }}>Reset Password</h3>
-                  <button onClick={() => { setShowForgot(false); setForgotMsg(''); }} style={{ background: 'none', border: 'none', color: '#888', fontSize: '18px', cursor: 'pointer' }}>✕</button>
+                  <button onClick={() => { setShowForgot(false); setForgotMsg(''); }} style={{ background: 'none', border: 'none', color: '#888', cursor: 'pointer', display: 'flex', alignItems: 'center' }}><X size={18} /></button>
                 </div>
                 <p style={{ fontSize: '13px', color: '#888', marginBottom: '16px' }}>Enter your email and we'll send you a password reset link.</p>
                 <input value={forgotEmail} onChange={e => setForgotEmail(e.target.value)} placeholder="your@email.com" type="email"

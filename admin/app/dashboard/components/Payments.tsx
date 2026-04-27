@@ -1,5 +1,6 @@
 'use client';
 import { useState, useEffect } from 'react';
+import { X, Download } from 'lucide-react';
 import DateRangePicker from './DateRangePicker';
 import {
   AreaChart, Area, BarChart, Bar, XAxis, YAxis,
@@ -346,7 +347,7 @@ export default function Payments() {
                   {selectedTx.status}
                 </span>
               </div>
-              <button onClick={() => setSelectedTx(null)} style={{ background: 'transparent', color: '#FEFEFE', fontSize: '20px', border: 'none', cursor: 'pointer' }}>✕</button>
+              <button onClick={() => setSelectedTx(null)} style={{ background: 'transparent', color: '#FEFEFE', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center' }}><X size={20} /></button>
             </div>
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
@@ -403,7 +404,7 @@ export default function Payments() {
           <div style={{ background: '#1A1A1A', border: '1px solid #2A2A2A', borderRadius: '16px', padding: '28px', width: '100%', maxWidth: '400px' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
               <h2 style={{ fontSize: '17px', fontWeight: '700', color: '#FEFEFE' }}>Issue Refund</h2>
-              <button onClick={() => setShowRefundModal(false)} style={{ background: 'transparent', color: '#FEFEFE', fontSize: '20px', border: 'none', cursor: 'pointer' }}>✕</button>
+              <button onClick={() => setShowRefundModal(false)} style={{ background: 'transparent', color: '#FEFEFE', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center' }}><X size={20} /></button>
             </div>
 
             <div style={{ background: '#111111', borderRadius: '8px', padding: '14px', marginBottom: '16px' }}>
@@ -538,12 +539,12 @@ export default function Payments() {
           padding: '8px 14px', background: 'transparent', border: '1px solid #2A2A2A',
           borderRadius: '8px', color: '#FEFEFE', fontSize: '12px', cursor: 'pointer',
           display: 'flex', alignItems: 'center', gap: '6px',
-        }}>⬇ CSV</button>
+        }}><Download size={12} /> CSV</button>
         <button onClick={downloadPDF} style={{
           padding: '8px 14px', background: '#E5B800', border: 'none',
           borderRadius: '8px', color: '#000', fontSize: '12px', fontWeight: '700', cursor: 'pointer',
           display: 'flex', alignItems: 'center', gap: '6px',
-        }}>⬇ PDF Report</button>
+        }}><Download size={12} /> PDF Report</button>
       </div>
 
       <p style={{ fontSize: '12px', color: '#FEFEFE', marginBottom: '12px' }}>
