@@ -18,6 +18,7 @@ import { SquareModule } from './square/square.module';
 import { SubmissionsModule } from './submissions/submissions.module';
 import { WebhooksModule } from './webhooks/webhooks.module';
 import { GiftCardsModule } from './gift-cards/gift-cards.module';
+import { AuditLogsModule } from './audit-logs/audit-logs.module';
 
 @Module({
   imports: [
@@ -63,6 +64,7 @@ import { GiftCardsModule } from './gift-cards/gift-cards.module';
     SubmissionsModule,
     WebhooksModule,
     GiftCardsModule,
+    AuditLogsModule,
   ],
 })
 

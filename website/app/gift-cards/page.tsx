@@ -70,7 +70,7 @@ function GiftCardsPageInner() {
     setSubmitting(true);
     setSubmitError('');
     try {
-      // Step 1 — create the gift card PaymentIntent. The actual gift card row is
+      // Step 1 create the gift card PaymentIntent. The actual gift card row is
       // not created in DB until the payment confirms (the webhook + the
       // issue-from-payment fallback both create it idempotently).
       const piRes = await fetch(`${API}/gift-cards/create-payment-intent`, {
@@ -90,7 +90,7 @@ function GiftCardsPageInner() {
       }
       const { clientSecret, paymentIntentId } = await piRes.json();
 
-      // Step 2 — confirm the card with Stripe
+      // Step 2 confirm the card with Stripe
       const cardElement = elements.getElement(CardNumberElement);
       if (!cardElement) throw new Error('Card form not ready. Please refresh and try again.');
       const { error: stripeError } = await stripe.confirmCardPayment(clientSecret, {
@@ -98,7 +98,7 @@ function GiftCardsPageInner() {
       });
       if (stripeError) throw new Error(stripeError.message || 'Card payment failed');
 
-      // Step 3 — fallback issuance in case the Stripe webhook is delayed.
+      // Step 3 fallback issuance in case the Stripe webhook is delayed.
       // This is idempotent on paymentIntentId, so the webhook + this call
       // both safely converge on the same gift card record.
       await fetch(`${API}/gift-cards/issue-from-payment`, {
@@ -374,13 +374,13 @@ function GiftCardsPageInner() {
       </section>
 
       {/* ══════════════════════════════════════════
-          MAIN — Card + Form
+          MAIN Card + Form
       ══════════════════════════════════════════ */}
       <section id="buy" style={{ padding: '48px 48px', background: '#F8F9FA' }}>
         <div className="container">
           <div id="giftcard-grid" className="giftcard-grid">
 
-            {/* ── LEFT — Visual + Amount ── */}
+            {/* ── LEFT Visual + Amount ── */}
             <div id="giftcard-left">
 
               {/* Section header */}
@@ -405,7 +405,7 @@ function GiftCardsPageInner() {
               </div>
 
               {/* Gift Card Visual */}
-              <div id="giftcard-visual" className="giftcard-visual" aria-label={`Gift card preview — $${finalAmount > 0 ? finalAmount : 0}`}>
+              <div id="giftcard-visual" className="giftcard-visual" aria-label={`Gift card preview $${finalAmount > 0 ? finalAmount : 0}`}>
                 <div className="card-bubble-1" aria-hidden="true" />
                 <div className="card-bubble-2" aria-hidden="true" />
                 <div className="card-chip" aria-hidden="true" />
@@ -459,7 +459,7 @@ function GiftCardsPageInner() {
 
             </div>
 
-            {/* ── RIGHT — Form ── */}
+            {/* ── RIGHT Form ── */}
             <div id="giftcard-right">
               {submitted ? (
                 <div id="success-card" className="success-card">
@@ -555,7 +555,7 @@ function GiftCardsPageInner() {
                       />
                     </div>
 
-                    {/* Card details — uses the same form-input look so the page UI is unchanged */}
+                    {/* Card details uses the same form-input look so the page UI is unchanged */}
                     <div id="form-group-card-number">
                       <label htmlFor="input-card-number" className="form-label">Card Number *</label>
                       <div id="input-card-number" className="form-input" style={{ padding: '14px 16px' }}>
@@ -638,7 +638,7 @@ function GiftCardsPageInner() {
                 <p id="footer-address-line" style={{ fontSize: '14px', color: '#4D4D4D', display: 'flex', alignItems: 'center', gap: '7px', marginBottom: '8px' }}>
                   <MapPin size={13} color="#000000ff" aria-hidden="true" />
                   <a id="footer-address-link" href="https://www.google.com/maps?q=3517+Lancaster+Ave,+Philadelphia+PA+19104" style={{ color: '#4D4D4D', textDecoration: 'none' }}>
-                    3517 Lancaster Ave, Philadelphia PA 19104
+                    3517 Lancaster Ave, Philadelphia, PA 19104, United States
                   </a>
                 </p>
                 <p id="footer-phone-line" style={{ fontSize: '14px', color: '#4D4D4D', display: 'flex', alignItems: 'center', gap: '7px' }}>

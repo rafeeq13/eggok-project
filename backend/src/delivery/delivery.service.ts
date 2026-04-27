@@ -137,7 +137,7 @@ export class DeliveryService {
   private buildPayload(order: { customerName: string; customerPhone: string; deliveryAddress: string; deliveryApt?: string; deliveryInstructions?: string; items: any[]; total: number; orderNumber: string }) {
     return {
       pickup_name: 'Eggs Ok',
-      pickup_address: '3517 Lancaster Ave, Philadelphia, PA 19104',
+      pickup_address: '3517 Lancaster Ave, Philadelphia, PA 19104, United States',
       pickup_phone_number: '+12159489902',
       dropoff_name: order.customerName,
       dropoff_address: order.deliveryAddress,

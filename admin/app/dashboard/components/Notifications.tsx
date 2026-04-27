@@ -38,7 +38,7 @@ const initialEmailTemplates: EmailTemplate[] = [
     name: 'Order Confirmation',
     subject: 'Your Eggs Ok order #{{order_id}} is confirmed!',
     trigger: 'When customer places an order',
-    body: `Hi {{customer_name}},\n\nThank you for your order! Here are your order details:\n\nOrder #{{order_id}}\n{{order_items}}\n\nSubtotal: {{subtotal}}\nDelivery Fee: {{delivery_fee}}\nTotal: {{total}}\n\nEstimated time: {{estimated_time}}\n\nThank you for choosing Eggs Ok!\n3517 Lancaster Ave, Philadelphia PA 19104`,
+    body: `Hi {{customer_name}},\n\nThank you for your order! Here are your order details:\n\nOrder #{{order_id}}\n{{order_items}}\n\nSubtotal: {{subtotal}}\nDelivery Fee: {{delivery_fee}}\nTotal: {{total}}\n\nEstimated time: {{estimated_time}}\n\nThank you for choosing Eggs Ok!\n3517 Lancaster Ave, Philadelphia, PA 19104, United States`,
     active: true,
   },
   {
@@ -46,7 +46,7 @@ const initialEmailTemplates: EmailTemplate[] = [
     name: 'Order Ready for Pickup',
     subject: 'Your Eggs Ok order is ready!',
     trigger: 'When order status changes to Ready',
-    body: `Hi {{customer_name}},\n\nGreat news! Your order #{{order_id}} is ready for pickup.\n\nPlease come to:\n3517 Lancaster Ave, Philadelphia PA 19104\n\nShow your order number at the counter.\n\nSee you soon!`,
+    body: `Hi {{customer_name}},\n\nGreat news! Your order #{{order_id}} is ready for pickup.\n\nPlease come to:\n3517 Lancaster Ave, Philadelphia, PA 19104, United States\n\nShow your order number at the counter.\n\nSee you soon!`,
     active: true,
   },
   {

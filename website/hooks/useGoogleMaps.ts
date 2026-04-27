@@ -85,7 +85,7 @@ export function useGoogleMaps() {
  * directly (NOT the deprecated-ish Autocomplete widget). This gives us:
  *   - Instant fetch on the first keystroke (no 300ms widget debounce).
  *   - A custom dropdown we fully control (no .pac-container z-index fights).
- *   - Immediate fetch when we attach to an input that already has text — which fixes
+ *   - Immediate fetch when we attach to an input that already has text which fixes
  *     the common case where the user types while the Maps script is still loading
  *     and would otherwise see nothing until they typed again.
  *
@@ -126,7 +126,7 @@ export function initAutocomplete(
   const hide = () => { dropdown.style.display = 'none'; };
   const show = () => { positionDropdown(); dropdown.style.display = 'block'; };
 
-  // Geocode the raw typed text — used as a fallback so the user can always proceed
+  // Geocode the raw typed text used as a fallback so the user can always proceed
   // even when Places returns no predictions or is denied/limited.
   const selectByGeocode = (text: string) => {
     geocoder.geocode({ address: text, componentRestrictions: { country: 'US' } }, (results: any[] | null, status: any) => {

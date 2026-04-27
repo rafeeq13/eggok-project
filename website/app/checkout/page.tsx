@@ -267,7 +267,7 @@ function CheckoutInner() {
             setDeliveryAddrError('');
             setDeliveryStep(2);
           } else {
-            setDeliveryAddrError(`Sorry, this address is ${result.distance} miles away — outside our delivery area.`);
+            setDeliveryAddrError(`Sorry, this address is ${result.distance} miles away outside our delivery area.`);
           }
         })
         .catch(() => setDeliveryStep(2));
@@ -345,7 +345,7 @@ function CheckoutInner() {
     : (subtotal * tipPercent) / 100;
 
   const total = subtotal + taxes + deliveryFee - discount + tipAmount;
-  // What the gift card actually applies to the order — the lesser of its
+  // What the gift card actually applies to the order the lesser of its
   // balance and the order total, recomputed when the cart changes.
   const giftCardApplied = giftCard ? Math.min(giftCard.balance, total) : 0;
   const stripeCharge = Math.max(0, total - giftCardApplied);
@@ -389,7 +389,7 @@ function CheckoutInner() {
       });
       const data = await res.json();
       if (data.valid && data.kind === 'gift_card' && data.giftCard) {
-        // Gift cards aren't a discount — they reduce the Stripe charge instead.
+        // Gift cards aren't a discount they reduce the Stripe charge instead.
         setGiftCard(data.giftCard);
         setPromoApplied(false);
         setPromoDiscount(0);
@@ -460,7 +460,7 @@ function CheckoutInner() {
     };
 
     try {
-      // Case A — gift card covers the whole order, no Stripe charge needed (would
+      // Case A gift card covers the whole order, no Stripe charge needed (would
       // be below the $0.50 PaymentIntent minimum). Place the order via the dedicated
       // free-order endpoint that redeems the card atomically.
       if (giftCard && stripeCharge < 0.5) {
@@ -480,7 +480,7 @@ function CheckoutInner() {
         return;
       }
 
-      // Case B — Stripe pays the full or remaining amount. The backend reads
+      // Case B Stripe pays the full or remaining amount. The backend reads
       // giftCardCode + giftCardAmount from the cart and computes the actual
       // Stripe charge as `total − giftCardAmount` itself.
       const piRes = await fetch(`${API_URL}/payments/create-payment-intent-for-cart`, {
@@ -510,7 +510,7 @@ function CheckoutInner() {
       }
 
       // Create the order on the backend now that payment succeeded. Idempotent
-      // on paymentIntentId — safe to race the Stripe webhook.
+      // on paymentIntentId safe to race the Stripe webhook.
       const orderRes = await fetch(`${API_URL}/orders/confirm-payment`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -853,7 +853,7 @@ function CheckoutInner() {
                   {promoApplied && <p style={{ fontSize: '12px', color: '#22C55E', marginTop: '6px' }}>&#10003; {promoLabel}</p>}
                   {giftCard && (
                     <p style={{ fontSize: '12px', color: '#22C55E', marginTop: '6px' }}>
-                      &#10003; Gift card {giftCard.code} — applying ${giftCardApplied.toFixed(2)} of ${giftCard.balance.toFixed(2)}
+                      &#10003; Gift card {giftCard.code} applying ${giftCardApplied.toFixed(2)} of ${giftCard.balance.toFixed(2)}
                       {' '}<button type="button" onClick={() => { setGiftCard(null); setPromoCode(''); }} style={{ background: 'none', border: 'none', color: '#FC0301', fontSize: '12px', cursor: 'pointer', textDecoration: 'underline', padding: 0 }}>remove</button>
                     </p>
                   )}

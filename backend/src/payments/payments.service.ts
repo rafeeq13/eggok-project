@@ -100,7 +100,7 @@ export class PaymentsService {
         chunks['cart_chunks'] = String(i);
 
         if (i > 48) {
-            throw new BadRequestException('Order is too large to process — please remove some items.');
+            throw new BadRequestException('Order is too large to process please remove some items.');
         }
 
         const paymentIntent = await stripe.paymentIntents.create({

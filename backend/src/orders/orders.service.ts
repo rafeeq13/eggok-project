@@ -10,7 +10,7 @@ import { LoyaltyService } from '../loyalty/loyalty.service';
 import { SquareService } from '../square/square.service';
 import { GiftCardsService } from '../gift-cards/gift-cards.service';
 
-// Valid state transitions — the order state machine
+// Valid state transitions the order state machine
 const VALID_TRANSITIONS: Record<string, string[]> = {
   pending_payment: ['paid', 'cancelled'],
   paid: ['sent_to_kitchen', 'confirmed', 'preparing', 'cancelled'],
@@ -104,7 +104,7 @@ export class OrdersService {
         this.logger.error(`[SQUARE RESCUE] Unexpected error: ${err.message}`);
       });
     }, SQUARE_RESCUE_INTERVAL_MS);
-    this.logger.log('[SQUARE WORKER] Started — pending sync every 30s, failed-rescue every 5m');
+    this.logger.log('[SQUARE WORKER] Started pending sync every 30s, failed-rescue every 5m');
   }
 
   /**
@@ -201,7 +201,7 @@ export class OrdersService {
         // Square returned null (not configured or unknown error)
         await this.ordersRepository.update(order.id, {
           squareSyncAttempts: attempt,
-          squareSyncLastError: 'Square returned null — may not be configured',
+          squareSyncLastError: 'Square returned null may not be configured',
           squareSyncStatus: attempt >= SQUARE_MAX_SYNC_ATTEMPTS ? 'failed' : 'pending',
         });
       }
@@ -541,7 +541,7 @@ export class OrdersService {
       });
     }
 
-    // Record transaction (idempotent — won't duplicate)
+    // Record transaction (idempotent won't duplicate)
     this.paymentsService.recordTransaction({
       orderNumber: order.orderNumber,
       customer: order.customerName,
@@ -593,7 +593,7 @@ export class OrdersService {
     // orders that later "fail" (e.g. dispute webhooks) are left alone for accounting.
     if ((UNPAID_STATUSES as unknown as string[]).includes(order.status)) {
       await this.ordersRepository.delete(order.id);
-      this.logger.warn(`[PAYMENT] Order ${orderNumber} payment failed — purged from DB`);
+      this.logger.warn(`[PAYMENT] Order ${orderNumber} payment failed purged from DB`);
     }
   }
 
@@ -632,7 +632,7 @@ export class OrdersService {
   /**
    * Backward-compatible endpoint called by frontend after Stripe payment.
    * Acts as a FALLBACK in case webhook hasn't arrived yet.
-   * The webhook is the source of truth — this just ensures we don't miss orders
+   * The webhook is the source of truth this just ensures we don't miss orders
    * if the webhook is delayed.
    */
   async confirmOrderPayment(orderNumber: string, paymentIntentId?: string): Promise<{ success: boolean; squareOrderId?: string }> {
@@ -652,7 +652,7 @@ export class OrdersService {
           if (stripe) {
             const pi = await stripe.paymentIntents.retrieve(paymentIntentId);
             if (pi.status === 'succeeded') {
-              // Webhook might be delayed — trigger payment confirmation
+              // Webhook might be delayed trigger payment confirmation
               await this.handlePaymentConfirmed(orderNumber, paymentIntentId);
               const updated = await this.ordersRepository.findOne({ where: { orderNumber } });
               return { success: true, squareOrderId: updated?.squareOrderId };
@@ -663,7 +663,7 @@ export class OrdersService {
         }
       }
 
-      // Without paymentIntentId, we can't verify — just queue for Square sync
+      // Without paymentIntentId, we can't verify just queue for Square sync
       // This preserves backward compatibility with the old frontend flow
       await this.ordersRepository.update(order.id, {
         status: 'paid',
@@ -734,7 +734,7 @@ export class OrdersService {
       this.mailService.sendOrderStatusEmail(updated, status).catch(() => {});
     }
 
-    // Out for delivery — auto-dispatch if not already dispatched
+    // Out for delivery auto-dispatch if not already dispatched
     if (status === 'out_for_delivery' && updated.orderType === 'delivery') {
       this.mailService.sendDeliveryUpdateEmail(updated).catch(() => {});
       if (!updated.deliveryQuoteId) {
@@ -754,7 +754,7 @@ export class OrdersService {
       this.mailService.sendPickupCompleteEmail(updated).catch(() => {});
     }
 
-    // Cancelled — cancel delivery if active, and refund any gift card amount.
+    // Cancelled cancel delivery if active, and refund any gift card amount.
     if (status === 'cancelled') {
       this.mailService.sendOrderCancelledEmail(updated).catch(() => {});
       if (updated.deliveryQuoteId) {
@@ -805,7 +805,7 @@ export class OrdersService {
     // State guard: only dispatch if order is paid and not already dispatched
     const unpaidStatuses = ['pending_payment', 'pending'];
     if (unpaidStatuses.includes(order.status)) {
-      this.logger.warn(`[DELIVERY] Cannot dispatch ${order.orderNumber} — not yet paid (status: ${order.status})`);
+      this.logger.warn(`[DELIVERY] Cannot dispatch ${order.orderNumber} not yet paid (status: ${order.status})`);
       return order;
     }
 
@@ -976,7 +976,7 @@ export class OrdersService {
   }
 
   async getActiveOrders(): Promise<Order[]> {
-    // Drop unpaid (pending_payment / pending) — those are pre-payment placeholders
+    // Drop unpaid (pending_payment / pending) those are pre-payment placeholders
     // that shouldn't appear anywhere customer- or admin-facing.
     return this.ordersRepository
       .createQueryBuilder('order')

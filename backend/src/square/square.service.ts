@@ -85,7 +85,7 @@ export class SquareService {
   private parseScheduledTime(date: string, time: string): string {
     const naive = new Date(`${date}T${time}:00`); // interpreted as server-local
     if (isNaN(naive.getTime())) return new Date(Date.now() + 15 * 60000).toISOString();
-    // Find what NY says for an arbitrary reference instant — use that to
+    // Find what NY says for an arbitrary reference instant use that to
     // compute the offset for our scheduled instant.
     const probe = new Date(`${date}T12:00:00Z`);
     const nyParts = new Intl.DateTimeFormat('en-US', {
@@ -123,7 +123,7 @@ export class SquareService {
    */
   private async findExistingByReference(client: SquareClient, locationId: string, reference: string): Promise<{ id: string } | null> {
     try {
-      // Short window — only the last few minutes. Goal is to catch network-drop
+      // Short window only the last few minutes. Goal is to catch network-drop
       // retries (response lost between Square accepting our create and our process
       // reading it). NOT to adopt historical orders that happen to share a
       // reference_id (e.g. after truncating our DB and reusing EO-XXXX numbers).
@@ -175,7 +175,7 @@ export class SquareService {
       const client = this.getClient(creds);
 
       // If a previous attempt actually reached Square (response lost on our
-      // end), don't create a duplicate — adopt the existing order.
+      // end), don't create a duplicate adopt the existing order.
       const already = await this.findExistingByReference(client, creds.squareLocationId, order.orderNumber);
       if (already) {
         console.log(`[SQUARE] Order ${order.orderNumber} already exists in Square (${already.id}), reusing`);
@@ -241,7 +241,7 @@ export class SquareService {
       // Square Free plan filters DELIVERY-type orders out of Order Manager
       // (proven by direct experiments: TEST-A..D all hidden, TEST-E shipment shown);
       // SHIPMENT renders cleanly with the recipient name + address. The order
-      // is still treated as delivery internally — Uber Direct dispatch, customer
+      // is still treated as delivery internally Uber Direct dispatch, customer
       // emails and our admin views all read `orderType = 'delivery'`. Only the
       // Square representation is normalised so kitchen sees it on the dashboard.
       const isDelivery = order.orderType === 'delivery';
@@ -263,7 +263,7 @@ export class SquareService {
             state: 'PROPOSED' as const,
             shipmentDetails: {
               recipient: {
-                displayName: `🚚 ${order.customerName}`,
+                displayName: `${order.customerName}`,
                 phoneNumber: order.customerPhone,
               },
               expectedShippedAt: shipAt,
@@ -586,7 +586,7 @@ idempotencyKey: `eggok-pay-${order.orderNumber}-${squareOrderId.slice(0, 16)}`,
         return false;
       }
 
-      // Update fulfillment state — preserve all existing fields (pickup_details,
+      // Update fulfillment state preserve all existing fields (pickup_details,
       // delivery_details, recipient, etc.) so Square dashboard keeps showing the
       // proper Source / Type / Channel after completion. Sending only {uid,type,state}
       // makes Square strip the metadata and fall back to generic "In store" / "Order".

@@ -31,7 +31,7 @@ export class PaymentsController {
     }
 
     /**
-     * New checkout flow — accepts the full cart (no pre-existing order in DB)
+     * New checkout flow accepts the full cart (no pre-existing order in DB)
      * and embeds it in Stripe metadata. The order row is only created after
      * Stripe confirms the charge, so failed/abandoned payments leave nothing behind.
      */
@@ -41,7 +41,7 @@ export class PaymentsController {
     }
 
     /**
-     * Stripe Webhook — the single source of truth for payment confirmation.
+     * Stripe Webhook the single source of truth for payment confirmation.
      * Triggers Square sync, transaction recording, and order status transitions.
      * This endpoint receives raw body for signature verification.
      */
@@ -54,7 +54,7 @@ export class PaymentsController {
         const webhookSecret = await this.paymentsService.getWebhookSecret();
 
         // If no webhook secret configured, fall back to trusting the payload
-        // (for initial setup / migration period — log a warning)
+        // (for initial setup / migration period log a warning)
         let event: any;
         if (webhookSecret && signature) {
             const rawBody = req.rawBody || req.body;
@@ -69,7 +69,7 @@ export class PaymentsController {
             }
         } else {
             // During migration: accept unverified webhooks but log warning
-            this.logger.warn('[STRIPE WEBHOOK] No webhook secret configured — accepting unverified event. Configure stripeWebhookSecret in Admin → Integrations.');
+            this.logger.warn('[STRIPE WEBHOOK] No webhook secret configured accepting unverified event. Configure stripeWebhookSecret in Admin → Integrations.');
             event = req.body;
         }
 
@@ -92,16 +92,16 @@ export class PaymentsController {
                 const paymentIntent = event.data?.object || event;
                 const paymentIntentId = paymentIntent.id;
 
-                // Gift card purchase — issue the card and email the recipient.
+                // Gift card purchase issue the card and email the recipient.
                 if (paymentIntent.metadata?.type === 'gift_card') {
-                    this.logger.log(`[STRIPE WEBHOOK] Gift card payment succeeded (PI: ${paymentIntentId}) — issuing card`);
+                    this.logger.log(`[STRIPE WEBHOOK] Gift card payment succeeded (PI: ${paymentIntentId}) issuing card`);
                     await this.giftCardsService.issueFromPayment(paymentIntentId);
                     break;
                 }
 
                 // New flow: cart embedded in metadata, create order from PI
                 if (paymentIntent.metadata?.cart_chunks) {
-                    this.logger.log(`[STRIPE WEBHOOK] Payment succeeded (PI: ${paymentIntentId}) — creating order`);
+                    this.logger.log(`[STRIPE WEBHOOK] Payment succeeded (PI: ${paymentIntentId}) creating order`);
                     await this.ordersService.createOrderFromPayment(paymentIntentId);
                     break;
                 }

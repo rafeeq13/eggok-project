@@ -55,7 +55,7 @@ export class MailService {
             html: this.wrapEmail({
                 eyebrow: 'Email Test',
                 title: 'Your mail setup is working',
-                preheader: 'SMTP configuration verified — your application can now send emails.',
+                preheader: 'SMTP configuration verified your application can now send emails.',
                 intro: `This test email confirms that ${settings.fromName} can send messages from the application.`,
                 sections: [
                     {
@@ -510,7 +510,7 @@ export class MailService {
                 heroIcon: 'https://eggsokpa.com/webicons/Contactorderpreparedblack.png',
                 heroTitle: 'Your Order is Being Prepared!',
                 heroSubtitle: 'Our kitchen is working on your delicious meal right now.',
-                greetingMessage: `The kitchen is now preparing your order #${this.safeText(order.orderNumber)}. It won't be long — get ready for something delicious!`,
+                greetingMessage: `The kitchen is now preparing your order #${this.safeText(order.orderNumber)}. It won't be long get ready for something delicious!`,
             },
             ready: {
                 activeStep: 3,
@@ -651,7 +651,7 @@ export class MailService {
         await this.sendMail(
             {
                 to: order.customerEmail,
-                subject: `Order #${order.orderNumber} picked up — Enjoy!`,
+                subject: `Order #${order.orderNumber} picked up Enjoy!`,
                 html,
                 text: `Hi ${order.customerName}, your order #${order.orderNumber} has been picked up. Enjoy!`,
             },
@@ -672,7 +672,7 @@ export class MailService {
                 html: this.wrapEmail({
                     eyebrow: 'Welcome',
                     title: `Welcome to Eggs Ok, ${this.safeText(name)}!`,
-                    preheader: 'Your account is ready — earn points, track orders, and get exclusive offers.',
+                    preheader: 'Your account is ready earn points, track orders, and get exclusive offers.',
                     intro: 'Thanks for creating your account. You now have access to order tracking, saved addresses, loyalty rewards, and exclusive offers.',
                     cta: { text: 'Start Ordering', link: `${websiteUrl}/order` },
                     sections: [
@@ -746,7 +746,7 @@ export class MailService {
         const personalMessage = this.safeText(card.message || '');
         const expiryLine = card.expiresAt
             ? `Expires ${card.expiresAt}`
-            : 'Never expires — use it whenever you like.';
+            : 'Never expires use it whenever you like.';
 
         const sections: Array<{ title: string; lines: string[] }> = [
             {
@@ -762,7 +762,7 @@ export class MailService {
             lines: [
                 'Add items to your cart and head to checkout.',
                 'Enter the code above in the "Add coupon or gift card" field.',
-                'The balance applies to your order — any remainder can be used later.',
+                'The balance applies to your order any remainder can be used later.',
             ],
         });
 
@@ -774,10 +774,10 @@ export class MailService {
                     eyebrow: 'Gift Card',
                     title: `You received a $${amount} Eggs Ok gift card`,
                     preheader: `${senderName} sent you a $${amount} Eggs Ok gift card. Code inside.`,
-                    intro: `Hi ${recipientName}, ${senderName} sent you an Eggs Ok gift card worth $${amount}. Use the code below at checkout — the balance carries over between orders.`,
+                    intro: `Hi ${recipientName}, ${senderName} sent you an Eggs Ok gift card worth $${amount}. Use the code below at checkout the balance carries over between orders.`,
                     cta: { text: 'Order Now', link: `${websiteUrl}/order` },
                     sections,
-                    footer: 'Keep this code safe — anyone with it can redeem the balance.',
+                    footer: 'Keep this code safe anyone with it can redeem the balance.',
                 }),
                 text: `Hi ${recipientName}, ${senderName} sent you a $${amount} Eggs Ok gift card.\n\nCode: ${card.code}\nBalance: $${amount}\n${personalMessage ? `\nMessage: ${personalMessage}\n` : ''}\nRedeem at ${websiteUrl}/order.`,
             },
@@ -1191,8 +1191,7 @@ ${preheader}
             <span style="white-space:nowrap;display:inline-block;margin:0 6px;">
               <a href="https://maps.google.com/?q=3517+Lancaster+Ave+Philadelphia+PA+19104" style="color:#4D4D4D;text-decoration:none;font-family:${FONT_BODY};">
                 <img src="https://eggsokpa.com/webicons/ContactLocation.png" width="14" height="14" style="vertical-align:middle;" alt="Location">
-                3517 Lancaster Ave, Philadelphia, PA 19104
-              </a>
+3517 Lancaster Ave, Philadelphia, PA 19104, United States              </a>
             </span>
             <span style="white-space:nowrap;display:inline-block;margin:0 6px;">
               <a href="https://www.eggsokpa.com" style="color:#4D4D4D;text-decoration:none;font-family:${FONT_BODY};">

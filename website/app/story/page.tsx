@@ -258,7 +258,7 @@ export default function StoryPage() {
           <h1 id="hero-title" className="bebas" style={{ fontSize: '50px', color: '#1A1A1A', lineHeight: '1.2', marginBottom: '24px' }}>
             Made With Purpose
           </h1>
-          <p id="hero-subtitle" style={{ fontSize: '16px', fontWeight: 500, color: '#4D4D4D', lineHeight: '1.8', maxWidth: '540px', margin: '0 auto 40px' }}>
+          <p id="hero-subtitle" style={{ fontSize: '16px', fontWeight: 500, color: '#4D4D4D', lineHeight: '1.8', maxWidth: '540px', margin: '0 auto 0px' }}>
 
               From the success of our halal favorites - OK HOT CHICKEN, OK SMASHED BURGER, and OK CHEESESTEAK , we saw something bigger: a chance to bring halal food into every part of the day.
 
@@ -275,7 +275,7 @@ export default function StoryPage() {
       </section>
 
       {/* ══════════════════════════════════════════
-          SECTION 1 — THE ORIGIN
+          SECTION 1 THE ORIGIN
       ══════════════════════════════════════════ */}
       <section id="story-origin" className="section-pad" style={{ padding: '48px 32px', background: '#FFFFFF', position: 'relative', overflow: 'hidden' }}>
         <div className="section-bg-glow" style={{ position: 'absolute', inset: 0, backgroundImage: 'radial-gradient(circle at 80% 50%, rgba(254,216,0,0.04) 0%, transparent 60%)', pointerEvents: 'none' }} aria-hidden="true" />
@@ -320,7 +320,7 @@ export default function StoryPage() {
       <hr className="section-divider" />
 
       {/* ══════════════════════════════════════════
-          SECTION 2 — THE FOOD
+          SECTION 2 THE FOOD
       ══════════════════════════════════════════ */}
       <section id="story-food" className="section-pad" style={{ padding: '48px 32px', background: '#F8F9FA', position: 'relative', overflow: 'hidden' }}>
         <div className="section-bg-glow" style={{ position: 'absolute', inset: 0, backgroundImage: 'radial-gradient(circle at 20% 50%, rgba(254,216,0,0.04) 0%, transparent 60%)', pointerEvents: 'none' }} aria-hidden="true" />
@@ -350,7 +350,7 @@ export default function StoryPage() {
               <div id="food-img-frame" className="story-img-frame story-img-frame-alt">
                 <Image
                   src="/main-menu/Our-Story/2.jpg"
-                  alt="Eggs Ok — fresh, made to order"
+                  alt="Eggs Ok fresh, made to order"
                   width={533.2} height={533.2}
                   style={{ objectFit: 'cover', borderRadius: '16px', display: 'block', aspectRatio: '4/3' }}
                 />
@@ -365,7 +365,7 @@ export default function StoryPage() {
       <hr className="section-divider" />
 
       {/* ══════════════════════════════════════════
-          SECTION 3 — COMMUNITY
+          SECTION 3 COMMUNITY
       ══════════════════════════════════════════ */}
       <section id="story-community" className="section-pad" style={{ padding: '48px 32px', background: '#FFFFFF', position: 'relative', overflow: 'hidden' }}>
         <div className="section-bg-glow" style={{ position: 'absolute', inset: 0, backgroundImage: 'radial-gradient(circle at 70% 60%, rgba(254,216,0,0.04) 0%, transparent 55%)', pointerEvents: 'none' }} aria-hidden="true" />
@@ -431,7 +431,7 @@ export default function StoryPage() {
                 <p id="footer-address-line" style={{ fontSize: '14px', color: '#4D4D4D', display: 'flex', alignItems: 'center', gap: '7px', marginBottom: '8px' }}>
                   <MapPin size={13} color="#000000ff" aria-hidden="true" />
                   <a href="https://www.google.com/maps?q=3517+Lancaster+Ave,+Philadelphia+PA+19104" id="footer-address-link" style={{ color: '#1A1A1A', textDecoration: 'none', transition: 'color 0.15s' }}>
-                    3517 Lancaster Ave, Philadelphia PA 19104
+                    3517 Lancaster Ave, Philadelphia, PA 19104, United States
                   </a>
                 </p>
                 <p id="footer-phone-line" style={{ fontSize: '14px', color: '#4D4D4D', display: 'flex', alignItems: 'center', gap: '7px' }}>

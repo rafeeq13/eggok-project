@@ -56,7 +56,7 @@ export function useStoreSettings() {
         minOrder: settings?.minOrder ?? 10,
         taxRate: settings?.taxRate ?? 0.08,
         storeName: settings?.storeName ?? 'Eggs Ok',
-        storeAddress: settings?.storeAddress ?? '3517 Lancaster Ave, Philadelphia, PA 19104',
+        storeAddress: settings?.storeAddress ?? '3517 Lancaster Ave, Philadelphia, PA 19104, United States',
         storeTimezone: settings?.storeTimezone ?? 'America/New_York',
     };
 }

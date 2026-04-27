@@ -287,7 +287,7 @@ function DashboardContent() {
               </h1>
               {!isMobile && (
                 <p style={{ fontSize: '11px', color: '#FEFEFE', marginTop: '1px' }}>
-                  3517 Lancaster Ave, Philadelphia PA 19104
+                  3517 Lancaster Ave, Philadelphia, PA 19104, United States
                 </p>
               )}
             </div>

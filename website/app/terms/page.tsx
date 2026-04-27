@@ -3,7 +3,7 @@ import Link from 'next/link';
 import Header from '../components/Header';
 
 export const metadata: Metadata = {
-  title: 'Terms of Service — Eggs Ok',
+  title: 'Terms of Service Eggs Ok',
   description: 'Terms and conditions for ordering from Eggs Ok in Philadelphia.',
 };
 
@@ -121,7 +121,7 @@ export default function TermsPage() {
         <div className="legal-section">
           <h2>8. Intellectual Property</h2>
           <p>
-            All content on this site — logos, photos, menu descriptions, branding — belongs to Eggs Ok or our
+            All content on this site logos, photos, menu descriptions, branding belongs to Eggs Ok or our
             licensors and is protected by U.S. copyright and trademark law.
           </p>
         </div>

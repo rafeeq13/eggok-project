@@ -37,7 +37,7 @@ export class WebhooksController {
         return res.status(400).json({ error: 'Invalid signature' });
       }
     } else {
-      this.logger.warn('[STRIPE WEBHOOK] No webhook secret configured — accepting unverified event. Configure stripeWebhookSecret in Admin → Integrations.');
+      this.logger.warn('[STRIPE WEBHOOK] No webhook secret configured accepting unverified event. Configure stripeWebhookSecret in Admin → Integrations.');
       event = req.body;
     }
 
@@ -62,7 +62,7 @@ export class WebhooksController {
 
         // New flow: cart embedded in PI metadata, create order from PI.
         if (paymentIntent.metadata?.cart_chunks) {
-          this.logger.log(`[STRIPE WEBHOOK] Payment succeeded (PI: ${paymentIntentId}) — creating order from cart metadata`);
+          this.logger.log(`[STRIPE WEBHOOK] Payment succeeded (PI: ${paymentIntentId}) creating order from cart metadata`);
           await this.ordersService.createOrderFromPayment(paymentIntentId);
           break;
         }

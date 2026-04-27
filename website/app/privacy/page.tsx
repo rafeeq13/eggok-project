@@ -3,7 +3,7 @@ import Link from 'next/link';
 import Header from '../components/Header';
 
 export const metadata: Metadata = {
-  title: 'Privacy Policy — Eggs Ok',
+  title: 'Privacy Policy Eggs Ok',
   description: 'How Eggs Ok collects, uses, and protects your personal information.',
 };
 
@@ -54,13 +54,13 @@ export default function PrivacyPage() {
           <h2>1. Information We Collect</h2>
           <p>We collect information in three ways:</p>
           <ul>
-            <li><strong>Information you give us</strong> — your name, email, phone number, delivery address,
+            <li><strong>Information you give us</strong> your name, email, phone number, delivery address,
               special instructions, order history, and any messages you send through the contact form or during
               catering inquiries.</li>
-            <li><strong>Payment information</strong> — card details are collected and processed directly by our
+            <li><strong>Payment information</strong> card details are collected and processed directly by our
               payment provider, Stripe. We receive only the card brand, last four digits, and a transaction
               identifier. We never see or store your full card number.</li>
-            <li><strong>Automatic data</strong> — IP address, device type, browser, and basic usage data (e.g.
+            <li><strong>Automatic data</strong> IP address, device type, browser, and basic usage data (e.g.
               pages visited, items viewed) collected via cookies and standard web logs.</li>
           </ul>
         </div>
@@ -73,7 +73,7 @@ export default function PrivacyPage() {
             <li>Respond to catering inquiries, contact messages, and support questions.</li>
             <li>Maintain your account, loyalty balance, and saved addresses.</li>
             <li>Detect fraud, debug issues, and improve the service.</li>
-            <li>Send occasional marketing messages — only if you opt in; you can unsubscribe at any time.</li>
+            <li>Send occasional marketing messages only if you opt in; you can unsubscribe at any time.</li>
           </ul>
         </div>
 
@@ -81,11 +81,11 @@ export default function PrivacyPage() {
           <h2>3. Who We Share Information With</h2>
           <p>We share the minimum information needed with trusted service providers:</p>
           <ul>
-            <li><strong>Stripe</strong> — for payment processing.</li>
-            <li><strong>Delivery providers</strong> (e.g. Uber Direct) — for dispatching delivery orders; they
+            <li><strong>Stripe</strong> for payment processing.</li>
+            <li><strong>Delivery providers</strong> (e.g. Uber Direct) for dispatching delivery orders; they
               receive only your first name, delivery address, phone, and order details.</li>
-            <li><strong>Email service providers</strong> — to deliver transactional and receipt emails.</li>
-            <li><strong>Google Maps / Places</strong> — when you use address autocomplete.</li>
+            <li><strong>Email service providers</strong> to deliver transactional and receipt emails.</li>
+            <li><strong>Google Maps / Places</strong> when you use address autocomplete.</li>
           </ul>
           <p>We do not sell your personal information to anyone.</p>
         </div>
@@ -112,7 +112,7 @@ export default function PrivacyPage() {
           <h2>6. Security</h2>
           <p>
             Passwords are stored hashed. Payment processing uses TLS and industry-standard tokenization via
-            Stripe. Despite our efforts, no system is perfectly secure — please use a strong password and let us
+            Stripe. Despite our efforts, no system is perfectly secure please use a strong password and let us
             know if you suspect any unauthorized activity on your account.
           </p>
         </div>

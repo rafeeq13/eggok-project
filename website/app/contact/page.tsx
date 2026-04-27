@@ -53,7 +53,7 @@ export default function ContactPage() {
   ];
 
   const contactInfo = [
-    { Icon: MapPin, label: 'Address',  value: '3517 Lancaster Ave, Philadelphia PA 19104', href: 'https://maps.google.com/?q=3517+Lancaster+Ave+Philadelphia+PA+19104', external: true  },
+    { Icon: MapPin, label: 'Address',  value: '3517 Lancaster Ave, Philadelphia, PA 19104, United States', href: 'https://maps.google.com/?q=3517+Lancaster+Ave+Philadelphia+PA+19104', external: true  },
     { Icon: Phone,  label: 'Phone',    value: '215-948-9902',                              href: 'tel:2159489902',                                                    external: false },
     { Icon: Phone,  label: 'Catering', value: '267-370-7993',                              href: 'tel:2673707993',                                                    external: false },
     { Icon: Mail,   label: 'Email',    value: 'orders@eggsokphilly.com',                   href: 'mailto:orders@eggsokphilly.com',                                    external: false },
@@ -438,31 +438,44 @@ export default function ContactPage() {
               </div>
 
               {/* Map box */}
-              <div id="map-box" className="map-box">
-                <div id="map-placeholder" className="map-placeholder">
-                  {[...Array(8)].map((_, i) => (
-                    <div key={`h${i}`} className="map-grid-line-h" style={{ top: `${i * 12.5}%` }} aria-hidden="true" />
-                  ))}
-                  {[...Array(10)].map((_, i) => (
-                    <div key={`v${i}`} className="map-grid-line-v" style={{ left: `${i * 10}%` }} aria-hidden="true" />
-                  ))}
-                  <div id="map-pin-dot" className="map-pin-dot" aria-hidden="true" />
-                  <div id="map-address-chip" className="map-address-chip">
-                    <p className="map-address-name">3517 Lancaster Ave</p>
-                    <p className="map-address-sub">Philadelphia, PA 19104</p>
-                  </div>
-                </div>
-                <a
-                  id="map-open-link"
-                  href="https://maps.google.com/?q=3517+Lancaster+Ave+Philadelphia+PA+19104"
-                  target="_blank" rel="noopener noreferrer"
-                  className="map-open-link"
-                  aria-label="Open location in Google Maps"
-                >
-                  <MapPin size={14} aria-hidden="true" />
-                  Open in Google Maps
-                </a>
-              </div>
+<div id="map-box" className="map-box">
+  <div id="map-placeholder" className="map-placeholder">
+    {[...Array(8)].map((_, i) => (
+      <div key={`h${i}`} className="map-grid-line-h" style={{ top: `${i * 12.5}%` }} aria-hidden="true" />
+    ))}
+    {[...Array(10)].map((_, i) => (
+      <div key={`v${i}`} className="map-grid-line-v" style={{ left: `${i * 10}%` }} aria-hidden="true" />
+    ))}
+    <div id="map-pin-dot" className="map-pin-dot" aria-hidden="true" />
+    <div id="map-address-chip" className="map-address-chip">
+      <p className="map-address-name">3517 Lancaster Ave</p>
+      <p className="map-address-sub">Philadelphia, PA 19104</p>
+    </div>
+    
+    <iframe 
+      src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d4451.970164549288!2d-75.1955039!3d39.9583712!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c6c70b98ffe7f7%3A0x160ea05e3fd45b64!2sEGGS%20OK!5e1!3m2!1sen!2s!4v1777312107290!5m2!1sen!2s" 
+      width="100%" 
+      height="300" 
+      style={{ border: 0 }} 
+      allowFullScreen="" 
+      loading="lazy" 
+      referrerPolicy="no-referrer-when-downgrade"
+      title="Google Maps"
+    />
+  </div>
+  
+  <a
+    id="map-open-link"
+    href="https://www.google.com/maps/place/EGGS+OK/@39.9583712,-75.1955039"
+    target="_blank" 
+    rel="noopener noreferrer"
+    className="map-open-link"
+    aria-label="Open location in Google Maps"
+  >
+    <MapPin size={14} aria-hidden="true" />
+    Open in Google Maps
+  </a>
+</div>
 
             </div>
 
@@ -616,7 +629,7 @@ export default function ContactPage() {
                 <p id="footer-address-line" style={{ fontSize: '14px', color: '#4D4D4D', display: 'flex', alignItems: 'center', gap: '7px', marginBottom: '8px' }}>
                   <MapPin size={13} color="#000000ff" aria-hidden="true" />
                   <a id="footer-address-link" href="https://www.google.com/maps?q=3517+Lancaster+Ave,+Philadelphia+PA+19104" style={{ color: '#1A1A1A', textDecoration: 'none' }}>
-                    3517 Lancaster Ave, Philadelphia PA 19104
+                    3517 Lancaster Ave, Philadelphia, PA 19104, United States
                   </a>
                 </p>
                 <p id="footer-phone-line" style={{ fontSize: '14px', color: '#4D4D4D', display: 'flex', alignItems: 'center', gap: '7px' }}>

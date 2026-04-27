@@ -234,7 +234,7 @@ export default function Payments() {
             ${logoImg}
             <div>
               <div class="brand-sub" style="font-size:13px;color:#E5B800;font-weight:700;margin-bottom:4px;">Payment & Revenue Report</div>
-              <div class="brand-sub">3517 Lancaster Ave, Philadelphia PA 19104</div>
+              <div class="brand-sub">3517 Lancaster Ave, Philadelphia, PA 19104, United States</div>
             </div>
           </div>
           <div class="report-meta">

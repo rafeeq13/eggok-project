@@ -303,7 +303,7 @@ export default function StoreSettings() {
           </div>
           <div>
             <label style={labelStyle}>Address</label>
-            <input value="3517 Lancaster Ave, Philadelphia PA 19104" readOnly style={{ ...inputStyle, opacity: 0.5 }} />
+            <input value="3517 Lancaster Ave, Philadelphia, PA 19104, United States" readOnly style={{ ...inputStyle, opacity: 0.5 }} />
           </div>
         </div>
       </div>

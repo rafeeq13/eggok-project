@@ -845,7 +845,7 @@ function OrderContent() {
             setDeliveryError('');
             setDeliveryStep(2);
           } else {
-            setDeliveryError(`Sorry, this address is ${result.distance} miles away — outside our delivery area.`);
+            setDeliveryError(`Sorry, this address is ${result.distance} miles away outside our delivery area.`);
           }
         })
         .catch(() => setDeliveryStep(2));
@@ -1044,7 +1044,7 @@ function OrderContent() {
       ══════════════════════════════════════════ */}
       <nav id="order-nav" className="order-nav" aria-label="Order page navigation">
 
-        {/* Burger — tablet only */}
+        {/* Burger tablet only */}
         <button id="sidebar-burger" className="burger" onClick={() => setSidebarOpen(v => !v)} aria-label="Toggle category menu">
           {sidebarOpen
             ? <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" /></svg>
@@ -1702,7 +1702,7 @@ function OrderContent() {
                 <span className="schedule-time-label">ASAP</span>
               </div>
 
-              {/* Time slots — store hours 7:00 AM – 3:00 PM */}
+              {/* Time slots store hours 7:00 AM – 3:00 PM */}
               {Array.from({ length: 33 }, (_, i) => {
                 const totalMins = 7 * 60 + i * 15; const h = Math.floor(totalMins / 60); const m = totalMins % 60;
                 const label = `${h > 12 ? h - 12 : h === 0 ? 12 : h}:${m.toString().padStart(2, '0')} ${h >= 12 ? 'PM' : 'AM'} ${tzAbbr}`;
@@ -1828,7 +1828,7 @@ function OrderContent() {
                 />
               </div>
 
-              {/* Upsell — admin-picked modifier-free items. Tap once to add to cart without replacing
+              {/* Upsell admin-picked modifier-free items. Tap once to add to cart without replacing
                   the item currently being configured in this modal. */}
               {(() => {
                 const upsellSet = new Set(upsellIds);

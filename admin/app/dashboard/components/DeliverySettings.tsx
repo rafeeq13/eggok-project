@@ -40,7 +40,7 @@ export default function DeliverySettings() {
   const [freeDeliveryThreshold, setFreeDeliveryThreshold] = useState('50');
   const [prepTime, setPrepTime] = useState('15');
   const [maxActiveOrders, setMaxActiveOrders] = useState('20');
-  const [storeAddress] = useState('3517 Lancaster Ave, Philadelphia PA 19104');
+  const [storeAddress] = useState('3517 Lancaster Ave, Philadelphia, PA 19104, United States');
   const [storeLat] = useState(39.9612);
   const [storeLng] = useState(-75.1832);
 

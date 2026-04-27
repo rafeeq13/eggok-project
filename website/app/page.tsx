@@ -23,7 +23,7 @@ import { useCart } from './context/CartContext';
 /* ─────────────────────────────────────────────
    DATA
 ───────────────────────────────────────────── */
-// No static favorites — all come from menu management (isPopular items)
+// No static favorites all come from menu management (isPopular items)
 
 const MENU_TILES = [
   { label: 'Breakfast Sandwiches', img: '/main-menu/Our-Gallery/1.webp', items: '9 items' },
@@ -44,14 +44,14 @@ const MENU_TILES = [
 ];
 
 const REVIEWS = [
-  { name: 'Jasmine T.', stars: 5, text: 'Best breakfast spot in West Philly hands down. The Fully Loaded Sandwich is absolutely insane — I order it every single week.',                                                      date: 'March 2025'    },
+  { name: 'Jasmine T.', stars: 5, text: 'Best breakfast spot in West Philly hands down. The Fully Loaded Sandwich is absolutely insane I order it every single week.',                                                      date: 'March 2025'    },
   { name: 'Marcus R.',  stars: 5, text: 'Ordered online and it was ready in 12 minutes. Fresh, hot, and exactly what I wanted. The brown sugar latte is a must.',                                                            date: 'February 2025' },
   { name: 'Priya K.',   stars: 5, text: "The matcha drinks here are genuinely the best I've had outside of a specialty café. And the breakfast burrito? Chef's kiss.",                                                       date: 'January 2025'  },
   { name: 'Devon M.',   stars: 5, text: 'Catered our office breakfast meeting and every single person was raving. Huge variety, everything was delicious. Will definitely book again.',                                       date: 'December 2024' },
 ];
 
 const FAQS = [
-  { q: 'What are your hours?',            a: "We're open Monday–Friday 8 AM–10 PM and Saturday–Sunday 9 AM–11 PM. Hours may vary on holidays — check our social media for updates." },
+  { q: 'What are your hours?',            a: "We're open Monday–Friday 8 AM–10 PM and Saturday–Sunday 9 AM–11 PM. Hours may vary on holidays check our social media for updates." },
   { q: 'Do you offer delivery?',          a: 'Yes! We offer both pickup and delivery. You can place your order online and choose your preferred method at checkout. Delivery radius covers most of West Philadelphia.' },
   { q: 'How long does an order take?',    a: 'Pickup orders are typically ready in about 15 minutes. Delivery times depend on your location and current demand, usually 25–40 minutes.' },
   { q: 'Can I customize my order?',       a: 'Absolutely. Our online ordering system lets you add modifiers, swap ingredients, and leave special instructions for every item.' },
@@ -336,13 +336,13 @@ export default function HomePage() {
         .btn-outline:hover { background: #F0F0F0; border-color: #4D4D4D; color: #1A1A1A; }
         .btn-outline:active { background: #f4f4f410; }
 
-        /* ── Section Label — consistent across all sections ── */
+        /* ── Section Label consistent across all sections ── */
         .sec-label {
           font-size: 12px; font-weight: 700; letter-spacing: 3.5px;
           text-transform: uppercase; color: #888888; margin-bottom: 10px; display: block;
         }
 
-        /* ── Section Heading — consistent across all sections ── */
+        /* ── Section Heading consistent across all sections ── */
         .sec-heading {
           font-family: 'Playfair Display', Georgia, serif;
           font-weight: 700;
@@ -1125,7 +1125,7 @@ export default function HomePage() {
                   id={`fav-card-${item.id}`}
                   className={`fav-card reveal ${featuredReveal.visible ? 'visible' : ''}`}
                   style={{ ['--reveal-delay' as any]: `${0.08 * i}s` }}
-                  role="listitem" aria-label={`${item.name} — ${item.price}`}
+                  role="listitem" aria-label={`${item.name} ${item.price}`}
                   onClick={() => openFavModal(item)}
                 >
                   <div className="fav-img-wrap">
@@ -1252,7 +1252,7 @@ export default function HomePage() {
                 className={`menu-tile reveal ${menuReveal.visible ? 'visible' : ''}`}
                 style={{ ['--reveal-delay' as any]: `${0.07 * i}s` }}
                 role="listitem"
-                aria-label={`${tile.label} — ${tile.items}`}
+                aria-label={`${tile.label} ${tile.items}`}
               >
                 <div className="menu-tile-img">
                   <Image src={tile.img} alt={tile.label} width={400} height={300}
@@ -1292,7 +1292,7 @@ export default function HomePage() {
               <h2 id="catering-heading" className="catering-heading">Let Us Cater Your Next Event</h2>
               <p className="catering-body">
                 From corporate breakfasts to birthday brunches, Eggs Ok brings the same fresh,
-                made-to-order quality to your event. We handle setup, variety, and volume — you
+                made-to-order quality to your event. We handle setup, variety, and volume you
                 enjoy the moment. Submit a request and we&apos;ll get back to you within 24 hours.
               </p>
               <Link href="/catering" className="btn-yellow catering-cta-btn">
@@ -1477,8 +1477,8 @@ export default function HomePage() {
                   <div className="location-address-row">
                     <MapPin size={16} color="#000000ff" className="location-address-icon" aria-hidden="true" />
                     <div className="location-address-text">
-                      <p className="location-street">3517 Lancaster Ave</p>
-                      <p className="location-city">Philadelphia, PA 19104</p>
+                      <p className="location-street">3517 Lancaster Ave, Philadelphia</p>
+                      <p className="location-city">PA 19104, United States</p>
                     </div>
                   </div>
                   <div className="location-hours-row">
@@ -1511,7 +1511,7 @@ export default function HomePage() {
             <div id="location-map" className="location-map-panel">
               <iframe
                 id="location-map-iframe"
-                title="Eggs Ok location on Google Maps  3517 Lancaster Ave, Philadelphia PA 19104"
+                title="Eggs Ok location on Google Maps  3517 Lancaster Ave, Philadelphia, PA 19104, United States"
                 src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d2225.985082274644!2d-75.192929!3d39.9583712!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c6c70b98ffe7f7%3A0x160ea05e3fd45b64!2sEGGS%20OK!5e1!3m2!1sen!2s!4v1776887472466!5m2!1sen!2s"
                 width="100%" height="100%"
                 className="location-map-iframe"
@@ -1539,7 +1539,7 @@ export default function HomePage() {
           </h2>
           <p className="delivery-body">
             Craving something fresh? Order online and get it delivered piping hot via your
-            favorite delivery app — fast, easy, and always made to order.
+            favorite delivery app fast, easy, and always made to order.
           </p>
           <div id="delivery-app-buttons" className="delivery-buttons">
             <img id="ubereats-btn" className="delivery-app-btn delivery-app-ubereats" src="/main-menu/Ubereats-ordering-1.webp" alt="Order on Uber Eats" />
@@ -1566,7 +1566,7 @@ export default function HomePage() {
               </p>
               <address id="footer-address" className="footer-address">
                 <p className="footer-address-line">
-                  <MapPin size={13} color="#000000ff"  aria-hidden="true" href='https://www.google.com/maps?q=3517+Lancaster+Ave,+Philadelphia+PA+19104'/> <a href='https://www.google.com/maps?q=3517+Lancaster+Ave,+Philadelphia+PA+19104' className="footer-address-link">3517 Lancaster Ave, Philadelphia PA 19104</a>
+                  <MapPin size={13} color="#000000ff"  aria-hidden="true" href='https://www.google.com/maps?q=3517+Lancaster+Ave,+Philadelphia+PA+19104'/> <a href='https://www.google.com/maps?q=3517+Lancaster+Ave,+Philadelphia+PA+19104' className="footer-address-link">3517 Lancaster Ave, Philadelphia, PA 19104, United States</a>
                 </p>
                 <p className="footer-phone-line">
                   <Smartphone size={13} color="#000000ff" aria-hidden="true" />
@@ -1711,7 +1711,7 @@ export default function HomePage() {
         </div>
       )}
 
-      {/* Sticky Order CTA (mobile + tablet — always visible) */}
+      {/* Sticky Order CTA (mobile + tablet always visible) */}
       <Link
         href="/order"
         className={`sticky-order-cta${selectedFav ? '' : ' visible'}`}

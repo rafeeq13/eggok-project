@@ -6,7 +6,7 @@ type Category = { id: number; name: string; active: boolean; sortOrder: number }
 type ModifierOption = { id: number; name: string; price: number; isDefault: boolean };
 type GlobalModifierGroup = { id: number; name: string; required: boolean; minSelections: number; maxSelections: number; options: ModifierOption[]; linkedItemIds: number[] };
 type MenuItem = { id: number; categoryId: number; name: string; description: string; pickupPrice: string; deliveryPrice: string; available: boolean; imageUrl: string; linkedModifierIds: number[] };
-type HistoryEntry = { id: number; action: string; target: string; detail: string; time: string };
+type HistoryEntry = { id: number; action: string; target: string; detail: string; time: string; user?: string; userRole?: string };
 
 const actionColor: Record<string, string> = {
   ADDED: '#22C55E', UPDATED: '#F59E0B', DELETED: '#FC0301',
@@ -138,22 +138,53 @@ export default function MenuManagement() {
   };
 
   const confirm = (title: string, message: string, onConfirm: () => void) => setConfirmDialog({ show: true, title, message, onConfirm });
+  // Backend-backed audit log. Writes go to /audit-logs (the backend stamps the
+  // user, role and IP from the admin token). Reads pull the most recent 100
+  // entries on mount and after every write — so changes from any admin/device
+  // show up here, not just the ones made on this browser.
   const addHistory = (action: string, target: string, detail: string) => {
-    setHistory(prev => {
-      const entry = { id: Date.now(), action, target, detail, time: new Date().toLocaleString() };
-      const updated = [entry, ...prev].slice(0, 100); // keep last 100
-      try { localStorage.setItem('menuHistory', JSON.stringify(updated)); } catch {}
-      return updated;
-    });
+    // Optimistic prepend so the UI updates immediately; backend write happens
+    // in the background and the next reload reconciles via fetchHistory().
+    let user = 'Unknown';
+    let userRole: string | undefined;
+    try {
+      const saved = localStorage.getItem('admin_user');
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (parsed?.name) user = parsed.name;
+        if (parsed?.role) userRole = parsed.role;
+      }
+    } catch {}
+    const entry: HistoryEntry = { id: Date.now(), action, target, detail, time: new Date().toLocaleString(), user, userRole };
+    setHistory(prev => [entry, ...prev].slice(0, 100));
+
+    adminFetch(`${API}/audit-logs`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action, target, detail }),
+    }).then(r => { if (r.ok) fetchHistory(); }).catch(() => {});
   };
 
-  // Load history from localStorage on mount
-  useEffect(() => {
+  const fetchHistory = async () => {
     try {
-      const saved = localStorage.getItem('menuHistory');
-      if (saved) setHistory(JSON.parse(saved));
+      const res = await adminFetch(`${API}/audit-logs?limit=100`);
+      if (!res.ok) return;
+      const body = await res.json();
+      const rows: HistoryEntry[] = (body.data || []).map((row: any) => ({
+        id: row.id,
+        action: row.action,
+        target: row.target,
+        detail: row.detail || '',
+        time: new Date(row.createdAt).toLocaleString(),
+        user: row.userName || 'Unknown',
+        userRole: row.userRole,
+      }));
+      setHistory(rows);
     } catch {}
-  }, []);
+  };
+
+  // Pull authoritative history from the backend on mount.
+  useEffect(() => { fetchHistory(); }, []);
   const showSuccess = (msg: string) => { setSuccessMsg(msg); setTimeout(() => setSuccessMsg(''), 3000); };
 
   const inputStyle = { padding: '9px 12px', background: '#111111', border: '1px solid #2A2A2A', borderRadius: '8px', color: '#FEFEFE', fontSize: '13px', width: '100%' };
@@ -835,6 +866,10 @@ export default function MenuManagement() {
                 <span style={{ fontSize: '10px', fontWeight: '700', padding: '3px 10px', borderRadius: '20px', flexShrink: 0, background: `${actionColor[entry.action]}20`, color: actionColor[entry.action], border: `1px solid ${actionColor[entry.action]}40` }}>{entry.action}</span>
                 <span style={{ fontSize: '11px', color: '#FEFEFE', flexShrink: 0, minWidth: '80px' }}>{entry.target}</span>
                 <span style={{ fontSize: '13px', color: '#FEFEFE', flex: 1 }}>{entry.detail}</span>
+                <span style={{ fontSize: '11px', color: '#AAAAAA', flexShrink: 0, minWidth: '120px', textAlign: 'right' }} title={entry.userRole || ''}>
+                  by <span style={{ color: '#FEFEFE', fontWeight: 600 }}>{entry.user || 'Unknown'}</span>
+                  {entry.userRole ? <span style={{ color: '#777', marginLeft: '4px' }}>({entry.userRole})</span> : null}
+                </span>
                 <span style={{ fontSize: '11px', color: '#FEFEFE', flexShrink: 0 }}>{entry.time}</span>
               </div>
             ))}

@@ -613,7 +613,7 @@ export default function CateringPage() {
                 <p id="footer-address-line" style={{ fontSize: '14px', color: '#4D4D4D', display: 'flex', alignItems: 'center', gap: '7px', marginBottom: '8px' }}>
                   <MapPin size={13} color="#000" aria-hidden="true" />
                   <a id="footer-address-link" href="https://www.google.com/maps?q=3517+Lancaster+Ave,+Philadelphia+PA+19104" style={{ color: '#4D4D4D', textDecoration: 'none' }}>
-                    3517 Lancaster Ave, Philadelphia PA 19104
+                    3517 Lancaster Ave, Philadelphia, PA 19104, United States
                   </a>
                 </p>
                 <p id="footer-phone-line" style={{ fontSize: '14px', color: '#4D4D4D', display: 'flex', alignItems: 'center', gap: '7px' }}>
