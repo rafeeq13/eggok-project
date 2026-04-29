@@ -1,8 +1,16 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://eggsokphilly.com/sitemap.xml
+Sitemap: https://eggsokpa.com/sitemap.xml
 
 # Disallow admin and API
 Disallow: /api/
 Disallow: /admin/
+
+# Transactional / private routes — no SEO value, don't index
+Disallow: /checkout
+Disallow: /confirmation
+Disallow: /account
+Disallow: /reset-password
+Disallow: /track
+Disallow: /order-tracking
