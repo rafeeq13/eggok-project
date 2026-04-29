@@ -20,6 +20,9 @@ export const metadata: Metadata = {
     locale: 'en_US',
     type: 'website',
   },
+  verification: {
+    google: 'yY3Zgo8j23THXCga1bpHAxc8_L5xD-2K58KaJwcxgbo',
+  },
 };
 
 // Server-side fetch of public-safe integration fields so the pixel ID and the
