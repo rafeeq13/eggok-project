@@ -186,6 +186,51 @@ export class SettingsService implements OnModuleInit {
     };
   }
 
+  /**
+   * Single source of truth for "can a customer place this order right now?".
+   * Called from both the Stripe payment-intent endpoint and the gift-card-only
+   * order endpoint so the rules can't be bypassed by hitting the API directly.
+   *
+   * Rules:
+   *   - If both delivery and pickup are disabled, no orders at all.
+   *   - The chosen orderType must match an enabled method.
+   *   - If the store is closed (hours or manual override), only scheduled orders.
+   */
+  async validateOrderAcceptance(
+    orderType: string | undefined,
+    scheduleType: string | undefined,
+  ): Promise<{ ok: boolean; reason?: string }> {
+    const store = await this.getSetting('store');
+    const deliveryEnabled = store?.deliveryEnabled !== false;
+    const pickupEnabled = store?.pickupEnabled !== false;
+
+    if (!deliveryEnabled && !pickupEnabled) {
+      return {
+        ok: false,
+        reason: store?.closedMessage || 'We are not accepting orders right now. Please check back later.',
+      };
+    }
+    if (orderType === 'pickup' && !pickupEnabled) {
+      return { ok: false, reason: 'Pickup is currently unavailable. Please choose delivery instead.' };
+    }
+    if (orderType === 'delivery' && !deliveryEnabled) {
+      return { ok: false, reason: 'Delivery is currently unavailable. Please choose pickup instead.' };
+    }
+    if (orderType !== 'pickup' && orderType !== 'delivery') {
+      return { ok: false, reason: 'Please choose pickup or delivery before placing your order.' };
+    }
+
+    const status = await this.isStoreOpen();
+    if (!status.isOpen && scheduleType !== 'scheduled') {
+      return {
+        ok: false,
+        reason: 'Our store is currently closed, but you can place a scheduled order for a later time.',
+      };
+    }
+
+    return { ok: true };
+  }
+
   async getSetting(key: string): Promise<any> {
     const setting = await this.settingsRepository.findOne({ where: { key } });
     if (!setting) {

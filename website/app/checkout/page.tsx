@@ -193,7 +193,7 @@ export default function CheckoutPage() {
 
 function CheckoutInner() {
   const router = useRouter();
-  const { isOpen, statusMessage, taxRate, storeName, storeAddress, storeTimezone, isDeliveryEnabled, isPickupEnabled } = useStoreSettings();
+  const { isOpen, statusMessage, taxRate, storeName, storeAddress, storeTimezone, isDeliveryEnabled, isPickupEnabled, closedMessage } = useStoreSettings();
   const [tzAbbr, setTzAbbr] = useState('ET');
   useEffect(() => {
     try {
@@ -417,6 +417,10 @@ function CheckoutInner() {
   const placingRef = useRef(false);
   const handlePlaceOrder = async () => {
     if (placingRef.current) return;
+    if (availabilityNotice) {
+      setOrderError(availabilityNotice);
+      return;
+    }
     placingRef.current = true;
     setPlacing(true);
     setOrderError('');
@@ -567,9 +571,24 @@ function CheckoutInner() {
   const isPhoneValid = phone.replace(/\D/g, '').length >= 10;
   const hasItems = cart.length > 0;
   const hasDeliveryAddress = orderType === 'pickup' || deliveryAddress.trim().length > 0;
+  // Availability gates — mirror the backend rules so the button matches what the API will accept.
+  const acceptingOrders = isPickupEnabled || isDeliveryEnabled;
+  const selectedTypeAvailable =
+    (orderType === 'pickup' && isPickupEnabled) || (orderType === 'delivery' && isDeliveryEnabled);
+  const mustSchedule = acceptingOrders && !isOpen;
+  const scheduleNotChosen = mustSchedule && scheduleType !== 'scheduled';
+  const availabilityNotice = !acceptingOrders
+    ? (closedMessage || "We're not accepting orders right now. Please check back later.")
+    : !selectedTypeAvailable
+      ? (isDeliveryEnabled
+          ? 'Pickup is currently unavailable — you can only place a delivery order.'
+          : 'Delivery is currently unavailable — you can only place a pickup order.')
+      : scheduleNotChosen
+        ? 'Our store is currently closed, but you can place a scheduled order for a later time.'
+        : '';
   const isFormValid = firstName && lastName && isEmailValid && isPhoneValid && hasItems && hasDeliveryAddress;
   const isPaymentValid = (stripe && elements?.getElement(CardNumberElement)) ? cardComplete : true;
-  const canPlaceOrder = isFormValid && isPaymentValid;
+  const canPlaceOrder = isFormValid && isPaymentValid && acceptingOrders && selectedTypeAvailable && !scheduleNotChosen;
 
   const isPreset = (t: number) => tipMode === 'preset' && tipPercent === t;
   const isCustomActive = tipMode === 'custom';
@@ -597,6 +616,21 @@ function CheckoutInner() {
 
           {/* â”€â”€ LEFT â”€â”€ */}
           <div>
+
+            {availabilityNotice && (
+              <div role="alert" style={{
+                background: !acceptingOrders ? '#FFF1F0' : '#FFF8E5',
+                border: `1px solid ${!acceptingOrders ? '#FC0301' : '#E5B800'}`,
+                color: '#1A1A1A', borderRadius: '12px', padding: '14px 16px',
+                marginBottom: '20px', fontSize: '14px', fontWeight: 500,
+                display: 'flex', alignItems: 'center', gap: '10px',
+              }}>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={!acceptingOrders ? '#FC0301' : '#E5B800'} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
+                  <circle cx="12" cy="12" r="10" /><line x1="12" y1="8" x2="12" y2="12" /><line x1="12" y1="16" x2="12.01" y2="16" />
+                </svg>
+                <span>{availabilityNotice}</span>
+              </div>
+            )}
 
             {/* Order Details */}
             <div style={cardStyle}>
@@ -1070,7 +1104,9 @@ function CheckoutInner() {
                     </div>
                     <p style={{ fontSize: '14px', color: '#AAAAAA', marginTop: '2px' }}>{storeAddress}</p>
                   </div>
-                  <button className="co-btn-primary" onClick={() => { setScheduleType('asap'); setShowDeliveryModal(false); }}>Deliver ASAP</button>
+                  {isOpen && (
+                    <button className="co-btn-primary" onClick={() => { setScheduleType('asap'); setShowDeliveryModal(false); }}>Deliver ASAP</button>
+                  )}
                   <button className="co-btn-secondary" onClick={() => { setShowDeliveryModal(false); setShowScheduleModal(true); }}>Schedule delivery</button>
                 </div>
               )}
@@ -1120,12 +1156,14 @@ function CheckoutInner() {
             </div>
 
             <div className="co-times-list">
-              <div className="co-time-row" onClick={() => { setScheduleType('asap'); setScheduleTime(''); }}>
-                <div className={`co-radio ${scheduleType === 'asap' ? 'selected' : 'unselected'}`}>
-                  {scheduleType === 'asap' && <div className="co-radio-inner" />}
+              {isOpen && (
+                <div className="co-time-row" onClick={() => { setScheduleType('asap'); setScheduleTime(''); }}>
+                  <div className={`co-radio ${scheduleType === 'asap' ? 'selected' : 'unselected'}`}>
+                    {scheduleType === 'asap' && <div className="co-radio-inner" />}
+                  </div>
+                  <span style={{ fontSize: '16px', color: '#1A1A1A' }}>ASAP</span>
                 </div>
-                <span style={{ fontSize: '16px', color: '#1A1A1A' }}>ASAP</span>
-              </div>
+              )}
               {Array.from({ length: 33 }, (_, i) => {
                 const totalMins = 7 * 60 + i * 15; const h = Math.floor(totalMins / 60); const m = totalMins % 60;
                 const label = `${h > 12 ? h - 12 : h === 0 ? 12 : h}:${m.toString().padStart(2, '0')} ${h >= 12 ? 'PM' : 'AM'} ${tzAbbr}`;

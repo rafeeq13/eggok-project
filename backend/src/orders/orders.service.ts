@@ -9,6 +9,7 @@ import { PaymentsService } from '../payments/payments.service';
 import { LoyaltyService } from '../loyalty/loyalty.service';
 import { SquareService } from '../square/square.service';
 import { GiftCardsService } from '../gift-cards/gift-cards.service';
+import { SettingsService } from '../settings/settings.service';
 
 // Valid state transitions the order state machine
 const VALID_TRANSITIONS: Record<string, string[]> = {
@@ -57,6 +58,7 @@ export class OrdersService {
     private loyaltyService: LoyaltyService,
     private squareService: SquareService,
     private giftCardsService: GiftCardsService,
+    private settingsService: SettingsService,
   ) {
     // Start background workers on service init
     this.startSquareSyncWorker();
@@ -372,6 +374,11 @@ export class OrdersService {
    * inline and create the order in a single atomic operation.
    */
   async placeOrderWithGiftCard(cart: any): Promise<Order> {
+    const acceptance = await this.settingsService.validateOrderAcceptance(cart?.orderType, cart?.scheduleType);
+    if (!acceptance.ok) {
+      throw new Error(acceptance.reason || 'Order cannot be placed right now.');
+    }
+
     const code = cart?.giftCardCode ? String(cart.giftCardCode).trim().toUpperCase() : '';
     if (!code) throw new Error('giftCardCode is required');
     const total = Number(cart?.total);

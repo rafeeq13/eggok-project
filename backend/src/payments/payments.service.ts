@@ -75,6 +75,11 @@ export class PaymentsService {
      * payment leaves zero trace in the DB.
      */
     async createPaymentIntentForCart(cart: any): Promise<{ clientSecret: string; paymentIntentId: string }> {
+        const acceptance = await this.settingsService.validateOrderAcceptance(cart?.orderType, cart?.scheduleType);
+        if (!acceptance.ok) {
+            throw new BadRequestException(acceptance.reason || 'Order cannot be placed right now.');
+        }
+
         const stripe = await this.getStripe();
         if (!stripe) {
             throw new BadRequestException('Stripe is not configured. Add your secret key in Admin → Integrations.');

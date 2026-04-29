@@ -457,7 +457,7 @@ export default function ContactPage() {
       width="100%" 
       height="300" 
       style={{ border: 0 }} 
-      allowFullScreen="" 
+      allowFullScreen
       loading="lazy" 
       referrerPolicy="no-referrer-when-downgrade"
       title="Google Maps"

@@ -6,12 +6,14 @@ import { OrdersService } from './orders.service';
 import { OrdersController } from './orders.controller';
 import { PaymentsModule } from '../payments/payments.module';
 import { LoyaltyModule } from '../loyalty/loyalty.module';
+import { SettingsModule } from '../settings/settings.module';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([Order, Customer]),
     forwardRef(() => PaymentsModule),
     LoyaltyModule,
+    SettingsModule,
   ],
   controllers: [OrdersController],
   providers: [OrdersService],

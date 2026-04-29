@@ -299,7 +299,7 @@ const css = `
   display: flex;
   align-items: center;
   gap: 6px;
-  width:50% ;
+  // width:50% ;
   padding: 10px 5px;
   border-radius: 20px;
   background: #f5f5f5;
@@ -788,7 +788,15 @@ function OrderContent() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [showMobileSearch, setShowMobileSearch] = useState(false);
   const searchParams = useSearchParams();
-  const { isOpen, statusMessage, isDeliveryEnabled, isPickupEnabled, storeTimezone, storeName, storeAddress, taxRate, deliveryFee: defaultDeliveryFee } = useStoreSettings();
+  const { isOpen, statusMessage, isDeliveryEnabled, isPickupEnabled, storeTimezone, storeName, storeAddress, taxRate, deliveryFee: defaultDeliveryFee, closedMessage } = useStoreSettings();
+  const acceptingOrders = isPickupEnabled || isDeliveryEnabled;
+  const partialAvailabilityNotice = !acceptingOrders
+    ? (closedMessage || "We're not accepting orders right now. Please check back later.")
+    : (!isPickupEnabled
+        ? 'Pickup is currently unavailable — you can only place a delivery order.'
+        : !isDeliveryEnabled
+          ? 'Delivery is currently unavailable — you can only place a pickup order.'
+          : '');
   const [tzAbbr, setTzAbbr] = useState('ET');
   useEffect(() => {
     try {
@@ -942,6 +950,10 @@ function OrderContent() {
   };
 
   const openItem = (item: MenuItem) => {
+    // Hard stop when admin has turned BOTH methods off — no scheduling can rescue this.
+    if (!acceptingOrders) {
+      return;
+    }
     // When the store is closed, force the customer to schedule. Instead of
     // silently blocking the click (confusing UX), open the schedule modal so
     // they can pick a future time slot. Once a time is picked, scheduleType
@@ -1227,6 +1239,21 @@ function OrderContent() {
                   </span>
                 </div>
               </div>
+
+              {partialAvailabilityNotice && (
+                <div role="alert" style={{
+                  background: !acceptingOrders ? '#FFF1F0' : '#FFF8E5',
+                  border: `1px solid ${!acceptingOrders ? '#FC0301' : '#E5B800'}`,
+                  color: '#1A1A1A', borderRadius: '12px', padding: '14px 16px',
+                  margin: '12px 0', fontSize: '14px', fontWeight: 500,
+                  display: 'flex', alignItems: 'center', gap: '10px',
+                }}>
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={!acceptingOrders ? '#FC0301' : '#E5B800'} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
+                    <circle cx="12" cy="12" r="10" /><line x1="12" y1="8" x2="12" y2="12" /><line x1="12" y1="16" x2="12.01" y2="16" />
+                  </svg>
+                  <span>{partialAvailabilityNotice}</span>
+                </div>
+              )}
 
               {/* Order controls row */}
               <div id="order-controls-row" className="order-row">
@@ -1632,9 +1659,11 @@ function OrderContent() {
                     <p style={{ fontSize: '14px', color: '#AAAAAA', marginTop: '2px' }}>{storeAddress}</p>
                   </div>
 
-                  <button id="deliver-asap-btn" className="delivery-btn-primary" onClick={() => { setScheduleType('asap'); setShowDeliveryModal(false); }}>
-                    Deliver ASAP
-                  </button>
+                  {isOpen && (
+                    <button id="deliver-asap-btn" className="delivery-btn-primary" onClick={() => { setScheduleType('asap'); setShowDeliveryModal(false); }}>
+                      Deliver ASAP
+                    </button>
+                  )}
                   <button id="schedule-delivery-btn" className="delivery-btn-secondary" onClick={() => { setShowDeliveryModal(false); setShowScheduleModal(true); }}>
                     Schedule delivery
                   </button>
@@ -1694,13 +1723,15 @@ function OrderContent() {
             </div>
 
             <div id="schedule-times-list" className="schedule-times-list">
-              {/* ASAP option */}
-              <div id="schedule-asap-row" className="schedule-time-row" onClick={() => { setScheduleType('asap'); setScheduleTime(''); }}>
-                <div className={`schedule-radio ${scheduleType === 'asap' ? 'selected' : 'unselected'}`}>
-                  {scheduleType === 'asap' && <div className="schedule-radio-inner" />}
+              {/* ASAP option — hidden when the store is closed; only scheduled orders are accepted then. */}
+              {isOpen && (
+                <div id="schedule-asap-row" className="schedule-time-row" onClick={() => { setScheduleType('asap'); setScheduleTime(''); }}>
+                  <div className={`schedule-radio ${scheduleType === 'asap' ? 'selected' : 'unselected'}`}>
+                    {scheduleType === 'asap' && <div className="schedule-radio-inner" />}
+                  </div>
+                  <span className="schedule-time-label">ASAP</span>
                 </div>
-                <span className="schedule-time-label">ASAP</span>
-              </div>
+              )}
 
               {/* Time slots store hours 7:00 AM – 3:00 PM */}
               {Array.from({ length: 33 }, (_, i) => {
