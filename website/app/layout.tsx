@@ -27,7 +27,9 @@ export const metadata: Metadata = {
 // (Facebook's verifier scrapes static HTML — JS-injected meta tags don't count).
 async function getPublicIntegrations(): Promise<{ facebookPixelId?: string; facebookPixelStatus?: string; facebookDomainVerification?: string }> {
   try {
-    const res = await fetch(`${API_URL}/settings/integrations`, { next: { revalidate: 300 } });
+    // Short revalidation so an admin toggle (turning the pixel on/off, rotating
+    // the domain-verification code) propagates within ~1 min without a redeploy.
+    const res = await fetch(`${API_URL}/settings/integrations`, { next: { revalidate: 60 } });
     if (!res.ok) return {};
     return await res.json();
   } catch {
