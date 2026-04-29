@@ -8,9 +8,12 @@ declare global {
   }
 }
 
-export function fbqTrack(event: string, data?: Record<string, any>) {
+export function fbqTrack(event: string, data?: Record<string, any>, eventID?: string) {
   if (typeof window === 'undefined') return;
   if (typeof window.fbq !== 'function') return;
-  if (data) window.fbq('track', event, data);
+  // The third argument shape `{ eventID }` is how Meta Pixel accepts a custom event ID
+  // for deduplication against Conversions API events with the same id.
+  if (data && eventID) window.fbq('track', event, data, { eventID });
+  else if (data) window.fbq('track', event, data);
   else window.fbq('track', event);
 }

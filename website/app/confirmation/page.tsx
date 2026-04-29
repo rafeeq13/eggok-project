@@ -68,7 +68,7 @@ export default function ConfirmationPage() {
               currency: 'USD',
               content_ids: Array.isArray(order.items) ? order.items.map((it: any) => String(it.id)) : [],
               num_items: Array.isArray(order.items) ? order.items.reduce((n: number, it: any) => n + (it.quantity || 0), 0) : 0,
-            });
+            }, order.orderNumber);
           }
         }
 

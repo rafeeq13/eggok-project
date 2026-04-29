@@ -87,8 +87,9 @@ export default function Integrations() {
   const [googleMapsKey, setGoogleMapsKey] = useState(clientIntegrationDefaults.googleMapsKey);
   const [googleMapsStatus, setGoogleMapsStatus] = useState<IntegrationStatus>('disconnected');
 
-  // Facebook Pixel
+  // Facebook Pixel + Conversions API (CAPI)
   const [facebookPixelId, setFacebookPixelId] = useState('');
+  const [facebookCapiToken, setFacebookCapiToken] = useState('');
   const [facebookDomainVerification, setFacebookDomainVerification] = useState('');
   const [facebookPixelStatus, setFacebookPixelStatus] = useState<IntegrationStatus>('disconnected');
 
@@ -187,6 +188,7 @@ export default function Integrations() {
             if (v.googleMapsStatus) setGoogleMapsStatus(v.googleMapsStatus);
 
             if (v.facebookPixelId) setFacebookPixelId(v.facebookPixelId);
+            if (v.facebookCapiToken) setFacebookCapiToken(v.facebookCapiToken);
             if (v.facebookDomainVerification) setFacebookDomainVerification(v.facebookDomainVerification);
             if (v.facebookPixelStatus) setFacebookPixelStatus(v.facebookPixelStatus);
           }
@@ -225,7 +227,7 @@ export default function Integrations() {
       fcmServerKey, apnsKeyId, apnsTeamId, apnsBundleId, pushStatus: statusUpdate?.pushStatus || pushStatus,
       uberDirectCustomerId, uberDirectClientId, uberDirectClientSecret, uberDirectEnvironment, uberDirectStatus: statusUpdate?.uberDirectStatus || uberDirectStatus,
       googleMapsKey, googleMapsStatus: statusUpdate?.googleMapsStatus || googleMapsStatus,
-      facebookPixelId, facebookDomainVerification, facebookPixelStatus: statusUpdate?.facebookPixelStatus || facebookPixelStatus,
+      facebookPixelId, facebookCapiToken, facebookDomainVerification, facebookPixelStatus: statusUpdate?.facebookPixelStatus || facebookPixelStatus,
     };
 
     try {
@@ -1294,6 +1296,14 @@ export default function Integrations() {
                 </div>
 
                 <div>
+                  <label style={labelStyle}>Conversions API (CAPI) Access Token</label>
+                  <PasswordInput value={facebookCapiToken} onChange={setFacebookCapiToken} placeholder="Long-lived access token from Events Manager → Settings → Conversions API" />
+                  <p style={{ fontSize: '11px', color: '#FEFEFE', marginTop: '4px' }}>
+                    Server-side secret. Used to send Purchase events directly from the backend (ad-blocker proof). Never exposed to the storefront.
+                  </p>
+                </div>
+
+                <div>
                   <label style={labelStyle}>Domain Verification Code (optional)</label>
                   <input
                     style={inputStyle}
@@ -1311,10 +1321,10 @@ export default function Integrations() {
                 <div style={{ padding: '12px 14px', background: '#111111', borderRadius: '8px', border: '1px solid #2A2A2A' }}>
                   <p style={{ fontSize: '12px', fontWeight: '600', color: '#FEFEFE', marginBottom: '8px' }}>Events that will be tracked</p>
                   {[
-                    'PageView — every storefront page',
-                    'AddToCart — when a customer adds an item',
-                    'InitiateCheckout — when checkout opens',
-                    'Purchase — when an order is placed (with order value & currency)',
+                    'PageView — browser pixel, every storefront page',
+                    'AddToCart — browser pixel, when a customer adds an item',
+                    'InitiateCheckout — browser pixel, when checkout opens',
+                    'Purchase — browser pixel + server-side CAPI (deduped on orderNumber)',
                   ].map((feature, i) => (
                     <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px' }}>
                       <span style={{ color: '#22C55E', display: 'inline-flex', alignItems: 'center' }}><Check size={12} /></span>

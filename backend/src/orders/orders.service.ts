@@ -10,6 +10,7 @@ import { LoyaltyService } from '../loyalty/loyalty.service';
 import { SquareService } from '../square/square.service';
 import { GiftCardsService } from '../gift-cards/gift-cards.service';
 import { SettingsService } from '../settings/settings.service';
+import { FacebookCapiService } from '../analytics/facebook-capi.service';
 
 // Valid state transitions the order state machine
 const VALID_TRANSITIONS: Record<string, string[]> = {
@@ -59,6 +60,7 @@ export class OrdersService {
     private squareService: SquareService,
     private giftCardsService: GiftCardsService,
     private settingsService: SettingsService,
+    private facebookCapi: FacebookCapiService,
   ) {
     // Start background workers on service init
     this.startSquareSyncWorker();
@@ -470,6 +472,10 @@ export class OrdersService {
     this.attemptSquareSync(order).catch(err => {
       this.logger.warn(`[PAYMENT] Immediate Square sync failed for ${order.orderNumber}, worker will retry: ${err.message}`);
     });
+
+    // Server-side Facebook conversion event. Browser pixel fires the same Purchase
+    // with eventID=orderNumber; Facebook deduplicates so the conversion is counted once.
+    this.facebookCapi.sendPurchase(order).catch(() => {});
   }
 
   async createOrder(data: any): Promise<Order> {

@@ -19,6 +19,7 @@ import { SubmissionsModule } from './submissions/submissions.module';
 import { WebhooksModule } from './webhooks/webhooks.module';
 import { GiftCardsModule } from './gift-cards/gift-cards.module';
 import { AuditLogsModule } from './audit-logs/audit-logs.module';
+import { AnalyticsModule } from './analytics/analytics.module';
 
 @Module({
   imports: [
@@ -65,6 +66,7 @@ import { AuditLogsModule } from './audit-logs/audit-logs.module';
     WebhooksModule,
     GiftCardsModule,
     AuditLogsModule,
+    AnalyticsModule,
   ],
 })
 
