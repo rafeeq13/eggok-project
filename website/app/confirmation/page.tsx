@@ -1,8 +1,9 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { useCart } from '../context/CartContext';
 import { useStoreSettings } from '../../hooks/useStoreSettings';
+import { fbqTrack } from '../../lib/facebookPixel';
 
 export default function ConfirmationPage() {
   const { cart, cartTotal, orderType, getPrice, scheduleType, scheduleTime, deliveryAddress, deliveryFee: cartDeliveryFee } = useCart();
@@ -45,6 +46,9 @@ export default function ConfirmationPage() {
     });
   };
 
+  // Fire Purchase exactly once per order (orderNumber-keyed in localStorage so a
+  // hard refresh of the confirmation page doesn't double-count in Facebook).
+  const purchaseTrackedRef = useRef(false);
   useEffect(() => {
     setTimeout(() => setVisible(true), 100);
     const saved = localStorage.getItem('eggok_last_order');
@@ -53,6 +57,20 @@ export default function ConfirmationPage() {
         const order = JSON.parse(saved);
         setLastOrder(order);
         setOrderNumber(order.orderNumber);
+
+        if (!purchaseTrackedRef.current && order.orderNumber) {
+          const fired = localStorage.getItem('eggok_pixel_purchase_fired');
+          if (fired !== order.orderNumber) {
+            purchaseTrackedRef.current = true;
+            localStorage.setItem('eggok_pixel_purchase_fired', order.orderNumber);
+            fbqTrack('Purchase', {
+              value: Number(order.total) || 0,
+              currency: 'USD',
+              content_ids: Array.isArray(order.items) ? order.items.map((it: any) => String(it.id)) : [],
+              num_items: Array.isArray(order.items) ? order.items.reduce((n: number, it: any) => n + (it.quantity || 0), 0) : 0,
+            });
+          }
+        }
 
         if (order.id) {
           // Poll order from API to get latest status + delivery fields

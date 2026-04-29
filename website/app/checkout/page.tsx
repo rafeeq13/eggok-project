@@ -8,6 +8,7 @@ import { useGoogleMaps, initAutocomplete, validateDeliveryAddress } from '../../
 import { loadStripe } from '@stripe/stripe-js';
 import { Elements, CardNumberElement, CardExpiryElement, CardCvcElement, useStripe, useElements } from '@stripe/react-stripe-js';
 import { useStoreSettings } from '../../hooks/useStoreSettings';
+import { fbqTrack } from '../../lib/facebookPixel';
 
 const css = `
   *, *::before, *::after { box-sizing: border-box; }
@@ -212,6 +213,20 @@ function CheckoutInner() {
 
   const [mounted, setMounted] = useState(false);
   useEffect(() => setMounted(true), []);
+
+  // Fire InitiateCheckout once per visit when cart has items.
+  const checkoutTrackedRef = useRef(false);
+  useEffect(() => {
+    if (checkoutTrackedRef.current) return;
+    if (cart.length === 0) return;
+    checkoutTrackedRef.current = true;
+    fbqTrack('InitiateCheckout', {
+      num_items: cart.reduce((n, c) => n + c.quantity, 0),
+      content_ids: cart.map(c => String(c.item.id)),
+      value: cartTotal,
+      currency: 'USD',
+    });
+  }, [cart, cartTotal]);
 
   // Set default order type based on allowed options
   useEffect(() => {

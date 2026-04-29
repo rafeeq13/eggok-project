@@ -119,9 +119,15 @@ export class SettingsController {
       const authHeader = req.headers['authorization'];
       const hasAdminAuth = authHeader && authHeader.startsWith('Bearer ') && authHeader.length > 7;
       if (!hasAdminAuth) {
-        // Only expose public-safe keys (e.g. Google Maps key, publishable keys)
-        const { googleMapsKey, googleMapsStatus, stripePublishableKey, squareAppId } = value;
-        return { googleMapsKey, googleMapsStatus, stripePublishableKey, squareAppId };
+        // Only expose public-safe keys (e.g. Google Maps key, publishable keys, FB pixel)
+        const {
+          googleMapsKey, googleMapsStatus, stripePublishableKey, squareAppId,
+          facebookPixelId, facebookPixelStatus, facebookDomainVerification,
+        } = value;
+        return {
+          googleMapsKey, googleMapsStatus, stripePublishableKey, squareAppId,
+          facebookPixelId, facebookPixelStatus, facebookDomainVerification,
+        };
       }
     }
     return value;

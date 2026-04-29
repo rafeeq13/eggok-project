@@ -2,6 +2,8 @@ import type { Metadata } from 'next';
 import './globals.css';
 import { CartProvider } from './context/CartContext';
 import { AuthProvider } from './context/AuthContext';
+import FacebookPixel from './components/FacebookPixel';
+import { API_URL } from '../lib/api';
 
 export const metadata: Metadata = {
   title: 'Eggs Ok  Breakfast & Lunch Philadelphia',
@@ -13,22 +15,43 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'Eggs Ok  Breakfast & Lunch Philadelphia',
     description: 'Order online from Eggs Ok. Fresh breakfast made daily.',
-    url: 'https://eggsokphilly.com',
+    url: 'https://eggsokpa.com',
     siteName: 'Eggs Ok',
     locale: 'en_US',
     type: 'website',
   },
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+// Server-side fetch of public-safe integration fields so the pixel ID and the
+// facebook-domain-verification meta tag are present in the initial HTML
+// (Facebook's verifier scrapes static HTML — JS-injected meta tags don't count).
+async function getPublicIntegrations(): Promise<{ facebookPixelId?: string; facebookPixelStatus?: string; facebookDomainVerification?: string }> {
+  try {
+    const res = await fetch(`${API_URL}/settings/integrations`, { next: { revalidate: 300 } });
+    if (!res.ok) return {};
+    return await res.json();
+  } catch {
+    return {};
+  }
+}
+
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
+  const integrations = await getPublicIntegrations();
+  const pixelId = integrations.facebookPixelStatus === 'connected' && integrations.facebookPixelId
+    ? integrations.facebookPixelId
+    : '';
+  const fbVerify = integrations.facebookDomainVerification || '';
+
   return (
     <html lang="en">
       <head>
         <link rel="preconnect" href="https://maps.googleapis.com" />
         <link rel="preconnect" href="https://maps.gstatic.com" crossOrigin="" />
         <link rel="dns-prefetch" href="https://maps.googleapis.com" />
+        {fbVerify && <meta name="facebook-domain-verification" content={fbVerify} />}
       </head>
       <body>
+        <FacebookPixel pixelId={pixelId} />
         <AuthProvider>
           <CartProvider>
             {children}

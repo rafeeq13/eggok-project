@@ -1,5 +1,6 @@
 'use client';
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import { fbqTrack } from '../../lib/facebookPixel';
 
 type ModifierOption = { id: number; name: string; price: number };
 type ModifierGroup = { id: number; name: string; required: boolean; minSelections: number; maxSelections: number; options: ModifierOption[] };
@@ -161,6 +162,13 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
         );
       }
       return [...prev, { id: Date.now() + Math.random(), item, quantity, selectedModifiers, specialInstructions }];
+    });
+    fbqTrack('AddToCart', {
+      content_ids: [String(item.id)],
+      content_name: item.name,
+      content_type: 'product',
+      value: getPrice(item) * quantity,
+      currency: 'USD',
     });
   };
 

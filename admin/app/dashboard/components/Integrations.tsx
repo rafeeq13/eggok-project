@@ -87,6 +87,11 @@ export default function Integrations() {
   const [googleMapsKey, setGoogleMapsKey] = useState(clientIntegrationDefaults.googleMapsKey);
   const [googleMapsStatus, setGoogleMapsStatus] = useState<IntegrationStatus>('disconnected');
 
+  // Facebook Pixel
+  const [facebookPixelId, setFacebookPixelId] = useState('');
+  const [facebookDomainVerification, setFacebookDomainVerification] = useState('');
+  const [facebookPixelStatus, setFacebookPixelStatus] = useState<IntegrationStatus>('disconnected');
+
   const showSuccess = (msg: string) => {
     setSuccessMsg(msg);
     setErrorMsg('');
@@ -180,6 +185,10 @@ export default function Integrations() {
 
             if (v.googleMapsKey) setGoogleMapsKey(v.googleMapsKey);
             if (v.googleMapsStatus) setGoogleMapsStatus(v.googleMapsStatus);
+
+            if (v.facebookPixelId) setFacebookPixelId(v.facebookPixelId);
+            if (v.facebookDomainVerification) setFacebookDomainVerification(v.facebookDomainVerification);
+            if (v.facebookPixelStatus) setFacebookPixelStatus(v.facebookPixelStatus);
           }
         }
       } catch (err) {
@@ -215,7 +224,8 @@ export default function Integrations() {
       doordashDeveloperId, doordashKeyId, doordashSigningSecret, doordashEnvironment, doordashStatus: statusUpdate?.doordashStatus || doordashStatus,
       fcmServerKey, apnsKeyId, apnsTeamId, apnsBundleId, pushStatus: statusUpdate?.pushStatus || pushStatus,
       uberDirectCustomerId, uberDirectClientId, uberDirectClientSecret, uberDirectEnvironment, uberDirectStatus: statusUpdate?.uberDirectStatus || uberDirectStatus,
-      googleMapsKey, googleMapsStatus: statusUpdate?.googleMapsStatus || googleMapsStatus
+      googleMapsKey, googleMapsStatus: statusUpdate?.googleMapsStatus || googleMapsStatus,
+      facebookPixelId, facebookDomainVerification, facebookPixelStatus: statusUpdate?.facebookPixelStatus || facebookPixelStatus,
     };
 
     try {
@@ -327,14 +337,20 @@ export default function Integrations() {
         message = 'Could not reach the server';
       }
     } else {
-      // Fallback for integrations without backend test (doordash, push, maps)
+      // Fallback for integrations without backend test (doordash, push, maps, facebook)
+      const facebookValid = id === 'facebook' && /^\d{14,17}$/.test(facebookPixelId.trim());
       const hasCredentials = (
         (id === 'doordash' && doordashDeveloperId && doordashKeyId) ||
         (id === 'push' && fcmServerKey) ||
-        (id === 'maps' && googleMapsKey)
+        (id === 'maps' && googleMapsKey) ||
+        facebookValid
       );
       newStatus = hasCredentials ? 'connected' : 'error';
-      message = hasCredentials ? 'Credentials saved' : 'Missing required credentials';
+      message = hasCredentials
+        ? 'Credentials saved'
+        : id === 'facebook'
+          ? 'Pixel ID must be 14–17 digits (numeric only)'
+          : 'Missing required credentials';
     }
 
     setTestingId(null);
@@ -345,6 +361,7 @@ export default function Integrations() {
     if (id === 'uberdirect') setUberDirectStatus(newStatus);
     if (id === 'push') setPushStatus(newStatus);
     if (id === 'maps') setGoogleMapsStatus(newStatus);
+    if (id === 'facebook') setFacebookPixelStatus(newStatus);
 
     if (newStatus === 'connected') {
       showSuccess(message);
@@ -360,6 +377,7 @@ export default function Integrations() {
     if (id === 'uberdirect') update.uberDirectStatus = newStatus;
     if (id === 'push') update.pushStatus = newStatus;
     if (id === 'maps') update.googleMapsStatus = newStatus;
+    if (id === 'facebook') update.facebookPixelStatus = newStatus;
     saveIntegrations(update);
   };
 
@@ -372,6 +390,7 @@ export default function Integrations() {
     push: <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9" /><path d="M13.73 21a2 2 0 01-3.46 0" /></svg>,
     uberdirect: <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z" /><path d="M2 17l10 5 10-5" /><path d="M2 12l10 5 10-5" /></svg>,
     maps: <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" /><circle cx="12" cy="10" r="3" /></svg>,
+    facebook: <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z" /></svg>,
   };
 
   const integrations: Integration[] = [
@@ -382,6 +401,7 @@ export default function Integrations() {
     { id: 'email', name: 'Email Service', description: 'Order confirmations & notifications', icon: 'email', status: emailStatus, lastSync: emailStatus === 'connected' ? 'Just now' : 'Never' },
     { id: 'push', name: 'Push Notifications', description: 'iOS & Android push alerts', icon: 'push', status: pushStatus, lastSync: pushStatus === 'connected' ? 'Just now' : 'Never' },
     { id: 'maps', name: 'Google Maps', description: 'Live map & delivery zones', icon: 'maps', status: googleMapsStatus, lastSync: googleMapsStatus === 'connected' ? 'Just now' : 'Never' },
+    { id: 'facebook', name: 'Facebook Pixel', description: 'Ad tracking & conversion events', icon: 'facebook', status: facebookPixelStatus, lastSync: facebookPixelStatus === 'connected' ? 'Just now' : 'Never' },
   ];
 
   const statusColor: Record<IntegrationStatus, string> = {
@@ -468,6 +488,7 @@ export default function Integrations() {
     { id: 'email', label: 'Email', icon: <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" /><polyline points="22,6 12,13 2,6" /></svg> },
     { id: 'push', label: 'Push Notifications', icon: <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9" /><path d="M13.73 21a2 2 0 01-3.46 0" /></svg> },
     { id: 'maps', label: 'Google Maps', icon: <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" /><circle cx="12" cy="10" r="3" /></svg> },
+    { id: 'facebook', label: 'Facebook Pixel', icon: <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z" /></svg> },
   ];
 
   return (
@@ -562,6 +583,7 @@ export default function Integrations() {
                 { id: 'email', label: 'Email Service', status: emailStatus, required: true },
                 { id: 'push', label: 'Push Notifications', status: pushStatus, required: false },
                 { id: 'maps', label: 'Google Maps', status: googleMapsStatus, required: false },
+                { id: 'facebook', label: 'Facebook Pixel', status: facebookPixelStatus, required: false },
               ].map((item, i, arr) => (
                 <div key={i} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '10px 0', borderBottom: i < arr.length - 1 ? '1px solid #2A2A2A' : 'none' }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
@@ -1228,6 +1250,80 @@ export default function Integrations() {
                 </div>
 
                 <ConnectButton id="maps" />
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* FACEBOOK PIXEL */}
+        {activeSection === 'facebook' && (
+          <div>
+            <div style={cardStyle}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '16px', paddingBottom: '12px', borderBottom: '1px solid #2A2A2A' }}>
+                <div>
+                  <p style={sectionTitle}>Facebook Pixel</p>
+                  <p style={{ fontSize: '12px', color: '#FEFEFE', marginTop: '4px' }}>Track ad conversions (PageView, AddToCart, InitiateCheckout, Purchase) on the storefront</p>
+                </div>
+                <span style={{ fontSize: '11px', padding: '3px 10px', borderRadius: '20px', fontWeight: '600', background: `${statusColor[facebookPixelStatus]}20`, color: statusColor[facebookPixelStatus], border: `1px solid ${statusColor[facebookPixelStatus]}40`, flexShrink: 0 }}>
+                  {statusLabel[facebookPixelStatus]}
+                </span>
+              </div>
+
+              <div style={{ padding: '12px 14px', background: '#111111', borderRadius: '8px', marginBottom: '16px', border: '1px solid #E5B80020' }}>
+                <p style={{ fontSize: '12px', color: '#E5B800', fontWeight: '600', marginBottom: '4px' }}>Where to get these</p>
+                <p style={{ fontSize: '11px', color: '#FEFEFE', lineHeight: '1.6' }}>
+                  <b>Pixel ID:</b> business.facebook.com {'>'} Events Manager {'>'} pick your pixel {'>'} Settings {'>'} copy the Pixel ID (15–17 digits).<br />
+                  <b>Domain Verification:</b> business.facebook.com {'>'} Brand Safety {'>'} Domains {'>'} pick your domain {'>'} Add a meta-tag, copy the value of the <code>content="..."</code> attribute (do NOT paste the whole tag — only the code inside).
+                </p>
+              </div>
+
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
+                <div>
+                  <label style={labelStyle}>Pixel ID</label>
+                  <input
+                    style={inputStyle}
+                    value={facebookPixelId}
+                    onChange={e => setFacebookPixelId(e.target.value.replace(/[^0-9]/g, ''))}
+                    placeholder="1234567890123456"
+                    onFocus={e => e.target.style.borderColor = '#E5B800'}
+                    onBlur={e => e.target.style.borderColor = '#2A2A2A'}
+                  />
+                  <p style={{ fontSize: '11px', color: '#FEFEFE', marginTop: '4px' }}>
+                    Numeric only. The pixel script loads on the storefront once Status is Connected.
+                  </p>
+                </div>
+
+                <div>
+                  <label style={labelStyle}>Domain Verification Code (optional)</label>
+                  <input
+                    style={inputStyle}
+                    value={facebookDomainVerification}
+                    onChange={e => setFacebookDomainVerification(e.target.value.trim())}
+                    placeholder="xk37hx93evmd4yiu6ldxp8mgx61n0m"
+                    onFocus={e => e.target.style.borderColor = '#E5B800'}
+                    onBlur={e => e.target.style.borderColor = '#2A2A2A'}
+                  />
+                  <p style={{ fontSize: '11px', color: '#FEFEFE', marginTop: '4px' }}>
+                    Renders <code>{`<meta name="facebook-domain-verification" content="…" />`}</code> in the storefront <code>&lt;head&gt;</code>. Save, wait for the next deploy, then click "Verify domain" in Facebook Business Settings.
+                  </p>
+                </div>
+
+                <div style={{ padding: '12px 14px', background: '#111111', borderRadius: '8px', border: '1px solid #2A2A2A' }}>
+                  <p style={{ fontSize: '12px', fontWeight: '600', color: '#FEFEFE', marginBottom: '8px' }}>Events that will be tracked</p>
+                  {[
+                    'PageView — every storefront page',
+                    'AddToCart — when a customer adds an item',
+                    'InitiateCheckout — when checkout opens',
+                    'Purchase — when an order is placed (with order value & currency)',
+                  ].map((feature, i) => (
+                    <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px' }}>
+                      <span style={{ color: '#22C55E', display: 'inline-flex', alignItems: 'center' }}><Check size={12} /></span>
+                      <span style={{ fontSize: '12px', color: '#FEFEFE' }}>{feature}</span>
+                    </div>
+                  ))}
+                </div>
+
+                <ConnectButton id="facebook" />
               </div>
             </div>
           </div>
